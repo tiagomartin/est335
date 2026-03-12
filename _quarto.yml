@@ -31,17 +31,17 @@ website:
     search: true
     collapse-level: 1
     contents:
-      - aulas.qmd
+      #- aulas.qmd
       #- estudos.qmd
-      - exercicios.qmd
-      - resolucao.qmd
-      - formulario.qmd
+      #- exercicios.qmd
+      #- resolucao.qmd
+      #- formulario.qmd
       #- analises.qmd
-      - plano.qmd
+      #- plano.qmd
       - cronograma.qmd
       #- material.qmd
-      - revisao.qmd
-      - notas.qmd
+      #- revisao.qmd
+      #- notas.qmd
 format:
   html:
     theme:

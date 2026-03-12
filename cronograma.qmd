@@ -1,0 +1,41 @@
+---
+title: "Cronograma da Disciplina"
+tbl-colwidths: [5,10,30,5,5,5,5,5,5,5]
+---
+
+Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.
+
+<!-- https://fontawesome.com/search?o=r&m=free -->
+
+<!-- https://jpswalsh.github.io/academicons/ -->
+
+<!-- [{{< fa file-pdf size=2xl >}}](/weeks/week-1.html#prepare){aria-label="Week 1 summary"}  |  [️](/slides/lec-1.html "Lecture slides"){aria-label="Lecture 1 slides"}  |       [{{< fa laptop-file size=2xl >}}](/ae/ae-0-movies.html "Application exercise"){aria-label="Application Exercise 0 instructions"} -->
+
+<!-- {{< fa brands r-project size=2xl >}}  -  scripts -->
+
+<!-- {{< fa file-powerpoint size=2xl >}}   -  slides -->
+
+<!-- {{< fa laptop-file size=2xl >}}  -  estudo de caso -->
+
+<!-- {{< fa file-pdf size=2xl >}}  -  artigo -->
+
+<!-- {{< fa table size=2xl >}}  -  tabelas estatisticas -->
+
+<!-- {{< fa file-lines size=2xl >}}  -  exercicios -->
+
+<!-- {{< fa folder size=2xl >}}  -  material complementar -->
+
+<!-- {{< fa list-check size=2xl >}}  -  projeto -->
+
+::: column-screen-inset-right
+| Semana | Data | Tópico | Artigo | Slides | EC | LE | Script | MC | Projeto |
+|:------:|--------|--------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+| [1](programacao/semana-1.html) | Ter, 31/03 | Apresentação da disciplina |  |  |  |  |  |  |  |
+|  | Qui, 02/04 | Feriado: Semana Santa |  |  |  |  |  |  |  |
+:::
+
+```{r echo = FALSE}
+knitr::knit_exit()
+```
+
+
