@@ -104,6 +104,39 @@
 \makeatother
 
 
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 
 
@@ -261,7 +294,7 @@ A função objetivo possui \textbf{duas partes}:
 \[
 \sum_{k=1}^{n}
 \left(
-y_k - \beta_0 - \sum_{i=1}^{d} \beta_i x_{k,i}
+y_k - \beta_0 - \sum_{i=1}^{p} \beta_i x_{k,i}
 \right)^2
 \]
 
@@ -273,7 +306,7 @@ mede o \textbf{erro quadrático de treinamento}.
 2️⃣ \textbf{Penalização pela complexidade}
 
 \[
-\lambda \sum_{i=1}^{d} I(\beta_i \neq 0)
+\lambda \sum_{i=1}^{p} I(\beta_i \neq 0)
 \]
 
 conta \textbf{quantos coeficientes são diferentes de zero}.
@@ -281,7 +314,8 @@ conta \textbf{quantos coeficientes são diferentes de zero}.
 Ou seja, penaliza modelos com \textbf{muitas variáveis}.
 \end{frame}
 
-\begin{frame}{Ideia central}
+\begin{frame}
+\begin{block}{Ideia central}
 \phantomsection\label{ideia-central-1}
 O parâmetro \(\lambda\) controla o compromisso entre:
 
@@ -302,28 +336,793 @@ Quanto maior \(\lambda\):
 \item
   o modelo se torna \textbf{mais simples}.
 \end{itemize}
+\end{block}
 \end{frame}
 
-\begin{frame}{Observação importante}
-\phantomsection\label{observauxe7uxe3o-importante}
-Se
+\begin{frame}
+\begin{block}{Caso sem penalização}
+\phantomsection\label{caso-sem-penalizauxe7uxe3o}
+Quando \(\lambda = 0\) não existe penalização.
+
+Nesse caso, \(\hat{\beta}_{L_0}\) coincide com o \textbf{estimador de
+mínimos quadrados}.
+
+Ou seja:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{nenhuma variável é descartada}
+\item
+  todas as covariáveis permanecem no modelo.
+\end{itemize}
+
+{É importante notar que não há penalização para \(\beta_0\)}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Busca entre todos os subconjuntos}
+\phantomsection\label{busca-entre-todos-os-subconjuntos}
+Para um valor específico de \(\lambda = \dfrac{2 \hat{\sigma}^2}{n}\),
+encontrar a solução para \(\hat{\boldsymbol{\beta}}_{L_0}\) equivale a
+buscar entre todos os modelos da classe
 
 \[
-d > n
+G =
+\{g(x)\}
 \]
 
-o método clássico de mínimos quadrados \textbf{não pode ser aplicado
-diretamente},\\
-pois a matriz
+que correspondem a diferentes \textbf{subconjuntos de covariáveis}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+Por exemplo:
 
 \[
-X^T X
+\begin{aligned}
+G = \{g(\mathbf{x})&=\hat{\beta}_0,\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_2 x_2 \\
+\vdots\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_p x_p \\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_2 x_2\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_3 x_3\\
+\vdots\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_2 x_2+\cdots+\hat{\beta}_p x_p\}
+\end{aligned}
+\]
+\end{frame}
+
+\begin{frame}
+\begin{block}{Como escolher o melhor modelo?}
+\phantomsection\label{como-escolher-o-melhor-modelo}
+Uma estratégia é ajustar \textbf{cada um dos \(2^p\) modelos} e comparar
+seus desempenhos.
+
+Para isso utilizamos critérios de seleção de modelos, como:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{AIC}
+\item
+  \textbf{BIC}
+\item
+  \textbf{validação cruzada}
+\end{itemize}
+
+O modelo escolhido é aquele que apresenta o \textbf{menor risco
+estimado}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Dificuldade computacional}
+\phantomsection\label{dificuldade-computacional}
+Apesar da ideia ser conceitualmente simples, resolver o problema
+exatamente pode ser \textbf{computacionalmente caro}.
+
+Se existem \(p\) covariáveis, então existem \(2^p\) subconjuntos
+possíveis de variáveis.
+
+Logo, precisaríamos ajustar \textbf{\(2^p\) modelos diferentes}.
+
+Por exemplo:
+
+\begin{itemize}
+\tightlist
+\item
+  \(p=10\) \(\rightarrow\) \(2^{10}=1024\) modelos
+\item
+  \(p=20\) \(\rightarrow\) \(2^{20}=1.048.576\) modelos
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{met_param_altas_dimen_files/figure-beamer/unnamed-chunk-1-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Ideia alternativa}
+\phantomsection\label{ideia-alternativa}
+Uma solução é utilizar \textbf{heurísticas} que exploram apenas
+\textbf{uma pequena parte do espaço de modelos}, mas ainda assim
+produzem modelos com \textbf{baixo erro preditivo}.
+
+Ou seja, buscamos uma \textbf{aproximação da solução ótima}, sem
+precisar avaliar todos os \(2^p\) modelos.
+\end{block}
+\end{frame}
+
+\begin{frame}{Regressão Stepwise}
+\phantomsection\label{regressuxe3o-stepwise}
+Uma família de algoritmos que utiliza essa ideia é chamada de
+\textbf{regressão stepwise}.
+
+Esses métodos analisam apenas \textbf{um subconjunto dos modelos
+possíveis}, reduzindo drasticamente o custo computacional.
+
+\begin{block}{Ideia do algoritmo}
+\phantomsection\label{ideia-do-algoritmo}
+Os métodos stepwise constroem o modelo \textbf{sequencialmente},
+adicionando ou removendo variáveis.
+
+Em cada etapa, o algoritmo avalia um pequeno conjunto de candidatos e
+escolhe o modelo que \textbf{melhora mais o critério de ajuste}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Tipos principais}
+\phantomsection\label{tipos-principais}
+Existem três variantes clássicas:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Forward stepwise}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    começa com modelo vazio
+  \item
+    adiciona uma variável por vez
+  \end{itemize}
+\item
+  \textbf{Backward stepwise}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    começa com todas as variáveis
+  \item
+    remove uma variável por vez
+  \end{itemize}
+\item
+  \textbf{Stepwise bidirecional}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    pode adicionar ou remover variáveis em cada etapa
+  \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Forward Stepwise Selection}
+\phantomsection\label{forward-stepwise-selection}
+O método \textbf{forward stepwise} constrói o modelo
+\textbf{sequencialmente}, adicionando uma variável por vez.
+
+Em cada etapa escolhemos a variável que \textbf{mais reduz o risco
+estimado} (por exemplo, usando \textbf{AIC} ou \textbf{validação
+cruzada}).
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Passo 1: Escolher a melhor variável isolada}
+\phantomsection\label{passo-1-escolher-a-melhor-variuxe1vel-isolada}
+Para cada variável \(X_j\), com \(j=1,\dots,p\), ajustamos o modelo
+
+\[
+Y = \beta_j X_j + \varepsilon
 \]
 
-não é invertível.
+e estimamos o risco \(\hat{R}(g_j)\). Escolhemos
 
-Métodos de \textbf{seleção de variáveis} ajudam a contornar esse
-problema.
+\[
+\hat{j} = \arg\min_j \hat{R}(g_j)
+\]
+
+e definimos \(S = \{\hat{j}\}\).
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Passo 2: Adicionar uma nova variável}
+\phantomsection\label{passo-2-adicionar-uma-nova-variuxe1vel}
+Para cada variável \(j \notin S\), ajustamos
+
+\[
+Y = \beta_j X_j + \sum_{s \in S} \beta_s X_s + \varepsilon
+\]
+
+Calculamos novamente o risco estimado \(\hat{R}(g_j)\). Selecionamos
+
+\[
+\hat{j} = \arg\min_{j \notin S} \hat{R}(g_j)
+\]
+
+e atualizamos \(S \leftarrow S \cup \{\hat{j}\}.\)
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Passo 3: Repetir}
+\phantomsection\label{passo-3-repetir}
+Repetimos o processo:
+
+\begin{itemize}
+\tightlist
+\item
+  adicionando \textbf{uma variável por vez}
+\item
+  sempre escolhendo a que \textbf{mais reduz o risco estimado}.
+\end{itemize}
+
+O procedimento continua até:
+
+\begin{itemize}
+\tightlist
+\item
+  todas as variáveis entrarem no modelo, ou
+\item
+  não ser mais possível melhorar o ajuste.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Passo 4: Escolher o melhor modelo}
+\phantomsection\label{passo-4-escolher-o-melhor-modelo}
+Ao final, escolhemos o modelo com \textbf{menor risco estimado} ao longo
+da sequência de modelos gerados.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Vantagem computacional}
+\phantomsection\label{vantagem-computacional}
+No \textbf{best subset selection} precisaríamos avaliar \(2^p\) modelos.
+
+No \textbf{forward stepwise} precisamos ajustar apenas
+
+\[
+1 + \frac{p(p+1)}{2}
+\]
+
+modelos.
+
+Isso representa uma \textbf{redução enorme no custo computacional}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{met_param_altas_dimen_files/figure-beamer/unnamed-chunk-2-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Lasso}
+\phantomsection\label{lasso}
+O \textbf{Lasso} (Least Absolute Shrinkage and Selection Operator) foi
+proposto por Tibshirani (1996).
+
+Seu objetivo é encontrar um estimador da regressão linear que tenha
+\textbf{menor risco preditivo} que o método de mínimos quadrados.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Ideia central}
+\phantomsection\label{ideia-central-2}
+Assim como em outros métodos de regularização, o Lasso busca minimizar:
+
+\begin{itemize}
+\tightlist
+\item
+  o \textbf{erro de ajuste}
+\item
+  mais uma \textbf{penalização de complexidade}.
+\end{itemize}
+
+A função objetivo é
+
+\[
+\hat{\beta}_{L_1,\lambda}
+=
+\arg\min_{\beta}
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
+\right)^2
++
+\lambda \sum_{j=1}^{p} |\beta_j|
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Penalização \(L_1\)}
+\phantomsection\label{penalizauxe7uxe3o-l_1}
+No Lasso, a complexidade do modelo é medida pela \textbf{norma \(L_1\)}:
+
+\[
+\sum_{j=1}^{p} |\beta_j|
+\]
+
+Essa penalização favorece modelos com \textbf{coeficientes pequenos} e
+frequentemente \textbf{iguais a zero}.
+
+Por isso, o Lasso realiza \textbf{seleção automática de variáveis}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Comparação com seleção de subconjuntos}
+\phantomsection\label{comparauxe7uxe3o-com-seleuxe7uxe3o-de-subconjuntos}
+Nos métodos de seleção de variáveis clássicos utilizamos a penalização
+
+\[
+\sum_{j=1}^{p} I(\beta_j \neq 0)
+\]
+
+que corresponde à \textbf{norma \(L_0\)}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+No Lasso utilizamos
+
+\[
+\sum_{j=1}^{p} |\beta_j|
+\]
+
+que é a \textbf{norma \(L_1\)}.
+
+Essa substituição torna o problema \textbf{computacionalmente muito mais
+fácil de resolver}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Vantagens do Lasso}
+\phantomsection\label{vantagens-do-lasso}
+Em relação a métodos como \textbf{stepwise selection}, o Lasso possui:
+
+\begin{itemize}
+\tightlist
+\item
+  solução \textbf{computacionalmente mais rápida}
+\item
+  \textbf{melhores propriedades teóricas}
+\item
+  capacidade de realizar \textbf{seleção automática de variáveis}.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{O papel do parâmetro \(\lambda\) no Lasso}
+\phantomsection\label{o-papel-do-paruxe2metro-lambda-no-lasso}
+Cada valor do \textbf{parâmetro de regularização \(\lambda\)} produz um
+conjunto diferente de coeficientes
+
+\[
+\hat{\beta}_{L_1,\lambda}
+\]
+
+Esse parâmetro controla o \textbf{grau de penalização aplicado ao
+modelo}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Caso 1: \(\lambda = 0\)}
+\phantomsection\label{caso-1-lambda-0}
+Quando \(\lambda = 0\) o problema do Lasso se reduz a
+
+\[
+\min_\beta \sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p}\beta_j x_{k,j}
+\right)^2
+\]
+
+ou seja, ao \textbf{estimador de mínimos quadrados}.
+
+Neste caso:
+
+\begin{itemize}
+\tightlist
+\item
+  não há penalização
+\item
+  todos os coeficientes podem ser diferentes de zero
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Caso 2: \(\lambda\) grande}
+\phantomsection\label{caso-2-lambda-grande}
+Quando \(\lambda\) cresce, o termo de penalização domina:
+
+\[
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p}\beta_j x_{k,j}
+\right)^2
++
+\lambda \sum_{j=1}^{p} |\beta_j|
+\;\approx\;
+\lambda \sum_{j=1}^{p} |\beta_j|
+\]
+
+Nesse caso, a solução tende a
+
+\[
+\hat{\beta}_1 = \cdots = \hat{\beta}_p = 0
+\]
+
+Portanto:
+
+\begin{itemize}
+\tightlist
+\item
+  o modelo torna-se \textbf{extremamente simples}
+\item
+  a \textbf{variância é muito pequena}
+\item
+  mas o \textbf{viés é alto}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Como escolher \(\lambda\)?}
+\phantomsection\label{como-escolher-lambda}
+Na prática, \(\lambda\) é escolhido por \textbf{validação cruzada}.
+
+Procedimento:
+
+\begin{enumerate}
+\tightlist
+\item
+  Ajustar o modelo para vários valores de \(\lambda\)
+\item
+  Estimar o risco preditivo \(R(g_\lambda)\)
+\item
+  Selecionar o valor de \(\lambda\) que \textbf{minimiza o erro de
+  validação}
+\end{enumerate}
+
+Esse processo está ilustrado no \textbf{caminho de regularização do
+Lasso}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{met_param_altas_dimen_files/figure-beamer/unnamed-chunk-3-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Caminho dos coeficientes no Lasso}
+\phantomsection\label{caminho-dos-coeficientes-no-lasso}
+\begin{itemize}
+\tightlist
+\item
+  Cada curva representa um \textbf{coeficiente do modelo}.
+\item
+  Quando \(\lambda\) é pequeno, os coeficientes ficam próximos do ajuste
+  por mínimos quadrados.
+\item
+  À medida que \(\lambda\) aumenta, os coeficientes são
+  \textbf{encolhidos em direção a zero}.
+\item
+  Alguns coeficientes tornam-se \textbf{exatamente zero}, realizando
+  \textbf{seleção automática de variáveis}.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Regressão Ridge}
+\phantomsection\label{regressuxe3o-ridge}
+Uma alternativa ao \textbf{Lasso} é a \textbf{Regressão Ridge},
+introduzida por Hoerl and Kennard (1970). A ideia é buscar um modelo que
+minimize simultaneamente:
+
+\begin{itemize}
+\tightlist
+\item
+  o \textbf{erro de ajuste do modelo}
+\item
+  uma \textbf{medida da complexidade do vetor de coeficientes}
+\end{itemize}
+
+Na regressão Ridge isso é feito penalizando a \textbf{norma \(L_2\) dos
+coeficientes}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Formulação do Problema}
+\phantomsection\label{formulauxe7uxe3o-do-problema-1}
+O estimador da regressão Ridge é definido como
+
+\[
+\hat{\beta}_{L_2,\lambda}
+=
+\arg\min_{\beta}
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
+\right)^2
++
+\lambda \sum_{j=1}^{p} \beta_j^2
+\]
+
+onde
+
+\begin{itemize}
+\tightlist
+\item
+  \(y_k\) é a variável resposta da \(k\)-ésima observação\\
+\item
+  \(x_{k,j}\) é o valor da \(j\)-ésima covariável\\
+\item
+  \(\beta_j\) são os coeficientes do modelo\\
+\item
+  \(\lambda \ge 0\) é o \textbf{parâmetro de regularização}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Estrutura da Função Objetivo}
+\phantomsection\label{estrutura-da-funuxe7uxe3o-objetivo}
+\begin{block}{Erro de ajuste}
+\phantomsection\label{erro-de-ajuste}
+\[
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
+\right)^2
+\]
+
+Esse termo corresponde ao \textbf{erro quadrático residual}.
+\end{block}
+
+\begin{block}{Penalização Ridge}
+\phantomsection\label{penalizauxe7uxe3o-ridge}
+\[
+\lambda \sum_{j=1}^{d} \beta_j^2
+\]
+
+Esse termo penaliza coeficientes grandes, reduzindo a complexidade do
+modelo.
+\end{block}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Norma \(L_2\)}
+\phantomsection\label{norma-l_2}
+A penalização utilizada corresponde à \textbf{norma \(L_2\) do vetor de
+coeficientes}
+
+\[
+\|\beta\|_{L_2}^2
+=
+\sum_{j=1}^{d} \beta_j^2
+\]
+
+Essa medida representa o \textbf{comprimento euclidiano do vetor de
+parâmetros}.
+
+Penalizar essa quantidade implica restringir a magnitude dos
+coeficientes.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Papel do Parâmetro \(\lambda\)}
+\phantomsection\label{papel-do-paruxe2metro-lambda}
+O parâmetro \(\lambda\) controla o grau de regularização do modelo.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Valor de \(\lambda\) & Interpretação \\
+\midrule\noalign{}
+\endhead
+\(\lambda = 0\) & regressão linear clássica \\
+\(\lambda\) pequeno & penalização fraca \\
+\(\lambda\) grande & coeficientes próximos de zero \\
+\bottomrule\noalign{}
+\end{longtable}
+
+Assim, \(\lambda\) controla o \textbf{trade-off entre ajuste e
+complexidade do modelo}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Solução Analítica}
+\phantomsection\label{soluuxe7uxe3o-analuxedtica}
+Diferentemente do Lasso, a regressão Ridge possui \textbf{solução
+analítica fechada}, dada por
+
+\[
+\hat{\boldsymbol{\beta}}_{L_2,\lambda}
+=
+(\boldsymbol{X}^t \boldsymbol{X} + \lambda I_0)^{-1}\boldsymbol{X}^t\boldsymbol{y}
+\]
+
+onde
+
+\begin{itemize}
+\tightlist
+\item
+  \(\boldsymbol{X}\) é a matriz de covariáveis
+\item
+  \(\boldsymbol{y}\) é o vetor de respostas
+\item
+  \(I_0\) é uma matriz identidade modificada.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Papel da Matriz Identidade}
+\phantomsection\label{papel-da-matriz-identidade}
+A matriz \(I_0\) é construída de modo que o \textbf{intercepto não seja
+penalizado}.
+
+\[
+I_0 =
+\begin{pmatrix}
+0 & 0 & 0 & \cdots & 0 \\
+0 & 1 & 0 & \cdots & 0 \\
+0 & 0 & 1 & \cdots & 0 \\
+0 & 0 & 0 & \ddots & 0 \\
+0 & 0 & 0 & \cdots & 1
+\end{pmatrix}
+\]
+
+Ou seja, o coeficiente \(\beta_0\) não sofre regularização.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Comparação com Regressão Linear}
+\phantomsection\label{comparauxe7uxe3o-com-regressuxe3o-linear}
+Na regressão linear clássica temos
+
+\[
+\hat{\boldsymbol{\beta}}_{OLS}
+=
+(\boldsymbol{X}^t \boldsymbol{X})^{-1} \boldsymbol{X}^t \boldsymbol{y}
+\]
+
+Na regressão Ridge adiciona-se o termo \(\lambda I_0\). Esse termo torna
+a matriz
+
+\[
+\boldsymbol{X}^t \boldsymbol{X} + \lambda I_0
+\]
+
+mais estável numericamente, especialmente quando existe \textbf{alta
+correlação entre variáveis explicativas}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação Geométrica}
+\phantomsection\label{interpretauxe7uxe3o-geomuxe9trica}
+A regressão Ridge pode ser interpretada como o problema
+
+\[
+\min \text{Erro}
+\quad
+\text{sujeito a}
+\quad
+\sum_{j=1}^{p} \beta_j^2 \leq t
+\]
+
+Geometricamente:
+
+\begin{itemize}
+\tightlist
+\item
+  a restrição define uma \textbf{esfera no espaço dos coeficientes}
+\item
+  a solução ocorre onde essa esfera toca a superfície do erro mínimo.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Comparação entre Ridge e Lasso}
+\phantomsection\label{comparauxe7uxe3o-entre-ridge-e-lasso}
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Método & Penalização & Efeito \\
+\midrule\noalign{}
+\endhead
+Ridge & \(L_2\) & reduz coeficientes \\
+Lasso & \(L_1\) & pode zerar coeficientes \\
+\bottomrule\noalign{}
+\end{longtable}
+
+Assim:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Ridge} reduz a magnitude dos coeficientes
+\item
+  \textbf{Lasso} pode realizar \textbf{seleção automática de variáveis}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Conclusão}
+\phantomsection\label{conclusuxe3o}
+A regressão Ridge é um método fundamental em aprendizado estatístico
+porque
+
+\begin{itemize}
+\tightlist
+\item
+  reduz a variância dos estimadores
+\item
+  melhora a estabilidade numérica
+\item
+  controla a complexidade do modelo
+\item
+  funciona bem em presença de \textbf{multicolinearidade}.
+\end{itemize}
+
+Por essas razões, métodos de regularização são amplamente utilizados em
+problemas modernos de \textbf{aprendizado de máquina e análise de dados
+de alta dimensão}.
+\end{block}
+\end{frame}
+
+\begin{frame}{References}
+\phantomsection\label{references}
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-hoerl1970ridge}
+Hoerl, Arthur E., and Robert W. Kennard. 1970. {``Ridge Regression:
+Biased Estimation for Nonorthogonal Problems.''} \emph{Technometrics} 12
+(1): 55--67. \url{https://doi.org/10.1080/00401706.1970.10488634}.
+
+\bibitem[\citeproctext]{ref-tibshirani1996lasso}
+Tibshirani, Robert. 1996. {``Regression Shrinkage and Selection via the
+Lasso.''} \emph{Journal of the Royal Statistical Society: Series B
+(Methodological)} 58 (1): 267--88.
+
+\end{CSLReferences}
 \end{frame}
 
 

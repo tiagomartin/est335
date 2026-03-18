@@ -70,16 +70,16 @@ Esta página contém aulas que serão apresentadas ao longo do semestre. Você p
 </span>
 :::
 
-<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
-<!-- <span class="fw-bold"> -->
-<!--   Função Geradora de Momentos -->
-<!-- </span> -->
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+  Métodos Paramétricos em Altas Dimensões
+</span>
 
-<!-- <span> -->
-<!-- [Ver slides](/aulas/func_geradora_momentos/func_gera_momentos.html#/title-slide){.btn .btn-est304-main .btn-sm} -->
-<!-- [PDF](/aulas/func_geradora_momentos/func_gera_momentos.pdf){.btn .btn-est304-outline .btn-sm} -->
-<!-- </span> -->
-<!-- ::: -->
+<span>
+[Ver slides](/aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#/title-slide){.btn .btn-est304-main .btn-sm}
+[PDF](/aulas/regressao/met_param_altas_dim/met_param_altas_dimen.pdf){.btn .btn-est304-outline .btn-sm}
+</span>
+:::
 
 <!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
 <!-- <span class="fw-bold"> -->
