@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Função Geradora de Momentos – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Função Geradora de Momentos – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Homepage da disciplina EST335 - Métodos Estatísticos para Machine Learning, 2026/1">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Função Geradora de Momentos</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#momentos" id="toc-momentos" class="nav-link active" data-scroll-target="#momentos">Momentos</a></li>
+  <li><a href="#momentos-1" id="toc-momentos-1" class="nav-link" data-scroll-target="#momentos-1">Momentos</a></li>
+  <li><a href="#momentos-2" id="toc-momentos-2" class="nav-link" data-scroll-target="#momentos-2">Momentos</a></li>
+  <li><a href="#momentos-3" id="toc-momentos-3" class="nav-link" data-scroll-target="#momentos-3">Momentos</a></li>
+  <li><a href="#momentos-4" id="toc-momentos-4" class="nav-link" data-scroll-target="#momentos-4">Momentos</a></li>
+  <li><a href="#momentos-5" id="toc-momentos-5" class="nav-link" data-scroll-target="#momentos-5">Momentos</a></li>
+  <li><a href="#momentos-6" id="toc-momentos-6" class="nav-link" data-scroll-target="#momentos-6">Momentos</a></li>
+  <li><a href="#momentos-7" id="toc-momentos-7" class="nav-link" data-scroll-target="#momentos-7">Momentos</a></li>
+  <li><a href="#momentos-8" id="toc-momentos-8" class="nav-link" data-scroll-target="#momentos-8">Momentos</a></li>
+  <li><a href="#momentos-9" id="toc-momentos-9" class="nav-link" data-scroll-target="#momentos-9">Momentos</a></li>
+  <li><a href="#momentos-10" id="toc-momentos-10" class="nav-link" data-scroll-target="#momentos-10">Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos" id="toc-função-geradora-de-momentos" class="nav-link" data-scroll-target="#função-geradora-de-momentos">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-1" id="toc-função-geradora-de-momentos-1" class="nav-link" data-scroll-target="#função-geradora-de-momentos-1">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-2" id="toc-função-geradora-de-momentos-2" class="nav-link" data-scroll-target="#função-geradora-de-momentos-2">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-3" id="toc-função-geradora-de-momentos-3" class="nav-link" data-scroll-target="#função-geradora-de-momentos-3">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-4" id="toc-função-geradora-de-momentos-4" class="nav-link" data-scroll-target="#função-geradora-de-momentos-4">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-5" id="toc-função-geradora-de-momentos-5" class="nav-link" data-scroll-target="#função-geradora-de-momentos-5">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-6" id="toc-função-geradora-de-momentos-6" class="nav-link" data-scroll-target="#função-geradora-de-momentos-6">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-7" id="toc-função-geradora-de-momentos-7" class="nav-link" data-scroll-target="#função-geradora-de-momentos-7">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-8" id="toc-função-geradora-de-momentos-8" class="nav-link" data-scroll-target="#função-geradora-de-momentos-8">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-9" id="toc-função-geradora-de-momentos-9" class="nav-link" data-scroll-target="#função-geradora-de-momentos-9">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-10" id="toc-função-geradora-de-momentos-10" class="nav-link" data-scroll-target="#função-geradora-de-momentos-10">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-11" id="toc-função-geradora-de-momentos-11" class="nav-link" data-scroll-target="#função-geradora-de-momentos-11">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-12" id="toc-função-geradora-de-momentos-12" class="nav-link" data-scroll-target="#função-geradora-de-momentos-12">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-13" id="toc-função-geradora-de-momentos-13" class="nav-link" data-scroll-target="#função-geradora-de-momentos-13">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-14" id="toc-função-geradora-de-momentos-14" class="nav-link" data-scroll-target="#função-geradora-de-momentos-14">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-15" id="toc-função-geradora-de-momentos-15" class="nav-link" data-scroll-target="#função-geradora-de-momentos-15">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-16" id="toc-função-geradora-de-momentos-16" class="nav-link" data-scroll-target="#função-geradora-de-momentos-16">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-17" id="toc-função-geradora-de-momentos-17" class="nav-link" data-scroll-target="#função-geradora-de-momentos-17">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-18" id="toc-função-geradora-de-momentos-18" class="nav-link" data-scroll-target="#função-geradora-de-momentos-18">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-19" id="toc-função-geradora-de-momentos-19" class="nav-link" data-scroll-target="#função-geradora-de-momentos-19">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-20" id="toc-função-geradora-de-momentos-20" class="nav-link" data-scroll-target="#função-geradora-de-momentos-20">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-21" id="toc-função-geradora-de-momentos-21" class="nav-link" data-scroll-target="#função-geradora-de-momentos-21">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-22" id="toc-função-geradora-de-momentos-22" class="nav-link" data-scroll-target="#função-geradora-de-momentos-22">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-23" id="toc-função-geradora-de-momentos-23" class="nav-link" data-scroll-target="#função-geradora-de-momentos-23">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-24" id="toc-função-geradora-de-momentos-24" class="nav-link" data-scroll-target="#função-geradora-de-momentos-24">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-25" id="toc-função-geradora-de-momentos-25" class="nav-link" data-scroll-target="#função-geradora-de-momentos-25">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-26" id="toc-função-geradora-de-momentos-26" class="nav-link" data-scroll-target="#função-geradora-de-momentos-26">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-27" id="toc-função-geradora-de-momentos-27" class="nav-link" data-scroll-target="#função-geradora-de-momentos-27">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-28" id="toc-função-geradora-de-momentos-28" class="nav-link" data-scroll-target="#função-geradora-de-momentos-28">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-29" id="toc-função-geradora-de-momentos-29" class="nav-link" data-scroll-target="#função-geradora-de-momentos-29">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-30" id="toc-função-geradora-de-momentos-30" class="nav-link" data-scroll-target="#função-geradora-de-momentos-30">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-31" id="toc-função-geradora-de-momentos-31" class="nav-link" data-scroll-target="#função-geradora-de-momentos-31">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-32" id="toc-função-geradora-de-momentos-32" class="nav-link" data-scroll-target="#função-geradora-de-momentos-32">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-33" id="toc-função-geradora-de-momentos-33" class="nav-link" data-scroll-target="#função-geradora-de-momentos-33">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-34" id="toc-função-geradora-de-momentos-34" class="nav-link" data-scroll-target="#função-geradora-de-momentos-34">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-35" id="toc-função-geradora-de-momentos-35" class="nav-link" data-scroll-target="#função-geradora-de-momentos-35">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-36" id="toc-função-geradora-de-momentos-36" class="nav-link" data-scroll-target="#função-geradora-de-momentos-36">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-37" id="toc-função-geradora-de-momentos-37" class="nav-link" data-scroll-target="#função-geradora-de-momentos-37">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-38" id="toc-função-geradora-de-momentos-38" class="nav-link" data-scroll-target="#função-geradora-de-momentos-38">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-39" id="toc-função-geradora-de-momentos-39" class="nav-link" data-scroll-target="#função-geradora-de-momentos-39">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-40" id="toc-função-geradora-de-momentos-40" class="nav-link" data-scroll-target="#função-geradora-de-momentos-40">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-41" id="toc-função-geradora-de-momentos-41" class="nav-link" data-scroll-target="#função-geradora-de-momentos-41">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-42" id="toc-função-geradora-de-momentos-42" class="nav-link" data-scroll-target="#função-geradora-de-momentos-42">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-43" id="toc-função-geradora-de-momentos-43" class="nav-link" data-scroll-target="#função-geradora-de-momentos-43">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-44" id="toc-função-geradora-de-momentos-44" class="nav-link" data-scroll-target="#função-geradora-de-momentos-44">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-45" id="toc-função-geradora-de-momentos-45" class="nav-link" data-scroll-target="#função-geradora-de-momentos-45">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-46" id="toc-função-geradora-de-momentos-46" class="nav-link" data-scroll-target="#função-geradora-de-momentos-46">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-47" id="toc-função-geradora-de-momentos-47" class="nav-link" data-scroll-target="#função-geradora-de-momentos-47">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-48" id="toc-função-geradora-de-momentos-48" class="nav-link" data-scroll-target="#função-geradora-de-momentos-48">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-49" id="toc-função-geradora-de-momentos-49" class="nav-link" data-scroll-target="#função-geradora-de-momentos-49">Função Geradora de Momentos</a></li>
+  <li><a href="#função-geradora-de-momentos-50" id="toc-função-geradora-de-momentos-50" class="nav-link" data-scroll-target="#função-geradora-de-momentos-50">Função Geradora de Momentos</a></li>
+  <li><a href="#função-característica" id="toc-função-característica" class="nav-link" data-scroll-target="#função-característica">Função Característica</a></li>
+  <li><a href="#função-característica-1" id="toc-função-característica-1" class="nav-link" data-scroll-target="#função-característica-1">Função Característica</a></li>
+  <li><a href="#função-característica-2" id="toc-função-característica-2" class="nav-link" data-scroll-target="#função-característica-2">Função Característica</a></li>
+  <li><a href="#função-característica-3" id="toc-função-característica-3" class="nav-link" data-scroll-target="#função-característica-3">Função Característica</a>
+  <ul class="collapse">
+  <li><a href="#observações-importantes" id="toc-observações-importantes" class="nav-link" data-scroll-target="#observações-importantes">Observações importantes</a></li>
+  </ul></li>
+  <li><a href="#função-característica-4" id="toc-função-característica-4" class="nav-link" data-scroll-target="#função-característica-4">Função Característica</a>
+  <ul class="collapse">
+  <li><a href="#observações-importantes-1" id="toc-observações-importantes-1" class="nav-link" data-scroll-target="#observações-importantes-1">Observações importantes</a></li>
+  </ul></li>
+  <li><a href="#função-característica-5" id="toc-função-característica-5" class="nav-link" data-scroll-target="#função-característica-5">Função Característica</a>
+  <ul class="collapse">
+  <li><a href="#relação-com-momentos" id="toc-relação-com-momentos" class="nav-link" data-scroll-target="#relação-com-momentos">Relação com Momentos</a></li>
+  </ul></li>
+  <li><a href="#função-característica-6" id="toc-função-característica-6" class="nav-link" data-scroll-target="#função-característica-6">Função Característica</a>
+  <ul class="collapse">
+  <li><a href="#propriedade-fundamental-soma-de-variáveis-independentes" id="toc-propriedade-fundamental-soma-de-variáveis-independentes" class="nav-link" data-scroll-target="#propriedade-fundamental-soma-de-variáveis-independentes">Propriedade fundamental: soma de variáveis independentes</a></li>
+  </ul></li>
+  <li><a href="#função-característica-7" id="toc-função-característica-7" class="nav-link" data-scroll-target="#função-característica-7">Função Característica</a></li>
+  <li><a href="#função-característica-8" id="toc-função-característica-8" class="nav-link" data-scroll-target="#função-característica-8">Função Característica</a></li>
+  <li><a href="#função-característica-9" id="toc-função-característica-9" class="nav-link" data-scroll-target="#função-característica-9">Função Característica</a></li>
+  <li><a href="#função-característica-10" id="toc-função-característica-10" class="nav-link" data-scroll-target="#função-característica-10">Função Característica</a></li>
+  <li><a href="#função-característica-11" id="toc-função-característica-11" class="nav-link" data-scroll-target="#função-característica-11">Função Característica</a>
+  <ul class="collapse">
+  <li><a href="#observações-importantes-2" id="toc-observações-importantes-2" class="nav-link" data-scroll-target="#observações-importantes-2">Observações importantes</a></li>
+  </ul></li>
+  <li><a href="#função-característica-12" id="toc-função-característica-12" class="nav-link" data-scroll-target="#função-característica-12">Função Característica</a></li>
+  <li><a href="#função-característica-13" id="toc-função-característica-13" class="nav-link" data-scroll-target="#função-característica-13">Função Característica</a></li>
+  <li><a href="#função-característica-14" id="toc-função-característica-14" class="nav-link" data-scroll-target="#função-característica-14">Função Característica</a></li>
+  <li><a href="#função-característica-15" id="toc-função-característica-15" class="nav-link" data-scroll-target="#função-característica-15">Função Característica</a></li>
+  <li><a href="#função-característica-16" id="toc-função-característica-16" class="nav-link" data-scroll-target="#função-característica-16">Função Característica</a></li>
+  <li><a href="#função-característica-17" id="toc-função-característica-17" class="nav-link" data-scroll-target="#função-característica-17">Função Característica</a></li>
+  <li><a href="#função-característica-18" id="toc-função-característica-18" class="nav-link" data-scroll-target="#função-característica-18">Função Característica</a></li>
+  <li><a href="#função-característica-19" id="toc-função-característica-19" class="nav-link" data-scroll-target="#função-característica-19">Função Característica</a></li>
+  <li><a href="#função-característica-20" id="toc-função-característica-20" class="nav-link" data-scroll-target="#função-característica-20">Função Característica</a></li>
+  <li><a href="#função-característica-21" id="toc-função-característica-21" class="nav-link" data-scroll-target="#função-característica-21">Função Característica</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/func_geradora_momentos/func_gera_momentos.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="func_gera_momentos.html"><i class="bi bi-file-slides"></i>RevealJS</a></li><li><a href="func_gera_momentos.pdf"><i class="bi bi-file-pdf"></i>Beamer</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Função Geradora de Momentos</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="momentos" class="level2">
+<h2 class="anchored" data-anchor-id="momentos">Momentos</h2>
+<p>Calculamos algumas características de uma variável aleatória <span class="math inline">\(X\)</span>, tais como <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(Var(X)\)</span>, através da distribuição de probabilidade de <span class="math inline">\(X\)</span></p>
+<p>. . .</p>
+<p>Vimos que a variância pode ser expressa como uma <strong>função da esperança</strong> das duas primeiras potências de <span class="math inline">\(X\)</span>, ou seja,</p>
+<p><span class="math display">\[Var(X) = E(X^2) - \Big[E(X)\Big]^2\]</span></p>
+<p>. . .</p>
+<p>Outras características da distribuição de probabilidade de <span class="math inline">\(X\)</span> podem ser expressas por meio das esperanças das potências de <span class="math inline">\(X\)</span> como por exemplo <strong>coeficientes de assimetria</strong> e <strong>curtose</strong>.</p>
+</section>
+<section id="momentos-1" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-1">Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Definição 01: Momentos">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definição 01: Momentos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Seja <span class="math inline">\(X\)</span> uma variável aleatória. Então, o <strong>k-ésimo momento</strong> de <span class="math inline">\(X\)</span>, denotado por <span class="math inline">\(\mu'_k\)</span> é definido como,</p>
+<p><span class="math display">\[\mu'_k = E(X^k)\]</span></p>
+<p>desde que essa quantidade exista. O <strong>k-ésimo momento central</strong> de uma variável aleatória <span class="math inline">\(X\)</span>, denotado por <span class="math inline">\(\mu_k\)</span> é definido como,</p>
+<p><span class="math display">\[\mu_k = E\Big[X - E(X)\Big]^k\]</span></p>
+<p>sempre que essa quantidade existir.</p>
+</div>
+</div>
+</section>
+<section id="momentos-2" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-2">Momentos</h2>
+<p>Note que,</p>
+<ul>
+<li><span class="math inline">\(E(X) = \mu'_1\)</span></li>
+</ul>
+<p>. . .</p>
+<ul>
+<li><span class="math inline">\(Var(X) = \mu_2 = \mu'_2 - [\mu'_1]^2\)</span></li>
+</ul>
+<p>. . .</p>
+<ul>
+<li>Para qualquer variável aleatória, <span class="math inline">\(\mu_1 = 0\)</span>.</li>
+</ul>
+</section>
+<section id="momentos-3" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-3">Momentos</h2>
+<ul>
+<li>Se <span class="math inline">\(X\)</span> é uma variável aleatória discreta,</li>
+</ul>
+<p><span class="math display">\[\mu'_k = E(X^k) = \sum_{i=1}^{\infty} x_i^k p(x_i)\]</span></p>
+<p>. . .</p>
+<ul>
+<li>Se <span class="math inline">\(X\)</span> é uma variável aleatória contínua,</li>
+</ul>
+<p><span class="math display">\[\mu'_k = E(X^k) = \int_{-\infty}^{\infty} x^k f(x) \, dx\]</span></p>
+</section>
+<section id="momentos-4" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-4">Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Exemplo 01: Momentos da distribuição Gamma">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemplo 01: Momentos da distribuição Gamma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Encontre o <span class="math inline">\(k\)</span>-ésimo momento de <span class="math inline">\(X \sim Gamma(\alpha, \lambda)\)</span>.</p>
+</div>
+</div>
+<p>. . .</p>
+<p><strong>Solução:</strong> Temos que, se <span class="math inline">\(X \sim Gamma(\alpha, \lambda)\)</span>, então sua função densidade é dada por,</p>
+<p><span class="math display">\[
+f(x \mid \alpha,\lambda) =
+\begin{cases}
+\dfrac{\lambda e^{-\lambda x}(\lambda x)^{\alpha-1}}{\Gamma(\alpha)}, &amp; x\ge 0,\\[6pt]
+0, &amp; x&lt;0
+\end{cases}
+\]</span></p>
+</section>
+<section id="momentos-5" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-5">Momentos</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X^k) &amp;= \int_0^\infty x^k f(x\mid \alpha,\lambda)\, dx = \int_0^\infty x^k
+\frac{\lambda e^{-\lambda x}(\lambda x)^{\alpha-1}}
+{\Gamma(\alpha)}\, dx \\[6pt]
+&amp;= \int_0^\infty x^k
+\frac{\lambda e^{-\lambda x}\lambda^{\alpha-1} \, x^{\alpha-1}}
+{\Gamma(\alpha)}\, dx = \frac{\lambda^\alpha}{\Gamma(\alpha)}
+\int_0^\infty x^{\alpha+k-1} e^{-\lambda x}\, dx
+\end{aligned}
+\]</span></p>
+<p>Note que a integral é quase a função gama, a não ser pelo termo <span class="math inline">\(e^{-\lambda x}\)</span>. Seja então a seguinte mudança de variável,</p>
+<p><span class="math display">\[u = \lambda  x \,\,\, \Rightarrow \,\,\, x = \dfrac{u}{\lambda}, \qquad dx = \dfrac{du}{\lambda}\]</span></p>
+</section>
+<section id="momentos-6" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-6">Momentos</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X^k) &amp;=  \dfrac{\lambda^\alpha}{\Gamma(\alpha)}
+\int_0^\infty x^{\alpha+k-1} e^{-\lambda x}\, dx  = \dfrac{\lambda^\alpha}{\Gamma(\alpha)}
+\int_0^\infty \Big(\dfrac{u}{\lambda}\Big)^{\alpha+k-1} e^{-u}\, \dfrac{du}{\lambda} \\[6pt] &amp;= \dfrac{\lambda^\alpha}{\lambda ^{\alpha + k}\,\Gamma(\alpha)}
+\int_0^\infty u^{\alpha+k-1} e^{-u}\, du = \dfrac{\lambda^\alpha \Gamma(\alpha + k)}{\lambda ^{\alpha + k}\,\Gamma(\alpha)} \\[6pt] &amp;= \dfrac{\Gamma(\alpha+k)}{\Gamma(\alpha)\lambda^k}
+\end{aligned}
+\]</span></p>
+<p>Mas,</p>
+<p><span class="math display">\[
+\Gamma(\alpha+k) = (\alpha+k-1)(\alpha+k-2)\cdots(\alpha+1)\alpha\Gamma(\alpha)
+\]</span></p>
+</section>
+<section id="momentos-7" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-7">Momentos</h2>
+<p>De forma que, o <span class="math inline">\(k\)</span>-ésimo momento de uma variável aleatória <span class="math inline">\(X \sim Gamma (\alpha, \lambda)\)</span> é dado por</p>
+<p><span class="math display">\[
+E(X^k)
+=
+\frac{\alpha(\alpha+1)\cdots(\alpha+k-1)}{\lambda^k}
+\]</span></p>
+</section>
+<section id="momentos-8" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-8">Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Exemplo 02: Momentos da distribuição Weibull">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemplo 02: Momentos da distribuição Weibull
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Encontre o <span class="math inline">\(k\)</span>-ésimo momento de <span class="math inline">\(X \sim Weibull(\alpha, \beta)\)</span>.</p>
+</div>
+</div>
+<p>. . .</p>
+<p><strong>Solução:</strong> Temos que, se <span class="math inline">\(X \sim Weibull(\alpha, \beta)\)</span>, então sua função densidade é dada por,</p>
+<p><span class="math display">\[
+f(x \mid \alpha,\beta)=
+\begin{cases}
+\dfrac{\beta}{\alpha}
+\left(\dfrac{x}{\alpha}\right)^{\beta-1}
+\exp\!\left[-\left(\dfrac{x}{\alpha}\right)^{\beta}\right], &amp; x\ge 0,\\[6pt]
+0, &amp; x&lt;0
+\end{cases}
+\]</span></p>
+</section>
+<section id="momentos-9" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-9">Momentos</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X^k) &amp;= \int_0^\infty x^k
+\frac{\beta}{\alpha}
+\left(\frac{x}{\alpha}\right)^{\beta-1}
+\exp\!\left[-\left(\frac{x}{\alpha}\right)^{\beta}\right] dx
+\end{aligned}
+\]</span></p>
+<p>Mudança de variável:</p>
+<p><span class="math display">\[
+u = \left(\frac{x}{\alpha}\right)^{\beta}
+\quad\Rightarrow\quad
+x = \alpha u^{1/\beta},\qquad
+dx = \alpha \frac{1}{\beta} u^{1/\beta - 1} du
+\]</span></p>
+<p>Além disso:</p>
+<p><span class="math display">\[
+x^k = \alpha^k u^{k/\beta},
+\qquad
+\left(\frac{x}{\alpha}\right)^{\beta-1}=u^{(\beta-1)/\beta},
+\qquad
+\exp\!\left[-\left(\frac{x}{\alpha}\right)^{\beta}\right]=e^{-u}
+\]</span></p>
+</section>
+<section id="momentos-10" class="level2">
+<h2 class="anchored" data-anchor-id="momentos-10">Momentos</h2>
+<p>logo,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X^k) &amp;= \int_0^\infty x^k
+\frac{\beta}{\alpha}
+\left(\frac{x}{\alpha}\right)^{\beta-1}
+\exp\!\left[-\left(\frac{x}{\alpha}\right)^{\beta}\right] dx \\[6pt] &amp;= \int_0^\infty
+\alpha^k u^{k/\beta}\,
+\frac{\beta}{\alpha}\,
+u^{(\beta-1)/\beta}\,
+e^{-u}\,
+\alpha \frac{1}{\beta}u^{1/\beta -1}\,du \\[6pt] &amp;= \alpha^k \int_0^\infty
+u^{\frac{k+\beta}{\beta}-1}
+e^{-u}\,du = \alpha^k\,\,\Gamma\!\left(1+\frac{k}{\beta}\right)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos">Função Geradora de Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Definição 02: Função Geradora de Momentos">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definição 02: Função Geradora de Momentos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Seja <span class="math inline">\(X\)</span> uma variável aleatória qualquer. A <strong>função geradora de momentos</strong> (FGM) de <span class="math inline">\(X\)</span>, denotada por <span class="math inline">\(M_X\)</span>, é definida por</p>
+<p><span class="math display">\[
+M_X(t)=E(e^{tX}),
+\]</span></p>
+<p>para valores de <span class="math inline">\(t\)</span> em um intervalo contendo <span class="math inline">\(0\)</span> onde a experança exista.</p>
+</div>
+</div>
+<p><strong>Importante:</strong> a função geradora de momentos é função de <span class="math inline">\(t\)</span>. Para ela existir basta que exista <span class="math inline">\(\varepsilon &gt; 0\)</span> tal que <span class="math inline">\(E(e^{tX})\)</span> esteja bem definida para qualquer <span class="math inline">\(t \in (-\varepsilon, \varepsilon)\)</span>.</p>
+<!-- ## -->
+<!-- ```{r, echo=FALSE} -->
+<!-- #| label: fig-mgf-exp -->
+<!-- #| fig-cap: "Função geradora de momentos da Exponencial(λ = 1). A região sombreada indica um intervalo aberto em torno de 0 onde a MGF é bem definida." -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- library(ggplot2) -->
+<!-- lambda <- 1 -->
+<!-- eps    <- 0.5  # intervalo (-eps, eps) ao redor de 0 -->
+<!-- # pontos apenas onde a MGF está bem definida: t < lambda -->
+<!-- t  <- seq(-3, lambda - 0.01, length.out = 400) -->
+<!-- mgf <- lambda / (lambda - t) -->
+<!-- df <- data.frame(t = t, M = mgf) -->
+<!-- ggplot(df, aes(x = t, y = M)) + -->
+<!--   # faixa sombreada (-eps, eps) -->
+<!--   geom_rect(aes(xmin = -eps, xmax = eps, ymin = -Inf, ymax = Inf), -->
+<!--             fill = "grey80", alpha = 0.5, inherit.aes = FALSE) + -->
+<!--   # curva da MGF -->
+<!--   geom_line(size = 1) + -->
+<!--   # assíntota em t = lambda -->
+<!--   geom_vline(xintercept = lambda, linetype = "dashed") + -->
+<!--   # linha vertical em t = 0 -->
+<!--   geom_vline(xintercept = 0, linetype = "dotted") + -->
+<!--   labs( -->
+<!--     x = "t", -->
+<!--     y = "M_X(t)", -->
+<!--     title = "MGF da Exponencial com λ = 1", -->
+<!--     subtitle = "Domínio: t < 1. A região sombreada é um intervalo (-ε, ε) em torno de 0." -->
+<!--   ) + -->
+<!--   coord_cartesian(ylim = c(0, 10)) + -->
+<!--   theme_minimal(base_size = 14) -->
+<!-- ``` -->
+</section>
+<section id="função-geradora-de-momentos-1" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-1">Função Geradora de Momentos</h2>
+<p>Note que a <strong>definição de função geradora de momentos</strong> é feita independente do tipo de variável, mas a forma de encontrá-la depende se a variável for <strong>discreta</strong> ou <strong>contínua</strong>, isto é,</p>
+<ul>
+<li>Se <span class="math inline">\(X\)</span> é discreta,</li>
+</ul>
+<p><span class="math display">\[M_X(t) = E(e^{tX}) = \sum_{\forall x \in S_X} \, e^{tx} p_X(x)\]</span></p>
+<ul>
+<li>Se <span class="math inline">\(X\)</span> é contínua,</li>
+</ul>
+<p><span class="math display">\[M_X(t) = E(e^{tX}) = \int_{-\infty}^{\infty} \, e^{tx} f_X(x) \, dx\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-2" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-2">Função Geradora de Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Teorema 01">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Teorema 01
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suponha que a função geradora de momentos de <span class="math inline">\(X\)</span> exista para <span class="math inline">\(|t| &lt; \varepsilon\)</span>, <span class="math inline">\(\varepsilon &gt; 0\)</span>. Então, <span class="math inline">\(E(X^k)\)</span> existe para <span class="math inline">\(k = 1, 2, \cdots\)</span> e temos:</p>
+<p><span class="math display">\[E(X^k) = \dfrac{d^k}{dt^k} M_X(t) \Bigg|_{t=0}\]</span></p>
+<p>ou seja, o <span class="math inline">\(k\)</span>-ésimo momento de <span class="math inline">\(X\)</span> é igual à derivada de ordem <span class="math inline">\(k\)</span> de <span class="math inline">\(M_X(t)\)</span> avaliada em <span class="math inline">\(t = 0\)</span>.</p>
+</div>
+</div>
+<p><strong>Demonstração:</strong> Suponha que a função geradora de momentos de <span class="math inline">\(X\)</span> exista para todo <span class="math inline">\(t\)</span> tal que <span class="math inline">\(|t|&lt;\varepsilon\)</span>, com <span class="math inline">\(\varepsilon&gt;0\)</span>, isto é,</p>
+<p><span class="math display">\[
+M_X(t)=E(e^{tX})&lt;\infty,\qquad |t|&lt;\varepsilon
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-3" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-3">Função Geradora de Momentos</h2>
+<p>Pela série de Maclaurin da função exponencial, para qualquer número real <span class="math inline">\(y\)</span> temos <span class="math display">\[
+e^{y} = \sum_{n=0}^{\infty} \frac{y^n}{n!}
+\]</span></p>
+<p>Aplicando isso a <span class="math inline">\(y=tX\)</span>, obtemos, para cada <span class="math inline">\(t\)</span> com <span class="math inline">\(|t|&lt;\varepsilon\)</span>, <span class="math display">\[
+e^{tX} = \sum_{n=0}^{\infty} \frac{(tX)^n}{n!} = 1 + tX +\frac{(tX)^2}{2!} + \frac{(tX)^3}{3!} + \cdots
+\]</span></p>
+<p>Temos que <span class="math inline">\(M_X(t)=E(e^{tX})\)</span>. Logo, admitindo ser válido permutar soma infinita e esperança, temos</p>
+</section>
+<section id="função-geradora-de-momentos-4" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-4">Função Geradora de Momentos</h2>
+<p><span class="math display">\[
+M_X(t)
+= E(e^{tX})
+= E\left(\sum_{n=0}^{\infty} \frac{(tX)^n}{n!}\right)
+= \sum_{n=0}^{\infty} \frac{t^n}{n!} E(X^n),
+\qquad |t|&lt;\varepsilon
+\]</span></p>
+<p>Portanto, <span class="math inline">\(M_X(t)\)</span> é dada, em uma vizinhança de <span class="math inline">\(0\)</span>, por uma série de potência da forma <span class="math display">\[
+M_X(t) = \sum_{n=0}^{\infty} a_n t^n,
+\qquad \text{com } a_n = \frac{E(X^n)}{n!}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-5" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-5">Função Geradora de Momentos</h2>
+<p>Da teoria de séries de potência, sabemos que, se <span class="math display">\[
+M_X(t) = \sum_{n=0}^{\infty} a_n t^n,
+\]</span> então a <span class="math inline">\(k\)</span>-ésima derivada é <span class="math display">\[
+M_X^{(k)}(t) = \sum_{n=k}^{\infty} a_n\, n(n-1)\cdots (n-k+1)\, t^{\,n-k}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-6" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-6">Função Geradora de Momentos</h2>
+<p>Agora substituímos <span class="math inline">\(t=0\)</span>:</p>
+<p>Observe:</p>
+<ul>
+<li>Se <span class="math inline">\(n &gt; k\)</span>, aparece o fator <span class="math inline">\(t^{n-k} = 0^{n-k} = 0\)</span>;<br>
+</li>
+<li>Então <strong>todos</strong> os termos com <span class="math inline">\(n&gt;k\)</span> desaparecem;</li>
+<li>Só o termo com <span class="math inline">\(n=k\)</span> permanece.</li>
+</ul>
+<p>O único termo sobrevivente é:</p>
+<p><span class="math display">\[
+a_k \, k(k-1)(k-2)\cdots 1 \, t^{\,0}
+= a_k \, k!
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-7" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-7">Função Geradora de Momentos</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+M_X^{(k)}(0) = a_k\, k!
+= \frac{E(X^k)}{k!}\,k!
+= E(X^k)
+\]</span></p>
+<p>Logo, <span class="math display">\[
+E(X^k) = \left.\frac{d^k}{dt^k} M_X(t)\right|_{t=0},
+\qquad k=1,2,\dots
+\]</span></p>
+<p>o que mostra que o <span class="math inline">\(k\)</span>-ésimo momento de <span class="math inline">\(X\)</span> é igual à derivada de ordem <span class="math inline">\(k\)</span> da função geradora de momentos avaliada em <span class="math inline">\(t=0\)</span>.</p>
+</section>
+<section id="função-geradora-de-momentos-8" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-8">Função Geradora de Momentos</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dica Importante!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Para qualquer variável aleatória <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+M_X(0) = E(e^{0X}) = 1.
+\]</span></p>
+<p>Isso sempre deve ocorrer. Use esse fato para verificar se sua FGM está correta.</p>
+</div>
+</div>
+</section>
+<section id="função-geradora-de-momentos-9" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-9">Função Geradora de Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Exemplo 03: Distribuição de Bernoulli">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemplo 03: Distribuição de Bernoulli
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Seja <span class="math inline">\(X \sim Bernoulli(p)\)</span>. Encontre sua função geradora de momentos e a partir dela, encontre <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(\operatorname{Var}(X)\)</span>.</p>
+</div>
+</div>
+<p>. . .</p>
+<p><strong>Solução:</strong> Por definição,</p>
+<p><span class="math display">\[
+M_X(t) = E(e^{tX}) = \sum_{x=0}^1 e^{tx} p^x(1-p)^{1-x}
+\]</span></p>
+<p>Como <span class="math inline">\(X\)</span> só assume os valores <span class="math inline">\(0\)</span> e <span class="math inline">\(1\)</span>:</p>
+<p><span class="math display">\[
+M_X(t)
+= e^{t\cdot 0} p^0(1-p)^{1-0} + e^{t\cdot 1} p^1(1-p)^{1-1}
+= (1-p) + e^{t}p
+= 1 - p +  e^{t} p
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-10" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-10">Função Geradora de Momentos</h2>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\boxed{M_X(t) = 1 - p + p e^{t}, \quad t \in \mathbb{R}}
+\]</span></p>
+<p>Veja que <span class="math inline">\(M_X(0) = 1 - p + p e^{0} = 1 - p + p \times 1 = 1\)</span>. Assim,</p>
+<ul>
+<li>Primeira derivada de <span class="math inline">\(M_X(t)\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+M_X'(t) = \frac{d}{dt}\big(1 - p + p e^{t}\big)
+= p e^{t}
+\]</span></p>
+<p>Avaliada em <span class="math inline">\(t = 0\)</span>, temos <span class="math inline">\(E(X) = M_X'(0) = p e^{0} = p\)</span></p>
+</section>
+<section id="função-geradora-de-momentos-11" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-11">Função Geradora de Momentos</h2>
+<ul>
+<li>Segunda derivada de <span class="math inline">\(M_X(t)\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+M_X''(t) = \frac{d}{dt}\big(M_X'(t)\big)
+= \frac{d}{dt}(p e^{t}) = p e^{t}
+\]</span></p>
+<p>Avaliada em <span class="math inline">\(t = 0\)</span>, temos <span class="math inline">\(E(X) = M_X''(0) = p e^{0} = p\)</span>.</p>
+<p>Assim,</p>
+<p><span class="math display">\[
+\operatorname{Var}(X)
+= M_X''(0) - [M_X'(0)]^2
+= p - p^2
+= p(1-p)
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-12" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-12">Função Geradora de Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Exemplo 04: Distribuição Binomial">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemplo 04: Distribuição Binomial
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Seja <span class="math inline">\(X \sim Binomial(n,p)\)</span>. Encontre sua função geradora de momentos e a partir dela, encontre <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(\operatorname{Var}(X)\)</span>.</p>
+</div>
+</div>
+<p>. . .</p>
+<p><strong>Solução:</strong> Se <span class="math inline">\(X \sim Binomial(n,p)\)</span> então sua f.p. é dada por</p>
+<p><span class="math display">\[
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \qquad k=0,1,\dots,n
+\]</span></p>
+<p>Por definição,</p>
+<p><span class="math display">\[
+M_X(t) = E(e^{tX}) = \sum_{k=0}^{n} e^{tk} P(X = k)
+= \sum_{k=0}^{n} e^{tk} \binom{n}{k} p^k (1-p)^{n-k}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-13" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-13">Função Geradora de Momentos</h2>
+<p>Escrevendo <span class="math inline">\(e^{tk} = (e^{t})^k\)</span>:</p>
+<p><span class="math display">\[
+M_X(t)
+= \sum_{k=0}^{n} \binom{n}{k} (p e^t)^k (1-p)^{n-k}
+\]</span></p>
+<p>Temos que o binômio de Newton é dado por:</p>
+<p><span class="math display">\[
+(a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^k b^{n-k}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-14" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-14">Função Geradora de Momentos</h2>
+<p>Assim, tomando <span class="math inline">\(a = p e^{t}\)</span> e <span class="math inline">\(b = 1-p\)</span>:</p>
+<p><span class="math display">\[
+M_X(t) = (1-p + p e^{t})^n
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\boxed{M_X(t) = (1-p + p e^{t})^n,\quad t\in\mathbb{R}}
+\]</span></p>
+<p>Veja que, <span class="math inline">\(M_X(0) = (1-p + p e^{0})^n = (1 - p + p \times 1)^n = 1^n = 1\)</span>.</p>
+</section>
+<section id="função-geradora-de-momentos-15" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-15">Função Geradora de Momentos</h2>
+<p>Sabemos que</p>
+<p><span class="math display">\[
+E(X) = M_X'(0)
+\]</span></p>
+<p>Derivada primeira em relação a <span class="math inline">\(t\)</span>,</p>
+<p><span class="math display">\[
+M_X'(t) = \frac{d}{dt} (1-p + p e^{t})^n
+= n(1-p + p e^{t})^{n-1} \cdot p e^{t}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+M_X'(0)
+= n(1-p + p e^{0})^{n-1} \cdot p e^{0}
+= n(1-p + p)^{n-1} p
+= n p
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-16" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-16">Função Geradora de Momentos</h2>
+<p>Vamos agora encontrar a segunda derivada. Temos</p>
+<p><span class="math display">\[
+M_X'(t) = n p e^{t} (1-p + p e^{t})^{n-1}
+\]</span></p>
+<p>Aplicando a regra do produto:</p>
+<p><span class="math display">\[
+\begin{aligned}
+M_X''(t)
+&amp;= \frac{d}{dt}\Big[ n p e^{t} (1-p + p e^{t})^{n-1} \Big] \\
+&amp;= n p e^{t} (n-1)(1-p + p e^{t})^{n-2} \cdot p e^{t}
+\;+\; n p e^{t} (1-p + p e^{t})^{n-1}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-17" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-17">Função Geradora de Momentos</h2>
+<p>Avaliando em <span class="math inline">\(t=0\)</span>:</p>
+<ul>
+<li><span class="math inline">\(e^{0}=1\)</span><br>
+</li>
+<li><span class="math inline">\(1-p + p e^{0} = 1-p + p = 1\)</span></li>
+</ul>
+<p>Assim,</p>
+<p><span class="math display">\[
+\begin{aligned}
+M_X''(0)
+&amp;= n p \cdot 1 \cdot (n-1) \cdot 1^{\,n-2} \cdot p \cdot 1
+   \;+\; n p \cdot 1 \cdot 1^{\,n-1} \\[6pt]
+&amp;= n p (n-1)p + n p \\[6pt]
+&amp;= n p \big[(n-1)p + 1\big]
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-18" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-18">Função Geradora de Momentos</h2>
+<p>De forma que,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(X)
+&amp;= M_X''(0) - [M_X'(0)]^2\\[6pt]
+&amp;= n p \big[(n-1)p + 1\big] - (np)^2 \\[6pt]
+&amp;= n p \big[(n-1)p + 1 - n p\big] \\[6pt]
+&amp;= n p (1 - p)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-19" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-19">Função Geradora de Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Exemplo 05: Distribuição Geométrica">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemplo 05: Distribuição Geométrica
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Seja <span class="math inline">\(X \sim Geo(p)\)</span>. Encontre sua função geradora de momentos e a partir dela, encontre <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(\operatorname{Var}(X)\)</span>.</p>
+</div>
+</div>
+<p>. . .</p>
+<p><strong>Solução:</strong> Seja <span class="math inline">\(X \sim \text{Geo}(p)\)</span>, cuja função de probabilidade é</p>
+<p><span class="math display">\[
+P(X = k) = p(1-p)^{k-1}, \qquad k = 1,2,3,\dots
+\]</span></p>
+<p>Por definição, temos que,</p>
+<p><span class="math display">\[
+M_X(t)
+= E(e^{tX})
+= \sum_{k=1}^{\infty} e^{tk} p(1-p)^{k-1} = p \sum_{k=1}^{\infty} (e^t)^k (1-p)^{k-1}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-20" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-20">Função Geradora de Momentos</h2>
+<p>Reorganizando,</p>
+<p><span class="math display">\[
+M_X(t)
+= p e^t \sum_{k=1}^{\infty} \big[(1-p)e^{t}\big]^{\,k-1}
+\]</span></p>
+<p>A soma é uma série geométrica com razão</p>
+<p><span class="math display">\[
+r=(1-p)e^{t}
+\]</span></p>
+<p>A série converge se e somente se:</p>
+<p><span class="math display">\[
+|(1-p)e^{t}| &lt; 1
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-21" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-21">Função Geradora de Momentos</h2>
+<p>Usando a soma da série geométrica,</p>
+<p><span class="math display">\[
+\sum_{k=0}^{\infty} r^k = \frac{1}{1-r},
+\]</span></p>
+<p>temos:</p>
+<p><span class="math display">\[
+M_X(t) = \frac{p e^t}{1 - (1-p)e^{t}}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-22" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-22">Função Geradora de Momentos</h2>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\boxed{M_X(t) = \frac{p e^{t}}{1-(1-p)e^{t}}, \quad \text{para } t &lt; \ln\Bigg(\frac{1}{1-p}\Bigg)}
+\]</span></p>
+<p>Note que, <span class="math inline">\(M_X(0) = \dfrac{p e^{0}}{1-(1-p)e^{0}} = \dfrac{p}{1-(1-p)} =  \dfrac{p}{p} =1\)</span></p>
+<p>. . .</p>
+<p>Sabemos que:</p>
+<p><span class="math display">\[
+E(X) = M_X'(0)
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-23" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-23">Função Geradora de Momentos</h2>
+<p>Vamos então encontrar a derivada de primeira ordem de</p>
+<p><span class="math display">\[
+M_X(t) = \frac{p e^{t}}{1 - (1-p)e^{t}}
+\]</span></p>
+<p>Use regra do quociente, temos</p>
+<p><span class="math display">\[
+M_X'(t)
+= \frac{p e^t \big[1 - (1-p)e^{t}\big] - p e^{t}\big[-(1-p)e^{t}\big]}{\big[1 - (1-p)e^{t}\big]^2}
+\]</span></p>
+<p>Simplificando o numerador:</p>
+<p><span class="math display">\[
+p e^{t}\left[1 - (1-p)e^{t} + (1-p)e^{t}\right]
+= p e^{t}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-24" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-24">Função Geradora de Momentos</h2>
+<p>Portanto,</p>
+<p><span class="math display">\[
+M_X'(t) = \frac{p e^{t}}{\left[1 - (1-p)e^{t}\right]^2}
+\]</span></p>
+<p>Avaliando em <span class="math inline">\(t=0\)</span>:</p>
+<ul>
+<li><span class="math inline">\(e^0=1\)</span></li>
+<li><span class="math inline">\(1 - (1-p)e^{0} = 1-(1-p) = p\)</span></li>
+</ul>
+<p>Logo,</p>
+<p><span class="math display">\[E(X) = M_X'(0)
+= \frac{p}{p^2}
+= \frac{1}{p}\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-25" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-25">Função Geradora de Momentos</h2>
+<p>Encontrando <span class="math inline">\(\operatorname{Var}(X)\)</span>, usamos,</p>
+<p><span class="math display">\[
+\operatorname{Var}(X) = M_X''(0) - \Big[M_X'(0)\Big]^2
+\]</span></p>
+<p>A derivada segunda é dada por</p>
+<p><span class="math display">\[
+M_X''(t)
+= \frac{p e^{t}\big[1+(1-p)e^{t}\big]}{\left[1-(1-p)e^{t}\right]^3}
+\]</span></p>
+<p>de forma que</p>
+<p><span class="math display">\[M_X''(0)
+= \frac{p(1+(1-p))}{p^3}
+= \frac{p(2-p)}{p^3}
+= \frac{2-p}{p^2}\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-26" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-26">Função Geradora de Momentos</h2>
+<p>e, portanto,</p>
+<p><span class="math display">\[\operatorname{Var}(X)
+= M_X''(0) - \Big[M_X'(0)\Big]^2
+= \frac{2-p}{p^2} - \left(\frac{1}{p}\right)^2
+= \frac{2-p-1}{p^2}
+= \frac{1-p}{p^2}\]</span></p>
+<p>. . .</p>
+<p>Veja que neste exemplo, a função geradora de momentos de <span class="math inline">\(X ∼ Geo(p)\)</span> não está definida para todo <span class="math inline">\(t \in \mathbb{R}\)</span>, mas está bem definida para <span class="math inline">\(t &lt; \ln\Big(\frac{1}{1-p}\Big)\)</span>. E como <span class="math inline">\(\ln\Big(\frac{1}{1-p}\Big) &gt; 0\)</span>, a função geradora de momentos está bem definida para <span class="math inline">\(t\)</span> em uma vizinhança de zero.</p>
+</section>
+<section id="função-geradora-de-momentos-27" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-27">Função Geradora de Momentos</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Exemplo 06: Distribuição de Poisson">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemplo 06: Distribuição de Poisson
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Seja <span class="math inline">\(X \sim Poisson(\lambda)\)</span>. Encontre sua função geradora de momentos e a partir dela, encontre <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(\operatorname{Var}(X)\)</span>.</p>
+</div>
+</div>
+<p>. . .</p>
+<p><strong>Solução:</strong> Seja <span class="math inline">\(X \sim Poisson(\lambda)\)</span>, cuja função de probabilidade é</p>
+<p><span class="math display">\[
+P(X = k) = \frac{e^{-\lambda}\lambda^k}{k!}, \quad k = 0,1,2,\ldots
+\]</span></p>
+<p>Assim, a função geradora de momentos (fgm) de <span class="math inline">\(X\)</span> é dada por,</p>
+<p><span class="math display">\[
+M_X(t) = \sum_{k=0}^\infty e^{tk}\,\frac{e^{-\lambda}\lambda^k}{k!}
+       = e^{-\lambda} \sum_{k=0}^\infty \frac{(\lambda e^t)^k}{k!}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-28" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-28">Função Geradora de Momentos</h2>
+<p>A série</p>
+<p><span class="math display">\[
+\sum_{k=0}^\infty \frac{(\lambda e^t)^k}{k!}
+\]</span></p>
+<p>é a expansão em série de Taylor de <span class="math inline">\(e^{\lambda e^t}\)</span>. Assim,</p>
+<p><span class="math display">\[
+M_X(t) = e^{-\lambda} e^{\lambda e^t}
+       = \exp\{\lambda(e^t - 1)\}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-29" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-29">Função Geradora de Momentos</h2>
+<p>Portanto, a fgm de <span class="math inline">\(X\)</span> é <span class="math display">\[
+\boxed{M_X(t) = \exp\big(\lambda(e^t - 1)\big)}
+\]</span></p>
+<p>Note que, <span class="math inline">\(M_X(0) = \exp\big(\lambda(e^0 - 1)\big) = \exp\big(0\big) =  1\)</span></p>
+<p>. . .</p>
+<p>Vamos calcular as derivadas de ordem primeira e ordem segunda para calcular os respectivos momentos:</p>
+<p>Pela regra da cadeia,</p>
+<p><span class="math display">\[
+M_X'(t) = \exp\big(\lambda(e^t - 1)\big)\cdot \lambda e^t
+        = \lambda e^t\, M_X(t)
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-30" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-30">Função Geradora de Momentos</h2>
+<p>Logo,</p>
+<p><span class="math display">\[
+E(X) = M_X'(0) = \lambda e^0\, M_X(0) = \lambda \cdot 1 \cdot 1 = \lambda
+\]</span></p>
+<p>. . .</p>
+<p>A segunda derivada de <span class="math inline">\(M_X(t)\)</span> é dada por:</p>
+<p><span class="math display">\[
+\begin{aligned}
+M_X''(t)
+&amp;= \frac{d}{dt}\big[\lambda e^t\, M_X(t)\big] \\
+&amp;= \lambda e^t\, M_X(t) + \lambda e^t\, M_X'(t) \\
+&amp;= \lambda e^t\, M_X(t) + \lambda e^t\,[\lambda e^t\, M_X(t)] \\
+&amp;= \lambda e^t\, M_X(t)\,\big[1 + \lambda e^t\big]
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-31" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-31">Função Geradora de Momentos</h2>
+<p>Agora, avaliando em <span class="math inline">\(t=0\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+M_X''(0) = \lambda e^0\, M_X(0)\,\big[1 + \lambda e^0\big] = \lambda \cdot 1 \cdot 1 \cdot (1+\lambda) = \lambda(1+\lambda)
+\end{aligned}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+E(X^2) = M_X''(0) = \lambda(1+\lambda)
+\]</span></p>
+<p>Assim,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Var}(X)
+&amp;= M_X''(0) - \Big[M_X'(0)\Big]^2 \\
+&amp;= \lambda(1+\lambda) - \lambda^2 \\
+&amp;= \lambda
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-32" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-32">Função Geradora de Momentos</h2>
+<p><strong>Exemplo 07 - Distribuição Exponencial:</strong> Seja <span class="math inline">\(X \sim exp(\lambda)\)</span>. Encontre sua função geradora de momentos e a partir dela, encontre <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(\operatorname{Var}(X)\)</span>.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Seja <span class="math inline">\(X \sim exp(\lambda)\)</span>, cuja função densidade é</p>
+<p><span class="math display">\[
+f(x) = \lambda e^{-\lambda x}, \quad x &gt; 0
+\]</span></p>
+<p>Neste caso, a função geradora de momentos (fgm) de <span class="math inline">\(X\)</span> é definida por <span class="math display">\[
+M_X(t) = E(e^{tX}) = \int_0^\infty e^{tx}\,\lambda e^{-\lambda x}\,dx = \int_0^\infty \lambda e^{-(\lambda - t)x} \, dx
+\]</span></p>
+<p>válida para <span class="math inline">\(t &lt; \lambda\)</span>.</p>
+</section>
+<section id="função-geradora-de-momentos-33" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-33">Função Geradora de Momentos</h2>
+<p>Assim, como</p>
+<p><span class="math display">\[
+\int_0^\infty \lambda e^{-(\lambda - t)x} \,dx =  \lambda \frac{e^{-(\lambda - t)x}}{-(\lambda - t)} \Bigg|_0^{\infty} = \frac{\lambda}{\lambda - t}, \,\,\,\, \lambda - t &gt; 0
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\boxed{M_X(t) = \frac{\lambda}{\lambda - t}, \qquad t &lt; \lambda}
+\]</span></p>
+<p>Note que, <span class="math inline">\(M_X(0) = \frac{\lambda}{\lambda - 0} =  1\)</span></p>
+</section>
+<section id="função-geradora-de-momentos-34" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-34">Função Geradora de Momentos</h2>
+<p>Derivando,</p>
+<p><span class="math display">\[
+  M_X'(t) = \frac{\lambda}{(\lambda - t)^2}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+E(X) = M_X'(0) = \frac{\lambda}{\lambda^2} = \frac{1}{\lambda}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-35" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-35">Função Geradora de Momentos</h2>
+<p>A segunda derivada é dada por,</p>
+<p><span class="math display">\[
+M_X''(t) = \frac{2\lambda}{(\lambda - t)^3}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+E(X^2) = M_X''(0) = \frac{2\lambda}{\lambda^3} = \frac{2}{\lambda^2}
+\]</span></p>
+<p>De forma que,</p>
+<p><span class="math display">\[
+\text{Var}(X)
+= E(X^2) - \Big[E(X) \Big]^2
+= \frac{2}{\lambda^2} - \frac{1}{\lambda^2}
+= \frac{1}{\lambda^2}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-36" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-36">Função Geradora de Momentos</h2>
+<p><strong>Exemplo 08 - Distribuição Gamma:</strong> Seja <span class="math inline">\(X \sim Gamma(\alpha, \lambda)\)</span>. Encontre sua função geradora de momentos.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Seja <span class="math inline">\(X \sim Gamma(\alpha, \lambda)\)</span>, cuja função densidade é</p>
+<p><span class="math display">\[
+  f(x) = \frac{\lambda^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda x},
+\qquad x&gt;0
+\]</span></p>
+<p>A função geradora de momentos é</p>
+<p><span class="math display">\[
+  M_X(t)
+= \int_0^\infty e^{tx}
+\frac{\lambda^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda x}\,dx
+= \frac{\lambda^\alpha}{\Gamma(\alpha)}
+\int_0^\infty x^{\alpha-1}e^{-(\lambda - t)x}\,dx
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-37" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-37">Função Geradora de Momentos</h2>
+<p>Usamos agora o resultado da função Gamma:</p>
+<p><span class="math display">\[
+\int_0^\infty x^{\alpha-1}e^{-bx}\,dx
+= \frac{\Gamma(\alpha)}{b^\alpha}, \qquad b&gt;0
+\]</span></p>
+<p>Aqui, <span class="math inline">\(b = \lambda - t\)</span> (precisamos de <span class="math inline">\(\lambda - t &gt; 0\)</span>, isto é, <span class="math inline">\(t&lt;\lambda\)</span>). Logo,</p>
+<p><span class="math display">\[
+\int_0^\infty x^{\alpha-1}e^{-(\lambda - t)x}\,dx
+= \frac{\Gamma(\alpha)}{(\lambda - t)^\alpha}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+M_X(t)
+= \frac{\lambda^\alpha}{\Gamma(\alpha)}
+\cdot
+\frac{\Gamma(\alpha)}{(\lambda - t)^\alpha}
+= \left(\frac{\lambda}{\lambda - t}\right)^\alpha,
+\qquad t &lt; \lambda
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-38" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-38">Função Geradora de Momentos</h2>
+<p><strong>Exemplo 09 - Distribuição Normal Padrão:</strong> Seja <span class="math inline">\(X \sim N(0, 1)\)</span>. Encontre sua função geradora de momentos.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Seja <span class="math inline">\(X \sim N(0, 1)\)</span>, cuja função densidade é</p>
+<p><span class="math display">\[
+f(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}, \qquad x \in \mathbb{R}
+\]</span></p>
+<p>Queremos encontrar a função geradora de momentos (fgm) dada por</p>
+<p><span class="math display">\[
+M_X(t)
+= \int_{-\infty}^{\infty} e^{tx}\,\frac{1}{\sqrt{2\pi}} e^{-x^2/2}\,dx
+= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}
+\exp\Big(tx - \frac{x^2}{2}\Big)\,dx
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-39" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-39">Função Geradora de Momentos</h2>
+<p>Vamos usar a técnica de completar quadrados no expoente,</p>
+<p><span class="math display">\[
+\begin{aligned}
+tx - \frac{x^2}{2}
+&amp;= -\frac{1}{2}\big(x^2 - 2tx\big) = -\frac{1}{2}\big(x^2 - 2tx + t^2 - t^2\big) \\
+&amp;= -\frac{1}{2}\big[(x - t)^2 - t^2\big] = -\frac{(x - t)^2}{2} + \frac{t^2}{2}
+\end{aligned}
+\]</span></p>
+<p>Assim,</p>
+<p><span class="math display">\[\small
+M_X(t)
+= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}
+\exp\!\left(-\frac{(x - t)^2}{2} + \frac{t^2}{2}\right)\,dx
+= \exp\!\left(\frac{t^2}{2}\right)
+\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}
+\exp\!\left(-\frac{(x - t)^2}{2}\right)\,dx
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-40" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-40">Função Geradora de Momentos</h2>
+<p>A integral</p>
+<p><span class="math display">\[
+\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}
+\exp\!\left(-\frac{(x - t)^2}{2}\right)\,dx
+\]</span> é a área total sob a curva de uma normal <span class="math inline">\(N(t,1)\)</span>, e portanto é igual a <span class="math inline">\(1\)</span>.</p>
+<p>Logo, <span class="math display">\[
+\boxed{M_X(t) = \exp\!\left(\frac{t^2}{2}\right), \qquad t \in \mathbb{R}}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-41" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-41">Função Geradora de Momentos</h2>
+<p><strong>Proposição 01 - Transformações Lineares:</strong> Seja <span class="math inline">\(X\)</span> uma variável aleatória com função geradora de momentos <span class="math inline">\(M_X\)</span>. Seja <span class="math inline">\(Y = aX + b\)</span>. Então, a função geradora de momentos de <span class="math inline">\(Y\)</span> é dada por</p>
+<p><span class="math display">\[M_Y(t) = e^{bt} M_X(at)\]</span></p>
+<p>. . .</p>
+<p><strong>Demonstração:</strong></p>
+<p><span class="math display">\[M_Y(t) = E(e^{tY}) = E(e^{t(aX+b)}) = E\Big(e^{atX} e^{bt} \Big) = e^{bt} E\Big(e^{atX}\Big) =  e^{bt} M_X(at)\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-42" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-42">Função Geradora de Momentos</h2>
+<p><strong>Exemplo 10 - Distribuição Normal:</strong> Seja <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>. Encontre sua função geradora de momentos.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Se <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, então <span class="math inline">\(X = \sigma Z + \mu\)</span>, em que <span class="math inline">\(Z\sim N(0,1)\)</span>, com função geradora de momentos dada por <span class="math inline">\(M_Z(t) = \exp\!\left(\frac{t^2}{2}\right)\)</span>. Assim,</p>
+<p><span class="math display">\[M_X(t) = e^{\mu t} M_Z(\sigma t) = e^{\mu t} \exp\!\left(\frac{(\sigma t)^2}{2}\right) = e^{\mu t} \exp\!\left(\frac{\sigma^2 t^2}{2}\right)\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-43" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-43">Função Geradora de Momentos</h2>
+<p>Logo,</p>
+<p>Se <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, então</p>
+<p><span class="math display">\[\boxed{M_X(t)= \exp \Bigg(\mu t + \frac{\sigma^2 t^2}{2} \Bigg)}\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-44" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-44">Função Geradora de Momentos</h2>
+<p><strong>Teorema 02:</strong> Se duas variáveis aleatórias têm funções geradoras de momentos que existem, e são iguais, então elas têm a mesma função de distribuição.</p>
+<p>. . .</p>
+<p>A demonstração desse Teorema será omitida, pois ela usa conceitos não estudados neste curso. Veja que o Teorema 02 nos mostra que se duas variáveis aleatórias tem mesma função geradora de momentos então estas variáveis aleatórias são identicamente distribuídas.</p>
+<p>Isso significa que podemos identificar a distribuição de uma variável aleatória a partir da sua função geradora de momentos, assim como identificamos a distribuição da variável aleatória a partir da sua função de distribuição, função densidade ou função de probabilidade.</p>
+</section>
+<section id="função-geradora-de-momentos-45" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-45">Função Geradora de Momentos</h2>
+<p><strong>Exemplo 11:</strong> Seja <span class="math inline">\(X \sim Gamma(\alpha, \lambda)\)</span>. Considere também <span class="math inline">\(Y = cX,\,\, c\in \mathbb{R}\)</span>. Mostre, a partir da função geradora de momentos, que <span class="math inline">\(Y \sim Gamma(\alpha, \lambda/c)\)</span>.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Por definição,</p>
+<p><span class="math display">\[
+M_Y(t) = E(e^{tY}) = E(e^{t(cX)}) = E(e^{(ct)X})
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+M_Y(t) = M_X(ct) = \left(\frac{\lambda}{\lambda - ct}\right)^{\alpha},
+\qquad ct &lt; \lambda \;\; \Rightarrow \;\; t &lt; \frac{\lambda}{c}
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-46" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-46">Função Geradora de Momentos</h2>
+<p>ou seja,</p>
+<p><span class="math display">\[
+M_Y(t)
+= \left(\frac{\lambda}{\lambda - ct}\right)^{\alpha}
+= \left(\frac{\lambda/c}{(\lambda/c) - t}\right)^{\alpha},
+\qquad t &lt; \frac{\lambda}{c}
+\]</span></p>
+<p>Veja que trata-se da função geradora de momentos de uma variável aleatória com distribuição <span class="math inline">\(Gamma(\alpha,\lambda/c)\)</span>. Logo, <span class="math inline">\(Y \sim Gamma(\alpha,\lambda/c)\)</span>.</p>
+</section>
+<section id="função-geradora-de-momentos-47" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-47">Função Geradora de Momentos</h2>
+<p><strong>Teorema 03 - Soma de variáveis independentes:</strong> Sejam <span class="math inline">\(X_1, X_2, \cdots, X_n\)</span> variáveis aleatórias independentes e funções geradoras de momentos, respectivamente, iguais a <span class="math inline">\(M_{X_j}(t), \,\, j = 1, 2, \cdots, n\)</span> para <span class="math inline">\(t\)</span> em alguma vizinhança de zero. Se <span class="math inline">\(Y = X_1 + X_2 + \cdots + X_n\)</span>, então a função geradora de momentos de <span class="math inline">\(Y\)</span> existe e é dada por:</p>
+<p><span class="math display">\[M_Y(t) =  \prod_{j = 1}^n M_{X_j}(t)\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-48" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-48">Função Geradora de Momentos</h2>
+<p><strong>Demonstração:</strong> Pela definição, temos</p>
+<p><span class="math display">\[
+\begin{aligned}
+M_Y(t) &amp;= E(e^{t(X_1 + X_2 + \cdots + X_n)}) \\ &amp;= E(e^{tX_1}e^{tX_2} \cdots e^{tX_n}) \\ &amp;= E(e^{tX_1})E(e^{tX_2})\cdots E(e^{tX_n})
+\end{aligned}
+\]</span> e daí segue o resultado desejado.</p>
+</section>
+<section id="função-geradora-de-momentos-49" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-49">Função Geradora de Momentos</h2>
+<p><strong>Exemplo 12:</strong> Sejam <span class="math inline">\(X_1, X_2, \cdots, X_n\)</span> variáveis aleatórias independentes com distribuição Bernoulli de parâmetro <span class="math inline">\(p\)</span>. Se <span class="math inline">\(Y = X_1 + X_2 + \cdots + X_n\)</span>, mostre, a partir da função geradora de momentos, que <span class="math inline">\(Y \sim Binomial(n,p)\)</span>.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Temos que se <span class="math inline">\(X_1, X_2, \cdots, X_n\)</span> são variáveis aleatórias independentes com distribuição Bernoulli de parâmetro <span class="math inline">\(p\)</span>, então</p>
+<p><span class="math display">\[
+M_{X_j}(t) = 1 - p + p e^{t}, \quad j = 1,2, \cdots n
+\]</span></p>
+</section>
+<section id="função-geradora-de-momentos-50" class="level2">
+<h2 class="anchored" data-anchor-id="função-geradora-de-momentos-50">Função Geradora de Momentos</h2>
+<p>Então, pelo <strong>Teorema 03</strong>, temos</p>
+<p><span class="math display">\[
+M_Y(t) = \prod_{j = 1}^n M_{X_j}(t) = \big(1 - p + p e^{t}\big)^n
+\]</span></p>
+<p>que corresponde à função geradora de momentos de uma variável aleatória Binomial com parâmetros <span class="math inline">\(n\)</span> e <span class="math inline">\(p\)</span>. Logo, temos que <span class="math inline">\(X_1 + X_2 + \cdots + X_n \sim Binomial(n,p)\)</span>.</p>
+</section>
+<section id="função-característica" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica">Função Característica</h2>
+<p>A <strong>função característica</strong> é uma das ferramentas mais importantes da Teoria das Probabilidades.</p>
+<p>. . .</p>
+<p>Ela desempenha um papel similar ao da função geradora de momentos (fgm), mas com vantagens significativas: <strong>sempre existe</strong>, determina unicamente a distribuição e facilita o estudo de somas de variáveis aleatórias.</p>
+<p>. . .</p>
+<p><strong>Definição 03 - Variáveis Aleatórias Complexas:</strong> Dizemos que uma variável aleatória <span class="math inline">\(X\)</span> é complexa, se pode ser escrita como</p>
+<p><span class="math display">\[X = X^a + i \,X^b\]</span></p>
+<p>em que <span class="math inline">\(i = \sqrt{-1}\)</span> e <span class="math inline">\(X^a\)</span> e <span class="math inline">\(X^b\)</span> são variáveis aleatórias reais.</p>
+</section>
+<section id="função-característica-1" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-1">Função Característica</h2>
+<p>Para o valor esperado de <span class="math inline">\(X\)</span>, no caso complexo, exigimos que as esperanças das duas partes sejam finitas. Assim, temos:</p>
+<p><span class="math display">\[E(X) = E(X^a) + i \, E(X^b)\]</span></p>
+<p>em que <span class="math inline">\(E(X^a)\)</span> e <span class="math inline">\(E(X^b)\)</span> são finitas.</p>
+<p>. . .</p>
+<p>Para efeitos práticos, podemos trabalhar funções complexas como se estivéssemos com funções reais.</p>
+<p>. . .</p>
+<p>As propriedades usuais de números complexos serão usadas. Sendo <span class="math inline">\(z = a + i\, b\)</span>, denotaremos por <span class="math inline">\(|z|\)</span> seu módulo e por <span class="math inline">\(\bar{z}\)</span> seu conjugado.</p>
+</section>
+<section id="função-característica-2" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-2">Função Característica</h2>
+<p><strong>Definição 04 - Função Característica:</strong> A função característica de uma variável aleatória <span class="math inline">\(X\)</span> é definida por</p>
+<p><span class="math display">\[
+\varphi_X(t) = E\!\left(e^{itX}\right) = E\Big[\cos(tX)\Big] + i\, E\Big[\, \text{sen}(tX)\Big],
+\qquad t \in \mathbb{R},
+\]</span> onde <span class="math inline">\(i = \sqrt{-1}.\)</span></p>
+</section>
+<section id="função-característica-3" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-3">Função Característica</h2>
+<section id="observações-importantes" class="level3">
+<h3 class="anchored" data-anchor-id="observações-importantes">Observações importantes</h3>
+<ol type="1">
+<li><p><strong>Sempre existe</strong><br>
+Diferentemente da fgm, que pode divergir,<br>
+<span class="math display">\[
+|e^{itX}| = 1 \quad \Rightarrow \quad |E(e^{itX})| \le 1.
+\]</span> Portanto, <span class="math inline">\(\varphi_X(t)\)</span> está sempre bem definida.</p></li>
+<li><p><strong>Determina unicamente a distribuição</strong><br>
+Se <span class="math inline">\(\varphi_X(t) = \varphi_Y(t)\)</span> para todo <span class="math inline">\(t\)</span>, então<br>
+<span class="math display">\[
+X \stackrel{d}{=} Y.
+\]</span></p></li>
+</ol>
+</section>
+</section>
+<section id="função-característica-4" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-4">Função Característica</h2>
+<section id="observações-importantes-1" class="level3">
+<h3 class="anchored" data-anchor-id="observações-importantes-1">Observações importantes</h3>
+<ol start="3" type="1">
+<li><p><strong>É sempre contínua</strong><br>
+Aliás, é uniformemente contínua em toda a reta real.</p></li>
+<li><p><strong>Normalização</strong><br>
+Como <span class="math inline">\(E(e^{it\cdot 0}) = 1\)</span>, temos <span class="math display">\[
+\varphi_X(0) = 1
+\]</span></p></li>
+</ol>
+</section>
+</section>
+<section id="função-característica-5" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-5">Função Característica</h2>
+<section id="relação-com-momentos" class="level3">
+<h3 class="anchored" data-anchor-id="relação-com-momentos">Relação com Momentos</h3>
+<p>Se <span class="math inline">\(X\)</span> possui momentos até ordem <span class="math inline">\(k\)</span>, então:</p>
+<p><span class="math display">\[
+\varphi_X^{(n)}(0) = i^n E(X^n),
+\qquad n = 1,2,\dots,k.
+\]</span></p>
+<p>Em particular:</p>
+<ul>
+<li><span class="math inline">\(E(X) = -i\,\varphi_X'(0)\)</span><br>
+</li>
+<li><span class="math inline">\(\text{Var}(X) = -\varphi_X''(0) - \left[\varphi_X'(0)\right]^2\)</span></li>
+</ul>
+</section>
+</section>
+<section id="função-característica-6" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-6">Função Característica</h2>
+<section id="propriedade-fundamental-soma-de-variáveis-independentes" class="level3">
+<h3 class="anchored" data-anchor-id="propriedade-fundamental-soma-de-variáveis-independentes">Propriedade fundamental: soma de variáveis independentes</h3>
+<p>Se <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são independentes:</p>
+<p><span class="math display">\[
+\varphi_{X+Y}(t)
+= E(e^{it(X+Y)})
+= E(e^{itX})\,E(e^{itY})
+= \varphi_X(t)\,\varphi_Y(t).
+\]</span></p>
+<p>Esse resultado é crucial, por exemplo, para demonstrar o <strong>Teorema Central do Limite</strong>.</p>
+</section>
+</section>
+<section id="função-característica-7" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-7">Função Característica</h2>
+<p><strong>Exemplo 13:</strong> Considere uma variável aleatória <span class="math inline">\(X\)</span> com distribuição Uniforme Contínua no intervalo <span class="math inline">\([a,b]\)</span>. Encontre sua função característica.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Considere <span class="math inline">\(X \sim \text{U}(a,b)\)</span>, com <span class="math inline">\(a&lt;b\)</span>. Temos que, sua função densidade é dada por</p>
+<p><span class="math display">\[
+f(x) = \frac{1}{b-a}, \qquad a \le x \le b
+\]</span></p>
+<p>Assim, a função característica de <span class="math inline">\(X\)</span> é</p>
+<p><span class="math display">\[
+\varphi_X(t) = E(e^{itX})
+= \int_{-\infty}^{\infty} e^{itx} f(x)\,dx
+\]</span></p>
+</section>
+<section id="função-característica-8" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-8">Função Característica</h2>
+<p>Como <span class="math inline">\(f(x)\)</span> é não nula apenas em <span class="math inline">\([a,b]\)</span>:</p>
+<p><span class="math display">\[
+\varphi_X(t)
+= \int_a^b e^{itx}\,\frac{1}{b-a}\,dx
+= \frac{1}{b-a} \int_a^b e^{itx}\,dx.
+\]</span></p>
+<p>mudança de variável: <span class="math inline">\(u = itx \Rightarrow du = it \, dx\)</span> ou <span class="math inline">\(dx = \frac{1}{it} du\)</span>. Quando <span class="math inline">\(x = a \Rightarrow u = ita\)</span>, quando <span class="math inline">\(x = b \Rightarrow u = itb\)</span>. Assim,</p>
+<p><span class="math display">\[
+\varphi_X(t)
+= \frac{1}{b-a}
+\left[\frac{1}{it}e^{u}\right]_{ita}^{itb}
+= \frac{e^{itb} - e^{ita}}{it \big(b-a\big)},
+\qquad t \ne 0
+\]</span></p>
+</section>
+<section id="função-característica-9" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-9">Função Característica</h2>
+<p><strong>Exemplo 14:</strong> Seja <span class="math inline">\(X \sim Gamma(\alpha, \lambda)\)</span>. Encontre sua função característica.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Se <span class="math inline">\(X \sim Gamma(\alpha, \lambda)\)</span>. Temos que sua função densidade é</p>
+<p><span class="math display">\[
+f(x) = \frac{\lambda^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda x},
+\qquad x&gt;0
+\]</span></p>
+<p>Assim, a função característica de <span class="math inline">\(X\)</span> é</p>
+<p><span class="math display">\[
+\varphi_X(t) = E(e^{itX})
+= \int_0^\infty e^{itx} f(x)\,dx
+\]</span></p>
+</section>
+<section id="função-característica-10" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-10">Função Característica</h2>
+<p>Substituindo a densidade:</p>
+<p><span class="math display">\[
+\varphi_X(t)
+= \int_0^\infty e^{itx}
+\frac{\lambda^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda x}\,dx
+= \frac{\lambda^\alpha}{\Gamma(\alpha)}
+\int_0^\infty x^{\alpha-1} e^{-(\lambda - it)x}\,dx
+\]</span></p>
+<p>Sabemos que,</p>
+<p><span class="math display">\[
+\int_0^\infty x^{\alpha-1}e^{-bx}\,dx = \frac{\Gamma(\alpha)}{b^\alpha}
+\]</span></p>
+<p>Assim,</p>
+<p><span class="math display">\[
+\varphi_X(t)
+= \frac{\lambda^\alpha}{\Gamma(\alpha)}
+\cdot
+\frac{\Gamma(\alpha)}{(\lambda - it)^\alpha}
+= \left(\frac{\lambda}{\lambda - it}\right)^\alpha
+\]</span></p>
+</section>
+<section id="função-característica-11" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-11">Função Característica</h2>
+<section id="observações-importantes-2" class="level3">
+<h3 class="anchored" data-anchor-id="observações-importantes-2">Observações importantes</h3>
+<ul>
+<li><p>A função característica <strong>generaliza</strong> a fgm para o plano complexo.</p></li>
+<li><p>Sempre que a fgm existir, vale: <span class="math display">\[
+\varphi_X(t) = M_X(it)
+\]</span></p></li>
+<li><p>Ambas determinam a distribuição, mas a função característica é <strong>mais poderosa</strong>, pois <strong>sempre existe</strong> e se comporta melhor em operações como soma de variáveis independentes.</p></li>
+</ul>
+</section>
+</section>
+<section id="função-característica-12" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-12">Função Característica</h2>
+<p><strong>Exemplo 15:</strong> Seja <span class="math inline">\(X \sim Binomial(n, p)\)</span>. Encontre sua função característica e, através dela, encontre <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(\text{Var}(X)\)</span>.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Se <span class="math inline">\(X \sim Binomial(n, p)\)</span>, sua função geradora de momentos é dada por</p>
+<p><span class="math display">\[
+M_X(t) = (1-p + p e^{t})^n
+\]</span></p>
+<p>Portanto, segue que</p>
+<p><span class="math display">\[
+\varphi_X(t) = M_X(it) = (1-p + p e^{it})^n
+\]</span></p>
+</section>
+<section id="função-característica-13" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-13">Função Característica</h2>
+<p>Em geral, se a função característica é <span class="math inline">\(\varphi_X(t)=E(e^{itX})\)</span>, então</p>
+<p><span class="math display">\[
+\varphi_X'(0) = i\,E(X)
+\quad \Rightarrow \quad
+E(X) = \frac{\varphi_X'(0)}{i}
+\]</span></p>
+<p>Note que,</p>
+<p><span class="math display">\[
+\varphi_X(t) = g(t)^n,
+\quad\text{onde}\quad
+g(t) = 1-p + pe^{it}
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\varphi_X'(t) = n g(t)^{n-1} g'(t)
+= n (1-p+pe^{it})^{n-1} \, p i e^{it}
+\]</span></p>
+</section>
+<section id="função-característica-14" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-14">Função Característica</h2>
+<p>Avaliando em <span class="math inline">\(t=0\)</span>:</p>
+<p><span class="math display">\[
+\varphi_X'(0) = n (1-p+pe^{i 0})^{n-1} \, p i e^{i\, 0} = n (1-p+pe^{0})^{n-1} \, p i e^{0} = n (1-p+p)^{n-1} \, p i = n p i
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+E(X) = \frac{\varphi_X'(0)}{i} = \frac{i np}{i} = np
+\]</span></p>
+</section>
+<section id="função-característica-15" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-15">Função Característica</h2>
+<p>Já temos <span class="math display">\[
+\varphi_X'(t) = n p i e^{it}\, g(t)^{n-1},
+\quad g(t)=1-p+pe^{it}
+\]</span></p>
+<p>Derivando novamente (regra do produto):</p>
+<p><span class="math display">\[
+\begin{aligned}
+\varphi_X''(t)
+&amp;= n p i \Big[ i e^{it} g(t)^{n-1}
+      + e^{it}(n-1) g(t)^{n-2} g'(t) \Big] \\
+&amp;= n p i \Big[ i e^{it} g(t)^{n-1}
+      + e^{it}(n-1) g(t)^{n-2} (p i e^{it}) \Big] \\
+&amp;= n p \Big[ i^2 e^{it} g(t)^{n-1}
+      + (n-1)p i^2 e^{2it} g(t)^{n-2} \Big] \\
+&amp;= -n p \Big[ e^{it} g(t)^{n-1}
+      + (n-1)p e^{2it} g(t)^{n-2} \Big]
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-característica-16" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-16">Função Característica</h2>
+<p>Em <span class="math inline">\(t=0\)</span> (<span class="math inline">\(g(0)=1\)</span>, <span class="math inline">\(e^{0}=1\)</span>):</p>
+<p><span class="math display">\[
+\varphi_X''(0)
+= -n p \big[ 1\cdot 1^{n-1} + (n-1)p\cdot 1\cdot 1^{n-2} \big]
+= -n p \big[ 1 + (n-1)p \big]
+\]</span></p>
+<p>Então,</p>
+<p><span class="math display">\[
+E(X^2) = -\varphi_X''(0)
+= n p\big[1 + (n-1)p\big]
+= np + n(n-1)p^2
+\]</span></p>
+</section>
+<section id="função-característica-17" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-17">Função Característica</h2>
+<p>Por fim, como <span class="math inline">\(\text{Var}(X) = -\varphi_X''(0) - \left[\varphi_X'(0)\right]^2\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Var}(X)
+&amp;= -\varphi_X''(0) - \left[\varphi_X'(0)\right]^2 \\
+&amp;= \big[np + n(n-1)p^2\big] - (np)^2 \\
+&amp;= np + n(n-1)p^2 - n^2p^2 \\
+&amp;= np + \big(n^2 - n - n^2\big)p^2 \\
+&amp;= np - np^2 \\
+&amp;= np(1-p)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-característica-18" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-18">Função Característica</h2>
+<p><strong>Exemplo 16:</strong> Seja <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>. Encontre sua função característica e, através dela, encontre <span class="math inline">\(E(X)\)</span> e <span class="math inline">\(\text{Var}(X)\)</span>.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Se <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, sua função geradora de momentos é dada por</p>
+<p><span class="math display">\[M_X(t)= \exp \Bigg(\mu t + \frac{\sigma^2 t^2}{2} \Bigg)\]</span></p>
+<p>Portanto, segue que</p>
+<p><span class="math display">\[
+\varphi_X(t) = M_X(it) = \exp \Bigg(it\mu - \frac{\sigma^2 t^2}{2} \Bigg)
+\]</span></p>
+</section>
+<section id="função-característica-19" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-19">Função Característica</h2>
+<p>Derivando:</p>
+<p><span class="math display">\[
+\varphi_X'(t)
+= \left(i\mu - \sigma^2 t\right)\,
+\exp\!\left(it\mu - \frac{\sigma^2 t^2}{2}\right)
+= \left(i\mu - \sigma^2 t\right)\varphi_X(t)
+\]</span></p>
+<p>Em <span class="math inline">\(t=0\)</span>:</p>
+<p><span class="math display">\[
+\varphi_X(0) = 1, \qquad
+\varphi_X'(0) = i\mu
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+E(X) = \frac{\varphi_X'(0)}{i} = \frac{i\mu}{i} = \mu
+\]</span></p>
+</section>
+<section id="função-característica-20" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-20">Função Característica</h2>
+<p>Derivamos novamente:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\varphi_X''(t)
+&amp;= \frac{d}{dt}\big[(i\mu - \sigma^2 t)\varphi_X(t)\big] \\
+&amp;= -\sigma^2 \varphi_X(t)
+   + (i\mu - \sigma^2 t)\varphi_X'(t) \\
+&amp;= -\sigma^2 \varphi_X(t)
+   + (i\mu - \sigma^2 t)^2 \varphi_X(t)
+\end{aligned}
+\]</span></p>
+<p>Em <span class="math inline">\(t=0\)</span>: <span class="math display">\[
+\varphi_X(0) = 1,\qquad
+\varphi_X''(0) = -\sigma^2 + (i\mu)^2
+              = -\sigma^2 - \mu^2
+\]</span></p>
+<p>Portanto, <span class="math display">\[
+E(X^2) = -\varphi_X''(0)
+       = \sigma^2 + \mu^2
+\]</span></p>
+</section>
+<section id="função-característica-21" class="level2">
+<h2 class="anchored" data-anchor-id="função-característica-21">Função Característica</h2>
+<p>De forma que,</p>
+<p><span class="math display">\[
+\operatorname{Var}(X)
+= E(X^2) - [E(X)]^2
+= (\sigma^2 + \mu^2) - \mu^2
+= \sigma^2
+\]</span></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/func_geradora_momentos/func_gera_momentos.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

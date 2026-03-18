@@ -1,0 +1,3110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Vetores Aleatórios – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Vetores Aleatórios – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Homepage da disciplina EST335 - Métodos Estatísticos para Machine Learning, 2026/1">
+<meta property="og:image" content="http://professortp.com.br/est335/images/vetor_2D.png">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Vetores Aleatórios</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução">Introdução</a></li>
+  <li><a href="#variáveis-aleatórias-multidimensionais" id="toc-variáveis-aleatórias-multidimensionais" class="nav-link" data-scroll-target="#variáveis-aleatórias-multidimensionais">Variáveis Aleatórias Multidimensionais</a></li>
+  <li><a href="#variáveis-aleatórias-multidimensionais-1" id="toc-variáveis-aleatórias-multidimensionais-1" class="nav-link" data-scroll-target="#variáveis-aleatórias-multidimensionais-1">Variáveis Aleatórias Multidimensionais</a></li>
+  <li><a href="#caso-discreto" id="toc-caso-discreto" class="nav-link" data-scroll-target="#caso-discreto">Caso discreto</a>
+  <ul class="collapse">
+  <li><a href="#variáveis-aleatórias-multidimensionais-discretas" id="toc-variáveis-aleatórias-multidimensionais-discretas" class="nav-link" data-scroll-target="#variáveis-aleatórias-multidimensionais-discretas">Variáveis Aleatórias Multidimensionais Discretas</a></li>
+  <li><a href="#função-de-probabilidade-conjunta" id="toc-função-de-probabilidade-conjunta" class="nav-link" data-scroll-target="#função-de-probabilidade-conjunta">Função de Probabilidade Conjunta</a></li>
+  <li><a href="#função-de-probabilidade-conjunta-1" id="toc-função-de-probabilidade-conjunta-1" class="nav-link" data-scroll-target="#função-de-probabilidade-conjunta-1">Função de Probabilidade Conjunta</a></li>
+  <li><a href="#função-de-probabilidade-conjunta-2" id="toc-função-de-probabilidade-conjunta-2" class="nav-link" data-scroll-target="#função-de-probabilidade-conjunta-2">Função de Probabilidade Conjunta</a></li>
+  <li><a href="#função-de-probabilidade-conjunta-3" id="toc-função-de-probabilidade-conjunta-3" class="nav-link" data-scroll-target="#função-de-probabilidade-conjunta-3">Função de Probabilidade Conjunta</a></li>
+  <li><a href="#função-de-probabilidade-conjunta-4" id="toc-função-de-probabilidade-conjunta-4" class="nav-link" data-scroll-target="#função-de-probabilidade-conjunta-4">Função de Probabilidade Conjunta</a></li>
+  <li><a href="#função-de-distribuição-acumulada" id="toc-função-de-distribuição-acumulada" class="nav-link" data-scroll-target="#função-de-distribuição-acumulada">Função de Distribuição Acumulada</a></li>
+  <li><a href="#função-de-distribuição-acumulada-1" id="toc-função-de-distribuição-acumulada-1" class="nav-link" data-scroll-target="#função-de-distribuição-acumulada-1">Função de Distribuição Acumulada</a></li>
+  <li><a href="#função-de-distribuição-acumulada-2" id="toc-função-de-distribuição-acumulada-2" class="nav-link" data-scroll-target="#função-de-distribuição-acumulada-2">Função de Distribuição Acumulada</a>
+  <ul class="collapse">
+  <li><a href="#para-y-0" id="toc-para-y-0" class="nav-link" data-scroll-target="#para-y-0">Para <span class="math inline">\(y = 0\)</span></a></li>
+  </ul></li>
+  <li><a href="#função-de-distribuição-acumulada-3" id="toc-função-de-distribuição-acumulada-3" class="nav-link" data-scroll-target="#função-de-distribuição-acumulada-3">Função de Distribuição Acumulada</a>
+  <ul class="collapse">
+  <li><a href="#para-y-1" id="toc-para-y-1" class="nav-link" data-scroll-target="#para-y-1">Para <span class="math inline">\(y = 1\)</span></a></li>
+  </ul></li>
+  <li><a href="#função-de-distribuição-acumulada-4" id="toc-função-de-distribuição-acumulada-4" class="nav-link" data-scroll-target="#função-de-distribuição-acumulada-4">Função de Distribuição Acumulada</a>
+  <ul class="collapse">
+  <li><a href="#tabela-final-dos-valores-da-fda" id="toc-tabela-final-dos-valores-da-fda" class="nav-link" data-scroll-target="#tabela-final-dos-valores-da-fda">Tabela final dos valores da fda</a></li>
+  </ul></li>
+  <li><a href="#função-de-distribuição-acumulada-5" id="toc-função-de-distribuição-acumulada-5" class="nav-link" data-scroll-target="#função-de-distribuição-acumulada-5">Função de Distribuição Acumulada</a></li>
+  <li><a href="#distribuições-marginais" id="toc-distribuições-marginais" class="nav-link" data-scroll-target="#distribuições-marginais">Distribuições Marginais</a></li>
+  <li><a href="#distribuições-marginais-1" id="toc-distribuições-marginais-1" class="nav-link" data-scroll-target="#distribuições-marginais-1">Distribuições Marginais</a></li>
+  <li><a href="#distribuições-condicionais" id="toc-distribuições-condicionais" class="nav-link" data-scroll-target="#distribuições-condicionais">Distribuições Condicionais</a></li>
+  <li><a href="#distribuições-condicionais-1" id="toc-distribuições-condicionais-1" class="nav-link" data-scroll-target="#distribuições-condicionais-1">Distribuições Condicionais</a></li>
+  <li><a href="#distribuições-condicionais-2" id="toc-distribuições-condicionais-2" class="nav-link" data-scroll-target="#distribuições-condicionais-2">Distribuições Condicionais</a></li>
+  <li><a href="#distribuições-condicionais-3" id="toc-distribuições-condicionais-3" class="nav-link" data-scroll-target="#distribuições-condicionais-3">Distribuições Condicionais</a></li>
+  <li><a href="#distribuições-condicionais-4" id="toc-distribuições-condicionais-4" class="nav-link" data-scroll-target="#distribuições-condicionais-4">Distribuições Condicionais</a></li>
+  <li><a href="#esperança-condicional" id="toc-esperança-condicional" class="nav-link" data-scroll-target="#esperança-condicional">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-1" id="toc-esperança-condicional-1" class="nav-link" data-scroll-target="#esperança-condicional-1">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-2" id="toc-esperança-condicional-2" class="nav-link" data-scroll-target="#esperança-condicional-2">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-3" id="toc-esperança-condicional-3" class="nav-link" data-scroll-target="#esperança-condicional-3">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-4" id="toc-esperança-condicional-4" class="nav-link" data-scroll-target="#esperança-condicional-4">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-5" id="toc-esperança-condicional-5" class="nav-link" data-scroll-target="#esperança-condicional-5">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-6" id="toc-esperança-condicional-6" class="nav-link" data-scroll-target="#esperança-condicional-6">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-7" id="toc-esperança-condicional-7" class="nav-link" data-scroll-target="#esperança-condicional-7">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-8" id="toc-esperança-condicional-8" class="nav-link" data-scroll-target="#esperança-condicional-8">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-9" id="toc-esperança-condicional-9" class="nav-link" data-scroll-target="#esperança-condicional-9">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-10" id="toc-esperança-condicional-10" class="nav-link" data-scroll-target="#esperança-condicional-10">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-11" id="toc-esperança-condicional-11" class="nav-link" data-scroll-target="#esperança-condicional-11">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-12" id="toc-esperança-condicional-12" class="nav-link" data-scroll-target="#esperança-condicional-12">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-13" id="toc-esperança-condicional-13" class="nav-link" data-scroll-target="#esperança-condicional-13">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-14" id="toc-esperança-condicional-14" class="nav-link" data-scroll-target="#esperança-condicional-14">Esperança Condicional</a></li>
+  <li><a href="#esperança-condicional-15" id="toc-esperança-condicional-15" class="nav-link" data-scroll-target="#esperança-condicional-15">Esperança Condicional</a></li>
+  <li><a href="#independência-de-variáveis-aleatórias" id="toc-independência-de-variáveis-aleatórias" class="nav-link" data-scroll-target="#independência-de-variáveis-aleatórias">Independência de Variáveis Aleatórias</a></li>
+  <li><a href="#independência-de-variáveis-aleatórias-1" id="toc-independência-de-variáveis-aleatórias-1" class="nav-link" data-scroll-target="#independência-de-variáveis-aleatórias-1">Independência de Variáveis Aleatórias</a></li>
+  <li><a href="#independência-de-variáveis-aleatórias-2" id="toc-independência-de-variáveis-aleatórias-2" class="nav-link" data-scroll-target="#independência-de-variáveis-aleatórias-2">Independência de Variáveis Aleatórias</a></li>
+  <li><a href="#independência-de-variáveis-aleatórias-3" id="toc-independência-de-variáveis-aleatórias-3" class="nav-link" data-scroll-target="#independência-de-variáveis-aleatórias-3">Independência de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias" id="toc-funções-de-variáveis-aleatórias" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-1" id="toc-funções-de-variáveis-aleatórias-1" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-1">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-2" id="toc-funções-de-variáveis-aleatórias-2" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-2">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-3" id="toc-funções-de-variáveis-aleatórias-3" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-3">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-4" id="toc-funções-de-variáveis-aleatórias-4" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-4">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-5" id="toc-funções-de-variáveis-aleatórias-5" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-5">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-6" id="toc-funções-de-variáveis-aleatórias-6" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-6">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-7" id="toc-funções-de-variáveis-aleatórias-7" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-7">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-8" id="toc-funções-de-variáveis-aleatórias-8" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-8">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-9" id="toc-funções-de-variáveis-aleatórias-9" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-9">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-10" id="toc-funções-de-variáveis-aleatórias-10" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-10">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-11" id="toc-funções-de-variáveis-aleatórias-11" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-11">Funções de Variáveis Aleatórias</a>
+  <ul class="collapse">
+  <li><a href="#propriedades-da-covariância" id="toc-propriedades-da-covariância" class="nav-link" data-scroll-target="#propriedades-da-covariância">Propriedades da covariância</a></li>
+  </ul></li>
+  <li><a href="#funções-de-variáveis-aleatórias-12" id="toc-funções-de-variáveis-aleatórias-12" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-12">Funções de Variáveis Aleatórias</a>
+  <ul class="collapse">
+  <li><a href="#propriedades-da-covariância-1" id="toc-propriedades-da-covariância-1" class="nav-link" data-scroll-target="#propriedades-da-covariância-1">Propriedades da covariância</a></li>
+  </ul></li>
+  <li><a href="#funções-de-variáveis-aleatórias-13" id="toc-funções-de-variáveis-aleatórias-13" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-13">Funções de Variáveis Aleatórias</a>
+  <ul class="collapse">
+  <li><a href="#propriedades-da-covariância-2" id="toc-propriedades-da-covariância-2" class="nav-link" data-scroll-target="#propriedades-da-covariância-2">Propriedades da covariância</a></li>
+  </ul></li>
+  <li><a href="#funções-de-variáveis-aleatórias-14" id="toc-funções-de-variáveis-aleatórias-14" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-14">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-15" id="toc-funções-de-variáveis-aleatórias-15" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-15">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-16" id="toc-funções-de-variáveis-aleatórias-16" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-16">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-17" id="toc-funções-de-variáveis-aleatórias-17" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-17">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-18" id="toc-funções-de-variáveis-aleatórias-18" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-18">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-19" id="toc-funções-de-variáveis-aleatórias-19" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-19">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-20" id="toc-funções-de-variáveis-aleatórias-20" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-20">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-21" id="toc-funções-de-variáveis-aleatórias-21" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-21">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-22" id="toc-funções-de-variáveis-aleatórias-22" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-22">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-23" id="toc-funções-de-variáveis-aleatórias-23" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-23">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-24" id="toc-funções-de-variáveis-aleatórias-24" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-24">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-25" id="toc-funções-de-variáveis-aleatórias-25" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-25">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-26" id="toc-funções-de-variáveis-aleatórias-26" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-26">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-27" id="toc-funções-de-variáveis-aleatórias-27" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-27">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-28" id="toc-funções-de-variáveis-aleatórias-28" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-28">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-29" id="toc-funções-de-variáveis-aleatórias-29" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-29">Funções de Variáveis Aleatórias</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-30" id="toc-funções-de-variáveis-aleatórias-30" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-30">Funções de Variáveis Aleatórias</a></li>
+  </ul></li>
+  <li><a href="#caso-contínuo" id="toc-caso-contínuo" class="nav-link" data-scroll-target="#caso-contínuo">Caso contínuo</a>
+  <ul class="collapse">
+  <li><a href="#variáveis-aleatórias-multidimensionais-contínuas" id="toc-variáveis-aleatórias-multidimensionais-contínuas" class="nav-link" data-scroll-target="#variáveis-aleatórias-multidimensionais-contínuas">Variáveis Aleatórias Multidimensionais Contínuas</a></li>
+  <li><a href="#função-densidade-conjunta" id="toc-função-densidade-conjunta" class="nav-link" data-scroll-target="#função-densidade-conjunta">Função Densidade Conjunta</a></li>
+  <li><a href="#função-densidade-conjunta-1" id="toc-função-densidade-conjunta-1" class="nav-link" data-scroll-target="#função-densidade-conjunta-1">Função Densidade Conjunta</a></li>
+  <li><a href="#função-densidade-conjunta-2" id="toc-função-densidade-conjunta-2" class="nav-link" data-scroll-target="#função-densidade-conjunta-2">Função Densidade Conjunta</a></li>
+  <li><a href="#função-densidade-conjunta-3" id="toc-função-densidade-conjunta-3" class="nav-link" data-scroll-target="#função-densidade-conjunta-3">Função Densidade Conjunta</a></li>
+  <li><a href="#densidades-marginais" id="toc-densidades-marginais" class="nav-link" data-scroll-target="#densidades-marginais">Densidades Marginais</a></li>
+  <li><a href="#densidades-marginais-1" id="toc-densidades-marginais-1" class="nav-link" data-scroll-target="#densidades-marginais-1">Densidades Marginais</a></li>
+  <li><a href="#densidades-marginais-2" id="toc-densidades-marginais-2" class="nav-link" data-scroll-target="#densidades-marginais-2">Densidades Marginais</a></li>
+  <li><a href="#densidades-marginais-3" id="toc-densidades-marginais-3" class="nav-link" data-scroll-target="#densidades-marginais-3">Densidades Marginais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais" id="toc-distribuições-e-esperanças-condicionais" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-1" id="toc-distribuições-e-esperanças-condicionais-1" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-1">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-2" id="toc-distribuições-e-esperanças-condicionais-2" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-2">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-3" id="toc-distribuições-e-esperanças-condicionais-3" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-3">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-4" id="toc-distribuições-e-esperanças-condicionais-4" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-4">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-5" id="toc-distribuições-e-esperanças-condicionais-5" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-5">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-6" id="toc-distribuições-e-esperanças-condicionais-6" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-6">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-7" id="toc-distribuições-e-esperanças-condicionais-7" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-7">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-8" id="toc-distribuições-e-esperanças-condicionais-8" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-8">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-9" id="toc-distribuições-e-esperanças-condicionais-9" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-9">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-10" id="toc-distribuições-e-esperanças-condicionais-10" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-10">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-11" id="toc-distribuições-e-esperanças-condicionais-11" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-11">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-12" id="toc-distribuições-e-esperanças-condicionais-12" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-12">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-13" id="toc-distribuições-e-esperanças-condicionais-13" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-13">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#distribuições-e-esperanças-condicionais-14" id="toc-distribuições-e-esperanças-condicionais-14" class="nav-link" data-scroll-target="#distribuições-e-esperanças-condicionais-14">Distribuições e Esperanças Condicionais</a></li>
+  <li><a href="#independência-de-variáveis-aleatórias-contínuas" id="toc-independência-de-variáveis-aleatórias-contínuas" class="nav-link" data-scroll-target="#independência-de-variáveis-aleatórias-contínuas">Independência de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#independência-de-variáveis-aleatórias-contínuas-1" id="toc-independência-de-variáveis-aleatórias-contínuas-1" class="nav-link" data-scroll-target="#independência-de-variáveis-aleatórias-contínuas-1">Independência de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#independência-de-variáveis-aleatórias-contínuas-2" id="toc-independência-de-variáveis-aleatórias-contínuas-2" class="nav-link" data-scroll-target="#independência-de-variáveis-aleatórias-contínuas-2">Independência de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas" id="toc-funções-de-variáveis-aleatórias-contínuas" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-1" id="toc-funções-de-variáveis-aleatórias-contínuas-1" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-1">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-2" id="toc-funções-de-variáveis-aleatórias-contínuas-2" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-2">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-3" id="toc-funções-de-variáveis-aleatórias-contínuas-3" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-3">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-4" id="toc-funções-de-variáveis-aleatórias-contínuas-4" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-4">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-5" id="toc-funções-de-variáveis-aleatórias-contínuas-5" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-5">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-6" id="toc-funções-de-variáveis-aleatórias-contínuas-6" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-6">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-7" id="toc-funções-de-variáveis-aleatórias-contínuas-7" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-7">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-8" id="toc-funções-de-variáveis-aleatórias-contínuas-8" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-8">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-9" id="toc-funções-de-variáveis-aleatórias-contínuas-9" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-9">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-10" id="toc-funções-de-variáveis-aleatórias-contínuas-10" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-10">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-11" id="toc-funções-de-variáveis-aleatórias-contínuas-11" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-11">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-12" id="toc-funções-de-variáveis-aleatórias-contínuas-12" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-12">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-13" id="toc-funções-de-variáveis-aleatórias-contínuas-13" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-13">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-14" id="toc-funções-de-variáveis-aleatórias-contínuas-14" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-14">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-15" id="toc-funções-de-variáveis-aleatórias-contínuas-15" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-15">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-16" id="toc-funções-de-variáveis-aleatórias-contínuas-16" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-16">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-17" id="toc-funções-de-variáveis-aleatórias-contínuas-17" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-17">Funções de Variáveis Aleatórias Contínuas</a></li>
+  <li><a href="#funções-de-variáveis-aleatórias-contínuas-18" id="toc-funções-de-variáveis-aleatórias-contínuas-18" class="nav-link" data-scroll-target="#funções-de-variáveis-aleatórias-contínuas-18">Funções de Variáveis Aleatórias Contínuas</a>
+  <ul class="collapse">
+  <li><a href="#coeficiente-de-correlação" id="toc-coeficiente-de-correlação" class="nav-link" data-scroll-target="#coeficiente-de-correlação">Coeficiente de correlação</a></li>
+  </ul></li>
+  <li><a href="#transformações-bivariadas" id="toc-transformações-bivariadas" class="nav-link" data-scroll-target="#transformações-bivariadas">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-1" id="toc-transformações-bivariadas-1" class="nav-link" data-scroll-target="#transformações-bivariadas-1">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-2" id="toc-transformações-bivariadas-2" class="nav-link" data-scroll-target="#transformações-bivariadas-2">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-3" id="toc-transformações-bivariadas-3" class="nav-link" data-scroll-target="#transformações-bivariadas-3">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-4" id="toc-transformações-bivariadas-4" class="nav-link" data-scroll-target="#transformações-bivariadas-4">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-5" id="toc-transformações-bivariadas-5" class="nav-link" data-scroll-target="#transformações-bivariadas-5">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-6" id="toc-transformações-bivariadas-6" class="nav-link" data-scroll-target="#transformações-bivariadas-6">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-7" id="toc-transformações-bivariadas-7" class="nav-link" data-scroll-target="#transformações-bivariadas-7">Transformações Bivariadas</a>
+  <ul class="collapse">
+  <li><a href="#integral-interna-em-v" id="toc-integral-interna-em-v" class="nav-link" data-scroll-target="#integral-interna-em-v">Integral interna em <span class="math inline">\(v\)</span></a></li>
+  </ul></li>
+  <li><a href="#transformações-bivariadas-8" id="toc-transformações-bivariadas-8" class="nav-link" data-scroll-target="#transformações-bivariadas-8">Transformações Bivariadas</a>
+  <ul class="collapse">
+  <li><a href="#integral-externa-em-u" id="toc-integral-externa-em-u" class="nav-link" data-scroll-target="#integral-externa-em-u">Integral externa em <span class="math inline">\(u\)</span></a></li>
+  </ul></li>
+  <li><a href="#transformações-bivariadas-9" id="toc-transformações-bivariadas-9" class="nav-link" data-scroll-target="#transformações-bivariadas-9">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-10" id="toc-transformações-bivariadas-10" class="nav-link" data-scroll-target="#transformações-bivariadas-10">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-11" id="toc-transformações-bivariadas-11" class="nav-link" data-scroll-target="#transformações-bivariadas-11">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-12" id="toc-transformações-bivariadas-12" class="nav-link" data-scroll-target="#transformações-bivariadas-12">Transformações Bivariadas</a></li>
+  <li><a href="#transformações-bivariadas-13" id="toc-transformações-bivariadas-13" class="nav-link" data-scroll-target="#transformações-bivariadas-13">Transformações Bivariadas</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/Vetores_aleatorios/vetores_aleatorios.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="vetores_aleatorios.html"><i class="bi bi-file-slides"></i>RevealJS</a></li><li><a href="vetores_aleatorios.pdf"><i class="bi bi-file-pdf"></i>Beamer</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Vetores Aleatórios</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introdução" class="level2">
+<h2 class="anchored" data-anchor-id="introdução">Introdução</h2>
+<p>Em muitas situações, é comum que um experimento aleatório gere mais de uma variável de interesse e, quase sempre, o interesse estará em estudar o comportamento simultâneo de 2 ou mais variáveis, em busca de relações, associações.</p>
+<p>Torna-se necessário, então, conhecer o comportamento probabilístico conjunto de tais variáveis.</p>
+</section>
+<section id="variáveis-aleatórias-multidimensionais" class="level2">
+<h2 class="anchored" data-anchor-id="variáveis-aleatórias-multidimensionais">Variáveis Aleatórias Multidimensionais</h2>
+<p><strong>Definição:</strong> Sejam <span class="math inline">\(\varepsilon\)</span> um experimento e <span class="math inline">\(S\)</span> um espaço amostral associado a <span class="math inline">\(\varepsilon\)</span>. Sejam <span class="math inline">\(X = X(s)\)</span> e <span class="math inline">\(Y = Y(s)\)</span> duas funções, cada uma associando um número real a cada resultado <span class="math inline">\(s \in S\)</span>. Denominaremos <span class="math inline">\((X, Y)\)</span> uma <strong>variável aleatória bidimensional</strong> (também chamada <strong>vetor aleatório</strong>).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\images/vetor_2D.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="variáveis-aleatórias-multidimensionais-1" class="level2">
+<h2 class="anchored" data-anchor-id="variáveis-aleatórias-multidimensionais-1">Variáveis Aleatórias Multidimensionais</h2>
+<p>Se <span class="math inline">\(X_1 = X_1(s)\)</span>, <span class="math inline">\(X_2 = X_2(s)\)</span>, <span class="math inline">\(\ldots\)</span>, <span class="math inline">\(X_n = X_n(s)\)</span> forem <span class="math inline">\(n\)</span> funções, cada uma associando um número real a cada resultado <span class="math inline">\(s \in S\)</span>, denominaremos <span class="math inline">\((X_1, \ldots, X_n)\)</span> uma <strong>variável aleatória <span class="math inline">\(n\)</span>-dimensional</strong> (ou um <strong>vetor aleatório <span class="math inline">\(n\)</span>-dimensional</strong>).</p>
+</section>
+<section id="caso-discreto" class="level1">
+<h1>Caso discreto</h1>
+<section id="variáveis-aleatórias-multidimensionais-discretas" class="level2">
+<h2 class="anchored" data-anchor-id="variáveis-aleatórias-multidimensionais-discretas">Variáveis Aleatórias Multidimensionais Discretas</h2>
+<p><strong>Definição:</strong> <span class="math inline">\((X, Y)\)</span> será uma <strong>variável aleatória discreta bidimensional</strong> se os valores possíveis de <span class="math inline">\((X, Y)\)</span> forem finitos ou infinitos numeráveis. Isto é, os valores possíveis de <span class="math inline">\((X, Y)\)</span> possam ser representados por <span class="math inline">\((x_i, y_j)\)</span>, <span class="math inline">\(i = 1, 2, \ldots, n, \ldots\)</span>, <span class="math inline">\(j = 1, 2, \ldots, m, \ldots\)</span></p>
+<p>. . .</p>
+<p>Podemos pensar que um <strong>vetor aleatório bidimensional discreto</strong> é um vetor formado por <strong>duas variáveis aleatórias discretas</strong> definidas no <strong>mesmo espaço amostral</strong>.</p>
+<p>. . .</p>
+<p>De forma análoga, podemos definir um <strong>vetor aleatório <span class="math inline">\(n\)</span>−dimensional discreto</strong> como sendo um vetor formado por <strong><span class="math inline">\(n\)</span> variáveis aleatórias discretas</strong> definidas no <strong>mesmo espaço amostral</strong>.</p>
+</section>
+<section id="função-de-probabilidade-conjunta" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-probabilidade-conjunta">Função de Probabilidade Conjunta</h2>
+<p><strong>Definição:</strong> Seja <span class="math inline">\((X, Y)\)</span> uma <strong>variável aleatória discreta bidimensional</strong>. A cada resultado possível <span class="math inline">\((x_i, y_j)\)</span> associaremos um número <span class="math inline">\(p(x_i, y_j)\)</span> representando<br>
+<span class="math inline">\(P(X = x_i,\; Y = y_j)\)</span> e satisfazendo as seguintes condições:</p>
+<ol type="1">
+<li><p><span class="math inline">\(p(x_i, y_j) \geq 0\)</span>, para todo <span class="math inline">\((x_i, y_j)\)</span>;</p></li>
+<li><p><span class="math inline">\(\displaystyle \sum_{j=1}^{\infty} \sum_{i=1}^{\infty} p(x_i, y_j) = 1\)</span></p></li>
+</ol>
+<p>. . .</p>
+<p>A função <span class="math inline">\(p\)</span> definida para todo <span class="math inline">\((x_i, y_j)\)</span> no contradomínio de <span class="math inline">\((X, Y)\)</span> é denominada <strong>função de probabilidade conjunta</strong> de <span class="math inline">\((X, Y)\)</span>.</p>
+<p>. . .</p>
+<p>O conjunto dos termos <span class="math inline">\(\{(x_i, y_j,\; p(x_i, y_j)),\; i = 1, 2, \ldots,\; j = 1, 2, \ldots\}\)</span> é denominado <strong>distribuição de probabilidade conjunta</strong> de <span class="math inline">\((X, Y)\)</span>.</p>
+</section>
+<section id="função-de-probabilidade-conjunta-1" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-probabilidade-conjunta-1">Função de Probabilidade Conjunta</h2>
+<p>Para vetores <span class="math inline">\(n\)</span>-dimensionais, a função de probabilidade conjunta é <span class="math inline">\(P(X_1 = x_1,\; X_2 = x_2,\; \ldots,\; X_n = x_n)\)</span> e satisfaz</p>
+<p><span class="math display">\[
+\sum_{x_1} \sum_{x_2} \cdots \sum_{x_n}
+P(X_1 = x_1,\; X_2 = x_2,\; \ldots,\; X_n = x_n) = 1
+\]</span></p>
+</section>
+<section id="função-de-probabilidade-conjunta-2" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-probabilidade-conjunta-2">Função de Probabilidade Conjunta</h2>
+<p><strong>Exemplo:</strong> Considere o experimento aleatório que consiste em sortear duas bolas, sem reposição, de uma urna que contém 3 bolas vermelhas (V) e 2 bolas brancas (B). Defina as seguintes variáveis aleatórias:</p>
+<ul>
+<li><p><span class="math inline">\(X\)</span>: o número de bolas brancas observadas.</p></li>
+<li><p><span class="math inline">\(Y\)</span>: a cor da segunda bola sorteada, em que <span class="math inline">\(1\)</span> se a bola for V e <span class="math inline">\(0\)</span>, se for B.</p></li>
+</ul>
+<p>. . .</p>
+<p>Temos que, o espaço amostral do experimento</p>
+<p><span class="math display">\[
+S = \{(1B, 2B), (1B, 2V), (1V, 2B), (1V, 2V)\}
+\]</span></p>
+<p>. . .</p>
+<p>Note que,</p>
+<p><span class="math display">\[X=\{0,1,2\}, \quad \text{e} \quad Y=\{0,1\}\]</span></p>
+</section>
+<section id="função-de-probabilidade-conjunta-3" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-probabilidade-conjunta-3">Função de Probabilidade Conjunta</h2>
+<p>Além disso,</p>
+<p><span class="math display">\[
+P(1B, 2B) \;=\; P(X = 2, Y = 0) = P(1B)\,P(2B \mid 1B)
+= \frac{2}{5} \times \frac{1}{4}
+= \frac{1}{10}
+\]</span></p>
+<p><span class="math display">\[
+P(1B, 2V) \;=\; P(X = 1, Y = 1) = P(1B)\,P(2V \mid 1B)
+= \frac{2}{5} \times \frac{3}{4}
+= \frac{3}{10}
+\]</span></p>
+<p><span class="math display">\[
+P(1V, 2B) \;=\; P(X = 1, Y = 0) = P(1V)\,P(2B \mid 1V)
+= \frac{3}{5} \times \frac{2}{4}
+= \frac{3}{10}
+\]</span></p>
+<p><span class="math display">\[
+P(1V, 2V) \;=\; P(X = 0, Y = 1) = P(1V)\,P(2V \mid 1V)
+= \frac{3}{5} \times \frac{2}{4}
+= \frac{3}{10}
+\]</span></p>
+</section>
+<section id="função-de-probabilidade-conjunta-4" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-probabilidade-conjunta-4">Função de Probabilidade Conjunta</h2>
+<p>Temos então, a distribuição conjunta de <span class="math inline">\((X,Y)\)</span></p>
+<p><span class="math display">\[
+\begin{array}{c|ccc}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{1}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 \\
+\hline
+\end{array}
+\]</span></p>
+</section>
+<section id="função-de-distribuição-acumulada" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-distribuição-acumulada">Função de Distribuição Acumulada</h2>
+<p>Seja <span class="math inline">\((X, Y)\)</span> uma <strong>variável aleatória bidimensional</strong>. A <strong>função de distribuição acumulada (fd)</strong> <span class="math inline">\(F\)</span> da variável aleatória bidimensional <span class="math inline">\((X, Y)\)</span> é definida por</p>
+<p><span class="math display">\[
+F(x, y) = P(X \leq x,\; Y \leq y) = \sum_{x' \le x} \sum_{y' \le y} p(x',y')
+\]</span></p>
+<p>. . .</p>
+<p>De forma análoga, para vetores <span class="math inline">\(n\)</span>-dimensionais,</p>
+<p><span class="math display">\[
+\begin{aligned}
+F(x_1, x_2, \ldots, x_n)
+&amp;=
+P(X_1 \le x_1,\; X_2 \le x_2,\; \ldots,\; X_n \le x_n) \\[6pt]
+&amp;= \sum_{x_1' \le x_1}
+\sum_{x_2' \le x_2}
+\cdots
+\sum_{x_n' \le x_n}
+P(X_1 = x_1',\; X_2 = x_2',\; \ldots,\; X_n = x_n')
+\end{aligned}
+\]</span></p>
+</section>
+<section id="função-de-distribuição-acumulada-1" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-distribuição-acumulada-1">Função de Distribuição Acumulada</h2>
+<p>Considere a distribuição conjunta <span class="math inline">\(p(x,y) = P(X = x, Y = y)\)</span> do exemplo da urna:</p>
+<p><span class="math display">\[
+\begin{array}{c|ccc}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{1}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 \\
+\hline
+\end{array}
+\]</span></p>
+</section>
+<section id="função-de-distribuição-acumulada-2" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-distribuição-acumulada-2">Função de Distribuição Acumulada</h2>
+<section id="para-y-0" class="level3">
+<h3 class="anchored" data-anchor-id="para-y-0">Para <span class="math inline">\(y = 0\)</span></h3>
+<p><span class="math display">\[\small
+\begin{aligned}
+F(0,0) &amp;= P(X \le 0, Y \le 0) = p(0,0) = 0 \\
+F(1,0) &amp;= P(X \le 1, Y \le 0) = p(0,0) + p(1,0)
+= 0 + \frac{3}{10}
+= \frac{3}{10} \\
+F(2,0) &amp;= P(X \le 2, Y \le 0) = p(0,0) + p(1,0) + p(2,0)
+= 0 + \frac{3}{10} + \frac{1}{10}
+= \frac{4}{10}
+\end{aligned}
+\]</span></p>
+</section>
+</section>
+<section id="função-de-distribuição-acumulada-3" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-distribuição-acumulada-3">Função de Distribuição Acumulada</h2>
+<section id="para-y-1" class="level3">
+<h3 class="anchored" data-anchor-id="para-y-1">Para <span class="math inline">\(y = 1\)</span></h3>
+<p><span class="math display">\[\small
+\begin{aligned}
+F(0,1) &amp;= P(X \le 0, Y \le 1) = p(0,0) + p(0,1) = 0 + \frac{3}{10} = \frac{3}{10}\\
+F(1,1) &amp;= P(X \le 1, Y \le 1) = p(0,0) + p(1,0) + p(0,1) + p(1,1) = 0 + \frac{3}{10} + \frac{3}{10} + \frac{3}{10} = \frac{9}{10} \\
+F(2,1) &amp;= P(X \le 2, Y \le 1) = p(0,0) + p(1,0) + p(2,0) + p(0,1) + p(1,1) + p(2,1) \\ &amp;= 0 + \frac{3}{10} + \frac{1}{10} + \frac{3}{10} + \frac{3}{10} + 0 =  1
+\end{aligned}
+\]</span></p>
+</section>
+</section>
+<section id="função-de-distribuição-acumulada-4" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-distribuição-acumulada-4">Função de Distribuição Acumulada</h2>
+<section id="tabela-final-dos-valores-da-fda" class="level3">
+<h3 class="anchored" data-anchor-id="tabela-final-dos-valores-da-fda">Tabela final dos valores da fda</h3>
+<p><span class="math display">\[
+\begin{array}{c|ccc}
+\hline
+y \backslash x &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{4}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{9}{10} &amp; 1 \\
+\hline
+\end{array}
+\]</span></p>
+</section>
+</section>
+<section id="função-de-distribuição-acumulada-5" class="level2">
+<h2 class="anchored" data-anchor-id="função-de-distribuição-acumulada-5">Função de Distribuição Acumulada</h2>
+<p><span class="math display">\[
+F(x,y)=P(X\le x,\;Y\le y)=
+\begin{cases}
+0, &amp; y&lt;0 \ \text{ou}\ x&lt;0,\\[6pt]
+0, &amp; 0\le y&lt;1,\; 0\le x&lt;1,\\[6pt]
+\dfrac{3}{10}, &amp; 0\le y&lt;1,\; 1\le x&lt;2,\\[6pt]
+\dfrac{2}{5}, &amp; 0\le y&lt;1,\; x\ge 2,\\[8pt]
+\dfrac{3}{10}, &amp; y\ge 1,\; 0\le x&lt;1,\\[6pt]
+\dfrac{9}{10}, &amp; y\ge 1,\; 1\le x&lt;2,\\[6pt]
+1, &amp; y\ge 1,\; x\ge 2
+\end{cases}
+\]</span></p>
+</section>
+<section id="distribuições-marginais" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-marginais">Distribuições Marginais</h2>
+<p>Seja <span class="math inline">\((X, Y)\)</span> um <strong>vetor aleatório discreto</strong> com distribuição conjunta <span class="math inline">\(p(x_i, y_j)\)</span>.</p>
+<p>. . .</p>
+<ul>
+<li>A <strong>distribuição marginal de <span class="math inline">\(X\)</span></strong> é definida como</li>
+</ul>
+<p><span class="math display">\[
+P(X = x) = \sum_y p(x, y) = \sum_y P(X = x, Y = y), \qquad \forall x
+\]</span></p>
+<p>. . .</p>
+<ul>
+<li>Analogamente, a <strong>distribuição marginal de <span class="math inline">\(Y\)</span></strong> é definida como</li>
+</ul>
+<p><span class="math display">\[
+P(Y = y) = \sum_x p(x, y) = \sum_x P(X = x, Y = y), \qquad \forall y
+\]</span></p>
+</section>
+<section id="distribuições-marginais-1" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-marginais-1">Distribuições Marginais</h2>
+<p>Em geral, se <span class="math inline">\((X_1, X_2, \ldots, X_n)\)</span> é um <strong>vetor aleatório <span class="math inline">\(n\)</span>-dimensional</strong>, então</p>
+<p><span class="math display">\[\small
+P(X_i = x_i)
+=
+\sum_{x_1} \cdots \sum_{x_{i-1}} \sum_{x_{i+1}} \cdots \sum_{x_n}
+P(X_1 = x_1, \ldots, X_{i-1} = x_{i-1}, X_{i+1} = x_{i+1}, \ldots, X_n = x_n)
+\]</span></p>
+<p>. . .</p>
+<p>No nosso exemplo,</p>
+<p><span class="math display">\[
+\begin{array}{c|ccc|c}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 &amp; P(Y=y) \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{1}{10} &amp; \dfrac{4}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 &amp; \dfrac{6}{10} \\
+\hline
+P(X=x) &amp; \dfrac{3}{10} &amp; \dfrac{6}{10} &amp; \dfrac{1}{10} &amp; 1 \\
+\hline
+\end{array}
+\]</span></p>
+</section>
+<section id="distribuições-condicionais" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-condicionais">Distribuições Condicionais</h2>
+<p>Seja <span class="math inline">\((X, Y)\)</span> um <strong>vetor aleatório discreto</strong> com distribuição conjunta <span class="math inline">\(p(x,y)\)</span>. A <strong>distribuição condicional de <span class="math inline">\(X\)</span> dado <span class="math inline">\(Y = y\)</span></strong> é definida como</p>
+<p><span class="math display">\[
+P(X = x \mid Y = y)
+=
+\frac{P(X = x,\; Y = y)}{P(Y = y)},
+\qquad \forall x
+\]</span></p>
+<p>. . .</p>
+<p>Analogamente, define-se a <strong>distribuição condicional de <span class="math inline">\(Y\)</span> dado <span class="math inline">\(X = x\)</span></strong> como</p>
+<p><span class="math display">\[
+P(Y = y \mid X = x)
+=
+\frac{P(X = x,\; Y = y)}{P(X = x)},
+\qquad \forall y
+\]</span></p>
+</section>
+<section id="distribuições-condicionais-1" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-condicionais-1">Distribuições Condicionais</h2>
+<p>Note que existe uma distribuição condicional de <span class="math inline">\(X\)</span> para cada valor <span class="math inline">\(y\)</span> e uma distribuição condicional de <span class="math inline">\(Y\)</span> para cada valor <span class="math inline">\(x\)</span>.</p>
+<p>. . .</p>
+<p>Assim, se <span class="math inline">\(X\)</span> assume <span class="math inline">\(n\)</span> valores distintos e <span class="math inline">\(Y\)</span> assume <span class="math inline">\(m\)</span> valores distintos, teremos ao todo <span class="math inline">\(n + m\)</span> <strong>distribuições condicionais</strong>.</p>
+</section>
+<section id="distribuições-condicionais-2" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-condicionais-2">Distribuições Condicionais</h2>
+<p>Voltando ao exemplo, note que temos as distribuições condicionais <span class="math inline">\(X \mid Y = 0\)</span> e <span class="math inline">\(X \mid Y = 1\)</span>. Analogamente, temos as distribuições condicionais<br>
+<span class="math inline">\(Y \mid X = 0\)</span>, <span class="math inline">\(Y \mid X = 1\)</span> e <span class="math inline">\(Y \mid X = 2\)</span>.</p>
+<p><span class="math display">\[
+\begin{array}{c|ccc|c}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 &amp; P(Y=y) \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{1}{10} &amp; \dfrac{4}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 &amp; \dfrac{6}{10} \\
+\hline
+P(X=x) &amp; \dfrac{3}{10} &amp; \dfrac{6}{10} &amp; \dfrac{1}{10} &amp; 1 \\
+\hline
+\end{array}
+\]</span></p>
+</section>
+<section id="distribuições-condicionais-3" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-condicionais-3">Distribuições Condicionais</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+\begin{aligned}
+P(X = 0 \mid Y = 0) &amp;= \frac{P(X = 0,\; Y = 0)}{P(Y = 0)} = \frac{0}{2/5} = 0 \\[6pt]
+P(X = 1 \mid Y = 0) &amp;= \frac{P(X = 1,\; Y = 0)}{P(Y = 0)} = \frac{3/10}{2/5} = \frac{3}{4} \\[6pt]
+P(X = 2 \mid Y = 0) &amp;= \frac{P(X = 2,\; Y = 0)}{P(Y = 0)} = \frac{1/10}{2/5} = \frac{1}{4}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="distribuições-condicionais-4" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-condicionais-4">Distribuições Condicionais</h2>
+<p>Analogamente, temos que</p>
+<p><span class="math display">\[
+\begin{aligned}
+P(X = 0 \mid Y = 1) &amp;= \frac{P(X = 0,\; Y = 1)}{P(Y = 1)} = \frac{3/10}{3/5} = \frac{1}{2}\\[6pt]
+P(X = 1 \mid Y = 1) &amp;= \frac{P(X = 1,\; Y = 1)}{P(Y = 1)} = \frac{3/10}{3/5} = \frac{1}{2}\\[6pt]
+P(X = 2 \mid Y = 1) &amp;= \frac{P(X = 2,\; Y = 1)}{P(Y = 1)} = 0
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional">Esperança Condicional</h2>
+<p>Para cada uma das distribuições condicionais, podemos calcular a respectiva <strong>esperança condicional</strong>:</p>
+<p><span class="math display">\[
+E_X(X \mid Y = y)
+=
+\sum_x x\, P(X = x \mid Y = y)
+\]</span></p>
+<p><span class="math display">\[
+E_Y(Y \mid X = x)
+=
+\sum_y y\, P(Y = y \mid X = x)
+\]</span></p>
+<p>. . .</p>
+<p><strong>Observação:</strong> Note que o subscrito <span class="math inline">\(X\)</span> indica que a variável aleatória é <span class="math inline">\(X\)</span> e, portanto, estamos calculando a média (ou esperança) dos valores que <span class="math inline">\(X\)</span> assume fixado o valor <span class="math inline">\(y\)</span>. Observação análoga vale para o subscrito <span class="math inline">\(Y\)</span>.</p>
+</section>
+<section id="esperança-condicional-1" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-1">Esperança Condicional</h2>
+<p>Voltando ao exemplo, vamos encontrar <span class="math inline">\(E(X \mid Y = 0)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X \mid Y = 0)
+&amp;= \sum_x x\,P(X=x\mid Y=0) \\
+&amp;= 0\cdot 0 + 1\cdot \frac{3}{4} + 2\cdot \frac{1}{4} \\
+&amp;= \frac{3}{4} + \frac{2}{4} \\
+&amp;= \frac{5}{4}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-2" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-2">Esperança Condicional</h2>
+<p>De forma análoga, vamos encontrar <span class="math inline">\(E(X \mid Y = 1)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X \mid Y = 1)
+&amp;= \sum_x x\,P(X=x\mid Y=1) \\
+&amp;= 0\cdot \frac{1}{2} + 1\cdot \frac{1}{2} + 2\cdot 0 \\
+&amp;= \frac{1}{2}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-3" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-3">Esperança Condicional</h2>
+<p>Analogamente,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y\mid X=0) &amp;= \sum_y y\,P(Y=y\mid X=0) = 0\cdot 0 + 1\cdot 1 = 1\\[6pt]
+E(Y\mid X=1) &amp;= \sum_y y\,P(Y=y\mid X=1) = 0\cdot \frac{1}{2} + 1\cdot \frac{1}{2} = \frac{1}{2} \\[6pt]
+E(Y\mid X=2) &amp;= \sum_y y\,P(Y=y\mid X=2) = 0\cdot 1 + 1\cdot 0 = 0
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-4" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-4">Esperança Condicional</h2>
+<p>Note que, para cada valor <span class="math inline">\(y\)</span> de <span class="math inline">\(Y\)</span>, temos um valor diferente de <span class="math inline">\(E(X \mid Y = y)\)</span> e, para cada valor <span class="math inline">\(x\)</span> de <span class="math inline">\(X\)</span>, temos um valor diferente de <span class="math inline">\(E(Y \mid X = x)\)</span>.</p>
+<p>. . .</p>
+<p>Sendo assim, podemos definir uma <strong>função</strong> <span class="math inline">\(g\)</span> que associa, a cada valor <span class="math inline">\(y\)</span> de <span class="math inline">\(Y\)</span>, o valor <span class="math inline">\(g(y) = E(X \mid Y = y)\)</span> e outra <strong>função</strong> <span class="math inline">\(h\)</span> que associa, a cada valor <span class="math inline">\(x\)</span> de <span class="math inline">\(X\)</span>, o valor <span class="math inline">\(h(x) = E(Y \mid X = x)\)</span>, ou seja,</p>
+<p><span class="math display">\[
+g:\; y \longmapsto g(y) = E(X \mid Y = y)
+\]</span></p>
+<p><span class="math display">\[
+h:\; x \longmapsto h(x) = E(Y \mid X = x)
+\]</span></p>
+</section>
+<section id="esperança-condicional-5" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-5">Esperança Condicional</h2>
+<p>Como <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são variáveis aleatórias, resulta que essas funções definem novas variáveis aleatórias <span class="math inline">\(g(Y)\)</span> e <span class="math inline">\(h(X)\)</span> e suas esperanças podem também ser calculadas.</p>
+<p>. . .</p>
+<p>Vamos denotar essas esperanças por <span class="math inline">\(E_Y[g(Y)]\)</span> e <span class="math inline">\(E_X[h(X)]\)</span>, que são calculadas como</p>
+<p><span class="math display">\[
+E_Y[g(Y)] = \sum_y g(y)\,P(Y = y)
+\]</span></p>
+<p><span class="math display">\[
+E_X[h(X)] = \sum_x h(x)\,P(X = x)
+\]</span></p>
+</section>
+<section id="esperança-condicional-6" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-6">Esperança Condicional</h2>
+<p>Assim, usando a definição da esperança condicional, temos que</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+E_Y[g(Y)]
+&amp;= \sum_y g(y)\,P(Y = y) = \sum_y E_X(X \mid Y = y)\,P(Y = y) \\
+&amp;= \sum_y \sum_x x\,P(X = x \mid Y = y)\,P(Y = y) \\
+&amp;= \sum_y \sum_x x\,\frac{P(X = x,\; Y = y)}{P(Y = y)}\,P(Y = y) \\
+&amp;= \sum_y \sum_x x\,P(X = x,\; Y = y) \\
+&amp;= \sum_x x \sum_y P(X = x,\; Y = y) \\
+&amp;= \sum_x x\,P(X = x) = E(X)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-7" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-7">Esperança Condicional</h2>
+<p>De forma análoga, temos que</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+E_X[h(X)] &amp;= \sum_x h(x)\,P(X = x) = \sum_x E_Y(Y \mid X = x)\,P(X = x) \\
+&amp;= \sum_x \sum_y y\,P(Y = y \mid X = x)\,P(X = x) \\
+&amp;= \sum_x \sum_y y\,\frac{P(X = x,\; Y = y)}{P(X = x)}\,P(X = x) \\
+&amp;= \sum_x \sum_y y\,P(X = x,\; Y = y) \\
+&amp;= \sum_y y \sum_x P(X = x,\; Y = y) \\
+&amp;= \sum_y y\,P(Y = y) = E(Y)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-8" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-8">Esperança Condicional</h2>
+<p><strong>Resumindo:</strong></p>
+<p><span class="math display">\[
+E_Y\!\left[E_X(X \mid Y)\right] = E(X)
+\]</span></p>
+<p><span class="math display">\[
+E_X\!\left[E_Y(Y \mid X)\right] = E(Y)
+\]</span></p>
+<p>Esse resultado estabelece a <strong>Lei da Esperança Total</strong>.</p>
+</section>
+<section id="esperança-condicional-9" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-9">Esperança Condicional</h2>
+<p>No exemplo, <span class="math inline">\(Y\in\{0,1\}\)</span> e <span class="math inline">\(X\in\{0,1,2\}\)</span>, com distribuição conjunta:</p>
+<p><span class="math display">\[
+\begin{array}{c|ccc}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{1}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 \\
+\hline
+\end{array}
+\]</span></p>
+</section>
+<section id="esperança-condicional-10" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-10">Esperança Condicional</h2>
+<p>As marginais são: <span class="math display">\[
+\begin{aligned}
+P(Y=0)&amp;=\frac{4}{10},\quad P(Y=1)=\frac{6}{10},\\
+P(X=0)&amp;=\frac{3}{10},\quad P(X=1)=\frac{6}{10},\quad P(X=2)=\frac{1}{10}
+\end{aligned}
+\]</span></p>
+<p>E as esperanças condicionais já calculadas: <span class="math display">\[
+\begin{aligned}
+E(X\mid Y=0)&amp;=\frac{5}{4},\qquad E(X\mid Y=1)=\frac{1}{2},\\
+E(Y\mid X=0)&amp;=1,\qquad E(Y\mid X=1)=\frac{1}{2},\qquad E(Y\mid X=2)=0
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-11" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-11">Esperança Condicional</h2>
+<p>Primeiro, calculemos <span class="math inline">\(E(X)\)</span> diretamente pela marginal de <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X)
+&amp;= \sum_x x\,P(X=x) \\
+&amp;= 0\cdot\frac{3}{10} + 1\cdot\frac{6}{10} + 2\cdot\frac{1}{10} \\
+&amp;= \frac{6}{10} + \frac{2}{10} \\
+&amp;= \frac{8}{10} = \frac{4}{5}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-12" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-12">Esperança Condicional</h2>
+<p>Agora, calculemos <span class="math inline">\(E_Y[E(X\mid Y)]\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+E_Y[E(X\mid Y)]
+&amp;= \sum_y E(X\mid Y=y)\,P(Y=y) \\
+&amp;= E(X\mid Y=0)\,P(Y=0) + E(X\mid Y=1)\,P(Y=1) \\
+&amp;= \frac{5}{4}\cdot\frac{4}{10} + \frac{1}{2}\cdot\frac{6}{10} \\
+&amp;= \frac{5}{10} + \frac{3}{10} \\
+&amp;= \frac{8}{10} = \frac{4}{5}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-13" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-13">Esperança Condicional</h2>
+<p>Logo, <span class="math display">\[
+E_Y[E_X(X\mid Y)] = \frac{4}{5} = E(X)
+\]</span></p>
+<p>. . .</p>
+<p>De forma análoga,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y)
+&amp;= \sum_y y\,P(Y=y) \\
+&amp;= 0\cdot\frac{4}{10} + 1\cdot\frac{6}{10} \\
+&amp;= \frac{6}{10} = \frac{3}{5}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-14" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-14">Esperança Condicional</h2>
+<p>e,</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+E_X[E(Y\mid X)]
+&amp;= \sum_x E(Y\mid X=x)\,P(X=x) \\
+&amp;= E(Y\mid X=0)\,P(X=0) + E(Y\mid X=1)\,P(X=1) + E(Y\mid X=2)\,P(X=2) \\
+&amp;= 1\cdot\frac{3}{10} + \frac{1}{2}\cdot\frac{6}{10} + 0\cdot\frac{1}{10} \\
+&amp;= \frac{3}{10} + \frac{3}{10} \\
+&amp;= \frac{6}{10} = \frac{3}{5}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="esperança-condicional-15" class="level2">
+<h2 class="anchored" data-anchor-id="esperança-condicional-15">Esperança Condicional</h2>
+<p>Logo, <span class="math display">\[
+E_X[E_Y(Y\mid X)] = \frac{3}{5} = E(Y)
+\]</span></p>
+</section>
+<section id="independência-de-variáveis-aleatórias" class="level2">
+<h2 class="anchored" data-anchor-id="independência-de-variáveis-aleatórias">Independência de Variáveis Aleatórias</h2>
+<p><strong>Definição (Independência de variáveis aleatórias discretas):</strong> Seja <span class="math inline">\((X, Y)\)</span> um <strong>vetor aleatório discreto</strong> com distribuição conjunta <span class="math inline">\(p(x,y) = P(X = x,\; Y = y)\)</span>. Dizemos que <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são <strong>independentes</strong> se, e somente se,</p>
+<p><span class="math display">\[
+P(X = x,\; Y = y) = P(X = x)\,P(Y = y),
+\qquad \forall x,\; y
+\]</span></p>
+<p>Ou seja, a <strong>distribuição conjunta</strong> é o <strong>produto das distribuições marginais</strong>.</p>
+<p>De forma análoga, para vetores <span class="math inline">\(n\)</span>-dimensionais,</p>
+<p><span class="math display">\[
+P(X_1 = x_1,\; X_2 = x_2,\; \ldots,\; X_n = x_n)
+=
+\prod_{i=1}^n P(X_i = x_i),
+\qquad \forall\, x_1, x_2, \ldots, x_n
+\]</span></p>
+</section>
+<section id="independência-de-variáveis-aleatórias-1" class="level2">
+<h2 class="anchored" data-anchor-id="independência-de-variáveis-aleatórias-1">Independência de Variáveis Aleatórias</h2>
+<p>Lembrando a distribuição conjunta do exemplo:</p>
+<p><span class="math display">\[
+\begin{array}{c|ccc}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{1}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 \\
+\hline
+\end{array}
+\]</span></p>
+<p>As marginais são:</p>
+<p><span class="math display">\[
+P(X=0)=\frac{3}{10},\quad P(X=1)=\frac{6}{10},\quad P(X=2)=\frac{1}{10}
+\]</span></p>
+</section>
+<section id="independência-de-variáveis-aleatórias-2" class="level2">
+<h2 class="anchored" data-anchor-id="independência-de-variáveis-aleatórias-2">Independência de Variáveis Aleatórias</h2>
+<p>e,</p>
+<p><span class="math display">\[
+P(Y=0)=\frac{4}{10},\quad P(Y=1)=\frac{6}{10}
+\]</span></p>
+<p>Pela definição, <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> seriam independentes se, para todo <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>,</p>
+<p><span class="math display">\[
+P(X=x,Y=y)=P(X=x)\,P(Y=y)
+\]</span> mas,</p>
+<p>Considere o par <span class="math inline">\((x,y)=(0,0)\)</span>:</p>
+</section>
+<section id="independência-de-variáveis-aleatórias-3" class="level2">
+<h2 class="anchored" data-anchor-id="independência-de-variáveis-aleatórias-3">Independência de Variáveis Aleatórias</h2>
+<ul>
+<li><p>Da tabela conjunta: <span class="math display">\[
+P(X=0, Y=0)=0
+\]</span></p></li>
+<li><p>Pelo produto das marginais: <span class="math display">\[
+P(X=0)\,P(Y=0)=\frac{3}{10}\cdot\frac{4}{10}=\frac{12}{100}=\frac{3}{25}
+\]</span></p></li>
+</ul>
+<p>Como <span class="math display">\[
+P(X=0, Y=0)\neq P(X=0)\,P(Y=0),
+\]</span> concluímos que <strong><span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> não são independentes</strong>.</p>
+</section>
+<section id="funções-de-variáveis-aleatórias" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias">Funções de Variáveis Aleatórias</h2>
+<p><strong>TEOREMA 01:</strong> Seja <span class="math inline">\((X, Y)\)</span> um <strong>vetor aleatório discreto</strong> com função de probabilidade conjunta <span class="math inline">\(P(X = x,\; Y = y)\)</span>. Seja <span class="math inline">\(h:\mathbb{R}^2 \to \mathbb{R}\)</span> uma função real tal que cada par <span class="math inline">\((x, y)\)</span> é levado a <span class="math inline">\(h(x, y)\)</span>. Então,</p>
+<p><span class="math display">\[
+E[h(X,Y)] = \sum_i \sum_j h(x_i, y_j)\,P(X = x_i,\; Y = y_j)
+\]</span></p>
+<p>De forma análoga, para vetores <span class="math inline">\(n\)</span>-dimensionais,</p>
+<p><span class="math display">\[
+E\!\left[h(X_1,\ldots,X_n)\right]
+=
+\sum_{x_1}\sum_{x_2}\cdots\sum_{x_n}
+h(x_1,\ldots,x_n)\,p(x_1,\ldots,x_n)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-1" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-1">Funções de Variáveis Aleatórias</h2>
+<p><strong>TEOREMA 02:</strong> Seja <span class="math inline">\((X, Y)\)</span> um <strong>vetor aleatório discreto</strong> com função de probabilidade conjunta <span class="math inline">\(P(X = x,\; Y = y)\)</span>. Seja <span class="math inline">\(h:\mathbb{R}^2 \to \mathbb{R}\)</span> uma função real tal que <span class="math inline">\(h(x, y) = x + y\)</span>. Então,</p>
+<p><span class="math display">\[
+E(X + Y) = E(X) + E(Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-2" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-2">Funções de Variáveis Aleatórias</h2>
+<p>Usando o teorema anterior, temos que</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X + Y)
+&amp;= \sum_x \sum_y (x + y)\,P(X = x,\; Y = y) \\
+&amp;= \sum_x \sum_y x\,P(X = x,\; Y = y)
+   + \sum_x \sum_y y\,P(X = x,\; Y = y) \\
+&amp;= \sum_x x \sum_y P(X = x,\; Y = y)
+   + \sum_y y \sum_x P(X = x,\; Y = y) \\
+&amp;= \sum_x x\,P(X = x)
+   + \sum_y y\,P(Y = y) \\
+&amp;= E(X) + E(Y)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-3" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-3">Funções de Variáveis Aleatórias</h2>
+<p>No exemplo da urna, a distribuição conjunta é:</p>
+<p><span class="math display">\[
+\begin{array}{c|ccc}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+0 &amp; 0 &amp; \dfrac{3}{10} &amp; \dfrac{1}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 \\
+\hline
+\end{array}
+\]</span></p>
+<p>As marginais são: <span class="math display">\[
+P(X=0)=\frac{3}{10},\quad P(X=1)=\frac{6}{10},\quad P(X=2)=\frac{1}{10}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-4" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-4">Funções de Variáveis Aleatórias</h2>
+<p>e,</p>
+<p><span class="math display">\[
+P(Y=0)=\frac{4}{10},\quad P(Y=1)=\frac{6}{10}
+\]</span></p>
+<p>. . .</p>
+<p>Temos então,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X)
+&amp;= \sum_x x\,P(X=x) \\
+&amp;= 0\cdot\frac{3}{10} + 1\cdot\frac{6}{10} + 2\cdot\frac{1}{10} \\
+&amp;= \frac{6}{10} + \frac{2}{10} = \frac{8}{10}=\frac{4}{5}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-5" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-5">Funções de Variáveis Aleatórias</h2>
+<p>e,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y)
+&amp;= \sum_y y\,P(Y=y) \\
+&amp;= 0\cdot\frac{4}{10} + 1\cdot\frac{6}{10} = \frac{6}{10}=\frac{3}{5}
+\end{aligned}
+\]</span></p>
+<p>. . .</p>
+<p>Logo,</p>
+<p><span class="math display">\[
+E(X)+E(Y)=\frac{4}{5}+\frac{3}{5}=\frac{7}{5}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-6" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-6">Funções de Variáveis Aleatórias</h2>
+<p>Note que, como <span class="math inline">\(E(X+Y)=\sum_{x,y} (x+y)\,P(X=x,Y=y)\)</span>, temos:</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+E(X+Y)
+&amp;= (1+0)\cdot\frac{3}{10}
++ (2+0)\cdot\frac{1}{10}
++ (0+1)\cdot\frac{3}{10}
++ (1+1)\cdot\frac{3}{10} \\
+&amp;= 1\cdot\frac{3}{10}
++ 2\cdot\frac{1}{10}
++ 1\cdot\frac{3}{10}
++ 2\cdot\frac{3}{10} \\
+&amp;= \frac{3}{10}+\frac{2}{10}+\frac{3}{10}+\frac{6}{10} \\
+&amp;= \frac{14}{10}=\frac{7}{5}
+\end{aligned}
+\]</span></p>
+<p>Portanto, de acordo com Teorema 02,</p>
+<p><span class="math display">\[\small
+E(X+Y)=\frac{7}{5}=E(X)+E(Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-7" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-7">Funções de Variáveis Aleatórias</h2>
+<p>Usando definições e propriedades da esperança e da variância, vamos estudar a <strong>variância da soma de duas variáveis aleatórias</strong>.</p>
+<p>. . .</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(X+Y)
+&amp;= E\,\left[(X+Y)-E(X+Y)\right]^2 \\
+&amp;= E\,\left[X+Y-E(X)-E(Y)\right]^2 \\
+&amp;= E\,\left[(X-E(X))+(Y-E(Y))\right]^2 \\
+&amp;= E\,\left[(X-E(X))^2\right] + E\,\left[(Y-E(Y))^2\right] + 2E\,\left[(X-E(X))(Y-E(Y))\right] \\
+&amp;= \operatorname{Var}(X) + \operatorname{Var}(Y)
++ 2E\,\left[(X-E(X))(Y-E(Y))\right]
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-8" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-8">Funções de Variáveis Aleatórias</h2>
+<p>Observe que, na variância da soma, aparece um termo envolvendo a <strong>esperança do produto dos desvios em torno das médias</strong>. Esse termo define a <strong>covariância</strong> de duas variáveis aleatórias. Note ainda, que as variáveis <span class="math display">\[
+X' = X - E(X) \quad \text{e} \quad Y' = Y - E(Y)
+\]</span> são variáveis aleatórias ambas com média zero, isto é,</p>
+<p><span class="math display">\[
+E(X') = E(Y') = 0
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-9" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-9">Funções de Variáveis Aleatórias</h2>
+<p><strong>Definição (Covariância):</strong> A <strong>covariância</strong> entre duas variáveis aleatórias <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> é definida por</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X,Y)
+=
+E\!\left[(X - E(X))(Y - E(Y))\right]
+\]</span></p>
+<p>. . .</p>
+<p>Substituindo essa definição na expressão da variância da soma de duas variáveis aleatórias, obtém-se o seguinte resultado.</p>
+<p><strong>Resultado 01:</strong> A variância da soma de duas variáveis aleatórias é dada por</p>
+<p><span class="math display">\[
+\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y) + 2\,\operatorname{Cov}(X,Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-10" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-10">Funções de Variáveis Aleatórias</h2>
+<p>Uma forma alternativa de cálculo da covariância resulta de</p>
+<p><span class="math display">\[
+\begin{aligned}
+E[(X - E(X))(Y - E(Y))]
+&amp;= E[XY - X E(Y) - Y E(X) + E(X)E(Y)] \\
+&amp;= E(XY) - E[X E(Y)] - E[Y E(X)] + E(X)E(Y) \\
+&amp;= E(XY) - E(Y)E(X) - E(X)E(Y) + E(X)E(Y) \\
+&amp;= E(XY) - E(X)E(Y)
+\end{aligned}
+\]</span></p>
+<p>Aqui usamos que <span class="math inline">\(E(kX) = kE(X)\)</span> e também que <span class="math inline">\(E(k) = k\)</span>. Logo,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X,Y) = E(XY) - E(X)E(Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-11" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-11">Funções de Variáveis Aleatórias</h2>
+<section id="propriedades-da-covariância" class="level3">
+<h3 class="anchored" data-anchor-id="propriedades-da-covariância">Propriedades da covariância</h3>
+<ol type="1">
+<li><strong><span class="math inline">\(\operatorname{Cov}(aX + b,\; cY + d) = ac\,\operatorname{Cov}(X,Y)\)</span></strong></li>
+</ol>
+<p>De fato,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Cov}(aX + b,\; cY + d)
+&amp;= E\!\left[(aX + b - E(aX + b))(cY + d - E(cY + d))\right] \\
+&amp;= E\!\left[(aX + b - aE(X) - b)(cY + d - cE(Y) - d)\right] \\
+&amp;= E\!\left[a(X - E(X))\,c(Y - E(Y))\right] \\
+&amp;= ac\,E\!\left[(X - E(X))(Y - E(Y))\right] \\
+&amp;= ac\,\operatorname{Cov}(X,Y)
+\end{aligned}
+\]</span></p>
+</section>
+</section>
+<section id="funções-de-variáveis-aleatórias-12" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-12">Funções de Variáveis Aleatórias</h2>
+<section id="propriedades-da-covariância-1" class="level3">
+<h3 class="anchored" data-anchor-id="propriedades-da-covariância-1">Propriedades da covariância</h3>
+<ol start="2" type="1">
+<li><strong><span class="math inline">\(\operatorname{Cov}(X + Y,\; Z + W)
+= \operatorname{Cov}(X,Z) + \operatorname{Cov}(X,W) + \operatorname{Cov}(Y,Z) + \operatorname{Cov}(Y,W)\)</span></strong></li>
+</ol>
+<p>De fato,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Cov}(X + Y,\; Z + W)
+&amp;= E\!\left[(X + Y)(Z + W)\right] - E(X + Y)\,E(Z + W) \\
+&amp;= E(XZ + XW + YZ + YW)
+   - [E(X) + E(Y)][E(Z) + E(W)] \\
+&amp;= E(XZ) + E(XW) + E(YZ) + E(YW) \\
+&amp;\quad - E(X)E(Z) - E(X)E(W) - E(Y)E(Z) - E(Y)E(W) \\
+&amp;= [E(XZ) - E(X)E(Z)]
++ [E(XW) - E(X)E(W)] \\
+&amp;\quad + [E(YZ) - E(Y)E(Z)]
++ [E(YW) - E(Y)E(W)] \\
+&amp;= \operatorname{Cov}(X,Z)
++ \operatorname{Cov}(X,W)
++ \operatorname{Cov}(Y,Z)
++ \operatorname{Cov}(Y,W)
+\end{aligned}
+\]</span></p>
+</section>
+</section>
+<section id="funções-de-variáveis-aleatórias-13" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-13">Funções de Variáveis Aleatórias</h2>
+<section id="propriedades-da-covariância-2" class="level3">
+<h3 class="anchored" data-anchor-id="propriedades-da-covariância-2">Propriedades da covariância</h3>
+<ol start="3" type="1">
+<li><strong><span class="math display">\[\operatorname{Var}(X - Y)=\operatorname{Var}(X)+\operatorname{Var}(Y)-2\,\operatorname{Cov}(X,Y)\]</span></strong></li>
+</ol>
+<p>De fato,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(X - Y)
+&amp;= \operatorname{Var}[X + (-Y)] \\
+&amp;= \operatorname{Var}(X) + \operatorname{Var}(Y)
+   + 2\,\operatorname{Cov}(X,\,-Y) \\
+&amp;= \operatorname{Var}(X) + \operatorname{Var}(Y)
+   + 2(-1)\operatorname{Cov}(X,Y) \\
+&amp;= \operatorname{Var}(X) + \operatorname{Var}(Y)
+   - 2\,\operatorname{Cov}(X,Y)
+\end{aligned}
+\]</span></p>
+</section>
+</section>
+<section id="funções-de-variáveis-aleatórias-14" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-14">Funções de Variáveis Aleatórias</h2>
+<p><strong>Resultado 02:</strong> Se <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são variáveis aleatórias <strong>independentes</strong>, então <span class="math display">\[
+\operatorname{Cov}(X,Y) = 0
+\]</span></p>
+<p>De fato,</p>
+<p>Se <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são independentes, então</p>
+<p><span class="math display">\[P(X = x,\; Y = y) = P(X = x)\,P(Y = y)\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-15" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-15">Funções de Variáveis Aleatórias</h2>
+<p>Nesse caso,</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+E(XY)
+&amp;= \sum_x \sum_y xy\,P(X = x,\; Y = y) \\
+&amp;= \sum_x \sum_y xy\,P(X = x)\,P(Y = y) \\
+&amp;= \left(\sum_x x\,P(X = x)\right)
+   \left(\sum_y y\,P(Y = y)\right) \\
+&amp;= E(X)\,E(Y)
+\end{aligned}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[\small
+\operatorname{Cov}(X,Y)
+= E(XY) - E(X)E(Y)
+= 0
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-16" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-16">Funções de Variáveis Aleatórias</h2>
+<p>Note que a recíproca desse resultado <strong>não é verdadeira</strong>, isto é, <strong>covariância nula não significa independência</strong> entre as variáveis.</p>
+</section>
+<section id="funções-de-variáveis-aleatórias-17" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-17">Funções de Variáveis Aleatórias</h2>
+<p>Como exemplo, consideremos a seguinte distribuição de probabilidade conjunta:</p>
+<p><strong>Distribuição conjunta <span class="math inline">\(p(x,y)\)</span> (com marginais)</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(Y\backslash X\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(0\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(1\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(2\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(p_Y(y)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{3}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{3}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{2}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{2}{5}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{1}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{1}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{2}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{1}{5}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{4}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{1}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{3}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{2}{5}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(p_X(x)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{2}{5}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{1}{4}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\dfrac{7}{20}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="funções-de-variáveis-aleatórias-18" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-18">Funções de Variáveis Aleatórias</h2>
+<p>Para essa distribuição, temos:</p>
+<p><span class="math display">\[
+E(X)
+= 0\cdot\frac{2}{5} + 1\cdot\frac{1}{4} + 2\cdot\frac{7}{20}
+= \frac{19}{20}
+\]</span></p>
+<p><span class="math display">\[
+E(Y)
+= 1\cdot\frac{2}{5} + 2\cdot\frac{1}{5} + 3\cdot\frac{2}{5}
+= 2
+\]</span></p>
+<p>. . .</p>
+<p>Além disso,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(XY)
+&amp;= 0\cdot1\cdot\frac{3}{20}
++ 1\cdot1\cdot\frac{3}{20}
++ 2\cdot1\cdot\frac{2}{20} + 0\cdot2\cdot\frac{1}{20}
++ 1\cdot2\cdot\frac{1}{20}\\
+&amp;+ 2\cdot2\cdot\frac{2}{20} + 0\cdot3\cdot\frac{4}{20}
++ 1\cdot3\cdot\frac{1}{20}
++ 2\cdot3\cdot\frac{3}{20} = \frac{38}{20}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-19" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-19">Funções de Variáveis Aleatórias</h2>
+<p>Observa-se que</p>
+<p><span class="math display">\[
+E(XY) = \frac{38}{20}
+= \frac{19}{20}\cdot 2
+= E(X)\,E(Y)
+\]</span></p>
+<p>. . .</p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X,Y)
+= E(XY) - E(X)E(Y)
+= 0
+\]</span></p>
+<p>. . .</p>
+<p>Entretanto, <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> <strong>não são independentes</strong>, pois, por exemplo,</p>
+<p><span class="math display">\[
+P(X = 0,\; Y = 1)
+= \frac{3}{20}
+\neq
+P(X = 0)\,P(Y = 1)
+= \frac{2}{5}\cdot\frac{2}{5}
+= \frac{8}{20}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-20" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-20">Funções de Variáveis Aleatórias</h2>
+<p><strong>Definição (Coeficiente de Correlação):</strong> O <strong>coeficiente de correlação</strong> entre duas variáveis aleatórias <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> é a covariância entre as variáveis padronizadas, ou seja,</p>
+<p><span class="math display">\[
+\operatorname{Cor}(X,Y)
+=
+E\!\left(\frac{X - E(X)}{\sigma_X} \right)\, \left(\frac{Y - E(Y)}{\sigma_Y}\right)
+=
+\frac{\operatorname{Cov}(X,Y)}{\sigma_X\,\sigma_Y},
+\]</span></p>
+<p>onde <span class="math inline">\(\sigma_X\)</span> e <span class="math inline">\(\sigma_Y\)</span> são os <strong>desvios-padrão</strong> de <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span>, respectivamente.</p>
+<p>. . .</p>
+<p><strong>TEOREMA 03:</strong> Dadas duas variáveis aleatórias <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> com esperança, variância e covariância finitas, então</p>
+<p><span class="math display">\[
+-1 \le \operatorname{Cor}(X,Y) \le 1
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-21" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-21">Funções de Variáveis Aleatórias</h2>
+<p><strong>Demonstração</strong></p>
+<p>Sejam</p>
+<p><span class="math display">\[
+X^* = \frac{X - E(X)}{\sigma_X},
+\qquad
+Y^* = \frac{Y - E(Y)}{\sigma_Y},
+\]</span></p>
+<p>as variáveis aleatórias <strong>padronizadas</strong>.</p>
+<p>Das propriedades de esperança e variância, sabemos que</p>
+<p><span class="math display">\[
+E(X^*) = E(Y^*) = 0
+\quad \text{e} \quad
+\operatorname{Var}(X^*) = \operatorname{Var}(Y^*) = 1
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-22" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-22">Funções de Variáveis Aleatórias</h2>
+<p>Sabemos também que a variância de qualquer variável aleatória é não-negativa. Em particular,</p>
+<p><span class="math display">\[
+\operatorname{Var}(X^* + Y^*) \ge 0
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(X^* + Y^*)
+&amp;= \operatorname{Var}(X^*) + \operatorname{Var}(Y^*)
+   + 2\,\operatorname{Cov}(X^*,Y^*) \\
+&amp;= 1 + 1 + 2\,\operatorname{Cov}(X^*,Y^*) \\
+&amp;\ge 0,
+\end{aligned}
+\]</span></p>
+<p>o que implica</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X^*,Y^*) \ge -1
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-23" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-23">Funções de Variáveis Aleatórias</h2>
+<p>Analogamente, considerando</p>
+<p><span class="math display">\[
+\operatorname{Var}(X^* - Y^*) \ge 0,
+\]</span></p>
+<p>temos</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(X^* - Y^*)
+&amp;= \operatorname{Var}(X^*) + \operatorname{Var}(Y^*)
+   - 2\,\operatorname{Cov}(X^*,Y^*) \\
+&amp;= 1 + 1 - 2\,\operatorname{Cov}(X^*,Y^*) \\
+&amp;\ge 0,
+\end{aligned}
+\]</span></p>
+<p>o que implica</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X^*,Y^*) \le 1
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-24" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-24">Funções de Variáveis Aleatórias</h2>
+<p>Portanto,</p>
+<p><span class="math display">\[
+-1 \le \operatorname{Cov}(X^*,Y^*) \le 1
+\]</span></p>
+<p>Mas, por definição,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X^*,Y^*) = \operatorname{Cor}(X,Y),
+\]</span></p>
+<p>o que completa a demonstração.</p>
+</section>
+<section id="funções-de-variáveis-aleatórias-25" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-25">Funções de Variáveis Aleatórias</h2>
+<p>Voltando ao exemplo da urna,</p>
+<p><span class="math display">\[\small
+\begin{array}{c|ccc|c}
+\hline
+Y \backslash X &amp; 0 &amp; 1 &amp; 2 &amp; P(Y=y) \\
+\hline
+0 &amp; 0 &amp; \dfrac{1}{10} &amp; \dfrac{3}{10} &amp; \dfrac{4}{10} \\
+1 &amp; \dfrac{3}{10} &amp; \dfrac{3}{10} &amp; 0 &amp; \dfrac{6}{10} \\
+\hline
+P(X=x) &amp; \dfrac{3}{10} &amp; \dfrac{4}{10} &amp; \dfrac{3}{10} &amp; 1 \\
+\hline
+\end{array}
+\]</span></p>
+<p>. . .</p>
+<p>Temos,</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+E(X)
+&amp;= 0\cdot\frac{3}{10} + 1\cdot\frac{4}{10} + 2\cdot\frac{3}{10} = \frac{4}{10} + \frac{6}{10} = 1
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-26" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-26">Funções de Variáveis Aleatórias</h2>
+<p>Da mesma forma,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y)
+&amp;= 0\cdot\frac{4}{10} + 1\cdot\frac{6}{10} = \frac{6}{10} = \frac{3}{5}
+\end{aligned}
+\]</span></p>
+<p>. . .</p>
+<p>Somando apenas os termos não nulos da distribuição conjunta:</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(XY) = (1\cdot 1)\frac{3}{10} = \frac{3}{10}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-27" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-27">Funções de Variáveis Aleatórias</h2>
+<p>Usando a fórmula alternativa da covariância,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X,Y) = E(XY) - E(X)E(Y),
+\]</span></p>
+<p>temos</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Cov}(X,Y)
+&amp;= \frac{3}{10} - 1\cdot\frac{3}{5} \\
+&amp;= \frac{3}{10} - \frac{6}{10} \\
+&amp;= -\frac{3}{10}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-28" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-28">Funções de Variáveis Aleatórias</h2>
+<ul>
+<li>Variância de <span class="math inline">\(X\)</span></li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+E(X^2)
+&amp;= 0^2\cdot\frac{3}{10}
++ 1^2\cdot\frac{4}{10}
++ 2^2\cdot\frac{3}{10} \\
+&amp;= \frac{4}{10} + \frac{12}{10}
+= \frac{16}{10}
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\operatorname{Var}(X)
+= E(X^2) - [E(X)]^2
+= \frac{16}{10} - 1
+= \frac{6}{10}
+= \frac{3}{5}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-29" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-29">Funções de Variáveis Aleatórias</h2>
+<ul>
+<li>Variância de <span class="math inline">\(Y\)</span></li>
+</ul>
+<p>Como <span class="math inline">\(Y\)</span> é Bernoulli com <span class="math inline">\(P(Y=1)=\frac{3}{5}\)</span>,</p>
+<p><span class="math display">\[
+\operatorname{Var}(Y)
+= \frac{3}{5}\left(1-\frac{3}{5}\right)
+= \frac{6}{25}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\sigma_X = \sqrt{\frac{3}{5}},
+\qquad
+\sigma_Y = \sqrt{\frac{6}{25}}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-30" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-30">Funções de Variáveis Aleatórias</h2>
+<p>Por definição,</p>
+<p><span class="math display">\[
+\operatorname{Cor}(X,Y)
+=
+\frac{\operatorname{Cov}(X,Y)}{\sigma_X\,\sigma_Y}
+\]</span></p>
+<p>Substituindo os valores obtidos,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Cor}(X,Y)&amp;= \frac{-\frac{3}{10}}{\sqrt{\frac{3}{5}}\;\sqrt{\frac{6}{25}}}= -\frac{3}{10}\sqrt{\frac{125}{18}}
+\end{aligned}
+\]</span></p>
+<p>Numericamente,</p>
+<p><span class="math display">\[
+\operatorname{Cor}(X,Y)\approx -0,79
+\]</span></p>
+</section>
+</section>
+<section id="caso-contínuo" class="level1">
+<h1>Caso contínuo</h1>
+<section id="variáveis-aleatórias-multidimensionais-contínuas" class="level2">
+<h2 class="anchored" data-anchor-id="variáveis-aleatórias-multidimensionais-contínuas">Variáveis Aleatórias Multidimensionais Contínuas</h2>
+<p><strong>Definição:</strong> <span class="math inline">\((X, Y)\)</span> será uma <strong>variável aleatória contínua bidimensional</strong> se <span class="math inline">\((X, Y)\)</span> puder tomar todos os valores em algum conjunto não numerável do plano euclidiano. Por exemplo, se <span class="math inline">\((X, Y)\)</span> tomar todos os valores em uma região <span class="math inline">\(R\)</span>, poderemos dizer que <span class="math inline">\((X, Y)\)</span> é uma <strong>variável aleatória bidimensional contínua</strong>.</p>
+<p>. . .</p>
+<p>Podemos pensar que um <strong>vetor aleatório bidimensional contínuo</strong> é um vetor formado por <strong>duas variáveis aleatórias contínuas</strong> definidas no <strong>mesmo espaço amostral</strong>.</p>
+<p>. . .</p>
+<p>De forma análoga, podemos definir um <strong>vetor aleatório <span class="math inline">\(n\)</span>−dimensional contínuo</strong> como sendo um vetor formado por <strong><span class="math inline">\(n\)</span> variáveis aleatórias contínuas</strong> definidas no <strong>mesmo espaço amostral</strong>.</p>
+</section>
+<section id="função-densidade-conjunta" class="level2">
+<h2 class="anchored" data-anchor-id="função-densidade-conjunta">Função Densidade Conjunta</h2>
+<p>Seja <span class="math inline">\((X,Y)\)</span> um <strong>vetor aleatório contínuo</strong>. A função densidade conjunta <span class="math inline">\(f(x,y)\)</span> é uma função que satisfaz as seguintes propriedades:</p>
+<ol type="1">
+<li><p><span class="math inline">\(f(x,y) \ge 0\)</span></p></li>
+<li><p><span class="math inline">\(\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} f(x,y)\,dx\,dy = 1\)</span></p></li>
+<li><p><span class="math inline">\(P(a \le X \le b,\; c \le Y \le d)=\int_c^d \int_a^b f(x,y)\,dx\,dy\)</span></p></li>
+</ol>
+</section>
+<section id="função-densidade-conjunta-1" class="level2">
+<h2 class="anchored" data-anchor-id="função-densidade-conjunta-1">Função Densidade Conjunta</h2>
+<p><strong>Exemplo:</strong> Suponhamos que a variável aleatória contínua bidimensional <span class="math inline">\((X,Y)\)</span> tenha fdp conjunta dada por</p>
+<p><span class="math display">\[
+f(x,y)=
+\begin{cases}
+x^2 + \dfrac{xy}{3}, &amp; 0 \le x \le 1,\;\; 0 \le y \le 2, \\[8pt]
+0, &amp; \text{caso contrário}.
+\end{cases}
+\]</span></p>
+</section>
+<section id="função-densidade-conjunta-2" class="level2">
+<h2 class="anchored" data-anchor-id="função-densidade-conjunta-2">Função Densidade Conjunta</h2>
+<ol type="1">
+<li>Vamos verificar que a função densidade conjunta <span class="math inline">\(f(x,y)\)</span> satisfaz a condição de não-negatividade:</li>
+</ol>
+<p>Na região limitada por <span class="math inline">\(0 \le x \le 1 \, \text{e} \, 0 \le y \le 2\)</span>, temos:</p>
+<ul>
+<li><span class="math inline">\(x^2 \ge 0\)</span>, pois o quadrado de qualquer número real é não-negativo;</li>
+<li><span class="math inline">\(\dfrac{xy}{3} \ge 0\)</span>, pois <span class="math inline">\(x \ge 0\)</span> e <span class="math inline">\(y \ge 0\)</span>.</li>
+</ul>
+<p>Logo, a soma desses termos também é não-negativa:</p>
+<p><span class="math display">\[
+x^2 + \frac{xy}{3} \ge 0
+\]</span></p>
+</section>
+<section id="função-densidade-conjunta-3" class="level2">
+<h2 class="anchored" data-anchor-id="função-densidade-conjunta-3">Função Densidade Conjunta</h2>
+<ol start="2" type="1">
+<li>Verifiquemos se a função densidade conjunta satisfaz <span class="math inline">\(\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} f(x,y)\,dx\,dy = 1\)</span></li>
+</ol>
+<p><span class="math display">\[\small
+\begin{aligned}
+\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} f(x,y)\,dx\,dy
+&amp;= \int_0^2 \int_0^1 \left(x^2 + \frac{xy}{3}\right)\,dx\,dy \\[6pt]
+&amp;= \int_0^2 \left[\int_0^1 x^2\,dx + \int_0^1 \frac{xy}{3}\,dx \right] dy \\[6pt]
+&amp;= \int_0^2 \left[\frac{x^3}{3}\Bigg|_0^1 + \frac{yx^2}{6}\Bigg|_0^1\right] dy = \int_0^2 \left(\frac{1}{3} + \frac{y}{6}\right) dy \\[6pt]
+&amp;= \int_0^2 \frac{1}{3} dy + \int_0^2 \frac{y}{6} dy = \frac{y}{3}\Bigg|_0^2 + \frac{y^2}{12}\Bigg|_0^2 = \frac23+\frac13 = 1
+\end{aligned}
+\]</span></p>
+</section>
+<section id="densidades-marginais" class="level2">
+<h2 class="anchored" data-anchor-id="densidades-marginais">Densidades Marginais</h2>
+<p>As <strong>densidades marginais</strong> de <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são definidas por:</p>
+<p><span class="math display">\[
+f_X(x) = \int f(x,y)\,dy,
+\]</span></p>
+<p><span class="math display">\[
+f_Y(y) = \int f(x,y)\,dx
+\]</span></p>
+</section>
+<section id="densidades-marginais-1" class="level2">
+<h2 class="anchored" data-anchor-id="densidades-marginais-1">Densidades Marginais</h2>
+<p>Voltando ao exemplo, vamos encontrar as densidades marginais <span class="math inline">\(f_X(x)\)</span> e <span class="math inline">\(f_Y(y)\)</span>:</p>
+<ul>
+<li><strong>Densidade marginal de <span class="math inline">\(X\)</span>:</strong> Por definição,</li>
+</ul>
+<p><span class="math display">\[
+f_X(x)=\int_{-\infty}^{+\infty} f(x,y)\,dy
+\]</span></p>
+<p>Como o suporte em <span class="math inline">\(y\)</span> é <span class="math inline">\(0\le y\le 2\)</span>, para <span class="math inline">\(0\le x\le 1\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+f_X(x)
+&amp;=\int_0^2 \left(x^2+\frac{xy}{3}\right)\,dy =\int_0^2 x^2\,dy+\int_0^2 \frac{xy}{3}\,dy \\
+&amp;= x^2(2-0) + \frac{x}{3}\left[\frac{y^2}{2}\right]_0^2 = 2x^2 + \frac{x}{3}\cdot\frac{4}{2} = 2x^2 + \frac{2x}{3}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="densidades-marginais-2" class="level2">
+<h2 class="anchored" data-anchor-id="densidades-marginais-2">Densidades Marginais</h2>
+<p>Logo,</p>
+<p><span class="math display">\[
+f_X(x)=
+\begin{cases}
+2x^2 + \dfrac{2x}{3}, &amp; 0 \le x \le 1,\\[8pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+<p>. . .</p>
+<ul>
+<li><strong>Densidade marginal de <span class="math inline">\(Y\)</span>:</strong> De forma análoga,</li>
+</ul>
+<p><span class="math display">\[
+f_Y(y)=\int_{-\infty}^{+\infty} f(x,y)\,dx
+\]</span></p>
+<p>Como o suporte em <span class="math inline">\(x\)</span> é <span class="math inline">\(0\le x\le 1\)</span>, para <span class="math inline">\(0\le y\le 2\)</span>:</p>
+</section>
+<section id="densidades-marginais-3" class="level2">
+<h2 class="anchored" data-anchor-id="densidades-marginais-3">Densidades Marginais</h2>
+<p><span class="math display">\[
+\begin{aligned}
+f_Y(y)
+&amp;=\int_0^1 \left(x^2+\frac{xy}{3}\right)\,dx =\int_0^1 x^2\,dx+\int_0^1 \frac{xy}{3}\,dx \\
+&amp;=\left[\frac{x^3}{3}\right]_0^1 + \frac{y}{3}\left[\frac{x^2}{2}\right]_0^1 =\frac{1}{3} + \frac{y}{3}\cdot\frac{1}{2} =\frac{1}{3}+\frac{y}{6}
+\end{aligned}
+\]</span></p>
+<p>. . .</p>
+<p>Logo,</p>
+<p><span class="math display">\[
+f_Y(y)=
+\begin{cases}
+\dfrac{1}{3}+\dfrac{y}{6}, &amp; 0 \le y \le 2,\\[8pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais">Distribuições e Esperanças Condicionais</h2>
+<p>Por definição, temos que</p>
+<p><span class="math display">\[
+f_{X\mid Y}(x\mid y)=\frac{f(x,y)}{f_Y(y)}
+\]</span></p>
+<p>Note que, para cada <span class="math inline">\(y\)</span> temos uma densidade condicional diferente. Analogamente,</p>
+<p><span class="math display">\[
+f_{Y\mid X}(y\mid x)=\frac{f(x,y)}{f_X(x)}
+\]</span></p>
+<p>e para cada <span class="math inline">\(x\)</span> temos uma densidade condicional diferente.</p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-1" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-1">Distribuições e Esperanças Condicionais</h2>
+<p>No nosso exemplo, a densidade conjunta é</p>
+<p><span class="math display">\[
+f(x,y)=
+\begin{cases}
+x^2+\dfrac{xy}{3}, &amp; 0\le x\le 1,\; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+<p>e as marginais são,</p>
+<p><span class="math display">\[
+f_X(x)=
+\begin{cases}
+2x^2+\dfrac{2x}{3}, &amp; 0\le x\le 1,\\[6pt]
+0, &amp; \text{caso contrário},
+\end{cases}
+\qquad
+f_Y(y)=
+\begin{cases}
+\dfrac{1}{3}+\dfrac{y}{6}=\dfrac{y+2}{6}, &amp; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-2" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-2">Distribuições e Esperanças Condicionais</h2>
+<p>Assim, para <span class="math inline">\(0\le y\le 2\)</span>,</p>
+<p><span class="math display">\[
+f_{X\mid Y}(x\mid y)=\frac{f(x,y)}{f_Y(y)}
+=\frac{x^2+\frac{xy}{3}}{\frac{y+2}{6}}
+=\frac{6x^2+2xy}{y+2}
+=\frac{2x(3x+y)}{y+2}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+f_{X\mid Y}(x\mid y)=
+\begin{cases}
+\dfrac{2x(3x+y)}{y+2}, &amp; 0\le x\le 1,\; 0\le y\le 2,\\[10pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-3" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-3">Distribuições e Esperanças Condicionais</h2>
+<p>De forma análoga, para <span class="math inline">\(0&lt;x\le 1\)</span> (note que <span class="math inline">\(f_X(0)=0\)</span>, mas isso ocorre com probabilidade zero),</p>
+<p><span class="math display">\[
+f_{Y\mid X}(y\mid x)=\frac{f(x,y)}{f_X(x)}
+=\frac{x^2+\frac{xy}{3}}{2x^2+\frac{2x}{3}}
+=\frac{x+\frac{y}{3}}{2x+\frac{2}{3}}
+=\frac{3x+y}{6x+2}
+=\frac{3x+y}{2(3x+1)}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+f_{Y\mid X}(y\mid x)=
+\begin{cases}
+\dfrac{3x+y}{2(3x+1)}, &amp; 0\le y\le 2,\; 0&lt;x\le 1,\\[10pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-4" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-4">Distribuições e Esperanças Condicionais</h2>
+<p>Como no caso discreto, definem-se as seguintes esperanças condicionais:</p>
+<p><span class="math display">\[
+E_X(X\mid Y=y)=\int x\,f_{X\mid Y}(x\mid y)\,dx
+=\int x\,\frac{f(x,y)}{f_Y(y)}\,dx
+\]</span></p>
+<p><span class="math display">\[
+E_Y(Y\mid X=x)=\int y\,f_{Y\mid X}(y\mid x)\,dy
+=\int y\,\frac{f(x,y)}{f_X(x)}\,dy
+\]</span></p>
+<p>. . .</p>
+<p>Note que, assim como no caso discreto, para cada valor <span class="math inline">\(y\)</span> de <span class="math inline">\(Y\)</span>, temos um valor diferente de <span class="math inline">\(E_X(X\mid Y=y)\)</span>, e para cada valor <span class="math inline">\(x\)</span> de <span class="math inline">\(X\)</span>, temos um valor diferente de <span class="math inline">\(E_Y(Y\mid X=x)\)</span>.</p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-5" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-5">Distribuições e Esperanças Condicionais</h2>
+<p>Logo, aqui também podemos definir uma função <span class="math inline">\(g\)</span> que associa a cada valor de <span class="math inline">\(Y\)</span> o valor <span class="math inline">\(E_X(X\mid Y=y)\)</span> e outra função <span class="math inline">\(h\)</span> que associa a cada valor de <span class="math inline">\(X\)</span> o valor <span class="math inline">\(E_Y(Y\mid X=x)\)</span>, ou seja,</p>
+<p><span class="math display">\[
+\begin{aligned}
+g:\; &amp; y \longmapsto g(y) = E_X(X\mid Y=y), \\
+h:\; &amp; x \longmapsto h(x) = E_Y(Y\mid X=x)
+\end{aligned}
+\]</span></p>
+<p>Como <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são variáveis aleatórias, essas funções definem novas variáveis aleatórias <span class="math inline">\(g(Y)\)</span> e <span class="math inline">\(h(X)\)</span>, cujas esperanças são calculadas como</p>
+<p><span class="math display">\[
+\begin{aligned}
+E_Y[g(Y)] &amp;= \int g(y)\,f_Y(y)\,dy \\
+E_X[h(X)] &amp;= \int h(x)\,f_X(x)\,dx
+\end{aligned}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-6" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-6">Distribuições e Esperanças Condicionais</h2>
+<p>Usando a definição de esperança condicional, temos que</p>
+<p><span class="math display">\[
+\begin{aligned}
+E_Y[g(Y)]
+&amp;= \int g(y)\,f_Y(y)\,dy = \int E_X(X\mid Y=y)\,f_Y(y)\,dy \\
+&amp;= \int \left(\int x\,\frac{f(x,y)}{f_Y(y)}\,dx\right) f_Y(y)\,dy = \int\!\!\int x\,f(x,y)\,dx\,dy \\
+&amp;= \int x \left(\int f(x,y)\,dy\right) dx = \int x\,f_X(x)\,dx = E(X)
+\end{aligned}
+\]</span></p>
+<p>Ou seja,</p>
+<p><span class="math display">\[
+E_Y\!\left[E_X(X\mid Y)\right] = E(X)
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-7" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-7">Distribuições e Esperanças Condicionais</h2>
+<p>Analogamente,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E_X[h(X)]
+&amp;= \int h(x)\,f_X(x)\,dx = \int E_Y(Y\mid X=x)\,f_X(x)\,dx \\
+&amp;= \int \left(\int y\,\frac{f(x,y)}{f_X(x)}\,dy\right) f_X(x)\,dx = \int\!\!\int y\,f(x,y)\,dy\,dx \\
+&amp;= \int y \left(\int f(x,y)\,dx\right) dy = \int y\,f_Y(y)\,dy = E(Y)
+\end{aligned}
+\]</span></p>
+<p>Ou seja,</p>
+<p><span class="math display">\[
+E_X\!\left[E_Y(Y\mid X)\right] = E(Y)
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-8" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-8">Distribuições e Esperanças Condicionais</h2>
+<p>Esses resultados correspondem à <strong>Lei da Esperança Total</strong> no caso contínuo, em perfeita analogia com o caso discreto.</p>
+<p>. . .</p>
+<p>Para nosso exemplo, temos:</p>
+<p><span class="math display">\[
+f(x,y)=
+\begin{cases}
+x^2+\dfrac{xy}{3}, &amp; 0\le x\le 1,\; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+<p>e as marginais são</p>
+<p><span class="math display">\[\small
+f_X(x)=
+\begin{cases}
+2x^2+\dfrac{2x}{3}, &amp; 0\le x\le 1,\\[6pt]
+0, &amp; \text{caso contrário},
+\end{cases}
+\qquad
+f_Y(y)=
+\begin{cases}
+\dfrac{1}{3}+\dfrac{y}{6}=\dfrac{y+2}{6}, &amp; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-9" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-9">Distribuições e Esperanças Condicionais</h2>
+<ul>
+<li>Vamos verificar que <span class="math inline">\(E_Y[E(X\mid Y)] = E(X)\)</span>:</li>
+</ul>
+<p>A densidade condicional é</p>
+<p><span class="math display">\[\small
+f_{X\mid Y}(x\mid y)
+=\frac{f(x,y)}{f_Y(y)}
+=\frac{x^2+\frac{xy}{3}}{\frac{y+2}{6}}
+=\frac{6x^2+2xy}{y+2},
+\qquad 0\le x\le 1,\; 0\le y\le 2
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+g(y)=E(X\mid Y=y)
+&amp;=\int_0^1 x\,f_{X\mid Y}(x\mid y)\,dx =\int_0^1 x\,\frac{6x^2+2xy}{y+2}\,dx =\frac{1}{y+2}\int_0^1 (6x^3+2y x^2)\,dx \\ &amp;=\frac{1}{y+2}\left(6\cdot\frac{1}{4}+2y\cdot\frac{1}{3}\right) =\frac{1}{y+2}\left(\frac{3}{2}+\frac{2y}{3}\right) =\frac{4y+9}{6(y+2)},
+\qquad 0\le y\le 2
+\end{aligned}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-10" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-10">Distribuições e Esperanças Condicionais</h2>
+<p>De forma que,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E_Y[g(Y)]
+&amp;=\int_0^2 g(y)\,f_Y(y)\,dy =\int_0^2 \frac{4y+9}{6(y+2)}\cdot\frac{y+2}{6}\,dy \\
+&amp;=\int_0^2 \frac{4y+9}{36}\,dy =\frac{1}{36}\left[2y^2+9y\right]_0^2 =\frac{1}{36}(8+18) =\frac{26}{36} =\frac{13}{18}
+\end{aligned}
+\]</span></p>
+<p>. . .</p>
+<p>Note que</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X)
+&amp;=\int_0^1 x\,f_X(x)\,dx
+=\int_0^1 x\left(2x^2+\frac{2x}{3}\right)\,dx =\int_0^1 \left(2x^3+\frac{2}{3}x^2\right)\,dx \\
+&amp;=2\cdot\frac{1}{4}+\frac{2}{3}\cdot\frac{1}{3}
+=\frac{1}{2}+\frac{2}{9}
+=\frac{13}{18}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-11" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-11">Distribuições e Esperanças Condicionais</h2>
+<p>Portanto,</p>
+<p><span class="math display">\[
+E_Y[E(X\mid Y)] = \frac{13}{18} = E(X)
+\]</span></p>
+<p>. . .</p>
+<ul>
+<li>Verificar <span class="math inline">\(E_X[E(Y\mid X)] = E(Y)\)</span></li>
+</ul>
+<p>A densidade condicional é</p>
+<p><span class="math display">\[
+f_{Y\mid X}(y\mid x)
+=\frac{f(x,y)}{f_X(x)}
+=\frac{x^2+\frac{xy}{3}}{2x^2+\frac{2x}{3}}
+=\frac{3x+y}{2(3x+1)},
+\qquad 0\le y\le 2,\; 0&lt;x\le 1
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-12" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-12">Distribuições e Esperanças Condicionais</h2>
+<p>Logo,</p>
+<p><span class="math display">\[
+\begin{aligned}
+h(x)=E(Y\mid X=x)
+&amp;=\int_0^2 y\,f_{Y\mid X}(y\mid x)\,dy =\int_0^2 y\,\frac{3x+y}{2(3x+1)}\,dy \\
+&amp;=\frac{1}{2(3x+1)}\int_0^2 (3xy+y^2)\,dy =\frac{1}{2(3x+1)}
+\left(3x\cdot\frac{y^2}{2}\Big|_0^2+\frac{y^3}{3}\Big|_0^2\right) \\
+&amp;=\frac{1}{2(3x+1)}\left(3x\cdot 2+\frac{8}{3}\right) =\frac{9x+4}{3(3x+1)},
+\qquad 0&lt;x\le 1
+\end{aligned}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-13" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-13">Distribuições e Esperanças Condicionais</h2>
+<p>Note que <span class="math display">\[
+f_X(x)=2x^2+\frac{2x}{3}=\frac{2x(3x+1)}{3}
+\]</span></p>
+<p>Então,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E_X[h(X)]
+&amp;=\int_0^1 h(x)\,f_X(x)\,dx =\int_0^1 \frac{9x+4}{3(3x+1)}\cdot\frac{2x(3x+1)}{3}\,dx \\
+&amp;=\int_0^1 \frac{2x(9x+4)}{9}\,dx =\frac{1}{9}\int_0^1 (18x^2+8x)\,dx \\
+&amp;=\frac{1}{9}\left(18\cdot\frac{1}{3}+8\cdot\frac{1}{2}\right) =\frac{1}{9}(6+4) = \frac{10}{9}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="distribuições-e-esperanças-condicionais-14" class="level2">
+<h2 class="anchored" data-anchor-id="distribuições-e-esperanças-condicionais-14">Distribuições e Esperanças Condicionais</h2>
+<p>Além disso,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y)
+&amp;=\int_0^2 y\,f_Y(y)\,dy
+=\int_0^2 y\cdot\frac{y+2}{6}\,dy \\
+&amp;=\frac{1}{6}\int_0^2 (y^2+2y)\,dy \\
+&amp;=\frac{1}{6}\left(\frac{8}{3}+4\right)
+=\frac{1}{6}\cdot\frac{20}{3}
+=\frac{10}{9}
+\end{aligned}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+E_X[E(Y\mid X)] = \frac{10}{9} = E(Y)
+\]</span></p>
+</section>
+<section id="independência-de-variáveis-aleatórias-contínuas" class="level2">
+<h2 class="anchored" data-anchor-id="independência-de-variáveis-aleatórias-contínuas">Independência de Variáveis Aleatórias Contínuas</h2>
+<p>A definição de independência de variáveis aleatórias contínuas é análoga à definição no caso discreto.</p>
+<p>. . .</p>
+<p><strong>Definição (Independência de variáveis aleatórias contínuas):</strong> Seja <span class="math inline">\((X,Y)\)</span> um <strong>vetor aleatório contínuo</strong> com função densidade conjunta <span class="math inline">\(f(x,y)\)</span>. Sejam <span class="math inline">\(f_X(x)\)</span> e <span class="math inline">\(f_Y(y)\)</span> as densidades marginais de <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span>, respectivamente. Então, diz-se que <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são <strong>variáveis aleatórias independentes</strong> se</p>
+<p><span class="math display">\[
+f(x,y)=f_X(x)\,f_Y(y),
+\qquad \forall\,x,y
+\]</span></p>
+<p>Ou seja, a <strong>densidade conjunta</strong> é o <strong>produto das densidades marginais</strong> para todo par <span class="math inline">\((x,y)\)</span> no domínio de definição.</p>
+</section>
+<section id="independência-de-variáveis-aleatórias-contínuas-1" class="level2">
+<h2 class="anchored" data-anchor-id="independência-de-variáveis-aleatórias-contínuas-1">Independência de Variáveis Aleatórias Contínuas</h2>
+<p>No exemplo, a densidade conjunta é</p>
+<p><span class="math display">\[\small
+f(x,y)=
+\begin{cases}
+x^2+\dfrac{xy}{3}, &amp; 0\le x\le 1,\; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+<p>As marginais são</p>
+<p><span class="math display">\[\small
+f_X(x)=
+\begin{cases}
+2x^2+\dfrac{2x}{3}, &amp; 0\le x\le 1,\\[6pt]
+0, &amp; \text{caso contrário},
+\end{cases}
+\qquad
+f_Y(y)=
+\begin{cases}
+\dfrac{1}{3}+\dfrac{y}{6}=\dfrac{y+2}{6}, &amp; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+</section>
+<section id="independência-de-variáveis-aleatórias-contínuas-2" class="level2">
+<h2 class="anchored" data-anchor-id="independência-de-variáveis-aleatórias-contínuas-2">Independência de Variáveis Aleatórias Contínuas</h2>
+<p>Pela definição, <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> seriam independentes se</p>
+<p><span class="math display">\[
+f(x,y)=f_X(x)\,f_Y(y)\quad \text{para todo } (x,y)
+\]</span></p>
+<p>. . .</p>
+<p>Para <span class="math inline">\(0\le x\le 1\)</span> e <span class="math inline">\(0\le y\le 2\)</span>,</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+f_X(x)f_Y(y)
+&amp;=\left(2x^2+\frac{2x}{3}\right)\left(\frac{y+2}{6}\right) =\frac{y+2}{3}\left(x^2+\frac{x}{3}\right) \\[4pt] &amp;=\frac{y+2}{3}x^2+\frac{y+2}{9}x =\left(\frac{y}{3}+\frac{2}{3}\right)x^2+\left(\frac{y}{9}+\frac{2}{9}\right)x \\[4pt] &amp;\neq x^2+\dfrac{xy}{3} = f(x,y)
+\end{aligned}
+\]</span></p>
+<p>Assim, concluímos que <strong><span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> não são independentes</strong>.</p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Assim como no caso discreto, conhecida a densidade conjunta de <span class="math inline">\((X,Y)\)</span>, podemos ter interesse em estudar a densidade de uma variável aleatória definida como uma função <span class="math inline">\(h(X,Y)\)</span>, em que <span class="math inline">\(h\)</span> é uma função real, isto é, <span class="math inline">\(h:\mathbb{R}^2 \to \mathbb{R}\)</span>.</p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-1" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-1">Funções de Variáveis Aleatórias Contínuas</h2>
+<p><strong>TEOREMA 04:</strong> Sejam <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> variáveis aleatórias contínuas com densidade conjunta <span class="math inline">\(f(x,y)\)</span> e seja <span class="math inline">\(h:\mathbb{R}^2 \to \mathbb{R}\)</span> uma função qualquer. Então,</p>
+<p><span class="math display">\[
+E[h(X,Y)] = \int\!\!\int h(x,y)\,f(x,y)\,dx\,dy
+\]</span></p>
+<p>. . .</p>
+<p><strong>TEOREMA 05:</strong> Sejam <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> variáveis aleatórias contínuas com densidade conjunta <span class="math inline">\(f(x,y)\)</span> e seja <span class="math inline">\(h:\mathbb{R}^2 \to \mathbb{R}\)</span> uma função definida por <span class="math inline">\(h(X,Y)=aX+bY\)</span>, com <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span> números reais quaisquer. Então,</p>
+<p><span class="math display">\[
+E[h(X,Y)] = a\,E(X) + b\,E(Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-2" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-2">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>No nosso exemplo, a densidade conjunta é</p>
+<p><span class="math display">\[
+f(x,y)=
+\begin{cases}
+x^2+\dfrac{xy}{3}, &amp; 0\le x\le 1,\; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+<p>. . .</p>
+<p>Pelo Teorema 05, para a combinação linear <span class="math display">\[
+h(X,Y)=aX+bY,
+\]</span> vale <span class="math display">\[
+E[h(X,Y)] = aE(X)+bE(Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-3" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-3">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Temos que a marginal de <span class="math inline">\(X\)</span> é <span class="math display">\[
+f_X(x)=2x^2+\frac{2x}{3}, \qquad 0\le x\le 1
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X)
+&amp;=\int_0^1 x\,f_X(x)\,dx =\int_0^1 x\left(2x^2+\frac{2x}{3}\right)\,dx \\
+&amp;=\int_0^1 \left(2x^3+\frac{2}{3}x^2\right)\,dx =2\cdot\frac{1}{4}+\frac{2}{3}\cdot\frac{1}{3} \\
+&amp;=\frac{1}{2}+\frac{2}{9}
+=\frac{13}{18}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-4" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-4">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>A marginal de <span class="math inline">\(Y\)</span> é <span class="math display">\[
+f_Y(y)=\frac{1}{3}+\frac{y}{6}=\frac{y+2}{6}, \qquad 0\le y\le 2
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(Y)
+&amp;=\int_0^2 y\,f_Y(y)\,dy =\int_0^2 y\left(\frac{y+2}{6}\right)\,dy \\
+&amp;=\frac{1}{6}\int_0^2 (y^2+2y)\,dy =\frac{1}{6}\left(\frac{8}{3}+4\right) \\
+&amp;=\frac{1}{6}\cdot\frac{20}{3} =\frac{10}{9}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-5" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-5">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Escolhendo, por exemplo, <span class="math display">\[
+a=2 \quad \text{e} \quad b=-3,
+\]</span> temos <span class="math display">\[
+h(X,Y)=2X-3Y
+\]</span></p>
+<p>Pelo Teorema 05,</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(2X-3Y)
+&amp;=2E(X)-3E(Y) =2\cdot\frac{13}{18}-3\cdot\frac{10}{9} \\
+&amp;=\frac{13}{9}-\frac{30}{9} = -\frac{17}{9}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-6" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-6">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Pelo Teorema 04,</p>
+<p><span class="math display">\[
+E(2X-3Y)=\int_0^2\int_0^1 (2x-3y)\left(x^2+\frac{xy}{3}\right)\,dx\,dy
+\]</span></p>
+<p>. . .</p>
+<p>Temos que,</p>
+<p><span class="math display">\[
+\begin{aligned}
+(2x-3y)\left(x^2+\frac{xy}{3}\right)
+&amp;= (2x)x^2 + (2x)\frac{xy}{3} - (3y)x^2 - (3y)\frac{xy}{3} \\
+&amp;= 2x^3 + \frac{2}{3}x^2y - 3x^2y - xy^2 \\
+&amp;= 2x^3 - \frac{7}{3}x^2y - xy^2
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-7" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-7">Funções de Variáveis Aleatórias Contínuas</h2>
+<ul>
+<li>Integral interna em <span class="math inline">\(x\)</span> (de <span class="math inline">\(0\)</span> a <span class="math inline">\(1\)</span>)</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{0}^{1}\left(2x^3 - \frac{7}{3}x^2y - xy^2\right)\,dx
+&amp;= \int_{0}^{1}2x^3\,dx \;-\;\frac{7}{3}y\int_{0}^{1}x^2\,dx \;-\;y^2\int_{0}^{1}x\,dx \\
+&amp;= 2\cdot\frac{1}{4} \;-\;\frac{7}{3}y\cdot\frac{1}{3}\;-\;y^2\cdot\frac{1}{2} \\
+&amp;= \frac{1}{2} - \frac{7}{9}y - \frac{1}{2}y^2
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-8" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-8">Funções de Variáveis Aleatórias Contínuas</h2>
+<ul>
+<li>Integral externa em <span class="math inline">\(y\)</span> (de <span class="math inline">\(0\)</span> a <span class="math inline">\(2\)</span>)</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{0}^{2}\left(\frac{1}{2} - \frac{7}{9}y - \frac{1}{2}y^2\right)\,dy
+&amp;= \int_{0}^{2}\frac{1}{2}\,dy \;-\;\frac{7}{9}\int_{0}^{2}y\,dy \;-\;\frac{1}{2}\int_{0}^{2}y^2\,dy \\
+&amp;= \frac{1}{2}\cdot 2 \;-\;\frac{7}{9}\cdot\frac{2^2}{2} \;-\;\frac{1}{2}\cdot\frac{2^3}{3} \\
+&amp;= 1 - \frac{14}{9} - \frac{4}{3} = 1 - \frac{14}{9} - \frac{12}{9} = -\frac{17}{9}
+\end{aligned}
+\]</span></p>
+<p>. . .</p>
+<p>Logo, verificamos numericamente a linearidade:</p>
+<p><span class="math display">\[
+E(aX+bY)=aE(X)+bE(Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-9" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-9">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>As definições de <strong>covariância</strong> e <strong>correlação</strong> são as mesmas vistas para o caso discreto. A covariância entre <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> é definida por</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X,Y)
+=
+E[(X - E(X))(Y - E(Y))]
+=
+E(XY) - E(X)E(Y)
+\]</span></p>
+<p>. . .</p>
+<p>O coeficiente de correlação é definido por</p>
+<p><span class="math display">\[
+\operatorname{Cor}(X,Y)
+=
+E\!\left(
+\frac{X - E(X)}{\sigma_X}\right)
+\left(\frac{Y - E(Y)}{\sigma_Y}
+\right)
+=
+\frac{\operatorname{Cov}(X,Y)}{\sigma_X\,\sigma_Y}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-10" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-10">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Valem todas as propriedades vistas anteriormente para o caso discreto. Em particular, se <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são variáveis aleatórias contínuas <strong>independentes</strong>, então</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X,Y)=0
+\]</span></p>
+<p>A recíproca, em geral, <strong>não é verdadeira</strong>, uma vez que a covariância mede apenas a <strong>relação linear</strong> entre as variáveis.</p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-11" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-11">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>No nosso exemplo,</p>
+<p><span class="math display">\[
+f(x,y)=
+\begin{cases}
+x^2+\dfrac{xy}{3}, &amp; 0\le x\le 1,\; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+<p>Já obtivemos</p>
+<p><span class="math display">\[
+E(X)=\frac{13}{18},
+\qquad
+E(Y)=\frac{10}{9}
+\]</span></p>
+<p>A seguir calculamos <span class="math inline">\(E(XY)\)</span>, <span class="math inline">\(\operatorname{Cov}(X,Y)\)</span> e <span class="math inline">\(\operatorname{Cor}(X,Y)\)</span>.</p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-12" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-12">Funções de Variáveis Aleatórias Contínuas</h2>
+<ul>
+<li>Cálculo de <span class="math inline">\(E(XY)\)</span></li>
+</ul>
+<p>Por definição,</p>
+<p><span class="math display">\[
+E(XY)=\int_0^2\int_0^1 xy\,f(x,y)\,dx\,dy
+=\int_0^2\int_0^1 xy\left(x^2+\frac{xy}{3}\right)\,dx\,dy
+\]</span></p>
+<p>Expandindo:</p>
+<p><span class="math display">\[
+xy\left(x^2+\frac{xy}{3}\right)=x^3y+\frac{x^2y^2}{3}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-13" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-13">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Então, <span class="math display">\[
+\begin{aligned}
+E(XY)
+&amp;=\int_0^2\int_0^1 \left(x^3y+\frac{x^2y^2}{3}\right)\,dx\,dy =\int_0^2\left[y\int_0^1 x^3\,dx+\frac{y^2}{3}\int_0^1 x^2\,dx\right]dy \\
+&amp;=\int_0^2\left[y\cdot\frac14+\frac{y^2}{3}\cdot\frac13\right]dy =\int_0^2\left(\frac{y}{4}+\frac{y^2}{9}\right)dy =\left[\frac{y^2}{8}+\frac{y^3}{27}\right]_0^2 \\
+&amp;=\frac{4}{8}+\frac{8}{27}
+=\frac12+\frac{8}{27}
+=\frac{43}{54}
+\end{aligned}
+\]</span></p>
+<p>. . .</p>
+<ul>
+<li>Covariância: Temos que</li>
+</ul>
+<p><span class="math display">\[
+\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-14" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-14">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Então,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Cov}(X,Y)
+&amp;=\frac{43}{54}-\left(\frac{13}{18}\right)\left(\frac{10}{9}\right) \\
+&amp;=\frac{43}{54}-\frac{130}{162}
+=\frac{129}{162}-\frac{130}{162}
+=-\frac{1}{162}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-15" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-15">Funções de Variáveis Aleatórias Contínuas</h2>
+<ul>
+<li>Correlação</li>
+</ul>
+<p>Para a correlação, precisamos das variâncias. Primeiro, vamos calcular <span class="math inline">\(E(X^2)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(X^2)
+&amp;=\int_0^2\int_0^1 x^2 f(x,y)\,dx\,dy =\int_0^2\int_0^1 x^2\left(x^2+\frac{xy}{3}\right)\,dx\,dy \\
+&amp;=\int_0^2\int_0^1 \left(x^4+\frac{x^3y}{3}\right)\,dx\,dy =\int_0^2\left[\frac{1}{5}+\frac{y}{3}\cdot\frac{1}{4}\right]dy \\
+&amp;=\int_0^2\left(\frac{1}{5}+\frac{y}{12}\right)dy
+=\left[\frac{y}{5}+\frac{y^2}{24}\right]_0^2 =\frac{2}{5}+\frac{4}{24}
+=\frac{2}{5}+\frac{1}{6}
+=\frac{17}{30}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-16" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-16">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Então,</p>
+<p><span class="math display">\[\small
+\operatorname{Var}(X)=E(X^2)-[E(X)]^2
+=\frac{17}{30}-\left(\frac{13}{18}\right)^2
+=\frac{73}{1620}
+\]</span></p>
+<p>. . .</p>
+<p>Agora, vamos calcular <span class="math inline">\(E(Y^2)\)</span>:</p>
+<p><span class="math display">\[\small
+\begin{aligned}
+E(Y^2)
+&amp;=\int_0^2\int_0^1 y^2 f(x,y)\,dx\,dy =\int_0^2\int_0^1 y^2\left(x^2+\frac{xy}{3}\right)\,dx\,dy \\
+&amp;=\int_0^2\left[y^2\int_0^1 x^2\,dx+\frac{y^3}{3}\int_0^1 x\,dx\right]dy =\int_0^2\left(y^2\cdot\frac13+\frac{y^3}{3}\cdot\frac12\right)dy \\
+&amp;=\int_0^2\left(\frac{y^2}{3}+\frac{y^3}{6}\right)dy =\left[\frac{y^3}{9}+\frac{y^4}{24}\right]_0^2
+=\frac{8}{9}+\frac{16}{24}
+=\frac{8}{9}+\frac{2}{3}
+=\frac{14}{9}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-17" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-17">Funções de Variáveis Aleatórias Contínuas</h2>
+<p>Então,</p>
+<p><span class="math display">\[
+\operatorname{Var}(Y)=E(Y^2)-[E(Y)]^2
+=\frac{14}{9}-\left(\frac{10}{9}\right)^2
+=\frac{26}{81}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\sigma_X=\sqrt{\frac{73}{1620}},
+\qquad
+\sigma_Y=\sqrt{\frac{26}{81}}=\frac{\sqrt{26}}{9}
+\]</span></p>
+</section>
+<section id="funções-de-variáveis-aleatórias-contínuas-18" class="level2">
+<h2 class="anchored" data-anchor-id="funções-de-variáveis-aleatórias-contínuas-18">Funções de Variáveis Aleatórias Contínuas</h2>
+<section id="coeficiente-de-correlação" class="level3">
+<h3 class="anchored" data-anchor-id="coeficiente-de-correlação">Coeficiente de correlação</h3>
+<p>Por definição,</p>
+<p><span class="math display">\[
+\operatorname{Cor}(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}
+=\frac{-\frac{1}{162}}{\sqrt{\frac{73}{1620}}\;\sqrt{\frac{26}{81}}}
+\]</span></p>
+<p>Simplificando, obtém-se</p>
+<p><span class="math display">\[
+\operatorname{Cor}(X,Y)= -\frac{\sqrt{9490}}{1898}\approx -0.0513
+\]</span></p>
+</section>
+</section>
+<section id="transformações-bivariadas" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas">Transformações Bivariadas</h2>
+<p><strong>Exemplo:</strong> Considere o nosso vetor aleatório contínuo <span class="math inline">\((X,Y)\)</span> com densidade conjunta</p>
+<p><span class="math display">\[
+f_{X,Y}(x,y)=
+\begin{cases}
+x^2+\dfrac{xy}{3}, &amp; 0\le x\le 1,\; 0\le y\le 2,\\[6pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-1" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-1">Transformações Bivariadas</h2>
+<p>Vamos definir uma transformação <strong>invertível</strong>:</p>
+<p><span class="math display">\[
+U = X,
+\qquad
+V = X+Y
+\]</span></p>
+<p>. . .</p>
+<p>Da definição,</p>
+<p><span class="math display">\[
+u=x,
+\qquad
+v=x+y
+\;\Rightarrow\;
+x=u,\quad y=v-u
+\]</span></p>
+<p>Logo, a inversa é</p>
+<p><span class="math display">\[
+(x,y) = (u,\; v-u)
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-2" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-2">Transformações Bivariadas</h2>
+<p>O Jacobiano da transformação inversa <span class="math inline">\((u,v)\mapsto(x,y)\)</span> é</p>
+<p><span class="math display">\[
+J =
+\begin{vmatrix}
+\dfrac{\partial x}{\partial u} &amp; \dfrac{\partial x}{\partial v} \\[8pt]
+\dfrac{\partial y}{\partial u} &amp; \dfrac{\partial y}{\partial v}
+\end{vmatrix}
+=
+\begin{vmatrix}
+1 &amp; 0 \\
+-1 &amp; 1
+\end{vmatrix}
+= 1
+\]</span></p>
+<p>Assim, <span class="math inline">\(|J|=1\)</span>. Como <span class="math inline">\(0\le x\le 1\)</span> e <span class="math inline">\(0\le y\le 2\)</span>, então:</p>
+<ul>
+<li><span class="math inline">\(u=x \in [0,1]\)</span>;</li>
+<li><span class="math inline">\(y=v-u \in [0,2] \Rightarrow 0\le v-u\le 2 \Rightarrow u \le v \le u+2\)</span></li>
+</ul>
+</section>
+<section id="transformações-bivariadas-3" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-3">Transformações Bivariadas</h2>
+<p>Portanto, o suporte é</p>
+<p><span class="math display">\[
+0\le u\le 1,
+\qquad
+u \le v \le u+2
+\]</span></p>
+<p>. . .</p>
+<p>Pelo método do Jacobiano,</p>
+<p><span class="math display">\[
+f_{U,V}(u,v)= f_{X,Y}(x,y)\,|J|
+= f_{X,Y}(u,\;v-u)\cdot 1,
+\]</span></p>
+<p>isto é,</p>
+<p><span class="math display">\[
+\begin{aligned}
+f_{U,V}(u,v)
+&amp;=
+u^2 + \frac{u(v-u)}{3} \\
+&amp;=
+u^2 + \frac{uv-u^2}{3}
+=
+\frac{2u^2+uv}{3}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-4" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-4">Transformações Bivariadas</h2>
+<p>Logo,</p>
+<p><span class="math display">\[
+f_{U,V}(u,v)=
+\begin{cases}
+\dfrac{2u^2+uv}{3}, &amp; 0\le u\le 1,\; u\le v\le u+2,\\[8pt]
+0, &amp; \text{caso contrário}
+\end{cases}
+\]</span></p>
+<p>. . .</p>
+<ul>
+<li>Validade da função densidade</li>
+</ul>
+<p><strong>Não-negatividade</strong></p>
+<p>No suporte da distribuição temos <span class="math display">\[
+u\ge 0 \quad \text{e} \quad v\ge u\ge 0
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-5" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-5">Transformações Bivariadas</h2>
+<p>Logo, <span class="math display">\[
+2u^2 \ge 0
+\qquad \text{e} \qquad
+uv \ge 0
+\]</span></p>
+<p>Portanto, <span class="math display">\[
+2u^2+uv \ge 0
+\quad \Rightarrow \quad
+f_{U,V}(u,v)\ge 0
+\]</span></p>
+<p>em todo o suporte.</p>
+<p>Fora do suporte, <span class="math inline">\(f_{U,V}(u,v)=0\)</span>, o que também satisfaz a condição.</p>
+</section>
+<section id="transformações-bivariadas-6" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-6">Transformações Bivariadas</h2>
+<p>Devemos verificar que</p>
+<p><span class="math display">\[
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}
+f_{U,V}(u,v)\,dv\,du = 1
+\]</span></p>
+<p>Como o suporte é <span class="math display">\[
+0\le u\le 1, \qquad u\le v\le u+2,
+\]</span> temos</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_0^1\int_u^{u+2} \frac{2u^2+uv}{3}\,dv\,du
+&amp;= \int_0^1 \frac{1}{3}
+\left[
+\int_u^{u+2} (2u^2+uv)\,dv
+\right] du
+\end{aligned}
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-7" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-7">Transformações Bivariadas</h2>
+<section id="integral-interna-em-v" class="level3">
+<h3 class="anchored" data-anchor-id="integral-interna-em-v">Integral interna em <span class="math inline">\(v\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+\int_u^{u+2} (2u^2+uv)\,dv
+&amp;= 2u^2(v)\Big|_u^{u+2}
++ u\frac{v^2}{2}\Big|_u^{u+2} \\
+&amp;= 2u^2(2) + \frac{u}{2}\left[(u+2)^2-u^2\right] \\
+&amp;= 4u^2 + \frac{u}{2}(4u+4) \\
+&amp;= 4u^2 + 2u^2 + 2u \\
+&amp;= 6u^2 + 2u
+\end{aligned}
+\]</span></p>
+</section>
+</section>
+<section id="transformações-bivariadas-8" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-8">Transformações Bivariadas</h2>
+<section id="integral-externa-em-u" class="level3">
+<h3 class="anchored" data-anchor-id="integral-externa-em-u">Integral externa em <span class="math inline">\(u\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+\int_0^1 \frac{1}{3}(6u^2+2u)\,du
+&amp;= \frac{1}{3}\int_0^1 (6u^2+2u)\,du \\
+&amp;= \frac{1}{3}\left(6\cdot\frac{1}{3}+2\cdot\frac{1}{2}\right) \\
+&amp;= \frac{1}{3}(2+1) \\
+&amp;= 1
+\end{aligned}
+\]</span></p>
+<p>Logo, <span class="math inline">\(f_{U,V}(u,v)\)</span>é uma função densidade de probabilidade conjunta válida.</p>
+</section>
+</section>
+<section id="transformações-bivariadas-9" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-9">Transformações Bivariadas</h2>
+<p><strong>Exemplo:</strong> Sejam <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> variáveis aleatórias independentes com distribuição exponencial com parâmetro igual a 1, isto é, com densidade de probabilidade <span class="math inline">\(f_X(x) = e^{-x}\)</span>, para <span class="math inline">\(x \ge 0\)</span> e igual a zero no complementar. Determinar a densidade conjunta de:</p>
+<p><span class="math display">\[U = X + Y \quad \text{e} \quad V = \frac{Y}{X}\]</span></p>
+<p>. . .</p>
+<p>Como <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são independentes, e com distribuição Exponencial<span class="math inline">\((1)\)</span>,</p>
+<p><span class="math display">\[
+f_X(x)=e^{-x}\mathbf{I}_{\{x\ge 0\}},\qquad
+f_Y(y)=e^{-y}\mathbf{I}_{\{y\ge 0\}}
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-10" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-10">Transformações Bivariadas</h2>
+<p>E a densidade conjunta é dada por</p>
+<p><span class="math display">\[
+f_{X,Y}(x,y)=e^{-(x+y)}\mathbf{I}_{\{x\ge 0,\;y\ge 0\}}
+\]</span></p>
+<p>Defina a transformação <span class="math display">\[
+U=X+Y,\qquad V=\frac{Y}{X}
+\]</span></p>
+<p>. . .</p>
+<p>De <span class="math inline">\(V=\dfrac{Y}{X}\)</span>, obtemos <span class="math inline">\(Y=VX\)</span>. Substituindo em <span class="math inline">\(U=X+Y\)</span>:</p>
+<p><span class="math display">\[
+U = X + VX = X(1+V)
+\quad\Rightarrow\quad
+X=\frac{U}{1+V}
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-11" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-11">Transformações Bivariadas</h2>
+<p>Então, <span class="math display">\[
+Y=VX = V\frac{U}{1+V}=\frac{UV}{1+V}
+\]</span></p>
+<p>Como <span class="math inline">\(X&gt;0\)</span> e <span class="math inline">\(Y&gt;0\)</span>, temos necessariamente <span class="math display">\[
+U&gt;0
+\quad\text{e}\quad
+V&gt;0
+\]</span></p>
+<p>. . .</p>
+<p>Temos então, que a inversa é <span class="math display">\[
+x(u,v)=\frac{u}{1+v},\qquad
+y(u,v)=\frac{uv}{1+v}
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-12" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-12">Transformações Bivariadas</h2>
+<p>O Jacobiano dessa transformação é:</p>
+<p><span class="math display">\[
+\begin{aligned}
+J &amp;=
+\begin{vmatrix}
+\dfrac{\partial x}{\partial u} &amp; \dfrac{\partial x}{\partial v} \\[8pt]
+\dfrac{\partial y}{\partial u} &amp; \dfrac{\partial y}{\partial v}
+\end{vmatrix}
+=
+\begin{vmatrix}
+\dfrac{1}{1+v} &amp; -\dfrac{u}{(1+v)^2} \\[10pt]
+\dfrac{v}{1+v} &amp; \dfrac{u}{(1+v)^2}
+\end{vmatrix}
+= \frac{1}{1+v}\cdot\frac{u}{(1+v)^2}
+-\left(-\frac{u}{(1+v)^2}\right)\cdot\frac{v}{1+v} \\[10pt]
+&amp;= \frac{u}{(1+v)^2}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="transformações-bivariadas-13" class="level2">
+<h2 class="anchored" data-anchor-id="transformações-bivariadas-13">Transformações Bivariadas</h2>
+<p>Pelo método do Jacobiano,</p>
+<p><span class="math display">\[
+f_{U,V}(u,v)=f_{X,Y}(x(u,v),y(u,v))\cdot |J|
+\]</span></p>
+<p>Como <span class="math inline">\(x(u,v)+y(u,v)=\dfrac{u}{1+v}+\dfrac{uv}{1+v}=u\)</span>, segue que</p>
+<p><span class="math display">\[
+f_{X,Y}(x(u,v),y(u,v))=e^{-u}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+f_{U,V}(u,v)= e^{-u}\cdot \frac{u}{(1+v)^2},
+\qquad u&gt;0,\; v&gt;0
+\]</span></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/Vetores_aleatorios/vetores_aleatorios.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

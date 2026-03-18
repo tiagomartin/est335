@@ -1,0 +1,106 @@
+---
+title: "Aulas"
+format:
+  html:
+    theme: cosmo
+    fontsize: 1.2em
+    include-in-header:
+      text: |
+        <style>
+        /* Estilos visuais EST304 sem quebrar tipografia do Quarto */
+        .aulas-list .list-group-item {
+          border-left: 4px solid #003287;
+          padding-top: 0.8rem;
+          padding-bottom: 0.8rem;
+        }
+        .aulas-list .list-group-item:hover {
+          background-color: #F2F2F2;
+        }
+        .disciplina-badge {
+          background-color: #003287;
+        }
+        .btn-est304-main {
+          background-color: #003287;
+          border-color: #003287;
+          color: #fff;
+        }
+        .btn-est304-main:hover {
+          background-color: #789CEB;
+          border-color: #789CEB;
+          color: #fff;
+        }
+        .btn-est304-outline {
+          color: #003287;
+          border-color: #003287;
+        }
+        .btn-est304-outline:hover {
+          background-color: #003287;
+          color: #fff;
+        }
+        </style>
+---
+Esta página contém aulas que serão apresentadas ao longo do semestre. Você pode baixar as aulas em uma versão PDF.
+
+::: {.list-group .aulas-list}
+
+
+
+<p style="font-size: 30px; font-weight: bold;">Parte I: Regressão</p>
+
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+  Introdução
+</span>
+
+<span>
+[Ver slides](/aulas/regressao/intro/intro.html#/title-slide){.btn .btn-est304-main .btn-sm}
+[PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm}
+</span>
+:::
+
+<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
+<!-- <span class="fw-bold"> -->
+<!--   Transformação de Variáveis Unidimensionais -->
+<!-- </span> -->
+
+<!-- <span> -->
+<!-- [Ver slides](/aulas/transformacoes/transformacoes.html#/title-slide){.btn .btn-est304-main .btn-sm} -->
+<!-- [PDF](/aulas/transformacoes/transformacoes.pdf){.btn .btn-est304-outline .btn-sm} -->
+<!-- </span> -->
+<!-- ::: -->
+
+<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
+<!-- <span class="fw-bold"> -->
+<!--   Função Geradora de Momentos -->
+<!-- </span> -->
+
+<!-- <span> -->
+<!-- [Ver slides](/aulas/func_geradora_momentos/func_gera_momentos.html#/title-slide){.btn .btn-est304-main .btn-sm} -->
+<!-- [PDF](/aulas/func_geradora_momentos/func_gera_momentos.pdf){.btn .btn-est304-outline .btn-sm} -->
+<!-- </span> -->
+<!-- ::: -->
+
+<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
+<!-- <span class="fw-bold"> -->
+<!--   Integral Dupla e Tripla -->
+<!-- </span> -->
+
+<!-- <span> -->
+<!-- [Ver slides](/aulas/integrais_dup_trip/integrais_dup_trip.html){.btn .btn-est304-main .btn-sm} -->
+<!-- [PDF](/aulas/integrais_dup_trip/integrais_dup_trip.pdf){.btn .btn-est304-outline .btn-sm} -->
+<!-- </span> -->
+<!-- ::: -->
+
+<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
+<!-- <span class="fw-bold"> -->
+<!--   Vetores Aleatórios -->
+<!-- </span> -->
+
+<!-- <span> -->
+<!-- [Ver slides](/aulas/Vetores_aleatorios/vetores_aleatorios.html){.btn .btn-est304-main .btn-sm} -->
+<!-- [PDF](/aulas/Vetores_aleatorios/vetores_aleatorios.pdf){.btn .btn-est304-outline .btn-sm} -->
+<!-- </span> -->
+<!-- ::: -->
+
+:::
