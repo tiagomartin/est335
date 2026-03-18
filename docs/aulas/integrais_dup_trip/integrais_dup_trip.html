@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Integrais Duplas e Triplas – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+<meta property="og:title" content="Integrais Duplas e Triplas – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Homepage da disciplina EST335 - Métodos Estatísticos para Machine Learning, 2026/1">
+<meta property="og:image" content="http://professortp.com.br/est335/images/repres_int_dupla.png">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Integrais Duplas e Triplas</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#introdu%C3%A7%C3%A3o" id="toc-introdução" class="nav-link active" data-scroll-target="#introdu%C3%A7%C3%A3o">Introdução</a></li>
+  <li><a href="#integrais-duplas" id="toc-integrais-duplas" class="nav-link" data-scroll-target="#integrais-duplas">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-1" id="toc-integrais-duplas-1" class="nav-link" data-scroll-target="#integrais-duplas-1">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-2" id="toc-integrais-duplas-2" class="nav-link" data-scroll-target="#integrais-duplas-2">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-3" id="toc-integrais-duplas-3" class="nav-link" data-scroll-target="#integrais-duplas-3">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-4" id="toc-integrais-duplas-4" class="nav-link" data-scroll-target="#integrais-duplas-4">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-5" id="toc-integrais-duplas-5" class="nav-link" data-scroll-target="#integrais-duplas-5">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-6" id="toc-integrais-duplas-6" class="nav-link" data-scroll-target="#integrais-duplas-6">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-7" id="toc-integrais-duplas-7" class="nav-link" data-scroll-target="#integrais-duplas-7">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-8" id="toc-integrais-duplas-8" class="nav-link" data-scroll-target="#integrais-duplas-8">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-9" id="toc-integrais-duplas-9" class="nav-link" data-scroll-target="#integrais-duplas-9">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-10" id="toc-integrais-duplas-10" class="nav-link" data-scroll-target="#integrais-duplas-10">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-11" id="toc-integrais-duplas-11" class="nav-link" data-scroll-target="#integrais-duplas-11">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-12" id="toc-integrais-duplas-12" class="nav-link" data-scroll-target="#integrais-duplas-12">Integrais Duplas</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais" id="toc-integrais-duplas-em-regiões-gerais" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#regi%C3%B5es-gerais-no-plano" id="toc-regiões-gerais-no-plano" class="nav-link" data-scroll-target="#regi%C3%B5es-gerais-no-plano">Regiões Gerais no Plano</a></li>
+  <li><a href="#regi%C3%B5es-gerais-no-plano-1" id="toc-regiões-gerais-no-plano-1" class="nav-link" data-scroll-target="#regi%C3%B5es-gerais-no-plano-1">Regiões Gerais no Plano</a></li>
+  <li>
+<a href="#regi%C3%B5es-do-tipo-i-regi%C3%B5es-x" id="toc-regiões-do-tipo-i-regiões-x" class="nav-link" data-scroll-target="#regi%C3%B5es-do-tipo-i-regi%C3%B5es-x">Regiões do Tipo I (Regiões <span class="math inline">\(x\)</span>)</a>
+  <ul class="collapse">
+<li><a href="#interpreta%C3%A7%C3%A3o-geom%C3%A9trica" id="toc-interpretação-geométrica" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-geom%C3%A9trica">Interpretação geométrica</a></li>
+  </ul>
+</li>
+  <li><a href="#exemplo-regi%C3%A3o-do-tipo-i" id="toc-exemplo-região-do-tipo-i" class="nav-link" data-scroll-target="#exemplo-regi%C3%A3o-do-tipo-i">Exemplo: Região do Tipo I</a></li>
+  <li><a href="#exemplo-regi%C3%A3o-do-tipo-i-1" id="toc-exemplo-região-do-tipo-i-1" class="nav-link" data-scroll-target="#exemplo-regi%C3%A3o-do-tipo-i-1">Exemplo: Região do Tipo I</a></li>
+  <li>
+<a href="#regi%C3%B5es-do-tipo-ii-regi%C3%B5es-y" id="toc-regiões-do-tipo-ii-regiões-y" class="nav-link" data-scroll-target="#regi%C3%B5es-do-tipo-ii-regi%C3%B5es-y">Regiões do Tipo II (Regiões <span class="math inline">\(y\)</span>)</a>
+  <ul class="collapse">
+<li><a href="#interpreta%C3%A7%C3%A3o-geom%C3%A9trica-1" id="toc-interpretação-geométrica-1" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-geom%C3%A9trica-1">Interpretação geométrica</a></li>
+  </ul>
+</li>
+  <li><a href="#exemplo-regi%C3%A3o-do-tipo-ii" id="toc-exemplo-região-do-tipo-ii" class="nav-link" data-scroll-target="#exemplo-regi%C3%A3o-do-tipo-ii">Exemplo: Região do Tipo II</a></li>
+  <li><a href="#exemplo-regi%C3%A3o-do-tipo-ii-1" id="toc-exemplo-região-do-tipo-ii-1" class="nav-link" data-scroll-target="#exemplo-regi%C3%A3o-do-tipo-ii-1">Exemplo: Região do Tipo II</a></li>
+  <li><a href="#troca-da-ordem-de-integra%C3%A7%C3%A3o" id="toc-troca-da-ordem-de-integração" class="nav-link" data-scroll-target="#troca-da-ordem-de-integra%C3%A7%C3%A3o">Troca da Ordem de Integração</a></li>
+  <li><a href="#troca-da-ordem-de-integra%C3%A7%C3%A3o-1" id="toc-troca-da-ordem-de-integração-1" class="nav-link" data-scroll-target="#troca-da-ordem-de-integra%C3%A7%C3%A3o-1">Troca da Ordem de Integração</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-1" id="toc-integrais-duplas-em-regiões-gerais-1" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-1">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-2" id="toc-integrais-duplas-em-regiões-gerais-2" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-2">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-3" id="toc-integrais-duplas-em-regiões-gerais-3" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-3">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-4" id="toc-integrais-duplas-em-regiões-gerais-4" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-4">Integrais Duplas em Regiões Gerais</a></li>
+  <li>
+<a href="#integrais-duplas-em-regi%C3%B5es-gerais-5" id="toc-integrais-duplas-em-regiões-gerais-5" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-5">Integrais Duplas em Regiões Gerais</a>
+  <ul class="collapse">
+<li><a href="#c%C3%A1lculo-de-displaystyle-int_03-xsqrt25-x2dx" id="toc-cálculo-de-displaystyle-int_03-xsqrt25-x2dx" class="nav-link" data-scroll-target="#c%C3%A1lculo-de-displaystyle-int_03-xsqrt25-x2dx">Cálculo de <span class="math inline">\(\displaystyle \int_{0}^{3} x\sqrt{25-x^2}\,dx\)</span></a></li>
+  </ul>
+</li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-6" id="toc-integrais-duplas-em-regiões-gerais-6" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-6">Integrais Duplas em Regiões Gerais</a></li>
+  <li>
+<a href="#integrais-duplas-em-regi%C3%B5es-gerais-7" id="toc-integrais-duplas-em-regiões-gerais-7" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-7">Integrais Duplas em Regiões Gerais</a>
+  <ul class="collapse">
+<li><a href="#c%C3%A1lculo-de-dfrac43-displaystyle-int_03-x2dx" id="toc-cálculo-de-dfrac43-displaystyle-int_03-x2dx" class="nav-link" data-scroll-target="#c%C3%A1lculo-de-dfrac43-displaystyle-int_03-x2dx">Cálculo de <span class="math inline">\(\dfrac43 \displaystyle \int_{0}^{3} x^2\,dx\)</span></a></li>
+  </ul>
+</li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-8" id="toc-integrais-duplas-em-regiões-gerais-8" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-8">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-9" id="toc-integrais-duplas-em-regiões-gerais-9" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-9">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-10" id="toc-integrais-duplas-em-regiões-gerais-10" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-10">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-11" id="toc-integrais-duplas-em-regiões-gerais-11" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-11">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-12" id="toc-integrais-duplas-em-regiões-gerais-12" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-12">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-13" id="toc-integrais-duplas-em-regiões-gerais-13" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-13">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-14" id="toc-integrais-duplas-em-regiões-gerais-14" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-14">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-15" id="toc-integrais-duplas-em-regiões-gerais-15" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-15">Integrais Duplas em Regiões Gerais</a></li>
+  <li><a href="#integrais-duplas-em-regi%C3%B5es-gerais-16" id="toc-integrais-duplas-em-regiões-gerais-16" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-16">Integrais Duplas em Regiões Gerais</a></li>
+  <li>
+<a href="#integrais-duplas-em-regi%C3%B5es-gerais-17" id="toc-integrais-duplas-em-regiões-gerais-17" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-17">Integrais Duplas em Regiões Gerais</a>
+  <ul class="collapse">
+<li><a href="#escrevendo-a-integral-como-integral-iterada" id="toc-escrevendo-a-integral-como-integral-iterada" class="nav-link" data-scroll-target="#escrevendo-a-integral-como-integral-iterada">Escrevendo a integral como integral iterada</a></li>
+  <li><a href="#passo-1-integral-interna-em-rela%C3%A7%C3%A3o-a-y" id="toc-passo-1-integral-interna-em-relação-a-y" class="nav-link" data-scroll-target="#passo-1-integral-interna-em-rela%C3%A7%C3%A3o-a-y">Passo 1: integral interna (em relação a <span class="math inline">\(y\)</span>)</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#integrais-duplas-em-regi%C3%B5es-gerais-18" id="toc-integrais-duplas-em-regiões-gerais-18" class="nav-link" data-scroll-target="#integrais-duplas-em-regi%C3%B5es-gerais-18">Integrais Duplas em Regiões Gerais</a>
+  <ul class="collapse">
+<li><a href="#passo-2-integral-externa-em-rela%C3%A7%C3%A3o-a-x" id="toc-passo-2-integral-externa-em-relação-a-x" class="nav-link" data-scroll-target="#passo-2-integral-externa-em-rela%C3%A7%C3%A3o-a-x">Passo 2: integral externa (em relação a <span class="math inline">\(x\)</span>)</a></li>
+  </ul>
+</li>
+  <li><a href="#integrais-triplas" id="toc-integrais-triplas" class="nav-link" data-scroll-target="#integrais-triplas">Integrais Triplas</a></li>
+  <li><a href="#integrais-triplas-1" id="toc-integrais-triplas-1" class="nav-link" data-scroll-target="#integrais-triplas-1">Integrais Triplas</a></li>
+  <li><a href="#integrais-triplas-2" id="toc-integrais-triplas-2" class="nav-link" data-scroll-target="#integrais-triplas-2">Integrais triplas</a></li>
+  <li>
+<a href="#integrais-triplas-3" id="toc-integrais-triplas-3" class="nav-link" data-scroll-target="#integrais-triplas-3">Integrais triplas</a>
+  <ul class="collapse">
+<li><a href="#passo-1-integrar-em-rela%C3%A7%C3%A3o-a-z" id="toc-passo-1-integrar-em-relação-a-z" class="nav-link" data-scroll-target="#passo-1-integrar-em-rela%C3%A7%C3%A3o-a-z">Passo 1: integrar em relação a <span class="math inline">\(z\)</span></a></li>
+  <li><a href="#passo-2-integrar-em-rela%C3%A7%C3%A3o-a-y" id="toc-passo-2-integrar-em-relação-a-y" class="nav-link" data-scroll-target="#passo-2-integrar-em-rela%C3%A7%C3%A3o-a-y">Passo 2: integrar em relação a <span class="math inline">\(y\)</span></a></li>
+  </ul>
+</li>
+  <li>
+<a href="#integrais-triplas-4" id="toc-integrais-triplas-4" class="nav-link" data-scroll-target="#integrais-triplas-4">Integrais triplas</a>
+  <ul class="collapse">
+<li><a href="#passo-3-integrar-em-rela%C3%A7%C3%A3o-a-x" id="toc-passo-3-integrar-em-relação-a-x" class="nav-link" data-scroll-target="#passo-3-integrar-em-rela%C3%A7%C3%A3o-a-x">Passo 3: integrar em relação a <span class="math inline">\(x\)</span></a></li>
+  </ul>
+</li>
+  <li><a href="#integrais-triplas-5" id="toc-integrais-triplas-5" class="nav-link" data-scroll-target="#integrais-triplas-5">Integrais triplas</a></li>
+  <li>
+<a href="#integrais-triplas-6" id="toc-integrais-triplas-6" class="nav-link" data-scroll-target="#integrais-triplas-6">Integrais triplas</a>
+  <ul class="collapse">
+<li><a href="#passo-1-integrar-em-rela%C3%A7%C3%A3o-a-z-1" id="toc-passo-1-integrar-em-relação-a-z-1" class="nav-link" data-scroll-target="#passo-1-integrar-em-rela%C3%A7%C3%A3o-a-z-1">Passo 1: integrar em relação a <span class="math inline">\(z\)</span></a></li>
+  <li><a href="#passo-2-integrar-em-rela%C3%A7%C3%A3o-a-y-1" id="toc-passo-2-integrar-em-relação-a-y-1" class="nav-link" data-scroll-target="#passo-2-integrar-em-rela%C3%A7%C3%A3o-a-y-1">Passo 2: integrar em relação a <span class="math inline">\(y\)</span></a></li>
+  </ul>
+</li>
+  <li>
+<a href="#integrais-triplas-7" id="toc-integrais-triplas-7" class="nav-link" data-scroll-target="#integrais-triplas-7">Integrais triplas</a>
+  <ul class="collapse">
+<li><a href="#passo-3-integrar-em-rela%C3%A7%C3%A3o-a-x-1" id="toc-passo-3-integrar-em-relação-a-x-1" class="nav-link" data-scroll-target="#passo-3-integrar-em-rela%C3%A7%C3%A3o-a-x-1">Passo 3: integrar em relação a <span class="math inline">\(x\)</span></a></li>
+  </ul>
+</li>
+  <li><a href="#mudan%C3%A7a-de-vari%C3%A1veis-em-integrais-m%C3%BAltiplas" id="toc-mudança-de-variáveis-em-integrais-múltiplas" class="nav-link" data-scroll-target="#mudan%C3%A7a-de-vari%C3%A1veis-em-integrais-m%C3%BAltiplas">Mudança de Variáveis em Integrais Múltiplas</a></li>
+  <li><a href="#o-jacobiano" id="toc-o-jacobiano" class="nav-link" data-scroll-target="#o-jacobiano">O Jacobiano</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares" id="toc-integral-dupla-em-coordenadas-polares" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-1" id="toc-integral-dupla-em-coordenadas-polares-1" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-1">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-2" id="toc-integral-dupla-em-coordenadas-polares-2" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-2">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-3" id="toc-integral-dupla-em-coordenadas-polares-3" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-3">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-4" id="toc-integral-dupla-em-coordenadas-polares-4" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-4">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-5" id="toc-integral-dupla-em-coordenadas-polares-5" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-5">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-6" id="toc-integral-dupla-em-coordenadas-polares-6" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-6">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-7" id="toc-integral-dupla-em-coordenadas-polares-7" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-7">Integral Dupla em Coordenadas Polares</a></li>
+  <li><a href="#integral-dupla-em-coordenadas-polares-8" id="toc-integral-dupla-em-coordenadas-polares-8" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-8">Integral Dupla em Coordenadas Polares</a></li>
+  <li>
+<a href="#integral-dupla-em-coordenadas-polares-9" id="toc-integral-dupla-em-coordenadas-polares-9" class="nav-link" data-scroll-target="#integral-dupla-em-coordenadas-polares-9">Integral Dupla em Coordenadas Polares</a>
+  <ul class="collapse">
+<li><a href="#integral-em-r" id="toc-integral-em-r" class="nav-link" data-scroll-target="#integral-em-r">Integral em <span class="math inline">\(r\)</span></a></li>
+  <li><a href="#integral-em-theta" id="toc-integral-em-theta" class="nav-link" data-scroll-target="#integral-em-theta">Integral em <span class="math inline">\(\theta\)</span></a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/integrais_dup_trip/integrais_dup_trip.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="integrais_dup_trip.html"><i class="bi bi-file-slides"></i>RevealJS</a></li><li><a href="integrais_dup_trip.pdf"><i class="bi bi-file-pdf"></i>Beamer</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Integrais Duplas e Triplas</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="introdução" class="level2"><h2 class="anchored" data-anchor-id="introdução">Introdução</h2>
+<p>Na teoria da probabilidade, especialmente quando lidamos com <strong>vetores aleatórios contínuos</strong>, as <strong>integrais múltiplas</strong> desempenham um papel central. Diferentemente do caso discreto, em que probabilidades são obtidas por somas, no caso contínuo as probabilidades são calculadas por integrais, que admitem uma interpretação geométrica natural como volumes sob superfícies.</p>
+</section><section id="integrais-duplas" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas">Integrais Duplas</h2>
+<p>Seja <span class="math inline">\(f:\mathbb{R}^2 \to \mathbb{R}\)</span> uma função não negativa e integrável em uma região <span class="math inline">\(R \subset \mathbb{R}^2\)</span>. A integral dupla de <span class="math inline">\(f\)</span> sobre <span class="math inline">\(R\)</span> é definida por</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dA
+\]</span></p>
+<p>Geometricamente, essa integral representa o volume do sólido limitado superiormente pela superfície <span class="math inline">\(z=f(x,y)\)</span>, inferiormente pelo plano <span class="math inline">\(z=0\)</span> e lateralmente pela região <span class="math inline">\(R\)</span>.</p>
+</section><section id="integrais-duplas-1" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-1">Integrais Duplas</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/repres_int_dupla.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Aqui, <span class="math inline">\(R\)</span> é a região sobre a qual integramos e <span class="math inline">\(dA\)</span> é o elemento de área, uma versão infinitesimal de <span class="math inline">\(\delta A\)</span>.</p>
+</section><section id="integrais-duplas-2" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-2">Integrais Duplas</h2>
+<ul>
+<li>
+<span class="math inline">\(dA\)</span> depende das coordenadas. Em coordenadas cartesianas, temos:</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/regiao_dA.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Vemos claramente que <span class="math inline">\(\delta A = \delta x \delta y\)</span>, então, temos <span class="math inline">\(dA=dxdy\)</span>.</p>
+</section><section id="integrais-duplas-3" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-3">Integrais Duplas</h2>
+<p>Por conseguinte, esta integral é avaliada como:</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dA = \iint_R f(x,y)\,dxdy
+\]</span></p>
+<p>. . .</p>
+<p>Na prática, integrais duplas são calculadas como <strong>integrais iteradas</strong>. Seja</p>
+<p><span class="math display">\[
+R=\{(x,y): a\le x\le b,\ c\le y\le d\}
+\]</span></p>
+<p>Assim, pelo <strong>Teorema de Fubini</strong>, a integral é:</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dx\,dy
+=
+\int_{y=c}^{d}
+\left(
+\int_{x=a}^{b} f(x,y)\,dx
+\right)
+dy
+=
+\int_{x=a}^{b}
+\left(
+\int_{y=c}^{d} f(x,y)\,dy
+\right)
+dx
+\]</span></p>
+</section><section id="integrais-duplas-4" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-4">Integrais Duplas</h2>
+<p>Primeiro, calculamos a integral interna e depois a integral externa. Neste caso, a integral interna é em relação a <span class="math inline">\(x\)</span>. No entanto, a ordem de integração não importa, pois podemos calcular a integral em relação a <span class="math inline">\(y\)</span> primeiro.</p>
+</section><section id="integrais-duplas-5" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-5">Integrais Duplas</h2>
+<p><strong>Exemplo 01:</strong> Calcule</p>
+<p><span class="math display">\[
+\iint_{[0,1]\times[0,1]} (x+y)\,dx\,dy
+\]</span></p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Como <span class="math inline">\([0,1]\times[0,1]\)</span> é um retângulo, podemos escrever a integral dupla como uma integral iterada:</p>
+<p><span class="math display">\[
+\iint_{[0,1]\times[0,1]} (x+y)\,dx\,dy
+=
+\int_{0}^{1}\int_{0}^{1} (x+y)\,dx\,dy
+\]</span></p>
+</section><section id="integrais-duplas-6" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-6">Integrais Duplas</h2>
+<p><strong>Passo 1:</strong> integrar em relação a <span class="math inline">\(x\)</span></p>
+<p>Aqui <span class="math inline">\(y\)</span> é constante. Então:</p>
+<p><span class="math display">\[
+\int_{0}^{1} (x+y)\,dx
+=
+\int_{0}^{1} x\,dx + \int_{0}^{1} y\,dx
+\]</span></p>
+<p>Calculando cada parte:</p>
+<p><span class="math display">\[
+\int_{0}^{1} x\,dx = \left.\frac{x^2}{2}\right|_{0}^{1}=\frac12,
+\qquad
+\int_{0}^{1} y\,dx = y\int_{0}^{1} 1\,dx = y(1-0)=y
+\]</span></p>
+</section><section id="integrais-duplas-7" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-7">Integrais Duplas</h2>
+<p>Logo, a integral interna é: <span class="math display">\[
+\int_{0}^{1} (x+y)\,dx = \frac12 + y
+\]</span></p>
+<p>. . .</p>
+<p><strong>Passo 2:</strong> integrar em relação a <span class="math inline">\(y\)</span></p>
+<p>Agora integramos o resultado de <span class="math inline">\(0\)</span> a <span class="math inline">\(1\)</span>:</p>
+<p><span class="math display">\[
+\int_{0}^{1}\left(\frac12+y\right)\,dy
+=
+\int_{0}^{1}\frac12\,dy+\int_{0}^{1}y\,dy
+\]</span></p>
+</section><section id="integrais-duplas-8" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-8">Integrais Duplas</h2>
+<p><span class="math display">\[
+\int_{0}^{1}\frac12\,dy=\left.\frac{y}{2}\right|_{0}^{1}=\frac12,
+\qquad
+\int_{0}^{1}y\,dy=\left.\frac{y^2}{2}\right|_{0}^{1}=\frac12
+\]</span></p>
+<p>Somando: <span class="math display">\[
+\int_{0}^{1}\left(\frac12+y\right)\,dy=\frac12+\frac12=1
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\iint_{[0,1]\times[0,1]} (x+y)\,dx\,dy = 1
+\]</span></p>
+</section><section id="integrais-duplas-9" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-9">Integrais Duplas</h2>
+<p><strong>Exemplo 02:</strong> Na integral dupla seguinte, indicar a região <span class="math inline">\(R\)</span> de integração e encontrar o seu valor:</p>
+<p><span class="math display">\[
+\int_{0}^{2}\int_{0}^{1} (1 + 2x + 2y)\,dy\,dx
+\]</span></p>
+<p>. . .</p>
+<p><strong>Solução:</strong> A integral está escrita na forma iterada</p>
+<p><span class="math display">\[
+\int_{x=0}^{2}\int_{y=0}^{1} (\cdot)\,dy\,dx
+\]</span></p>
+<p>Logo, a região de integração é</p>
+<p><span class="math display">\[
+R = \{(x,y)\in\mathbb{R}^2 : 0 \le x \le 2,\ 0 \le y \le 1\}
+\]</span></p>
+</section><section id="integrais-duplas-10" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-10">Integrais Duplas</h2>
+<p>Trata-se de um <strong>retângulo</strong> no plano cartesiano, com base no intervalo <span class="math inline">\([0,2]\)</span> do eixo <span class="math inline">\(x\)</span> e altura no intervalo <span class="math inline">\([0,1]\)</span> do eixo <span class="math inline">\(y\)</span>. Assim, mantendo <span class="math inline">\(x\)</span> fixo, temos:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{0}^{1} (1 + 2x + 2y)\,dy &amp;= \int_{0}^{1} 1\,dy + \int_{0}^{1} 2x\,dy + \int_{0}^{1} 2y\,dy \\ &amp; = y \bigg|_0^1 + 2x\,y \bigg|_0^1 + 2\dfrac{y^2}{2}\bigg|_0^1 \\ &amp;= 1 + 2x + 1 \\ &amp; = 2 + 2x
+\end{aligned}
+\]</span></p>
+</section><section id="integrais-duplas-11" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-11">Integrais Duplas</h2>
+<p>vamos agora, integrar em relação a <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{0}^{2} (2 + 2x)\,dx &amp;= \int_{0}^{2} 2\,dx + \int_{0}^{2} 2x\,dx \\ &amp; = 2x \bigg|_0^2 + 2\dfrac{x^2}{2}\bigg|_0^2 \\ &amp;= 4 + 4 \\ &amp; = 8
+\end{aligned}
+\]</span></p>
+</section><section id="integrais-duplas-12" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-12">Integrais Duplas</h2>
+<p>Esse valor representa o <strong>volume</strong> do sólido limitado:</p>
+<ul>
+<li>inferiormente pelo plano <span class="math inline">\(z=0\)</span>,</li>
+<li>superiormente pela superfície <span class="math inline">\(z=1+2x+2y\)</span>,</li>
+<li>lateralmente pela região retangular <span class="math inline">\(R=[0,2]\times[0,1]\)</span>
+</li>
+</ul></section><section id="integrais-duplas-em-regiões-gerais" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais">Integrais Duplas em Regiões Gerais</h2>
+<p>Até agora, consideramos integrais duplas sobre regiões retangulares. No entanto, em muitas aplicações, especialmente em Probabilidade, a região de integração não é um retângulo, mas sim uma região mais geral do plano.</p>
+<p>. . .</p>
+<p>Nesses casos, a integral dupla continua sendo definida como</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dx\,dy,
+\]</span></p>
+<p>mas o cálculo exige uma descrição adequada da região <span class="math inline">\(R\)</span>.</p>
+</section><section id="regiões-gerais-no-plano" class="level2"><h2 class="anchored" data-anchor-id="regiões-gerais-no-plano">Regiões Gerais no Plano</h2>
+<p>Uma <strong>região geral</strong> <span class="math inline">\(R \subset \mathbb{R}^2\)</span> é qualquer subconjunto do plano que possa ser descrito por desigualdades envolvendo <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>.</p>
+<p>. . .</p>
+<p>Na prática, trabalhamos principalmente com dois tipos de regiões:</p>
+<ul>
+<li>Regiões do tipo I (ou regiões <span class="math inline">\(x\)</span>)</li>
+<li>Regiões do tipo II (ou regiões <span class="math inline">\(y\)</span>)</li>
+</ul></section><section id="regiões-gerais-no-plano-1" class="level2"><h2 class="anchored" data-anchor-id="regiões-gerais-no-plano-1">Regiões Gerais no Plano</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/regioes_gerais.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="regiões-do-tipo-i-regiões-x" class="level2"><h2 class="anchored" data-anchor-id="regiões-do-tipo-i-regiões-x">Regiões do Tipo I (Regiões <span class="math inline">\(x\)</span>)</h2>
+<p>Uma região <span class="math inline">\(R\)</span> é dita do tipo I se pode ser escrita na forma</p>
+<p><span class="math display">\[
+R = \{(x,y) : a \le x \le b,\ g_1(x) \le y \le g_2(x)\}
+\]</span></p>
+<p>Nesse caso, a integral dupla é calculada como</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dx\,dy
+=
+\int_a^b \int_{g_1(x)}^{g_2(x)} f(x,y)\,dy\,dx
+\]</span></p>
+<section id="interpretação-geométrica" class="level3"><h3 class="anchored" data-anchor-id="interpretação-geométrica">Interpretação geométrica</h3>
+<ul>
+<li>
+<span class="math inline">\(x\)</span> varia em um intervalo fixo <span class="math inline">\([a,b]\)</span>;</li>
+<li>para cada <span class="math inline">\(x\)</span>, a variável <span class="math inline">\(y\)</span> varia entre duas curvas.</li>
+</ul></section></section><section id="exemplo-região-do-tipo-i" class="level2"><h2 class="anchored" data-anchor-id="exemplo-região-do-tipo-i">Exemplo: Região do Tipo I</h2>
+<p>Considere a região limitada pelas curvas</p>
+<p><span class="math display">\[
+y = x^2 \quad \text{e} \quad y = x,
+\]</span> com <span class="math inline">\(0 \le x \le 1\)</span>.</p>
+<p>A região é</p>
+<p><span class="math display">\[
+R = \{(x,y): 0 \le x \le 1,\ x^2 \le y \le x\}
+\]</span></p>
+<p>A integral dupla de <span class="math inline">\(f(x,y)\)</span> sobre <span class="math inline">\(R\)</span> é</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dx\,dy
+=
+\int_0^1 \int_{x^2}^{x} f(x,y)\,dy\,dx
+\]</span></p>
+</section><section id="exemplo-região-do-tipo-i-1" class="level2"><h2 class="anchored" data-anchor-id="exemplo-região-do-tipo-i-1">Exemplo: Região do Tipo I</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="regiões-do-tipo-ii-regiões-y" class="level2"><h2 class="anchored" data-anchor-id="regiões-do-tipo-ii-regiões-y">Regiões do Tipo II (Regiões <span class="math inline">\(y\)</span>)</h2>
+<p>Uma região <span class="math inline">\(R\)</span> é dita do tipo II se pode ser escrita como</p>
+<p><span class="math display">\[
+R = \{(x,y) : c \le y \le d,\ h_1(y) \le x \le h_2(y)\}
+\]</span></p>
+<p>Nesse caso,</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dx\,dy
+=
+\int_c^d \int_{h_1(y)}^{h_2(y)} f(x,y)\,dx\,dy
+\]</span></p>
+<section id="interpretação-geométrica-1" class="level3"><h3 class="anchored" data-anchor-id="interpretação-geométrica-1">Interpretação geométrica</h3>
+<ul>
+<li>
+<span class="math inline">\(y\)</span> varia em um intervalo fixo <span class="math inline">\([c,d]\)</span>;</li>
+<li>para cada <span class="math inline">\(y\)</span>, a variável <span class="math inline">\(x\)</span> varia entre duas curvas.</li>
+</ul></section></section><section id="exemplo-região-do-tipo-ii" class="level2"><h2 class="anchored" data-anchor-id="exemplo-região-do-tipo-ii">Exemplo: Região do Tipo II</h2>
+<p>Considere a região limitada por</p>
+<p><span class="math display">\[
+x = y^2 \quad \text{e} \quad x = y,
+\]</span> com <span class="math inline">\(0 \le y \le 1\)</span>.</p>
+<p>A região é</p>
+<p><span class="math display">\[
+R = \{(x,y): 0 \le y \le 1,\ y^2 \le x \le y\}
+\]</span></p>
+<p>A integral dupla de <span class="math inline">\(f(x,y)\)</span> sobre <span class="math inline">\(R\)</span> é <span class="math display">\[
+\iint_R f(x,y)\,dx\,dy
+=
+\int_0^1 \int_{y^2}^{y} f(x,y)\,dx\,dy
+\]</span></p>
+</section><section id="exemplo-região-do-tipo-ii-1" class="level2"><h2 class="anchored" data-anchor-id="exemplo-região-do-tipo-ii-1">Exemplo: Região do Tipo II</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="troca-da-ordem-de-integração" class="level2"><h2 class="anchored" data-anchor-id="troca-da-ordem-de-integração">Troca da Ordem de Integração</h2>
+<p>Uma mesma região <span class="math inline">\(R\)</span> pode, muitas vezes, ser descrita tanto como região do tipo I quanto do tipo II.</p>
+<p>Trocar a ordem de integração significa reescrever</p>
+<p><span class="math display">\[
+\int_a^b \int_{g_1(x)}^{g_2(x)} f(x,y)\,dy\,dx
+\]</span></p>
+<p>na forma</p>
+<p><span class="math display">\[
+\int_c^d \int_{h_1(y)}^{h_2(y)} f(x,y)\,dx\,dy,
+\]</span></p>
+<p>mantendo a mesma região <span class="math inline">\(R\)</span>.</p>
+</section><section id="troca-da-ordem-de-integração-1" class="level2"><h2 class="anchored" data-anchor-id="troca-da-ordem-de-integração-1">Troca da Ordem de Integração</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="integrais-duplas-em-regiões-gerais-1" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-1">Integrais Duplas em Regiões Gerais</h2>
+<p><strong>Exemplo 03:</strong> Resolver a integral dupla</p>
+<p><span class="math display">\[
+\int_{0}^{3}\int_{4x/3}^{\sqrt{25-x^2}} x \, dy \, dx
+\]</span></p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Identificação da Região de Integração</p>
+<p>A integral está na forma <span class="math display">\[
+\int_{x=0}^{3}\int_{y=4x/3}^{\sqrt{25-x^2}} (\cdot)\,dy\,dx
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-2" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-2">Integrais Duplas em Regiões Gerais</h2>
+<p>Logo, a região de integração é <span class="math display">\[
+R = \{(x,y)\in\mathbb{R}^2 : 0 \le x \le 3,\ \tfrac{4x}{3} \le y \le \sqrt{25-x^2}\}
+\]</span></p>
+<p>ou seja, <span class="math inline">\(R\)</span> é a região compreendida entre a reta <span class="math inline">\(y=\frac{4x}{3}\)</span> e o círculo <span class="math inline">\(x^2+y^2=25\)</span>, no primeiro quadrante, conforme ilustrado na Figura. Nessa região, a interseção entre as duas curvas é o ponto <span class="math inline">\(P(3,4).\)</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-3" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-3">Integrais Duplas em Regiões Gerais</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="integrais-duplas-em-regiões-gerais-4" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-4">Integrais Duplas em Regiões Gerais</h2>
+<p>Como a função integranda é <span class="math inline">\(f(x,y)=x\)</span>, integramos primeiro em relação a <span class="math inline">\(y\)</span>, tratando <span class="math inline">\(x\)</span> como constante:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{4x/3}^{\sqrt{25-x^2}} x\,dy &amp;= x \int_{4x/3}^{\sqrt{25-x^2}} dy \\[6pt] &amp;= x\,y\bigg|_{4x/3}^{\sqrt{25-x^2}} \\[6pt] &amp;= x\left(\sqrt{25-x^2} - \frac{4x}{3}\right)
+\end{aligned}
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-5" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-5">Integrais Duplas em Regiões Gerais</h2>
+<p>Agora integramos em relação a <span class="math inline">\(x\)</span>: <span class="math display">\[
+\int_{0}^{3} x\left(\sqrt{25-x^2} - \frac{4x}{3}\right)\,dx
+=
+\int_{0}^{3} x\sqrt{25-x^2}\,dx
+-
+\frac{4}{3}\int_{0}^{3} x^2\,dx
+\]</span></p>
+<section id="cálculo-de-displaystyle-int_03-xsqrt25-x2dx" class="level3"><h3 class="anchored" data-anchor-id="cálculo-de-displaystyle-int_03-xsqrt25-x2dx">Cálculo de <span class="math inline">\(\displaystyle \int_{0}^{3} x\sqrt{25-x^2}\,dx\)</span>
+</h3>
+<p>Faça a substituição</p>
+<p><span class="math display">\[
+u = 25 - x^2 \quad \Rightarrow \quad du = -2x\,dx
+\]</span> Quando <span class="math inline">\(x = 0 \rightarrow u = 25\)</span> e quando <span class="math inline">\(x = 3 \rightarrow u = 16\)</span>.</p>
+</section></section><section id="integrais-duplas-em-regiões-gerais-6" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-6">Integrais Duplas em Regiões Gerais</h2>
+<p>Logo,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{0}^{3} x\left(\sqrt{25-x^2} - \frac{4x}{3}\right)\,dx &amp;=
+-\frac12 \int_{25}^{16} \sqrt{u}\,du = \frac12 \int^{25}_{16} \sqrt{u}\,du \\[6pt] &amp;=
+\frac12 \cdot \frac{2}{3}u^{3/2} \bigg|_{16}^{25} \\[6pt] &amp;=
+\frac13 (25^{3/2}-16^{3/2}) \\[6pt] &amp;= \frac13 \cdot (125 - 64) = \frac{61}{3}
+\end{aligned}
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-7" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-7">Integrais Duplas em Regiões Gerais</h2>
+<section id="cálculo-de-dfrac43-displaystyle-int_03-x2dx" class="level3"><h3 class="anchored" data-anchor-id="cálculo-de-dfrac43-displaystyle-int_03-x2dx">Cálculo de <span class="math inline">\(\dfrac43 \displaystyle \int_{0}^{3} x^2\,dx\)</span>
+</h3>
+<p><span class="math display">\[
+\dfrac43 \int_{0}^{3} x^2\,dx =
+\left.\dfrac43 \cdot \dfrac{x^3}{3}\right|_{0}^{3} = \dfrac43 \cdot 9 = 12
+\]</span></p>
+<p>Substituindo os resultados:</p>
+<p><span class="math display">\[
+\int_{0}^{3}\int_{4x/3}^{\sqrt{25-x^2}} x \, dy \, dx = \frac{61}{3} - 12 = \frac{25}{3}
+\]</span></p>
+</section></section><section id="integrais-duplas-em-regiões-gerais-8" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-8">Integrais Duplas em Regiões Gerais</h2>
+<p><strong>Exemplo 04:</strong> Na integral do exemplo anterior, alterar a ordem de integração e indicar a integral resultante.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> No exemplo anterior, tínhamos a integral</p>
+<p><span class="math display">\[
+\int_{0}^{3}\int_{4x/3}^{\sqrt{25-x^2}} x\,dy\,dx,
+\]</span></p>
+<p>cuja região é</p>
+<p><span class="math display">\[
+R=\{(x,y): 0\le x\le 3,\ \tfrac{4x}{3}\le y\le \sqrt{25-x^2}\}
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-9" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-9">Integrais Duplas em Regiões Gerais</h2>
+<p>Para inverter a ordem, fixamos <span class="math inline">\(y\)</span> e vemos como <span class="math inline">\(x\)</span> varia.</p>
+<p>No primeiro quadrante, para um <span class="math inline">\(y\)</span> fixo, o limite à esquerda vem da reta <span class="math display">\[
+y=\frac{4x}{3}\ \Longleftrightarrow\ x=\frac{3y}{4},
+\]</span> e o limite à direita vem do círculo <span class="math display">\[
+x^2+y^2=25\ \Longleftrightarrow\ x=\sqrt{25-y^2}.
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-10" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-10">Integrais Duplas em Regiões Gerais</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="624"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="integrais-duplas-em-regiões-gerais-11" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-11">Integrais Duplas em Regiões Gerais</h2>
+<p>Quanto aos valores de <span class="math inline">\(y\)</span> na região:</p>
+<ul>
+<li>o menor <span class="math inline">\(y\)</span> ocorre em <span class="math inline">\((0,0)\)</span>: <span class="math inline">\(y=0\)</span>,</li>
+<li>o maior <span class="math inline">\(y\)</span> ocorre no topo do semicírculo: <span class="math inline">\(y=5\)</span>.</li>
+</ul>
+<p>Logo, a região pode ser descrita por <span class="math display">\[
+R=\left\{(x,y): 0\le y\le 5,\ \frac{3y}{4}\le x\le \sqrt{25-y^2}\right\}
+\]</span></p>
+<p>Assim, a integral equivalente é <span class="math display">\[
+\int_{0}^{5}\int_{3y/4}^{\sqrt{25-y^2}} x\,dx\,dy
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-12" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-12">Integrais Duplas em Regiões Gerais</h2>
+<!-- A região de integração seria dividida em duas partes, a primeira é um triângulo cujos vértices são $(0,0)$, $(0,4)$ e $(3,4)$, enquanto a segunda é o sector acima do segmento de reta, o eixo $y$, e a circunferência, como mostra o gráfico. -->
+<p>Calculando rapidamente: <span class="math display">\[
+\int_{0}^{5}\int_{3y/4}^{\sqrt{25-y^2}} x\,dx\,dy = \int_{0}^{5}\left[\frac{x^2}{2}\right]_{3y/4}^{\sqrt{25-y^2}}\,dy = \int_{0}^{5}\frac{1}{2}\left((25-y^2)-\frac{9y^2}{16}\right)dy
+\]</span></p>
+<p>Simplificando: <span class="math display">\[
+\frac{1}{2}\left(25-y^2-\frac{9y^2}{16}\right)
+=
+\frac{1}{2}\left(25-\frac{25y^2}{16}\right)
+=
+\frac{25}{2}\left(1-\frac{y^2}{16}\right)
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-13" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-13">Integrais Duplas em Regiões Gerais</h2>
+<p>Então, <span class="math display">\[
+\int_{0}^{5}\frac{25}{2}\left(1-\frac{y^2}{16}\right)dy
+=
+\frac{25}{2}\left[y-\frac{y^3}{48}\right]_{0}^{5}
+=
+\frac{25}{2}\left(5-\frac{125}{48}\right)
+=
+\frac{25}{3}
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-14" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-14">Integrais Duplas em Regiões Gerais</h2>
+<p><strong>Exemplo 05:</strong> Resolver <span class="math display">\[
+\iint_R x\,dA,
+\]</span> onde <span class="math inline">\(R\)</span> é a região entre as curvas <span class="math inline">\(y=2x\)</span> e <span class="math inline">\(y=x^2\)</span>.</p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Região de integração <span class="math inline">\(R\)</span></p>
+<p>Para encontrar os pontos de interseção, resolvemos <span class="math display">\[
+x^2 = 2x \;\;\Longleftrightarrow\;\; x(x-2)=0,
+\]</span> logo, <span class="math display">\[
+x=0 \quad \text{ou} \quad x=2.
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-15" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-15">Integrais Duplas em Regiões Gerais</h2>
+<p>Para <span class="math inline">\(0&lt;x&lt;2\)</span>, temos <span class="math inline">\(2x &gt; x^2\)</span>, então:</p>
+<ul>
+<li>curva superior: <span class="math inline">\(y=2x\)</span>,</li>
+<li>curva inferior: <span class="math inline">\(y=x^2\)</span>
+</li>
+</ul>
+<p>Assim, a região pode ser descrita como <span class="math display">\[
+R=\{(x,y): 0\le x\le 2,\ x^2 \le y \le 2x\}
+\]</span></p>
+</section><section id="integrais-duplas-em-regiões-gerais-16" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-16">Integrais Duplas em Regiões Gerais</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="integrais-duplas-em-regiões-gerais-17" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-17">Integrais Duplas em Regiões Gerais</h2>
+<section id="escrevendo-a-integral-como-integral-iterada" class="level3"><h3 class="anchored" data-anchor-id="escrevendo-a-integral-como-integral-iterada">Escrevendo a integral como integral iterada</h3>
+<p>Como <span class="math inline">\(R\)</span> é do tipo I, temos</p>
+<p><span class="math display">\[
+\iint_R x\,dA
+=
+\int_{0}^{2}\int_{x^2}^{2x} x\,dy\,dx
+\]</span></p>
+</section><section id="passo-1-integral-interna-em-relação-a-y" class="level3"><h3 class="anchored" data-anchor-id="passo-1-integral-interna-em-relação-a-y">Passo 1: integral interna (em relação a <span class="math inline">\(y\)</span>)</h3>
+<p>Como <span class="math inline">\(x\)</span> é constante em relação a <span class="math inline">\(y\)</span>: <span class="math display">\[
+\int_{x^2}^{2x} x\,dy
+=
+x\int_{x^2}^{2x} dy
+=
+x\left[y\right]_{x^2}^{2x}
+=
+x(2x-x^2)
+\]</span></p>
+</section></section><section id="integrais-duplas-em-regiões-gerais-18" class="level2"><h2 class="anchored" data-anchor-id="integrais-duplas-em-regiões-gerais-18">Integrais Duplas em Regiões Gerais</h2>
+<section id="passo-2-integral-externa-em-relação-a-x" class="level3"><h3 class="anchored" data-anchor-id="passo-2-integral-externa-em-relação-a-x">Passo 2: integral externa (em relação a <span class="math inline">\(x\)</span>)</h3>
+<p><span class="math display">\[
+\int_{0}^{2} (2x^2-x^3)\,dx =
+\left[\frac{2x^3}{3}-\frac{x^4}{4}\right]_{0}^{2} =  \frac{2\cdot 2^3}{3}-\frac{2^4}{4}
+=
+\frac{16}{3}-4
+=
+\frac{16}{3}-\frac{12}{3}
+=
+\frac{4}{3}
+\]</span></p>
+</section></section><section id="integrais-triplas" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas">Integrais Triplas</h2>
+<p>Seja <span class="math inline">\(f:\mathbb{R}^3 \to \mathbb{R}\)</span> uma função não negativa e integrável em uma região <span class="math inline">\(V \subset \mathbb{R}^3\)</span>. A integral tripla</p>
+<p><span class="math display">\[
+\iiint_V f(x,y,z)\,dV
+\]</span></p>
+<p>representa um hipervolume e é utilizada para modelar vetores aleatórios tridimensionais.</p>
+</section><section id="integrais-triplas-1" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas-1">Integrais Triplas</h2>
+<p>Assim como no caso bidimensional, integrais triplas são avaliadas como integrais iteradas.</p>
+<p><span class="math display">\[
+\iiint_V f(x,y,z)\,dV = \iiint f(x,y,z)\, dx\,dy\,dz
+\]</span></p>
+<p>com limites determinados pela geometria de <span class="math inline">\(V\)</span>.</p>
+</section><section id="integrais-triplas-2" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas-2">Integrais triplas</h2>
+<p><strong>Exemplo 06:</strong> Calcular a integral tripla <span class="math display">\[
+\iiint_B x y z^2 \, dV,
+\]</span> em que <span class="math inline">\(B\)</span> é a caixa retangular <span class="math display">\[
+B=\{(x,y,z)\in\mathbb{R}^3:\ 0\le x\le 1,\ -1\le y\le 2,\ 0\le z\le 3\}
+\]</span></p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Como <span class="math inline">\(B\)</span> é uma caixa retangular, podemos escrever diretamente:</p>
+<p><span class="math display">\[
+\iiint_B x y z^2 \, dV
+=
+\int_{0}^{1}\int_{-1}^{2}\int_{0}^{3} x y z^2 \, dz \, dy \, dx
+\]</span></p>
+</section><section id="integrais-triplas-3" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas-3">Integrais triplas</h2>
+<section id="passo-1-integrar-em-relação-a-z" class="level3"><h3 class="anchored" data-anchor-id="passo-1-integrar-em-relação-a-z">Passo 1: integrar em relação a <span class="math inline">\(z\)</span>
+</h3>
+<p>Tratando <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> como constantes:</p>
+<p><span class="math display">\[
+\int_{0}^{3} x y z^2\,dz
+=
+xy\int_{0}^{3} z^2\,dz
+=
+xy\left[\frac{z^3}{3}\right]_{0}^{3}
+=
+xy\cdot \frac{27}{3}
+=
+9xy
+\]</span></p>
+</section><section id="passo-2-integrar-em-relação-a-y" class="level3"><h3 class="anchored" data-anchor-id="passo-2-integrar-em-relação-a-y">Passo 2: integrar em relação a <span class="math inline">\(y\)</span>
+</h3>
+<p>Agora:</p>
+<p><span class="math display">\[
+\int_{-1}^{2} 9xy \, dy
+=
+9x\int_{-1}^{2} y\,dy
+=
+9x\left[\frac{y^2}{2}\right]_{-1}^{2}
+=
+9x\left(\frac{4}{2}-\frac{1}{2}\right)
+=
+9x\cdot\frac{3}{2}
+=
+\frac{27}{2}x
+\]</span></p>
+</section></section><section id="integrais-triplas-4" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas-4">Integrais triplas</h2>
+<section id="passo-3-integrar-em-relação-a-x" class="level3"><h3 class="anchored" data-anchor-id="passo-3-integrar-em-relação-a-x">Passo 3: integrar em relação a <span class="math inline">\(x\)</span>
+</h3>
+<p>Por fim:</p>
+<p><span class="math display">\[
+\int_{0}^{1} \frac{27}{2}x\,dx
+=
+\frac{27}{2}\left[\frac{x^2}{2}\right]_{0}^{1}
+=
+\frac{27}{2}\cdot\frac{1}{2}
+=
+\frac{27}{4}
+\]</span></p>
+<p>Logo, <span class="math display">\[
+\iiint_B x y z^2 \, dV = \frac{27}{4}
+\]</span></p>
+</section></section><section id="integrais-triplas-5" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas-5">Integrais triplas</h2>
+<p><strong>Exemplo 07:</strong> Calcule a integral tripla <span class="math display">\[
+\iiint_G 12xy^2 z^3\, dV,
+\]</span> na caixa retangular <span class="math display">\[
+G=\{(x,y,z)\in\mathbb{R}^3:\ -1\le x\le 2,\ 0\le y\le 3,\ 0\le z\le 2\}
+\]</span></p>
+<p>. . .</p>
+<p><strong>Solução:</strong> Como <span class="math inline">\(G\)</span> é uma caixa retangular, podemos escrever: <span class="math display">\[
+\iiint_G 12xy^2 z^3\, dV
+=
+\int_{-1}^{2}\int_{0}^{3}\int_{0}^{2} 12xy^2 z^3\, dz\, dy\, dx
+\]</span></p>
+</section><section id="integrais-triplas-6" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas-6">Integrais triplas</h2>
+<section id="passo-1-integrar-em-relação-a-z-1" class="level3"><h3 class="anchored" data-anchor-id="passo-1-integrar-em-relação-a-z-1">Passo 1: integrar em relação a <span class="math inline">\(z\)</span>
+</h3>
+<p>Tratando <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> como constantes: <span class="math display">\[
+\int_{0}^{2} 12xy^2 z^3\, dz
+=
+12xy^2 \int_{0}^{2} z^3\,dz
+=
+12xy^2\left[\frac{z^4}{4}\right]_{0}^{2}
+=12xy^2\cdot \frac{16}{4}
+=
+12xy^2\cdot 4
+=
+48xy^2
+\]</span></p>
+</section><section id="passo-2-integrar-em-relação-a-y-1" class="level3"><h3 class="anchored" data-anchor-id="passo-2-integrar-em-relação-a-y-1">Passo 2: integrar em relação a <span class="math inline">\(y\)</span>
+</h3>
+<p>Agora:</p>
+<p><span class="math display">\[
+\int_{0}^{3} 48xy^2\,dy
+=
+48x\int_{0}^{3} y^2\,dy
+=
+48x\left[\frac{y^3}{3}\right]_{0}^{3} = 48x\cdot \frac{27}{3}
+=
+48x\cdot 9
+=
+432x
+\]</span></p>
+</section></section><section id="integrais-triplas-7" class="level2"><h2 class="anchored" data-anchor-id="integrais-triplas-7">Integrais triplas</h2>
+<section id="passo-3-integrar-em-relação-a-x-1" class="level3"><h3 class="anchored" data-anchor-id="passo-3-integrar-em-relação-a-x-1">Passo 3: integrar em relação a <span class="math inline">\(x\)</span>
+</h3>
+<p>Por fim:</p>
+<p><span class="math display">\[
+\int_{-1}^{2} 432x\,dx
+=
+432\int_{-1}^{2} x\,dx
+=
+432\left[\frac{x^2}{2}\right]_{-1}^{2}
+=
+432\left(\frac{4}{2}-\frac{1}{2}\right)
+=
+432\cdot\frac{3}{2}
+=
+648
+\]</span></p>
+<p>Logo, <span class="math display">\[
+\iiint_G 12xy^2 z^3\, dV = 648
+\]</span></p>
+</section></section><section id="mudança-de-variáveis-em-integrais-múltiplas" class="level2"><h2 class="anchored" data-anchor-id="mudança-de-variáveis-em-integrais-múltiplas">Mudança de Variáveis em Integrais Múltiplas</h2>
+<p>Em muitos problemas, a região de integração é complicada no sistema original de coordenadas. A mudança de variáveis permite transformar a integral para um novo sistema mais conveniente.</p>
+<p>Seja</p>
+<p><span class="math display">\[
+(x,y)=T(u,v),
+\]</span></p>
+<p>onde <span class="math inline">\(T\)</span> é uma transformação diferenciável e bijetiva. Então,</p>
+<p><span class="math display">\[
+\iint_D f(x,y)\,dx\,dy
+=
+\iint_{D^*} f(T(u,v))\,|J(u,v)|\,du\,dv,
+\]</span></p>
+<p>onde <span class="math inline">\(J(u,v)\)</span> é o Jacobiano da transformação.</p>
+</section><section id="o-jacobiano" class="level2"><h2 class="anchored" data-anchor-id="o-jacobiano">O Jacobiano</h2>
+<p>Para <span class="math display">\[
+x=x(u,v),\quad y=y(u,v),
+\]</span> define-se o Jacobiano por</p>
+<p><span class="math display">\[
+J=
+\begin{vmatrix}
+\dfrac{\partial x}{\partial u} &amp; \dfrac{\partial x}{\partial v} \\
+\dfrac{\partial y}{\partial u} &amp; \dfrac{\partial y}{\partial v}
+\end{vmatrix}
+\]</span></p>
+<p>. . .</p>
+<p>O Jacobiano mede o fator de distorção de área causado pela transformação:</p>
+<p><span class="math display">\[
+dx\,dy = |J(u,v)|\,du\,dv
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares">Integral Dupla em Coordenadas Polares</h2>
+<p>Observe que:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/sistemaCP.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>No sistema de coordenadas polares, temos <span class="math display">\[
+x=x(r,\theta)=r\cos\theta
+\quad \text{e} \quad
+y=y(r,\theta)=r\,\text{sen }\theta
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares-1" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-1">Integral Dupla em Coordenadas Polares</h2>
+<p>O jacobiano da transformação é <span class="math display">\[
+\begin{aligned}
+J(r,\theta)
+&amp;=
+\left|
+\begin{matrix}
+\dfrac{\partial x}{\partial r} &amp; \dfrac{\partial x}{\partial \theta}\\[6pt]
+\dfrac{\partial y}{\partial r} &amp; \dfrac{\partial y}{\partial \theta}
+\end{matrix}
+\right|
+=
+\left|
+\begin{matrix}
+\cos\theta &amp; -r\,\text{sen }\theta\\
+\text{sen }\theta &amp; r\cos\theta
+\end{matrix}
+\right| \\[6pt] &amp;= (\cos\theta)(r\cos\theta)-(-r\,\text{sen }\theta)(\text{sen }\theta) \\[6pt]
+&amp;=
+r\cos^2\theta+r\,\text{sen}^2\,\theta
+=
+r(\cos^2\theta+\text{sen}^2\,\theta)
+=
+r
+\end{aligned}
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares-2" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-2">Integral Dupla em Coordenadas Polares</h2>
+<p>Logo, pelo teorema de mudança de variáveis, se <span class="math inline">\(T(r,\theta)=(r\cos\theta,r\,\text{sen }\theta)\)</span>, então</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dA
+=
+\iint_S f\big(x(r,\theta),y(r,\theta)\big)\,|J(r,\theta)|\,dr\,d\theta
+\]</span></p>
+<p>Como <span class="math inline">\(|J(r,\theta)|=r\)</span>, obtemos a forma operacional:</p>
+<p><span class="math display">\[
+\iint_R f(x,y)\,dA
+=
+\iint_S f(r\cos\theta,r\,\text{sen }\theta)\,r\,dr\,d\theta
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares-3" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-3">Integral Dupla em Coordenadas Polares</h2>
+<p><strong>Exemplo 08:</strong> Calcule <span class="math display">\[
+\iint_R (x-y)\,dA,
+\]</span> sendo <span class="math inline">\(R\)</span> o semi-círculo de centro na origem e raio <span class="math inline">\(1\)</span> (isto é, a região <span class="math inline">\(x^2+y^2\le 1\)</span> com <span class="math inline">\(x\ge 0\)</span>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="integral-dupla-em-coordenadas-polares-4" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-4">Integral Dupla em Coordenadas Polares</h2>
+<p><strong>Solução:</strong> Em coordenadas polares: <span class="math display">\[
+x=r\cos\theta,\qquad y=r\,\text{sen }\theta,\qquad dA=dx\,dy=r\,dr\,d\theta
+\]</span></p>
+<p>. . .</p>
+<p>Assim, o integrando fica:</p>
+<p><span class="math display">\[
+x-y = r\cos\theta - r\,\text{sen }\theta = r(\cos\theta-\text{sen }\theta)
+\]</span></p>
+<p>. . .</p>
+<p>Como <span class="math inline">\(R\)</span> é o semicírculo superior de raio <span class="math inline">\(1\)</span>, temos <span class="math display">\[
+0\le r\le 1,\qquad -\dfrac{\pi}{2}\le \theta\le \dfrac{\pi}{2}
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares-5" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-5">Integral Dupla em Coordenadas Polares</h2>
+<p>De forma que,</p>
+<p><span class="math display">\[
+\iint_R (x-y)\,dA
+=
+\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\int_{0}^{1} r(\cos\theta-\text{sen }\theta)\,r\,dr\,d\theta
+=
+\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\int_{0}^{1} r^2(\cos\theta-\text{sen }\theta)\,dr\,d\theta
+\]</span></p>
+<p>. . .</p>
+<p>Integrando em relação a <span class="math inline">\(r\)</span></p>
+<p><span class="math display">\[
+(\cos\theta-\text{sen }\theta)  \int_{0}^{1} r^2\,dr = (\cos\theta-\text{sen }\theta) \left.\frac{r^3}{3}\right|_{0}^{1}=\frac{1}{3} (\cos\theta-\text{sen }\theta)
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares-6" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-6">Integral Dupla em Coordenadas Polares</h2>
+<p>Integrando em relação a <span class="math inline">\(\theta\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\frac{1}{3}(\cos\theta-\text{sen }\theta)\,d\theta &amp;= \frac13 \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\cos\theta\,d\theta - \frac13 \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} \text{sen }\theta\,d\theta \\[6pt] &amp;= \frac13 \text{sen }\theta \bigg|_{-\frac{\pi}{2}}^{\frac{\pi}{2}} + \frac13 \cos\theta\bigg|_{-\frac{\pi}{2}}^{\frac{\pi}{2}} \\[6pt] &amp;= \frac13 \Bigg(\text{sen }\bigg(\frac{\pi}{2}\bigg) - \text{sen } \bigg(-\frac{\pi}{2}\bigg)\Bigg) + \frac13 \Bigg(\cos \bigg(\frac{\pi}{2}\bigg) - \cos \bigg(-\frac{\pi}{2}\bigg)\Bigg) \\[6pt] &amp;= \frac13 \cdot (1 - (-1)) + \frac13(0-0) = \frac23
+\end{aligned}
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares-7" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-7">Integral Dupla em Coordenadas Polares</h2>
+<p><strong>Exemplo 09:</strong> Calcule <span class="math display">\[
+\iint_R \sqrt{x^2+y^2}\,dA,
+\]</span> sendo <span class="math inline">\(R\)</span> a região delimitada por <span class="math inline">\(x^2 + y^2 = 1\)</span> e <span class="math inline">\(x^2 + y^2 = 9\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="integrais_dup_trip_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="integral-dupla-em-coordenadas-polares-8" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-8">Integral Dupla em Coordenadas Polares</h2>
+<p><strong>Solução:</strong> Em coordenadas polares:</p>
+<p><span class="math display">\[
+x=r\cos\theta,\qquad y=r\,\text{sen }\theta,\qquad dA=dx\,dy=r\,dr\,d\theta
+\]</span></p>
+<p>Além disso, <span class="math display">\[
+\sqrt{x^2+y^2}=\sqrt{r^2}=r \quad (r\ge 0)
+\]</span></p>
+<p>Como <span class="math inline">\(R\)</span> é um anel completo, os limites são: <span class="math display">\[
+1\le r\le 3,\qquad 0\le \theta\le 2\pi
+\]</span></p>
+</section><section id="integral-dupla-em-coordenadas-polares-9" class="level2"><h2 class="anchored" data-anchor-id="integral-dupla-em-coordenadas-polares-9">Integral Dupla em Coordenadas Polares</h2>
+<p>Assim, <span class="math display">\[
+\iint_R \sqrt{x^2+y^2}\,dA
+=
+\int_{0}^{2\pi}\int_{1}^{3} r\cdot r\,dr\,d\theta
+=
+\int_{0}^{2\pi}\int_{1}^{3} r^2\,dr\,d\theta
+\]</span></p>
+<section id="integral-em-r" class="level3"><h3 class="anchored" data-anchor-id="integral-em-r">Integral em <span class="math inline">\(r\)</span>
+</h3>
+<p><span class="math display">\[
+\int_{1}^{3} r^2\,dr
+=
+\left.\frac{r^3}{3}\right|_{1}^{3}
+=
+\frac{27-1}{3}
+=
+\frac{26}{3}
+\]</span></p>
+</section><section id="integral-em-theta" class="level3"><h3 class="anchored" data-anchor-id="integral-em-theta">Integral em <span class="math inline">\(\theta\)</span>
+</h3>
+<p><span class="math display">\[
+\int_{0}^{2\pi} \frac{26}{3} d\theta = \frac{26}{3} \int_{0}^{2\pi} d\theta = \frac{26}{3} \cdot \theta \bigg|_0^{2\pi} = \frac{52 \pi}{3}
+\]</span></p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/integrais_dup_trip/integrais_dup_trip.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>
