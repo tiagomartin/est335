@@ -35,7 +35,7 @@
     "href": "aulas.html",
     "title": "Aulas",
     "section": "",
-    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre. Você pode baixar as aulas em uma versão PDF.\n\n\nParte I: Regressão\n\n\n Introdução \n Ver slides PDF",
+    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre. Você pode baixar as aulas em uma versão PDF.\n\n\nParte I: Regressão\n\n\n Introdução \n Ver slides PDF \n\n\n Métodos Paramétricos \n Ver slides PDF",
     "crumbs": [
       "Aulas"
     ]
@@ -3588,5 +3588,145 @@
     "title": "Parte 1 : Regressão",
     "section": "Penalização: uma alternativa",
     "text": "Penalização: uma alternativa\nUma forma alternativa de estimar o risco de um modelo \\(g\\) é usar uma medida de penalização ou complexidade.\nA ideia é que modelos muito complexos tendem a subestimar o risco verdadeiro quando avaliados apenas pelo erro no conjunto de treinamento."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#métodos-paramétricos",
+    "href": "aulas/regressao/met_param/met_param.html#métodos-paramétricos",
+    "title": "Parte 1 : Regressão",
+    "section": "Métodos paramétricos",
+    "text": "Métodos paramétricos\nMétodos paramétricos assumem que a função de regressão pode ser descrita por um número finito de parâmetros.\nAqui, iremos nos concentrar em modelos de regressão linear.\n\nGrande parte do conteúdo pode parecer familiar;\nporém, será apresentado sob a perspectiva de modelagem preditiva e seleção de modelos."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#regressão-linear",
+    "href": "aulas/regressao/met_param/met_param.html#regressão-linear",
+    "title": "Parte 1 : Regressão",
+    "section": "Regressão linear",
+    "text": "Regressão linear\nNa regressão linear, a função de predição possui forma linear nos parâmetros.\nA função de predição pode ser escrita como\n\\[\ng(x) = \\beta^t x\n\\]\nou explicitamente\n\\[\ng(x) = \\beta_0 x_0 + \\beta_1 x_1 + \\cdots + \\beta_p x_p\n\\] Adotamos a convenção \\(x_0 = 1\\). Assim, \\(\\beta_0\\) corresponde ao intercepto do modelo.\nO vetor de parâmetros é\n\\[\n\\beta = (\\beta_0, \\beta_1, \\ldots, \\beta_p)\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#convenção-do-intercepto",
+    "href": "aulas/regressao/met_param/met_param.html#convenção-do-intercepto",
+    "title": "Métodos Paramétricos",
+    "section": "Convenção do intercepto",
+    "text": "Convenção do intercepto\n\nTransformações de variáveis\nOs termos \\(x_i\\) não precisam ser apenas as variáveis originais. Podemos construir novas covariáveis a partir delas, por exemplo:\n\ntermos quadráticos: \\(x_i^2\\)\ninterações: \\(x_i x_j\\)\ntransformações não lineares\n\nIsso permite que modelos lineares representem relações não lineares nos dados."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#transformações-de-variáveis",
+    "href": "aulas/regressao/met_param/met_param.html#transformações-de-variáveis",
+    "title": "Parte 1 : Regressão",
+    "section": "Transformações de variáveis",
+    "text": "Transformações de variáveis\nOs termos \\(x_i\\) não precisam ser apenas as variáveis originais. Podemos construir novas covariáveis a partir delas, por exemplo:\n\ntermos quadráticos: \\(x_i^2\\)\n\ninterações: \\(x_i x_j\\)\n\ntransformações não lineares\n\nIsso permite que modelos lineares representem relações não lineares nos dados."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#ideia-central",
+    "href": "aulas/regressao/met_param/met_param.html#ideia-central",
+    "title": "Métodos Paramétricos",
+    "section": "Ideia central",
+    "text": "Ideia central\nMesmo sendo chamado de modelo linear, o modelo pode capturar relações complexas porque ele é\n\nlinear nos parâmetros \\(\\beta\\),\nmas não necessariamente linear nas variáveis originais."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#o-método-dos-mínimos-quadrados",
+    "href": "aulas/regressao/met_param/met_param.html#o-método-dos-mínimos-quadrados",
+    "title": "Parte 1 : Regressão",
+    "section": "O Método dos Mínimos Quadrados",
+    "text": "O Método dos Mínimos Quadrados\nUma forma de estimar os coeficientes \\(\\beta\\) da regressão linear é utilizar o método dos mínimos quadrados.\nA ideia é escolher os coeficientes que minimizam a soma dos erros quadráticos:\n\\[\n\\hat{\\beta} =\n\\arg\\min_{\\beta}\n\\sum_{i=1}^{n}\n\\left(\nY_i - \\beta_0 - \\beta_1 x_{i1} - \\cdots - \\beta_d x_{ip}\n\\right)^2\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#interpretação",
+    "href": "aulas/regressao/met_param/met_param.html#interpretação",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação",
+    "text": "Interpretação\nO método escolhe os parâmetros que minimizam a soma dos quadrados dos resíduos:\n\\[\n\\text{resíduo}_i = Y_i - g(X_i)\n\\]\nLogo, o objetivo é minimizar\n\\[\n\\sum_{i=1}^{n} (Y_i - g(X_i))^2\n\\]\nGeometricamente, isso corresponde a ajustar o hiperplano que fica mais próximo possível dos dados."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#forma-matricial-do-modelo",
+    "href": "aulas/regressao/met_param/met_param.html#forma-matricial-do-modelo",
+    "title": "Parte 1 : Regressão",
+    "section": "Forma matricial do modelo",
+    "text": "Forma matricial do modelo\nO modelo de regressão pode ser escrito em forma matricial como\n\\[\n\\boldsymbol{y} = \\boldsymbol{X} \\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]\nonde\n\n\n\\(\\boldsymbol{y}\\) é o vetor de respostas\n\n\\(\\boldsymbol{X}\\) é a matriz de covariáveis\n\n\n\\(\\boldsymbol{\\beta}\\) é o vetor de parâmetros"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#solução-dos-mínimos-quadrados",
+    "href": "aulas/regressao/met_param/met_param.html#solução-dos-mínimos-quadrados",
+    "title": "Parte 1 : Regressão",
+    "section": "Solução dos mínimos quadrados",
+    "text": "Solução dos mínimos quadrados\nA solução analítica do problema é dada por\n\\[\n\\hat{\\boldsymbol{\\beta}} = (\\boldsymbol{X}^t \\boldsymbol{X})^{-1} \\boldsymbol{X}^t \\boldsymbol{y}\n\\]\nEssa expressão é conhecida como a equação normal da regressão linear."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#estrutura-da-matriz-de-dados",
+    "href": "aulas/regressao/met_param/met_param.html#estrutura-da-matriz-de-dados",
+    "title": "Parte 1 : Regressão",
+    "section": "Estrutura da matriz de dados",
+    "text": "Estrutura da matriz de dados\nA matriz de covariáveis possui a forma\n\\[\n\\boldsymbol{X} =\n\\begin{pmatrix}\nx_{1,0} & x_{1,1} & \\cdots & x_{1,d} \\\\\nx_{2,0} & x_{2,1} & \\cdots & x_{2,d} \\\\\n\\vdots  & \\vdots  & \\ddots & \\vdots \\\\\nx_{n,0} & x_{n,1} & \\cdots & x_{n,d}\n\\end{pmatrix}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#função-de-regressão-estimada",
+    "href": "aulas/regressao/met_param/met_param.html#função-de-regressão-estimada",
+    "title": "Parte 1 : Regressão",
+    "section": "Função de regressão estimada",
+    "text": "Função de regressão estimada\nUma vez estimados os coeficientes pelo método dos mínimos quadrados, a função de predição é dada por\n\\[\ng(\\mathbf{x}) = \\hat{\\boldsymbol{\\beta}}^t \\mathbf{x}\n\\]\nAssim, para um novo vetor de covariáveis \\(\\mathbf{x}\\), a previsão é\n\\[\n\\hat{\\boldsymbol{y}} = g(\\mathbf{x})\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#justificativa-estatística-do-método",
+    "href": "aulas/regressao/met_param/met_param.html#justificativa-estatística-do-método",
+    "title": "Parte 1 : Regressão",
+    "section": "Justificativa estatística do método",
+    "text": "Justificativa estatística do método\nGrande parte da literatura estatística estuda o método dos mínimos quadrados sob diferentes perspectivas, como:\n\n\nmáxima verossimilhança;\n\ntestes de hipóteses para os coeficientes \\(\\beta_i\\);\n\nintervalos de confiança para os parâmetros.\n\nEsses tópicos são tratados em profundidade em livros clássicos como:\n\nMorettin and Singer (2019)\nNeter et al. (1996)"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#uma-observação-importante",
+    "href": "aulas/regressao/met_param/met_param.html#uma-observação-importante",
+    "title": "Parte 1 : Regressão",
+    "section": "Uma observação importante",
+    "text": "Uma observação importante\nAssumir que a verdadeira função de regressão \\(r(x)\\) é exatamente linear é uma suposição bastante forte.\nNa prática, essa hipótese raramente é verdadeira.\nMesmo assim, existe uma literatura extensa mostrando que o método dos mínimos quadrados continua sendo útil para estimar relações entre \\(\\boldsymbol{X}\\) e \\(\\boldsymbol{y}\\), mesmo quando a verdadeira função de regressão não é linear."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#quando-a-suposição-de-linearidade-falha",
+    "href": "aulas/regressao/met_param/met_param.html#quando-a-suposição-de-linearidade-falha",
+    "title": "Parte 1 : Regressão",
+    "section": "Quando a suposição de linearidade falha",
+    "text": "Quando a suposição de linearidade falha\nA suposição de que a verdadeira função de regressão\n\\[\nr(\\mathbf{x}) = E[\\boldsymbol{y} \\mid \\boldsymbol{X}=\\mathbf{x}]\n\\]\né linear muitas vezes não é válida na prática.\nMesmo assim, modelos lineares frequentemente apresentam bom desempenho preditivo."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#references",
+    "href": "aulas/regressao/met_param/met_param.html#references",
+    "title": "Parte 1 : Regressão",
+    "section": "References",
+    "text": "References\n\n\nMorettin, Pedro A., and Julio M. Singer. 2019. Estatística e Ciência de Dados. Rio de Janeiro: LTC.\n\n\nNeter, John, Michael H. Kutner, Christopher J. Nachtsheim, and William Wasserman. 1996. Applied Linear Statistical Models. 4th ed. Chicago: Irwin."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#limitações-do-método-dos-mínimos-quadrados",
+    "href": "aulas/regressao/met_param/met_param.html#limitações-do-método-dos-mínimos-quadrados",
+    "title": "Parte 1 : Regressão",
+    "section": "Limitações do método dos mínimos quadrados",
+    "text": "Limitações do método dos mínimos quadrados\nQuando o número de covariáveis é muito grande, o método dos mínimos quadrados pode apresentar desempenho ruim.\nIsso ocorre principalmente por dois motivos:\n\n\nsuper-ajuste (overfitting)\n\nalta variância do estimador"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#problema-em-alta-dimensão",
+    "href": "aulas/regressao/met_param/met_param.html#problema-em-alta-dimensão",
+    "title": "Parte 1 : Regressão",
+    "section": "Problema em alta dimensão",
+    "text": "Problema em alta dimensão\nConsidere:\n\n\\(p\\) = número de covariáveis\n\n\\(n\\) = tamanho da amostra\n\nQuando \\(p &gt; n\\) o estimador de mínimos quadrados não está bem definido."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#por-quê",
+    "href": "aulas/regressao/met_param/met_param.html#por-quê",
+    "title": "Parte 1 : Regressão",
+    "section": "Por quê?",
+    "text": "Por quê?\nA solução dos mínimos quadrados é\n\\[\n\\hat{\\beta} = (X^T X)^{-1} X^T Y\n\\]\nPorém, quando \\(d &gt; n\\),\n\\[\nX^T X\n\\]\nnão é invertível.\nLogo, o estimador não pode ser calculado diretamente."
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html#consequência",
+    "href": "aulas/regressao/met_param/met_param.html#consequência",
+    "title": "Parte 1 : Regressão",
+    "section": "Consequência",
+    "text": "Consequência\nEm problemas com muitas variáveis (alta dimensão):\n\no método clássico de mínimos quadrados não funciona bem\nprecisamos utilizar métodos alternativos\n\nPor exemplo:\n\nregularização (Ridge, Lasso)\nredução de dimensionalidade\nseleção de variáveis"
+  },
+  {
+    "objectID": "aulas/regressao/met_param/met_param.html",
+    "href": "aulas/regressao/met_param/met_param.html",
+    "title": "Parte 1 : Regressão",
+    "section": "",
+    "text": "Métodos paramétricos assumem que a função de regressão pode ser descrita por um número finito de parâmetros.\nAqui, iremos nos concentrar em modelos de regressão linear.\n\nGrande parte do conteúdo pode parecer familiar;\nporém, será apresentado sob a perspectiva de modelagem preditiva e seleção de modelos."
   }
 ]
