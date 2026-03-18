@@ -166,22 +166,22 @@
 <p>Na regressão linear, a função de predição possui <strong>forma linear nos parâmetros</strong>.</p>
 <p>A função de predição pode ser escrita como</p>
 <p><span class="math display">\[
-g(x) = \beta^t x
+g(\mathbf{x}) = \boldsymbol{\beta}^t \mathbf{x}
 \]</span></p>
 <p>ou explicitamente</p>
 <p><span class="math display">\[
-g(x) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
+g(\mathbf{x}) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 \]</span> Adotamos a convenção <span class="math inline">\(x_0 = 1\)</span>. Assim, <span class="math inline">\(\beta_0\)</span> corresponde ao <strong>intercepto do modelo</strong>.</p>
 <p>O vetor de parâmetros é</p>
 <p><span class="math display">\[
-\beta = (\beta_0, \beta_1, \ldots, \beta_p)
+\boldsymbol{\beta}^t = (\beta_0, \beta_1, \ldots, \beta_p)
 \]</span></p>
 </section><section id="transformações-de-variáveis" class="slide level2"><h2>Transformações de variáveis</h2>
 <p>Os termos <span class="math inline">\(x_i\)</span> <strong>não precisam ser apenas as variáveis originais</strong>. Podemos construir <strong>novas covariáveis</strong> a partir delas, por exemplo:</p>
 <ul>
-<li>termos quadráticos: <span class="math inline">\(x_i^2\)</span>
+<li>termos quadráticos: <span class="math inline">\(X_i^2\)</span>
 </li>
-<li>interações: <span class="math inline">\(x_i x_j\)</span>
+<li>interações: <span class="math inline">\(X_i X_j\)</span>
 </li>
 <li>transformações não lineares</li>
 </ul>
@@ -190,7 +190,7 @@ g(x) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 <p>Uma forma de estimar os coeficientes <span class="math inline">\(\beta\)</span> da regressão linear é utilizar o <strong>método dos mínimos quadrados</strong>.</p>
 <p>A ideia é escolher os coeficientes que <strong>minimizam a soma dos erros quadráticos</strong>:</p>
 <p><span class="math display">\[
-\hat{\beta} =
+\hat{\boldsymbol{\beta}} =
 \arg\min_{\beta}
 \sum_{i=1}^{n}
 \left(
@@ -232,10 +232,10 @@ Y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_d x_{ip}
 <p><span class="math display">\[
 \boldsymbol{X} =
 \begin{pmatrix}
-x_{1,0} &amp; x_{1,1} &amp; \cdots &amp; x_{1,d} \\
-x_{2,0} &amp; x_{2,1} &amp; \cdots &amp; x_{2,d} \\
+x_{1,0} &amp; x_{1,1} &amp; \cdots &amp; x_{1,p} \\
+x_{2,0} &amp; x_{2,1} &amp; \cdots &amp; x_{2,p} \\
 \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots \\
-x_{n,0} &amp; x_{n,1} &amp; \cdots &amp; x_{n,d}
+x_{n,0} &amp; x_{n,1} &amp; \cdots &amp; x_{n,p}
 \end{pmatrix}
 \]</span></p>
 </section><section class="slide level2"><p>e o vetor resposta é</p>
@@ -297,9 +297,9 @@ g_{\boldsymbol{\beta}_*}(\mathbf{x}) = \boldsymbol{\beta}_*^t \mathbf{x}
 R(g_{\boldsymbol{\beta}})
 =
 \arg\min_{\boldsymbol{\beta}}
-E[(\boldsymbol{y} - \boldsymbol{\beta}^t \boldsymbol{X})^2]
+E[(\boldsymbol{y} - \boldsymbol{\beta}^t \mathbf{x})^2]
 \]</span></p>
-<p>Esse vetor define a <strong>melhor aproximação linear</strong> da relação entre <span class="math inline">\(\boldsymbol{X}\)</span> e <span class="math inline">\(\boldsymbol{y}\)</span>.</p>
+<p>Esse vetor define a <strong>melhor aproximação linear</strong> da relação entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\boldsymbol{y}\)</span>.</p>
 <p><span class="math inline">\(\boldsymbol{\beta}_*\)</span> é chamado de <strong>oráculo</strong>.</p>
 </section><section class="slide level2"><h3 id="interpretação-1">Interpretação</h3>
 <p>Mesmo quando o verdadeiro modelo <span class="math inline">\(r(x)\)</span> não é linear, o método dos mínimos quadrados estima o <strong>melhor preditor linear possível</strong>.</p>
@@ -354,7 +354,7 @@ Ele encontra a <strong>melhor aproximação linear da realidade</strong>.</p>
 <li><strong>redução de dimensionalidade</strong></li>
 <li><strong>seleção de variáveis</strong></li>
 </ul></section><section class="slide level2">
-<img data-src="met_param_files/figure-html/unnamed-chunk-1-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-2">Interpretação</h3>
+<img data-src="met_param_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-2">Interpretação</h3>
 <blockquote>
 <p>Quando temos mais parâmetros do que observações, o modelo tem liberdade suficiente para passar exatamente por todos os pontos.</p>
 </blockquote>
@@ -572,6 +572,41 @@ Neter, John, Michael H. Kutner, Christopher J. Nachtsheim, and William Wasserman
           RevealZoom
         ]
       });
+    </script><script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+    
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+    
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+    
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+    
+      })();
     </script><script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")

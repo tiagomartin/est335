@@ -54,20 +54,20 @@ Na regressão linear, a função de predição possui **forma linear nos parâme
 A função de predição pode ser escrita como
 
 $$
-g(x) = \beta^t x
+g(\mathbf{x}) = \boldsymbol{\beta}^t \mathbf{x}
 $$
 
 ou explicitamente
 
 $$
-g(x) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
+g(\mathbf{x}) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 $$
 Adotamos a convenção $x_0 = 1$. Assim, $\beta_0$ corresponde ao **intercepto do modelo**.
 
 O vetor de parâmetros é
 
 $$
-\beta = (\beta_0, \beta_1, \ldots, \beta_p)
+\boldsymbol{\beta}^t = (\beta_0, \beta_1, \ldots, \beta_p)
 $$
 
 ---
@@ -76,8 +76,8 @@ $$
 
 Os termos $x_i$ **não precisam ser apenas as variáveis originais**. Podemos construir **novas covariáveis** a partir delas, por exemplo:
 
-- termos quadráticos: $x_i^2$
-- interações: $x_i x_j$
+- termos quadráticos: $X_i^2$
+- interações: $X_i X_j$
 - transformações não lineares
 
 Isso permite que **modelos lineares representem relações não lineares nos dados**.
@@ -91,7 +91,7 @@ Uma forma de estimar os coeficientes $\beta$ da regressão linear é utilizar o 
 A ideia é escolher os coeficientes que **minimizam a soma dos erros quadráticos**:
 
 $$
-\hat{\beta} =
+\hat{\boldsymbol{\beta}} =
 \arg\min_{\beta}
 \sum_{i=1}^{n}
 \left(
@@ -154,10 +154,10 @@ A matriz de covariáveis possui a forma
 $$
 \boldsymbol{X} =
 \begin{pmatrix}
-x_{1,0} & x_{1,1} & \cdots & x_{1,d} \\
-x_{2,0} & x_{2,1} & \cdots & x_{2,d} \\
+x_{1,0} & x_{1,1} & \cdots & x_{1,p} \\
+x_{2,0} & x_{2,1} & \cdots & x_{2,p} \\
 \vdots  & \vdots  & \ddots & \vdots \\
-x_{n,0} & x_{n,1} & \cdots & x_{n,d}
+x_{n,0} & x_{n,1} & \cdots & x_{n,p}
 \end{pmatrix}
 $$
 
@@ -258,10 +258,10 @@ $$
 R(g_{\boldsymbol{\beta}})
 =
 \arg\min_{\boldsymbol{\beta}}
-E[(\boldsymbol{y} - \boldsymbol{\beta}^t \boldsymbol{X})^2]
+E[(\boldsymbol{y} - \boldsymbol{\beta}^t \mathbf{x})^2]
 $$
       
-Esse vetor define a **melhor aproximação linear** da relação entre $\boldsymbol{X}$ e $\boldsymbol{y}$.
+Esse vetor define a **melhor aproximação linear** da relação entre $\mathbf{x}$ e $\boldsymbol{y}$.
     
     
 $\boldsymbol{\beta}_*$ é chamado de **oráculo**.
