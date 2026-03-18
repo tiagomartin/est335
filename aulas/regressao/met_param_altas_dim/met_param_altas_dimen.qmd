@@ -1,0 +1,851 @@
+---
+title: "Parte 1 : Regressão"
+subtitle: "<span class='custom-subtitle'>Métodos Paramétricos em Altas Dimensões</span>"
+format: 
+  revealjs:
+    width: 1600
+    height: 900
+    footer: ""
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    preview-links: auto
+    self-contained: false
+    embed-resources: false
+    code-link: true
+    highlight-style: a11y
+    chalkboard: true
+  beamer:          # Slides em PDF (LaTeX/Beamer)
+    aspectratio: 169   # 16:9
+    keep-tex: true     # opcional, guarda o .tex gerado
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+    data-background-image: /images/back.png
+    data-background-size: cover
+    data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+## Busca pelo melhor subconjunto de covariáveis
+
+Quando o número de covariáveis é grande, uma estratégia natural é **remover algumas variáveis do modelo**.
+
+O objetivo é **reduzir a variância da função de predição estimada**.
+
+<br>
+
+### Ideia central
+
+Ao retirar algumas covariáveis do modelo:
+
+- a **variância do estimador diminui**
+- mas o **viés pode aumentar**
+
+Esse é mais um exemplo do **trade-off viés–variância**.
+
+---
+
+### Quando isso funciona bem?
+
+Se algumas covariáveis possuem **pouca ou nenhuma relação com a resposta $\boldsymbol{y}$**, então removê-las:
+
+- aumenta **pouco o viés**
+- reduz **consideravelmente a variância**
+
+Como consequência, o **poder preditivo do modelo pode aumentar**.
+
+---
+
+### Estratégia
+
+A solução consiste em encontrar um **subconjunto de covariáveis**
+
+$$
+S \subset \{1,2,\dots,p\}
+$$
+
+que produza o **melhor desempenho preditivo**.
+
+
+---
+
+### Formulação do problema
+
+Podemos escrever o problema como
+
+$$
+\hat{\boldsymbol{\beta}}_{L_0} =
+\arg\min_{\beta_0 \in \mathbb{R}, \boldsymbol{\beta} \in \mathbb{R}^p}
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{i=1}^{p} \beta_i x_{k,i}
+\right)^2
++
+\lambda \sum_{i=1}^{p} I(\beta_i \neq 0)
+$$
+
+---
+
+### Interpretação da expressão
+
+A função objetivo possui **duas partes**:
+
+1️⃣ **Erro de ajuste**
+
+$$
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{i=1}^{p} \beta_i x_{k,i}
+\right)^2
+$$
+
+mede o **erro quadrático de treinamento**.
+
+
+
+
+---
+
+2️⃣ **Penalização pela complexidade**
+
+$$
+\lambda \sum_{i=1}^{p} I(\beta_i \neq 0)
+$$
+
+conta **quantos coeficientes são diferentes de zero**.
+
+Ou seja, penaliza modelos com **muitas variáveis**.
+
+---
+
+### Ideia central
+
+O parâmetro $\lambda$ controla o compromisso entre:
+
+- **qualidade de ajuste**
+- **complexidade do modelo**
+
+Quanto maior $\lambda$:
+
+- menos variáveis são selecionadas
+- o modelo se torna **mais simples**.
+
+
+
+
+---
+
+### Caso sem penalização
+
+Quando $\lambda = 0$ não existe penalização.
+
+Nesse caso, $\hat{\beta}_{L_0}$ coincide com o **estimador de mínimos quadrados**.
+
+Ou seja:
+
+- **nenhuma variável é descartada**
+- todas as covariáveis permanecem no modelo.
+
+
+
+[É importante notar que não há penalização para $\beta_0$]{.body-text-m .teal-text .center}
+
+
+
+---
+
+
+### Busca entre todos os subconjuntos
+
+Para um valor específico de $\lambda = \dfrac{2 \hat{\sigma}^2}{n}$, encontrar a solução para $\hat{\boldsymbol{\beta}}_{L_0}$ equivale a buscar entre todos os modelos da classe
+
+$$
+G =
+\{g(x)\}
+$$
+
+que correspondem a diferentes **subconjuntos de covariáveis**.
+
+
+---
+
+
+Por exemplo:
+
+$$
+\begin{aligned}
+G = \{g(\mathbf{x})&=\hat{\beta}_0,\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_2 x_2 \\
+\vdots\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_p x_p \\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_2 x_2\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_3 x_3\\
+\vdots\\
+g(\mathbf{x}) &=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_2 x_2+\cdots+\hat{\beta}_p x_p\}
+\end{aligned}
+$$
+
+
+
+---
+
+### Como escolher o melhor modelo?
+
+Uma estratégia é ajustar **cada um dos $2^p$ modelos** e comparar seus desempenhos.
+
+Para isso utilizamos critérios de seleção de modelos, como:
+
+- **AIC**
+- **BIC**
+- **validação cruzada**
+
+O modelo escolhido é aquele que apresenta o **menor risco estimado**.
+
+
+---
+
+### Dificuldade computacional
+
+Apesar da ideia ser conceitualmente simples, resolver o problema exatamente pode ser **computacionalmente caro**.
+
+Se existem $p$ covariáveis, então existem $2^p$ subconjuntos possíveis de variáveis.
+
+Logo, precisaríamos ajustar **$2^p$ modelos diferentes**.
+
+Por exemplo:
+
+- $p=10$ $\rightarrow$ $2^{10}=1024$ modelos
+- $p=20$ $\rightarrow$ $2^{20}=1.048.576$ modelos
+
+
+---
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| fig-align: center
+
+library(ggplot2)
+
+p <- 1:20
+modelos <- 2^p
+
+df <- data.frame(p, modelos)
+
+ggplot(df, aes(p, modelos)) +
+  geom_line(color = "#D7301F", linewidth = 1.2) +
+  geom_point(color = "#D7301F", size = 2.8) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "Crescimento do número de modelos",
+    x = "Número de covariáveis (p)",
+    y = "Número de modelos possíveis"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+---
+
+### Ideia alternativa
+
+Uma solução é utilizar **heurísticas** que exploram apenas **uma pequena parte do espaço de modelos**, mas ainda assim produzem modelos com **baixo erro preditivo**.
+
+Ou seja, buscamos uma **aproximação da solução ótima**, sem precisar avaliar todos os $2^p$ modelos.
+
+
+
+## Regressão Stepwise
+
+Uma família de algoritmos que utiliza essa ideia é chamada de **regressão stepwise**.
+
+Esses métodos analisam apenas **um subconjunto dos modelos possíveis**, reduzindo drasticamente o custo computacional.
+
+
+<br>
+
+### Ideia do algoritmo
+
+Os métodos stepwise constroem o modelo **sequencialmente**, adicionando ou removendo variáveis.
+
+Em cada etapa, o algoritmo avalia um pequeno conjunto de candidatos e escolhe o modelo que **melhora mais o critério de ajuste**.
+
+---
+
+### Tipos principais
+
+Existem três variantes clássicas:
+
+- **Forward stepwise**
+    - começa com modelo vazio
+    - adiciona uma variável por vez
+
+- **Backward stepwise**
+    - começa com todas as variáveis
+    - remove uma variável por vez
+
+- **Stepwise bidirecional**
+    - pode adicionar ou remover variáveis em cada etapa
+    
+
+---
+
+### Forward Stepwise Selection
+
+O método **forward stepwise** constrói o modelo **sequencialmente**, adicionando uma variável por vez.
+
+Em cada etapa escolhemos a variável que **mais reduz o risco estimado** (por exemplo, usando **AIC** ou **validação cruzada**).
+
+
+---
+
+### Passo 1: Escolher a melhor variável isolada
+
+Para cada variável $X_j$, com $j=1,\dots,p$, ajustamos o modelo
+
+$$
+Y = \beta_j X_j + \varepsilon
+$$
+
+e estimamos o risco $\hat{R}(g_j)$. Escolhemos
+
+$$
+\hat{j} = \arg\min_j \hat{R}(g_j)
+$$
+
+e definimos $S = \{\hat{j}\}$.
+
+
+---
+
+### Passo 2: Adicionar uma nova variável
+
+Para cada variável $j \notin S$, ajustamos
+
+$$
+Y = \beta_j X_j + \sum_{s \in S} \beta_s X_s + \varepsilon
+$$
+
+Calculamos novamente o risco estimado $\hat{R}(g_j)$. Selecionamos
+
+$$
+\hat{j} = \arg\min_{j \notin S} \hat{R}(g_j)
+$$
+
+e atualizamos $S \leftarrow S \cup \{\hat{j}\}.$
+
+
+---
+
+### Passo 3: Repetir
+
+Repetimos o processo:
+
+- adicionando **uma variável por vez**
+- sempre escolhendo a que **mais reduz o risco estimado**.
+
+O procedimento continua até:
+
+- todas as variáveis entrarem no modelo, ou
+- não ser mais possível melhorar o ajuste.
+
+---
+
+### Passo 4: Escolher o melhor modelo
+
+Ao final, escolhemos o modelo com **menor risco estimado** ao longo da sequência de modelos gerados.
+
+
+---
+
+### Vantagem computacional
+
+No **best subset selection** precisaríamos avaliar $2^p$ modelos.
+
+No **forward stepwise** precisamos ajustar apenas
+
+$$
+1 + \frac{p(p+1)}{2}
+$$
+
+modelos.
+
+Isso representa uma **redução enorme no custo computacional**.
+
+
+---
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| fig-align: center
+
+library(ggplot2)
+
+d <- 4:10
+
+melhor_subconjunto <- 2^d
+forward_stepwise <- 1 + d * (d + 1) / 2
+
+df_plot <- data.frame(
+  d = rep(d, 2),
+  modelos = c(forward_stepwise, melhor_subconjunto),
+  metodo = rep(c("forward stepwise", "melhor subconjunto"), each = length(d))
+)
+
+ggplot(df_plot, aes(x = d, y = modelos, color = metodo)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2.8) +
+  scale_color_manual(values = c(
+    "forward stepwise" = "#2C7FB8",
+    "melhor subconjunto" = "#D81B60"
+  )) +
+  theme_minimal(base_size = 13) +
+  labs(
+    x = "d",
+    y = "Número de modelos",
+    color = ""
+  ) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+
+
+## Lasso
+
+O **Lasso** (Least Absolute Shrinkage and Selection Operator) foi proposto por @tibshirani1996lasso.
+
+Seu objetivo é encontrar um estimador da regressão linear que tenha **menor risco preditivo** que o método de mínimos quadrados.
+
+---
+
+### Ideia central
+
+Assim como em outros métodos de regularização, o Lasso busca minimizar:
+
+- o **erro de ajuste**
+- mais uma **penalização de complexidade**.
+
+A função objetivo é
+
+$$
+\hat{\beta}_{L_1,\lambda}
+=
+\arg\min_{\beta}
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
+\right)^2
++
+\lambda \sum_{j=1}^{p} |\beta_j|
+$$
+
+
+
+---
+
+### Penalização $L_1$
+
+No Lasso, a complexidade do modelo é medida pela **norma $L_1$**:
+
+$$
+\sum_{j=1}^{p} |\beta_j|
+$$
+
+Essa penalização favorece modelos com **coeficientes pequenos** e frequentemente **iguais a zero**.
+
+Por isso, o Lasso realiza **seleção automática de variáveis**.
+
+
+---
+
+### Comparação com seleção de subconjuntos
+
+Nos métodos de seleção de variáveis clássicos utilizamos a penalização
+
+$$
+\sum_{j=1}^{p} I(\beta_j \neq 0)
+$$
+
+que corresponde à **norma $L_0$**.
+
+
+---
+
+No Lasso utilizamos
+
+$$
+\sum_{j=1}^{p} |\beta_j|
+$$
+
+que é a **norma $L_1$**.
+
+Essa substituição torna o problema **computacionalmente muito mais fácil de resolver**.
+
+
+
+---
+
+### Vantagens do Lasso
+
+Em relação a métodos como **stepwise selection**, o Lasso possui:
+
+- solução **computacionalmente mais rápida**
+- **melhores propriedades teóricas**
+- capacidade de realizar **seleção automática de variáveis**.
+
+
+---
+
+### O papel do parâmetro $\lambda$ no Lasso
+
+
+Cada valor do **parâmetro de regularização $\lambda$** produz um conjunto diferente de coeficientes
+
+$$
+\hat{\beta}_{L_1,\lambda}
+$$
+
+Esse parâmetro controla o **grau de penalização aplicado ao modelo**.
+
+---
+
+### Caso 1: $\lambda = 0$
+
+Quando $\lambda = 0$ o problema do Lasso se reduz a
+
+$$
+\min_\beta \sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p}\beta_j x_{k,j}
+\right)^2
+$$
+
+ou seja, ao **estimador de mínimos quadrados**.
+
+Neste caso:
+
+- não há penalização
+- todos os coeficientes podem ser diferentes de zero
+
+
+---
+
+### Caso 2: $\lambda$ grande
+
+Quando $\lambda$ cresce, o termo de penalização domina:
+
+$$
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p}\beta_j x_{k,j}
+\right)^2
++
+\lambda \sum_{j=1}^{p} |\beta_j|
+\;\approx\;
+\lambda \sum_{j=1}^{p} |\beta_j|
+$$
+
+Nesse caso, a solução tende a
+
+$$
+\hat{\beta}_1 = \cdots = \hat{\beta}_p = 0
+$$
+
+Portanto:
+
+- o modelo torna-se **extremamente simples**
+- a **variância é muito pequena**
+- mas o **viés é alto**
+
+
+---
+
+### Como escolher $\lambda$?
+
+Na prática, $\lambda$ é escolhido por **validação cruzada**.
+
+Procedimento:
+
+1. Ajustar o modelo para vários valores de $\lambda$
+2. Estimar o risco preditivo $R(g_\lambda)$
+3. Selecionar o valor de $\lambda$ que **minimiza o erro de validação**
+
+Esse processo está ilustrado no **caminho de regularização do Lasso**.
+
+
+---
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 5
+#| fig-align: center
+
+library(glmnet)
+library(ggplot2)
+
+set.seed(123)
+
+n <- 100
+p <- 8
+
+X <- matrix(rnorm(n * p), n, p)
+beta_true <- c(3, 1.5, 0, 0, 2, 0, 0, 0)
+y <- X %*% beta_true + rnorm(n, sd = 1)
+
+fit_lasso <- glmnet(X, y, alpha = 1)
+
+matplot(
+  log(fit_lasso$lambda),
+  t(as.matrix(fit_lasso$beta)),
+  type = "l",
+  lty = 1,
+  lwd = 2,
+  xlab = expression(log(lambda)),
+  ylab = "Coeficientes",
+  main = "Caminho dos coeficientes no Lasso"
+)
+
+abline(v = log(fit_lasso$lambda[which.min(abs(fit_lasso$lambda - 1))]),
+       lty = 2, col = "gray40")
+```
+
+
+---
+
+### Caminho dos coeficientes no Lasso
+
+- Cada curva representa um **coeficiente do modelo**.
+- Quando $\lambda$ é pequeno, os coeficientes ficam próximos do ajuste por mínimos quadrados.
+- À medida que $\lambda$ aumenta, os coeficientes são **encolhidos em direção a zero**.
+- Alguns coeficientes tornam-se **exatamente zero**, realizando **seleção automática de variáveis**.
+
+
+
+
+
+## Regressão Ridge
+
+Uma alternativa ao **Lasso** é a **Regressão Ridge**, introduzida por @hoerl1970ridge. A ideia é buscar um modelo que minimize simultaneamente:
+
+- o **erro de ajuste do modelo**
+- uma **medida da complexidade do vetor de coeficientes**
+
+Na regressão Ridge isso é feito penalizando a **norma $L_2$ dos coeficientes**.
+
+
+---
+
+### Formulação do Problema
+
+O estimador da regressão Ridge é definido como
+
+$$
+\hat{\beta}_{L_2,\lambda}
+=
+\arg\min_{\beta}
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
+\right)^2
++
+\lambda \sum_{j=1}^{p} \beta_j^2
+$$
+
+onde
+
+- $y_k$ é a variável resposta da $k$-ésima observação  
+- $x_{k,j}$ é o valor da $j$-ésima covariável  
+- $\beta_j$ são os coeficientes do modelo  
+- $\lambda \ge 0$ é o **parâmetro de regularização**
+
+---
+
+### Estrutura da Função Objetivo
+
+
+
+#### Erro de ajuste
+
+$$
+\sum_{k=1}^{n}
+\left(
+y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
+\right)^2
+$$
+
+Esse termo corresponde ao **erro quadrático residual**.
+
+#### Penalização Ridge
+
+$$
+\lambda \sum_{j=1}^{d} \beta_j^2
+$$
+
+Esse termo penaliza coeficientes grandes, reduzindo a complexidade do modelo.
+
+---
+
+### Norma $L_2$
+
+A penalização utilizada corresponde à **norma $L_2$ do vetor de coeficientes**
+
+$$
+\|\beta\|_{L_2}^2
+=
+\sum_{j=1}^{d} \beta_j^2
+$$
+
+Essa medida representa o **comprimento euclidiano do vetor de parâmetros**.
+
+Penalizar essa quantidade implica restringir a magnitude dos coeficientes.
+
+---
+
+### Papel do Parâmetro $\lambda$
+
+O parâmetro $\lambda$ controla o grau de regularização do modelo.
+
+| Valor de $\lambda$ | Interpretação |
+|---|---|
+| $\lambda = 0$ | regressão linear clássica |
+| $\lambda$ pequeno | penalização fraca |
+| $\lambda$ grande | coeficientes próximos de zero |
+
+Assim, $\lambda$ controla o **trade-off entre ajuste e complexidade do modelo**.
+
+---
+
+### Solução Analítica
+
+Diferentemente do Lasso, a regressão Ridge possui **solução analítica fechada**, dada por
+
+$$
+\hat{\boldsymbol{\beta}}_{L_2,\lambda}
+=
+(\boldsymbol{X}^t \boldsymbol{X} + \lambda I_0)^{-1}\boldsymbol{X}^t\boldsymbol{y}
+$$
+
+onde
+
+- $\boldsymbol{X}$ é a matriz de covariáveis
+- $\boldsymbol{y}$ é o vetor de respostas
+- $I_0$ é uma matriz identidade modificada.
+
+---
+
+### Papel da Matriz Identidade
+
+A matriz $I_0$ é construída de modo que o **intercepto não seja penalizado**.
+
+
+
+$$
+I_0 =
+\begin{pmatrix}
+0 & 0 & 0 & \cdots & 0 \\
+0 & 1 & 0 & \cdots & 0 \\
+0 & 0 & 1 & \cdots & 0 \\
+0 & 0 & 0 & \ddots & 0 \\
+0 & 0 & 0 & \cdots & 1
+\end{pmatrix}
+$$
+
+Ou seja, o coeficiente $\beta_0$ não sofre regularização.
+
+---
+
+### Comparação com Regressão Linear
+
+Na regressão linear clássica temos
+
+$$
+\hat{\boldsymbol{\beta}}_{OLS}
+=
+(\boldsymbol{X}^t \boldsymbol{X})^{-1} \boldsymbol{X}^t \boldsymbol{y}
+$$
+
+Na regressão Ridge adiciona-se o termo $\lambda I_0$. Esse termo torna a matriz
+
+$$
+\boldsymbol{X}^t \boldsymbol{X} + \lambda I_0
+$$
+
+mais estável numericamente, especialmente quando existe **alta correlação entre variáveis explicativas**.
+
+---
+
+### Interpretação Geométrica
+
+A regressão Ridge pode ser interpretada como o problema
+
+$$
+\min \text{Erro}
+\quad
+\text{sujeito a}
+\quad
+\sum_{j=1}^{p} \beta_j^2 \leq t
+$$
+
+Geometricamente:
+
+- a restrição define uma **esfera no espaço dos coeficientes**
+- a solução ocorre onde essa esfera toca a superfície do erro mínimo.
+
+---
+
+### Comparação entre Ridge e Lasso
+
+| Método | Penalização | Efeito |
+|---|---|---|
+| Ridge | $L_2$ | reduz coeficientes |
+| Lasso | $L_1$ | pode zerar coeficientes |
+
+Assim:
+
+- **Ridge** reduz a magnitude dos coeficientes
+- **Lasso** pode realizar **seleção automática de variáveis**
+
+---
+
+### Conclusão
+
+A regressão Ridge é um método fundamental em aprendizado estatístico porque
+
+- reduz a variância dos estimadores
+- melhora a estabilidade numérica
+- controla a complexidade do modelo
+- funciona bem em presença de **multicolinearidade**.
+
+Por essas razões, métodos de regularização são amplamente utilizados em problemas modernos de **aprendizado de máquina e análise de dados de alta dimensão**.
+
+
+
+
+
+
+
+## References {visibility="uncounted"}
+
+::: {#refs}
+:::

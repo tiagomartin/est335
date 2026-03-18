@@ -3601,7 +3601,7 @@
     "href": "aulas/regressao/met_param/met_param.html#regressão-linear",
     "title": "Parte 1 : Regressão",
     "section": "Regressão linear",
-    "text": "Regressão linear\nNa regressão linear, a função de predição possui forma linear nos parâmetros.\nA função de predição pode ser escrita como\n\\[\ng(x) = \\beta^t x\n\\]\nou explicitamente\n\\[\ng(x) = \\beta_0 x_0 + \\beta_1 x_1 + \\cdots + \\beta_p x_p\n\\] Adotamos a convenção \\(x_0 = 1\\). Assim, \\(\\beta_0\\) corresponde ao intercepto do modelo.\nO vetor de parâmetros é\n\\[\n\\beta = (\\beta_0, \\beta_1, \\ldots, \\beta_p)\n\\]"
+    "text": "Regressão linear\nNa regressão linear, a função de predição possui forma linear nos parâmetros.\nA função de predição pode ser escrita como\n\\[\ng(\\mathbf{x}) = \\boldsymbol{\\beta}^t \\mathbf{x}\n\\]\nou explicitamente\n\\[\ng(\\mathbf{x}) = \\beta_0 x_0 + \\beta_1 x_1 + \\cdots + \\beta_p x_p\n\\] Adotamos a convenção \\(x_0 = 1\\). Assim, \\(\\beta_0\\) corresponde ao intercepto do modelo.\nO vetor de parâmetros é\n\\[\n\\boldsymbol{\\beta}^t = (\\beta_0, \\beta_1, \\ldots, \\beta_p)\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#convenção-do-intercepto",
@@ -3615,7 +3615,7 @@
     "href": "aulas/regressao/met_param/met_param.html#transformações-de-variáveis",
     "title": "Parte 1 : Regressão",
     "section": "Transformações de variáveis",
-    "text": "Transformações de variáveis\nOs termos \\(x_i\\) não precisam ser apenas as variáveis originais. Podemos construir novas covariáveis a partir delas, por exemplo:\n\ntermos quadráticos: \\(x_i^2\\)\n\ninterações: \\(x_i x_j\\)\n\ntransformações não lineares\n\nIsso permite que modelos lineares representem relações não lineares nos dados."
+    "text": "Transformações de variáveis\nOs termos \\(x_i\\) não precisam ser apenas as variáveis originais. Podemos construir novas covariáveis a partir delas, por exemplo:\n\ntermos quadráticos: \\(X_i^2\\)\n\ninterações: \\(X_i X_j\\)\n\ntransformações não lineares\n\nIsso permite que modelos lineares representem relações não lineares nos dados."
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#ideia-central",
@@ -3629,7 +3629,7 @@
     "href": "aulas/regressao/met_param/met_param.html#o-método-dos-mínimos-quadrados",
     "title": "Parte 1 : Regressão",
     "section": "O Método dos Mínimos Quadrados",
-    "text": "O Método dos Mínimos Quadrados\nUma forma de estimar os coeficientes \\(\\beta\\) da regressão linear é utilizar o método dos mínimos quadrados.\nA ideia é escolher os coeficientes que minimizam a soma dos erros quadráticos:\n\\[\n\\hat{\\beta} =\n\\arg\\min_{\\beta}\n\\sum_{i=1}^{n}\n\\left(\nY_i - \\beta_0 - \\beta_1 x_{i1} - \\cdots - \\beta_d x_{ip}\n\\right)^2\n\\]"
+    "text": "O Método dos Mínimos Quadrados\nUma forma de estimar os coeficientes \\(\\beta\\) da regressão linear é utilizar o método dos mínimos quadrados.\nA ideia é escolher os coeficientes que minimizam a soma dos erros quadráticos:\n\\[\n\\hat{\\boldsymbol{\\beta}} =\n\\arg\\min_{\\beta}\n\\sum_{i=1}^{n}\n\\left(\nY_i - \\beta_0 - \\beta_1 x_{i1} - \\cdots - \\beta_d x_{ip}\n\\right)^2\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#interpretação",
@@ -3657,7 +3657,7 @@
     "href": "aulas/regressao/met_param/met_param.html#estrutura-da-matriz-de-dados",
     "title": "Parte 1 : Regressão",
     "section": "Estrutura da matriz de dados",
-    "text": "Estrutura da matriz de dados\nA matriz de covariáveis possui a forma\n\\[\n\\boldsymbol{X} =\n\\begin{pmatrix}\nx_{1,0} & x_{1,1} & \\cdots & x_{1,d} \\\\\nx_{2,0} & x_{2,1} & \\cdots & x_{2,d} \\\\\n\\vdots  & \\vdots  & \\ddots & \\vdots \\\\\nx_{n,0} & x_{n,1} & \\cdots & x_{n,d}\n\\end{pmatrix}\n\\]"
+    "text": "Estrutura da matriz de dados\nA matriz de covariáveis possui a forma\n\\[\n\\boldsymbol{X} =\n\\begin{pmatrix}\nx_{1,0} & x_{1,1} & \\cdots & x_{1,p} \\\\\nx_{2,0} & x_{2,1} & \\cdots & x_{2,p} \\\\\n\\vdots  & \\vdots  & \\ddots & \\vdots \\\\\nx_{n,0} & x_{n,1} & \\cdots & x_{n,p}\n\\end{pmatrix}\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#função-de-regressão-estimada",
@@ -3728,5 +3728,166 @@
     "title": "Parte 1 : Regressão",
     "section": "",
     "text": "Métodos paramétricos assumem que a função de regressão pode ser descrita por um número finito de parâmetros.\nAqui, iremos nos concentrar em modelos de regressão linear.\n\nGrande parte do conteúdo pode parecer familiar;\nporém, será apresentado sob a perspectiva de modelagem preditiva e seleção de modelos."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#busca-pelo-melhor-subconjunto-de-covariáveis",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#busca-pelo-melhor-subconjunto-de-covariáveis",
+    "title": "Parte 1 : Regressão",
+    "section": "Busca pelo melhor subconjunto de covariáveis",
+    "text": "Busca pelo melhor subconjunto de covariáveis\nQuando o número de covariáveis é grande, uma estratégia natural é remover algumas variáveis do modelo.\nO objetivo é reduzir a variância da função de predição estimada.\n\nIdeia central\nAo retirar algumas covariáveis do modelo:\n\na variância do estimador diminui\n\nmas o viés pode aumentar\n\n\nEsse é mais um exemplo do trade-off viés–variância."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#ideia-central",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#ideia-central",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia central",
+    "text": "Ideia central\nAo retirar algumas covariáveis do modelo:\n\na variância do estimador diminui\nmas o viés pode aumentar\n\nEsse é mais um exemplo do trade-off viés–variância."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#quando-isso-funciona-bem",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#quando-isso-funciona-bem",
+    "title": "Parte 1 : Regressão",
+    "section": "Quando isso funciona bem?",
+    "text": "Quando isso funciona bem?\nSe algumas covariáveis possuem pouca ou nenhuma relação com a resposta \\(Y\\), então removê-las:\n\naumenta pouco o viés\nreduz consideravelmente a variância\n\nComo consequência, o poder preditivo do modelo pode aumentar."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#intuição",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#intuição",
+    "title": "Parte 1 : Regressão",
+    "section": "Intuição",
+    "text": "Intuição\nNem sempre mais variáveis significa melhor modelo.\nAdicionar muitas covariáveis pode:\n\naumentar o ruído\naumentar a variância do estimador\nlevar ao super-ajuste (overfitting)."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#estratégia",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#estratégia",
+    "title": "Parte 1 : Regressão",
+    "section": "Estratégia",
+    "text": "Estratégia\nA solução consiste em encontrar um subconjunto de covariáveis\n\\[\nS \\subset \\{1,2,\\dots,d\\}\n\\]\nque produza o melhor desempenho preditivo."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#ideia-central-1",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#ideia-central-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia central",
+    "text": "Ideia central\nO parâmetro \\(\\lambda\\) controla o compromisso entre:\n\nqualidade de ajuste\ncomplexidade do modelo\n\nQuanto maior \\(\\lambda\\):\n\nmenos variáveis são selecionadas\no modelo se torna mais simples."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#observação-importante",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#observação-importante",
+    "title": "Parte 1 : Regressão",
+    "section": "Observação importante",
+    "text": "Observação importante\nSe \\(p &gt; n\\) o método clássico de mínimos quadrados não pode ser aplicado diretamente, pois a matriz \\(\\boldsymbol{X}^t \\boldsymbol{X}\\) não é invertível.\nMétodos de seleção de variáveis ajudam a contornar esse problema.\nÉ importante notar que não há penalização para \\(\\beta_0\\)"
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-stepwise",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-stepwise",
+    "title": "Parte 1 : Regressão",
+    "section": "Regressão Stepwise",
+    "text": "Regressão Stepwise\nUma família de algoritmos que utiliza essa ideia é chamada de regressão stepwise.\nEsses métodos analisam apenas um subconjunto dos modelos possíveis, reduzindo drasticamente o custo computacional.\n\nIdeia do algoritmo\nOs métodos stepwise constroem o modelo sequencialmente, adicionando ou removendo variáveis.\nEm cada etapa, o algoritmo avalia um pequeno conjunto de candidatos e escolhe o modelo que melhora mais o critério de ajuste."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#lasso",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#lasso",
+    "title": "Parte 1 : Regressão",
+    "section": "Lasso",
+    "text": "Lasso\nO Lasso (Least Absolute Shrinkage and Selection Operator) foi proposto por Tibshirani (1996).\nSeu objetivo é encontrar um estimador da regressão linear que tenha menor risco preditivo que o método de mínimos quadrados."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#ideia-central-2",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#ideia-central-2",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia central",
+    "text": "Ideia central\nAssim como em outros métodos de regularização, o Lasso busca minimizar:\n\no erro de ajuste\n\nmais uma penalização de complexidade.\n\nA função objetivo é\n\\[\n\\hat{\\beta}_{L_1,\\lambda}\n=\n\\arg\\min_{\\beta}\n\\sum_{k=1}^{n}\n\\left(\ny_k - \\beta_0 - \\sum_{j=1}^{d} \\beta_j x_{k,j}\n\\right)^2\n+\n\\lambda \\sum_{j=1}^{d} |\\beta_j|.\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#references",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#references",
+    "title": "Parte 1 : Regressão",
+    "section": "References",
+    "text": "References\n\n\nHoerl, Arthur E., and Robert W. Kennard. 1970. “Ridge Regression: Biased Estimation for Nonorthogonal Problems.” Technometrics 12 (1): 55–67. https://doi.org/10.1080/00401706.1970.10488634.\n\n\nTibshirani, Robert. 1996. “Regression Shrinkage and Selection via the Lasso.” Journal of the Royal Statistical Society: Series B (Methodological) 58 (1): 267–88."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#caso-1-lambda-0",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#caso-1-lambda-0",
+    "title": "Parte 1 : Regressão",
+    "section": "Caso 1: \\(\\lambda = 0\\)\n",
+    "text": "Caso 1: \\(\\lambda = 0\\)\n\nQuando\n\\[\n\\lambda = 0\n\\]\no problema do Lasso se reduz a\n\\[\n\\min_\\beta \\sum_{k=1}^{n}\n\\left(\ny_k - \\beta_0 - \\sum_{j=1}^{d}\\beta_j x_{k,j}\n\\right)^2\n\\]\nou seja, ao estimador de mínimos quadrados.\nNeste caso:\n\nnão há penalização\ntodos os coeficientes podem ser diferentes de zero"
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-ridge",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-ridge",
+    "title": "Parte 1 : Regressão",
+    "section": "Regressão Ridge",
+    "text": "Regressão Ridge\nUma alternativa ao Lasso é a Regressão Ridge, introduzida por Hoerl and Kennard (1970). A ideia é buscar um modelo que minimize simultaneamente:\n\no erro de ajuste do modelo\n\numa medida da complexidade do vetor de coeficientes\n\n\nNa regressão Ridge isso é feito penalizando a norma \\(L_2\\) dos coeficientes."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#formulação-do-problema-1",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#formulação-do-problema-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Formulação do Problema",
+    "text": "Formulação do Problema\nO estimador da regressão Ridge é definido como\n\\[\n\\hat{\\beta}_{L_2,\\lambda}\n=\n\\arg\\min_{\\beta}\n\\sum_{k=1}^{n}\n\\left(\ny_k - \\beta_0 - \\sum_{j=1}^{d} \\beta_j x_{k,j}\n\\right)^2\n+\n\\lambda \\sum_{j=1}^{d} \\beta_j^2\n\\]\nonde\n\n\n\\(y_k\\) é a variável resposta da \\(k\\)-ésima observação\n\n\n\\(x_{k,j}\\) é o valor da \\(j\\)-ésima covariável\n\n\n\\(\\beta_j\\) são os coeficientes do modelo\n\n\n\\(\\lambda \\ge 0\\) é o parâmetro de regularização"
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#estrutura-da-função-objetivo",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#estrutura-da-função-objetivo",
+    "title": "Parte 1 : Regressão",
+    "section": "Estrutura da Função Objetivo",
+    "text": "Estrutura da Função Objetivo\nA função objetivo possui dois componentes.\nErro de ajuste\n\\[\n\\sum_{k=1}^{n}\n\\left(\ny_k - \\beta_0 - \\sum_{j=1}^{d} \\beta_j x_{k,j}\n\\right)^2\n\\]\nEsse termo corresponde ao erro quadrático residual.\nPenalização Ridge\n\\[\n\\lambda \\sum_{j=1}^{d} \\beta_j^2\n\\]\nEsse termo penaliza coeficientes grandes, reduzindo a complexidade do modelo."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#norma-l_2",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#norma-l_2",
+    "title": "Parte 1 : Regressão",
+    "section": "Norma \\(L_2\\)\n",
+    "text": "Norma \\(L_2\\)\n\nA penalização utilizada corresponde à norma \\(L_2\\) do vetor de coeficientes\n\\[\n\\|\\beta\\|_{L_2}^2\n=\n\\sum_{j=1}^{d} \\beta_j^2\n\\]\nEssa medida representa o comprimento euclidiano do vetor de parâmetros.\nPenalizar essa quantidade implica restringir a magnitude dos coeficientes."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#papel-do-parâmetro-lambda",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#papel-do-parâmetro-lambda",
+    "title": "Parte 1 : Regressão",
+    "section": "Papel do Parâmetro \\(\\lambda\\)\n",
+    "text": "Papel do Parâmetro \\(\\lambda\\)\n\nO parâmetro \\(\\lambda\\) controla o grau de regularização do modelo.\n\n\nValor de \\(\\lambda\\)\n\nInterpretação\n\n\n\n\\(\\lambda = 0\\)\nregressão linear clássica\n\n\n\n\\(\\lambda\\) pequeno\npenalização fraca\n\n\n\n\\(\\lambda\\) grande\ncoeficientes próximos de zero\n\n\n\nAssim, \\(\\lambda\\) controla o trade-off entre ajuste e complexidade do modelo."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#solução-analítica",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#solução-analítica",
+    "title": "Parte 1 : Regressão",
+    "section": "Solução Analítica",
+    "text": "Solução Analítica\nDiferentemente do Lasso, a regressão Ridge possui solução analítica fechada, dada por\n\\[\n\\hat{\\beta}_{L_2,\\lambda}\n=\n(X^TX + \\lambda I_0)^{-1}X^TY\n\\]\nonde\n\n\n\\(X\\) é a matriz de covariáveis\n\n\\(Y\\) é o vetor de respostas\n\n\\(I_0\\) é uma matriz identidade modificada."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#papel-da-matriz-identidade",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#papel-da-matriz-identidade",
+    "title": "Parte 1 : Regressão",
+    "section": "Papel da Matriz Identidade",
+    "text": "Papel da Matriz Identidade\nA matriz \\(I_0\\) é construída de modo que o intercepto não seja penalizado.\nOu seja, o coeficiente\n\\[\n\\beta_0\n\\]\nnão sofre regularização."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#comparação-com-regressão-linear",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#comparação-com-regressão-linear",
+    "title": "Parte 1 : Regressão",
+    "section": "Comparação com Regressão Linear",
+    "text": "Comparação com Regressão Linear\nNa regressão linear clássica temos\n\\[\n\\hat{\\beta}_{OLS}\n=\n(X^TX)^{-1}X^TY\n\\]\nNa regressão Ridge adiciona-se o termo\n\\[\n\\lambda I_0\n\\]\nEsse termo torna a matriz\n\\[\nX^TX + \\lambda I_0\n\\]\nmais estável numericamente, especialmente quando existe alta correlação entre variáveis explicativas."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#interpretação-geométrica",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#interpretação-geométrica",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação Geométrica",
+    "text": "Interpretação Geométrica\nA regressão Ridge pode ser interpretada como o problema\n\\[\n\\min \\text{Erro}\n\\quad\n\\text{sujeito a}\n\\quad\n\\sum_{j=1}^{d} \\beta_j^2 \\leq t\n\\]\nGeometricamente:\n\na restrição define uma esfera no espaço dos coeficientes\n\na solução ocorre onde essa esfera toca a superfície do erro mínimo."
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#comparação-entre-ridge-e-lasso",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#comparação-entre-ridge-e-lasso",
+    "title": "Parte 1 : Regressão",
+    "section": "Comparação entre Ridge e Lasso",
+    "text": "Comparação entre Ridge e Lasso\n\n\nMétodo\nPenalização\nEfeito\n\n\n\nRidge\n\\(L_2\\)\nreduz coeficientes\n\n\nLasso\n\\(L_1\\)\npode zerar coeficientes\n\n\n\nAssim:\n\n\nRidge reduz a magnitude dos coeficientes\n\nLasso pode realizar seleção automática de variáveis"
+  },
+  {
+    "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#conclusão",
+    "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#conclusão",
+    "title": "Parte 1 : Regressão",
+    "section": "Conclusão",
+    "text": "Conclusão\nA regressão Ridge é um método fundamental em aprendizado estatístico porque\n\nreduz a variância dos estimadores\nmelhora a estabilidade numérica\ncontrola a complexidade do modelo\nfunciona bem em presença de multicolinearidade.\n\nPor essas razões, métodos de regularização são amplamente utilizados em problemas modernos de aprendizado de máquina e análise de dados de alta dimensão."
   }
 ]

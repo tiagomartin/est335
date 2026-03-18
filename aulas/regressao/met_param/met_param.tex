@@ -236,20 +236,20 @@ nos parâmetros}.
 A função de predição pode ser escrita como
 
 \[
-g(x) = \beta^t x
+g(\mathbf{x}) = \boldsymbol{\beta}^t \mathbf{x}
 \]
 
 ou explicitamente
 
 \[
-g(x) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
+g(\mathbf{x}) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 \] Adotamos a convenção \(x_0 = 1\). Assim, \(\beta_0\) corresponde ao
 \textbf{intercepto do modelo}.
 
 O vetor de parâmetros é
 
 \[
-\beta = (\beta_0, \beta_1, \ldots, \beta_p)
+\boldsymbol{\beta}^t = (\beta_0, \beta_1, \ldots, \beta_p)
 \]
 \end{frame}
 
@@ -262,9 +262,9 @@ por exemplo:
 \begin{itemize}
 \tightlist
 \item
-  termos quadráticos: \(x_i^2\)
+  termos quadráticos: \(X_i^2\)
 \item
-  interações: \(x_i x_j\)
+  interações: \(X_i X_j\)
 \item
   transformações não lineares
 \end{itemize}
@@ -282,7 +282,7 @@ A ideia é escolher os coeficientes que \textbf{minimizam a soma dos
 erros quadráticos}:
 
 \[
-\hat{\beta} =
+\hat{\boldsymbol{\beta}} =
 \arg\min_{\beta}
 \sum_{i=1}^{n}
 \left(
@@ -350,10 +350,10 @@ A matriz de covariáveis possui a forma
 \[
 \boldsymbol{X} =
 \begin{pmatrix}
-x_{1,0} & x_{1,1} & \cdots & x_{1,d} \\
-x_{2,0} & x_{2,1} & \cdots & x_{2,d} \\
+x_{1,0} & x_{1,1} & \cdots & x_{1,p} \\
+x_{2,0} & x_{2,1} & \cdots & x_{2,p} \\
 \vdots  & \vdots  & \ddots & \vdots \\
-x_{n,0} & x_{n,1} & \cdots & x_{n,d}
+x_{n,0} & x_{n,1} & \cdots & x_{n,p}
 \end{pmatrix}
 \]
 \end{frame}
@@ -470,11 +470,11 @@ O vetor \(\boldsymbol{\beta}_*\) é definido como aquele que
 R(g_{\boldsymbol{\beta}})
 =
 \arg\min_{\boldsymbol{\beta}}
-E[(\boldsymbol{y} - \boldsymbol{\beta}^t \boldsymbol{X})^2]
+E[(\boldsymbol{y} - \boldsymbol{\beta}^t \mathbf{x})^2]
 \]
 
 Esse vetor define a \textbf{melhor aproximação linear} da relação entre
-\(\boldsymbol{X}\) e \(\boldsymbol{y}\).
+\(\mathbf{x}\) e \(\boldsymbol{y}\).
 
 \(\boldsymbol{\beta}_*\) é chamado de \textbf{oráculo}.
 \end{block}
