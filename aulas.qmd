@@ -59,16 +59,16 @@ Esta página contém aulas que serão apresentadas ao longo do semestre. Você p
 </span>
 :::
 
-<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
-<!-- <span class="fw-bold"> -->
-<!--   Transformação de Variáveis Unidimensionais -->
-<!-- </span> -->
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+  Métodos Paramétricos
+</span>
 
-<!-- <span> -->
-<!-- [Ver slides](/aulas/transformacoes/transformacoes.html#/title-slide){.btn .btn-est304-main .btn-sm} -->
-<!-- [PDF](/aulas/transformacoes/transformacoes.pdf){.btn .btn-est304-outline .btn-sm} -->
-<!-- </span> -->
-<!-- ::: -->
+<span>
+[Ver slides](/aulas/regressao/met_param/met_param.html#/title-slide){.btn .btn-est304-main .btn-sm}
+[PDF](/aulas/regressao/met_param/met_param.pdf){.btn .btn-est304-outline .btn-sm}
+</span>
+:::
 
 <!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
 <!-- <span class="fw-bold"> -->
