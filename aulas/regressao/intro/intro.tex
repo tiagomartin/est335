@@ -561,7 +561,7 @@ onde:
 
 \begin{frame}
 A partir dos dados de treinamento, queremos aprender uma função
-\(f(\mathbf{x})\) capaz de prever a resposta para \textbf{novas
+\(g(\mathbf{x})\) capaz de prever a resposta para \textbf{novas
 observações}.
 
 \pause
@@ -570,12 +570,22 @@ observações}.
 \textbf{função de regressão}
 
 \[
-f(\mathbf{x}) = \mathbb{E}[Y \mid X = \mathbf{x}]
+r(\mathbf{x}) = \mathbb{E}[Y \mid X = \mathbf{x}]
 \]
 
-como forma de descrever a relação entre uma variável aleatória
-\(Y \in \mathbb{R}\) e um vetor de variáveis explicativas
-\(\mathbf{x} = (x_1, \ldots, x_p) \in \mathbb{R}^p\)
+que descreve a relação entre
+
+\begin{itemize}
+\tightlist
+\item
+  uma variável resposta \(Y \in \mathbb{R}\)
+\item
+  um vetor de covariáveis
+\end{itemize}
+
+\[
+\mathbf{x} = (x_1,\ldots,x_p) \in \mathbb{R}^p
+\]
 \end{frame}
 
 \begin{frame}{Formulação do aprendizado estatístico}
@@ -583,7 +593,7 @@ como forma de descrever a relação entre uma variável aleatória
 Uma forma comum de representar o problema é
 
 \[
-Y = f(\mathbf{x}) + \varepsilon
+Y = r(\mathbf{x}) + \varepsilon
 \]
 
 onde:
@@ -591,16 +601,18 @@ onde:
 \begin{itemize}
 \tightlist
 \item
-  \(f(\mathbf{x})\) é a \textbf{função verdadeira desconhecida}
+  \(r(\mathbf{x})\) é a \textbf{função verdadeira desconhecida}
 \item
   \(\varepsilon\) representa \textbf{ruído aleatório}
+\item
+  \(\mathbb{E}[\varepsilon \mid X] = 0\)
 \end{itemize}
 
 O objetivo do \textbf{aprendizado supervisionado} é \textbf{estimar}
 (treinar) uma aproximação
 
 \[
-\hat f(\mathbf{x}) \approx f(\mathbf{x})
+g(\mathbf{x}) \approx r(\mathbf{x})
 \]
 \end{frame}
 
@@ -744,7 +756,7 @@ onde
 Queremos estimar a \textbf{função de regressão}
 
 \[
-f(x)=\mathbb{E}[Y \mid X=\mathbf{x}]
+r(x)=\mathbb{E}[Y \mid X=\mathbf{x}]
 \]
 
 A partir dessa função podemos:
@@ -784,7 +796,7 @@ Uma forma de resolver esse problema é estimar a \textbf{função de
 regressão}
 
 \[
-f(x) = \mathbb{E}[Y \mid X = \mathbf{x}]
+r(x) = \mathbb{E}[Y \mid X = \mathbf{x}]
 \]
 
 utilizando uma amostra de treinamento
@@ -808,7 +820,7 @@ onde:
 \begin{frame}
 \begin{block}{Predição em novas imagens}
 \phantomsection\label{prediuxe7uxe3o-em-novas-imagens}
-Depois de estimar a função \(f(\mathbf{x})\), podemos utilizá-la para
+Depois de estimar a função \(r(\mathbf{x})\), podemos utilizá-la para
 
 \begin{itemize}
 \tightlist
@@ -873,7 +885,7 @@ Considere
 Queremos estimar a \textbf{função de regressão}
 
 \[
-f(x) = \mathbb{E}[Y \mid X = x]
+r(x) = \mathbb{E}[Y \mid X = x]
 \]
 
 ou seja, o \textbf{ano esperado de lançamento dado o conjunto de
@@ -884,7 +896,7 @@ características da música}.
 \begin{frame}
 \begin{block}{O que podemos fazer com esse modelo?}
 \phantomsection\label{o-que-podemos-fazer-com-esse-modelo}
-Uma estimativa de \(f(x)\) pode ser usada para:
+Uma estimativa de \(r(x)\) pode ser usada para:
 
 \begin{enumerate}
 \tightlist
@@ -932,13 +944,8 @@ onde:
   \(Y_i\) = ano de lançamento
 \end{itemize}
 
-O objetivo é aprender uma função
-
-\[
-\hat f(x)
-\]
-
-capaz de prever o \textbf{ano de lançamento de novas músicas}.
+O objetivo é aprender uma função \(g(x)\) capaz de prever o \textbf{ano
+de lançamento de novas músicas}.
 \end{block}
 \end{frame}
 
@@ -973,7 +980,7 @@ variáveis}.
 Queremos construir uma função
 
 \[
-g : \mathbb{R}^d \rightarrow \mathbb{R}
+g : \mathbb{R}^p \rightarrow \mathbb{R}
 \]
 
 com \textbf{bom poder preditivo}.
@@ -1102,6 +1109,1539 @@ Exemplos:
 \begin{frame}
 \begin{center}
 \pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-4-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Interpretabilidade \emph{vs.} Flexibilidade}
+\phantomsection\label{interpretabilidade-vs.-flexibilidade}
+Em modelagem estatística e aprendizado de máquina, frequentemente existe
+um \textbf{trade-off entre interpretabilidade e flexibilidade}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Interpretabilidade:} facilidade de compreender como o modelo
+  toma decisões.
+\item
+  \textbf{Flexibilidade:} capacidade do modelo de capturar padrões
+  complexos nos dados.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-5-1.png}}
+\end{center}
+
+Modelos mais simples tendem a ser \textbf{mais interpretáveis}, enquanto
+modelos mais complexos tendem a ser \textbf{mais flexíveis} e capazes de
+capturar padrões não lineares.
+
+Em muitos problemas aplicados, o objetivo é encontrar um
+\textbf{equilíbrio entre interpretação e desempenho preditivo}.
+\end{frame}
+
+\begin{frame}{A Função de Risco}
+\phantomsection\label{a-funuxe7uxe3o-de-risco}
+Para construir boas funções de predição, precisamos de um
+\textbf{critério para medir o desempenho} de uma função de predição
+
+\[
+g : \mathbb{R}^p \rightarrow \mathbb{R}
+\]
+
+Em problemas de regressão, um critério muito utilizado é o \textbf{risco
+quadrático}, definido como
+
+\[
+R(g) = \mathbb{E}\left[(Y - g(\mathbf{x}))^2\right]
+\]
+
+onde \((\mathbf{x},Y)\) representa \textbf{uma nova observação}, não
+utilizada para estimar \(g\). Quanto \textbf{menor o risco},
+\textbf{melhor} é a função de predição \(g\).
+\end{frame}
+
+\begin{frame}
+O objetivo do aprendizado estatístico é encontrar uma função \(g\) que
+\textbf{minimize esse risco}.
+
+Na prática, queremos encontrar
+
+\[
+g^* = \arg\min_g R(g)
+\]
+
+Essa função é chamada de \textbf{preditor ótimo}.
+\end{frame}
+
+\begin{frame}{Função de perda}
+\phantomsection\label{funuxe7uxe3o-de-perda}
+Para avaliar a qualidade de uma função de predição \(g(\mathbf{x})\),
+utilizamos uma \textbf{função de perda}.
+
+Uma escolha comum em problemas de regressão é a \textbf{perda
+quadrática}
+
+\[
+L(g(X),Y) = (Y - g(\mathbf{x}))^2
+\]
+
+Essa função mede o \textbf{erro entre o valor observado \(Y\) e a
+predição \(g(\mathbf{x})\)}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Outras funções de perda}
+\phantomsection\label{outras-funuxe7uxf5es-de-perda}
+Além da perda quadrática, outras funções de perda podem ser utilizadas.
+
+Por exemplo, a \textbf{perda absoluta}
+
+\[
+L(g(\mathbf{x}),Y) = |Y - g(\mathbf{x})|
+\]
+
+Diferentes funções de perda levam a \textbf{diferentes critérios de
+ajuste do modelo}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{O risco de predição}
+\phantomsection\label{o-risco-de-prediuxe7uxe3o}
+De forma geral, o \textbf{risco} de uma função de predição é definido
+como
+
+\[
+R(g) = \mathbb{E}[L(g(\mathbf{x}),Y)]
+\]
+
+Ou seja, o risco corresponde ao \textbf{valor esperado da função de
+perda}.
+
+O objetivo é encontrar uma função \(g\) que minimize o risco
+
+\[
+g^* = \arg\min_g \mathbb{E}[L(g(\mathbf{x}),Y)]
+\]
+
+Em outras palavras, queremos um modelo que produza \textbf{erros
+pequenos em média para novas observações}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Decomposição do erro de predição}
+\phantomsection\label{decomposiuxe7uxe3o-do-erro-de-prediuxe7uxe3o}
+Considere uma função de predição
+
+\[
+g : \mathbb{R}^p \rightarrow \mathbb{R}
+\]
+
+O risco de predição sob perda quadrática é
+
+\[
+R_{pred}(g) = \mathbb{E}[(Y - g(\mathbf{x}))^2]
+\]
+
+Este risco mede \textbf{o erro médio de predição para novas
+observações}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Erro em relação à função de regressão}
+\phantomsection\label{erro-em-relauxe7uxe3o-uxe0-funuxe7uxe3o-de-regressuxe3o}
+Lembre que a função de regressão é
+
+\[
+r(x) = \mathbb{E}[Y \mid X = \mathbf{x}]
+\]
+
+Podemos então medir o erro do modelo em relação à função verdadeira:
+
+\[
+R_{reg}(g) = \mathbb{E}[(r(\mathbf{x}) - g(\mathbf{x}))^2]
+\]
+\end{block}
+
+\begin{block}{Teorema}
+\phantomsection\label{teorema}
+Sob perda quadrática,
+
+\[
+R_{pred}(g) =
+R_{reg}(g) +
+\mathbb{E}[\mathrm{Var}(Y|\mathbf{x})]
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Demonstração}
+\phantomsection\label{demonstrauxe7uxe3o}
+\[\small
+\begin{aligned}
+\mathbb{E}\left[(Y - g(\mathbf{x}))^2\right] &= \mathbb{E}\left[(Y - r(\mathbf{x}) + r(\mathbf{x}) - g(\mathbf{x}))^2\right] \\ &= \mathbb{E}\left[(r(\mathbf{x}) - g(\mathbf{x}))^2\right]+\mathbb{E}\left[(Y - r(\mathbf{x}))^2\right]
++2\,\mathbb{E}\left[(r(\mathbf{x})-g(\mathbf{x}))(Y-r(\mathbf{x}))\right] \\ &=\mathbb{E}\left[(r(\mathbf{x}) - g(\mathbf{x}))^2\right]+\mathbb{E}\left[\mathrm{Var}(Y|\mathbf{x})\right]
+\end{aligned}
+\] em que o último passo segue do fato que (lei da esperança total)
+
+\[\small
+\mathbb{E}\left[(r(\mathbf{x})-g(\mathbf{x}))(Y-r(\mathbf{x}))\right]=\mathbb{E}\left[\mathbb{E}\left[(r(\mathbf{x})-g(\mathbf{x}))(Y-r(\mathbf{x})) \mid \mathbf{x}\right]\right]=0
+\]
+
+e
+
+\[\small
+\mathbb{E}\left[(Y-r(\mathbf{x}))^2\right]=\mathbb{E}\left[\mathbb{E}\left[(Y-r(\mathbf{x}))^2 \mid \mathbf{x}\right]\right]=\mathbb{E}\left[\mathrm{Var}(Y|\mathbf{x})\right],
+\]
+
+pois \(\small r(\mathbf{x}) = \mathbb{E}[Y|\mathbf{x}]\).
+\end{block}
+\end{frame}
+
+\begin{frame}
+Assim, o erro de predição pode ser decomposto em duas partes:
+
+\begin{block}{Erro de aproximação do modelo}
+\phantomsection\label{erro-de-aproximauxe7uxe3o-do-modelo}
+\[
+R_{reg}(g) = \mathbb{E}[(r(\mathbf{x}) - g(\mathbf{x}))^2]
+\]
+
+mede \textbf{o quão bem o modelo aproxima a função verdadeira}.
+\end{block}
+
+\begin{block}{Ruído irreduzível}
+\phantomsection\label{ruuxeddo-irreduzuxedvel}
+\[
+\mathbb{E}[\mathrm{Var}(Y \mid \mathbf{x})]
+\]
+
+representa a \textbf{variabilidade intrínseca dos dados}, que
+\textbf{nenhum modelo consegue reduzir}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Observação: risco condicional \emph{vs.} risco esperado}
+\phantomsection\label{observauxe7uxe3o-risco-condicional-vs.-risco-esperado}
+A função de predição \(g\) pode ser entendida de duas formas.
+
+\begin{block}{Função fixa}
+\phantomsection\label{funuxe7uxe3o-fixa}
+Depois que a amostra de treinamento é observada, obtemos uma função de
+predição
+
+\[
+g = g_n
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+Nesse caso, tratamos \(g\) como fixa e avaliamos seu risco em uma nova
+observação \((X,Y)\):
+
+\[
+R(g) = \mathbb{E}\left[(Y-g(\mathbf{x}))^2\right]
+\]
+
+Esse risco é chamado de \textbf{risco condicional}.
+
+\begin{block}{Quando \(g\) depende dos dados}
+\phantomsection\label{quando-g-depende-dos-dados}
+Antes de observar a amostra, a função de predição ainda não está
+determinada.
+
+Na prática, ela é construída a partir dos dados de treinamento
+
+\[
+(\mathbf{x}_1,Y_1),\ldots,(\mathbf{x}_n,Y_n)
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+Portanto, o modelo ajustado deve ser escrito como
+
+\[
+g = g\big((\mathbf{x}_1,Y_1),\ldots,(\mathbf{x}_n,Y_n)\big),
+\]
+
+ou, de forma abreviada,
+
+\[
+g = g(\mathcal{D}_n),
+\]
+
+onde \(\mathcal{D}_n\) representa a amostra de treinamento.
+
+Como \(g\) depende da amostra, ele é uma \textbf{função aleatória dos
+dados}.
+
+Nesse caso, podemos considerar a esperança também em relação à amostra
+de treinamento.
+\end{frame}
+
+\begin{frame}
+Assim, o \textbf{risco esperado} é a média do risco condicional sobre
+todas as possíveis amostras:
+
+\[
+\mathbb{E}_{\mathcal{D}_n}\left[R\big(g(\mathcal{D}_n)\big)\right]
+\]
+
+Equivalentemente,
+
+\[
+\text{Risco esperado} = \mathbb{E}[\text{risco condicional}]
+\]
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o}
+\begin{itemize}
+\tightlist
+\item
+  O \textbf{risco condicional} avalia o desempenho de um modelo
+  específico, já ajustado.
+\item
+  O \textbf{risco esperado} avalia o desempenho médio do procedimento de
+  aprendizado.
+\end{itemize}
+
+Ou seja:
+
+\begin{itemize}
+\tightlist
+\item
+  risco condicional \(\rightarrow\) garantia sobre uma função \(g\)
+  específica
+\item
+  risco esperado \(\rightarrow\) garantia sobre o algoritmo que constrói
+  \(g\)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Exemplo}
+\phantomsection\label{exemplo}
+Suponha que o \textbf{risco esperado da regressão linear} em um problema
+seja igual a \(C\).
+
+Isso significa que, \textbf{em média}, ao aplicar \textbf{regressão
+linear} a \textbf{diferentes amostras provenientes da mesma distribuição
+e com o mesmo tamanho amostral}, o \textbf{risco condicional} obtido
+será aproximadamente \(C\).
+\end{block}
+\end{frame}
+
+\begin{frame}{Seleção de Modelos: Super e Sub-Ajuste}
+\phantomsection\label{seleuxe7uxe3o-de-modelos-super-e-sub-ajuste}
+Em problemas práticos, é comum ajustar \textbf{vários modelos
+candidatos} para aproximar a função de regressão \(r(x)\).
+
+O objetivo é identificar qual modelo possui \textbf{maior poder
+preditivo}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Exemplo: expectativa de vida e PIB per capita}
+\phantomsection\label{exemplo-expectativa-de-vida-e-pib-per-capita}
+Considere o problema de prever a \textbf{expectativa de vida} de um país
+a partir de seu \textbf{PIB per capita}.
+
+A função de predição considerada é
+
+\[
+g(x) = \beta_0 + \sum_{i=1}^{p} \beta_i x^i
+\]
+
+onde
+
+\[
+p \in \{1,4,50\}
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}{Modelos considerados}
+\phantomsection\label{modelos-considerados}
+Ajustamos três \textbf{regressões polinomiais}:
+
+\begin{itemize}
+\tightlist
+\item
+  modelo de \textbf{grau 1}
+\item
+  modelo de \textbf{grau 4}
+\item
+  modelo de \textbf{grau 50}
+\end{itemize}
+
+Os parâmetros \(\beta_i\) são estimados pelo \textbf{método dos mínimos
+quadrados}.
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-6-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Comparação de modelos}
+\phantomsection\label{comparauxe7uxe3o-de-modelos}
+\begin{itemize}
+\item
+  O modelo de \textbf{grau 1} é \textbf{simples demais} para capturar a
+  relação.
+\item
+  O modelo de \textbf{grau 50} é \textbf{extremamente complexo} e se
+  ajusta demais aos dados.
+\item
+  O modelo de \textbf{grau 4} oferece um \textbf{compromisso razoável
+  entre flexibilidade e estabilidade}.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Underfitting e Overfitting}
+\phantomsection\label{underfitting-e-overfitting}
+\begin{block}{Sub-ajuste (Underfitting)}
+\phantomsection\label{sub-ajuste-underfitting}
+O modelo com \(p=1\) \textbf{não captura bem o padrão dos dados}.
+\end{block}
+
+\begin{block}{Super-ajuste (Overfitting)}
+\phantomsection\label{super-ajuste-overfitting}
+O modelo com \(p=50\) \textbf{se ajusta demais à amostra observada} e
+tende a produzir \textbf{más predições para novos dados}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Objetivo}
+\phantomsection\label{objetivo-2}
+O objetivo é encontrar um modelo \textbf{intermediário}, que apresente
+bom desempenho preditivo.
+
+Neste exemplo, gostaríamos de um método que \textbf{escolha
+automaticamente} \(p = 4\).
+\end{block}
+\end{frame}
+
+\begin{frame}{Seleção de modelos}
+\phantomsection\label{seleuxe7uxe3o-de-modelos}
+O objetivo de um método de \textbf{seleção de modelos} é escolher uma
+boa função de predição \(g.\)
+
+Para isso, utilizamos um critério que permita avaliar a qualidade
+preditiva da função.
+
+Neste contexto, usamos o \textbf{risco quadrático} para medir a
+qualidade do modelo \(R(g).\)
+
+Queremos então escolher uma função \(g\) dentro de uma classe de
+candidatos \(\mathcal{G}\) que apresente \textbf{baixo risco
+quadrático}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Objetivo prático}
+\phantomsection\label{objetivo-pruxe1tico}
+Ao selecionar um modelo, queremos evitar:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{sub-ajuste (underfitting)}\\
+\item
+  \textbf{super-ajuste (overfitting)}
+\end{itemize}
+
+Ou seja, buscamos um modelo com \textbf{bom poder preditivo} para novas
+observações.
+\end{block}
+
+\begin{block}{Desafio}
+\phantomsection\label{desafio}
+Na prática, o valor de \(R(g)\) é \textbf{desconhecido}.
+
+Por isso, precisamos \textbf{estimar o risco} para avaliar e comparar as
+funções \(g \in \mathcal{G}.\)
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Próximo passo}
+\phantomsection\label{pruxf3ximo-passo}
+A questão central passa a ser:
+
+\begin{quote}
+Como estimar o risco de predição de um modelo?
+\end{quote}
+
+Na próxima etapa, estudamos métodos para \textbf{estimar esse risco} e,
+assim, escolher o modelo mais adequado.
+\end{block}
+\end{frame}
+
+\begin{frame}{\emph{Data Splitting} e Validação Cruzada}
+\phantomsection\label{data-splitting-e-validauxe7uxe3o-cruzada}
+\begin{block}{Risco observado}
+\phantomsection\label{risco-observado}
+Uma forma natural de avaliar um modelo é medir seu erro \textbf{nos
+dados de treinamento}.
+
+Esse erro é chamado de \textbf{risco observado} ou \textbf{erro
+quadrático médio (EQM)} no conjunto de treinamento:
+
+\[
+EQM(g) = \frac{1}{n}\sum_{i=1}^{n} (Y_i - g(\mathbf{x}_i))^2
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-1}
+O \(EQM(g)\) mede o quão bem o modelo ajusta \textbf{os dados
+observados}
+
+\[
+(\mathbf{x}_1,Y_1),\ldots,(\mathbf{x}_n,Y_n)
+\]
+
+Quanto menor o valor de \(EQM(g)\), melhor o modelo se ajusta \textbf{à
+amostra de treinamento}.
+\end{block}
+
+\begin{block}{Problema}
+\phantomsection\label{problema}
+O risco observado é um estimador \textbf{muito otimista} do verdadeiro
+risco de predição.
+
+Isso ocorre porque o modelo \(g\) foi ajustado \textbf{utilizando os
+próprios dados de treinamento}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Consequência}
+\phantomsection\label{consequuxeancia}
+Se utilizarmos apenas o erro de treinamento para escolher modelos,
+podemos obter:
+
+\begin{itemize}
+\tightlist
+\item
+  modelos \textbf{muito complexos}
+\item
+  \textbf{super-ajuste (overfitting)}
+\end{itemize}
+
+ou seja, um modelo que se ajusta muito bem aos dados observados, mas
+apresenta \textbf{baixo poder de generalização}.
+
+Minimizar apenas o erro de treinamento leva a \textbf{erro de treino
+muito baixo} mas \textbf{erro de predição alto em novos dados}.
+\end{block}
+\end{frame}
+
+\begin{frame}{\emph{Data splitting}}
+\phantomsection\label{data-splitting}
+Uma forma simples de estimar o risco de predição é \textbf{dividir o
+conjunto de dados em duas partes}: \textbf{Treinamento} e
+\textbf{Validação}
+
+Por exemplo:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Treinamento (70\%)}
+\end{itemize}
+
+\[
+(\mathbf{x}_1,Y_1),(\mathbf{x}_2,Y_2),\ldots,(\mathbf{x}_s,Y_s)
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Validação (30\%)}
+\end{itemize}
+
+\[
+(\mathbf{x}_{s+1},Y_{s+1}),\ldots,(\mathbf{x}_n,Y_n)
+\]
+\end{frame}
+
+\begin{frame}
+\begin{block}{Etapa 1: Ajustar o modelo}
+\phantomsection\label{etapa-1-ajustar-o-modelo}
+Utilizamos \textbf{apenas o conjunto de treinamento} para estimar a
+função de predição \(g.\)
+
+Por exemplo, podemos estimar os coeficientes de uma regressão linear.
+\end{block}
+
+\begin{block}{Etapa 2: Avaliar o modelo}
+\phantomsection\label{etapa-2-avaliar-o-modelo}
+O conjunto de validação é utilizado \textbf{apenas para avaliar o
+modelo}.
+
+Estimamos o risco através do erro quadrático médio no conjunto de
+validação:
+
+\[
+\hat{R}(g) =
+\frac{1}{n-s}
+\sum_{i=s+1}^{n}
+(Y_i - g(\mathbf{x}_i))^2
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-2}
+Esse valor corresponde ao \textbf{erro quadrático médio no conjunto de
+validação}.
+
+Como os dados de validação \textbf{não foram usados para treinar o
+modelo}, essa estimativa é \textbf{mais próxima do verdadeiro erro de
+predição}.
+\end{block}
+
+\begin{block}{Ideia central}
+\phantomsection\label{ideia-central}
+Treinamos o modelo com um conjunto de dados e avaliamos sua performance
+em \textbf{dados não utilizados no treinamento}.
+
+Isso nos ajuda a detectar \textbf{overfitting}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Escolha das amostras}
+\phantomsection\label{escolha-das-amostras}
+Uma boa prática ao dividir os dados em \textbf{treinamento} e
+\textbf{validação} é fazer essa divisão \textbf{aleatoriamente}.
+
+Para isso, utilizamos um \textbf{gerador de números aleatórios} para
+selecionar quais observações irão compor cada conjunto.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Por que fazer a divisão aleatoriamente?}
+\phantomsection\label{por-que-fazer-a-divisuxe3o-aleatoriamente}
+A seleção aleatória evita problemas quando o banco de dados está
+\textbf{ordenado de alguma forma}.
+
+Por exemplo:
+
+\begin{itemize}
+\tightlist
+\item
+  observações ordenadas por tempo
+\item
+  observações ordenadas por renda
+\item
+  observações ordenadas por região
+\end{itemize}
+
+Se não embaralharmos os dados, os conjuntos podem ficar
+\textbf{enviesados}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Resultado teórico}
+\phantomsection\label{resultado-teuxf3rico}
+Como os dados de validação não foram usados no treinamento, o estimador
+\(\hat{R}(g)\) é \textbf{consistente} para o verdadeiro risco \(R(g)\)
+pela \textbf{Lei dos Grandes Números}.
+
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-3}
+À medida que o tamanho do conjunto de validação aumenta,
+
+\[
+\hat{R}(g) \rightarrow R(g)
+\]
+
+ou seja, o erro estimado converge para o \textbf{verdadeiro erro de
+predição}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Problema: overfitting na validação}
+\phantomsection\label{problema-overfitting-na-validauxe7uxe3o}
+Se avaliarmos \textbf{muitos modelos diferentes}, podemos acabar
+escolhendo um modelo que se ajusta \textbf{bem ao conjunto de validação
+por acaso}.
+
+Isso gera \textbf{super-ajuste ao conjunto de validação}.
+
+Consequência:
+
+\begin{itemize}
+\tightlist
+\item
+  o modelo escolhido pode ter bom desempenho na validação, mas
+  \textbf{não generalizar bem para novos dados}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Treinamento \emph{vs.} Validação \emph{vs.} Teste}
+\phantomsection\label{treinamento-vs.-validauxe7uxe3o-vs.-teste}
+Uma prática comum é dividir os dados em três partes:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Treinamento} → ajustar os modelos
+\item
+  \textbf{Validação} → escolher o melhor modelo
+\item
+  \textbf{Teste} → avaliar o desempenho final
+\end{itemize}
+
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-4}
+O conjunto de teste fornece uma estimativa do risco
+
+\[
+R(g) = \mathbb{E}[(Y - g(\mathbf{x}))^2]
+\]
+
+para \textbf{novas observações}. Assim podemos avaliar se o modelo
+escolhido realmente \textbf{generaliza bem}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-7-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Validação cruzada}
+\phantomsection\label{validauxe7uxe3o-cruzada}
+Uma variação desse método é a \textbf{validação cruzada}, que utiliza
+\textbf{toda a amostra} para avaliar o modelo.
+
+Uma forma particular é o método \textbf{leave-one-out cross validation
+(LOOCV)}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Leave-One-Out Cross Validation (LOOCV)}
+\phantomsection\label{leave-one-out-cross-validation-loocv}
+No LOOCV, ajustamos o modelo \textbf{n vezes}.
+
+A cada passo:
+
+\begin{itemize}
+\tightlist
+\item
+  removemos uma observação do conjunto de dados
+\item
+  ajustamos o modelo com as outras \(n-1\) observações
+\item
+  avaliamos o erro na observação removida
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Estimador do risco}
+\phantomsection\label{estimador-do-risco}
+O estimador do risco no LOOCV é dado por
+
+\[
+\hat{R}(g) =
+\frac{1}{n}
+\sum_{i=1}^{n}
+(Y_i - g_{-i}(\mathbf{x}_i))^2
+\] onde \(g_{-i}\) é o modelo ajustado \textbf{sem utilizar a i-ésima
+observação}.
+\end{block}
+
+\begin{block}{Conjunto de treinamento em cada etapa}
+\phantomsection\label{conjunto-de-treinamento-em-cada-etapa}
+Para estimar \(g_{-i}\) utilizamos todas as observações \textbf{exceto a
+i-ésima}:
+
+\[
+(\mathbf{x}_1,Y_1),\ldots,(\mathbf{x}_{i-1},Y_{i-1}),(\mathbf{x}_{i+1},Y_{i+1}),\ldots,(\mathbf{x}_n,Y_n)
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Ideia central}
+\phantomsection\label{ideia-central-1}
+Cada observação é usada:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{uma vez para teste}
+\item
+  \textbf{\(n-1\) vezes para treinamento}
+\end{itemize}
+
+Assim, o LOOCV utiliza \textbf{toda a informação disponível} para
+estimar o erro de predição.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-8-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}{k-fold cross-validation}
+\phantomsection\label{k-fold-cross-validation}
+Uma alternativa ao LOOCV é o método \textbf{k-fold cross-validation}.
+
+Nesse procedimento, dividimos o conjunto de dados
+\textbf{aleatoriamente} em \(k\) subconjuntos disjuntos chamados
+\textbf{folds}, com aproximadamente o mesmo tamanho.
+
+\begin{block}{Divisão em folds}
+\phantomsection\label{divisuxe3o-em-folds}
+Denotamos por
+
+\[
+L_1, L_2, \ldots, L_k \subset \{1,\ldots,n\}
+\]
+
+os conjuntos de índices associados a cada fold.
+
+Cada \(L_j\) representa um \textbf{subconjunto de observações} utilizado
+para validação.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Ajuste dos modelos}
+\phantomsection\label{ajuste-dos-modelos}
+Para cada fold \(L_j\):
+
+\begin{itemize}
+\item
+  ajustamos o modelo utilizando \textbf{todas as observações exceto as
+  de \(L_j\)}
+\item
+  obtemos uma função estimada \(\hat{g}_{-j}\) treinada sem as
+  observações do \(j\)-ésimo fold.
+\end{itemize}
+\end{block}
+
+\begin{block}{Estimador do risco}
+\phantomsection\label{estimador-do-risco-1}
+O estimador do risco via k-fold cross-validation é
+
+\[
+\hat{R}(g) =
+\frac{1}{n}
+\sum_{j=1}^{k}
+\sum_{i \in L_j}
+(Y_i - \hat{g}_{-j}(\mathbf{x}_i))^2
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-5}
+Cada fold é usado \textbf{uma vez para validação} e \textbf{\(k-1\)
+vezes para treinamento}.
+
+Assim, utilizamos \textbf{toda a amostra} para avaliar o desempenho do
+modelo.
+\end{block}
+
+\begin{block}{Relação com LOOCV}
+\phantomsection\label{relauxe7uxe3o-com-loocv}
+Quando \(k = n\) cada fold contém apenas \textbf{uma observação}.
+
+Nesse caso, recuperamos o método \textbf{Leave-One-Out Cross Validation
+(LOOCV)}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-9-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}{LOOCV e erro esperado}
+\phantomsection\label{loocv-e-erro-esperado}
+Uma propriedade importante do \textbf{leave-one-out cross validation
+(LOOCV)} é que ele é aproximadamente \textbf{não viesado} para o
+\textbf{erro esperado} do método de aprendizagem.
+
+Ou seja, ele fornece uma boa estimativa do desempenho médio do modelo em
+\textbf{novos dados}.
+\end{frame}
+
+\begin{frame}{Intervalos de confiança para o risco}
+\phantomsection\label{intervalos-de-confianuxe7a-para-o-risco}
+Depois de escolher o modelo usando \textbf{treinamento} e
+\textbf{validação}, utilizamos o \textbf{conjunto de teste} para estimar
+o risco verdadeiro do modelo.
+
+O conjunto de teste não foi usado para ajustar o modelo.
+
+\begin{block}{Estimador do risco no conjunto de teste}
+\phantomsection\label{estimador-do-risco-no-conjunto-de-teste}
+Denote por
+\((\tilde{\mathbf{x}}_1,\tilde Y_1),\ldots,(\tilde{\mathbf{x}}_m,\tilde Y_m)\)
+as observações do \textbf{conjunto de teste}.
+
+Um estimador do risco é
+
+\[
+\hat R(g)
+=
+\frac{1}{m}
+\sum_{k=1}^{m}
+(\tilde Y_k - g(\tilde{\mathbf{x}}_k))^2
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+Definimos
+
+\[
+W_k = (\tilde Y_k - g(\tilde{\mathbf{x}}_k))^2
+\]
+
+Assim,
+
+\[
+\hat R(g) = \frac{1}{m}\sum_{k=1}^{m} W_k
+\]
+
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-6}
+Se as observações do conjunto de teste são i.i.d., então
+\(W_1,\ldots,W_m\) são variáveis aleatórias \textbf{independentes e
+identicamente distribuídas}.
+
+Logo, \(\hat R(g)\) é simplesmente \textbf{a média dessas variáveis}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Aproximação normal}
+\phantomsection\label{aproximauxe7uxe3o-normal}
+Pelo \textbf{Teorema Central do Limite},
+
+\[
+\hat R(g)
+\approx
+\mathcal{N}
+\left(
+R(g),
+\frac{1}{m}\,\mathrm{Var}(W_1)
+\right)
+\]
+
+quando \(m\) é grande.
+\end{block}
+
+\begin{block}{Intervalo de confiança para o risco}
+\phantomsection\label{intervalo-de-confianuxe7a-para-o-risco}
+Na prática, estimamos \(\mathrm{Var}(W_1)\) pela variância amostral:
+
+\[
+\hat\sigma^2
+=
+\frac{1}{m-1}
+\sum_{k=1}^{m}
+(W_k - \bar W)^2
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+onde
+
+\[
+\bar W = \hat R(g)
+\]
+
+Um intervalo de confiança aproximado de 95\% é
+
+\[
+\hat R(g)
+\pm
+1.96
+\frac{\hat\sigma}{\sqrt{m}}
+\]
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação prática}
+\phantomsection\label{interpretauxe7uxe3o-pruxe1tica}
+O intervalo de confiança fornece uma \textbf{medida de incerteza} da
+estimativa do risco.
+
+Isso permite avaliar:
+
+\begin{itemize}
+\tightlist
+\item
+  se o erro estimado é confiável
+\item
+  se dois modelos possuem desempenho estatisticamente diferente
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Um insight importante}
+\phantomsection\label{um-insight-importante}
+A largura do intervalo de confiança é aproximadamente
+
+\[
+4\sqrt{\frac{1}{m}\hat{\sigma}^2}
+\]
+
+Portanto, quanto \textbf{maior o conjunto de teste}, menor a incerteza
+da estimativa do risco.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Escolhendo o tamanho da divisão}
+\phantomsection\label{escolhendo-o-tamanho-da-divisuxe3o}
+Podemos escolher o tamanho do conjunto de teste \(m\) de modo que a
+largura do intervalo de confiança seja menor que uma tolerância desejada
+\(\varepsilon\).
+
+Ou seja, queremos
+
+\[
+4\sqrt{\frac{\hat{\sigma}^2}{m}} \le \varepsilon
+\]
+
+Resolvendo para \(m\), obtemos
+
+\[
+m \ge \frac{16\hat{\sigma}^2}{\varepsilon^2}
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-7}
+Esse resultado mostra que:
+
+\begin{itemize}
+\tightlist
+\item
+  quanto \textbf{menor a precisão desejada} (\(\varepsilon\) grande),
+  menor pode ser o conjunto de teste;
+\item
+  quanto \textbf{maior a variabilidade do erro}, maior deve ser o
+  conjunto de teste;
+\item
+  o erro estimado fica mais preciso à medida que \textbf{\(m\) aumenta}.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Consequência prática em Machine Learning}
+\phantomsection\label{consequuxeancia-pruxe1tica-em-machine-learning}
+Treinar um bom modelo exige muitos dados, pois precisamos aprender a
+função de predição \(g\).
+
+Por outro lado, \textbf{estimar o erro do modelo exige relativamente
+menos dados}.
+
+Isso explica por que, na prática, usamos divisões como:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{70\% / 30\%}
+\item
+  \textbf{80\% / 20\%}
+\item
+  \textbf{90\% / 10\%}
+\end{itemize}
+
+entre \textbf{treinamento} e \textbf{teste}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Exemplo: Seleção de modelo}
+\phantomsection\label{exemplo-seleuxe7uxe3o-de-modelo}
+Retomamos o exemplo \textbf{Expectativa de vida vs PIB per capita}.
+
+Nosso objetivo agora é escolher o \textbf{melhor modelo de regressão}
+dentro da classe
+
+\[
+G =
+\left\{
+g(x):\;
+g(x) =
+\beta_0 +
+\sum_{i=1}^{p}
+\beta_i x^i,
+\quad
+p \in \{1,2,\ldots,50\}
+\right\}
+\]
+
+Ou seja, consideramos \textbf{regressões polinomiais de diferentes
+graus}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Ideia do experimento}
+\phantomsection\label{ideia-do-experimento}
+Para cada valor de \(p\):
+
+\begin{enumerate}
+\tightlist
+\item
+  Ajustamos o modelo usando o \textbf{conjunto de treinamento}\\
+\item
+  Calculamos o \textbf{erro quadrático médio (EQM)} no treinamento\\
+\item
+  Calculamos o \textbf{erro no conjunto de validação}
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-10-1.png}}
+\end{frame}
+
+\begin{frame}
+\begin{block}{O que acontece no treinamento?}
+\phantomsection\label{o-que-acontece-no-treinamento}
+À medida que aumentamos o número de parâmetros \(p\):
+
+\begin{itemize}
+\tightlist
+\item
+  o modelo se torna \textbf{mais flexível}
+\item
+  o \textbf{erro de treinamento sempre diminui}
+\end{itemize}
+
+Isso ocorre porque modelos mais complexos conseguem \textbf{ajustar
+melhor os dados observados}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Problema: super-ajuste}
+\phantomsection\label{problema-super-ajuste}
+Minimizar o erro no conjunto de treinamento \textbf{não garante} bom
+desempenho em novos dados.
+
+Quando \(p\) é muito grande, ocorre \textbf{super-ajuste (overfitting)}.
+
+O modelo passa a capturar \textbf{ruído do conjunto de treinamento}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Papel do conjunto de validação}
+\phantomsection\label{papel-do-conjunto-de-validauxe7uxe3o}
+O conjunto de validação fornece uma estimativa do erro de generalização.
+
+Observamos que:
+
+\begin{itemize}
+\tightlist
+\item
+  o erro de treinamento continua diminuindo
+\item
+  o erro de validação \textbf{primeiro diminui e depois aumenta}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Escolha do modelo}
+\phantomsection\label{escolha-do-modelo}
+O modelo ideal é aquele que \textbf{minimiza o erro no conjunto de
+validação}.
+
+Esse modelo fornece o melhor compromisso entre:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{flexibilidade}
+\item
+  \textbf{capacidade de generalização}.
+\end{itemize}
+\end{block}
+
+\begin{block}{Conclusão}
+\phantomsection\label{conclusuxe3o}
+Minimizar o erro no conjunto de validação leva a um modelo mais adequado
+para prever \textbf{novas observações}.
+
+Esse procedimento é conhecido como \textbf{data splitting para seleção
+de modelos}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Penalização: uma alternativa}
+\phantomsection\label{penalizauxe7uxe3o-uma-alternativa}
+Uma forma alternativa de estimar o risco de um modelo \(g\) é usar uma
+\textbf{medida de penalização ou complexidade}.
+
+A ideia é que modelos muito complexos tendem a \textbf{subestimar o
+risco verdadeiro} quando avaliados apenas pelo erro no conjunto de
+treinamento.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Problema}
+\phantomsection\label{problema-1}
+O erro quadrático médio observado, \(EQM(g)\), tende a
+\textbf{subestimar o risco verdadeiro} \(R(g).\)
+
+Essa diferença aumenta quando o modelo possui \textbf{muitos
+parâmetros}.
+\end{block}
+
+\begin{block}{Ideia da penalização}
+\phantomsection\label{ideia-da-penalizauxe7uxe3o}
+A solução é adicionar uma penalização que mede a complexidade do modelo.
+
+Assim, usamos um critério da forma
+
+\[
+R(g) \approx EQM(g) + P(g),
+\]
+
+onde \(P(g)\) é uma função de penalização.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Medidas de penalização}
+\phantomsection\label{medidas-de-penalizauxe7uxe3o}
+Uma escolha simples para \(P(g)\) é usar o \textbf{número de parâmetros
+do modelo}.
+
+Dois critérios muito utilizados são:
+
+\begin{itemize}
+\tightlist
+\item
+  AIC
+\end{itemize}
+
+\[
+P(g)=\frac{2}{n p \hat{\sigma}^2}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  BIC
+\end{itemize}
+
+\[
+P(g)=\frac{\log(n)}{n p \hat{\sigma}^2}
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+onde
+
+\begin{itemize}
+\tightlist
+\item
+  \(p\) é o número de parâmetros
+\item
+  \(\hat{\sigma}^2\) estima \(\mathrm{Var}(Y|\mathbf{x})\).
+\end{itemize}
+
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-8}
+Esses critérios equilibram:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{qualidade do ajuste}
+\item
+  \textbf{complexidade do modelo}
+\end{itemize}
+
+Modelos com muitos parâmetros recebem \textbf{penalizações maiores}. A
+penalização é uma forma de evitar \textbf{overfitting}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-11-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Balanço entre Viés e Variância}
+\phantomsection\label{balanuxe7o-entre-viuxe9s-e-variuxe2ncia}
+\begin{block}{Decomposição do erro quadrático}
+\phantomsection\label{decomposiuxe7uxe3o-do-erro-quadruxe1tico}
+Uma grande vantagem do \textbf{erro quadrático} é que ele possui uma
+decomposição muito interpretável.
+
+Para um novo ponto \(\mathbf{x}\), o erro esperado pode ser escrito como
+
+\[
+\mathbb{E}\left[(Y - \hat g(\mathbf{x}))^2 \mid X = \mathbf{x}\right]
+=
+\mathrm{Var}(Y \mid X = \mathbf{x})
++
+\left(r(\mathbf{x}) - \mathbb{E}[\hat g(\mathbf{x})]\right)^2
++
+\mathrm{Var}(\hat g(\mathbf{x}))
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Significado das quantidades}
+\phantomsection\label{significado-das-quantidades}
+\begin{itemize}
+\item
+  \(r(\mathbf{x}) = \mathbb{E}[Y \mid X = \mathbf{x}]\) é a
+  \textbf{função de regressão verdadeira}.
+\item
+  \(\hat g(\mathbf{x})\) é o \textbf{estimador aprendido a partir dos
+  dados}.
+\item
+  A aleatoriedade vem de duas fontes:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    o ruído em \(Y\)
+  \item
+    a amostra de treinamento usada para construir \(\hat g\).
+  \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Decomposição do erro}
+\phantomsection\label{decomposiuxe7uxe3o-do-erro}
+O erro esperado pode ser decomposto em três termos:
+
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Ruído irreducível}
+\end{enumerate}
+
+\[
+\mathrm{Var}(Y \mid X=\mathbf{x})
+\]
+
+\begin{enumerate}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Viés ao quadrado}
+\end{enumerate}
+
+\[
+\left(r(\mathbf{x}) - \mathbb{E}[\hat g(\mathbf{x})]\right)^2
+\]
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Variância do estimador}
+\end{enumerate}
+
+\[
+\mathrm{Var}(\hat g(\mathbf{x}))
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Interpretação}
+\phantomsection\label{interpretauxe7uxe3o-9}
+\begin{itemize}
+\item
+  O \textbf{ruído irreducível} depende apenas da distribuição dos dados
+  e \textbf{não pode ser reduzido}.
+\item
+  O \textbf{viés} mede o erro sistemático do modelo.
+\item
+  A \textbf{variância} mede o quanto o modelo muda quando o conjunto de
+  treinamento muda.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-12-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Trade-off viés--variância}
+\phantomsection\label{trade-off-viuxe9svariuxe2ncia}
+À medida que a complexidade do modelo aumenta:
+
+\begin{itemize}
+\tightlist
+\item
+  o \textbf{viés diminui}
+\item
+  a \textbf{variância aumenta}
+\end{itemize}
+
+O \textbf{erro esperado} é a soma de:
+
+\begin{itemize}
+\tightlist
+\item
+  viés²
+\item
+  variância
+\item
+  ruído irreducível
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+Assim,
+
+\begin{itemize}
+\item
+  modelos simples → alto viés, baixa variância
+\item
+  modelos complexos → baixo viés, alta variância
+\end{itemize}
+
+{O melhor modelo equilibra viés e variância}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-13-1.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Parâmetros de sintonia (Tuning Parameters)}
+\phantomsection\label{paruxe2metros-de-sintonia-tuning-parameters}
+No exemplo anterior usamos regressões polinomiais
+
+\[
+g(x)=\beta_0+\sum_{i=1}^{p}\beta_i x^i
+\]
+
+O parâmetro \(p\) (grau do polinômio) controla a \textbf{complexidade do
+modelo}.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Papel do parâmetro \(p\)}
+\phantomsection\label{papel-do-paruxe2metro-p}
+O valor de \(p\) controla o equilíbrio entre:
+
+\begin{itemize}
+\item
+  \textbf{viés}
+\item
+  \textbf{variância}
+\item
+  valores pequenos de \(p\) → modelo simples → \textbf{alto viés}
+\item
+  valores grandes de \(p\) → modelo flexível → \textbf{alta variância}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Escolhendo o valor de \(p\)}
+\phantomsection\label{escolhendo-o-valor-de-p}
+O valor ótimo de \(p\) depende de:
+
+\begin{itemize}
+\tightlist
+\item
+  o tamanho da amostra \(n\)
+\item
+  a forma da função verdadeira
+\end{itemize}
+
+\[
+r(x)=\mathbb{E}[Y|X=x]
+\]
+\end{block}
+
+\begin{block}{Tuning parameter}
+\phantomsection\label{tuning-parameter}
+O parâmetro \(p\) é chamado de \textbf{tuning parameter}.
+
+\begin{itemize}
+\tightlist
+\item
+  controla a \textbf{complexidade do modelo}
+\item
+  não é estimado diretamente pelos dados
+\item
+  precisa ser \textbf{escolhido usando um critério de validação}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Como escolher tuning parameters}
+\phantomsection\label{como-escolher-tuning-parameters}
+Na prática, escolhemos esses parâmetros usando:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{data splitting}
+\item
+  \textbf{validação cruzada (cross-validation)}
+\end{itemize}
+
+O objetivo é selecionar o valor que \textbf{minimiza o erro de predição
+em novos dados}.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{intro_files/figure-beamer/unnamed-chunk-14-1.png}}
 \end{center}
 \end{frame}
 
