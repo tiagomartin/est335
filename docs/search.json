@@ -3889,5 +3889,705 @@
     "title": "Parte 1 : Regressão",
     "section": "Conclusão",
     "text": "Conclusão\nA regressão Ridge é um método fundamental em aprendizado estatístico porque\n\nreduz a variância dos estimadores\nmelhora a estabilidade numérica\ncontrola a complexidade do modelo\nfunciona bem em presença de multicolinearidade.\n\nPor essas razões, métodos de regularização são amplamente utilizados em problemas modernos de aprendizado de máquina e análise de dados de alta dimensão."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-paramétricos-vs-não-paramétricos",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-paramétricos-vs-não-paramétricos",
+    "title": "Parte 1 : Regressão",
+    "section": "Métodos Paramétricos vs Não Paramétricos",
+    "text": "Métodos Paramétricos vs Não Paramétricos\nPara amostras pequenas, métodos paramétricos costumam levar a bons resultados: impondo-se um modelo com poucos parâmetros, é possível criar estimadores com baixa variância para situações com tamanho amostral (\\(n\\)) pequeno.\nContudo, quando \\(n\\) é grande, muitas vezes é benéfico aumentar o número de parâmetros do modelo, de modo que tenhamos um viés consideravelmente menor, às custas de uma variância um pouco maior.\nIsso está diretamente relacionado ao trade-off viés-variância.\nÉ exatamente por isso que métodos não paramétricos ganham importância: informalmente, um modelo não paramétrico é um modelo que possui infinitos parâmetros (ou cuja complexidade cresce com os dados)."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-não-paramétricos",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-não-paramétricos",
+    "title": "Parte 1 : Regressão",
+    "section": "Métodos Não Paramétricos",
+    "text": "Métodos Não Paramétricos\nNos métodos não paramétricos:\n\nnão assumimos forma funcional fixa\n\no modelo é mais flexível\n\na complexidade cresce com os dados\n\n\num modelo não paramétrico pode ser visto como tendo infinitos parâmetros\n\n👉 ou seja, a complexidade depende do tamanho da amostra"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#séries-ortogonais",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#séries-ortogonais",
+    "title": "Parte 1 : Regressão",
+    "section": "Séries Ortogonais",
+    "text": "Séries Ortogonais\nConsidere o modelo de regressão:\n\\[\n\\boldsymbol{y} = g(\\mathbf{x}) + \\varepsilon\n\\]\ncom:\n\\[\nE(\\varepsilon \\mid \\mathbf{x}) = 0, \\quad Var(\\varepsilon \\mid \\mathbf{x}) = \\sigma^2\n\\]\nNosso objetivo é estimar:\n\\[\nr(\\mathbf{x}) = E(Y \\mid \\boldsymbol{X} = \\mathbf{x}) = g(\\mathbf{x})\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-principal",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-principal",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia principal",
+    "text": "Ideia principal\nQueremos estimar uma função desconhecida:\n\\[\nf(x)\n\\]\nA estratégia é aproximá-la por:\n\\[\nf(x) \\approx \\sum_{j=0}^{\\infty} \\beta_j \\psi_j(x)\n\\]\nonde:\n\n\\(\\psi_j(x)\\) são funções conhecidas\n\n\\(\\beta_j\\) são coeficientes a serem estimados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação",
+    "text": "Interpretação\nEstamos escrevendo:\n\n“qualquer função pode ser aproximada por uma combinação de funções simples”\n\n👉 ideia análoga à expansão em séries (como Fourier)"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#espaço-de-funções",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#espaço-de-funções",
+    "title": "Parte 1 : Regressão",
+    "section": "Espaço de funções",
+    "text": "Espaço de funções\nConsideramos o espaço\n\\[\nL^2([0,1]) =\n\\left\\{\nf : [0,1] \\to \\mathbb{R} :\n\\int_0^1 f^2(x)\\,dx &lt; \\infty\n\\right\\}\n\\]\nEsse é o espaço de funções com energia finita."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#base-ortonormal",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#base-ortonormal",
+    "title": "Parte 1 : Regressão",
+    "section": "Base ortonormal",
+    "text": "Base ortonormal\nEscolhemos uma base \\((\\psi_j(x))_{j \\in \\mathbb{N}}\\) tal que:\n\\[\n\\int_0^1 \\psi_i(x)\\psi_j(x)\\,dx =\n\\begin{cases}\n1, & i = j \\\\\n0, & i \\ne j\n\\end{cases}\n\\]\n👉 funções ortogonais e normalizadas"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#intuição-geométrica",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#intuição-geométrica",
+    "title": "Parte 1 : Regressão",
+    "section": "Intuição geométrica",
+    "text": "Intuição geométrica\nA árvore constrói uma aproximação:\n\nnão suave\n\nbaseada em regiões"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#exemplo-base-de-fourier",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#exemplo-base-de-fourier",
+    "title": "Parte 1 : Regressão",
+    "section": "Exemplo: Base de Fourier",
+    "text": "Exemplo: Base de Fourier\nUma base clássica é a base de Fourier:\n\\[\n\\psi_0(x) = 1\n\\]\n\\[\n\\psi_{2j-1}(x) = \\sqrt{2}\\sin(2\\pi j x)\n\\]\n\\[\n\\psi_{2j}(x) = \\sqrt{2}\\cos(2\\pi j x)\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-da-base-de-fourier",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-da-base-de-fourier",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação da base de Fourier",
+    "text": "Interpretação da base de Fourier\n\nsenos → capturam oscilações\n\ncossenos → capturam padrões periódicos\n\n👉 quanto mais termos usamos, mais complexa a função aproximada"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#aproximação-prática",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#aproximação-prática",
+    "title": "Parte 1 : Regressão",
+    "section": "Aproximação prática",
+    "text": "Aproximação prática\nNa prática, usamos apenas \\(J\\) termos:\n\\[\nf(x) \\approx \\sum_{j=0}^{J} \\beta_j \\psi_j(x)\n\\]\n👉 isso transforma o problema em regressão linear"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-regressão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-regressão",
+    "title": "Parte 1 : Regressão",
+    "section": "Conexão com regressão",
+    "text": "Conexão com regressão\nO modelo se torna:\n\\[\nY = \\sum_{j=0}^{J} \\beta_j \\psi_j(X) + \\varepsilon\n\\]\n👉 regressão linear nas funções base"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#relação-com-métodos-modernos",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#relação-com-métodos-modernos",
+    "title": "Parte 1 : Regressão",
+    "section": "Relação com métodos modernos",
+    "text": "Relação com métodos modernos\nEssa ideia está por trás de:\n\nsplines\n\nregressão kernel\n\nredes neurais\n\nbases wavelets\n\n👉 discutido amplamente em ESL"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#trade-off-viésvariância",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#trade-off-viésvariância",
+    "title": "Parte 1 : Regressão",
+    "section": "Trade-off viés–variância",
+    "text": "Trade-off viés–variância\n\n\\(J\\) pequeno → alto viés, baixa variância\n\n\\(J\\) grande → baixo viés, alta variância\n\n👉 exatamente o mesmo trade-off visto anteriormente"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#papel-do-tamanho-amostral",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#papel-do-tamanho-amostral",
+    "title": "Parte 1 : Regressão",
+    "section": "Papel do tamanho amostral",
+    "text": "Papel do tamanho amostral\n\ncom poucos dados → usar poucos termos\n\ncom muitos dados → podemos aumentar \\(J\\)\n\n👉 mesma lógica de modelos não paramétricos"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-regularização",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-regularização",
+    "title": "Parte 1 : Regressão",
+    "section": "Conexão com regularização",
+    "text": "Conexão com regularização\nPodemos controlar a complexidade usando:\n\nRidge\n\nLasso\n\naplicados aos coeficientes \\(\\beta_j\\)\n👉 ligação direta com capítulos anteriores"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#conclusão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#conclusão",
+    "title": "Parte 1 : Regressão",
+    "section": "Conclusão",
+    "text": "Conclusão\n\\[\n\\mathbb{E}\\big[(Y - g(x))^2 \\mid x\\big]\n\\le\n\\mathbb{E}\\big[(Y - g_i(x))^2 \\mid x\\big]\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#mensagem-chave",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#mensagem-chave",
+    "title": "Parte 1 : Regressão",
+    "section": "Mensagem chave",
+    "text": "Mensagem chave\n\nAprender uma função = escolher uma base + estimar coeficientes"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#dificuldade-central",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#dificuldade-central",
+    "title": "Parte 1 : Regressão",
+    "section": "Dificuldade central",
+    "text": "Dificuldade central\n\nNão conhecemos a forma de \\(f\\)\nModelos paramétricos podem ser incorretos\nPrecisamos de uma abordagem flexível"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-chave-da-aula",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-chave-da-aula",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia-chave da aula",
+    "text": "Ideia-chave da aula\nEm vez de escolher uma forma para \\(f\\), vamos:\n➡️ construir \\(f\\) a partir de blocos básicos"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#splines",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#splines",
+    "title": "Parte 1 : Regressão",
+    "section": "Splines",
+    "text": "Splines\nConsidere o modelo\n\\[\nY = f(X) + \\varepsilon\n\\]\ncom\n\\[\nE(\\varepsilon \\mid X) = 0\n\\]\nNosso objetivo é estimar\n\\[\nf(x) = E(Y \\mid X = x)\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#problema-de-regressão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#problema-de-regressão",
+    "title": "Parte 1 : Regressão",
+    "section": "Problema de regressão",
+    "text": "Problema de regressão\nConsidere o modelo\n\\[\nY = f(X) + \\varepsilon,\n\\]\nonde assumimos\n\\[\nE(\\varepsilon \\mid X) = 0, \\qquad Var(\\varepsilon \\mid X) = \\sigma^2\n\\]\nNosso objetivo é estimar a função de regressão\n\\[\nf(x) = E(Y \\mid X = x)\n\\]\nEsse problema é intrinsecamente infinito-dimensional, pois \\(f\\) pode ser uma função arbitrária."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#definição-de-spline",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#definição-de-spline",
+    "title": "Parte 1 : Regressão",
+    "section": "Definição de spline",
+    "text": "Definição de spline\nUm spline de ordem \\(k\\) é uma função \\(g\\) tal que\n\\[\ng \\in C^{k-1}\n\\]\ne é polinomial de grau \\(k-1\\) em cada subintervalo."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#introdução",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#introdução",
+    "title": "Parte 1 : Regressão",
+    "section": "Introdução",
+    "text": "Introdução\nConsidere o problema de estimar \\(f(x) = E(Y \\mid X = x)\\) a partir de uma amostra de tamanho \\(n\\).\nQuando \\(n\\) é pequeno, é comum impor uma estrutura paramétrica para \\(f\\), por exemplo,\n\\[\nf(x) = x^t \\beta,\n\\]\no que reduz o número de parâmetros a serem estimados.\nEssa restrição tende a produzir estimadores com baixa variância, ainda que à custa de um possível viés."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-1",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Introdução",
+    "text": "Introdução\nÀ medida que o tamanho amostral aumenta, torna-se possível considerar classes de funções mais ricas.\nNesse caso, admite-se um modelo mais flexível para \\(f\\), reduzindo o viés da estimativa, ainda que isso implique um aumento na variância.\nEsse comportamento reflete o compromisso fundamental entre viés e variância na estimação."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-2",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-2",
+    "title": "Parte 1 : Regressão",
+    "section": "Introdução",
+    "text": "Introdução\nMotivados por essa observação, consideramos modelos não paramétricos.\nInformalmente, um modelo não paramétrico é aquele em que a complexidade cresce com o tamanho da amostra, podendo ser interpretado como um modelo com um número efetivamente infinito de parâmetros.\nO objetivo é permitir que os dados determinem a forma da função \\(f\\), evitando restrições estruturais rígidas."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#redução-do-problema",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#redução-do-problema",
+    "title": "Parte 1 : Regressão",
+    "section": "Redução do problema",
+    "text": "Redução do problema\nPara tornar o problema tratável, restringimos \\(f\\) a uma classe de funções.\nAssim, buscamos uma aproximação\n\\[\nf(x) \\approx g(x),\n\\]\nonde \\(g\\) pertence a um espaço funcional de dimensão finita.\nA qualidade dessa aproximação dependerá da riqueza da classe escolhida."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#definição-formal-de-spline",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#definição-formal-de-spline",
+    "title": "Parte 1 : Regressão",
+    "section": "Definição formal de spline",
+    "text": "Definição formal de spline\nUm spline de ordem \\(k\\) é uma função \\(g\\) tal que:\n\nem cada subintervalo, \\(g\\) é um polinômio de grau \\(k-1\\),\n\n\\(g\\) pertence a \\(C^{k-1}\\) em todo o domínio.\n\nEssa definição garante compatibilidade entre flexibilidade local e regularidade global."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#exemplo-de-spline-linear",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#exemplo-de-spline-linear",
+    "title": "Parte 1 : Regressão",
+    "section": "Exemplo de spline linear",
+    "text": "Exemplo de spline linear\nNeste exemplo, a relação entre \\(X\\) e \\(Y\\) apresenta mudanças de inclinação em diferentes regiões do domínio.\nFixando nós em \\(t_1 = 3\\) e \\(t_2 = 7\\), ajustamos um spline linear da forma\n\\[\ng(x) = \\beta_0 + \\beta_1 x + \\gamma_1 (x - 3)_+ + \\gamma_2 (x - 7)_+.\n\\]\nAs linhas verticais indicam os pontos a partir dos quais a inclinação da função pode mudar."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#forma-analítica",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#forma-analítica",
+    "title": "Parte 1 : Regressão",
+    "section": "Forma analítica",
+    "text": "Forma analítica\nEssa construção pode ser escrita como\n\\[\ng(x) = \\beta_0 + \\beta_1 x + \\sum_{j=1}^{p} \\gamma_j (x - t_j)_+,\n\\]\nonde\n\\[\n(x - t)_+ = \\max(x - t, 0).\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#a-função-permanece-contínua-mas-sua-inclinação-muda-nos-nós.",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#a-função-permanece-contínua-mas-sua-inclinação-muda-nos-nós.",
+    "title": "Parte 1 : Regressão",
+    "section": "A função permanece contínua, mas sua inclinação muda nos nós.",
+    "text": "A função permanece contínua, mas sua inclinação muda nos nós.\nRepresentação paramétrica\nComo \\(\\mathcal{S}_k\\) é de dimensão finita, existe uma base \\(\\{B_j\\}_{j=1}^M\\) tal que\n\\[\ng(x) = \\sum_{j=1}^{M} \\beta_j B_j(x).\n\\]\nAssim, o problema de estimar \\(g\\) reduz-se à estimação dos coeficientes \\(\\beta_j\\)."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#forma-por-partes-3-nós",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#forma-por-partes-3-nós",
+    "title": "Parte 1 : Regressão",
+    "section": "Forma por partes (3 nós)",
+    "text": "Forma por partes (3 nós)\n\\[\ng(x) =\n\\begin{cases}\n\\beta_0 + \\beta_1 x, & x \\le t_1 \\\\\n\\beta_0 + \\beta_1 x + \\gamma_1(x - t_1), & t_1 &lt; x \\le t_2 \\\\\n\\beta_0 + \\beta_1 x + \\gamma_1(x - t_1) + \\gamma_2(x - t_2), & t_2 &lt; x \\le t_3 \\\\\n\\beta_0 + \\beta_1 x + \\sum_{j=1}^3 \\gamma_j(x - t_j), & x &gt; t_3\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#k-vizinhos-mais-próximos-knn",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#k-vizinhos-mais-próximos-knn",
+    "title": "Parte 1 : Regressão",
+    "section": "k Vizinhos Mais Próximos (KNN)",
+    "text": "k Vizinhos Mais Próximos (KNN)\nO método dos k vizinhos mais próximos (k-nearest neighbors, KNN) Benedetti (1977) e Stone (1977) é um dos métodos não paramétricos mais utilizados em aprendizado de máquina.\nSeu objetivo é estimar a função de regressão:\n\\[\nr(\\mathbf{x}) = \\mathbb{E}(\\boldsymbol{y} \\mid \\boldsymbol{X} = \\mathbf{x})\n\\]\ncom base na informação observada na vizinhança de \\(\\mathbf{x}\\)."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#references",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#references",
+    "title": "Parte 1 : Regressão",
+    "section": "References",
+    "text": "References\n\n\nBenedetti, J. K. 1977. “On the Nonparametric Estimation of Regression Functions.” Journal of the American Statistical Association.\n\n\nStone, Charles J. 1977. “Consistent Nonparametric Regression.” The Annals of Statistics."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#o-papel-do-parâmetro-k",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#o-papel-do-parâmetro-k",
+    "title": "Parte 1 : Regressão",
+    "section": "O papel do parâmetro \\(k\\)\n",
+    "text": "O papel do parâmetro \\(k\\)\n\nO parâmetro \\(k\\) controla o grau de suavização do estimador. Define o equilíbrio viés e variância\n\n\n\n\n\\(k\\) pequeno\n\najuste mais local\n\nmenor suavização\n\nbaixo viés\n\nalta variância\n\n\n\n\n\\(k\\) grande\n\najuste mais global\n\nmaior suavização\n\nalto viés\n\nbaixa variância"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#nadarayawatson",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#nadarayawatson",
+    "title": "Parte 1 : Regressão",
+    "section": "Nadaraya–Watson",
+    "text": "Nadaraya–Watson\nNo KNN, estimamos a função de regressão por:\n\\[\ng(\\mathbf{x}) = \\frac{1}{k} \\sum_{i \\in \\mathcal{N}_k(\\mathbf{x})} y_i\n\\]\n\nLimitação do KNN\nTodos os pontos na vizinhança recebem o mesmo peso.\nPodemos melhorar essa abordagem atribuindo pesos diferentes às observações, de acordo com a sua proximidade de \\(\\mathbf{x}\\)."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#regressão-polinomial-local",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#regressão-polinomial-local",
+    "title": "Parte 1 : Regressão",
+    "section": "Regressão Polinomial Local",
+    "text": "Regressão Polinomial Local\nA regressão de Nadaraya–Watson estima \\(g(x)\\) como uma média ponderada local, ou seja, resolve\n\\[\n\\hat{g}(\\mathbf{x}) = \\arg\\min_{\\beta_0} \\sum_{i=1}^n w_i(\\mathbf{x})\\,(Y_i - \\beta_0)^2\n\\]\nIsso equivale a ajustar localmente uma constante (polinômio de grau 0)."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-3",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-3",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação",
+    "text": "Interpretação\n\nPara cada ponto \\(x\\), ajustamos um modelo diferente\n\nOs pesos \\(w_i(x)\\) garantem que apenas observações próximas influenciem o ajuste\nO grau \\(p\\) controla a flexibilidade local do modelo"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#casos-importantes",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#casos-importantes",
+    "title": "Parte 1 : Regressão",
+    "section": "Casos importantes",
+    "text": "Casos importantes\n\n\n\\(p = 0\\) → regressão de Nadaraya–Watson\n\n\n\\(p = 1\\) → regressão linear local (reduz viés nas bordas)\n\n\n\\(p = 2\\) → regressão quadrática local"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-1",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia central",
+    "text": "Ideia central\nUma árvore de regressão divide o espaço de entrada em regiões:\n\\[\n\\mathcal{R}_1, \\mathcal{R}_2, \\ldots, \\mathcal{R}_M\n\\]\ne define:\n\\[\n\\hat{g}(x) = \\sum_{m=1}^M c_m \\mathbf{1}(x \\in \\mathcal{R}_m)\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-baseados-em-rkhs",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-baseados-em-rkhs",
+    "title": "Parte 1 : Regressão",
+    "section": "Métodos baseados em RKHS",
+    "text": "Métodos baseados em RKHS\nAté agora, construímos estimadores locais:\n\nmédias ponderadas (Nadaraya–Watson)\nregressão polinomial local\n\nEsses métodos são locais.\nAgora mudamos de perspectiva:\n\nqueremos estimar \\(g(\\mathbf{x})\\) escolhendo a melhor função em um espaço funcional."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#formulação-geral",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#formulação-geral",
+    "title": "Parte 1 : Regressão",
+    "section": "Formulação geral",
+    "text": "Formulação geral\nBuscamos uma função \\(g \\in \\mathcal{H}\\) que minimize:\n\\[\n\\min_{g \\in \\mathcal{H}} \\sum_{i=1}^n L(g(\\mathbf{x}_i), y_i) + \\mathcal{P}(g)\n\\]\nonde:\n\n\n\\(L\\) mede o erro de ajuste\n\n\n\\(\\mathcal{P}(g)\\) penaliza a complexidade\n\n\n\\(\\mathcal{H}\\) é um espaço de funções"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#caso-quadrático-regressão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#caso-quadrático-regressão",
+    "title": "Parte 1 : Regressão",
+    "section": "Caso quadrático (regressão)",
+    "text": "Caso quadrático (regressão)\nUma escolha natural é:\n\\[\n\\min_{g \\in \\mathcal{H}} \\sum_{i=1}^n (y_i - g(x_i))^2 + \\lambda \\|g\\|_{\\mathcal{H}}^2\n\\]\nEssa é a versão funcional de:\n\nregressão linear\nridge regression"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-ridge-regression",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-ridge-regression",
+    "title": "Parte 1 : Regressão",
+    "section": "Conexão com Ridge Regression",
+    "text": "Conexão com Ridge Regression\nNa regressão linear:\n\\[\n\\hat{\\beta} = \\arg\\min \\sum_{i=1}^n (y_i - x_i^T \\beta)^2 + \\lambda \\|\\beta\\|^2\n\\]\nAgora substituímos:\n\nvetor \\(\\beta\\) → função \\(g\\)\n\nnorma Euclidiana → norma no espaço \\(\\mathcal{H}\\)"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#o-problema-fundamental",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#o-problema-fundamental",
+    "title": "Parte 1 : Regressão",
+    "section": "O problema fundamental",
+    "text": "O problema fundamental\nEstamos resolvendo:\n\numa otimização sobre um espaço de funções (infinito dimensional)\n\nIsso parece inviável computacionalmente."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#a-ideia-chave-dos-rkhs",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#a-ideia-chave-dos-rkhs",
+    "title": "Parte 1 : Regressão",
+    "section": "A ideia chave dos RKHS",
+    "text": "A ideia chave dos RKHS\nRKHS (Reproducing Kernel Hilbert Spaces) permitem:\n\nrepresentar funções de forma controlada\ntransformar o problema funcional em um problema finito"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#teorema-do-representante",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#teorema-do-representante",
+    "title": "Parte 1 : Regressão",
+    "section": "Teorema do Representante",
+    "text": "Teorema do Representante\nA solução do problema tem a forma:\n\\[\n\\hat{g}(x) = \\sum_{i=1}^n \\alpha_i K(x, x_i)\n\\]\nonde:\n\n\n\\(K(\\cdot,\\cdot)\\) é um kernel\n\n\\(\\alpha_i\\) são coeficientes a serem estimados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-4",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-4",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação",
+    "text": "Interpretação\n\no espaço é dividido em “caixas”\ndentro de cada região, a previsão é constante → média dos dados\no modelo é uma função piecewise constante\n\n\n\nProblema de estimação\nQueremos encontrar a melhor partição:\n\\[\n\\{\\mathcal{R}_1, \\ldots, \\mathcal{R}_M\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#comparação-com-métodos-anteriores",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#comparação-com-métodos-anteriores",
+    "title": "Parte 1 : Regressão",
+    "section": "Comparação com métodos anteriores",
+    "text": "Comparação com métodos anteriores\n\nSplines → função suave global\n\nKernel → média local suave\n\nÁrvores → regiões com valores constantes"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#forma-matricial",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#forma-matricial",
+    "title": "Parte 1 : Regressão",
+    "section": "Forma matricial",
+    "text": "Forma matricial\nA solução pode ser escrita como:\n\\[\n\\hat{\\alpha} = (K + \\lambda I)^{-1} y\n\\]\nonde:\n\n\n\\(K_{ij} = K(x_i, x_j)\\) é a matriz de kernel"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#estimador-final",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#estimador-final",
+    "title": "Parte 1 : Regressão",
+    "section": "Estimador final",
+    "text": "Estimador final\nA função estimada é:\n\\[\n\\hat{g}(x) = \\sum_{i=1}^n \\hat{\\alpha}_i K(x, x_i)\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#intuição-final",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#intuição-final",
+    "title": "Parte 1 : Regressão",
+    "section": "Intuição final",
+    "text": "Intuição final\n\ncada observação gera uma função \\(K(x, x_i)\\)\n\no modelo é uma soma ponderada dessas funções\n\n\n\\(\\lambda\\) controla suavização"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-tudo-que-vimos",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#conexão-com-tudo-que-vimos",
+    "title": "Parte 1 : Regressão",
+    "section": "Conexão com tudo que vimos",
+    "text": "Conexão com tudo que vimos\n\nNadaraya–Watson → média ponderada\n\nSplines → penalização da curvatura\n\nRKHS → penalização via norma funcional"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#árvores-de-regressão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#árvores-de-regressão",
+    "title": "Parte 1 : Regressão",
+    "section": "Árvores de Regressão",
+    "text": "Árvores de Regressão\nAté agora, modelamos \\(g(\\mathbf{x})\\) como uma função suave:\n\nsplines\n\nkernels\n\nregressão local\n\nAgora adotamos uma abordagem diferente:\n\nmodelar \\(g(\\mathbf{x})\\) por partições do espaço das covariáveis."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#como-a-árvore-é-construída",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#como-a-árvore-é-construída",
+    "title": "Parte 1 : Regressão",
+    "section": "Como a árvore é construída?",
+    "text": "Como a árvore é construída?\nDe forma recursiva:\n\nescolhe-se uma variável \\(X_j\\)\n\nescolhe-se um ponto de corte \\(s\\)\n\ndivide-se o espaço:\n\n\\[\nx_j \\leq s \\quad \\text{vs} \\quad x_j &gt; s\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#critério-de-divisão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#critério-de-divisão",
+    "title": "Parte 1 : Regressão",
+    "section": "Critério de divisão",
+    "text": "Critério de divisão\nA melhor divisão é escolhida minimizando:\n\\[\n\\sum_{i \\in \\mathcal{R}_1} (y_i - \\bar{y}_1)^2 +\n\\sum_{i \\in \\mathcal{R}_2} (y_i - \\bar{y}_2)^2\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#construção-recursiva",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#construção-recursiva",
+    "title": "Parte 1 : Regressão",
+    "section": "Construção recursiva",
+    "text": "Construção recursiva\nO processo continua:\n\ncada região é subdividida\nformando uma estrutura em árvore"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#predição",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#predição",
+    "title": "Parte 1 : Regressão",
+    "section": "Predição",
+    "text": "Predição\nPara prever em um ponto \\(x\\):\n\npercorremos a árvore\nseguimos as condições\nchegamos a uma folha"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-da-árvore",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-da-árvore",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação da árvore",
+    "text": "Interpretação da árvore\n\nnós internos → regras de decisão\n\nfolhas → valores previstos"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#vantagens",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#vantagens",
+    "title": "Parte 1 : Regressão",
+    "section": "Vantagens",
+    "text": "Vantagens\n\naltamente interpretável\n\ncaptura interações automaticamente\n\nnão exige forma funcional"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#limitações",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#limitações",
+    "title": "Parte 1 : Regressão",
+    "section": "Limitações",
+    "text": "Limitações\n\nfunção não suave\n\nalta variância\n\nsensível a pequenas mudanças nos dados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#solução-prática",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#solução-prática",
+    "title": "Parte 1 : Regressão",
+    "section": "Solução prática",
+    "text": "Solução prática\nUtilizamos uma abordagem gulosa:\n\nescolhemos a melhor divisão local\n\nrepetimos recursivamente"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#melhor-divisão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#melhor-divisão",
+    "title": "Parte 1 : Regressão",
+    "section": "Melhor divisão",
+    "text": "Melhor divisão\nEscolhemos \\((j,s)\\) que minimiza:\n\\[\n\\sum_{i \\in \\mathcal{R}_1} (y_i - \\bar{y}_1)^2 +\n\\sum_{i \\in \\mathcal{R}_2} (y_i - \\bar{y}_2)^2\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#construção-completa",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#construção-completa",
+    "title": "Parte 1 : Regressão",
+    "section": "Construção completa",
+    "text": "Construção completa\n\ncomeça com todos os dados\n\nescolhe melhor split\n\ndivide\n\nrepete"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#overfitting",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#overfitting",
+    "title": "Parte 1 : Regressão",
+    "section": "Overfitting",
+    "text": "Overfitting\nA árvore completa tende a:\n\najustar demais os dados\n\nter alta variância"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#poda-pruning",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#poda-pruning",
+    "title": "Parte 1 : Regressão",
+    "section": "Poda (pruning)",
+    "text": "Poda (pruning)\nControlamos complexidade via:\n\nlimitar profundidade\n\npoda posterior"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-2",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-2",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia central",
+    "text": "Ideia central\n\nRandom Forest = Bagging + aleatorização nas variáveis"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#bagging-random-forest-e-boosting",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#bagging-random-forest-e-boosting",
+    "title": "Parte 1 : Regressão",
+    "section": "Bagging, Random Forest e Boosting",
+    "text": "Bagging, Random Forest e Boosting\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#vantagens-das-árvores-de-regressão",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#vantagens-das-árvores-de-regressão",
+    "title": "Parte 1 : Regressão",
+    "section": "Vantagens das Árvores de Regressão",
+    "text": "Vantagens das Árvores de Regressão\nAlém de serem facilmente interpretáveis, árvores apresentam propriedades importantes:"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#limitação-importante",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#limitação-importante",
+    "title": "Parte 1 : Regressão",
+    "section": "Limitação importante",
+    "text": "Limitação importante\nApesar dessas vantagens:\n\nárvores individuais têm alta variância\n\npequenas mudanças nos dados podem gerar árvores muito diferentes"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#motivação",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#motivação",
+    "title": "Parte 1 : Regressão",
+    "section": "Motivação",
+    "text": "Motivação\nPara melhorar o desempenho preditivo:\n\ncombinamos várias árvores em um único modelo"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#próximo-passo",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#próximo-passo",
+    "title": "Parte 1 : Regressão",
+    "section": "Próximo passo",
+    "text": "Próximo passo\nRandom Forest:\n\nreduz correlação entre árvores\n\nmelhora desempenho preditivo"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#insight",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#insight",
+    "title": "Parte 1 : Regressão",
+    "section": "Insight",
+    "text": "Insight\nCombinar modelos:\n\nmantém o viés\n\nreduz a variância"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-do-bagging",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-do-bagging",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia central do Bagging",
+    "text": "Ideia central do Bagging\n\nMédia de vários modelos instáveis → modelo mais estável"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#bagging-bootstrap-aggregating",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#bagging-bootstrap-aggregating",
+    "title": "Parte 1 : Regressão",
+    "section": "Bagging (Bootstrap Aggregating)",
+    "text": "Bagging (Bootstrap Aggregating)\nA ideia central é combinar vários estimadores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nonde \\(g_b(\\mathbf{x})\\) é a predição da \\(b\\)-ésima árvore.\nPara cada \\(b = 1, \\ldots, B\\):\n\namostramos com reposição (bootstrap)\n\najustamos uma árvore aos dados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#como-gerar-as-árvores",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#como-gerar-as-árvores",
+    "title": "Parte 1 : Regressão",
+    "section": "Como gerar as árvores?",
+    "text": "Como gerar as árvores?\nPara cada \\(b = 1, \\ldots, B\\):\n\namostramos com reposição (bootstrap)\n\najustamos uma árvore aos dados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#propriedade-fundamental",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#propriedade-fundamental",
+    "title": "Parte 1 : Regressão",
+    "section": "Propriedade fundamental",
+    "text": "Propriedade fundamental\nSe os estimadores são aproximadamente não viesados:\n\no viés permanece semelhante\n\na variância é reduzida"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#conclusão-1",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#conclusão-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Conclusão",
+    "text": "Conclusão\n\\[\n\\mathbb{E}[(Y - g(x))^2 \\mid x]\n\\le\n\\mathbb{E}[(Y - g_b(x))^2 \\mid x]\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#intuição",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#intuição",
+    "title": "Parte 1 : Regressão",
+    "section": "Intuição",
+    "text": "Intuição\n\nmuitas árvores instáveis → média estável"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#importância-de-variáveis",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#importância-de-variáveis",
+    "title": "Parte 1 : Regressão",
+    "section": "Importância de variáveis",
+    "text": "Importância de variáveis\nBagging permite medir a relevância de cada variável:\n\nbaseada na redução do erro (RSS)\n\ncada divisão reduz a variabilidade"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#limitação",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#limitação",
+    "title": "Parte 1 : Regressão",
+    "section": "Limitação",
+    "text": "Limitação\n\nárvores ainda podem ser correlacionadas\n\nredução de variância pode ser limitada"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-combinar-árvores",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-combinar-árvores",
+    "title": "Parte 1 : Regressão",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#redução-do-erro",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#redução-do-erro",
+    "title": "Parte 1 : Regressão",
+    "section": "Redução do erro",
+    "text": "Redução do erro\nA redução no RSS é dada por:\n\\[\n\\text{RSS}_{pai}\n-\n\\text{RSS}_{esq}\n-\n\\text{RSS}_{dir}\n\\]\nOu, explicitamente:\n\\[\n\\sum_{i \\in \\mathcal{R}_{pai}} (y_i - \\bar{y}_{pai})^2\n-\n\\sum_{i \\in \\mathcal{R}_{esq}} (y_i - \\bar{y}_{esq})^2\n-\n\\sum_{i \\in \\mathcal{R}_{dir}} (y_i - \\bar{y}_{dir})^2\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-5",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-5",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação",
+    "text": "Interpretação\n\nquanto maior a redução → melhor a divisão\n\nboas variáveis geram partições mais homogêneas"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#importância-de-uma-variável",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#importância-de-uma-variável",
+    "title": "Parte 1 : Regressão",
+    "section": "Importância de uma variável",
+    "text": "Importância de uma variável\nA importância de uma variável é:\n\na soma das reduções de RSS\n\nem todos os nós onde ela é usada"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#florestas-aleatórias-random-forest",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#florestas-aleatórias-random-forest",
+    "title": "Parte 1 : Regressão",
+    "section": "Florestas Aleatórias (Random Forest)",
+    "text": "Florestas Aleatórias (Random Forest)\nNo Bagging, combinamos várias árvores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nLimitação do Bagging\nMesmo com bootstrap, as árvores podem ser correlacionadas:\n\nmesmas variáveis dominantes\n\ndivisões semelhantes\n\npredições parecidas"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#problema",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#problema",
+    "title": "Parte 1 : Regressão",
+    "section": "Problema",
+    "text": "Problema\nA redução de variância depende da correlação:\n\nárvores muito parecidas → pouco ganho ao combinar"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-do-random-forest",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-do-random-forest",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia do Random Forest",
+    "text": "Ideia do Random Forest\nIntroduzir aleatoriedade adicional:\n\nem cada nó, escolhemos um subconjunto aleatório de variáveis"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#construção",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#construção",
+    "title": "Parte 1 : Regressão",
+    "section": "Construção",
+    "text": "Construção\nPara cada árvore:\n\namostra bootstrap dos dados\n\nem cada divisão:\n\nseleciona-se aleatoriamente \\(m\\) variáveis\n\nescolhe-se o melhor split entre elas"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#parâmetro-chave",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#parâmetro-chave",
+    "title": "Parte 1 : Regressão",
+    "section": "Parâmetro chave",
+    "text": "Parâmetro chave\n\\(m\\) = número de variáveis candidatas por split\n\n\n\\(m = d\\) → Bagging\n\n\n\\(m &lt; d\\) → Random Forest"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#efeito",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#efeito",
+    "title": "Parte 1 : Regressão",
+    "section": "Efeito",
+    "text": "Efeito\n\n↓ correlação entre árvores\n\n↓ variância do modelo final\n\n↑ desempenho preditivo"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#regra-prática",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#regra-prática",
+    "title": "Parte 1 : Regressão",
+    "section": "Regra prática",
+    "text": "Regra prática\nFrequentemente:\n\\[\nm \\approx \\frac{d}{3}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#boosting",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#boosting",
+    "title": "Parte 1 : Regressão",
+    "section": "Boosting",
+    "text": "Boosting\nO boosting constrói o estimador de forma sequencial, corrigindo erros do modelo anterior.\n\nIdeia central\nComeçamos com um modelo simples e vamos ajustando os resíduos:\n\\[\nr_i = y_i - g(x_i)\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#redes-neurais-artificiais",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#redes-neurais-artificiais",
+    "title": "Parte 1 : Regressão",
+    "section": "Redes Neurais Artificiais",
+    "text": "Redes Neurais Artificiais\nRedes neurais são modelos que aproximam funções não lineares complexas.\nNo contexto de regressão, trata-se de um estimador não linear de \\(r(\\mathbf{x})\\) que pode ser representado graficamente por uma estrutura do tipo"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#section",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#section",
+    "title": "Parte 1 : Regressão",
+    "section": "",
+    "text": "🔹 Entrada\n\\[\n\\mathbf{x} = (x_1, x_2, x_3, \\cdots, x_p)^t\n\\]\n🔹 Camada oculta\nPara cada neurônio \\(j\\):\n\\[\nx_j^{(1)} = f\\left(\\beta_{0j}^{(1)} + \\sum_{i=1}^{3} \\beta_{ij}^{(1)} x_i \\right)\n\\]\n\ncombinação linear das entradas\n\nseguida de uma função de ativação"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#funções-de-ativação-1",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#funções-de-ativação-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Funções de Ativação",
+    "text": "Funções de Ativação\n\n\nClássicas\n\nIdentidade\\[\nf(z)=z\n\\]\nSigmoid\\[\nf(z)=\\frac{1}{1+e^{-z}}\n\\]\nTanh\\[\nf(z)=\\frac{e^z-e^{-z}}{e^z+e^{-z}}\n\\]\n\n\nModernas\n\nReLU\\[\nf(z)=\\max(0,z)\n\\]\nLeaky ReLU\\[\nf(z)=\n\\begin{cases}\n0.01z, & z&lt;0\\\\\nz, & z\\geq0\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#construção-do-bagging",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#construção-do-bagging",
+    "title": "Parte 1 : Regressão",
+    "section": "Construção do Bagging",
+    "text": "Construção do Bagging"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-o-nome-backpropagation",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-o-nome-backpropagation",
+    "title": "Parte 1 : Regressão",
+    "section": "Por que o nome Backpropagation?",
+    "text": "Por que o nome Backpropagation?\nOs gradientes são calculados da saída para a entrada\n\n\nO erro “volta” pela rede ajustando os pesos"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-do-algoritmo",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#ideia-central-do-algoritmo",
+    "title": "Parte 1 : Regressão",
+    "section": "Ideia central do algoritmo",
+    "text": "Ideia central do algoritmo\nCada peso é atualizado usando:\n\\[\n\\text{erro} \\times \\text{sensibilidade local}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#derivada-do-erro-exemplo",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#derivada-do-erro-exemplo",
+    "title": "Parte 1 : Regressão",
+    "section": "Derivada do erro (exemplo)",
+    "text": "Derivada do erro (exemplo)\nPara a camada de saída:\n\\[\n\\frac{\\partial EQM(g_\\beta)}{\\partial \\beta_{j,1}^{(H)}}\n=\n\\frac{2}{n} \\sum_{k=1}^{n}\n\\left(\ng_\\beta(x_k) - y_k\n\\right) x_{k,j}\n\\]"
   }
 ]

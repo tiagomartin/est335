@@ -176,7 +176,7 @@ g(\mathbf{x}) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 <p><span class="math display">\[
 \boldsymbol{\beta}^t = (\beta_0, \beta_1, \ldots, \beta_p)
 \]</span></p>
-</section><section id="transformações-de-variáveis" class="slide level2"><h2>Transformações de variáveis</h2>
+</section><section class="slide level2"><h3 id="transformações-de-variáveis">Transformações de variáveis</h3>
 <p>Os termos <span class="math inline">\(x_i\)</span> <strong>não precisam ser apenas as variáveis originais</strong>. Podemos construir <strong>novas covariáveis</strong> a partir delas, por exemplo:</p>
 <ul>
 <li>termos quadráticos: <span class="math inline">\(X_i^2\)</span>
@@ -197,7 +197,7 @@ g(\mathbf{x}) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 Y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_d x_{ip}
 \right)^2
 \]</span></p>
-</section><section id="interpretação" class="slide level2"><h2>Interpretação</h2>
+</section><section class="slide level2"><h3 id="interpretação">Interpretação</h3>
 <p>O método escolhe os parâmetros que <strong>minimizam a soma dos quadrados dos resíduos</strong>:</p>
 <p><span class="math display">\[
 \text{resíduo}_i = Y_i - g(X_i)
@@ -207,7 +207,7 @@ Y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_d x_{ip}
 \sum_{i=1}^{n} (Y_i - g(X_i))^2
 \]</span></p>
 <p>Geometricamente, isso corresponde a <strong>ajustar o hiperplano que fica mais próximo possível dos dados</strong>.</p>
-</section><section id="forma-matricial-do-modelo" class="slide level2"><h2>Forma matricial do modelo</h2>
+</section><section class="slide level2"><h3 id="forma-matricial-do-modelo">Forma matricial do modelo</h3>
 <p>O modelo de regressão pode ser escrito em forma matricial como</p>
 <p><span class="math display">\[
 \boldsymbol{y} = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
@@ -221,13 +221,13 @@ Y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_d x_{ip}
 </li>
 <li>
 <span class="math inline">\(\boldsymbol{\beta}\)</span> é o vetor de parâmetros</li>
-</ul></section><section id="solução-dos-mínimos-quadrados" class="slide level2"><h2>Solução dos mínimos quadrados</h2>
+</ul></section><section class="slide level2"><h3 id="solução-dos-mínimos-quadrados">Solução dos mínimos quadrados</h3>
 <p>A solução analítica do problema é dada por</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} = (\boldsymbol{X}^t \boldsymbol{X})^{-1} \boldsymbol{X}^t \boldsymbol{y}
 \]</span></p>
 <p>Essa expressão é conhecida como a <strong>equação normal</strong> da regressão linear.</p>
-</section><section id="estrutura-da-matriz-de-dados" class="slide level2"><h2>Estrutura da matriz de dados</h2>
+</section><section class="slide level2"><h3 id="estrutura-da-matriz-de-dados">Estrutura da matriz de dados</h3>
 <p>A matriz de covariáveis possui a forma</p>
 <p><span class="math display">\[
 \boldsymbol{X} =
@@ -249,7 +249,7 @@ Y_n
 \end{pmatrix}
 \]</span></p>
 <p>Adotamos a convenção <span class="math inline">\(x_{i,0} = 1\)</span> para representar o <strong>intercepto</strong> do modelo.</p>
-</section><section id="função-de-regressão-estimada" class="slide level2"><h2>Função de regressão estimada</h2>
+<h3 id="função-de-regressão-estimada">Função de regressão estimada</h3>
 <p>Uma vez estimados os coeficientes pelo método dos mínimos quadrados, a <strong>função de predição</strong> é dada por</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \hat{\boldsymbol{\beta}}^t \mathbf{x}
@@ -258,7 +258,7 @@ g(\mathbf{x}) = \hat{\boldsymbol{\beta}}^t \mathbf{x}
 <p><span class="math display">\[
 \hat{\boldsymbol{y}} = g(\mathbf{x})
 \]</span></p>
-</section><section id="justificativa-estatística-do-método" class="slide level2"><h2>Justificativa estatística do método</h2>
+<h3 id="justificativa-estatística-do-método">Justificativa estatística do método</h3>
 <p>Grande parte da literatura estatística estuda o método dos mínimos quadrados sob diferentes perspectivas, como:</p>
 <ul>
 <li>
@@ -272,7 +272,8 @@ g(\mathbf{x}) = \hat{\boldsymbol{\beta}}^t \mathbf{x}
 <ul>
 <li><span class="citation" data-cites="morettin2019estatistica">Morettin and Singer (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></li>
 <li><span class="citation" data-cites="neter1996applied">Neter et al. (<a href="#/references" role="doc-biblioref" onclick="">1996</a>)</span></li>
-</ul></section><section id="uma-observação-importante" class="slide level2"><h2>Uma observação importante</h2>
+</ul>
+<h3 id="uma-observação-importante">Uma observação importante</h3>
 <p>Assumir que a verdadeira função de regressão <span class="math inline">\(r(x)\)</span> é exatamente linear é uma <strong>suposição bastante forte</strong>.</p>
 <p>Na prática, essa hipótese raramente é verdadeira.</p>
 <p>Mesmo assim, existe uma literatura extensa mostrando que o método dos mínimos quadrados continua sendo útil para estimar relações entre <span class="math inline">\(\boldsymbol{X}\)</span> e <span class="math inline">\(\boldsymbol{y}\)</span>, mesmo quando a verdadeira função de regressão <strong>não é linear</strong>.</p>

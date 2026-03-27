@@ -72,7 +72,7 @@ $$
 
 ---
 
-## Transformações de variáveis
+### Transformações de variáveis
 
 Os termos $x_i$ **não precisam ser apenas as variáveis originais**. Podemos construir **novas covariáveis** a partir delas, por exemplo:
 
@@ -101,7 +101,7 @@ $$
 
 ---
 
-## Interpretação
+### Interpretação
 
 O método escolhe os parâmetros que **minimizam a soma dos quadrados dos resíduos**:
 
@@ -119,7 +119,7 @@ Geometricamente, isso corresponde a **ajustar o hiperplano que fica mais próxim
 
 ---
 
-## Forma matricial do modelo
+### Forma matricial do modelo
 
 O modelo de regressão pode ser escrito em forma matricial como
 
@@ -135,7 +135,7 @@ onde
 
 ---
 
-## Solução dos mínimos quadrados
+### Solução dos mínimos quadrados
 
 A solução analítica do problema é dada por
 
@@ -147,7 +147,7 @@ Essa expressão é conhecida como a **equação normal** da regressão linear.
 
 ---
 
-## Estrutura da matriz de dados
+### Estrutura da matriz de dados
 
 A matriz de covariáveis possui a forma
 
@@ -181,7 +181,7 @@ Adotamos a convenção $x_{i,0} = 1$ para representar o **intercepto** do modelo
 
 
 
-## Função de regressão estimada
+### Função de regressão estimada
 
 Uma vez estimados os coeficientes pelo método dos mínimos quadrados, a **função de predição** é dada por
 
@@ -196,7 +196,7 @@ $$
 $$
 
 
-## Justificativa estatística do método
+### Justificativa estatística do método
 
 Grande parte da literatura estatística estuda o método dos mínimos quadrados sob diferentes perspectivas, como:
 
@@ -210,7 +210,7 @@ Esses tópicos são tratados em profundidade em livros clássicos como:
 - @neter1996applied
 
 
-## Uma observação importante
+### Uma observação importante
 
 Assumir que a verdadeira função de regressão $r(x)$ é exatamente linear é uma **suposição bastante forte**.
 
