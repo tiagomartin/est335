@@ -2009,60 +2009,8 @@ Os gradientes são calculados da saída para a entrada
 O erro ``volta'' pela rede ajustando os pesos
 \end{frame}
 
-\begin{frame}{Ideia central do algoritmo}
-\phantomsection\label{ideia-central-do-algoritmo}
-Cada peso é atualizado usando:
-
-\[
-\text{erro} \times \text{sensibilidade local}
-\]
-\end{frame}
-
 \begin{frame}
-\begin{block}{💡 Interpretação}
-\phantomsection\label{interpretauxe7uxe3o-6}
-\begin{itemize}
-\tightlist
-\item
-  erro → o quanto erramos\\
-\item
-  derivada → como corrigir
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\begin{block}{🎯 Conclusão}
-\phantomsection\label{conclusuxe3o-1}
-Backpropagation = aplicação eficiente da regra da cadeia
-\end{block}
-\end{frame}
-
-\begin{frame}{Derivada do erro (exemplo)}
-\phantomsection\label{derivada-do-erro-exemplo}
-Para a camada de saída:
-
-\[
-\frac{\partial EQM(g_\beta)}{\partial \beta_{j,1}^{(H)}}
-=
-\frac{2}{n} \sum_{k=1}^{n}
-\left(
-g_\beta(x_k) - y_k
-\right) x_{k,j}
-\]
-\end{frame}
-
-\begin{frame}
-\begin{block}{💡 Interpretação}
-\phantomsection\label{interpretauxe7uxe3o-7}
-\begin{itemize}
-\tightlist
-\item
-  erro × entrada\\
-\item
-  exatamente como regressão linear
-\end{itemize}
-\end{block}
+\pandocbounded{\includegraphics[keepaspectratio]{met_nao_param_files/figure-beamer/unnamed-chunk-21-1.png}}
 \end{frame}
 
 \begin{frame}{References}

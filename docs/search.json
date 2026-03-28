@@ -4490,7 +4490,7 @@
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#florestas-aleatórias-random-forest",
     "title": "Parte 1 : Regressão",
     "section": "Florestas Aleatórias (Random Forest)",
-    "text": "Florestas Aleatórias (Random Forest)\nNo Bagging, combinamos várias árvores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nLimitação do Bagging\nMesmo com bootstrap, as árvores podem ser correlacionadas:\n\nmesmas variáveis dominantes\n\ndivisões semelhantes\n\npredições parecidas"
+    "text": "Florestas Aleatórias (Random Forest)\nNo Bagging, combinamos várias árvores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nComo as amostras bootstrap não são i.i.d,\n\nCada árvore é diferente, mas nasce do mesmo mecanismo, então têm variâncias semelhantes, ou seja,\n\n\\[\n\\mathrm{Var}(g_b(\\mathbf{x})) = \\sigma^2\n\\quad \\text{para todo } b\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#problema",
@@ -4589,5 +4589,33 @@
     "title": "Parte 1 : Regressão",
     "section": "Derivada do erro (exemplo)",
     "text": "Derivada do erro (exemplo)\nPara a camada de saída:\n\\[\n\\frac{\\partial EQM(g_\\beta)}{\\partial \\beta_{j,1}^{(H)}}\n=\n\\frac{2}{n} \\sum_{k=1}^{n}\n\\left(\ng_\\beta(x_k) - y_k\n\\right) x_{k,j}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#rede-neural-aprendendo-uma-função-não-linear",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#rede-neural-aprendendo-uma-função-não-linear",
+    "title": "Parte 1 : Regressão",
+    "section": "Rede neural aprendendo uma função não linear",
+    "text": "Rede neural aprendendo uma função não linear\nNeste exemplo, a RNA foi ajustada para aproximar a função\n\\[\nf(x)=12+4x-6x^2+x^3+\\sin(x)\n\\]\na partir de observações ruidosas.\nA curva verde mostra a predição da rede, enquanto a curva vermelha representa a função real."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#de-onde-vem-a-variância-do-bagging",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#de-onde-vem-a-variância-do-bagging",
+    "title": "Parte 1 : Regressão",
+    "section": "De onde vem a variância do Bagging?",
+    "text": "De onde vem a variância do Bagging?\nConsidere\n\\[\n\\hat{h}_{\\text{bag}}(x) = \\frac{1}{B} \\sum_{b=1}^{B} h_b(x)\n\\]\nonde \\(h_1(x), \\dots, h_B(x)\\) são as árvores do ensemble."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-6",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-6",
+    "title": "Parte 1 : Regressão",
+    "section": "Interpretação",
+    "text": "Interpretação\n\n\n\\(\\rho\\sigma^2\\) é a parte da variância que não desaparece com o aumento de \\(B\\)\n\n\n\\(\\dfrac{1-\\rho}{B}\\sigma^2\\) é a parte que cai com o número de árvores"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#consequência-importante",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#consequência-importante",
+    "title": "Parte 1 : Regressão",
+    "section": "Consequência importante",
+    "text": "Consequência importante\n\nse \\(\\rho\\) é pequeno, o bagging reduz bastante a variância\nse \\(\\rho\\) é grande, o ganho é limitado\n\n👉 é por isso que o Random Forest busca reduzir a correlação entre árvores.\nLimitação do Bagging\nMesmo com bootstrap, as árvores podem ser correlacionadas:\n\nmesmas variáveis dominantes\n\ndivisões semelhantes\n\npredições parecidas"
   }
 ]
