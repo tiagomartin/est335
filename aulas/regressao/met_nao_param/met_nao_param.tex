@@ -1432,6 +1432,12 @@ Para cada \(b = 1, \ldots, B\):
 \end{frame}
 
 \begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{../../../images/regressao/bagging.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}
 \begin{block}{Propriedade fundamental}
 \phantomsection\label{propriedade-fundamental}
 Se os estimadores são aproximadamente não viesados:
@@ -1539,9 +1545,145 @@ No Bagging, combinamos várias árvores:
 g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 \]
 
-\begin{block}{Limitação do Bagging}
-\phantomsection\label{limitauxe7uxe3o-do-bagging}
-Mesmo com bootstrap, as árvores podem ser \textbf{correlacionadas}:
+Como as amostras \emph{bootstrap} não são \emph{i.i.d},
+
+\begin{itemize}
+\tightlist
+\item
+  Cada árvore é diferente, mas nasce do mesmo mecanismo, então têm
+  variâncias semelhantes, ou seja,
+\end{itemize}
+
+\[
+\mathrm{Var}(g_b(\mathbf{x})) = \sigma^2
+\quad \text{para todo } b
+\]
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\tightlist
+\item
+  As árvores não são independentes, mas podemos resumir essa dependência
+  por uma correlação média. Assim, a correlação entre quaisquer duas
+  árvores é
+\end{itemize}
+
+\[
+\mathrm{Cor}(g_b(\mathbf{x}),g_{b'}(\mathbf{x})) = \rho
+\quad (b \neq b')
+\]
+
+Logo,
+
+\[
+\mathrm{Cov}(g_b(\mathbf{x}),g_{b'}(\mathbf{x})) = \rho \sigma^2
+\]
+
+Então,
+
+\[
+\mathrm{Var}\!\big(g(\mathbf{x}) \big)
+=
+\mathrm{Var}\!\left(\frac{1}{B}\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+=
+\frac{1}{B^2}\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+\]
+\end{frame}
+
+\begin{frame}
+Expandindo a variância da soma:
+
+\[
+\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+=
+\sum_{b=1}^{B}\mathrm{Var}(g_b\big(\mathbf{x})\big)
++
+\sum_{b \neq b'}\mathrm{Cov}\big(g_b(\mathbf{x}),g_{b'}(\mathbf{x})\big)
+\]
+
+Substituindo as hipóteses:
+
+\[
+\sum_{b=1}^{B}\mathrm{Var}\big(g_b(\mathbf{x})\big)=B\sigma^2
+\]
+
+e
+
+\[
+\sum_{b \neq b'}\mathrm{Cov}\big(g_b(\mathbf{x}),g_{b'}(\mathbf{x})\big)
+=
+B(B-1)\rho\sigma^2
+\]
+\end{frame}
+
+\begin{frame}
+Portanto,
+
+\[
+\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+=
+B\sigma^2 + B(B-1)\rho\sigma^2
+\]
+
+e, assim,
+
+\[
+\mathrm{Var}\!\left(g(\mathbf{x})\right)
+=
+\frac{1}{B^2}
+\left[
+B\sigma^2 + B(B-1)\rho\sigma^2
+\right]
+\]
+\end{frame}
+
+\begin{frame}
+Simplificando,
+
+\[
+\mathrm{Var}\!\big(g(\mathbf{x})\big)
+=
+\frac{\sigma^2}{B}
++
+\frac{B-1}{B}\rho\sigma^2
+\]
+
+ou, equivalentemente,
+
+\[
+\boxed{
+\mathrm{Var}\!\big(g(\mathbf{x})\big)
+=
+\rho\sigma^2 + \frac{1-\rho}{B}\sigma^2
+}
+\]
+
+Note que,
+
+\begin{itemize}
+\tightlist
+\item
+  \(\rho\sigma^2\) é a parte da variância que \textbf{não desaparece}
+  com o aumento de \(B\)
+\item
+  \(\dfrac{1-\rho}{B}\sigma^2\) é a parte que \textbf{cai com o número
+  de árvores}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Consequência importante}
+\phantomsection\label{consequuxeancia-importante}
+\begin{itemize}
+\tightlist
+\item
+  se \(\rho\) é pequeno, o bagging reduz bastante a variância
+\item
+  se \(\rho\) é grande, o ganho é limitado
+\end{itemize}
+
+Além disso,
 
 \begin{itemize}
 \tightlist
@@ -1621,6 +1763,12 @@ m \approx \frac{d}{3}
 \end{column}
 \end{columns}
 \end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{../../../images/regressao/rf.png}}
+\end{center}
 \end{frame}
 
 \begin{frame}
@@ -1723,6 +1871,12 @@ g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
   reduz \textbf{viés} (diferente do bagging)
 \end{itemize}
 \end{block}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{../../../images/regressao/boosting.png}}
+\end{center}
 \end{frame}
 
 \begin{frame}
@@ -2010,7 +2164,40 @@ O erro ``volta'' pela rede ajustando os pesos
 \end{frame}
 
 \begin{frame}
-\pandocbounded{\includegraphics[keepaspectratio]{met_nao_param_files/figure-beamer/unnamed-chunk-21-1.png}}
+\begin{center}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{rna_eqm_lado_a_lado.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Rede neural aprendendo uma função não linear}
+\phantomsection\label{rede-neural-aprendendo-uma-funuxe7uxe3o-nuxe3o-linear}
+Neste exemplo, a RNA foi ajustada para aproximar a função
+
+\[
+f(x)=12+4x-6x^2+x^3+\sin(x)
+\]
+
+a partir de observações ruidosas.
+
+A curva verde mostra a predição da rede, enquanto a curva vermelha
+representa a função real.
+\end{frame}
+
+\begin{frame}
+\begin{block}{Síntese}
+\phantomsection\label{suxedntese}
+\begin{itemize}
+\tightlist
+\item
+  a função de ativação introduz não linearidade;
+\item
+  a camada oculta cria novas representações dos dados;
+\item
+  o backpropagation ajusta os pesos para reduzir o erro;
+\item
+  com isso, a rede consegue aproximar funções complexas.
+\end{itemize}
+\end{block}
 \end{frame}
 
 \begin{frame}{References}

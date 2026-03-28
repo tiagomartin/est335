@@ -81,16 +81,16 @@ Esta página contém aulas que serão apresentadas ao longo do semestre. Você p
 </span>
 :::
 
-<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
-<!-- <span class="fw-bold"> -->
-<!--   Integral Dupla e Tripla -->
-<!-- </span> -->
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+  Métodos Não Paramétricos
+</span>
 
-<!-- <span> -->
-<!-- [Ver slides](/aulas/integrais_dup_trip/integrais_dup_trip.html){.btn .btn-est304-main .btn-sm} -->
-<!-- [PDF](/aulas/integrais_dup_trip/integrais_dup_trip.pdf){.btn .btn-est304-outline .btn-sm} -->
-<!-- </span> -->
-<!-- ::: -->
+<span>
+[Ver slides](/aulas/regressao/met_nao_param/met_nao_param.html#/title-slide){.btn .btn-est304-main .btn-sm}
+[PDF](/aulas/regressao/met_nao_param/met_nao_param.pdf){.btn .btn-est304-outline .btn-sm}
+</span>
+:::
 
 <!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
 <!-- <span class="fw-bold"> -->

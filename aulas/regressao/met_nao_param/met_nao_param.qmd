@@ -4042,6 +4042,11 @@ O erro “volta” pela rede ajustando os pesos
 <!-- --- -->
 
 ```{r}
+#| echo: false
+#| include: false
+#| warning: false
+#| message: false
+
 library(ggplot2)
 library(nnet)
 library(dplyr)
@@ -4174,10 +4179,9 @@ err_current <- data.frame(
 )
 
 # -----------------------------
-# Gráfico único com facetas
+# Gráfico animado combinado
 # -----------------------------
 anim_combo <- ggplot() +
-  # painel esquerdo: dados
   geom_point(
     data = points_fun,
     aes(x, y),
@@ -4197,8 +4201,6 @@ anim_combo <- ggplot() +
     color = "#D62728",
     linewidth = 1.3
   ) +
-  
-  # painel direito: trajetória do erro
   geom_line(
     data = err_path,
     aes(x, y),
@@ -4217,7 +4219,6 @@ anim_combo <- ggplot() +
     color = "#D62728",
     size = 2.8
   ) +
-  
   facet_wrap(~painel, scales = "free", nrow = 1) +
   labs(
     title = "Rede neural artificial: aprendizado ao longo das iterações",
@@ -4234,16 +4235,107 @@ anim_combo <- ggplot() +
   ) +
   transition_manual(frame_id)
 
-animate(
-  anim_combo,
-  nframes = length(iter_grid),
-  fps = 4,
-  width = 12,
-  height = 5,
-  units = "in",
-  res = 120,
-  renderer = gifski_renderer("rna_eqm_lado_a_lado.gif")
-)
+# -----------------------------
+# GIF para HTML
+# -----------------------------
+if (knitr::is_html_output()) {
+  invisible(
+    animate(
+      anim_combo,
+      nframes = length(iter_grid),
+      fps = 4,
+      width = 12,
+      height = 5,
+      units = "in",
+      res = 120,
+      renderer = gifski_renderer("rna_eqm_lado_a_lado.gif")
+    )
+  )
+}
+
+# -----------------------------
+# PNG estático para PDF
+# -----------------------------
+if (knitr::is_latex_output()) {
+  frame_pdf <- max(iter_grid)
+  
+  points_fun_pdf <- subset(points_fun, frame_id == frame_pdf)
+  true_fun_pdf   <- subset(true_fun, frame_id == frame_pdf)
+  pred_fun_pdf   <- subset(pred_fun, frame_id == frame_pdf)
+  err_path_pdf   <- subset(err_path, frame_id == frame_pdf)
+  err_curr_pdf   <- subset(err_current, frame_id == frame_pdf)
+  
+  plot_pdf_nn <- ggplot() +
+    geom_point(
+      data = points_fun_pdf,
+      aes(x, y),
+      color = "#2C7FB8",
+      alpha = 0.45,
+      size = 1.8
+    ) +
+    geom_line(
+      data = pred_fun_pdf,
+      aes(x, y),
+      color = "#00BA38",
+      linewidth = 1.3
+    ) +
+    geom_line(
+      data = true_fun_pdf,
+      aes(x, y),
+      color = "#D62728",
+      linewidth = 1.3
+    ) +
+    geom_line(
+      data = err_path_pdf,
+      aes(x, y),
+      color = "#2C7FB8",
+      linewidth = 1.2
+    ) +
+    geom_point(
+      data = err_path_pdf,
+      aes(x, y),
+      color = "#2C7FB8",
+      size = 1.8
+    ) +
+    geom_point(
+      data = err_curr_pdf,
+      aes(x, y),
+      color = "#D62728",
+      size = 2.8
+    ) +
+    facet_wrap(~painel, scales = "free", nrow = 1) +
+    labs(
+      title = "Rede neural artificial: aprendizado ao longo das iterações",
+      subtitle = paste("Iteração:", frame_pdf),
+      x = NULL,
+      y = NULL
+    ) +
+    theme_minimal(base_size = 14) +
+    theme(
+      panel.grid.minor = element_blank(),
+      strip.text = element_text(face = "bold", size = 13),
+      plot.title = element_text(face = "bold", size = 18, hjust = 0.5),
+      plot.subtitle = element_text(size = 12, hjust = 0.5)
+    )
+  
+  while (!is.null(dev.list())) dev.off()
+  
+  png("rna_eqm_lado_a_lado.png", width = 1400, height = 600, res = 120)
+  print(plot_pdf_nn)
+  invisible(dev.off())
+}
+```
+
+```{r}
+#| echo: false
+#| out-width: "100%"
+#| fig-align: "center"
+
+if (knitr::is_html_output()) {
+  knitr::include_graphics("rna_eqm_lado_a_lado.gif")
+} else if (knitr::is_latex_output()) {
+  knitr::include_graphics("rna_eqm_lado_a_lado.png")
+}
 ```
 
 
