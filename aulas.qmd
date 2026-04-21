@@ -39,7 +39,9 @@ format:
         }
         </style>
 ---
-Esta página contém aulas que serão apresentadas ao longo do semestre. Você pode baixar as aulas em uma versão PDF.
+<!-- Esta página contém aulas que serão apresentadas ao longo do semestre. Você pode baixar as aulas em uma versão PDF. -->
+
+Esta página contém aulas que serão apresentadas ao longo do semestre. 
 
 ::: {.list-group .aulas-list}
 
@@ -55,7 +57,7 @@ Esta página contém aulas que serão apresentadas ao longo do semestre. Você p
 
 <span>
 [Ver slides](/aulas/regressao/intro/intro.html#/title-slide){.btn .btn-est304-main .btn-sm}
-[PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
 </span>
 :::
 
@@ -66,7 +68,7 @@ Esta página contém aulas que serão apresentadas ao longo do semestre. Você p
 
 <span>
 [Ver slides](/aulas/regressao/met_param/met_param.html#/title-slide){.btn .btn-est304-main .btn-sm}
-[PDF](/aulas/regressao/met_param/met_param.pdf){.btn .btn-est304-outline .btn-sm}
+<!-- [PDF](/aulas/regressao/met_param/met_param.pdf){.btn .btn-est304-outline .btn-sm} -->
 </span>
 :::
 
@@ -77,7 +79,7 @@ Esta página contém aulas que serão apresentadas ao longo do semestre. Você p
 
 <span>
 [Ver slides](/aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#/title-slide){.btn .btn-est304-main .btn-sm}
-[PDF](/aulas/regressao/met_param_altas_dim/met_param_altas_dimen.pdf){.btn .btn-est304-outline .btn-sm}
+<!-- [PDF](/aulas/regressao/met_param_altas_dim/met_param_altas_dimen.pdf){.btn .btn-est304-outline .btn-sm} -->
 </span>
 :::
 
@@ -88,19 +90,19 @@ Esta página contém aulas que serão apresentadas ao longo do semestre. Você p
 
 <span>
 [Ver slides](/aulas/regressao/met_nao_param/met_nao_param.html#/title-slide){.btn .btn-est304-main .btn-sm}
-[PDF](/aulas/regressao/met_nao_param/met_nao_param.pdf){.btn .btn-est304-outline .btn-sm}
+<!-- [PDF](/aulas/regressao/met_nao_param/met_nao_param.pdf){.btn .btn-est304-outline .btn-sm} -->
 </span>
 :::
 
-<!-- ::: {.list-group-item .d-flex .justify-content-between .align-items-center} -->
-<!-- <span class="fw-bold"> -->
-<!--   Vetores Aleatórios -->
-<!-- </span> -->
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+  Métodos Não Paramétricos em Altas Dimensões
+</span>
 
-<!-- <span> -->
-<!-- [Ver slides](/aulas/Vetores_aleatorios/vetores_aleatorios.html){.btn .btn-est304-main .btn-sm} -->
+<span>
+[Ver slides](/aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#/title-slide){.btn .btn-est304-main .btn-sm}
 <!-- [PDF](/aulas/Vetores_aleatorios/vetores_aleatorios.pdf){.btn .btn-est304-outline .btn-sm} -->
-<!-- </span> -->
-<!-- ::: -->
+</span>
+:::
 
 :::
