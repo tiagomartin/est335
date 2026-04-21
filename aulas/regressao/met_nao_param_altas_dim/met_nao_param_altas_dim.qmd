@@ -1,0 +1,924 @@
+---
+title: "Parte 1 : Regressão"
+subtitle: "<span class='custom-subtitle'>Métodos Não Paramétricos em Altas Dimensões</span>"
+format: 
+  revealjs:
+    width: 1600
+    height: 900
+    footer: ""
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    preview-links: auto
+    self-contained: false
+    embed-resources: false
+    code-link: true
+    highlight-style: a11y
+    chalkboard: true
+    #incremental: true
+    #transition: slide
+  beamer:          # Slides em PDF (LaTeX/Beamer)
+    aspectratio: 169   # 16:9
+    keep-tex: true     # opcional, guarda o .tex gerado
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+    data-background-image: /images/back.png
+    data-background-size: cover
+    data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+
+## Métodos Não Paramétricos em Altas Dimensões
+
+- Métodos não paramétricos são mais flexíveis
+- Porém:
+  - exigem mais dados
+  - sofrem em altas dimensões
+
+➡️ Pergunta central:
+Como a dimensão afeta o desempenho dos modelos?
+
+
+## O Problema da Dimensão
+
+Suponha:
+
+- $X = (X_1, X_2, ..., X_p)$
+
+À medida que $p$ cresce:
+
+- o espaço de entrada cresce exponencialmente
+- os dados ficam "espalhados"
+
+➡️ Dificuldade de aprendizado aumenta
+
+
+
+## Maldição da Dimensionalidade
+
+(Bellman, 1966)
+
+Problema:
+
+- Volume do espaço cresce exponencialmente
+- Dados se tornam escassos
+
+Consequência:
+
+➡️ Precisamos de MUITO mais dados
+
+
+
+## {background-image="/images/regressao/slide2.png" background-size="contain" background-position="center" background-repeat="no-repeat"}
+
+
+---
+
+Note que,<br><br>
+
+::: {.columns}
+
+:::: {.column width="33%"}
+### 🔵 1D  
+**Alta densidade**
+
+- muitos pontos locais  
+- vizinhos próximos  
+::::
+
+:::: {.column width="33%"}
+### 🟣 2D  
+**Densidade reduz**
+
+- menos pontos por região  
+- distância começa a importar  
+::::
+
+:::: {.column width="33%"}
+### 🔴 Alta dimensão  
+**Espaço explode**
+
+- dados esparsos  
+- vizinhos distantes  
+- KNN perde eficiência  
+::::
+
+:::
+
+
+
+
+::: {.callout-important}
+## Mensagem central
+
+Em altas dimensões, a proximidade deixa de ser informativa e métodos baseados em vizinhança perdem desempenho.
+:::
+
+
+
+## Consequência da alta dimensionalidade
+
+
+
+### ⚠️ Problema
+
+- Estimar uma função de regressão em alta dimensão é **muito difícil**
+- O erro não diminui facilmente, mesmo com mais dados
+
+
+
+> Sem hipóteses adicionais, **não é possível obter boas estimativas**
+> com tamanhos de amostra realistas.
+
+
+
+$$
+\text{Erro} \sim n^{-\frac{\alpha}{\alpha + p}}  \Rightarrow n \sim \left(\frac{1}{\delta}\right)^{\frac{\alpha + p}{\alpha}}
+$$
+$$\delta: \text{erro máximo desejável}$$
+
+---
+
+
+
+### Crescimento do tamanho da amostra com a dimensão
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 12
+#| fig-height: 5
+
+library(ggplot2)
+library(patchwork)
+
+# parâmetros
+alpha <- 2
+delta <- 0.2
+K <- 1
+
+# dimensão
+p <- 1:16
+
+df <- data.frame(
+  p = p,
+  n = (K/delta)^((alpha + p)/alpha)
+)
+
+#-----------------------------
+# gráfico SEM log (impacto)
+#-----------------------------
+g1 <- ggplot(df, aes(p, n)) +
+  geom_line(linewidth = 1.4, color = "#1F5FD1") +
+  geom_point(size = 3, color = "#1F5FD1") +
+  labs(
+    title = "Escala original",
+    subtitle = "Crescimento explosivo",
+    x = "Dimensão (p)",
+    y = "n"
+  ) +
+  theme_minimal(base_size = 16)
+
+#-----------------------------
+# gráfico COM log
+#-----------------------------
+g2 <- ggplot(df, aes(p, n)) +
+  geom_line(linewidth = 1.4, color = "#1F5FD1") +
+  geom_point(size = 3, color = "#1F5FD1") +
+  scale_y_log10() +
+  labs(
+    title = "Escala logarítmica",
+    subtitle = "Crescimento quase linear",
+    x = "Dimensão (p)",
+    y = "log10(n)"
+  ) +
+  theme_minimal(base_size = 16)
+
+#-----------------------------
+# lado a lado
+#-----------------------------
+g1 + g2
+```
+
+---
+
+### Impacto da dimensionalidade
+
+Por exemplo, qual o impacto de se dobrar a dimensionalidade dos dados de $p=4$ para $p=8$?
+
+
+Temos que
+
+$$\small n(p) \sim \left(\frac{1}{\delta}\right)^{\frac{\alpha + p}{\alpha}}$$
+Se $\delta = 0,2$ e $\alpha = 2$:
+
+
+
+$$\small
+\frac{n(8)}{n(4)} = \left(\frac{1}{0,2}\right)^{2} = 25
+$$
+
+> Dobrar a dimensão (de 4 para 8) pode exigir 25 vezes mais dados.
+
+
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: 5
+
+library(ggplot2)
+library(dplyr)
+
+n <- seq(50, 5000, length.out = 100)
+
+df <- expand.grid(
+  n = n,
+  d = c(1, 2, 5, 10)
+)
+
+df <- df |>
+  mutate(
+    erro = n^(-1/(2 + d)),
+    d = factor(d)
+  )
+
+ggplot(df, aes(n, erro, color = d)) +
+  geom_line(linewidth = 1.3) +
+  labs(
+    title = "Dimensões maiores → convergência mais lenta",
+    x = "Tamanho da amostra (n)",
+    y = "Erro",
+    color = "Dimensão"
+  ) +
+  theme_minimal(base_size = 16)
+```
+
+---
+
+
+### 🔑 Como resolver?
+
+Precisamos assumir duas suposições nos dados:
+
+- **Esparsidade** → poucas variáveis realmente importam  
+- **Redundância** → variáveis carregam informação semelhante<br><br>
+
+
+
+
+O problema não é só o modelo…  
+➡️ é a **dimensionalidade efetiva dos dados**
+
+
+
+
+## Esparsidade
+
+### 📐 Modelo depende de apenas alguns $x_i's$
+
+$$
+r(x) = r\big((x_i)_{i \in S}\big)
+$$
+
+em que $S \subset \{1, \cdots, p\}$. <br><br>
+
+
+
+::: {.columns}
+
+:::: {.column width="50%"}
+
+### 🔴 Alta dimensão aparente
+- $p = 1000$ variáveis  
+- difícil de estimar  
+
+::::
+
+:::: {.column width="50%"}
+
+### 🟢 Dimensão efetiva
+- $|S| = 5$ variáveis relevantes  
+- problema tratável  
+
+::::
+
+:::
+
+
+> O que importa não é $p$, mas sim o número de variáveis relevantes.
+
+
+---
+
+
+### Como aplicar a suposição de esparsidade?
+
+#### 🎯 Ideia central
+
+
+Poucas variáveis realmente importam<br><br>
+
+#### 🔧 Estratégias
+
+- **seleção de variáveis:** testes estatísticos, stepwise selection, importância de variáveis (Random Forest)
+    
+- **regularização (Lasso):** força vários coeficientes a zero, seleciona automaticamente variáveis
+    
+- entre outras...
+
+
+[Alta dimensão aparente → baixa dimensão efetiva]{.body-text-m .teal-text .center}
+
+
+
+
+## Redundância
+
+### 📊 Intuição
+
+- $X_1 = \cdots = X_p$ → informação totalmente redundante  
+- variáveis altamente correlacionadas → informação parcialmente redundante<br><br>
+
+
+
+::: {.columns}
+
+:::: {.column width="50%"}
+
+### 🔴 Alta dimensão aparente
+- $p = 100$ variáveis  
+- parecem independentes  
+
+::::
+
+:::: {.column width="50%"}
+
+### 🟢 Dimensão intrínseca
+- dados vivem em espaço de baixa dimensão  
+- estrutura escondida  
+
+::::
+
+:::
+
+
+$$
+\mathbf{x} \in \mathbb{R}^p \quad \text{mas vive em um espaço de dimensão menor}
+$$
+
+---
+
+### Como aplicar a suposição de redundância?
+
+#### 🎯 Ideia central
+
+Variáveis carregam informação repetida<br><br>
+
+
+#### 🔧 Estratégias
+
+- análise de correlação  
+- **PCA:**  captura redundância **linear** 
+- **UMAP / t-SNE:** capturam redundância **não linear**: preservam estrutura local, revelam padrões escondidos  
+- **Autoencoders:** aprendem uma representação de baixa dimensão dos dados, através de redes neurais<br>
+
+
+
+[Alta dimensão observada → baixa dimensão intrínseca]{.body-text-m .teal-text .center}
+
+
+
+
+
+---
+
+### Swiss Roll: estrutura original em 3D
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 13
+#| fig-height: 7
+#| out-width: 100%
+
+library(plotly)
+library(viridis)
+library(htmlwidgets)
+
+set.seed(123)
+
+#--------------------------------------------------
+# Dataset: Swiss Roll
+#--------------------------------------------------
+n <- 2000
+t <- sort(runif(n, 1.5*pi, 4.5*pi))
+h <- runif(n, 0, 10)
+
+x1 <- t * cos(t)
+x2 <- h
+x3 <- t * sin(t)
+
+dados_3d <- data.frame(x1, x2, x3, t)
+
+p <- plot_ly(
+  data = dados_3d,
+  x = ~x1,
+  y = ~x2,
+  z = ~x3,
+  color = ~t,
+  colors = viridis(100, option = "plasma"),
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(
+    size = 2.6,
+    opacity = 0.9,
+    colorbar = list(
+      title = list(text = "Posição ao longo do manifold"),
+      orientation = "h",
+      x = 0.5,
+      xanchor = "center",
+      y = -0.18,
+      len = 0.65,
+      thickness = 14
+    )
+  ),
+  hoverinfo = "skip",
+  showscale = TRUE
+) |>
+  layout(
+    scene = list(
+      xaxis = list(title = "X1"),
+      yaxis = list(title = "X2"),
+      zaxis = list(title = "X3"),
+      aspectmode = "manual",
+      aspectratio = list(x = 1.35, y = 0.8, z = 1.1),
+      camera = list(
+        eye = list(x = 1.55, y = 1.3, z = 0.85)
+      )
+    ),
+    margin = list(l = 0, r = 0, b = 40, t = 0)
+  ) |>
+  config(displayModeBar = FALSE)
+
+htmlwidgets::onRender(
+  p,
+  "
+  function(el,x){
+    el.style.width = '100%';
+    el.style.height = '680px';
+  }
+  "
+)
+```
+
+
+---
+
+
+### Redução de dimensionalidade: PCA vs UMAP vs Autoencoder
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 5.5
+#| out-width: 100%
+
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+library(umap)
+library(nnet)
+library(viridis)
+library(grid)
+
+set.seed(123)
+
+#--------------------------------------------------
+# Dataset: Swiss Roll
+#--------------------------------------------------
+n <- 1200
+
+t <- sort(runif(n, 1.5*pi, 4.5*pi))
+h <- runif(n, 0, 10)
+
+x1 <- t * cos(t)
+x2 <- h
+x3 <- t * sin(t)
+
+df <- data.frame(x1, x2, x3, t = t)
+
+X <- scale(df[, c("x1", "x2", "x3")])
+
+#--------------------------------------------------
+# Tema compacto para slide
+#--------------------------------------------------
+tema_slide <- theme_minimal(base_size = 12.5) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "#DADADA", linewidth = 0.28),
+    plot.title = element_text(face = "bold", size = 13),
+    plot.subtitle = element_text(size = 10),
+    axis.title = element_text(size = 10.5),
+    axis.text = element_text(size = 8.7),
+    plot.margin = margin(1, 1, 1, 1),
+    panel.spacing = unit(0.2, "lines"),
+    legend.position = "none"
+  )
+
+escala_cor <- scale_color_viridis_c(option = "plasma")
+
+#--------------------------------------------------
+# PCA
+#--------------------------------------------------
+pca <- prcomp(X)
+
+df_pca <- data.frame(
+  Comp1 = pca$x[, 1],
+  Comp2 = pca$x[, 2],
+  t = t
+)
+
+g_pca <- ggplot(df_pca, aes(Comp1, Comp2, color = t)) +
+  geom_point(size = 1.15, alpha = 0.85) +
+  escala_cor +
+  labs(
+    title = "PCA",
+    subtitle = "Mistura regiões distantes",
+    x = "Comp1",
+    y = "Comp2"
+  ) +
+  coord_fixed(ratio = 1) +
+  tema_slide
+
+#--------------------------------------------------
+# UMAP
+#--------------------------------------------------
+umap_res <- umap(X)
+
+df_umap <- data.frame(
+  Comp1 = umap_res$layout[, 1],
+  Comp2 = umap_res$layout[, 2],
+  t = t
+)
+
+g_umap <- ggplot(df_umap, aes(Comp1, Comp2, color = t)) +
+  geom_point(size = 1.15, alpha = 0.85) +
+  escala_cor +
+  labs(
+    title = "UMAP",
+    subtitle = "Preserva estrutura do manifold",
+    x = "Comp1",
+    y = "Comp2"
+  ) +
+  coord_fixed(ratio = 1) +
+  tema_slide
+
+#--------------------------------------------------
+# Autoencoder
+#--------------------------------------------------
+ae_model <- nnet(
+  X, X,
+  size = 2,
+  linout = TRUE,
+  trace = FALSE,
+  maxit = 1000
+)
+
+W1 <- matrix(
+  ae_model$wts[1:((ncol(X) + 1) * 2)],
+  nrow = ncol(X) + 1
+)
+
+sigmoid <- function(x) 1 / (1 + exp(-x))
+H <- sigmoid(cbind(1, X) %*% W1)
+
+df_ae <- data.frame(
+  Comp1 = H[, 1],
+  Comp2 = H[, 2],
+  t = t
+)
+
+g_ae <- ggplot(df_ae, aes(Comp1, Comp2, color = t)) +
+  geom_point(size = 1.15, alpha = 0.85) +
+  escala_cor +
+  labs(
+    title = "Autoencoder",
+    subtitle = "Mantém ordem, mas deforma",
+    x = "Comp1",
+    y = "Comp2"
+  ) +
+  coord_fixed(ratio = 1) +
+  tema_slide
+
+#--------------------------------------------------
+# Barra de cores compacta
+#--------------------------------------------------
+bar_df <- data.frame(
+  x = seq(min(t), max(t), length.out = 300),
+  y = 1
+)
+
+g_leg <- ggplot(bar_df, aes(x = x, y = y, fill = x)) +
+  geom_tile() +
+  scale_fill_viridis_c(option = "plasma") +
+  annotate("text", x = min(t), y = 0.50, label = "início", hjust = 0, size = 3.8) +
+  annotate("text", x = mean(range(t)), y = 0.50, label = "→", size = 5.5) +
+  annotate("text", x = max(t), y = 0.50, label = "fim", hjust = 1, size = 3.8) +
+  labs(title = "Posição ao longo do manifold") +
+  coord_cartesian(ylim = c(0.35, 1.15), clip = "off") +
+  theme_void() +
+  theme(
+    plot.title = element_text(size = 11.5, face = "bold", hjust = 0.5),
+    plot.margin = margin(-5, 40, -10, 40)
+  )
+
+#--------------------------------------------------
+# Layout final otimizado
+#--------------------------------------------------
+fig_final <- ((g_pca | g_umap | g_ae) / g_leg) +
+  plot_layout(
+    widths = c(1, 1, 1),
+    heights = c(9, 1),
+    guides = "collect"
+  ) 
+
+fig_final
+```
+
+
+<!-- > Métodos diferentes capturam estruturas diferentes nos dados. -->
+
+
+
+---
+
+
+### O que cada método fez?
+
+::: {.columns}
+
+:::: {.column width="33%"}
+#### PCA
+❌ achata  
+❌ mistura  
+❌ distorce
+::::
+
+:::: {.column width="33%"}
+#### UMAP
+✅ organiza  
+✅ preserva  
+✅ revela
+::::
+
+:::: {.column width="33%"}
+#### Autoencoder
+⚠️ comprime  
+⚠️ ordena parcialmente  
+❌ deforma
+::::
+
+:::
+
+
+
+[**Métodos diferentes capturam estruturas diferentes nos dados.**]{.body-text-m .teal-text .center}
+
+
+
+## Próximo passo
+
+### Métodos para alta dimensionalidade
+
+- Nem todos os métodos funcionam bem em alta dimensão  
+- Precisamos de abordagens que respeitem a estrutura dos dados<br><br> 
+
+
+### O que vem a seguir
+
+👉 Métodos não paramétricos adequados para alta dimensionalidade<br><br>   
+
+
+
+### 🎯 Objetivo
+
+**Aprender técnicas que funcionam mesmo quando $p$ é grande** 
+
+
+
+## KNN e Regressão Linear Local em Alta Dimensão
+
+### 💡 Ideia chave
+
+- Dados podem viver em uma **dimensão intrínseca baixa**
+- Mesmo que o espaço seja de alta dimensão $p$<br><br>
+
+
+### 🔍 O que isso implica?
+
+👉 Métodos baseados em vizinhança:
+
+- **KNN**
+- **Regressão linear local**
+
+✔ se adaptam automaticamente à estrutura dos dados  
+
+---
+
+### ⚡ Resultado importante
+
+A taxa de convergência de ambos é igual a 
+
+
+$$
+\text{Erro} \sim n^{-\frac{4}{4+u}}
+$$
+
+
+e depende de:
+
+- $u$ = dimensão intrínseca  
+- não de $p$ = dimensão observada  
+
+
+
+> Se $u \ll d$, podemos escapar da maldição da dimensionalidade
+
+
+
+[**A estrutura dos dados é mais importante que o número de variáveis**]{.body-text-m .teal-text .center}
+
+
+
+
+## Support Vector Regression (SVR)
+
+
+::: {.columns}
+
+:::: {.column width="75%"}
+### 💡 Ideia principal
+
+- SVR com **kernel Gaussiano**  
+- Funciona bem sob a hipótese de **redundância**
+
+---
+
+### 🔍 Intuição
+
+- Os dados possuem **informação repetida**  
+- A estrutura real é mais simples que parece  
+
+---
+
+👉 SVR explora essa estrutura via **kernel**
+
+- Mapeia os dados para um espaço de maior dimensão  
+- Captura **relações não lineares** e usa apenas **pontos relevantes (support vectors)**  
+::::
+
+:::: {.column width="25%"}
+> Mesmo em alta dimensão, o SVR pode funcionar bem  
+> quando existe estrutura nos dados
+::::
+:::
+
+
+## Random Forest em alta dimensão
+
+### 💡 Ideia principal
+
+- O desempenho depende das **variáveis relevantes**
+- Não sofre diretamente com o número total de variáveis $p$<br><br>
+
+### 🔍 Intuição
+
+- Em cada divisão:
+  - escolhem-se variáveis que **reduzem o erro**
+- Variáveis irrelevantes são **naturalmente ignoradas**
+
+---
+
+### ⚙️ O que isso implica?
+
+- modelo foca no que realmente importa  
+- reduz o efeito da alta dimensionalidade<br><br>  
+
+
+
+> A complexidade depende do número de variáveis relevantes  
+> e não do número total de variáveis
+
+
+[**Random Forests exploram esparsidade automaticamente**]{.body-text-m .teal-text .center}
+
+
+## Três formas de vencer a alta dimensão
+
+::: {.columns}
+
+:::: {.column}
+### 🤝 KNN
+👉 usa vizinhança  
+👉 funciona com estrutura local
+::::
+
+:::: {.column}
+### ⚙️ SVR
+👉 usa kernel  
+👉 revela padrões escondidos
+::::
+
+<br>
+
+:::: {.column}
+### 🌲 RF
+👉 seleciona variáveis  
+👉 ignora ruído
+::::
+
+:::
+
+[**Estrutura nos dados → aprendizado possível**]{.body-text-m .teal-text .center}
+
+
+
+## Quando usar cada método?
+
+::: {.columns}
+
+:::: {.column width="33%"}
+
+### 🤝 KNN
+
+**Use quando:**
+
+- há **estrutura local (manifold)**  
+- vizinhos fazem sentido  
+
+**Evite quando:**
+
+- alta dimensão sem estrutura  
+- distâncias não são informativas  
+
+::::
+
+:::: {.column width="33%"}
+
+### ⚙️ SVR
+
+**Use quando:**
+
+- há **relações não lineares**  
+- existe **redundância**  
+
+**Evite quando:**
+
+- muitos dados (custo computacional)  
+- kernel difícil de ajustar  
+
+::::
+
+:::: {.column width="33%"}
+
+### 🌲 Random Forest
+
+**Use quando:**
+
+- há **muitas variáveis**  
+- poucas são relevantes (**esparsidade**)  
+
+**Evite quando:**
+
+- precisa de modelo muito interpretável  
+- extrapolação é importante  
+
+::::
+
+:::
+
+---
+
+## 💡 Regra prática
+
+- 🌪 **Manifold → KNN**  
+- 🧠 **Redundância → SVR**  
+- ✂️ **Esparsidade → Random Forest**

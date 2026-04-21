@@ -4132,8 +4132,8 @@
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#o-papel-do-parâmetro-k",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#o-papel-do-parâmetro-k",
     "title": "Parte 1 : Regressão",
-    "section": "O papel do parâmetro \\(k\\)\n",
-    "text": "O papel do parâmetro \\(k\\)\n\nO parâmetro \\(k\\) controla o grau de suavização do estimador. Define o equilíbrio viés e variância\n\n\n\n\n\\(k\\) pequeno\n\najuste mais local\n\nmenor suavização\n\nbaixo viés\n\nalta variância\n\n\n\n\n\\(k\\) grande\n\najuste mais global\n\nmaior suavização\n\nalto viés\n\nbaixa variância"
+    "section": "O papel do parâmetro \\(k\\)",
+    "text": "O papel do parâmetro \\(k\\)\nO parâmetro \\(k\\) controla o grau de suavização do estimador. Define o equilíbrio viés e variância\n\n\n\n\\(k\\) pequeno\n\najuste mais local\n\nmenor suavização\n\nbaixo viés\n\nalta variância\n\n\n\n\\(k\\) grande\n\najuste mais global\n\nmaior suavização\n\nalto viés\n\nbaixa variância"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#nadarayawatson",
@@ -4224,7 +4224,7 @@
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-4",
     "title": "Parte 1 : Regressão",
     "section": "Interpretação",
-    "text": "Interpretação\n\no espaço é dividido em “caixas”\ndentro de cada região, a previsão é constante → média dos dados\no modelo é uma função piecewise constante\n\n\n\nProblema de estimação\nQueremos encontrar a melhor partição:\n\\[\n\\{\\mathcal{R}_1, \\ldots, \\mathcal{R}_M\\}\n\\]"
+    "text": "Interpretação\n\no espaço é dividido em “caixas”\ndentro de cada região, a previsão é constante → média dos dados\no modelo é uma função piecewise constante\n\n\nProblema de estimação\nQueremos encontrar a melhor partição:\n\\[\n\\{\\mathcal{R}_1, \\ldots, \\mathcal{R}_M\\}\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#comparação-com-métodos-anteriores",
@@ -4608,8 +4608,8 @@
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-6",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-6",
     "title": "Parte 1 : Regressão",
-    "section": "Interpretação",
-    "text": "Interpretação\n\n\n\\(\\rho\\sigma^2\\) é a parte da variância que não desaparece com o aumento de \\(B\\)\n\n\n\\(\\dfrac{1-\\rho}{B}\\sigma^2\\) é a parte que cai com o número de árvores"
+    "section": "🧠 Interpretação",
+    "text": "🧠 Interpretação\n\nMétodos não paramétricos são mais flexíveis\n\nMas pagam o preço em eficiência estatística"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#consequência-importante",
@@ -4617,5 +4617,278 @@
     "title": "Parte 1 : Regressão",
     "section": "Consequência importante",
     "text": "Consequência importante\n\nse \\(\\rho\\) é pequeno, o bagging reduz bastante a variância\nse \\(\\rho\\) é grande, o ganho é limitado\n\n👉 é por isso que o Random Forest busca reduzir a correlação entre árvores.\nLimitação do Bagging\nMesmo com bootstrap, as árvores podem ser correlacionadas:\n\nmesmas variáveis dominantes\n\ndivisões semelhantes\n\npredições parecidas"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#métodos-não-paramétricos-em-altas-dimensões",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#métodos-não-paramétricos-em-altas-dimensões",
+    "title": "Parte 1 : Regressão",
+    "section": "Métodos Não Paramétricos em Altas Dimensões",
+    "text": "Métodos Não Paramétricos em Altas Dimensões\n\nMétodos não paramétricos são mais flexíveis\nPorém:\n\nexigem mais dados\nsofrem em altas dimensões\n\n\n➡️ Pergunta central: Como a dimensão afeta o desempenho dos modelos?"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#o-problema-da-dimensão",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#o-problema-da-dimensão",
+    "title": "Parte 1 : Regressão",
+    "section": "O Problema da Dimensão",
+    "text": "O Problema da Dimensão\nSuponha:\n\n\\(X = (X_1, X_2, ..., X_p)\\)\n\nÀ medida que \\(p\\) cresce:\n\no espaço de entrada cresce exponencialmente\nos dados ficam “espalhados”\n\n➡️ Dificuldade de aprendizado aumenta"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#maldição-da-dimensionalidade",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#maldição-da-dimensionalidade",
+    "title": "Parte 1 : Regressão",
+    "section": "Maldição da Dimensionalidade",
+    "text": "Maldição da Dimensionalidade\n(Bellman, 1966)\nProblema:\n\nVolume do espaço cresce exponencialmente\nDados se tornam escassos\n\nConsequência:\n➡️ Precisamos de MUITO mais dados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#intuição-geométrica",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#intuição-geométrica",
+    "title": "Parte 1 : Regressão",
+    "section": "Intuição Geométrica",
+    "text": "Intuição Geométrica\nEm 1 dimensão:\n\ndados são densos\n\nEm 10 dimensões:\n\ndados são extremamente esparsos\n\n➡️ vizinhos ficam distantes"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#volume-em-altas-dimensões",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#volume-em-altas-dimensões",
+    "title": "Parte 1 : Regressão",
+    "section": "Volume em Altas Dimensões",
+    "text": "Volume em Altas Dimensões\nConsidere um hipercubo \\([0,1]^p\\)\nQueremos cobrir 10% do intervalo em cada dimensão:\nVolume total:\n\\[\n(0,1)^p\n\\] ➡️ KNN perde eficiência"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#maldição-da-dimensionalidade-intuição-geométrica",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#maldição-da-dimensionalidade-intuição-geométrica",
+    "title": "Parte 1 : Regressão",
+    "section": "Maldição da Dimensionalidade: Intuição Geométrica",
+    "text": "Maldição da Dimensionalidade: Intuição Geométrica\nÀ medida que a dimensão aumenta, os dados se tornam mais esparsos e os vizinhos ficam mais distantes."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-interpretar-a-figura",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-interpretar-a-figura",
+    "title": "Parte 1 : Regressão",
+    "section": "Como interpretar a figura?",
+    "text": "Como interpretar a figura?\n\n\n1D\n\ndados mais densos\nmuitos pontos na vizinhança\nvizinhos realmente próximos\n\n\n2D\n\npontos mais espalhados\nmenos observações por região local\nproximidade já fica menos informativa\n\n\nAlta dimensão\n\nespaço cresce exponencialmente\nvizinhos ficam distantes\nKNN perde eficiência\n\n\nMensagem central\nEm altas dimensões, a noção de “vizinho próximo” se enfraquece, o que dificulta a aplicação de métodos não paramétricos locais."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-interpretar-a-figura-1",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-interpretar-a-figura-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Como interpretar a figura?",
+    "text": "Como interpretar a figura?\n\n\n🔵 1D\n\ndados mais densos\n\nmuitos pontos na vizinhança\n\nvizinhos realmente próximos\n\n\n🟣 2D\n\npontos mais espalhados\n\nmenos observações por região local\n\nproximidade já fica menos informativa\n\n\n🔴 Alta dimensão\n\nespaço cresce exponencialmente\n\nvizinhos ficam distantes\n\nKNN perde eficiência"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-interpretar-a-figura-2",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-interpretar-a-figura-2",
+    "title": "Parte 1 : Regressão",
+    "section": "Como interpretar a figura?",
+    "text": "Como interpretar a figura?\n\n\n🔵 1D\nAlta densidade\n\nmuitos pontos locais\n\nvizinhos próximos\n\n\n\n🟣 2D\nDensidade reduz\n\nmenos pontos por região\n\ndistância começa a importar\n\n\n\n🔴 Alta dimensão\nEspaço explode\n\ndados esparsos\n\nvizinhos distantes\n\nKNN perde eficiência"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#consequência-da-alta-dimensionalidade",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#consequência-da-alta-dimensionalidade",
+    "title": "Parte 1 : Regressão",
+    "section": "Consequência da alta dimensionalidade",
+    "text": "Consequência da alta dimensionalidade\n⚠️ Problema\n\nEstimar uma função de regressão em alta dimensão é muito difícil\nO erro não diminui facilmente, mesmo com mais dados\n\n\nSem hipóteses adicionais, não é possível obter boas estimativas com tamanhos de amostra realistas.\n\n\\[\n\\text{Erro} \\sim n^{-\\frac{\\alpha}{\\alpha + p}}  \\Rightarrow n \\sim \\left(\\frac{1}{\\delta}\\right)^{\\frac{\\alpha + p}{\\alpha}}\n\\] \\[\\delta: \\text{erro máximo desejável}\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#taxa-de-convergência-em-altas-dimensões",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#taxa-de-convergência-em-altas-dimensões",
+    "title": "Parte 1 : Regressão",
+    "section": "Taxa de convergência em altas dimensões",
+    "text": "Taxa de convergência em altas dimensões\n📐 Resultado fundamental\n\\[\n\\text{Erro} \\sim n^{-\\frac{1}{2 + d}}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#conectando-taxa-de-erro-e-tamanho-da-amostra",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#conectando-taxa-de-erro-e-tamanho-da-amostra",
+    "title": "Parte 1 : Regressão",
+    "section": "Conectando taxa de erro e tamanho da amostra",
+    "text": "Conectando taxa de erro e tamanho da amostra\n📐 Ponto de partida\n\\[\n\\text{Erro} \\sim n^{-\\frac{1}{2 + d}}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#interpretação",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#interpretação",
+    "title": "Parte 1 : Regressão",
+    "section": "🧠 Interpretação",
+    "text": "🧠 Interpretação\n\nA taxa de erro decai lentamente com \\(n\\)\n\nPara reduzir o erro, precisamos aumentar \\(n\\)\n\nMas o crescimento de \\(n\\) depende de \\(d\\)"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-não-paramétricos-vantagens-e-limitações",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#métodos-não-paramétricos-vantagens-e-limitações",
+    "title": "Parte 1 : Regressão",
+    "section": "Métodos não paramétricos: vantagens e limitações",
+    "text": "Métodos não paramétricos: vantagens e limitações\n\n\n\n✅ Vantagem\n\nAlta flexibilidade\n\nNão impõem forma funcional para \\(f(x)\\)\n\nAdaptam-se melhor aos dados\n\n\n⚠️ Custo\n\nPrecisam de mais dados\n\nTaxa de convergência mais lenta"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#flexibilidade-vs-eficiência",
+    "href": "aulas/regressao/met_nao_param/met_nao_param.html#flexibilidade-vs-eficiência",
+    "title": "Parte 1 : Regressão",
+    "section": "Flexibilidade vs Eficiência",
+    "text": "Flexibilidade vs Eficiência\n\n\n\n🔵 Métodos paramétricos\n\nestrutura forte\n\nmenos flexíveis\n\nconvergem rápido\n\n\\[\n\\text{Erro} \\sim n^{-1}\n\\]\n\n🔴 Métodos não paramétricos\n\nalta flexibilidade\n\npoucos pressupostos\n\nconvergem lentamente\n\n\\[\n\\text{Erro} \\sim n^{-\\frac{\\alpha}{\\alpha + p}}\n\\]\n\n👉 Taxa de convergência = velocidade com que o erro diminui à medida que aumentamos o tamanho da amostra."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#impacto-da-dimensionalidade",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#impacto-da-dimensionalidade",
+    "title": "Parte 1 : Regressão",
+    "section": "Impacto da dimensionalidade",
+    "text": "Impacto da dimensionalidade\nPor exemplo, qual o impacto de se dobrar a dimensionalidade dos dados de \\(p=4\\) para \\(p=8\\)?\nTemos que\n\\[n \\sim \\left(\\frac{1}{\\delta}\\right)^{\\frac{\\alpha + p}{\\alpha}}\\] Se \\(\\delta = 0,2\\) e \\(\\alpha = 2\\):\n\\[\n\\frac{n(8)}{n(4)} = \\left(\\frac{1}{0,2}\\right)^{2} = 25\n\\]\n\nDobrar a dimensão (de 4 para 8) pode exigir 25 vezes mais dados."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#esparsidade-a-chave-para-aprender-em-alta-dimensão",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#esparsidade-a-chave-para-aprender-em-alta-dimensão",
+    "title": "Parte 1 : Regressão",
+    "section": "Esparsidade: a chave para aprender em alta dimensão",
+    "text": "Esparsidade: a chave para aprender em alta dimensão\n📐 Modelo\n\\[\nr(x) = r\\big((x_i)_{i \\in S}\\big)\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#esparsidade",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#esparsidade",
+    "title": "Parte 1 : Regressão",
+    "section": "Esparsidade",
+    "text": "Esparsidade\n📐 Modelo depende de apenas alguns \\(x_i's\\)\n\\[\nr(x) = r\\big((x_i)_{i \\in S}\\big)\n\\]\nem que \\(S \\subset \\{1, \\cdots, p\\}\\). \n\n\n🔴 Alta dimensão aparente\n\n\\(p = 1000\\) variáveis\n\ndifícil de estimar\n\n\n🟢 Dimensão efetiva\n\n\\(|S| = 5\\) variáveis relevantes\n\nproblema tratável\n\n\n\nO que importa não é \\(p\\), mas sim o número de variáveis relevantes."
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-aplicar-a-suposição-de-esparsidade",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-aplicar-a-suposição-de-esparsidade",
+    "title": "Parte 1 : Regressão",
+    "section": "Como aplicar a suposição de esparsidade?",
+    "text": "Como aplicar a suposição de esparsidade?\n🎯 Ideia central\nPoucas variáveis realmente importam\n🔧 Estratégias\n\nseleção de variáveis: testes estatísticos, stepwise selection, importância de variáveis (Random Forest)\nregularização (Lasso): força vários coeficientes a zero, seleciona automaticamente variáveis\nentre outras…\n\nAlta dimensão aparente → baixa dimensão efetiva"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#redundância",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#redundância",
+    "title": "Parte 1 : Regressão",
+    "section": "Redundância",
+    "text": "Redundância\n📊 Intuição\n\n\\(X_1 = \\cdots = X_p\\) → informação totalmente redundante\n\nvariáveis altamente correlacionadas → informação parcialmente redundante\n\n\n\n🔴 Alta dimensão aparente\n\n\\(p = 100\\) variáveis\n\nparecem independentes\n\n\n🟢 Dimensão intrínseca\n\ndados vivem em espaço de baixa dimensão\n\nestrutura escondida\n\n\n\\[\n\\mathbf{x} \\in \\mathbb{R}^p \\quad \\text{mas vive em um espaço de dimensão menor}\n\\]"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#redução-de-dimensionalidade-pca-vs-umap-vs-autoencoder-1",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#redução-de-dimensionalidade-pca-vs-umap-vs-autoencoder-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Redução de dimensionalidade: PCA vs UMAP vs Autoencoder",
+    "text": "Redução de dimensionalidade: PCA vs UMAP vs Autoencoder"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#swiss-roll-estrutura-original-em-3d",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#swiss-roll-estrutura-original-em-3d",
+    "title": "Parte 1 : Regressão",
+    "section": "Swiss Roll: estrutura original em 3D",
+    "text": "Swiss Roll: estrutura original em 3D"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-cada-método-vê-os-dados",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#como-cada-método-vê-os-dados",
+    "title": "Parte 1 : Regressão",
+    "section": "Como cada método “vê” os dados?",
+    "text": "Como cada método “vê” os dados?\n🟥 PCA\n\n❌ mistura regiões distantes\n\n❌ perde a estrutura"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#mensagem-central-1",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#mensagem-central-1",
+    "title": "Parte 1 : Regressão",
+    "section": "💡 Mensagem central",
+    "text": "💡 Mensagem central\nRandom Forests exploram esparsidade automaticamente"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#conclusão",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#conclusão",
+    "title": "Parte 1 : Regressão",
+    "section": "🚀 Conclusão",
+    "text": "🚀 Conclusão\nMesmo em alta dimensão, o SVR pode funcionar bem quando existe estrutura nos dados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#próximo-passo",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#próximo-passo",
+    "title": "Parte 1 : Regressão",
+    "section": "Próximo passo",
+    "text": "Próximo passo\nMétodos para alta dimensionalidade\n\nNem todos os métodos funcionam bem em alta dimensão\n\nPrecisamos de abordagens que respeitem a estrutura dos dados\n\nO que vem a seguir\n👉 Métodos não paramétricos adequados para alta dimensionalidade\n🎯 Objetivo\nAprender técnicas que funcionam mesmo quando \\(p\\) é grande"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#objetivo",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#objetivo",
+    "title": "Parte 1 : Regressão",
+    "section": "🎯 Objetivo",
+    "text": "🎯 Objetivo\nAprender técnicas que funcionam mesmo quando ( d ) é grande"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#knn-e-regressão-linear-local-em-alta-dimensão",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#knn-e-regressão-linear-local-em-alta-dimensão",
+    "title": "Parte 1 : Regressão",
+    "section": "KNN e Regressão Linear Local em Alta Dimensão",
+    "text": "KNN e Regressão Linear Local em Alta Dimensão\n💡 Ideia chave\n\nDados podem viver em uma dimensão intrínseca baixa\nMesmo que o espaço seja de alta dimensão \\(p\\)\n\n🔍 O que isso implica?\n👉 Métodos baseados em vizinhança:\n\nKNN\nRegressão linear local\n\n✔ se adaptam automaticamente à estrutura dos dados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr",
+    "title": "Parte 1 : Regressão",
+    "section": "Support Vector Regression (SVR)",
+    "text": "Support Vector Regression (SVR)\n\n\n💡 Ideia principal\n\nSVR com kernel Gaussiano\n\nFunciona bem sob a hipótese de redundância\n\n\n🔍 Intuição\n\nOs dados possuem informação repetida\n\nA estrutura real é mais simples que parece\n\n\n👉 SVR explora essa estrutura via kernel\n\nMapeia os dados para um espaço de maior dimensão\n\nCaptura relações não lineares e usa apenas pontos relevantes (support vectors)\n\n\n\n\nMesmo em alta dimensão, o SVR pode funcionar bem\nquando existe estrutura nos dados"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr-1",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr-1",
+    "title": "Parte 1 : Regressão",
+    "section": "Support Vector Regression (SVR)",
+    "text": "Support Vector Regression (SVR)\n\n\n💡 Ideia principal\n\nSVR com kernel Gaussiano\nFunciona bem sob redundância\n\n\n🔍 Intuição\n\ndados possuem informação repetida\n\nestrutura real é mais simples\n\n\n⚙️ Como funciona\n\nmapeia para espaço de maior dimensão\n\ncaptura não linearidades\n\nusa apenas support vectors\n\n\n🚀 Insight\n\nMesmo em alta dimensão,\no SVR pode funcionar bem\nquando existe estrutura nos dados\n\n\n🧠 Papel do kernel\n\ntransforma o problema\n\nrevela padrões escondidos\n\nevita depender de \\(d\\)"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr-2",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr-2",
+    "title": "Parte 1 : Regressão",
+    "section": "Support Vector Regression (SVR)",
+    "text": "Support Vector Regression (SVR)\n\n\n💡 Ideia principal\n\nSVR com kernel Gaussiano\nFunciona bem com redundância\n\n\n🔍 Intuição\n\ndados têm informação repetida\n\na estrutura real é mais simples\n\n\n⚙️ Como funciona\n\nprojeta para espaço de maior dimensão\n\ncaptura relações não lineares\n\nusa apenas support vectors\n\n\n🚀 Insight\n\nMesmo em alta dimensão,\no SVR funciona bem\nquando existe estrutura\n\n\n🧠 Papel do kernel\n\ntransforma o problema\n\nrevela padrões escondidos\n\nreduz dependência de \\(d\\)"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#random-forest-em-alta-dimensão",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#random-forest-em-alta-dimensão",
+    "title": "Parte 1 : Regressão",
+    "section": "Random Forest em alta dimensão",
+    "text": "Random Forest em alta dimensão\n💡 Ideia principal\n\nO desempenho depende das variáveis relevantes\nNão sofre diretamente com o número total de variáveis \\(p\\)\n\n🔍 Intuição\n\nEm cada divisão:\n\nescolhem-se variáveis que reduzem o erro\n\nVariáveis irrelevantes são naturalmente ignoradas"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#insight",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#insight",
+    "title": "Parte 1 : Regressão",
+    "section": "🚀 Insight",
+    "text": "🚀 Insight\n\nA complexidade depende do número de variáveis relevantes\ne não do número total de variáveis"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#três-formas-de-vencer-a-alta-dimensão",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#três-formas-de-vencer-a-alta-dimensão",
+    "title": "Parte 1 : Regressão",
+    "section": "Três formas de vencer a alta dimensão",
+    "text": "Três formas de vencer a alta dimensão\n\n\n🤝 KNN\n👉 usa vizinhança\n👉 funciona com estrutura local\n\n⚙️ SVR\n👉 usa kernel\n👉 revela padrões escondidos\n\n🌲 RF\n👉 seleciona variáveis\n👉 ignora ruído\n\nEstrutura nos dados → aprendizado possível"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#moral-da-história",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#moral-da-história",
+    "title": "Parte 1 : Regressão",
+    "section": "💡 Moral da história",
+    "text": "💡 Moral da história\nEstrutura nos dados → aprendizado possível"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#qual-método-escolher",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#qual-método-escolher",
+    "title": "Parte 1 : Regressão",
+    "section": "Qual método escolher?",
+    "text": "Qual método escolher?\n\n\n🤝 KNN\n👉 vizinhança importa\n👉 estrutura local clara\n\n⚙️ SVR\n👉 não linearidade\n👉 kernel captura padrões\n\n🌲 RF\n👉 muitas variáveis\n👉 seleção automática"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#decisão-rápida",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#decisão-rápida",
+    "title": "Parte 1 : Regressão",
+    "section": "💡 Decisão rápida",
+    "text": "💡 Decisão rápida\nEstrutura local? → KNN\nNão linearidade? → SVR\nMuitas variáveis? → RF"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#quando-usar-cada-método",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#quando-usar-cada-método",
+    "title": "Parte 1 : Regressão",
+    "section": "Quando usar cada método?",
+    "text": "Quando usar cada método?\n\n\n🤝 KNN\nUse quando:\n\nhá estrutura local (manifold)\n\nvizinhos fazem sentido\n\nEvite quando:\n\nalta dimensão sem estrutura\n\ndistâncias não são informativas\n\n\n⚙️ SVR\nUse quando:\n\nhá relações não lineares\n\nexiste redundância\n\nEvite quando:\n\nmuitos dados (custo computacional)\n\nkernel difícil de ajustar\n\n\n🌲 Random Forest\nUse quando:\n\nhá muitas variáveis\n\npoucas são relevantes (esparsidade)\n\nEvite quando:\n\nprecisa de modelo muito interpretável\n\nextrapolação é importante"
+  },
+  {
+    "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#regra-prática",
+    "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#regra-prática",
+    "title": "Parte 1 : Regressão",
+    "section": "💡 Regra prática",
+    "text": "💡 Regra prática\n\n🌪 Manifold → KNN\n\n🧠 Redundância → SVR\n\n✂️ Esparsidade → Random Forest"
   }
 ]

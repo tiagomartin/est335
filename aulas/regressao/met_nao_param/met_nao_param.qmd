@@ -2768,9 +2768,12 @@ $$
 - cada modelo aprende **o que o anterior errou**
 - reduz **viés** (diferente do bagging)
 
----
 
-![](/images/regressao/boosting.png){fig-align="center"}
+
+## {background-image="/images/regressao/boosting.png" background-size="contain" background-position="center" background-repeat="no-repeat"}
+
+
+<!-- ![](/images/regressao/boosting.png){fig-align="center"} -->
 
 ---
 
@@ -4447,6 +4450,68 @@ A curva verde mostra a predição da rede, enquanto a curva vermelha representa 
 - a camada oculta cria novas representações dos dados;
 - o backpropagation ajusta os pesos para reduzir o erro;
 - com isso, a rede consegue aproximar funções complexas.
+
+
+
+
+
+## Flexibilidade vs Eficiência
+
+<br>
+
+::: {.columns}
+
+:::: {.column width="50%"}
+
+### 🔵 Métodos paramétricos
+- estrutura forte  
+- menos flexíveis  
+- **convergem rápido**
+
+$$
+\text{Erro} \sim n^{-1}
+$$
+
+::::
+
+:::: {.column width="50%"}
+
+### 🔴 Métodos não paramétricos
+- alta flexibilidade  
+- poucos pressupostos  
+- **convergem lentamente**
+
+$$
+\text{Erro} \sim n^{-\frac{\alpha}{\alpha + p}}
+$$
+
+::::
+
+:::
+
+👉 **Taxa de convergência** = velocidade com que o **erro diminui** à medida que **aumentamos o tamanho da amostra**.
+
+---
+
+
+**Observação:** o parâmetro $\alpha$ é a **taxa de suavidade** de $r(x)$, ou seja, quão “regular” ou “sem variações bruscas” é a função de regressão.<br><br>
+
+
+::: {.callout-tip}
+
+## Definição (um pouco) mais formal
+
+Dizemos que $r(x)$ tem suavidade $\alpha$ se:
+
+- ela possui derivadas até ordem $\alpha$
+- essas derivadas são “bem comportadas” (limitadas)<br><br>
+
+:::
+
+- **Mais suavidade** = menos dados necessários  
+- **Menos suavidade** = mais dados necessários
+
+
 
 
 
