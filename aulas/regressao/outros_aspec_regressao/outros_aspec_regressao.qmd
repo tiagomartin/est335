@@ -1,0 +1,626 @@
+---
+title: "Parte 1 : Regressão"
+subtitle: "<span class='custom-subtitle'>Outros Aspectos de Regressão</span>"
+format: 
+  revealjs:
+    width: 1600
+    height: 900
+    footer: ""
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    preview-links: auto
+    self-contained: false
+    embed-resources: false
+    code-link: true
+    highlight-style: a11y
+    chalkboard: true
+    #incremental: true
+    #transition: slide
+  # beamer:          # Slides em PDF (LaTeX/Beamer)
+  #   aspectratio: 169   # 16:9
+  #   keep-tex: true     # opcional, guarda o .tex gerado
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+    data-background-image: /images/back.png
+    data-background-size: cover
+    data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+## Interpretabilidade em Machine Learning
+
+### 💡 Por que isso importa?
+
+- Bons modelos preditivos nem sempre são fáceis de entender  
+- Modelos interpretáveis geram **mais confiança**<br><br>  
+
+
+### 🔍 O que ganhamos?
+
+- entender quais variáveis são importantes  
+- obter **insights sobre o problema**  
+- avaliar desempenho em novos dados  
+- detectar possíveis vieses  
+
+---
+
+### ⚖️ Trade-off importante
+
+- modelos simples → mais interpretáveis  
+- modelos complexos → mais difíceis de explicar<br><br>   
+
+### 🚀 Objetivo
+
+**Tornar modelos complexos compreensíveis**
+
+
+## Modelos: quem é fácil de interpretar?
+
+::: {.columns}
+
+:::: {.column width="50%"}
+
+### 🟢 Mais interpretáveis
+- modelos lineares  
+- árvores de decisão  
+- modelos esparsos  
+
+::::
+
+:::: {.column width="50%"}
+
+### 🔴 Menos interpretáveis
+- SVR  
+- modelos com kernel  
+- modelos complexos  
+
+::::
+
+:::
+
+
+👉 Técnicas para interpretar modelos complexos:
+
+- LIME (*Local Interpretable Model-agnostic Explanations*)  
+- PDP (*Partial Dependence Plot*)
+- ICE (*Individual Conditional Expectation*) 
+
+
+
+## ExplainableML — LIME
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### 🎯 Pergunta do LIME
+
+> **Por que o modelo previu isso para esta observação?**
+
+---
+
+### Ideia central
+
+LIME não tenta explicar o modelo inteiro.
+
+👉 Explica **uma observação por vez**
+
+
+
+:::
+
+::: {.column width="50%"}
+
+### Estratégia
+
+1. escolhe uma observação $x^*$
+2. cria perturbações próximas de $x^*$
+3. consulta o modelo original
+4. ajusta um modelo simples local
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 7
+#| fig-height: 4
+
+library(ggplot2)
+
+set.seed(123)
+
+# função "caixa-preta"
+f <- function(x) sin(x) + 0.3*x
+
+x <- seq(0,10,length=500)
+
+# ponto a explicar
+x0 <- 6
+y0 <- f(x0)
+
+# vizinhança local
+x_local <- rnorm(80, x0, 0.8)
+y_local <- f(x_local) + rnorm(80,0,.15)
+
+df <- data.frame(x=x_local,y=y_local)
+
+ggplot() +
+
+  geom_line(
+    aes(x, f(x)),
+    linewidth=1.5,
+    linetype=1
+  ) +
+
+  geom_point(
+    data=df,
+    aes(x,y),
+    alpha=.35,
+    size=2
+  ) +
+
+  geom_smooth(
+    data=df,
+    aes(x,y),
+    method="lm",
+    se=FALSE,
+    linewidth=1.5
+  ) +
+
+  geom_point(
+    aes(x0,y0),
+    size=5
+  ) +
+
+  annotate(
+    "text",
+    x=x0+0.4,
+    y=y0+.5,
+    label="x*"
+  ) +
+
+  labs(
+    title="Intuição do LIME",
+    subtitle="Globalmente complexo, localmente simples",
+    x=NULL,
+    y=NULL
+  ) +
+
+  theme_minimal(base_size=16)
+```
+
+
+:::
+
+::::
+
+
+
+## Exemplo: previsão de gastos de clientes
+
+### 🏢 Cenário
+
+Uma empresa de **serviços digitais** deseja prever o gasto futuro do cliente, antes de lançar campanhas promocionais.<br><br>
+
+
+:::: {.columns}
+
+::: {.column width="58%"}
+
+### 📦 Variáveis disponíveis
+
+- 💰 **Renda mensal**
+- 👤 **Idade**
+- 📱 **Tempo de uso do aplicativo**
+- 🛒 **Histórico de compras**
+- 🏷️ **Categoria do cliente**
+:::
+::: {.column width="42%"}
+
+### 🎯 Objetivo
+
+Construir um modelo capaz de responder:
+
+> **Quanto este cliente provavelmente gastará nos próximos meses?**
+
+:::
+
+::::
+
+
+---
+
+
+
+### Por que o modelo previu esse valor para este cliente?
+
+```{r}
+# Pacotes
+library(tidyverse)
+library(tidymodels)
+library(xgboost)
+library(vip)
+library(pdp)
+library(shapviz)
+library(lime)
+
+set.seed(123)
+
+# ------------------------------------------------------------
+# 1. Simulação de dados
+# ------------------------------------------------------------
+n <- 1000
+
+dados <- tibble(
+  renda = rgamma(n, shape = 5, rate = 0.002),
+  idade = rnorm(n, mean = 40, sd = 12),
+  tempo_app = rexp(n, rate = 1/20),
+  gasto_anterior = rgamma(n, shape = 3, rate = 0.01),
+  categoria = sample(c("A", "B", "C"), n, replace = TRUE)
+) |>
+  mutate(
+    y = 200 +
+      0.08 * renda +
+      3.5 * idade -
+      0.04 * idade^2 +
+      12 * log1p(tempo_app) +
+      0.7 * gasto_anterior +
+      if_else(categoria == "B", 150, 0) +
+      if_else(categoria == "C", -100, 0) +
+      rnorm(n, 0, 250)
+  )
+
+# ------------------------------------------------------------
+# 2. Separação treino/teste
+# ------------------------------------------------------------
+split <- initial_split(dados, prop = 0.8)
+treino <- training(split)
+teste  <- testing(split)
+
+# ------------------------------------------------------------
+# 3. Receita de pré-processamento
+# ------------------------------------------------------------
+rec <- recipe(y ~ ., data = treino) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_zv(all_predictors())
+
+prep_rec <- prep(rec)
+
+x_train <- bake(prep_rec, treino) |> select(-y)
+y_train <- bake(prep_rec, treino) |> pull(y)
+
+x_test <- bake(prep_rec, teste) |> select(-y)
+y_test <- bake(prep_rec, teste) |> pull(y)
+
+# ------------------------------------------------------------
+# 4. Modelo XGBoost
+# ------------------------------------------------------------
+dtrain <- xgb.DMatrix(
+  data = as.matrix(x_train),
+  label = y_train
+)
+
+modelo_xgb <- xgb.train(
+  data = dtrain,
+  objective = "reg:squarederror",
+  nrounds = 250,
+  max_depth = 4,
+  eta = 0.05,
+  subsample = 0.8,
+  colsample_bytree = 0.8,
+  verbose = 0
+)
+
+explainer <- lime(data.frame(x_train), model = modelo_xgb)
+
+explanation <- lime::explain(
+data.frame(x_test[sample(nrow(x_test),4),]),
+explainer,
+n_features = 3)
+
+
+plot_features(explanation, ncol = 2)
+```
+
+
+<p align="center">
+ 💡 LIME transforma uma “caixa-preta” em decisões explicáveis cliente a cliente.
+</p>
+
+
+
+## De explicações locais para explicações globais
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+### 👤 LIME
+
+Explica:
+
+> **Por que este cliente recebeu esta predição?**
+
+✔ individual  
+✔ local  
+✔ observação específica  
+
+:::
+
+::: {.column width="55%"}
+
+### 🌎 PDP e ICE
+
+Explicam:
+
+> **Como o modelo reage quando uma variável muda?**
+
+✔ comportamento global  
+✔ relações não lineares  
+✔ efeitos médios e individuais  
+
+:::
+
+::::
+
+
+
+## Intuição matemática
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### 🌎 PDP
+
+$$
+h_i(x)=
+\frac{1}{n}
+\sum_{j=1}^{n}
+g(x_{j,1},...,x_i,...,x_{j,d})
+$$
+
+👉 mostra o **efeito médio**
+
+:::
+
+::: {.column width="50%"}
+
+### 👤 ICE
+
+$$
+h_{i,j}(x)=
+g(x_{j,1},...,x_i,...,x_{j,d})
+$$
+
+👉 mostra o **efeito individual**
+
+:::
+
+::::
+
+<br>
+
+[PDP = média das curvas ICE]{.body-text-m .teal-text .center}
+
+
+
+## Exemplo: previsão de gastos de clientes
+
+
+```{r}
+pred_fun <- function(object, newdata) {
+  predict(object, as.matrix(newdata))
+}
+
+pdp_renda <- partial(
+  object = modelo_xgb,
+  pred.var = "renda",
+  train = x_train,
+  pred.fun = pred_fun,
+  grid.resolution = 30
+)
+
+autoplot(pdp_renda) +
+  labs(
+    title = "PDP: efeito médio da renda",
+    x = "Renda",
+    y = "Predição média"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+[Clientes com maior renda tendem a apresentar maior potencial de consumo]{.teal-text .center}
+
+
+## Exemplo: previsão de gastos de clientes
+
+
+
+```{r}
+ice_idade <- partial(
+  object = modelo_xgb,
+  pred.var = "idade",
+  train = x_train,
+  pred.fun = pred_fun,
+  ice = TRUE,
+  grid.resolution = 30
+)
+
+autoplot(ice_idade, alpha = 0.15) +
+  labs(
+    title = "ICE: efeito individual da idade",
+    x = "Idade",
+    y = "Predição"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+[Em média, a idade isoladamente não altera drasticamente o gasto previsto]{.teal-text .center}
+
+
+
+
+## SHAP Values
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+LIME responde:
+
+> *“Por que esta observação recebeu esta predição?”*
+
+PDP/ICE respondem:
+
+> *“Como uma variável afeta o modelo?”*
+
+
+:::
+
+::: {.column width="50%"}
+
+
+💡 SHAP responde:
+
+> *“Quem puxou a predição para cima ou para baixo?”*
+> *"Quanto cada variável contribuiu para a predição"?*
+
+✔ local 
+
+✔ global
+
+✔ consistente matematicamente 
+
+✔ baseado em teoria dos jogos  
+
+:::
+
+::::
+
+
+
+
+## Como o SHAP funciona?
+
+$$
+g(x)=
+\phi_0+\phi_1+\phi_2+\cdots+\phi_p
+$$
+
+onde:
+
+- $\phi_0$ → predição média do modelo
+- $\phi_i$ → contribuição da variável $i$
+
+
+### Interpretação
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+🟢 $\phi_i>0$
+
+→ aumenta a predição
+
+:::
+
+::: {.column width="50%"}
+
+🔴 $\phi_i<0$
+
+→ reduz a predição
+
+:::
+
+::::
+
+
+[A soma das contribuições recupera exatamente a predição]{.teal-text .center}
+
+
+
+## Teoria dos jogos cooperativos
+
+### 🎲 Ideia
+
+Cada variável é um “jogador”. O modelo final é o “prêmio”.
+
+
+[Quanto cada jogador contribuiu para o resultado?]{.teal-text .center}
+
+
+&#128073; SHAP calcula a contribuição média de cada variável em todas as coalizões possíveis.
+
+
+
+## Exemplo: previsão de gastos de clientes
+
+
+```{r}
+shap <- shapviz(
+  modelo_xgb,
+  X_pred = as.matrix(x_train)
+)
+
+library(shapviz)
+library(patchwork)
+
+#----------------------------------
+# Gráfico 1: importância global
+#----------------------------------
+p1 <- sv_importance(shap) +
+  labs(
+    title = "Importância global via SHAP"
+  ) +
+  theme_minimal(base_size = 14)
+
+#----------------------------------
+# Gráfico 2: dependence plot
+#----------------------------------
+p2 <- sv_dependence(
+  shap,
+  v = "renda",
+  color_var = "gasto_anterior"
+) +
+  labs(
+    title = "Dependência SHAP: renda"
+  ) +
+  theme_minimal(base_size = 14)
+
+#----------------------------------
+# Combinar lado a lado
+#----------------------------------
+(p1 | p2) +
+  plot_annotation(
+    title = "Interpretando o modelo com SHAP"
+  )
+```
+
+
+---
+
+### 💡 Principais insights
+
+✔ histórico de compras é o fator dominante  
+
+✔ renda exerce efeito positivo e não linear  
+
+✔ clientes de maior renda aumentam a predição  
+
+✔ há interação entre renda e gasto anterior  
+
+🚀 SHAP revela importância, direção e interações.

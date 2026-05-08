@@ -253,7 +253,8 @@ O vetor de parâmetros é
 \]
 \end{frame}
 
-\begin{frame}{Transformações de variáveis}
+\begin{frame}
+\begin{block}{Transformações de variáveis}
 \phantomsection\label{transformauxe7uxf5es-de-variuxe1veis}
 Os termos \(x_i\) \textbf{não precisam ser apenas as variáveis
 originais}. Podemos construir \textbf{novas covariáveis} a partir delas,
@@ -271,6 +272,7 @@ por exemplo:
 
 Isso permite que \textbf{modelos lineares representem relações não
 lineares nos dados}.
+\end{block}
 \end{frame}
 
 \begin{frame}{O Método dos Mínimos Quadrados}
@@ -291,7 +293,8 @@ Y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_d x_{ip}
 \]
 \end{frame}
 
-\begin{frame}{Interpretação}
+\begin{frame}
+\begin{block}{Interpretação}
 \phantomsection\label{interpretauxe7uxe3o}
 O método escolhe os parâmetros que \textbf{minimizam a soma dos
 quadrados dos resíduos}:
@@ -308,9 +311,11 @@ Logo, o objetivo é minimizar
 
 Geometricamente, isso corresponde a \textbf{ajustar o hiperplano que
 fica mais próximo possível dos dados}.
+\end{block}
 \end{frame}
 
-\begin{frame}{Forma matricial do modelo}
+\begin{frame}
+\begin{block}{Forma matricial do modelo}
 \phantomsection\label{forma-matricial-do-modelo}
 O modelo de regressão pode ser escrito em forma matricial como
 
@@ -329,9 +334,11 @@ onde
 \item
   \(\boldsymbol{\beta}\) é o vetor de parâmetros
 \end{itemize}
+\end{block}
 \end{frame}
 
-\begin{frame}{Solução dos mínimos quadrados}
+\begin{frame}
+\begin{block}{Solução dos mínimos quadrados}
 \phantomsection\label{soluuxe7uxe3o-dos-muxednimos-quadrados}
 A solução analítica do problema é dada por
 
@@ -341,9 +348,11 @@ A solução analítica do problema é dada por
 
 Essa expressão é conhecida como a \textbf{equação normal} da regressão
 linear.
+\end{block}
 \end{frame}
 
-\begin{frame}{Estrutura da matriz de dados}
+\begin{frame}
+\begin{block}{Estrutura da matriz de dados}
 \phantomsection\label{estrutura-da-matriz-de-dados}
 A matriz de covariáveis possui a forma
 
@@ -356,6 +365,7 @@ x_{2,0} & x_{2,1} & \cdots & x_{2,p} \\
 x_{n,0} & x_{n,1} & \cdots & x_{n,p}
 \end{pmatrix}
 \]
+\end{block}
 \end{frame}
 
 \begin{frame}
@@ -373,9 +383,8 @@ Y_n
 
 Adotamos a convenção \(x_{i,0} = 1\) para representar o
 \textbf{intercepto} do modelo.
-\end{frame}
 
-\begin{frame}{Função de regressão estimada}
+\begin{block}{Função de regressão estimada}
 \phantomsection\label{funuxe7uxe3o-de-regressuxe3o-estimada}
 Uma vez estimados os coeficientes pelo método dos mínimos quadrados, a
 \textbf{função de predição} é dada por
@@ -389,9 +398,9 @@ Assim, para um novo vetor de covariáveis \(\mathbf{x}\), a previsão é
 \[
 \hat{\boldsymbol{y}} = g(\mathbf{x})
 \]
-\end{frame}
+\end{block}
 
-\begin{frame}{Justificativa estatística do método}
+\begin{block}{Justificativa estatística do método}
 \phantomsection\label{justificativa-estatuxedstica-do-muxe9todo}
 Grande parte da literatura estatística estuda o método dos mínimos
 quadrados sob diferentes perspectivas, como:
@@ -415,9 +424,9 @@ Esses tópicos são tratados em profundidade em livros clássicos como:
 \item
   Neter et al. (1996)
 \end{itemize}
-\end{frame}
+\end{block}
 
-\begin{frame}{Uma observação importante}
+\begin{block}{Uma observação importante}
 \phantomsection\label{uma-observauxe7uxe3o-importante}
 Assumir que a verdadeira função de regressão \(r(x)\) é exatamente
 linear é uma \textbf{suposição bastante forte}.
@@ -428,6 +437,7 @@ Mesmo assim, existe uma literatura extensa mostrando que o método dos
 mínimos quadrados continua sendo útil para estimar relações entre
 \(\boldsymbol{X}\) e \(\boldsymbol{y}\), mesmo quando a verdadeira
 função de regressão \textbf{não é linear}.
+\end{block}
 \end{frame}
 
 \begin{frame}{Quando a suposição de linearidade falha}
