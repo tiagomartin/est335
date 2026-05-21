@@ -1,5 +1,5 @@
 ---
-title: "Parte 1 : Regressão"
+title: "Parte I : Regressão"
 subtitle: "<span class='custom-subtitle'>Métodos Não Paramétricos</span>"
 format: 
   revealjs:
@@ -17,9 +17,9 @@ format:
     chalkboard: true
     #incremental: true
     #transition: slide
-  beamer:          # Slides em PDF (LaTeX/Beamer)
-    aspectratio: 169   # 16:9
-    keep-tex: true     # opcional, guarda o .tex gerado
+  # beamer:          # Slides em PDF (LaTeX/Beamer)
+  #   aspectratio: 169   # 16:9
+  #   keep-tex: true     # opcional, guarda o .tex gerado
 incremental: false
 code-link: true
 bibliography: references.bib

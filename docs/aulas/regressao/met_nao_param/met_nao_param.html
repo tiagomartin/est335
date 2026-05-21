@@ -6,16 +6,16 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.29">
-
-  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte 1 : Regressão</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
-  <style>
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+<style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -48,14 +48,14 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-  <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
+<link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+<style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -142,7 +142,7 @@
       margin-right: 0; 
     }
   </style>
-<meta property="og:title" content="Parte 1 : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:title" content="Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
 <meta property="og:description" content="Métodos Não Paramétricos">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
 </head>
@@ -150,16 +150,13 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">Parte 1 : Regressão</h1>
+<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Regressão</h1>
   <p class="subtitle"><span class="custom-subtitle">Métodos Não Paramétricos</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section>
-<section id="introdução" class="slide level2">
-<h2>Introdução</h2>
+</section><section id="introdução" class="slide level2"><h2>Introdução</h2>
 <p>Considere o problema de estimar <span class="math inline">\(f(x) = E(Y \mid X = x)\)</span> a partir de uma amostra de tamanho <span class="math inline">\(n\)</span>.</p>
 <p>Quando <span class="math inline">\(n\)</span> é pequeno, é comum impor uma estrutura paramétrica para <span class="math inline">\(f\)</span>, por exemplo,</p>
 <p><span class="math display">\[
@@ -167,21 +164,15 @@ f(x) = x^t \beta,
 \]</span></p>
 <p>o que reduz o número de parâmetros a serem estimados.</p>
 <p>Essa restrição tende a produzir estimadores com <strong>baixa variância</strong>, ainda que à custa de um possível viés.</p>
-</section>
-<section id="introdução-1" class="slide level2">
-<h2>Introdução</h2>
+</section><section id="introdução-1" class="slide level2"><h2>Introdução</h2>
 <p>À medida que o tamanho amostral aumenta, torna-se possível considerar classes de funções mais ricas.</p>
 <p>Nesse caso, admite-se um modelo mais flexível para <span class="math inline">\(f\)</span>, reduzindo o viés da estimativa, ainda que isso implique um aumento na variância.</p>
 <p>Esse comportamento reflete o compromisso fundamental entre viés e variância na estimação.</p>
-</section>
-<section id="introdução-2" class="slide level2">
-<h2>Introdução</h2>
+</section><section id="introdução-2" class="slide level2"><h2>Introdução</h2>
 <p>Motivados por essa observação, consideramos modelos não paramétricos.</p>
 <p>Informalmente, um modelo não paramétrico é aquele em que a complexidade cresce com o tamanho da amostra, podendo ser interpretado como um modelo com um número efetivamente infinito de parâmetros.</p>
 <p>O objetivo é permitir que os dados determinem a forma da função <span class="math inline">\(f\)</span>, evitando restrições estruturais rígidas.</p>
-</section>
-<section id="problema-de-regressão" class="slide level2">
-<h2>Problema de regressão</h2>
+</section><section id="problema-de-regressão" class="slide level2"><h2>Problema de regressão</h2>
 <p>Considere o modelo</p>
 <p><span class="math display">\[
 Y = f(X) + \varepsilon,
@@ -195,10 +186,7 @@ E(\varepsilon \mid X) = 0, \qquad Var(\varepsilon \mid X) = \sigma^2
 f(x) = E(Y \mid X = x)
 \]</span></p>
 <p>Esse problema é intrinsecamente infinito-dimensional, pois <span class="math inline">\(f\)</span> pode ser uma função arbitrária.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="redução-do-problema">Redução do problema</h3>
+</section><section class="slide level2"><h3 id="redução-do-problema">Redução do problema</h3>
 <p>Para tornar o problema tratável, restringimos <span class="math inline">\(f\)</span> a uma classe de funções.</p>
 <p>Assim, buscamos uma aproximação</p>
 <p><span class="math display">\[
@@ -206,16 +194,10 @@ f(x) \approx g(x),
 \]</span></p>
 <p>onde <span class="math inline">\(g\)</span> pertence a um espaço funcional de dimensão finita, ou seja, a uma classe de funções mais simples.</p>
 <p>A escolha dessa classe determina a flexibilidade do modelo.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="motivação-para-construções-locais">Motivação para construções locais</h3>
+</section><section class="slide level2"><h3 id="motivação-para-construções-locais">Motivação para construções locais</h3>
 <p>Se a função <span class="math inline">\(f\)</span> apresenta comportamentos distintos em diferentes regiões do domínio, uma única expressão global pode ser inadequada.</p>
 <p>Isso sugere construir <span class="math inline">\(g\)</span> de forma que diferentes regiões do domínio possam ser modeladas de maneira distinta.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="aproximação-por-partes">Aproximação por partes</h3>
+</section><section class="slide level2"><h3 id="aproximação-por-partes">Aproximação por partes</h3>
 <p>Para isso, fixamos pontos, chamados de nós (knots)</p>
 <p><span class="math display">\[
 t_1 &lt; t_2 &lt; \cdots &lt; t_p,
@@ -231,19 +213,13 @@ g_p(x), &amp; x \in (t_p,t_{p+1})
 \end{cases}
 \]</span></p>
 <p>Essa construção permite adaptação local.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="continuidade">Continuidade</h3>
+</section><section class="slide level2"><h3 id="continuidade">Continuidade</h3>
 <p>Para evitar descontinuidades, impomos</p>
 <p><span class="math display">\[
 g(t_j^-) = g(t_j^+)
 \]</span></p>
 <p>Assim, a função permanece contínua em todo o domínio.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="forma-analítica">Forma analítica</h3>
+</section><section class="slide level2"><h3 id="forma-analítica">Forma analítica</h3>
 <p>Essa construção pode ser escrita como</p>
 <p><span class="math display">\[
 g(x) = \beta_0 + \beta_1 x + \sum_{j=1}^{p} \gamma_j (x - t_j)_+,
@@ -252,10 +228,7 @@ g(x) = \beta_0 + \beta_1 x + \sum_{j=1}^{p} \gamma_j (x - t_j)_+,
 <p><span class="math display">\[
 (x - t)_+ = \max(x - t, 0)
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Para <span class="math inline">\(x &lt; t_j\)</span>,</p>
+</section><section class="slide level2"><p>Para <span class="math inline">\(x &lt; t_j\)</span>,</p>
 <p><span class="math display">\[
 (x - t_j)_+ = 0
 \]</span></p>
@@ -264,17 +237,11 @@ g(x) = \beta_0 + \beta_1 x + \sum_{j=1}^{p} \gamma_j (x - t_j)_+,
 (x - t_j)_+ = x - t_j
 \]</span></p>
 <p>Cada termo é ativado apenas após o nó.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-geométrica">Interpretação geométrica</h3>
+</section><section class="slide level2"><h3 id="interpretação-geométrica">Interpretação geométrica</h3>
 <p>Antes do primeiro nó, a função é linear.</p>
 <p>Após cada nó, um novo termo entra no modelo, alterando a inclinação da função.</p>
 <p>A função permanece contínua, mas sua inclinação muda nos nós.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="forma-por-partes">Forma por partes</h3>
+</section><section class="slide level2"><h3 id="forma-por-partes">Forma por partes</h3>
 <p>Assim, para nós <span class="math inline">\(t_1, t_2, t_3\)</span>, a função pode ser escrita como</p>
 <p><span class="math display">\[
 g(x) =
@@ -285,26 +252,17 @@ g(x) =
 \beta_0 + \beta_1 x + \sum_{j=1}^3 \gamma_j(x - t_j), &amp; x &gt; t_3
 \end{cases}
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="estimação-dos-coeficientes">Estimação dos coeficientes</h3>
+</section><section class="slide level2"><h3 id="estimação-dos-coeficientes">Estimação dos coeficientes</h3>
 <p>Dado <span class="math inline">\((x_i,y_i)\)</span>, estimamos</p>
 <p><span class="math display">\[
 \hat{\beta} = \arg\min \sum_{i=1}^n (y_i - g(x_i))^2
 \]</span></p>
 <p>O problema reduz-se a mínimos quadrados.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="papel-dos-nós">Papel dos nós</h3>
+</section><section class="slide level2"><h3 id="papel-dos-nós">Papel dos nós</h3>
 <p>O número de nós <span class="math inline">\(p\)</span> controla a complexidade do modelo.</p>
 <p>Mais nós permitem maior adaptação local.</p>
 <p>Menos nós produzem funções mais rígidas.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="exemplo">Exemplo</h3>
+</section><section class="slide level2"><h3 id="exemplo">Exemplo</h3>
 <p>Considere splines lineares com:</p>
 <ul>
 <li>dois nós<br>
@@ -312,21 +270,12 @@ g(x) =
 <li>três nós</li>
 </ul>
 <p>O aumento do número de nós introduz novas mudanças de inclinação na função estimada.</p>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="interpretação">Interpretação</h3>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação">Interpretação</h3>
 <p>Cada linha vertical representa um nó.</p>
 <p>Cada nó ativa um termo <span class="math inline">\((x - t_j)_+\)</span>.</p>
 <p>A função é contínua, mas sua inclinação muda nesses pontos.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="limitação-do-spline-linear">Limitação do spline linear</h3>
+</section><section class="slide level2"><h3 id="limitação-do-spline-linear">Limitação do spline linear</h3>
 <p>No spline linear, temos</p>
 <p><span class="math display">\[
 g(t_j^-) = g(t_j^+),
@@ -337,22 +286,17 @@ g(t_j^-) = g(t_j^+),
 g'(t_j^-) \neq g'(t_j^+),
 \]</span></p>
 <p>o que implica mudanças abruptas na inclinação.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="necessidade-de-maior-suavidade">Necessidade de maior suavidade</h3>
+</section><section class="slide level2"><h3 id="necessidade-de-maior-suavidade">Necessidade de maior suavidade</h3>
 <p>Em muitas aplicações, deseja-se que a função estimada varie de forma mais suave.</p>
 <p>Isso sugere impor continuidade também nas derivadas da função.</p>
 <p>Para obter maior suavidade, consideramos funções polinomiais de grau mais alto em cada subintervalo.</p>
 <p>Em particular, utilizamos polinômios de grau 3.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="definição-de-spline-cúbico">Definição de spline cúbico</h3>
+</section><section class="slide level2"><h3 id="definição-de-spline-cúbico">Definição de spline cúbico</h3>
 <p>Um spline cúbico é uma função <span class="math inline">\(g\)</span> tal que:</p>
 <ul>
 <li>em cada subintervalo, <span class="math inline">\(g\)</span> é um polinômio de grau 3,</li>
-<li><span class="math inline">\(g\)</span>, <span class="math inline">\(g'\)</span> e <span class="math inline">\(g''\)</span> são contínuas em todo o domínio.</li>
+<li>
+<span class="math inline">\(g\)</span>, <span class="math inline">\(g'\)</span> e <span class="math inline">\(g''\)</span> são contínuas em todo o domínio.</li>
 </ul>
 <p>Para cada nó <span class="math inline">\(t_j\)</span>, impomos</p>
 <p><span class="math display">\[
@@ -365,17 +309,11 @@ g'(t_j^-) = g'(t_j^+),
 g''(t_j^-) = g''(t_j^+)
 \]</span></p>
 <p>Essas condições garantem suavidade global da função.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="consequência-geométrica">Consequência geométrica</h3>
+</section><section class="slide level2"><h3 id="consequência-geométrica">Consequência geométrica</h3>
 <p>A função é contínua.</p>
 <p>A inclinação também é contínua.</p>
 <p>A curvatura varia suavemente ao longo do domínio.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="forma-analítica-1">Forma analítica</h3>
+</section><section class="slide level2"><h3 id="forma-analítica-1">Forma analítica</h3>
 <p>Uma forma conveniente de escrever o spline cúbico é</p>
 <p><span class="math display">\[
 g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{j=1}^{p} \gamma_j (x - t_j)_+^3
@@ -389,32 +327,21 @@ g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{j=1}^{p} \gamma_j
 (x - t_j)_+^3 = (x - t_j)^3
 \]</span></p>
 <p>Cada nó introduz uma modificação local na curvatura da função.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="estimação">Estimação</h3>
+</section><section class="slide level2"><h3 id="estimação">Estimação</h3>
 <p>Dado <span class="math inline">\((x_i,y_i)\)</span>, estimamos</p>
 <p><span class="math display">\[
 \hat{\beta} = \arg\min \sum_{i=1}^n (y_i - g(x_i))^2
 \]</span></p>
 <p>O problema permanece linear nos parâmetros.</p>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-2-1.png" class="r-stretch"></section>
-<section id="k-vizinhos-mais-próximos-knn" class="slide level2">
-<h2>k Vizinhos Mais Próximos (KNN)</h2>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-2-1.png" class="r-stretch"></section><section id="k-vizinhos-mais-próximos-knn" class="slide level2"><h2>k Vizinhos Mais Próximos (KNN)</h2>
 <p>O método dos <em>k vizinhos mais próximos</em> (<em>k-nearest neighbors</em>, KNN) <span class="citation" data-cites="benedetti1977">Benedetti (<a href="#/references" role="doc-biblioref" onclick="">1977</a>)</span> e <span class="citation" data-cites="stone1977">Stone (<a href="#/references" role="doc-biblioref" onclick="">1977</a>)</span> é um dos métodos não paramétricos mais utilizados em aprendizado de máquina.</p>
 <p>Seu objetivo é estimar a função de regressão:</p>
 <p><span class="math display">\[
 r(\mathbf{x}) = \mathbb{E}(\boldsymbol{y} \mid \boldsymbol{X} = \mathbf{x})
 \]</span></p>
 <p>com base na informação observada na vizinhança de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="ideia-central">Ideia central</h3>
+</section><section class="slide level2"><h3 id="ideia-central">Ideia central</h3>
 <p>Dado um ponto <span class="math inline">\(\mathbf{x}\)</span>, identificamos o conjunto:</p>
 <p><span class="math display">\[
 \mathcal{N}_k(\mathbf{x}) = \{ \text{índices dos } k \text{ vizinhos mais próximos de } \mathbf{x} \}
@@ -423,43 +350,33 @@ r(\mathbf{x}) = \mathbb{E}(\boldsymbol{y} \mid \boldsymbol{X} = \mathbf{x})
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-1">Interpretação</h3>
+</section><section class="slide level2"><h3 id="interpretação-1">Interpretação</h3>
 <p>A função <span class="math inline">\(g(\mathbf{x})\)</span> é uma média local das respostas <span class="math inline">\(\boldsymbol{y}\)</span>, calculada sobre uma vizinhança definida pela proximidade em <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
 <p>Isso caracteriza o KNN como um método de:</p>
 <ul>
-<li>baixa suposição estrutural sobre <span class="math inline">\(r(\mathbf{x})\)</span></li>
+<li>baixa suposição estrutural sobre <span class="math inline">\(r(\mathbf{x})\)</span>
+</li>
 <li>forte dependência da estrutura local dos dados</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="definição-da-vizinhança-em-knn">Definição da vizinhança em KNN</h3>
+</ul></section><section class="slide level2"><h3 id="definição-da-vizinhança-em-knn">Definição da vizinhança em KNN</h3>
 <p>Seja <span class="math inline">\(\mathbf{x} \in \mathbb{R}^p\)</span>. Definimos o conjunto dos <span class="math inline">\(k\)</span> vizinhos mais próximos de <span class="math inline">\(\mathbf{x}\)</span> como:</p>
 <p><span class="math display">\[
 \mathcal{N}_k(\mathbf{x}) = \left\{ i \in \{1,\dots,n\} : d(\mathbf{x}_i, \mathbf{x}) \le d_{\mathbf{x}}^{(k)} \right\}
 \]</span></p>
 <p>onde:</p>
 <ul>
-<li><span class="math inline">\(d(\mathbf{x}_i, \mathbf{x})\)</span> é a distância entre <span class="math inline">\(x_i\)</span> e <span class="math inline">\(x\)</span>;</li>
-<li><span class="math inline">\(d_{\mathbf{x}}^{(k)}\)</span> é a distância do <span class="math inline">\(k\)</span>-ésimo vizinho mais próximo de <span class="math inline">\(\mathbf{x}\)</span>.</li>
+<li>
+<span class="math inline">\(d(\mathbf{x}_i, \mathbf{x})\)</span> é a distância entre <span class="math inline">\(x_i\)</span> e <span class="math inline">\(x\)</span>;</li>
+<li>
+<span class="math inline">\(d_{\mathbf{x}}^{(k)}\)</span> é a distância do <span class="math inline">\(k\)</span>-ésimo vizinho mais próximo de <span class="math inline">\(\mathbf{x}\)</span>.</li>
 </ul>
 <p>O conjunto <span class="math inline">\(\mathcal{N}_k(\mathbf{x})\)</span> contém exatamente os <span class="math inline">\(k\)</span> pontos mais próximos de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="estimador-de-regressão-knn">Estimador de regressão KNN</h3>
+</section><section class="slide level2"><h3 id="estimador-de-regressão-knn">Estimador de regressão KNN</h3>
 <p>A função de regressão é estimada por uma média local:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 \]</span></p>
 <p>A estimativa em <span class="math inline">\(\mathbf{x}\)</span> depende exclusivamente dos valores de <span class="math inline">\(\boldsymbol{y}\)</span> observados nos pontos mais próximos de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="característica-fundamental">Característica fundamental</h3>
+</section><section class="slide level2"><h3 id="característica-fundamental">Característica fundamental</h3>
 <p>O estimador é:</p>
 <ul>
 <li>local<br>
@@ -467,15 +384,14 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 <li>não paramétrico<br>
 </li>
 <li>dependente da geometria dos dados</li>
-</ul>
-</section>
-<section id="o-papel-do-parâmetro-k" class="slide level2">
-<h2>O papel do parâmetro <span class="math inline">\(k\)</span></h2>
+</ul></section><section id="o-papel-do-parâmetro-k" class="slide level2"><h2>O papel do parâmetro <span class="math inline">\(k\)</span>
+</h2>
 <p>O parâmetro <span class="math inline">\(k\)</span> controla o grau de suavização do estimador. Define o equilíbrio viés e variância</p>
 <p><br></p>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="k-pequeno"><span class="math inline">\(k\)</span> pequeno</h3>
+<h3 id="k-pequeno">
+<span class="math inline">\(k\)</span> pequeno</h3>
 <ul>
 <li>ajuste mais local<br>
 </li>
@@ -487,7 +403,8 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 </li>
 </ul>
 </div><div class="column" style="width:48%;">
-<h3 id="k-grande"><span class="math inline">\(k\)</span> grande</h3>
+<h3 id="k-grande">
+<span class="math inline">\(k\)</span> grande</h3>
 <ul>
 <li>ajuste mais global<br>
 </li>
@@ -499,13 +416,8 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 </li>
 </ul>
 </div></div>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-3-1.png" class="r-stretch"></section>
-<section id="nadarayawatson" class="slide level2">
-<h2>Nadaraya–Watson</h2>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-3-1.png" class="r-stretch"></section><section id="nadarayawatson" class="slide level2"><h2>Nadaraya–Watson</h2>
 <p>No KNN, estimamos a função de regressão por:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
@@ -514,10 +426,7 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 <h3 id="limitação-do-knn">Limitação do KNN</h3>
 <p>Todos os pontos na vizinhança recebem o <strong>mesmo peso</strong>.</p>
 <p>Podemos melhorar essa abordagem atribuindo <strong>pesos diferentes</strong> às observações, de acordo com a sua proximidade de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="estimador-de-nadarayawatson">Estimador de Nadaraya–Watson</h3>
+</section><section class="slide level2"><h3 id="estimador-de-nadarayawatson">Estimador de Nadaraya–Watson</h3>
 <p>O estimador de regressão é dado por:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \sum_{i=1}^{n} w_i(\mathbf{x})\,y_i
@@ -528,10 +437,7 @@ g(\mathbf{x}) = \sum_{i=1}^{n} w_i(\mathbf{x})\,y_i
 <p><span class="math display">\[
 \sum_{i=1}^{n} w_i(\mathbf{x}) = 1
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-2">Interpretação</h3>
+</section><section class="slide level2"><h3 id="interpretação-2">Interpretação</h3>
 <p>A estimativa é uma <strong>média ponderada</strong>, onde os pesos dependem da distância entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span>.</p>
 <p><br></p>
 <h3 id="definição-dos-pesos">Definição dos pesos</h3>
@@ -539,12 +445,11 @@ g(\mathbf{x}) = \sum_{i=1}^{n} w_i(\mathbf{x})\,y_i
 <p><span class="math display">\[
 w_i(\mathbf{x}) = \frac{K(\mathbf{x}, \mathbf{x}_i)}{\sum_{j=1}^{n} K(\mathbf{x}, \mathbf{x}_j)}
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Em que,</p>
+</section><section class="slide level2"><p>Em que,</p>
 <ul>
-<li><span class="math inline">\(K(\mathbf{x}, \mathbf{x}_i)\)</span> é um <em>kernel de suavização</em>, usado para medir a similaridade entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span></li>
+<li>
+<span class="math inline">\(K(\mathbf{x}, \mathbf{x}_i)\)</span> é um <em>kernel de suavização</em>, usado para medir a similaridade entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span>
+</li>
 <li>quanto mais próximo <span class="math inline">\(\mathbf{x}_i\)</span> está de <span class="math inline">\(\mathbf{x}\)</span>, maior será o peso</li>
 </ul>
 <p>Ele controla:</p>
@@ -554,10 +459,7 @@ w_i(\mathbf{x}) = \frac{K(\mathbf{x}, \mathbf{x}_i)}{\sum_{j=1}^{n} K(\mathbf{x}
 <li>o grau de suavização do estimador</li>
 </ul>
 <p>Observações próximas recebem maior influência na estimativa de <span class="math inline">\(g(x)\)</span>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="exemplos-de-kernels">Exemplos de kernels</h3>
+</section><section class="slide level2"><h3 id="exemplos-de-kernels">Exemplos de kernels</h3>
 <h3 id="kernel-uniforme">Kernel uniforme</h3>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
@@ -575,11 +477,7 @@ K(\mathbf{x}, \mathbf{x}_i) = \frac{1}{\sqrt{2\pi}h}
 <li>todos os pontos recebem peso<br>
 </li>
 <li>pontos mais próximos têm maior influência</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="kernel-triangular">Kernel triangular</h3>
+</ul></section><section class="slide level2"><h3 id="kernel-triangular">Kernel triangular</h3>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)}{h}\right)\mathbf{1}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
 \]</span></p>
@@ -593,11 +491,8 @@ K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2
 \]</span></p>
 <ul>
 <li>peso decresce com a distância</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="o-papel-do-parâmetro-h">O papel do parâmetro <span class="math inline">\(h\)</span></h3>
+</ul></section><section class="slide level2"><h3 id="o-papel-do-parâmetro-h">O papel do parâmetro <span class="math inline">\(h\)</span>
+</h3>
 <p>O parâmetro <span class="math inline">\(h\)</span> controla a largura da vizinhança.</p>
 <p><br></p>
 <div class="columns">
@@ -622,18 +517,9 @@ K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2
 </li>
 </ul>
 </div></div>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-4-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-5-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="observação-prática">Observação prática</h3>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-4-1.png" class="r-stretch"></section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-5-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="observação-prática">Observação prática</h3>
 <p>Na prática, observa-se que:</p>
 <ul>
 <li>a escolha do <strong>kernel</strong> tem pouca influência no resultado<br>
@@ -641,26 +527,18 @@ K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2
 <li>a escolha do parâmetro de suavização (<span class="math inline">\(h\)</span>) é decisiva</li>
 </ul>
 <p>O comportamento do estimador é controlado principalmente por: <span class="math inline">\(h\)</span> (largura da vizinhança)</p>
-</section>
-<section id="regressão-polinomial-local" class="slide level2">
-<h2>Regressão Polinomial Local</h2>
+</section><section id="regressão-polinomial-local" class="slide level2"><h2>Regressão Polinomial Local</h2>
 <p>A regressão de Nadaraya–Watson estima <span class="math inline">\(g(x)\)</span> como uma <strong>média ponderada local</strong>, ou seja, resolve</p>
 <p><span class="math display">\[
 \hat{g}(\mathbf{x}) = \arg\min_{\beta_0} \sum_{i=1}^n w_i(\mathbf{x})\,(Y_i - \beta_0)^2
 \]</span></p>
 <p>Isso equivale a ajustar <strong>localmente uma constante</strong> (polinômio de grau 0).</p>
-</section>
-<section class="slide level2">
-
-<p>A regressão polinomial local generaliza essa ideia, permitindo que o ajuste local seja mais flexível.</p>
+</section><section class="slide level2"><p>A regressão polinomial local generaliza essa ideia, permitindo que o ajuste local seja mais flexível.</p>
 <p>Em vez de ajustar apenas um intercepto, consideramos um polinômio de grau <span class="math inline">\(p\)</span>:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, estimamos os coeficientes resolvendo:</p>
+</section><section class="slide level2"><p>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, estimamos os coeficientes resolvendo:</p>
 <p><span class="math display">\[
 (\hat{\beta}_0, \ldots, \hat{\beta}_p)
 =
@@ -668,53 +546,45 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \sum_{i=1}^n w_i(\mathbf{x})\left(Y_i - \beta_0 - \sum_{j=1}^p \beta_j x_i^j \right)^2
 \]</span></p>
 <p>Ou seja, realizamos um <strong>ajuste de mínimos quadrados ponderados localmente</strong>.</p>
-</section>
-<section class="slide level2">
-
-<p>A solução matricial é dada por:</p>
+</section><section class="slide level2"><p>A solução matricial é dada por:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} =
 (B^t D B)^{-1} B^t D \boldsymbol{y}
 \]</span></p>
 <p>onde:</p>
 <ul>
-<li><span class="math inline">\(B\)</span> é a matriz de regressão com linhas <span class="math inline">\((1, x_i, x_i^2, \ldots, x_i^p)\)</span><br>
+<li>
+<span class="math inline">\(B\)</span> é a matriz de regressão com linhas <span class="math inline">\((1, x_i, x_i^2, \ldots, x_i^p)\)</span><br>
 </li>
-<li><span class="math inline">\(D\)</span> é uma matriz diagonal com pesos <span class="math inline">\(w_i(\mathbf{x})\)</span><br>
+<li>
+<span class="math inline">\(D\)</span> é uma matriz diagonal com pesos <span class="math inline">\(w_i(\mathbf{x})\)</span><br>
 </li>
-<li><span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-3">Interpretação</h3>
+<li>
+<span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
+</ul></section><section class="slide level2"><h3 id="interpretação-3">Interpretação</h3>
 <ul>
-<li>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, ajustamos <strong>um modelo diferente</strong></li>
+<li>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, ajustamos <strong>um modelo diferente</strong>
+</li>
 <li>Os pesos <span class="math inline">\(w_i(\mathbf{x})\)</span> garantem que apenas observações próximas influenciem o ajuste</li>
-<li>O grau <span class="math inline">\(p\)</span> controla a <strong>flexibilidade local do modelo</strong></li>
+<li>O grau <span class="math inline">\(p\)</span> controla a <strong>flexibilidade local do modelo</strong>
+</li>
 </ul>
 <p><br></p>
 <h3 id="casos-importantes">Casos importantes</h3>
 <ul>
-<li><span class="math inline">\(p = 0\)</span> → regressão de Nadaraya–Watson<br>
+<li>
+<span class="math inline">\(p = 0\)</span> → regressão de Nadaraya–Watson<br>
 </li>
-<li><span class="math inline">\(p = 1\)</span> → regressão linear local (reduz viés nas bordas)<br>
+<li>
+<span class="math inline">\(p = 1\)</span> → regressão linear local (reduz viés nas bordas)<br>
 </li>
-<li><span class="math inline">\(p = 2\)</span> → regressão quadrática local</li>
-</ul>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-6-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-<p>Note que</p>
+<li>
+<span class="math inline">\(p = 2\)</span> → regressão quadrática local</li>
+</ul></section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-6-1.png" class="r-stretch"></section><section class="slide level2"><p>Note que</p>
 <p>A figura compara estimadores obtidos com o mesmo kernel e a mesma largura de banda <span class="math inline">\(h\)</span>, variando apenas o grau <span class="math inline">\(p\)</span> do polinômio ajustado localmente.</p>
 <p>Quando <span class="math inline">\(p=0\)</span>, obtemos o estimador de Nadaraya-Watson. À medida que o grau aumenta, o modelo local torna-se mais flexível, podendo capturar melhor a curvatura da função de regressão.</p>
-</section>
-<section id="árvores-de-regressão" class="slide level2">
-<h2>Árvores de Regressão</h2>
+</section><section id="árvores-de-regressão" class="slide level2"><h2>Árvores de Regressão</h2>
 <p>Até agora, modelamos <span class="math inline">\(g(\mathbf{x})\)</span> como uma função suave:</p>
 <ul>
 <li>splines<br>
@@ -727,10 +597,7 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 <blockquote>
 <p>modelar <span class="math inline">\(g(\mathbf{x})\)</span> por partições do espaço das covariáveis.</p>
 </blockquote>
-</section>
-<section class="slide level2">
-
-<h3 id="ideia-central-1">Ideia central</h3>
+</section><section class="slide level2"><h3 id="ideia-central-1">Ideia central</h3>
 <p>Uma árvore de regressão divide o espaço de entrada em regiões:</p>
 <p><span class="math display">\[
 \mathcal{R}_1, \mathcal{R}_2, \ldots, \mathcal{R}_M
@@ -743,13 +610,12 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 <p><span class="math display">\[
 c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 \]</span></p>
-</section>
-<section id="interpretação-4" class="slide level2">
-<h2>Interpretação</h2>
+</section><section id="interpretação-4" class="slide level2"><h2>Interpretação</h2>
 <ul>
 <li>o espaço é dividido em “caixas”</li>
 <li>dentro de cada região, a previsão é constante → média dos dados</li>
-<li>o modelo é uma função <strong>piecewise constante</strong></li>
+<li>o modelo é uma função <strong>piecewise constante</strong>
+</li>
 </ul>
 <p><br></p>
 <h3 id="problema-de-estimação">Problema de estimação</h3>
@@ -757,10 +623,7 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 <p><span class="math display">\[
 \{\mathcal{R}_1, \ldots, \mathcal{R}_M\}
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="critério-de-qualidade">Critério de qualidade</h3>
+</section><section class="slide level2"><h3 id="critério-de-qualidade">Critério de qualidade</h3>
 <p>A qualidade da árvore é medida por:</p>
 <p><span class="math display">\[
 \mathcal{P}(T) =
@@ -774,11 +637,7 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 <li>regiões boas → valores de <span class="math inline">\(y\)</span> homogêneos<br>
 </li>
 <li>objetivo → minimizar a variância intra-região</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="dificuldade-do-problema">Dificuldade do problema</h3>
+</ul></section><section class="slide level2"><h3 id="dificuldade-do-problema">Dificuldade do problema</h3>
 <p>Minimizar <span class="math inline">\(\mathcal{P}(T)\)</span> globalmente é:</p>
 <ul>
 <li>computacionalmente inviável<br>
@@ -792,11 +651,7 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 <li>escolhemos a melhor divisão local<br>
 </li>
 <li>repetimos recursivamente</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="divisão-em-um-nó">Divisão em um nó</h3>
+</ul></section><section class="slide level2"><h3 id="divisão-em-um-nó">Divisão em um nó</h3>
 <p>Para cada variável <span class="math inline">\(X_j\)</span> e ponto <span class="math inline">\(s\)</span>:</p>
 <p><span class="math display">\[
 \mathcal{R}_1 = \{x: x_j \leq s\}, \quad
@@ -809,10 +664,7 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 \sum_{i \in \mathcal{R}_1} (y_i - c_{m_1})^2 +
 \sum_{i \in \mathcal{R}_2} (y_i - c_{m_2})^2
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="construção-completa">Construção completa</h3>
+</section><section class="slide level2"><h3 id="construção-completa">Construção completa</h3>
 <ol type="1">
 <li>Começa com todos os dados<br>
 </li>
@@ -829,37 +681,26 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 <li>ajustar demais os dados<br>
 </li>
 <li>ter alta variância</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="poda-pruning">Poda (pruning)</h3>
+</ul></section><section class="slide level2"><h3 id="poda-pruning">Poda (pruning)</h3>
 <p>Árvores completas tendem a sobreajustar os dados.</p>
 <p>A poda consiste em escolher uma subárvore que minimize:</p>
 <p><span class="math display">\[
 \sum_{m=1}^{|T|} \sum_{i:x_i \in \mathcal{R}_m} (y_i - c_m)^2 + \alpha |T|
 \]</span></p>
 <ul>
-<li><span class="math inline">\(|T|\)</span> = número de folhas (complexidade da árvore)<br>
+<li>
+<span class="math inline">\(|T|\)</span> = número de folhas (complexidade da árvore)<br>
 </li>
-<li><span class="math inline">\(\alpha\)</span> controla o trade-off entre ajuste e simplicidade</li>
+<li>
+<span class="math inline">\(\alpha\)</span> controla o trade-off entre ajuste e simplicidade</li>
 </ul>
 <p>Valores grandes de <span class="math inline">\(\alpha\)</span> produzem árvores menores e mais estáveis.</p>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-7-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="interpretação-da-árvore-de-regressão">Interpretação da árvore de regressão</h3>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-7-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-da-árvore-de-regressão">Interpretação da árvore de regressão</h3>
 <p>A linha tracejada representa a função verdadeira que gerou os dados.</p>
 <p>A curva em degraus representa a árvore ajustada, que aproxima a função de regressão por regiões nas quais a predição é constante.</p>
 <p>Isso evidencia que árvores de regressão constroem estimadores do tipo <strong>piecewise</strong> constante.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="vantagens-das-árvores-de-regressão">Vantagens das Árvores de Regressão</h3>
+</section><section class="slide level2"><h3 id="vantagens-das-árvores-de-regressão">Vantagens das Árvores de Regressão</h3>
 <p>Além de serem facilmente interpretáveis, árvores apresentam propriedades importantes:</p>
 <p><br></p>
 <h4 id="variáveis-categóricas">Variáveis categóricas</h4>
@@ -870,11 +711,7 @@ X_1 \in \{\text{verde}, \text{vermelho}\}
 <ul>
 <li>não é necessário criar variáveis dummy</li>
 <li>as divisões são feitas diretamente nas categorias</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h4 id="seleção-automática-de-variáveis">Seleção automática de variáveis</h4>
+</ul></section><section class="slide level2"><h4 id="seleção-automática-de-variáveis">Seleção automática de variáveis</h4>
 <ul>
 <li>variáveis irrelevantes tendem a não ser utilizadas<br>
 </li>
@@ -886,11 +723,7 @@ X_1 \in \{\text{verde}, \text{vermelho}\}
 <li>árvores capturam interações automaticamente<br>
 </li>
 <li>não é necessário especificar termos de interação</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="limitação-importante">Limitação importante</h3>
+</ul></section><section class="slide level2"><h3 id="limitação-importante">Limitação importante</h3>
 <p>Apesar dessas vantagens:</p>
 <ul>
 <li>árvores individuais têm alta variância<br>
@@ -901,9 +734,7 @@ X_1 \in \{\text{verde}, \text{vermelho}\}
 <blockquote>
 <p>combinamos várias árvores em um único modelo</p>
 </blockquote>
-</section>
-<section id="por-que-combinar-árvores" class="slide level2">
-<h2>Por que combinar árvores?</h2>
+</section><section id="por-que-combinar-árvores" class="slide level2"><h2>Por que combinar árvores?</h2>
 <p>Considere dois estimadores <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span>.</p>
 <p>Definimos o estimador combinado:</p>
 <p><span class="math display">\[
@@ -917,10 +748,7 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 + \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
 + \text{bias}^2
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
+</section><section class="slide level2"><p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
 <ul>
 <li>não viesados<br>
 </li>
@@ -941,10 +769,7 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \le
 \mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Assim, combinar modelos:</p>
+</section><section class="slide level2"><p>Assim, combinar modelos:</p>
 <ul>
 <li>mantém o viés<br>
 </li>
@@ -955,9 +780,7 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 <blockquote>
 <p>Média de vários modelos instáveis → modelo mais estável</p>
 </blockquote>
-</section>
-<section id="bagging-bootstrap-aggregating" class="slide level2">
-<h2>Bagging (Bootstrap Aggregating)</h2>
+</section><section id="bagging-bootstrap-aggregating" class="slide level2"><h2>Bagging (Bootstrap Aggregating)</h2>
 <p>A ideia central é combinar vários estimadores:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
@@ -968,15 +791,8 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 <li>amostramos com reposição (bootstrap)<br>
 </li>
 <li>ajustamos uma árvore aos dados</li>
-</ul>
-</section>
-<section class="slide level2">
-
-
-<img data-src="../../..\images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="propriedade-fundamental">Propriedade fundamental</h3>
+</ul></section><section class="slide level2">
+<img data-src="../../..\images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="propriedade-fundamental">Propriedade fundamental</h3>
 <p>Se os estimadores são aproximadamente não viesados:</p>
 <ul>
 <li>o viés permanece semelhante<br>
@@ -989,10 +805,7 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 \le
 \mathbb{E}[(\boldsymbol{y} - g_b(\mathbf{x}))^2 \mid \mathbf{x}]
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="importância-de-variáveis-em-árvores">Importância de Variáveis em Árvores</h3>
+</section><section class="slide level2"><h3 id="importância-de-variáveis-em-árvores">Importância de Variáveis em Árvores</h3>
 <p>Bagging permite medir a relevância de cada variável:</p>
 <ul>
 <li>baseada na redução do erro (RSS)<br>
@@ -1005,11 +818,7 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 <li>esquerda (<span class="math inline">\(\mathcal{R}_{esq}\)</span>)<br>
 </li>
 <li>direita (<span class="math inline">\(\mathcal{R}_{dir}\)</span>)</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="redução-do-erro">Redução do erro</h3>
+</ul></section><section class="slide level2"><h3 id="redução-do-erro">Redução do erro</h3>
 <p>A redução no RSS é dada por:</p>
 <p><span class="math display">\[
 \text{RSS}_{pai}
@@ -1026,10 +835,7 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 -
 \sum_{i \in \mathcal{R}_{dir}} (y_i - \bar{y}_{dir})^2
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-5">Interpretação</h3>
+</section><section class="slide level2"><h3 id="interpretação-5">Interpretação</h3>
 <ul>
 <li>quanto maior a redução → melhor a divisão<br>
 </li>
@@ -1038,13 +844,8 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 <blockquote>
 <p>Variáveis importantes são aquelas que mais reduzem a variabilidade da resposta.</p>
 </blockquote>
-</section>
-<section class="slide level2">
-
-
-<img data-src="bagging_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
-<section id="florestas-aleatórias-random-forest" class="slide level2">
-<h2>Florestas Aleatórias (Random Forest)</h2>
+</section><section class="slide level2">
+<img data-src="bagging_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section id="florestas-aleatórias-random-forest" class="slide level2"><h2>Florestas Aleatórias (Random Forest)</h2>
 <p>No Bagging, combinamos várias árvores:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
@@ -1057,10 +858,7 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 \mathrm{Var}(g_b(\mathbf{x})) = \sigma^2
 \quad \text{para todo } b
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<ul>
+</section><section class="slide level2"><ul>
 <li>As árvores não são independentes, mas podemos resumir essa dependência por uma correlação média. Assim, a correlação entre quaisquer duas árvores é</li>
 </ul>
 <p><span class="math display">\[
@@ -1079,10 +877,7 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 =
 \frac{1}{B^2}\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Expandindo a variância da soma:</p>
+</section><section class="slide level2"><p>Expandindo a variância da soma:</p>
 <p><span class="math display">\[
 \mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
 =
@@ -1100,10 +895,7 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 =
 B(B-1)\rho\sigma^2
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Portanto,</p>
+</section><section class="slide level2"><p>Portanto,</p>
 <p><span class="math display">\[
 \mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
 =
@@ -1118,10 +910,7 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 B\sigma^2 + B(B-1)\rho\sigma^2
 \right]
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>Simplificando,</p>
+</section><section class="slide level2"><p>Simplificando,</p>
 <p><span class="math display">\[
 \mathrm{Var}\!\big(g(\mathbf{x})\big)
 =
@@ -1139,13 +928,13 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 \]</span></p>
 <p>Note que,</p>
 <ul>
-<li><span class="math inline">\(\rho\sigma^2\)</span> é a parte da variância que <strong>não desaparece</strong> com o aumento de <span class="math inline">\(B\)</span></li>
-<li><span class="math inline">\(\dfrac{1-\rho}{B}\sigma^2\)</span> é a parte que <strong>cai com o número de árvores</strong></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="consequência-importante">Consequência importante</h3>
+<li>
+<span class="math inline">\(\rho\sigma^2\)</span> é a parte da variância que <strong>não desaparece</strong> com o aumento de <span class="math inline">\(B\)</span>
+</li>
+<li>
+<span class="math inline">\(\dfrac{1-\rho}{B}\sigma^2\)</span> é a parte que <strong>cai com o número de árvores</strong>
+</li>
+</ul></section><section class="slide level2"><h3 id="consequência-importante">Consequência importante</h3>
 <ul>
 <li>se <span class="math inline">\(\rho\)</span> é pequeno, o bagging reduz bastante a variância</li>
 <li>se <span class="math inline">\(\rho\)</span> é grande, o ganho é limitado</li>
@@ -1157,11 +946,7 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 <li>divisões semelhantes<br>
 </li>
 <li>predições parecidas</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="problema">Problema</h3>
+</ul></section><section class="slide level2"><h3 id="problema">Problema</h3>
 <p>A redução de variância depende da correlação:</p>
 <blockquote>
 <p>árvores muito parecidas → pouco ganho ao combinar</p>
@@ -1172,10 +957,7 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 <blockquote>
 <p>em cada nó, escolhemos um subconjunto aleatório de variáveis</p>
 </blockquote>
-</section>
-<section class="slide level2">
-
-<h3 id="construção">Construção</h3>
+</section><section class="slide level2"><h3 id="construção">Construção</h3>
 <p>Para cada árvore:</p>
 <ul>
 <li>amostra bootstrap dos dados</li>
@@ -1183,36 +965,28 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 <ul>
 <li>seleciona-se aleatoriamente <span class="math inline">\(m\)</span> variáveis</li>
 <li>escolhe-se o melhor <em>split</em> entre elas</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <h3 id="parâmetro-chave">Parâmetro chave</h3>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><span class="math inline">\(m\)</span> = número de variáveis candidatas por <em>split</em></p>
 <ul>
-<li><span class="math inline">\(m = d \rightarrow\)</span> Bagging</li>
-<li><span class="math inline">\(m &lt; d \rightarrow\)</span> Random Forest</li>
+<li>
+<span class="math inline">\(m = d \rightarrow\)</span> Bagging</li>
+<li>
+<span class="math inline">\(m &lt; d \rightarrow\)</span> Random Forest</li>
 </ul>
 </div><div class="column" style="width:40%;">
 <p><span class="math display">\[
 m \approx \frac{d}{3}
 \]</span></p>
 </div></div>
-</section>
-<section class="slide level2">
-
-
-<img data-src="../../..\images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-10-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-
-<img data-src="rf_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
-<section id="boosting" class="slide level2">
-<h2>Boosting</h2>
+</section><section class="slide level2">
+<img data-src="../../..\images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-10-1.png" class="r-stretch"></section><section class="slide level2">
+<img data-src="rf_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section id="boosting" class="slide level2"><h2>Boosting</h2>
 <p>O <em>boosting</em> constrói o estimador de forma <strong>sequencial</strong>, corrigindo erros do modelo anterior.</p>
 <p><br></p>
 <h3 id="ideia-central-2">Ideia central</h3>
@@ -1220,10 +994,7 @@ m \approx \frac{d}{3}
 <p><span class="math display">\[
 r_i = y_i - g(x_i)
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="algoritmo">Algoritmo</h3>
+</section><section class="slide level2"><h3 id="algoritmo">Algoritmo</h3>
 <ol type="1">
 <li>Inicialize:</li>
 </ol>
@@ -1245,41 +1016,33 @@ r_i = y_i - g(x_i)
 <p><span class="math display">\[
 g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="parâmetros-importantes">Parâmetros importantes</h3>
+</section><section class="slide level2"><h3 id="parâmetros-importantes">Parâmetros importantes</h3>
 <ul>
-<li><span class="math inline">\(B\)</span> → número de iterações (<span class="math inline">\(B \approx 1000\)</span>)</li>
-<li><span class="math inline">\(\lambda\)</span> → <em>learning rate</em>, tipicamente pequeno (<span class="math inline">\(\lambda \approx 0,01\)</span>)
+<li>
+<span class="math inline">\(B\)</span> → número de iterações (<span class="math inline">\(B \approx 1000\)</span>)</li>
+<li>
+<span class="math inline">\(\lambda\)</span> → <em>learning rate</em>, tipicamente pequeno (<span class="math inline">\(\lambda \approx 0,01\)</span>)
 <ul>
-<li><span class="math inline">\(\lambda\)</span> grande → aprendizado rápido → risco de overfitting</li>
-<li><span class="math inline">\(\lambda\)</span> pequeno → aprendizado lento → mais estável</li>
-</ul></li>
-<li><span class="math inline">\(p\)</span> → complexidade da árvore (<span class="math inline">\(p = 2\)</span> ou <span class="math inline">\(p = 4\)</span>)</li>
+<li>
+<span class="math inline">\(\lambda\)</span> grande → aprendizado rápido → risco de overfitting</li>
+<li>
+<span class="math inline">\(\lambda\)</span> pequeno → aprendizado lento → mais estável</li>
+</ul>
+</li>
+<li>
+<span class="math inline">\(p\)</span> → complexidade da árvore (<span class="math inline">\(p = 2\)</span> ou <span class="math inline">\(p = 4\)</span>)</li>
 </ul>
 <p><br></p>
 <h3 id="observação">Observação</h3>
 <ul>
-<li>cada modelo aprende <strong>o que o anterior errou</strong></li>
+<li>cada modelo aprende <strong>o que o anterior errou</strong>
+</li>
 <li>reduz <strong>viés</strong> (diferente do bagging)</li>
-</ul>
-</section>
-<section id="section" class="slide level2" data-background-image="../../../images/regressao/boosting.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat">
-<h2></h2>
+</ul></section><section id="section" class="slide level2" data-background-image="../../../images/regressao/boosting.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat"><h2></h2>
 <!-- ![](/images/regressao/boosting.png){fig-align="center"} -->
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-13-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-
-<img data-src="boosting_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
-<section class="slide level2">
-
-<h3 id="boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</h3>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-13-1.png" class="r-stretch"></section><section class="slide level2">
+<img data-src="boosting_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section class="slide level2"><h3 id="boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</h3>
 <p>O <em>boosting</em> não é restrito ao uso de árvores.</p>
 <p>Podemos usar qualquer modelo como base, desde que seja um <strong>estimador fraco</strong>.</p>
 <p><br></p>
@@ -1290,10 +1053,7 @@ g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
 <li>pequeno viés de ajuste</li>
 </ul>
 <p><strong>Exemplos:</strong> árvores rasas (<em>stumps</em>), regressão linear simples, modelos com poucos parâmetros</p>
-</section>
-<section class="slide level2">
-
-<h3 id="por-que-usar-modelos-fracos">Por que usar modelos fracos?</h3>
+</section><section class="slide level2"><h3 id="por-que-usar-modelos-fracos">Por que usar modelos fracos?</h3>
 <ul>
 <li>evitam overfitting em cada etapa</li>
 <li>permitem correções graduais</li>
@@ -1301,26 +1061,15 @@ g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
 </ul>
 <p>Se você usar modelos muito complexos (ex: árvores profundas):</p>
 <p>👉 boosting pode superajustar rapidamente</p>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-16-1.png" class="r-stretch"></section>
-<section id="redes-neurais-artificiais" class="slide level2">
-<h2>Redes Neurais Artificiais</h2>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-16-1.png" class="r-stretch"></section><section id="redes-neurais-artificiais" class="slide level2"><h2>Redes Neurais Artificiais</h2>
 <p>Redes neurais são modelos que aproximam funções não lineares complexas.</p>
 <p>No contexto de regressão, trata-se de um estimador não linear de <span class="math inline">\(r(\mathbf{x})\)</span> que pode ser representado graficamente por uma estrutura do tipo</p>
 
-<img data-src="../../..\images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="rna-sem-camada-oculta">RNA sem camada oculta</h3>
+<img data-src="../../..\images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="rna-sem-camada-oculta">RNA sem camada oculta</h3>
 <!-- ![](/images/regressao/RNAsC.png){fig-align="center"} -->
 
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-17-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-<h4 id="entrada">🔹 Entrada</h4>
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-17-1.png" class="r-stretch"></section><section class="slide level2"><h4 id="entrada">🔹 Entrada</h4>
 <p><span class="math display">\[
 \mathbf{x} = (x_1, x_2, x_3, \cdots, x_p)^t
 \]</span></p>
@@ -1328,15 +1077,9 @@ g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
 <p><span class="math display">\[
 g(x) = f\left(\beta_0+\sum_{j=1}^{p} \beta_{j} x_j \right)
 \]</span></p>
-</section>
-<section class="slide level2">
+</section><section class="slide level2"><h3 id="rna-com-camada-oculta">RNA com camada oculta</h3>
 
-<h3 id="rna-com-camada-oculta">RNA com camada oculta</h3>
-
-<img data-src="../../..\images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-
-<p>Para a rede apresentada,</p>
+<img data-src="../../..\images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><p>Para a rede apresentada,</p>
 <h4 id="entrada-1">🔹 Entrada</h4>
 <p><span class="math display">\[
 \mathbf{x} = (x_1, x_2, x_3)^t
@@ -1348,22 +1091,13 @@ x_j^{1} = f\left( \beta_{0,j}^{(0)} + \sum_{i=1}^{3} \beta_{i,j}^{(0)} x_i^{0} \
 \quad \text{com } x_i^{0} = x_i,\; i=1,2,3.
 \]</span></p>
 <p>e <span class="math inline">\(f\)</span> é uma função definida pelo usuário, chamada de <strong>função de ativação.</strong></p>
-</section>
-<section class="slide level2">
-
-<h4 id="saída">🔹 Saída</h4>
+</section><section class="slide level2"><h4 id="saída">🔹 Saída</h4>
 <p><span class="math display">\[
 g(x) = x^{2}_1 = f\left( \beta_{0,1}^{1} + \sum_{i=1}^{5} \beta_{i,1}^{1} x_i^{1} \right)
 \]</span></p>
-</section>
-<section class="slide level2">
+</section><section class="slide level2"><h3 id="representação-de-cada-neurônio-da-rede">Representação de cada neurônio da rede</h3>
 
-<h3 id="representação-de-cada-neurônio-da-rede">Representação de cada neurônio da rede</h3>
-
-<img data-src="../../..\images/regressao/neuronioMP2.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="funções-de-ativação">Funções de Ativação</h3>
+<img data-src="../../..\images/regressao/neuronioMP2.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="funções-de-ativação">Funções de Ativação</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h4 id="clássicas">Clássicas</h4>
@@ -1393,18 +1127,9 @@ z, &amp; z\geq0
 \]</span></p></li>
 </ul>
 </div></div>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-18-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-19-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="por-que-precisamos-de-funções-de-ativação">Por que precisamos de funções de ativação?</h3>
+</section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-18-1.png" class="r-stretch"></section><section class="slide level2">
+<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-19-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="por-que-precisamos-de-funções-de-ativação">Por que precisamos de funções de ativação?</h3>
 <p>Sem <span class="math inline">\(f(\cdot)\)</span>:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \text{combinação linear}
@@ -1414,10 +1139,7 @@ g(\mathbf{x}) = \text{combinação linear}
 g(\mathbf{x}) = \text{função não linear}
 \]</span></p>
 <p>A função de ativação é o que dá poder às redes neurais.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="estimação-backpropagation">Estimação: Backpropagation</h3>
+</section><section class="slide level2"><h3 id="estimação-backpropagation">Estimação: Backpropagation</h3>
 <p>Queremos estimar os parâmetros da rede neural, <span class="math inline">\(\beta\)</span>, minimizando o erro:</p>
 <p><span class="math display">\[
 EQM(g_{\beta}) = \frac{1}{n} \sum_{k=1}^{n} (g_{\beta}(x_k) - y_k)^2
@@ -1429,10 +1151,7 @@ EQM(g_{\beta}) = \frac{1}{n} \sum_{k=1}^{n} (g_{\beta}(x_k) - y_k)^2
 <p><span class="math display">\[
 \beta \leftarrow \beta - \eta \nabla EQM(g_\beta)
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="atualização-dos-pesos">Atualização dos pesos</h3>
+</section><section class="slide level2"><h3 id="atualização-dos-pesos">Atualização dos pesos</h3>
 <p>Para cada parâmetro:</p>
 <p><span class="math display">\[
 \beta_{i,j}^{(l)} \leftarrow
@@ -1441,229 +1160,22 @@ EQM(g_{\beta}) = \frac{1}{n} \sum_{k=1}^{n} (g_{\beta}(x_k) - y_k)^2
 \]</span></p>
 <p>em que,</p>
 <ul>
-<li><span class="math inline">\(\eta\)</span> → taxa de aprendizado<br>
+<li>
+<span class="math inline">\(\eta\)</span> → taxa de aprendizado<br>
 </li>
-<li><span class="math inline">\(l\)</span> → camada<br>
+<li>
+<span class="math inline">\(l\)</span> → camada<br>
 </li>
-<li><span class="math inline">\((i,j)\)</span> → conexão entre neurônios</li>
+<li>
+<span class="math inline">\((i,j)\)</span> → conexão entre neurônios</li>
 </ul>
 <p>Movemos os parâmetros na direção que <strong>reduz o erro</strong></p>
-</section>
-<section id="por-que-o-nome-backpropagation" class="slide level2">
-<h2>Por que o nome Backpropagation?</h2>
+</section><section id="por-que-o-nome-backpropagation" class="slide level2"><h2>Por que o nome Backpropagation?</h2>
 <p>Os gradientes são calculados da saída para a entrada</p>
 
 <!-- ![](/images/regressao/backpropagation.gif){fig-align="center"} -->
 <img data-src="backpropagation.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"><p>O erro “volta” pela rede ajustando os pesos</p>
-</section>
-<section class="slide level2">
-
-<!-- ```{r} -->
-<!-- library(ggplot2) -->
-<!-- library(nnet) -->
-<!-- library(dplyr) -->
-<!-- library(tidyr) -->
-<!-- library(gganimate) -->
-<!-- library(gifski) -->
-<!-- set.seed(123) -->
-<!-- # ----------------------------- -->
-<!-- # Função real -->
-<!-- # ----------------------------- -->
-<!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { -->
-<!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) -->
-<!-- } -->
-<!-- # ----------------------------- -->
-<!-- # Dados -->
-<!-- # ----------------------------- -->
-<!-- n <- 150 -->
-<!-- x <- sort(runif(n, -1.2, 2.8)) -->
-<!-- y_true <- f_real(x) -->
-<!-- y <- y_true + rnorm(n, sd = 2.5) -->
-<!-- df <- data.frame(x = x, y = y) -->
-<!-- # padronização -->
-<!-- x_mean <- mean(df$x) -->
-<!-- x_sd   <- sd(df$x) -->
-<!-- y_mean <- mean(df$y) -->
-<!-- y_sd   <- sd(df$y) -->
-<!-- df$x_std <- (df$x - x_mean) / x_sd -->
-<!-- df$y_std <- (df$y - y_mean) / y_sd -->
-<!-- # grade -->
-<!-- xg <- seq(min(df$x), max(df$x), length.out = 400) -->
-<!-- grid <- data.frame(x = xg) -->
-<!-- grid$x_std <- (grid$x - x_mean) / x_sd -->
-<!-- df_true <- data.frame( -->
-<!--   x = xg, -->
-<!--   y_true = f_real(xg) -->
-<!-- ) -->
-<!-- # ----------------------------- -->
-<!-- # Ajustes com diferentes iterações -->
-<!-- # ----------------------------- -->
-<!-- iter_grid <- seq(5, 300, by = 5) -->
-<!-- pred_list <- lapply(iter_grid, function(it) { -->
-<!--   fit <- nnet( -->
-<!--     y_std ~ x_std, -->
-<!--     data = df, -->
-<!--     size = 8, -->
-<!--     linout = TRUE, -->
-<!--     skip = FALSE, -->
-<!--     decay = 0.001, -->
-<!--     maxit = it, -->
-<!--     trace = FALSE -->
-<!--   ) -->
-<!--   pred_std <- as.numeric(predict(fit, newdata = grid)) -->
-<!--   pred <- pred_std * y_sd + y_mean -->
-<!--   data.frame( -->
-<!--     x = xg, -->
-<!--     y_hat = pred, -->
-<!--     frame_id = it -->
-<!--   ) -->
-<!-- }) -->
-<!-- pred_anim <- do.call(rbind, pred_list) -->
-<!-- points_anim <- do.call(rbind, lapply(iter_grid, function(it) { -->
-<!--   data.frame( -->
-<!--     x = df$x, -->
-<!--     y = df$y, -->
-<!--     frame_id = it -->
-<!--   ) -->
-<!-- })) -->
-<!-- true_anim <- do.call(rbind, lapply(iter_grid, function(it) { -->
-<!--   data.frame( -->
-<!--     x = df_true$x, -->
-<!--     y_true = df_true$y_true, -->
-<!--     frame_id = it -->
-<!--   ) -->
-<!-- })) -->
-<!-- # ----------------------------- -->
-<!-- # Animação -->
-<!-- # ----------------------------- -->
-<!-- anim_nn <- ggplot() + -->
-<!--   geom_point( -->
-<!--     data = points_anim, -->
-<!--     aes(x, y), -->
-<!--     color = "#2C7FB8", -->
-<!--     alpha = 0.45, -->
-<!--     size = 1.8 -->
-<!--   ) + -->
-<!--   geom_line( -->
-<!--     data = pred_anim, -->
-<!--     aes(x, y_hat), -->
-<!--     color = "#00BA38", -->
-<!--     linewidth = 1.3 -->
-<!--   ) + -->
-<!--   geom_line( -->
-<!--     data = true_anim, -->
-<!--     aes(x, y_true), -->
-<!--     color = "#D62728", -->
-<!--     linewidth = 1.3 -->
-<!--   ) + -->
-<!--   labs( -->
-<!--     title = "RNA aprendendo a função: iteração {current_frame}", -->
-<!--     subtitle = "Verde: rede neural | Vermelho: função real", -->
-<!--     x = "X", -->
-<!--     y = "Y" -->
-<!--   ) + -->
-<!--   theme_minimal(base_size = 16) + -->
-<!--   theme( -->
-<!--     panel.grid.minor = element_blank(), -->
-<!--     plot.title = element_text(face = "bold") -->
-<!--   ) + -->
-<!--   transition_manual(frame_id) -->
-<!-- animate( -->
-<!--   anim_nn, -->
-<!--   nframes = length(iter_grid), -->
-<!--   fps = 3, -->
-<!--   width = 8, -->
-<!--   height = 4.8, -->
-<!--   units = "in", -->
-<!--   res = 120, -->
-<!--   renderer = gifski_renderer("rna_aprendendo.gif") -->
-<!-- ) -->
-<!-- ``` -->
-<!-- --- -->
-<!-- ```{r} -->
-<!-- library(ggplot2) -->
-<!-- library(nnet) -->
-<!-- set.seed(123) -->
-<!-- # ----------------------------- -->
-<!-- # Função real -->
-<!-- # ----------------------------- -->
-<!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { -->
-<!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) -->
-<!-- } -->
-<!-- # ----------------------------- -->
-<!-- # Dados -->
-<!-- # ----------------------------- -->
-<!-- n <- 150 -->
-<!-- x <- sort(runif(n, -1.2, 2.8)) -->
-<!-- y_true <- f_real(x) -->
-<!-- y <- y_true + rnorm(n, sd = 2.5) -->
-<!-- df <- data.frame(x = x, y = y) -->
-<!-- # ----------------------------- -->
-<!-- # Padronização -->
-<!-- # ----------------------------- -->
-<!-- x_mean <- mean(df$x) -->
-<!-- x_sd   <- sd(df$x) -->
-<!-- y_mean <- mean(df$y) -->
-<!-- y_sd   <- sd(df$y) -->
-<!-- df$x_std <- (df$x - x_mean) / x_sd -->
-<!-- df$y_std <- (df$y - y_mean) / y_sd -->
-<!-- # ----------------------------- -->
-<!-- # Ajuste da rede -->
-<!-- # ----------------------------- -->
-<!-- fit_nn <- nnet( -->
-<!--   y_std ~ x_std, -->
-<!--   data = df, -->
-<!--   size = 8, -->
-<!--   linout = TRUE, -->
-<!--   skip = FALSE, -->
-<!--   decay = 0.001, -->
-<!--   maxit = 500, -->
-<!--   trace = FALSE -->
-<!-- ) -->
-<!-- # ----------------------------- -->
-<!-- # Predição na grade -->
-<!-- # ----------------------------- -->
-<!-- xg <- seq(min(df$x), max(df$x), length.out = 500) -->
-<!-- grid <- data.frame(x = xg) -->
-<!-- grid$x_std <- (grid$x - x_mean) / x_sd -->
-<!-- pred_std <- as.numeric(predict(fit_nn, newdata = grid)) -->
-<!-- pred <- pred_std * y_sd + y_mean -->
-<!-- plot_df <- data.frame( -->
-<!--   x = xg, -->
-<!--   y_hat = pred, -->
-<!--   y_true = f_real(xg) -->
-<!-- ) -->
-<!-- # ----------------------------- -->
-<!-- # Gráfico final -->
-<!-- # ----------------------------- -->
-<!-- ggplot(df, aes(x, y)) + -->
-<!--   geom_point(color = "#2C7FB8", alpha = 0.5, size = 2) + -->
-<!--   geom_line( -->
-<!--     data = plot_df, -->
-<!--     aes(x, y_true), -->
-<!--     color = "#D62728", -->
-<!--     linewidth = 1.3 -->
-<!--   ) + -->
-<!--   geom_line( -->
-<!--     data = plot_df, -->
-<!--     aes(x, y_hat), -->
-<!--     color = "#00BA38", -->
-<!--     linewidth = 1.3 -->
-<!--   ) + -->
-<!--   theme_minimal(base_size = 16) + -->
-<!--   labs( -->
-<!--     title = "Rede neural aprendendo a função", -->
-<!--     subtitle = "Verde: RNA | Vermelho: função real", -->
-<!--     x = "X", -->
-<!--     y = "Y" -->
-<!--   ) + -->
-<!--   theme( -->
-<!--     panel.grid.minor = element_blank(), -->
-<!--     plot.title = element_text(face = "bold") -->
-<!--   ) -->
-<!-- ``` -->
-<!-- --- -->
-
+</section><section class="slide level2"><!-- ```{r} --><!-- library(ggplot2) --><!-- library(nnet) --><!-- library(dplyr) --><!-- library(tidyr) --><!-- library(gganimate) --><!-- library(gifski) --><!-- set.seed(123) --><!-- # ----------------------------- --><!-- # Função real --><!-- # ----------------------------- --><!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { --><!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) --><!-- } --><!-- # ----------------------------- --><!-- # Dados --><!-- # ----------------------------- --><!-- n <- 150 --><!-- x <- sort(runif(n, -1.2, 2.8)) --><!-- y_true <- f_real(x) --><!-- y <- y_true + rnorm(n, sd = 2.5) --><!-- df <- data.frame(x = x, y = y) --><!-- # padronização --><!-- x_mean <- mean(df$x) --><!-- x_sd   <- sd(df$x) --><!-- y_mean <- mean(df$y) --><!-- y_sd   <- sd(df$y) --><!-- df$x_std <- (df$x - x_mean) / x_sd --><!-- df$y_std <- (df$y - y_mean) / y_sd --><!-- # grade --><!-- xg <- seq(min(df$x), max(df$x), length.out = 400) --><!-- grid <- data.frame(x = xg) --><!-- grid$x_std <- (grid$x - x_mean) / x_sd --><!-- df_true <- data.frame( --><!--   x = xg, --><!--   y_true = f_real(xg) --><!-- ) --><!-- # ----------------------------- --><!-- # Ajustes com diferentes iterações --><!-- # ----------------------------- --><!-- iter_grid <- seq(5, 300, by = 5) --><!-- pred_list <- lapply(iter_grid, function(it) { --><!--   fit <- nnet( --><!--     y_std ~ x_std, --><!--     data = df, --><!--     size = 8, --><!--     linout = TRUE, --><!--     skip = FALSE, --><!--     decay = 0.001, --><!--     maxit = it, --><!--     trace = FALSE --><!--   ) --><!--   pred_std <- as.numeric(predict(fit, newdata = grid)) --><!--   pred <- pred_std * y_sd + y_mean --><!--   data.frame( --><!--     x = xg, --><!--     y_hat = pred, --><!--     frame_id = it --><!--   ) --><!-- }) --><!-- pred_anim <- do.call(rbind, pred_list) --><!-- points_anim <- do.call(rbind, lapply(iter_grid, function(it) { --><!--   data.frame( --><!--     x = df$x, --><!--     y = df$y, --><!--     frame_id = it --><!--   ) --><!-- })) --><!-- true_anim <- do.call(rbind, lapply(iter_grid, function(it) { --><!--   data.frame( --><!--     x = df_true$x, --><!--     y_true = df_true$y_true, --><!--     frame_id = it --><!--   ) --><!-- })) --><!-- # ----------------------------- --><!-- # Animação --><!-- # ----------------------------- --><!-- anim_nn <- ggplot() + --><!--   geom_point( --><!--     data = points_anim, --><!--     aes(x, y), --><!--     color = "#2C7FB8", --><!--     alpha = 0.45, --><!--     size = 1.8 --><!--   ) + --><!--   geom_line( --><!--     data = pred_anim, --><!--     aes(x, y_hat), --><!--     color = "#00BA38", --><!--     linewidth = 1.3 --><!--   ) + --><!--   geom_line( --><!--     data = true_anim, --><!--     aes(x, y_true), --><!--     color = "#D62728", --><!--     linewidth = 1.3 --><!--   ) + --><!--   labs( --><!--     title = "RNA aprendendo a função: iteração {current_frame}", --><!--     subtitle = "Verde: rede neural | Vermelho: função real", --><!--     x = "X", --><!--     y = "Y" --><!--   ) + --><!--   theme_minimal(base_size = 16) + --><!--   theme( --><!--     panel.grid.minor = element_blank(), --><!--     plot.title = element_text(face = "bold") --><!--   ) + --><!--   transition_manual(frame_id) --><!-- animate( --><!--   anim_nn, --><!--   nframes = length(iter_grid), --><!--   fps = 3, --><!--   width = 8, --><!--   height = 4.8, --><!--   units = "in", --><!--   res = 120, --><!--   renderer = gifski_renderer("rna_aprendendo.gif") --><!-- ) --><!-- ``` --><!-- --- --><!-- ```{r} --><!-- library(ggplot2) --><!-- library(nnet) --><!-- set.seed(123) --><!-- # ----------------------------- --><!-- # Função real --><!-- # ----------------------------- --><!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { --><!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) --><!-- } --><!-- # ----------------------------- --><!-- # Dados --><!-- # ----------------------------- --><!-- n <- 150 --><!-- x <- sort(runif(n, -1.2, 2.8)) --><!-- y_true <- f_real(x) --><!-- y <- y_true + rnorm(n, sd = 2.5) --><!-- df <- data.frame(x = x, y = y) --><!-- # ----------------------------- --><!-- # Padronização --><!-- # ----------------------------- --><!-- x_mean <- mean(df$x) --><!-- x_sd   <- sd(df$x) --><!-- y_mean <- mean(df$y) --><!-- y_sd   <- sd(df$y) --><!-- df$x_std <- (df$x - x_mean) / x_sd --><!-- df$y_std <- (df$y - y_mean) / y_sd --><!-- # ----------------------------- --><!-- # Ajuste da rede --><!-- # ----------------------------- --><!-- fit_nn <- nnet( --><!--   y_std ~ x_std, --><!--   data = df, --><!--   size = 8, --><!--   linout = TRUE, --><!--   skip = FALSE, --><!--   decay = 0.001, --><!--   maxit = 500, --><!--   trace = FALSE --><!-- ) --><!-- # ----------------------------- --><!-- # Predição na grade --><!-- # ----------------------------- --><!-- xg <- seq(min(df$x), max(df$x), length.out = 500) --><!-- grid <- data.frame(x = xg) --><!-- grid$x_std <- (grid$x - x_mean) / x_sd --><!-- pred_std <- as.numeric(predict(fit_nn, newdata = grid)) --><!-- pred <- pred_std * y_sd + y_mean --><!-- plot_df <- data.frame( --><!--   x = xg, --><!--   y_hat = pred, --><!--   y_true = f_real(xg) --><!-- ) --><!-- # ----------------------------- --><!-- # Gráfico final --><!-- # ----------------------------- --><!-- ggplot(df, aes(x, y)) + --><!--   geom_point(color = "#2C7FB8", alpha = 0.5, size = 2) + --><!--   geom_line( --><!--     data = plot_df, --><!--     aes(x, y_true), --><!--     color = "#D62728", --><!--     linewidth = 1.3 --><!--   ) + --><!--   geom_line( --><!--     data = plot_df, --><!--     aes(x, y_hat), --><!--     color = "#00BA38", --><!--     linewidth = 1.3 --><!--   ) + --><!--   theme_minimal(base_size = 16) + --><!--   labs( --><!--     title = "Rede neural aprendendo a função", --><!--     subtitle = "Verde: RNA | Vermelho: função real", --><!--     x = "X", --><!--     y = "Y" --><!--   ) + --><!--   theme( --><!--     panel.grid.minor = element_blank(), --><!--     plot.title = element_text(face = "bold") --><!--   ) --><!-- ``` --><!-- --- -->
 <!-- --- -->
 <!-- ```{r} -->
 <!-- library(ggplot2) -->
@@ -1733,28 +1245,20 @@ EQM(g_{\beta}) = \frac{1}{n} \sum_{k=1}^{n} (g_{\beta}(x_k) - y_k)^2
 <!--     plot.title = element_text(face = "bold") -->
 <!--   ) -->
 <!-- ``` -->
-<img data-src="rna_eqm_lado_a_lado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
-<section id="rede-neural-aprendendo-uma-função-não-linear" class="slide level2">
-<h2>Rede neural aprendendo uma função não linear</h2>
+<img data-src="rna_eqm_lado_a_lado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section><section id="rede-neural-aprendendo-uma-função-não-linear" class="slide level2"><h2>Rede neural aprendendo uma função não linear</h2>
 <p>Neste exemplo, a RNA foi ajustada para aproximar a função</p>
 <p><span class="math display">\[
 f(x)=12+4x-6x^2+x^3+\sin(x)
 \]</span></p>
 <p>a partir de observações ruidosas.</p>
 <p>A curva verde mostra a predição da rede, enquanto a curva vermelha representa a função real.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="síntese">Síntese</h3>
+</section><section class="slide level2"><h3 id="síntese">Síntese</h3>
 <ul>
 <li>a função de ativação introduz não linearidade;</li>
 <li>a camada oculta cria novas representações dos dados;</li>
 <li>o backpropagation ajusta os pesos para reduzir o erro;</li>
 <li>com isso, a rede consegue aproximar funções complexas.</li>
-</ul>
-</section>
-<section id="flexibilidade-vs-eficiência" class="slide level2">
-<h2>Flexibilidade vs Eficiência</h2>
+</ul></section><section id="flexibilidade-vs-eficiência" class="slide level2"><h2>Flexibilidade vs Eficiência</h2>
 <p><br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -1783,10 +1287,7 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
 \]</span></p>
 </div></div>
 <p>👉 <strong>Taxa de convergência</strong> = velocidade com que o <strong>erro diminui</strong> à medida que <strong>aumentamos o tamanho da amostra</strong>.</p>
-</section>
-<section class="slide level2">
-
-<p><strong>Observação:</strong> o parâmetro <span class="math inline">\(\alpha\)</span> é a <strong>taxa de suavidade</strong> de <span class="math inline">\(r(x)\)</span>, ou seja, quão “regular” ou “sem variações bruscas” é a função de regressão.<br><br></p>
+</section><section class="slide level2"><p><strong>Observação:</strong> o parâmetro <span class="math inline">\(\alpha\)</span> é a <strong>taxa de suavidade</strong> de <span class="math inline">\(r(x)\)</span>, ou seja, quão “regular” ou “sem variações bruscas” é a função de regressão.<br><br></p>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -1798,20 +1299,21 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
 <div class="callout-content">
 <p>Dizemos que <span class="math inline">\(r(x)\)</span> tem suavidade <span class="math inline">\(\alpha\)</span> se:</p>
 <ul>
-<li>ela possui derivadas até ordem <span class="math inline">\(\alpha\)</span></li>
-<li>essas derivadas são “bem comportadas” (limitadas)<br><br></li>
+<li>ela possui derivadas até ordem <span class="math inline">\(\alpha\)</span>
+</li>
+<li>essas derivadas são “bem comportadas” (limitadas)<br><br>
+</li>
 </ul>
 </div>
 </div>
 </div>
 <ul>
-<li><strong>Mais suavidade</strong> = menos dados necessários<br>
+<li>
+<strong>Mais suavidade</strong> = menos dados necessários<br>
 </li>
-<li><strong>Menos suavidade</strong> = mais dados necessários</li>
-</ul>
-</section>
-<section id="references" class="slide level2 smaller scrollable" data-visibility="uncounted">
-<h2>References</h2>
+<li>
+<strong>Menos suavidade</strong> = mais dados necessários</li>
+</ul></section><section id="references" class="slide level2 smaller scrollable" data-visibility="uncounted"><h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-benedetti1977" class="csl-entry" role="listitem">
 Benedetti, J. K. 1977. <span>“On the Nonparametric Estimation of Regression Functions.”</span> <em>Journal of the American Statistical Association</em>.
@@ -1823,31 +1325,14 @@ Stone, Charles J. 1977. <span>“Consistent Nonparametric Regression.”</span> 
 
 
 </section>
-    </div>
+</div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../../../site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -2039,84 +1524,42 @@ Stone, Charles J. 1977. <span>“Consistent Nonparametric Regression.”</span> 
           RevealZoom
         ]
       });
-    </script>
-    
-
-    <script>
-
+    </script><script>
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
     
-
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
-
     
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
     
-
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
-
     
-
       })();
-
-    </script>
-
-    
-
-    <script id="quarto-html-after-body" type="application/javascript">
+    </script><script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -2283,6 +1726,6 @@ Stone, Charles J. 1977. <span>“Consistent Nonparametric Regression.”</span> 
         }
       });
       </script>
-    
+
 
 </body></html>

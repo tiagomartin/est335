@@ -6,16 +6,16 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.29">
-
-  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte 1 : Regressão</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
-  <style>
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+<style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -48,14 +48,14 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-  <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
+<link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+<style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -142,7 +142,7 @@
       margin-right: 0; 
     }
   </style>
-<meta property="og:title" content="Parte 1 : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:title" content="Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
 <meta property="og:description" content="Métodos Paramétricos">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
 </head>
@@ -150,25 +150,19 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">Parte 1 : Regressão</h1>
+<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Regressão</h1>
   <p class="subtitle"><span class="custom-subtitle">Métodos Paramétricos</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section>
-<section id="métodos-paramétricos" class="slide level2">
-<h2>Métodos paramétricos</h2>
+</section><section id="métodos-paramétricos" class="slide level2"><h2>Métodos paramétricos</h2>
 <p>Métodos <strong>paramétricos</strong> assumem que a função de regressão pode ser descrita por um <strong>número finito de parâmetros</strong>.</p>
 <p>Aqui, iremos nos concentrar em <strong>modelos de regressão linear</strong>.</p>
 <ul>
 <li>Grande parte do conteúdo pode parecer familiar;</li>
 <li>porém, será apresentado sob a perspectiva de <strong>modelagem preditiva e seleção de modelos</strong>.</li>
-</ul>
-</section>
-<section id="regressão-linear" class="slide level2">
-<h2>Regressão linear</h2>
+</ul></section><section id="regressão-linear" class="slide level2"><h2>Regressão linear</h2>
 <p>Na regressão linear, a função de predição possui <strong>forma linear nos parâmetros</strong>.</p>
 <p>A função de predição pode ser escrita como</p>
 <p><span class="math display">\[
@@ -182,20 +176,17 @@ g(\mathbf{x}) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 <p><span class="math display">\[
 \boldsymbol{\beta}^t = (\beta_0, \beta_1, \ldots, \beta_p)
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="transformações-de-variáveis">Transformações de variáveis</h3>
+</section><section class="slide level2"><h3 id="transformações-de-variáveis">Transformações de variáveis</h3>
 <p>Os termos <span class="math inline">\(x_i\)</span> <strong>não precisam ser apenas as variáveis originais</strong>. Podemos construir <strong>novas covariáveis</strong> a partir delas, por exemplo:</p>
 <ul>
-<li>termos quadráticos: <span class="math inline">\(X_i^2\)</span></li>
-<li>interações: <span class="math inline">\(X_i X_j\)</span></li>
+<li>termos quadráticos: <span class="math inline">\(X_i^2\)</span>
+</li>
+<li>interações: <span class="math inline">\(X_i X_j\)</span>
+</li>
 <li>transformações não lineares</li>
 </ul>
 <p>Isso permite que <strong>modelos lineares representem relações não lineares nos dados</strong>.</p>
-</section>
-<section id="o-método-dos-mínimos-quadrados" class="slide level2">
-<h2>O Método dos Mínimos Quadrados</h2>
+</section><section id="o-método-dos-mínimos-quadrados" class="slide level2"><h2>O Método dos Mínimos Quadrados</h2>
 <p>Uma forma de estimar os coeficientes <span class="math inline">\(\beta\)</span> da regressão linear é utilizar o <strong>método dos mínimos quadrados</strong>.</p>
 <p>A ideia é escolher os coeficientes que <strong>minimizam a soma dos erros quadráticos</strong>:</p>
 <p><span class="math display">\[
@@ -206,10 +197,7 @@ g(\mathbf{x}) = \beta_0 x_0 + \beta_1 x_1 + \cdots + \beta_p x_p
 Y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_d x_{ip}
 \right)^2
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação">Interpretação</h3>
+</section><section class="slide level2"><h3 id="interpretação">Interpretação</h3>
 <p>O método escolhe os parâmetros que <strong>minimizam a soma dos quadrados dos resíduos</strong>:</p>
 <p><span class="math display">\[
 \text{resíduo}_i = Y_i - g(X_i)
@@ -219,33 +207,27 @@ Y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_d x_{ip}
 \sum_{i=1}^{n} (Y_i - g(X_i))^2
 \]</span></p>
 <p>Geometricamente, isso corresponde a <strong>ajustar o hiperplano que fica mais próximo possível dos dados</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="forma-matricial-do-modelo">Forma matricial do modelo</h3>
+</section><section class="slide level2"><h3 id="forma-matricial-do-modelo">Forma matricial do modelo</h3>
 <p>O modelo de regressão pode ser escrito em forma matricial como</p>
 <p><span class="math display">\[
 \boldsymbol{y} = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
 \]</span></p>
 <p>onde</p>
 <ul>
-<li><span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
-<li><span class="math inline">\(\boldsymbol{X}\)</span> é a <strong>matriz de covariáveis</strong></li>
-<li><span class="math inline">\(\boldsymbol{\beta}\)</span> é o vetor de parâmetros</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="solução-dos-mínimos-quadrados">Solução dos mínimos quadrados</h3>
+<li>
+<span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
+<li>
+<span class="math inline">\(\boldsymbol{X}\)</span> é a <strong>matriz de covariáveis</strong>
+</li>
+<li>
+<span class="math inline">\(\boldsymbol{\beta}\)</span> é o vetor de parâmetros</li>
+</ul></section><section class="slide level2"><h3 id="solução-dos-mínimos-quadrados">Solução dos mínimos quadrados</h3>
 <p>A solução analítica do problema é dada por</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} = (\boldsymbol{X}^t \boldsymbol{X})^{-1} \boldsymbol{X}^t \boldsymbol{y}
 \]</span></p>
 <p>Essa expressão é conhecida como a <strong>equação normal</strong> da regressão linear.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="estrutura-da-matriz-de-dados">Estrutura da matriz de dados</h3>
+</section><section class="slide level2"><h3 id="estrutura-da-matriz-de-dados">Estrutura da matriz de dados</h3>
 <p>A matriz de covariáveis possui a forma</p>
 <p><span class="math display">\[
 \boldsymbol{X} =
@@ -256,10 +238,7 @@ x_{2,0} &amp; x_{2,1} &amp; \cdots &amp; x_{2,p} \\
 x_{n,0} &amp; x_{n,1} &amp; \cdots &amp; x_{n,p}
 \end{pmatrix}
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<p>e o vetor resposta é</p>
+</section><section class="slide level2"><p>e o vetor resposta é</p>
 <p><span class="math display">\[
 \boldsymbol{y} =
 \begin{pmatrix}
@@ -282,9 +261,12 @@ g(\mathbf{x}) = \hat{\boldsymbol{\beta}}^t \mathbf{x}
 <h3 id="justificativa-estatística-do-método">Justificativa estatística do método</h3>
 <p>Grande parte da literatura estatística estuda o método dos mínimos quadrados sob diferentes perspectivas, como:</p>
 <ul>
-<li><strong>máxima verossimilhança</strong>;</li>
-<li><strong>testes de hipóteses</strong> para os coeficientes <span class="math inline">\(\beta_i\)</span>;</li>
-<li><strong>intervalos de confiança</strong> para os parâmetros.</li>
+<li>
+<strong>máxima verossimilhança</strong>;</li>
+<li>
+<strong>testes de hipóteses</strong> para os coeficientes <span class="math inline">\(\beta_i\)</span>;</li>
+<li>
+<strong>intervalos de confiança</strong> para os parâmetros.</li>
 </ul>
 <p>Esses tópicos são tratados em profundidade em livros clássicos como:</p>
 <ul>
@@ -295,28 +277,20 @@ g(\mathbf{x}) = \hat{\boldsymbol{\beta}}^t \mathbf{x}
 <p>Assumir que a verdadeira função de regressão <span class="math inline">\(r(x)\)</span> é exatamente linear é uma <strong>suposição bastante forte</strong>.</p>
 <p>Na prática, essa hipótese raramente é verdadeira.</p>
 <p>Mesmo assim, existe uma literatura extensa mostrando que o método dos mínimos quadrados continua sendo útil para estimar relações entre <span class="math inline">\(\boldsymbol{X}\)</span> e <span class="math inline">\(\boldsymbol{y}\)</span>, mesmo quando a verdadeira função de regressão <strong>não é linear</strong>.</p>
-</section>
-<section id="quando-a-suposição-de-linearidade-falha" class="slide level2">
-<h2>Quando a suposição de linearidade falha</h2>
+</section><section id="quando-a-suposição-de-linearidade-falha" class="slide level2"><h2>Quando a suposição de linearidade falha</h2>
 <p>A suposição de que a verdadeira função de regressão</p>
 <p><span class="math display">\[
 r(\mathbf{x}) = E[\boldsymbol{y} \mid \boldsymbol{X}=\mathbf{x}]
 \]</span></p>
 <p>é <strong>linear</strong> muitas vezes <strong>não é válida na prática</strong>.</p>
 <p>Mesmo assim, modelos lineares frequentemente apresentam <strong>bom desempenho preditivo</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="ideia-central">Ideia central</h3>
+</section><section class="slide level2"><h3 id="ideia-central">Ideia central</h3>
 <p>Mesmo quando <span class="math inline">\(r(\mathbf{x})\)</span> não é linear, frequentemente existe um vetor <span class="math inline">\(\boldsymbol{\beta}_*\)</span> tal que o preditor linear</p>
 <p><span class="math display">\[
 g_{\boldsymbol{\beta}_*}(\mathbf{x}) = \boldsymbol{\beta}_*^t \mathbf{x}
 \]</span></p>
 <p>possui <strong>bom poder preditivo</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="o-melhor-preditor-linear">O melhor preditor linear</h3>
+</section><section class="slide level2"><h3 id="o-melhor-preditor-linear">O melhor preditor linear</h3>
 <p>O vetor <span class="math inline">\(\boldsymbol{\beta}_*\)</span> é definido como aquele que <strong>minimiza o risco quadrático</strong>:</p>
 <p><span class="math display">\[
 \boldsymbol{\beta}_* =
@@ -328,16 +302,10 @@ E[(\boldsymbol{y} - \boldsymbol{\beta}^t \mathbf{x})^2]
 \]</span></p>
 <p>Esse vetor define a <strong>melhor aproximação linear</strong> da relação entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\boldsymbol{y}\)</span>.</p>
 <p><span class="math inline">\(\boldsymbol{\beta}_*\)</span> é chamado de <strong>oráculo</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-1">Interpretação</h3>
+</section><section class="slide level2"><h3 id="interpretação-1">Interpretação</h3>
 <p>Mesmo quando o verdadeiro modelo <span class="math inline">\(r(x)\)</span> não é linear, o método dos mínimos quadrados estima o <strong>melhor preditor linear possível</strong>.</p>
 <p>Ou seja, ele encontra a função linear que <strong>minimiza o erro quadrático médio esperado</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="consequência-importante">Consequência importante</h3>
+</section><section class="slide level2"><h3 id="consequência-importante">Consequência importante</h3>
 <p>Quando o tamanho da amostra cresce,</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} \rightarrow \boldsymbol{\beta}_*
@@ -348,69 +316,53 @@ E[(\boldsymbol{y} - \boldsymbol{\beta}^t \mathbf{x})^2]
 <p><strong>Mínimos quadrados não precisa que o modelo seja verdadeiro.</strong><br>
 Ele encontra a <strong>melhor aproximação linear da realidade</strong>.</p>
 </blockquote>
-</section>
-<section id="limitações-do-método-dos-mínimos-quadrados" class="slide level2">
-<h2>Limitações do método dos mínimos quadrados</h2>
+</section><section id="limitações-do-método-dos-mínimos-quadrados" class="slide level2"><h2>Limitações do método dos mínimos quadrados</h2>
 <p>Quando o número de covariáveis é <strong>muito grande</strong>, o método dos mínimos quadrados pode apresentar <strong>desempenho ruim</strong>.</p>
 <p>Isso ocorre principalmente por dois motivos:</p>
 <ul>
-<li><strong>super-ajuste (overfitting)</strong><br>
+<li>
+<strong>super-ajuste (overfitting)</strong><br>
 </li>
 <li><strong>alta variância do estimador</strong></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="problema-em-alta-dimensão">Problema em alta dimensão</h3>
+</ul></section><section class="slide level2"><h3 id="problema-em-alta-dimensão">Problema em alta dimensão</h3>
 <p>Considere:</p>
 <ul>
-<li><span class="math inline">\(p\)</span> = número de covariáveis<br>
+<li>
+<span class="math inline">\(p\)</span> = número de covariáveis<br>
 </li>
-<li><span class="math inline">\(n\)</span> = tamanho da amostra</li>
+<li>
+<span class="math inline">\(n\)</span> = tamanho da amostra</li>
 </ul>
 <p>Quando <span class="math inline">\(p &gt; n\)</span> o estimador de mínimos quadrados <strong>não está bem definido</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="por-quê">Por quê?</h3>
+</section><section class="slide level2"><h3 id="por-quê">Por quê?</h3>
 <p>A solução dos mínimos quadrados é</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} = (\boldsymbol{X}^t \boldsymbol{X})^{-1} \boldsymbol{X}^t \boldsymbol{y}
 \]</span></p>
 <p>Porém, quando <span class="math inline">\(p &gt; n\)</span>, <span class="math inline">\(\boldsymbol{X}^t \boldsymbol{X}\)</span> <strong>não é invertível</strong>.</p>
 <p>Logo, o estimador não pode ser calculado diretamente.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="consequência">Consequência</h3>
+</section><section class="slide level2"><h3 id="consequência">Consequência</h3>
 <p>Em problemas com <strong>muitas variáveis</strong> (alta dimensão):</p>
 <ul>
-<li>o método clássico de mínimos quadrados <strong>não funciona bem</strong></li>
-<li>precisamos utilizar <strong>métodos alternativos</strong></li>
+<li>o método clássico de mínimos quadrados <strong>não funciona bem</strong>
+</li>
+<li>precisamos utilizar <strong>métodos alternativos</strong>
+</li>
 </ul>
 <p>Por exemplo:</p>
 <ul>
 <li><strong>regularização (Ridge, Lasso)</strong></li>
 <li><strong>redução de dimensionalidade</strong></li>
 <li><strong>seleção de variáveis</strong></li>
-</ul>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_param_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="interpretação-2">Interpretação</h3>
+</ul></section><section class="slide level2">
+<img data-src="met_param_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-2">Interpretação</h3>
 <blockquote>
 <p>Quando temos mais parâmetros do que observações, o modelo tem liberdade suficiente para passar exatamente por todos os pontos.</p>
 </blockquote>
 <blockquote>
 <p>O problema é que existem infinitas funções que fazem isso, e elas podem ser completamente diferentes fora da amostra.</p>
 </blockquote>
-</section>
-<section id="references" class="slide level2 smaller scrollable" data-visibility="uncounted">
-<h2>References</h2>
+</section><section id="references" class="slide level2 smaller scrollable" data-visibility="uncounted"><h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-morettin2019estatistica" class="csl-entry" role="listitem">
 Morettin, Pedro A., and Julio M. Singer. 2019. <em>Estatística e Ciência de Dados</em>. Rio de Janeiro: LTC.
@@ -422,31 +374,14 @@ Neter, John, Michael H. Kutner, Christopher J. Nachtsheim, and William Wasserman
 
 
 </section>
-    </div>
+</div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../../../site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -638,84 +573,42 @@ Neter, John, Michael H. Kutner, Christopher J. Nachtsheim, and William Wasserman
           RevealZoom
         ]
       });
-    </script>
-    
-
-    <script>
-
+    </script><script>
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
     
-
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
-
     
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
     
-
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
-
     
-
       })();
-
-    </script>
-
-    
-
-    <script id="quarto-html-after-body" type="application/javascript">
+    </script><script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -882,6 +775,6 @@ Neter, John, Michael H. Kutner, Christopher J. Nachtsheim, and William Wasserman
         }
       });
       </script>
-    
+
 
 </body></html>

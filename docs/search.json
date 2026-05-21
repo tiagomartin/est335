@@ -18,7 +18,7 @@
     "href": "aulas.html",
     "title": "Aulas",
     "section": "",
-    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\nParte I: Regressão\n\n\n Introdução \n Ver slides  \n\n\n Métodos Paramétricos \n Ver slides  \n\n\n Métodos Paramétricos em Altas Dimensões \n Ver slides  \n\n\n Métodos Não Paramétricos \n Ver slides  \n\n\n Métodos Não Paramétricos em Altas Dimensões \n Ver slides  \n\n\n Outros Aspectos de Regressão \n Ver slides",
+    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\nParte I: Regressão\n\n\n Introdução \n Ver slides  \n\n\n Métodos Paramétricos \n Ver slides  \n\n\n Métodos Paramétricos em Altas Dimensões \n Ver slides  \n\n\n Métodos Não Paramétricos \n Ver slides  \n\n\n Métodos Não Paramétricos em Altas Dimensões \n Ver slides  \n\n\n Outros Aspectos de Regressão \n Ver slides  \n\n\n\nParte II: Classificação\n\n\n Introdução \n Ver slides",
     "crumbs": [
       "Aulas"
     ]
@@ -26,427 +26,427 @@
   {
     "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#busca-pelo-melhor-subconjunto-de-covariáveis",
     "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#busca-pelo-melhor-subconjunto-de-covariáveis",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Busca pelo melhor subconjunto de covariáveis",
-    "text": "Busca pelo melhor subconjunto de covariáveis\nQuando o número de covariáveis é grande, uma estratégia natural é remover algumas variáveis do modelo.\nO objetivo é reduzir a variância da função de predição estimada.\n\nIdeia central\nAo retirar algumas covariáveis do modelo:\n\na variância do estimador diminui\nmas o viés pode aumentar\n\nEsse é mais um exemplo do trade-off viés–variância."
+    "text": "Busca pelo melhor subconjunto de covariáveis\nQuando o número de covariáveis é grande, uma estratégia natural é remover algumas variáveis do modelo.\nO objetivo é reduzir a variância da função de predição estimada.\n\nIdeia central\nAo retirar algumas covariáveis do modelo:\n\na variância do estimador diminui\n\nmas o viés pode aumentar\n\n\nEsse é mais um exemplo do trade-off viés–variância."
   },
   {
     "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-stepwise",
     "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-stepwise",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Regressão Stepwise",
     "text": "Regressão Stepwise\nUma família de algoritmos que utiliza essa ideia é chamada de regressão stepwise.\nEsses métodos analisam apenas um subconjunto dos modelos possíveis, reduzindo drasticamente o custo computacional.\n\nIdeia do algoritmo\nOs métodos stepwise constroem o modelo sequencialmente, adicionando ou removendo variáveis.\nEm cada etapa, o algoritmo avalia um pequeno conjunto de candidatos e escolhe o modelo que melhora mais o critério de ajuste."
   },
   {
     "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#lasso",
     "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#lasso",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Lasso",
     "text": "Lasso\nO Lasso (Least Absolute Shrinkage and Selection Operator) foi proposto por Tibshirani (1996).\nSeu objetivo é encontrar um estimador da regressão linear que tenha menor risco preditivo que o método de mínimos quadrados."
   },
   {
     "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-ridge",
     "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#regressão-ridge",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Regressão Ridge",
-    "text": "Regressão Ridge\nUma alternativa ao Lasso é a Regressão Ridge, introduzida por Hoerl and Kennard (1970). A ideia é buscar um modelo que minimize simultaneamente:\n\no erro de ajuste do modelo\numa medida da complexidade do vetor de coeficientes\n\nNa regressão Ridge isso é feito penalizando a norma \\(L_2\\) dos coeficientes."
+    "text": "Regressão Ridge\nUma alternativa ao Lasso é a Regressão Ridge, introduzida por Hoerl and Kennard (1970). A ideia é buscar um modelo que minimize simultaneamente:\n\no erro de ajuste do modelo\n\numa medida da complexidade do vetor de coeficientes\n\n\nNa regressão Ridge isso é feito penalizando a norma \\(L_2\\) dos coeficientes."
   },
   {
     "objectID": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#references",
     "href": "aulas/regressao/met_param_altas_dim/met_param_altas_dimen.html#references",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "References",
     "text": "References\n\n\nHoerl, Arthur E., and Robert W. Kennard. 1970. “Ridge Regression: Biased Estimation for Nonorthogonal Problems.” Technometrics 12 (1): 55–67. https://doi.org/10.1080/00401706.1970.10488634.\n\n\nTibshirani, Robert. 1996. “Regression Shrinkage and Selection via the Lasso.” Journal of the Royal Statistical Society: Series B (Methodological) 58 (1): 267–88."
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#métodos-não-paramétricos-em-altas-dimensões",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#métodos-não-paramétricos-em-altas-dimensões",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Métodos Não Paramétricos em Altas Dimensões",
-    "text": "Métodos Não Paramétricos em Altas Dimensões\n\nMétodos não paramétricos são mais flexíveis\nPorém:\n\nexigem mais dados\nsofrem em altas dimensões\n\n\n➡️ Pergunta central: Como a dimensão afeta o desempenho dos modelos?"
+    "text": "Métodos Não Paramétricos em Altas Dimensões\n\nMétodos não paramétricos são mais flexíveis\nPorém:\n\nexigem mais dados\nsofrem em altas dimensões\n\n\n\n➡️ Pergunta central: Como a dimensão afeta o desempenho dos modelos?"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#o-problema-da-dimensão",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#o-problema-da-dimensão",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "O Problema da Dimensão",
     "text": "O Problema da Dimensão\nSuponha:\n\n\\(X = (X_1, X_2, ..., X_p)\\)\n\nÀ medida que \\(p\\) cresce:\n\no espaço de entrada cresce exponencialmente\nos dados ficam “espalhados”\n\n➡️ Dificuldade de aprendizado aumenta"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#maldição-da-dimensionalidade",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#maldição-da-dimensionalidade",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Maldição da Dimensionalidade",
     "text": "Maldição da Dimensionalidade\n(Bellman, 1966)\nProblema:\n\nVolume do espaço cresce exponencialmente\nDados se tornam escassos\n\nConsequência:\n➡️ Precisamos de MUITO mais dados"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#consequência-da-alta-dimensionalidade",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#consequência-da-alta-dimensionalidade",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Consequência da alta dimensionalidade",
-    "text": "Consequência da alta dimensionalidade\n⚠️ Problema\n\nEstimar uma função de regressão em alta dimensão é muito difícil\nO erro não diminui facilmente, mesmo com mais dados\n\n\nSem hipóteses adicionais, não é possível obter boas estimativas com tamanhos de amostra realistas.\n\n\\[\n\\text{Erro} \\sim n^{-\\frac{\\alpha}{\\alpha + p}}  \\Rightarrow n \\sim \\left(\\frac{1}{\\delta}\\right)^{\\frac{\\alpha + p}{\\alpha}}\n\\] \\[\\delta: \\text{erro máximo desejável}\\]"
+    "text": "Consequência da alta dimensionalidade\n⚠️ Problema\n\nEstimar uma função de regressão em alta dimensão é muito difícil\n\nO erro não diminui facilmente, mesmo com mais dados\n\n\nSem hipóteses adicionais, não é possível obter boas estimativas com tamanhos de amostra realistas.\n\n\\[\n\\text{Erro} \\sim n^{-\\frac{\\alpha}{\\alpha + p}}  \\Rightarrow n \\sim \\left(\\frac{1}{\\delta}\\right)^{\\frac{\\alpha + p}{\\alpha}}\n\\] \\[\\delta: \\text{erro máximo desejável}\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#esparsidade",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#esparsidade",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Esparsidade",
-    "text": "Esparsidade\n📐 Modelo depende de apenas alguns \\(x_i's\\)\n\\[\nr(x) = r\\big((x_i)_{i \\in S}\\big)\n\\]\nem que \\(S \\subset \\{1, \\cdots, p\\}\\). \n\n\n🔴 Alta dimensão aparente\n\n\\(p = 1000\\) variáveis\n\ndifícil de estimar\n\n\n🟢 Dimensão efetiva\n\n\\(|S| = 5\\) variáveis relevantes\n\nproblema tratável\n\n\n\nO que importa não é \\(p\\), mas sim o número de variáveis relevantes."
+    "text": "Esparsidade\n📐 Modelo depende de apenas alguns \\(x_i's\\)\n\n\\[\nr(x) = r\\big((x_i)_{i \\in S}\\big)\n\\]\nem que \\(S \\subset \\{1, \\cdots, p\\}\\). \n\n\n🔴 Alta dimensão aparente\n\n\n\\(p = 1000\\) variáveis\n\ndifícil de estimar\n\n\n🟢 Dimensão efetiva\n\n\n\\(|S| = 5\\) variáveis relevantes\n\nproblema tratável\n\n\n\nO que importa não é \\(p\\), mas sim o número de variáveis relevantes."
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#redundância",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#redundância",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Redundância",
-    "text": "Redundância\n📊 Intuição\n\n\\(X_1 = \\cdots = X_p\\) → informação totalmente redundante\n\nvariáveis altamente correlacionadas → informação parcialmente redundante\n\n\n\n🔴 Alta dimensão aparente\n\n\\(p = 100\\) variáveis\n\nparecem independentes\n\n\n🟢 Dimensão intrínseca\n\ndados vivem em espaço de baixa dimensão\n\nestrutura escondida\n\n\n\\[\n\\mathbf{x} \\in \\mathbb{R}^p \\quad \\text{mas vive em um espaço de dimensão menor}\n\\]"
+    "text": "Redundância\n📊 Intuição\n\n\n\\(X_1 = \\cdots = X_p\\) → informação totalmente redundante\n\nvariáveis altamente correlacionadas → informação parcialmente redundante\n\n\n\n\n🔴 Alta dimensão aparente\n\n\n\\(p = 100\\) variáveis\n\nparecem independentes\n\n\n🟢 Dimensão intrínseca\n\ndados vivem em espaço de baixa dimensão\n\nestrutura escondida\n\n\n\\[\n\\mathbf{x} \\in \\mathbb{R}^p \\quad \\text{mas vive em um espaço de dimensão menor}\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#próximo-passo",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#próximo-passo",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Próximo passo",
-    "text": "Próximo passo\nMétodos para alta dimensionalidade\n\nNem todos os métodos funcionam bem em alta dimensão\n\nPrecisamos de abordagens que respeitem a estrutura dos dados\n\nO que vem a seguir\n👉 Métodos não paramétricos adequados para alta dimensionalidade\n🎯 Objetivo\nAprender técnicas que funcionam mesmo quando \\(p\\) é grande"
+    "text": "Próximo passo\nMétodos para alta dimensionalidade\n\nNem todos os métodos funcionam bem em alta dimensão\n\nPrecisamos de abordagens que respeitem a estrutura dos dados\n\n\nO que vem a seguir\n👉 Métodos não paramétricos adequados para alta dimensionalidade\n🎯 Objetivo\nAprender técnicas que funcionam mesmo quando \\(p\\) é grande"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#knn-e-regressão-linear-local-em-alta-dimensão",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#knn-e-regressão-linear-local-em-alta-dimensão",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "KNN e Regressão Linear Local em Alta Dimensão",
-    "text": "KNN e Regressão Linear Local em Alta Dimensão\n💡 Ideia chave\n\nDados podem viver em uma dimensão intrínseca baixa\nMesmo que o espaço seja de alta dimensão \\(p\\)\n\n🔍 O que isso implica?\n👉 Métodos baseados em vizinhança:\n\nKNN\nRegressão linear local\n\n✔ se adaptam automaticamente à estrutura dos dados"
+    "text": "KNN e Regressão Linear Local em Alta Dimensão\n💡 Ideia chave\n\nDados podem viver em uma dimensão intrínseca baixa\n\nMesmo que o espaço seja de alta dimensão \\(p\\)\n\n\n🔍 O que isso implica?\n👉 Métodos baseados em vizinhança:\n\nKNN\nRegressão linear local\n\n✔ se adaptam automaticamente à estrutura dos dados"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#support-vector-regression-svr",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Support Vector Regression (SVR)",
-    "text": "Support Vector Regression (SVR)\n\n\n💡 Ideia principal\n\nSVR com kernel Gaussiano\n\nFunciona bem sob a hipótese de redundância\n\n\n🔍 Intuição\n\nOs dados possuem informação repetida\n\nA estrutura real é mais simples que parece\n\n\n👉 SVR explora essa estrutura via kernel\n\nMapeia os dados para um espaço de maior dimensão\n\nCaptura relações não lineares e usa apenas pontos relevantes (support vectors)\n\n\n\n\nMesmo em alta dimensão, o SVR pode funcionar bem\nquando existe estrutura nos dados"
+    "text": "Support Vector Regression (SVR)\n\n\n💡 Ideia principal\n\nSVR com kernel Gaussiano\n\nFunciona bem sob a hipótese de redundância\n\n\n\n🔍 Intuição\n\nOs dados possuem informação repetida\n\nA estrutura real é mais simples que parece\n\n\n👉 SVR explora essa estrutura via kernel\n\nMapeia os dados para um espaço de maior dimensão\n\nCaptura relações não lineares e usa apenas pontos relevantes (support vectors)\n\n\n\n\nMesmo em alta dimensão, o SVR pode funcionar bem\nquando existe estrutura nos dados"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#random-forest-em-alta-dimensão",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#random-forest-em-alta-dimensão",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Random Forest em alta dimensão",
-    "text": "Random Forest em alta dimensão\n💡 Ideia principal\n\nO desempenho depende das variáveis relevantes\nNão sofre diretamente com o número total de variáveis \\(p\\)\n\n🔍 Intuição\n\nEm cada divisão:\n\nescolhem-se variáveis que reduzem o erro\n\nVariáveis irrelevantes são naturalmente ignoradas"
+    "text": "Random Forest em alta dimensão\n💡 Ideia principal\n\nO desempenho depende das variáveis relevantes\n\nNão sofre diretamente com o número total de variáveis \\(p\\)\n\n\n🔍 Intuição\n\nEm cada divisão:\n\nescolhem-se variáveis que reduzem o erro\n\n\n\nVariáveis irrelevantes são naturalmente ignoradas"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#três-formas-de-vencer-a-alta-dimensão",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#três-formas-de-vencer-a-alta-dimensão",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Três formas de vencer a alta dimensão",
-    "text": "Três formas de vencer a alta dimensão\n\n\n🤝 KNN\n👉 usa vizinhança\n👉 funciona com estrutura local\n\n⚙️ SVR\n👉 usa kernel\n👉 revela padrões escondidos\n\n🌲 RF\n👉 seleciona variáveis\n👉 ignora ruído\n\nEstrutura nos dados → aprendizado possível"
+    "text": "Três formas de vencer a alta dimensão\n\n\n🤝 KNN\n👉 usa vizinhança\n👉 funciona com estrutura local\n\n⚙️ SVR\n👉 usa kernel\n👉 revela padrões escondidos\n\n\n🌲 RF\n👉 seleciona variáveis\n👉 ignora ruído\n\nEstrutura nos dados → aprendizado possível"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#quando-usar-cada-método",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#quando-usar-cada-método",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Quando usar cada método?",
-    "text": "Quando usar cada método?\n\n\n🤝 KNN\nUse quando:\n\nhá estrutura local (manifold)\n\nvizinhos fazem sentido\n\nEvite quando:\n\nalta dimensão sem estrutura\n\ndistâncias não são informativas\n\n\n⚙️ SVR\nUse quando:\n\nhá relações não lineares\n\nexiste redundância\n\nEvite quando:\n\nmuitos dados (custo computacional)\n\nkernel difícil de ajustar\n\n\n🌲 Random Forest\nUse quando:\n\nhá muitas variáveis\n\npoucas são relevantes (esparsidade)\n\nEvite quando:\n\nprecisa de modelo muito interpretável\n\nextrapolação é importante"
+    "text": "Quando usar cada método?\n\n\n🤝 KNN\nUse quando:\n\nhá estrutura local (manifold)\n\nvizinhos fazem sentido\n\nEvite quando:\n\nalta dimensão sem estrutura\n\ndistâncias não são informativas\n\n\n⚙️ SVR\nUse quando:\n\nhá relações não lineares\n\nexiste redundância\n\n\nEvite quando:\n\nmuitos dados (custo computacional)\n\nkernel difícil de ajustar\n\n\n🌲 Random Forest\nUse quando:\n\nhá muitas variáveis\n\npoucas são relevantes (esparsidade)\n\nEvite quando:\n\nprecisa de modelo muito interpretável\n\nextrapolação é importante"
   },
   {
     "objectID": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#regra-prática",
     "href": "aulas/regressao/met_nao_param_altas_dim/met_nao_param_altas_dim.html#regra-prática",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "💡 Regra prática",
     "text": "💡 Regra prática\n\n🌪 Manifold → KNN\n\n🧠 Redundância → SVR\n\n✂️ Esparsidade → Random Forest"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#o-que-é-aprendizagem",
     "href": "aulas/regressao/intro/intro.html#o-que-é-aprendizagem",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "O que é Aprendizagem?",
-    "text": "O que é Aprendizagem?\n\nDefinição de aprendizagem: É uma mudança adaptativa no comportamento causada pela experiência.\n\n\n\nPraticamente todos os animais com sistema nervoso central são capazes de aprender (mesmo os mais simples)."
+    "text": "O que é Aprendizagem?\n\n\nDefinição de aprendizagem: É uma mudança adaptativa no comportamento causada pela experiência.\n\n\n\nPraticamente todos os animais com sistema nervoso central são capazes de aprender (mesmo os mais simples)."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#o-que-é-aprendizagem-1",
     "href": "aulas/regressao/intro/intro.html#o-que-é-aprendizagem-1",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "O que é Aprendizagem?",
-    "text": "O que é Aprendizagem?\n\nO que significa para um computador aprender? Por que queremos que ele aprenda? Como fazemos para que ele aprenda?\n\nQueremos que computadores aprendam quando é muito difícil ou muito caro programá-los diretamente para executar uma tarefa.\nFazemos o computador “programar a si mesmo” ao mostrar exemplos de entradas e saídas.\n\nNa prática, escrevemos um programa “parametrizado” e deixamos que o algoritmo de aprendizagem encontre o conjunto de parâmetros que melhor aproxima a função ou o comportamento desejado."
+    "text": "O que é Aprendizagem?\n\n\nO que significa para um computador aprender? Por que queremos que ele aprenda? Como fazemos para que ele aprenda?\n\nQueremos que computadores aprendam quando é muito difícil ou muito caro programá-los diretamente para executar uma tarefa.\nFazemos o computador “programar a si mesmo” ao mostrar exemplos de entradas e saídas.\n\nNa prática, escrevemos um programa “parametrizado” e deixamos que o algoritmo de aprendizagem encontre o conjunto de parâmetros que melhor aproxima a função ou o comportamento desejado."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#definições-clássicas-de-aprendizado-de-máquina",
     "href": "aulas/regressao/intro/intro.html#definições-clássicas-de-aprendizado-de-máquina",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Definições Clássicas de Aprendizado de Máquina",
     "text": "Definições Clássicas de Aprendizado de Máquina\nArthur Samuel (1959):\n\n“Aprendizado de Máquina é o campo de estudo que dá aos computadores a habilidade de aprender sem serem explicitamente programados.”\n\n\nTom Mitchell (1997):\n\n“Dizemos que um programa de computador aprende a partir de uma experiência \\(E\\), com respeito a alguma tarefa \\(T\\) e alguma medida de desempenho \\(P\\), se o seu desempenho na tarefa \\(T\\), medido por \\(P\\), melhora com a experiência \\(E\\).”"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#definições-clássicas-de-aprendizado-de-máquina-1",
     "href": "aulas/regressao/intro/intro.html#definições-clássicas-de-aprendizado-de-máquina-1",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Definições Clássicas de Aprendizado de Máquina",
-    "text": "Definições Clássicas de Aprendizado de Máquina\n\n\\(T\\) — Task (Tarefa): A tarefa que queremos resolver.\n\nExemplos:\n\nclassificar e-mails, prever preço de casas, detectar fraude\n\n\n\n\n\n\\(E\\) — Experience (Experiência): Os dados utilizados para aprender.\n\nExemplo:\n\nhistórico de e-mails rotulados como spam ou não spam\n\n\n\n\n\n\n\\(P\\) — Performance (Desempenho): Métrica usada para avaliar o modelo.\n\nExemplos:\n\nacurácia, erro quadrático médio, AUC"
+    "text": "Definições Clássicas de Aprendizado de Máquina\n\n\n\\(T\\) — Task (Tarefa): A tarefa que queremos resolver.\n\nExemplos:\n\nclassificar e-mails, prever preço de casas, detectar fraude\n\n\n\n\n\n\n\n\n\\(E\\) — Experience (Experiência): Os dados utilizados para aprender.\n\nExemplo:\n\nhistórico de e-mails rotulados como spam ou não spam\n\n\n\n\n\n\n\n\n\n\n\\(P\\) — Performance (Desempenho): Métrica usada para avaliar o modelo.\n\nExemplos:\n\nacurácia, erro quadrático médio, AUC"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#por-que-precisamos-de-aprendizado-de-máquina",
     "href": "aulas/regressao/intro/intro.html#por-que-precisamos-de-aprendizado-de-máquina",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Por que precisamos de Aprendizado de Máquina?",
     "text": "Por que precisamos de Aprendizado de Máquina?\nÉ muito difícil resolver problemas como o reconhecimento de objetos bidimensionais ou tridimensionais.\n\nNão sabemos qual programa escrever, pois não sabemos exatamente como o cérebro realiza essa tarefa.\nMesmo que soubéssemos, o programa provavelmente seria extremamente complexo."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#exemplo-reconhecimento-de-dígitos-manuscritos",
     "href": "aulas/regressao/intro/intro.html#exemplo-reconhecimento-de-dígitos-manuscritos",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Exemplo: reconhecimento de dígitos manuscritos",
     "text": "Exemplo: reconhecimento de dígitos manuscritos\nUm exemplo clássico é o reconhecimento automático de dígitos escritos à mão.\nA variabilidade na forma como cada pessoa escreve os números torna muito difícil criar regras explícitas de programação para identificar cada dígito.\nEm vez disso, usamos aprendizado de máquina, que permite ao algoritmo aprender padrões diretamente a partir dos dados."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#exemplo-dígitos-manuscritos-mnist",
     "href": "aulas/regressao/intro/intro.html#exemplo-dígitos-manuscritos-mnist",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Exemplo: dígitos manuscritos (MNIST)",
     "text": "Exemplo: dígitos manuscritos (MNIST)"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#por-que-precisamos-de-aprendizado-de-máquina-1",
     "href": "aulas/regressao/intro/intro.html#por-que-precisamos-de-aprendizado-de-máquina-1",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Por que precisamos de Aprendizado de Máquina?",
     "text": "Por que precisamos de Aprendizado de Máquina?\nA abordagem de aprendizado de máquina\nEm vez de escrever um programa manualmente, coletamos muitos exemplos que especificam a saída correta para uma determinada entrada.\nUm algoritmo de aprendizado de máquina produz um programa a partir desses dados.\n\nO programa produzido por um algoritmo de aprendizado pode ser muito diferente de um programa típico escrito manualmente.\nSe fizermos isso corretamente, o programa funciona para novos casos, além daqueles usados no treinamento."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#programação-tradicional-vs-aprendizado-de-máquina",
     "href": "aulas/regressao/intro/intro.html#programação-tradicional-vs-aprendizado-de-máquina",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Programação Tradicional vs Aprendizado de Máquina",
-    "text": "Programação Tradicional vs Aprendizado de Máquina\nProgramação tradicional\nNós escrevemos explicitamente as regras.\nEntrada + Regras → Saída\nExemplo:\n\nEntrada: dados de um cliente\nRegras: lógica escrita pelo programador\nSaída: decisão do sistema"
+    "text": "Programação Tradicional vs Aprendizado de Máquina\nProgramação tradicional\nNós escrevemos explicitamente as regras.\nEntrada + Regras → Saída\nExemplo:\n\n\nEntrada: dados de um cliente\n\nRegras: lógica escrita pelo programador\n\nSaída: decisão do sistema"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#diferentes-tipos-de-aprendizado",
     "href": "aulas/regressao/intro/intro.html#diferentes-tipos-de-aprendizado",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Diferentes Tipos de Aprendizado",
     "text": "Diferentes Tipos de Aprendizado\nAprendizado Supervisionado\nEntrada → Saída conhecida\nExemplos:\n\nclassificação de imagens\nprevisão de preços\ndetecção de spam"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#notação-e-suposições",
     "href": "aulas/regressao/intro/intro.html#notação-e-suposições",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Notação e Suposições",
-    "text": "Notação e Suposições\nNo aprendizado supervisionado, dispomos de um conjunto de treinamento:\n\\[\n\\{(x_1, y_1), (x_2, y_2), \\ldots, (x_n, y_n)\\}\n\\]\nonde:\n\n\\(x_i = (x_{i1}, \\ldots, x_{id})\\) representa as variáveis explicativas\n\\(y_i\\) representa a variável resposta observada"
+    "text": "Notação e Suposições\nNo aprendizado supervisionado, dispomos de um conjunto de treinamento:\n\\[\n\\{(x_1, y_1), (x_2, y_2), \\ldots, (x_n, y_n)\\}\n\\]\nonde:\n\n\n\\(x_i = (x_{i1}, \\ldots, x_{id})\\) representa as variáveis explicativas\n\n\n\\(y_i\\) representa a variável resposta observada"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#formulação-do-aprendizado-estatístico",
     "href": "aulas/regressao/intro/intro.html#formulação-do-aprendizado-estatístico",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Formulação do aprendizado estatístico",
-    "text": "Formulação do aprendizado estatístico\nUma forma comum de representar o problema é\n\\[\nY = r(\\mathbf{x}) + \\varepsilon\n\\]\nonde:\n\n\\(r(\\mathbf{x})\\) é a função verdadeira desconhecida\n\\(\\varepsilon\\) representa ruído aleatório\n\\(\\mathbb{E}[\\varepsilon \\mid X] = 0\\)\n\nO objetivo do aprendizado supervisionado é estimar (treinar) uma aproximação\n\\[\ng(\\mathbf{x}) \\approx r(\\mathbf{x})\n\\]"
+    "text": "Formulação do aprendizado estatístico\nUma forma comum de representar o problema é\n\\[\nY = r(\\mathbf{x}) + \\varepsilon\n\\]\nonde:\n\n\n\\(r(\\mathbf{x})\\) é a função verdadeira desconhecida\n\n\n\\(\\varepsilon\\) representa ruído aleatório\n\n\\(\\mathbb{E}[\\varepsilon \\mid X] = 0\\)\n\nO objetivo do aprendizado supervisionado é estimar (treinar) uma aproximação\n\\[\ng(\\mathbf{x}) \\approx r(\\mathbf{x})\n\\]"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx",
     "href": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Predição versus Inferência: Por que estimar f(x)?",
     "text": "Predição versus Inferência: Por que estimar f(x)?\nExemplo 1.1 — Expectativa de vida e PIB per capita\nConsidere dados de 211 países no ano de 2012, contendo:\n\nPIB per capita\nexpectativa de vida\n\nUma pergunta natural é:\n\nComo podemos usar esses dados para estabelecer uma relação entre essas duas variáveis?"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx-1",
     "href": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx-1",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Predição versus Inferência: Por que estimar f(x)?",
     "text": "Predição versus Inferência: Por que estimar f(x)?\nExemplo 1.2 — Distância de uma galáxia até a Terra\nNa cosmologia, uma variável extremamente importante é o desvio para o vermelho (redshift) de uma galáxia.\nEsse valor mede quão distante a galáxia está da Terra."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx-2",
     "href": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx-2",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Predição versus Inferência: Por que estimar f(x)?",
-    "text": "Predição versus Inferência: Por que estimar f(x)?\nExemplo 1.3 — Isomap Face Data\nNeste conjunto de dados, proveniente de Tenenbaum, Silva, and Langford (2000), o objetivo é estimar a direção para a qual uma pessoa está olhando.\n\nResposta (\\(Y\\)): direção do olhar\n\nCovariáveis (\\(\\mathbf{x}\\)): imagem da face da pessoa"
+    "text": "Predição versus Inferência: Por que estimar f(x)?\nExemplo 1.3 — Isomap Face Data\nNeste conjunto de dados, proveniente de Tenenbaum, Silva, and Langford (2000), o objetivo é estimar a direção para a qual uma pessoa está olhando.\n\n\nResposta (\\(Y\\)): direção do olhar\n\n\nCovariáveis (\\(\\mathbf{x}\\)): imagem da face da pessoa"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx-3",
     "href": "aulas/regressao/intro/intro.html#predição-versus-inferência-por-que-estimar-fx-3",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Predição versus Inferência: Por que estimar f(x)?",
-    "text": "Predição versus Inferência: Por que estimar f(x)?\nExemplo 1.4 — Predição do ano de lançamento de músicas\nOs dados do YearPredictionMSD contêm diversas covariáveis sobre músicas do banco Million Song Dataset.\nAlguns exemplos de variáveis:\n\ncaracterísticas de timbre\nenergia da música\ndançabilidade\noutras características acústicas\n\nAlém disso, o conjunto de dados contém o ano de lançamento de cada música."
+    "text": "Predição versus Inferência: Por que estimar f(x)?\nExemplo 1.4 — Predição do ano de lançamento de músicas\nOs dados do YearPredictionMSD contêm diversas covariáveis sobre músicas do banco Million Song Dataset.\nAlguns exemplos de variáveis:\n\ncaracterísticas de timbre\n\n\nenergia da música\ndançabilidade\noutras características acústicas\n\nAlém disso, o conjunto de dados contém o ano de lançamento de cada música."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#dois-objetivos-do-aprendizado-supervisionado",
     "href": "aulas/regressao/intro/intro.html#dois-objetivos-do-aprendizado-supervisionado",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Dois objetivos do aprendizado supervisionado",
     "text": "Dois objetivos do aprendizado supervisionado\nDe modo geral, os problemas apresentados podem ser divididos em dois objetivos principais.\n\nObjetivo inferencial\nPerguntas típicas:\n\nQuais preditores são importantes?\nQual é a relação entre cada preditor e a variável resposta?\nQual é o efeito de mudar o valor de um preditor na variável resposta?\n\nEsse tipo de análise busca interpretar a relação entre as variáveis."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#duas-culturas-em-modelagem-estatística",
     "href": "aulas/regressao/intro/intro.html#duas-culturas-em-modelagem-estatística",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Duas culturas em modelagem estatística",
-    "text": "Duas culturas em modelagem estatística\nBreiman (2001) argumenta que existem duas culturas no uso de modelos estatísticos (em especial modelos de regressão).\n\nData Modeling Culture\n\nDomina a comunidade estatística.\nO principal objetivo está na interpretação dos parâmetros.\nTestar suposições do modelo é fundamental.\n\nFoco:\n\nInferência\nCompreensão do mecanismo gerador dos dados"
+    "text": "Duas culturas em modelagem estatística\nBreiman (2001) argumenta que existem duas culturas no uso de modelos estatísticos (em especial modelos de regressão).\n\nData Modeling Culture\n\nDomina a comunidade estatística.\nO principal objetivo está na interpretação dos parâmetros.\n\nTestar suposições do modelo é fundamental.\n\nFoco:\n\nInferência\nCompreensão do mecanismo gerador dos dados"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#integração-entre-estatística-e-machine-learning",
     "href": "aulas/regressao/intro/intro.html#integração-entre-estatística-e-machine-learning",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Integração entre Estatística e Machine Learning",
-    "text": "Integração entre Estatística e Machine Learning\n\nMachine Learning e Estatística não são opostos: são complementares.\n\nHistoricamente, as duas áreas enfatizaram objetivos diferentes:\n\nEstatística: foco em inferência e interpretação dos modelos.\nMachine Learning: foco em predição e desempenho em novos dados."
+    "text": "Integração entre Estatística e Machine Learning\n\nMachine Learning e Estatística não são opostos: são complementares.\n\nHistoricamente, as duas áreas enfatizaram objetivos diferentes:\n\n\nEstatística: foco em inferência e interpretação dos modelos.\n\nMachine Learning: foco em predição e desempenho em novos dados."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#interpretabilidade-vs.-flexibilidade",
     "href": "aulas/regressao/intro/intro.html#interpretabilidade-vs.-flexibilidade",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Interpretabilidade vs. Flexibilidade",
-    "text": "Interpretabilidade vs. Flexibilidade\nEm modelagem estatística e aprendizado de máquina, frequentemente existe um trade-off entre interpretabilidade e flexibilidade.\n\nInterpretabilidade: facilidade de compreender como o modelo toma decisões.\nFlexibilidade: capacidade do modelo de capturar padrões complexos nos dados."
+    "text": "Interpretabilidade vs. Flexibilidade\nEm modelagem estatística e aprendizado de máquina, frequentemente existe um trade-off entre interpretabilidade e flexibilidade.\n\n\nInterpretabilidade: facilidade de compreender como o modelo toma decisões.\n\nFlexibilidade: capacidade do modelo de capturar padrões complexos nos dados."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#a-função-de-risco",
     "href": "aulas/regressao/intro/intro.html#a-função-de-risco",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "A Função de Risco",
     "text": "A Função de Risco\nPara construir boas funções de predição, precisamos de um critério para medir o desempenho de uma função de predição\n\\[\ng : \\mathbb{R}^p \\rightarrow \\mathbb{R}\n\\]\nEm problemas de regressão, um critério muito utilizado é o risco quadrático, definido como\n\\[\nR(g) = \\mathbb{E}\\left[(Y - g(\\mathbf{x}))^2\\right]\n\\]\nonde \\((\\mathbf{x},Y)\\) representa uma nova observação, não utilizada para estimar \\(g\\). Quanto menor o risco, melhor é a função de predição \\(g\\)."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#função-de-perda",
     "href": "aulas/regressao/intro/intro.html#função-de-perda",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Função de perda",
     "text": "Função de perda\nPara avaliar a qualidade de uma função de predição \\(g(\\mathbf{x})\\), utilizamos uma função de perda.\nUma escolha comum em problemas de regressão é a perda quadrática\n\\[\nL(g(X),Y) = (Y - g(\\mathbf{x}))^2\n\\]\nEssa função mede o erro entre o valor observado \\(Y\\) e a predição \\(g(\\mathbf{x})\\)."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#decomposição-do-erro-de-predição",
     "href": "aulas/regressao/intro/intro.html#decomposição-do-erro-de-predição",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Decomposição do erro de predição",
     "text": "Decomposição do erro de predição\nConsidere uma função de predição\n\\[\ng : \\mathbb{R}^p \\rightarrow \\mathbb{R}\n\\]\nO risco de predição sob perda quadrática é\n\\[\nR_{pred}(g) = \\mathbb{E}[(Y - g(\\mathbf{x}))^2]\n\\]\nEste risco mede o erro médio de predição para novas observações."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#observação-risco-condicional-vs.-risco-esperado",
     "href": "aulas/regressao/intro/intro.html#observação-risco-condicional-vs.-risco-esperado",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Observação: risco condicional vs. risco esperado",
     "text": "Observação: risco condicional vs. risco esperado\nA função de predição \\(g\\) pode ser entendida de duas formas.\n\nFunção fixa\nDepois que a amostra de treinamento é observada, obtemos uma função de predição\n\\[\ng = g_n\n\\]"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#seleção-de-modelos-super-e-sub-ajuste",
     "href": "aulas/regressao/intro/intro.html#seleção-de-modelos-super-e-sub-ajuste",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Seleção de Modelos: Super e Sub-Ajuste",
     "text": "Seleção de Modelos: Super e Sub-Ajuste\nEm problemas práticos, é comum ajustar vários modelos candidatos para aproximar a função de regressão \\(r(x)\\).\nO objetivo é identificar qual modelo possui maior poder preditivo."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#modelos-considerados",
     "href": "aulas/regressao/intro/intro.html#modelos-considerados",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Modelos considerados",
-    "text": "Modelos considerados\nAjustamos três regressões polinomiais:\n\nmodelo de grau 1\nmodelo de grau 4\nmodelo de grau 50\n\nOs parâmetros \\(\\beta_i\\) são estimados pelo método dos mínimos quadrados."
+    "text": "Modelos considerados\nAjustamos três regressões polinomiais:\n\nmodelo de grau 1\n\nmodelo de grau 4\n\nmodelo de grau 50\n\n\nOs parâmetros \\(\\beta_i\\) são estimados pelo método dos mínimos quadrados."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#underfitting-e-overfitting",
     "href": "aulas/regressao/intro/intro.html#underfitting-e-overfitting",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Underfitting e Overfitting",
     "text": "Underfitting e Overfitting\n\nSub-ajuste (Underfitting)\nO modelo com \\(p=1\\) não captura bem o padrão dos dados.\n\nSuper-ajuste (Overfitting)\nO modelo com \\(p=50\\) se ajusta demais à amostra observada e tende a produzir más predições para novos dados."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#seleção-de-modelos",
     "href": "aulas/regressao/intro/intro.html#seleção-de-modelos",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Seleção de modelos",
     "text": "Seleção de modelos\nO objetivo de um método de seleção de modelos é escolher uma boa função de predição \\(g.\\)\nPara isso, utilizamos um critério que permita avaliar a qualidade preditiva da função.\nNeste contexto, usamos o risco quadrático para medir a qualidade do modelo \\(R(g).\\)\nQueremos então escolher uma função \\(g\\) dentro de uma classe de candidatos \\(\\mathcal{G}\\) que apresente baixo risco quadrático."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#data-splitting-e-validação-cruzada",
     "href": "aulas/regressao/intro/intro.html#data-splitting-e-validação-cruzada",
-    "title": "Parte 1 : Regressão",
-    "section": "Data Splitting e Validação Cruzada",
+    "title": "Parte I : Regressão",
+    "section": "\nData Splitting e Validação Cruzada",
     "text": "Data Splitting e Validação Cruzada\nRisco observado\nUma forma natural de avaliar um modelo é medir seu erro nos dados de treinamento.\nEsse erro é chamado de risco observado ou erro quadrático médio (EQM) no conjunto de treinamento:\n\\[\nEQM(g) = \\frac{1}{n}\\sum_{i=1}^{n} (Y_i - g(\\mathbf{x}_i))^2\n\\]"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#data-splitting",
     "href": "aulas/regressao/intro/intro.html#data-splitting",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Data splitting",
     "text": "Data splitting\nUma forma simples de estimar o risco de predição é dividir o conjunto de dados em duas partes: Treinamento e Validação\nPor exemplo:\n\nTreinamento (70%)\n\n\\[\n(\\mathbf{x}_1,Y_1),(\\mathbf{x}_2,Y_2),\\ldots,(\\mathbf{x}_s,Y_s)\n\\]\n\nValidação (30%)\n\n\\[\n(\\mathbf{x}_{s+1},Y_{s+1}),\\ldots,(\\mathbf{x}_n,Y_n)\n\\]"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#escolha-das-amostras",
     "href": "aulas/regressao/intro/intro.html#escolha-das-amostras",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Escolha das amostras",
     "text": "Escolha das amostras\nUma boa prática ao dividir os dados em treinamento e validação é fazer essa divisão aleatoriamente.\nPara isso, utilizamos um gerador de números aleatórios para selecionar quais observações irão compor cada conjunto."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#resultado-teórico",
     "href": "aulas/regressao/intro/intro.html#resultado-teórico",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Resultado teórico",
     "text": "Resultado teórico\nComo os dados de validação não foram usados no treinamento, o estimador \\(\\hat{R}(g)\\) é consistente para o verdadeiro risco \\(R(g)\\) pela Lei dos Grandes Números.\n\nInterpretação\nÀ medida que o tamanho do conjunto de validação aumenta,\n\\[\n\\hat{R}(g) \\rightarrow R(g)\n\\]\nou seja, o erro estimado converge para o verdadeiro erro de predição."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#problema-overfitting-na-validação",
     "href": "aulas/regressao/intro/intro.html#problema-overfitting-na-validação",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Problema: overfitting na validação",
     "text": "Problema: overfitting na validação\nSe avaliarmos muitos modelos diferentes, podemos acabar escolhendo um modelo que se ajusta bem ao conjunto de validação por acaso.\nIsso gera super-ajuste ao conjunto de validação.\nConsequência:\n\no modelo escolhido pode ter bom desempenho na validação, mas não generalizar bem para novos dados."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#treinamento-vs.-validação-vs.-teste",
     "href": "aulas/regressao/intro/intro.html#treinamento-vs.-validação-vs.-teste",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Treinamento vs. Validação vs. Teste",
-    "text": "Treinamento vs. Validação vs. Teste\nUma prática comum é dividir os dados em três partes:\n\nTreinamento → ajustar os modelos\nValidação → escolher o melhor modelo\nTeste → avaliar o desempenho final\n\nInterpretação\nO conjunto de teste fornece uma estimativa do risco\n\\[\nR(g) = \\mathbb{E}[(Y - g(\\mathbf{x}))^2]\n\\]\npara novas observações. Assim podemos avaliar se o modelo escolhido realmente generaliza bem."
+    "text": "Treinamento vs. Validação vs. Teste\nUma prática comum é dividir os dados em três partes:\n\n\nTreinamento → ajustar os modelos\n\nValidação → escolher o melhor modelo\n\nTeste → avaliar o desempenho final\n\nInterpretação\nO conjunto de teste fornece uma estimativa do risco\n\\[\nR(g) = \\mathbb{E}[(Y - g(\\mathbf{x}))^2]\n\\]\npara novas observações. Assim podemos avaliar se o modelo escolhido realmente generaliza bem."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#validação-cruzada",
     "href": "aulas/regressao/intro/intro.html#validação-cruzada",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Validação cruzada",
     "text": "Validação cruzada\nUma variação desse método é a validação cruzada, que utiliza toda a amostra para avaliar o modelo.\nUma forma particular é o método leave-one-out cross validation (LOOCV)."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#k-fold-cross-validation",
     "href": "aulas/regressao/intro/intro.html#k-fold-cross-validation",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "k-fold cross-validation",
     "text": "k-fold cross-validation\nUma alternativa ao LOOCV é o método k-fold cross-validation.\nNesse procedimento, dividimos o conjunto de dados aleatoriamente em \\(k\\) subconjuntos disjuntos chamados folds, com aproximadamente o mesmo tamanho.\nDivisão em folds\nDenotamos por\n\\[\nL_1, L_2, \\ldots, L_k \\subset \\{1,\\ldots,n\\}\n\\]\nos conjuntos de índices associados a cada fold.\nCada \\(L_j\\) representa um subconjunto de observações utilizado para validação."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#loocv-e-erro-esperado",
     "href": "aulas/regressao/intro/intro.html#loocv-e-erro-esperado",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "LOOCV e erro esperado",
     "text": "LOOCV e erro esperado\nUma propriedade importante do leave-one-out cross validation (LOOCV) é que ele é aproximadamente não viesado para o erro esperado do método de aprendizagem.\nOu seja, ele fornece uma boa estimativa do desempenho médio do modelo em novos dados."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#intervalos-de-confiança-para-o-risco",
     "href": "aulas/regressao/intro/intro.html#intervalos-de-confiança-para-o-risco",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Intervalos de confiança para o risco",
     "text": "Intervalos de confiança para o risco\nDepois de escolher o modelo usando treinamento e validação, utilizamos o conjunto de teste para estimar o risco verdadeiro do modelo.\nO conjunto de teste não foi usado para ajustar o modelo.\n\nEstimador do risco no conjunto de teste\nDenote por \\((\\tilde{\\mathbf{x}}_1,\\tilde Y_1),\\ldots,(\\tilde{\\mathbf{x}}_m,\\tilde Y_m)\\) as observações do conjunto de teste.\nUm estimador do risco é\n\\[\n\\hat R(g)\n=\n\\frac{1}{m}\n\\sum_{k=1}^{m}\n(\\tilde Y_k - g(\\tilde{\\mathbf{x}}_k))^2\n\\]"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#exemplo-seleção-de-modelo",
     "href": "aulas/regressao/intro/intro.html#exemplo-seleção-de-modelo",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Exemplo: Seleção de modelo",
     "text": "Exemplo: Seleção de modelo\nRetomamos o exemplo Expectativa de vida vs PIB per capita.\nNosso objetivo agora é escolher o melhor modelo de regressão dentro da classe\n\\[\nG =\n\\left\\{\ng(x):\\;\ng(x) =\n\\beta_0 +\n\\sum_{i=1}^{p}\n\\beta_i x^i,\n\\quad\np \\in \\{1,2,\\ldots,50\\}\n\\right\\}\n\\]\nOu seja, consideramos regressões polinomiais de diferentes graus."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#penalização-uma-alternativa",
     "href": "aulas/regressao/intro/intro.html#penalização-uma-alternativa",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Penalização: uma alternativa",
     "text": "Penalização: uma alternativa\nUma forma alternativa de estimar o risco de um modelo \\(g\\) é usar uma medida de penalização ou complexidade.\nA ideia é que modelos muito complexos tendem a subestimar o risco verdadeiro quando avaliados apenas pelo erro no conjunto de treinamento."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#balanço-entre-viés-e-variância",
     "href": "aulas/regressao/intro/intro.html#balanço-entre-viés-e-variância",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Balanço entre Viés e Variância",
     "text": "Balanço entre Viés e Variância\nDecomposição do erro quadrático\nUma grande vantagem do erro quadrático é que ele possui uma decomposição muito interpretável.\nPara um novo ponto \\(\\mathbf{x}\\), o erro esperado pode ser escrito como\n\\[\n\\mathbb{E}\\left[(Y - \\hat g(\\mathbf{x}))^2 \\mid X = \\mathbf{x}\\right]\n=\n\\mathrm{Var}(Y \\mid X = \\mathbf{x})\n+\n\\left(r(\\mathbf{x}) - \\mathbb{E}[\\hat g(\\mathbf{x})]\\right)^2\n+\n\\mathrm{Var}(\\hat g(\\mathbf{x}))\n\\]"
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#parâmetros-de-sintonia-tuning-parameters",
     "href": "aulas/regressao/intro/intro.html#parâmetros-de-sintonia-tuning-parameters",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Parâmetros de sintonia (Tuning Parameters)",
     "text": "Parâmetros de sintonia (Tuning Parameters)\nNo exemplo anterior usamos regressões polinomiais\n\\[\ng(x)=\\beta_0+\\sum_{i=1}^{p}\\beta_i x^i\n\\]\nO parâmetro \\(p\\) (grau do polinômio) controla a complexidade do modelo."
   },
   {
     "objectID": "aulas/regressao/intro/intro.html#references",
     "href": "aulas/regressao/intro/intro.html#references",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "References",
     "text": "References\n\n\nBreiman, Leo. 2001. “Statistical Modeling: The Two Cultures.” Statistical Science 16 (3): 199–231. https://doi.org/10.1214/ss/1009213726.\n\n\nTenenbaum, Joshua B., Vin de Silva, and John C. Langford. 2000. “A Global Geometric Framework for Nonlinear Dimensionality Reduction.” Science 290 (5500): 2319–23. https://doi.org/10.1126/science.290.5500.2319."
   },
@@ -458,193 +458,354 @@
     "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
+    "objectID": "aulas/classificacao/intro/intro.html#regressão-vs-classificação",
+    "href": "aulas/classificacao/intro/intro.html#regressão-vs-classificação",
+    "title": "Parte II : Classificação",
+    "section": "Regressão vs Classificação",
+    "text": "Regressão vs Classificação\n👉 O problema de classificação é um problema similar ao de predição em regressão.\n\n\nRegressão\nPredizer valores numéricos\nExemplos:\n\npreço\ntemperatura\nvendas\n\n\\[\nY \\in \\mathbb{R}\n\\]\n\nClassificação\nPredizer categorias\nExemplos:\n\nspam/não spam\nfraude/não fraude\ndoente/saudável\n\n\\[\nY \\in \\{1,\\dots,K\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#formulação-do-problema",
+    "href": "aulas/classificacao/intro/intro.html#formulação-do-problema",
+    "title": "Parte II : Classificação",
+    "section": "Formulação do problema",
+    "text": "Formulação do problema\nObservamos:\n\\[\n(X_1,Y_1),\\dots,(X_n,Y_n)\n\\]\nonde:\n\n\n\\(X_i\\) → variáveis explicativas\n\n\\(Y_i\\) → classe\n\nObjetivo: construir uma função \\(g(\\mathbf{x})\\) capaz de prever a classe de novas observações, isto é,\n\\[\ng(\\mathbf{x}_{n+1}) \\approx y_{n+1}, \\ldots, g(\\mathbf{x}_{n+m}) \\approx y_{n+m}\n\\]"
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#função-de-risco-em-classificação",
+    "href": "aulas/classificacao/intro/intro.html#função-de-risco-em-classificação",
+    "title": "Parte II : Classificação",
+    "section": "Função de risco em classificação",
+    "text": "Função de risco em classificação\nRegressão\n\\[\nR(g)=\\mathbb{E}[(Y-g(\\mathbf{x}))^2]\n\\]\nClassificação\n\\[\nR(g)= \\mathbb{E}[ \\mathbb{I}(Y\\neq g(\\mathbf{x}))] = P(Y\\neq g(\\mathbf{x}))\n\\]\nou seja, o risco de \\(g\\) é agora a probabilidade de erro em um nova observação \\((\\mathbf{x},Y)\\).\nEm outras palavras, uma função de perda mais adequada para o contexto de classificação é \\(L(g(\\mathbf{x}),Y) = \\mathbb{I}(Y \\neq g(\\mathbf{x}))\\), a chamada função de perda \\(0-1\\)."
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#estimação-do-risco-e-seleção-de-modelos",
+    "href": "aulas/classificacao/intro/intro.html#estimação-do-risco-e-seleção-de-modelos",
+    "title": "Parte II : Classificação",
+    "section": "Estimação do Risco e Seleção de Modelos",
+    "text": "Estimação do Risco e Seleção de Modelos\nDa mesma maneira que em regressão, pode-se estimar o risco de um método de classificação utilizando-se data splitting ou validação cruzada."
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#estimação-do-risco-e-seleção-de-modelos-1",
+    "href": "aulas/classificacao/intro/intro.html#estimação-do-risco-e-seleção-de-modelos-1",
+    "title": "Parte II : Classificação",
+    "section": "Estimação do Risco e Seleção de Modelos",
+    "text": "Estimação do Risco e Seleção de Modelos\nAssim, \\(\\mathcal{D}=\\mathcal{D}_{treino} \\cup \\mathcal{D}_{val} \\cup \\mathcal{D}_{teste}\\). Utilizamos o conjunto de treinamento para estimar \\(g\\) e o conjunto de validação apenas para estimar \\(R(g)\\) via\n\\[\n\\widehat{R}_{val}(g)\n=\n\\frac{1}{n_{val}}\n\\sum_{(\\mathbf{x}_i,Y_i)\\in \\mathcal{D}_{val}}\nI(Y_i\\neq g(\\mathbf{x}_i)).\n\\]\nisto é, avaliamos a proporção de erros no conjunto de validação."
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#estimação-do-risco-e-seleção-de-modelos-2",
+    "href": "aulas/classificacao/intro/intro.html#estimação-do-risco-e-seleção-de-modelos-2",
+    "title": "Parte II : Classificação",
+    "section": "Estimação do Risco e Seleção de Modelos",
+    "text": "Estimação do Risco e Seleção de Modelos\nGarantia teórica da validação\nSejam \\(G = \\{g_1,\\cdots, g_N\\}\\) uma classe de classificadores estimados com base em um conjunto de treinamento e,\n\\[\ng^*\n=\n\\arg\\min_{g\\in G}R(g)\n\\]\no melhor modelo verdadeiro estimado.\nSeja \\(\\hat g=\\arg\\min_{g\\in G}\\hat R(g)\\), o modelo escolhido via validação.\nResultado: Com alta probabilidade, \\(R(\\hat g)\\approx R(g^*)\\)."
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#balanço-entre-viés-e-variância",
+    "href": "aulas/classificacao/intro/intro.html#balanço-entre-viés-e-variância",
+    "title": "Parte II : Classificação",
+    "section": "Balanço entre Viés e Variância",
+    "text": "Balanço entre Viés e Variância\nAssim como em regressão, em classificação também se enfrenta o paradigma do balanço entre viés e variância.\n🎯 Ideia central\nSeja \\(G=\\{g_1,\\dots,g_N\\}\\) uma classe de classificadores. Além disso, sejam o melhor risco (risco do oráculo) que pode ser obtido usando-se classificadores de \\(G\\) dado por\n\\[\nR_{or}\n=\n\\inf_{g\\in G} R(g)\n\\]\ne \\(R_*\\) o risco do classificador de Bayes."
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#trade-off",
+    "href": "aulas/classificacao/intro/intro.html#trade-off",
+    "title": "Parte II : Classificação",
+    "section": "Trade-off",
+    "text": "Trade-off"
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho",
+    "href": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho",
+    "title": "Parte II : Classificação",
+    "section": "Outras medidas de desempenho",
+    "text": "Outras medidas de desempenho\nProblema da acurácia\nA taxa de erro\n\\[\nR(g)=P(Y\\neq g(\\mathbf{x}))\n\\]\nnem sempre descreve adequadamente o desempenho de um classificador. Um modelo pode apresentar:\n\nbaixa taxa de erro;\nalta acurácia;\n\ne ainda assim possuir desempenho ruim na classe minoritária."
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho-1",
+    "href": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho-1",
+    "title": "Parte II : Classificação",
+    "section": "Outras medidas de desempenho",
+    "text": "Outras medidas de desempenho\nSensibilidade (Recall): Capacidade do modelo detectar observações positivas\n\\[\nS=\\frac{VP}{VP+FN}\n\\]\nEspecificidade: Capacidade do modelo detectar observações negativas\n\\[\nE=\\frac{VN}{VN+FP}\n\\]"
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho-2",
+    "href": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho-2",
+    "title": "Parte II : Classificação",
+    "section": "Outras medidas de desempenho",
+    "text": "Outras medidas de desempenho\nPrecisão (Precision): Confiabilidade das predições positivas\n\\[\nVPP=\\frac{VP}{VP+FP}\n\\]\nValor preditivo negativo: Confiabilidade das predições negativas\n\\[\nVPN=\\frac{VN}{VN+FN}\n\\]"
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho-3",
+    "href": "aulas/classificacao/intro/intro.html#outras-medidas-de-desempenho-3",
+    "title": "Parte II : Classificação",
+    "section": "Outras medidas de desempenho",
+    "text": "Outras medidas de desempenho\nEstatística \\(F_1\\)\n\n\\[\nF_1=\n\\frac{2}{\\frac{1}{S}+\\frac{1}{VPP}}\n\\]\nMédia harmônica entre:\n\nsensibilidade;\nprecisão."
+  },
+  {
+    "objectID": "aulas/classificacao/intro/intro.html#interpretação-probabilística",
+    "href": "aulas/classificacao/intro/intro.html#interpretação-probabilística",
+    "title": "Parte II : Classificação",
+    "section": "Interpretação probabilística",
+    "text": "Interpretação probabilística\nAs métricas derivadas da matriz de confusão estimam probabilidades populacionais. Por exemplo:\nSensibilidade\n\\[\nS \\approx P(\\hat g(X)=1 \\mid Y=1)\n\\]\nEspecificidade\n\\[\nE \\approx P(\\hat g(X)=0 \\mid Y=0)\n\\]\n💡 Assim, é importante calcular os valores de VP, FN, VN e FP utilizando uma amostra de teste ou validação para evitar o sobre-ajuste."
+  },
+  {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#introdução",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#introdução",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Introdução",
     "text": "Introdução\nConsidere o problema de estimar \\(f(x) = E(Y \\mid X = x)\\) a partir de uma amostra de tamanho \\(n\\).\nQuando \\(n\\) é pequeno, é comum impor uma estrutura paramétrica para \\(f\\), por exemplo,\n\\[\nf(x) = x^t \\beta,\n\\]\no que reduz o número de parâmetros a serem estimados.\nEssa restrição tende a produzir estimadores com baixa variância, ainda que à custa de um possível viés."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-1",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-1",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Introdução",
     "text": "Introdução\nÀ medida que o tamanho amostral aumenta, torna-se possível considerar classes de funções mais ricas.\nNesse caso, admite-se um modelo mais flexível para \\(f\\), reduzindo o viés da estimativa, ainda que isso implique um aumento na variância.\nEsse comportamento reflete o compromisso fundamental entre viés e variância na estimação."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-2",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#introdução-2",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Introdução",
     "text": "Introdução\nMotivados por essa observação, consideramos modelos não paramétricos.\nInformalmente, um modelo não paramétrico é aquele em que a complexidade cresce com o tamanho da amostra, podendo ser interpretado como um modelo com um número efetivamente infinito de parâmetros.\nO objetivo é permitir que os dados determinem a forma da função \\(f\\), evitando restrições estruturais rígidas."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#problema-de-regressão",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#problema-de-regressão",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Problema de regressão",
     "text": "Problema de regressão\nConsidere o modelo\n\\[\nY = f(X) + \\varepsilon,\n\\]\nonde assumimos\n\\[\nE(\\varepsilon \\mid X) = 0, \\qquad Var(\\varepsilon \\mid X) = \\sigma^2\n\\]\nNosso objetivo é estimar a função de regressão\n\\[\nf(x) = E(Y \\mid X = x)\n\\]\nEsse problema é intrinsecamente infinito-dimensional, pois \\(f\\) pode ser uma função arbitrária."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#k-vizinhos-mais-próximos-knn",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#k-vizinhos-mais-próximos-knn",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "k Vizinhos Mais Próximos (KNN)",
     "text": "k Vizinhos Mais Próximos (KNN)\nO método dos k vizinhos mais próximos (k-nearest neighbors, KNN) Benedetti (1977) e Stone (1977) é um dos métodos não paramétricos mais utilizados em aprendizado de máquina.\nSeu objetivo é estimar a função de regressão:\n\\[\nr(\\mathbf{x}) = \\mathbb{E}(\\boldsymbol{y} \\mid \\boldsymbol{X} = \\mathbf{x})\n\\]\ncom base na informação observada na vizinhança de \\(\\mathbf{x}\\)."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#o-papel-do-parâmetro-k",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#o-papel-do-parâmetro-k",
-    "title": "Parte 1 : Regressão",
-    "section": "O papel do parâmetro \\(k\\)",
-    "text": "O papel do parâmetro \\(k\\)\nO parâmetro \\(k\\) controla o grau de suavização do estimador. Define o equilíbrio viés e variância\n\n\n\n\\(k\\) pequeno\n\najuste mais local\n\nmenor suavização\n\nbaixo viés\n\nalta variância\n\n\n\n\\(k\\) grande\n\najuste mais global\n\nmaior suavização\n\nalto viés\n\nbaixa variância"
+    "title": "Parte I : Regressão",
+    "section": "O papel do parâmetro \\(k\\)\n",
+    "text": "O papel do parâmetro \\(k\\)\n\nO parâmetro \\(k\\) controla o grau de suavização do estimador. Define o equilíbrio viés e variância\n\n\n\n\n\\(k\\) pequeno\n\najuste mais local\n\nmenor suavização\n\nbaixo viés\n\nalta variância\n\n\n\n\n\\(k\\) grande\n\najuste mais global\n\nmaior suavização\n\nalto viés\n\nbaixa variância"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#nadarayawatson",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#nadarayawatson",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Nadaraya–Watson",
     "text": "Nadaraya–Watson\nNo KNN, estimamos a função de regressão por:\n\\[\ng(\\mathbf{x}) = \\frac{1}{k} \\sum_{i \\in \\mathcal{N}_k(\\mathbf{x})} y_i\n\\]\n\nLimitação do KNN\nTodos os pontos na vizinhança recebem o mesmo peso.\nPodemos melhorar essa abordagem atribuindo pesos diferentes às observações, de acordo com a sua proximidade de \\(\\mathbf{x}\\)."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#regressão-polinomial-local",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#regressão-polinomial-local",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Regressão Polinomial Local",
     "text": "Regressão Polinomial Local\nA regressão de Nadaraya–Watson estima \\(g(x)\\) como uma média ponderada local, ou seja, resolve\n\\[\n\\hat{g}(\\mathbf{x}) = \\arg\\min_{\\beta_0} \\sum_{i=1}^n w_i(\\mathbf{x})\\,(Y_i - \\beta_0)^2\n\\]\nIsso equivale a ajustar localmente uma constante (polinômio de grau 0)."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#árvores-de-regressão",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#árvores-de-regressão",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Árvores de Regressão",
     "text": "Árvores de Regressão\nAté agora, modelamos \\(g(\\mathbf{x})\\) como uma função suave:\n\nsplines\n\nkernels\n\nregressão local\n\nAgora adotamos uma abordagem diferente:\n\nmodelar \\(g(\\mathbf{x})\\) por partições do espaço das covariáveis."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-4",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#interpretação-4",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Interpretação",
-    "text": "Interpretação\n\no espaço é dividido em “caixas”\ndentro de cada região, a previsão é constante → média dos dados\no modelo é uma função piecewise constante\n\n\nProblema de estimação\nQueremos encontrar a melhor partição:\n\\[\n\\{\\mathcal{R}_1, \\ldots, \\mathcal{R}_M\\}\n\\]"
+    "text": "Interpretação\n\no espaço é dividido em “caixas”\ndentro de cada região, a previsão é constante → média dos dados\no modelo é uma função piecewise constante\n\n\n\nProblema de estimação\nQueremos encontrar a melhor partição:\n\\[\n\\{\\mathcal{R}_1, \\ldots, \\mathcal{R}_M\\}\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-combinar-árvores",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-combinar-árvores",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Por que combinar árvores?",
     "text": "Por que combinar árvores?\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#bagging-bootstrap-aggregating",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#bagging-bootstrap-aggregating",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Bagging (Bootstrap Aggregating)",
     "text": "Bagging (Bootstrap Aggregating)\nA ideia central é combinar vários estimadores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nonde \\(g_b(\\mathbf{x})\\) é a predição da \\(b\\)-ésima árvore.\nPara cada \\(b = 1, \\ldots, B\\):\n\namostramos com reposição (bootstrap)\n\najustamos uma árvore aos dados"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#florestas-aleatórias-random-forest",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#florestas-aleatórias-random-forest",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Florestas Aleatórias (Random Forest)",
     "text": "Florestas Aleatórias (Random Forest)\nNo Bagging, combinamos várias árvores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nComo as amostras bootstrap não são i.i.d,\n\nCada árvore é diferente, mas nasce do mesmo mecanismo, então têm variâncias semelhantes, ou seja,\n\n\\[\n\\mathrm{Var}(g_b(\\mathbf{x})) = \\sigma^2\n\\quad \\text{para todo } b\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#boosting",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#boosting",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Boosting",
     "text": "Boosting\nO boosting constrói o estimador de forma sequencial, corrigindo erros do modelo anterior.\n\nIdeia central\nComeçamos com um modelo simples e vamos ajustando os resíduos:\n\\[\nr_i = y_i - g(x_i)\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#redes-neurais-artificiais",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#redes-neurais-artificiais",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Redes Neurais Artificiais",
     "text": "Redes Neurais Artificiais\nRedes neurais são modelos que aproximam funções não lineares complexas.\nNo contexto de regressão, trata-se de um estimador não linear de \\(r(\\mathbf{x})\\) que pode ser representado graficamente por uma estrutura do tipo"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-o-nome-backpropagation",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#por-que-o-nome-backpropagation",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Por que o nome Backpropagation?",
     "text": "Por que o nome Backpropagation?\nOs gradientes são calculados da saída para a entrada\n\n\nO erro “volta” pela rede ajustando os pesos"
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#rede-neural-aprendendo-uma-função-não-linear",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#rede-neural-aprendendo-uma-função-não-linear",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Rede neural aprendendo uma função não linear",
     "text": "Rede neural aprendendo uma função não linear\nNeste exemplo, a RNA foi ajustada para aproximar a função\n\\[\nf(x)=12+4x-6x^2+x^3+\\sin(x)\n\\]\na partir de observações ruidosas.\nA curva verde mostra a predição da rede, enquanto a curva vermelha representa a função real."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#flexibilidade-vs-eficiência",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#flexibilidade-vs-eficiência",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Flexibilidade vs Eficiência",
     "text": "Flexibilidade vs Eficiência\n\n\n\n🔵 Métodos paramétricos\n\nestrutura forte\n\nmenos flexíveis\n\nconvergem rápido\n\n\\[\n\\text{Erro} \\sim n^{-1}\n\\]\n\n🔴 Métodos não paramétricos\n\nalta flexibilidade\n\npoucos pressupostos\n\nconvergem lentamente\n\n\\[\n\\text{Erro} \\sim n^{-\\frac{\\alpha}{\\alpha + p}}\n\\]\n\n👉 Taxa de convergência = velocidade com que o erro diminui à medida que aumentamos o tamanho da amostra."
   },
   {
     "objectID": "aulas/regressao/met_nao_param/met_nao_param.html#references",
     "href": "aulas/regressao/met_nao_param/met_nao_param.html#references",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "References",
     "text": "References\n\n\nBenedetti, J. K. 1977. “On the Nonparametric Estimation of Regression Functions.” Journal of the American Statistical Association.\n\n\nStone, Charles J. 1977. “Consistent Nonparametric Regression.” The Annals of Statistics."
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#métodos-paramétricos",
     "href": "aulas/regressao/met_param/met_param.html#métodos-paramétricos",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Métodos paramétricos",
     "text": "Métodos paramétricos\nMétodos paramétricos assumem que a função de regressão pode ser descrita por um número finito de parâmetros.\nAqui, iremos nos concentrar em modelos de regressão linear.\n\nGrande parte do conteúdo pode parecer familiar;\nporém, será apresentado sob a perspectiva de modelagem preditiva e seleção de modelos."
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#regressão-linear",
     "href": "aulas/regressao/met_param/met_param.html#regressão-linear",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Regressão linear",
     "text": "Regressão linear\nNa regressão linear, a função de predição possui forma linear nos parâmetros.\nA função de predição pode ser escrita como\n\\[\ng(\\mathbf{x}) = \\boldsymbol{\\beta}^t \\mathbf{x}\n\\]\nou explicitamente\n\\[\ng(\\mathbf{x}) = \\beta_0 x_0 + \\beta_1 x_1 + \\cdots + \\beta_p x_p\n\\] Adotamos a convenção \\(x_0 = 1\\). Assim, \\(\\beta_0\\) corresponde ao intercepto do modelo.\nO vetor de parâmetros é\n\\[\n\\boldsymbol{\\beta}^t = (\\beta_0, \\beta_1, \\ldots, \\beta_p)\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#o-método-dos-mínimos-quadrados",
     "href": "aulas/regressao/met_param/met_param.html#o-método-dos-mínimos-quadrados",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "O Método dos Mínimos Quadrados",
     "text": "O Método dos Mínimos Quadrados\nUma forma de estimar os coeficientes \\(\\beta\\) da regressão linear é utilizar o método dos mínimos quadrados.\nA ideia é escolher os coeficientes que minimizam a soma dos erros quadráticos:\n\\[\n\\hat{\\boldsymbol{\\beta}} =\n\\arg\\min_{\\beta}\n\\sum_{i=1}^{n}\n\\left(\nY_i - \\beta_0 - \\beta_1 x_{i1} - \\cdots - \\beta_d x_{ip}\n\\right)^2\n\\]"
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#quando-a-suposição-de-linearidade-falha",
     "href": "aulas/regressao/met_param/met_param.html#quando-a-suposição-de-linearidade-falha",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Quando a suposição de linearidade falha",
     "text": "Quando a suposição de linearidade falha\nA suposição de que a verdadeira função de regressão\n\\[\nr(\\mathbf{x}) = E[\\boldsymbol{y} \\mid \\boldsymbol{X}=\\mathbf{x}]\n\\]\né linear muitas vezes não é válida na prática.\nMesmo assim, modelos lineares frequentemente apresentam bom desempenho preditivo."
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#limitações-do-método-dos-mínimos-quadrados",
     "href": "aulas/regressao/met_param/met_param.html#limitações-do-método-dos-mínimos-quadrados",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Limitações do método dos mínimos quadrados",
-    "text": "Limitações do método dos mínimos quadrados\nQuando o número de covariáveis é muito grande, o método dos mínimos quadrados pode apresentar desempenho ruim.\nIsso ocorre principalmente por dois motivos:\n\nsuper-ajuste (overfitting)\n\nalta variância do estimador"
+    "text": "Limitações do método dos mínimos quadrados\nQuando o número de covariáveis é muito grande, o método dos mínimos quadrados pode apresentar desempenho ruim.\nIsso ocorre principalmente por dois motivos:\n\n\nsuper-ajuste (overfitting)\n\nalta variância do estimador"
   },
   {
     "objectID": "aulas/regressao/met_param/met_param.html#references",
     "href": "aulas/regressao/met_param/met_param.html#references",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "References",
     "text": "References\n\n\nMorettin, Pedro A., and Julio M. Singer. 2019. Estatística e Ciência de Dados. Rio de Janeiro: LTC.\n\n\nNeter, John, Michael H. Kutner, Christopher J. Nachtsheim, and William Wasserman. 1996. Applied Linear Statistical Models. 4th ed. Chicago: Irwin."
   },
   {
     "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#interpretabilidade-em-machine-learning",
     "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#interpretabilidade-em-machine-learning",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Interpretabilidade em Machine Learning",
     "text": "Interpretabilidade em Machine Learning\n💡 Por que isso importa?\n\nBons modelos preditivos nem sempre são fáceis de entender\n\nModelos interpretáveis geram mais confiança\n\n\n🔍 O que ganhamos?\n\nentender quais variáveis são importantes\n\nobter insights sobre o problema\n\navaliar desempenho em novos dados\n\ndetectar possíveis vieses"
   },
   {
     "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#modelos-quem-é-fácil-de-interpretar",
     "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#modelos-quem-é-fácil-de-interpretar",
-    "title": "Parte 1 : Regressão",
+    "title": "Parte I : Regressão",
     "section": "Modelos: quem é fácil de interpretar?",
     "text": "Modelos: quem é fácil de interpretar?\n\n\n🟢 Mais interpretáveis\n\nmodelos lineares\n\nárvores de decisão\n\nmodelos esparsos\n\n\n🔴 Menos interpretáveis\n\nSVR\n\nmodelos com kernel\n\nmodelos complexos\n\n\n👉 Técnicas para interpretar modelos complexos:\n\nLIME (Local Interpretable Model-agnostic Explanations)\n\nPDP (Partial Dependence Plot)\nICE (Individual Conditional Expectation)"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#explainableml-lime",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#explainableml-lime",
+    "title": "Parte I : Regressão",
+    "section": "ExplainableML — LIME",
+    "text": "ExplainableML — LIME\n\n\n🎯 Pergunta do LIME\n\nPor que o modelo previu isso para esta observação?\n\n\nIdeia central\nLIME não tenta explicar o modelo inteiro.\n👉 Explica uma observação por vez\n\nEstratégia\n\nescolhe uma observação \\(x^*\\)\n\ncria perturbações próximas de \\(x^*\\)\n\nconsulta o modelo original\najusta um modelo simples local"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes",
+    "title": "Parte I : Regressão",
+    "section": "Exemplo: previsão de gastos de clientes",
+    "text": "Exemplo: previsão de gastos de clientes\n🏢 Cenário\nUma empresa de serviços digitais deseja prever o gasto futuro do cliente, antes de lançar campanhas promocionais.\n\n\n📦 Variáveis disponíveis\n\n💰 Renda mensal\n\n👤 Idade\n\n📱 Tempo de uso do aplicativo\n\n🛒 Histórico de compras\n\n🏷️ Categoria do cliente\n\n\n\n🎯 Objetivo\nConstruir um modelo capaz de responder:\n\nQuanto este cliente provavelmente gastará nos próximos meses?"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#de-explicações-locais-para-explicações-globais",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#de-explicações-locais-para-explicações-globais",
+    "title": "Parte I : Regressão",
+    "section": "De explicações locais para explicações globais",
+    "text": "De explicações locais para explicações globais\n\n\n👤 LIME\nExplica:\n\nPor que este cliente recebeu esta predição?\n\n✔ individual\n✔ local\n✔ observação específica\n\n🌎 PDP e ICE\nExplicam:\n\nComo o modelo reage quando uma variável muda?\n\n✔ comportamento global\n✔ relações não lineares\n✔ efeitos médios e individuais"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#intuição-matemática",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#intuição-matemática",
+    "title": "Parte I : Regressão",
+    "section": "Intuição matemática",
+    "text": "Intuição matemática\n\n\n🌎 PDP\n\\[\nh_i(x)=\n\\frac{1}{n}\n\\sum_{j=1}^{n}\ng(x_{j,1},...,x_i,...,x_{j,d})\n\\]\n👉 mostra o efeito médio\n\n👤 ICE\n\\[\nh_{i,j}(x)=\ng(x_{j,1},...,x_i,...,x_{j,d})\n\\]\n👉 mostra o efeito individual\n\n\nPDP = média das curvas ICE"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-1",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-1",
+    "title": "Parte I : Regressão",
+    "section": "Exemplo: previsão de gastos de clientes",
+    "text": "Exemplo: previsão de gastos de clientes\n\nClientes com maior renda tendem a apresentar maior potencial de consumo"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-2",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-2",
+    "title": "Parte I : Regressão",
+    "section": "Exemplo: previsão de gastos de clientes",
+    "text": "Exemplo: previsão de gastos de clientes\n\nEm média, a idade isoladamente não altera drasticamente o gasto previsto"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#shap-values",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#shap-values",
+    "title": "Parte I : Regressão",
+    "section": "SHAP Values",
+    "text": "SHAP Values\n\n\nLIME responde:\n\n“Por que esta observação recebeu esta predição?”\n\nPDP/ICE respondem:\n\n“Como uma variável afeta o modelo?”\n\n\n💡 SHAP responde:\n\n“Quem puxou a predição para cima ou para baixo?” “Quanto cada variável contribuiu para a predição”?\n\n✔ local\n✔ global\n✔ consistente matematicamente\n✔ baseado em teoria dos jogos"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#como-o-shap-funciona",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#como-o-shap-funciona",
+    "title": "Parte I : Regressão",
+    "section": "Como o SHAP funciona?",
+    "text": "Como o SHAP funciona?\n\\[\ng(x)=\n\\phi_0+\\phi_1+\\phi_2+\\cdots+\\phi_p\n\\]\nonde:\n\n\n\\(\\phi_0\\) → predição média do modelo\n\n\\(\\phi_i\\) → contribuição da variável \\(i\\)\n\n\nInterpretação\n\n\n🟢 \\(\\phi_i&gt;0\\)\n→ aumenta a predição\n\n🔴 \\(\\phi_i&lt;0\\)\n→ reduz a predição\n\nA soma das contribuições recupera exatamente a predição"
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#teoria-dos-jogos-cooperativos",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#teoria-dos-jogos-cooperativos",
+    "title": "Parte I : Regressão",
+    "section": "Teoria dos jogos cooperativos",
+    "text": "Teoria dos jogos cooperativos\n🎲 Ideia\nCada variável é um “jogador”. O modelo final é o “prêmio”.\nQuanto cada jogador contribuiu para o resultado?\n👉 SHAP calcula a contribuição média de cada variável em todas as coalizões possíveis."
+  },
+  {
+    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-3",
+    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-3",
+    "title": "Parte I : Regressão",
+    "section": "Exemplo: previsão de gastos de clientes",
+    "text": "Exemplo: previsão de gastos de clientes"
   },
   {
     "objectID": "cronograma.html",
@@ -655,138 +816,5 @@
     "crumbs": [
       "Cronograma da Disciplina"
     ]
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#explainableml-lime",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#explainableml-lime",
-    "title": "Parte 1 : Regressão",
-    "section": "ExplainableML — LIME",
-    "text": "ExplainableML — LIME\n\n\n🎯 Pergunta do LIME\n\nPor que o modelo previu isso para esta observação?\n\n\nIdeia central\nLIME não tenta explicar o modelo inteiro.\n👉 Explica uma observação por vez\n\nEstratégia\n\nescolhe uma observação \\(x^*\\)\n\ncria perturbações próximas de \\(x^*\\)\n\nconsulta o modelo original\najusta um modelo simples local"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#como-o-lime-funciona",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#como-o-lime-funciona",
-    "title": "Parte 1 : Regressão",
-    "section": "Como o LIME funciona?",
-    "text": "Como o LIME funciona?\n\n\n\n\n\nflowchart LR\n\nA[🎯 Observação $x^*$]\n--&gt; B[🔀 Perturbações locais]\n\nB --&gt; C[🤖 Predições do modelo]\n\nC --&gt; D[📈 Ajuste local]\n\nD --&gt; E[💡 Explicação interpretável]\n\n\n\n\n\n\n\nInsight\n🚀 Globalmente complexo. Localmente simples."
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#section",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#section",
-    "title": "Parte 1 : Regressão",
-    "section": "",
-    "text": "# A tibble: 3 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     260.   \n2 rsq     standard       0.307\n3 mae     standard     203."
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#caso-prático-previsão-de-gastos-de-clientes",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#caso-prático-previsão-de-gastos-de-clientes",
-    "title": "Parte 1 : Regressão",
-    "section": "🎯 Caso prático: previsão de gastos de clientes",
-    "text": "🎯 Caso prático: previsão de gastos de clientes\n\n\n🏢 Cenário\nUma empresa de serviços digitais deseja prever:\n\\[\\text{Gasto futuro do cliente}\\]\nantes de lançar campanhas promocionais.\n📦 Variáveis disponíveis\n\n💰 Renda mensal\n\n👤 Idade\n\n📱 Tempo de uso do aplicativo\n\n🛒 Histórico de compras\n\n🏷️ Categoria do cliente\n\n\n\n🎯 Objetivo\nConstruir um modelo capaz de responder:\n\nQuanto este cliente provavelmente gastará nos próximos meses?\n\n\n\n🤖 Modelo escolhido\nXGBoost Regression\n✔ alta capacidade preditiva\n✔ captura relações não lineares\n✔ interações complexas\n✔ robusto para dados reais\n\n⚠️ Desafio\n\nO modelo prevê bem…\n\n\nmas por quê?"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#precisamos-de-explainable-ml",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#precisamos-de-explainable-ml",
-    "title": "Parte 1 : Regressão",
-    "section": "🚀 Precisamos de Explainable ML",
-    "text": "🚀 Precisamos de Explainable ML\nPDP • ICE • SHAP • Importância de variáveis"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes",
-    "title": "Parte 1 : Regressão",
-    "section": "Exemplo: previsão de gastos de clientes",
-    "text": "Exemplo: previsão de gastos de clientes\n🏢 Cenário\nUma empresa de serviços digitais deseja prever o gasto futuro do cliente, antes de lançar campanhas promocionais.\n\n\n📦 Variáveis disponíveis\n\n💰 Renda mensal\n\n👤 Idade\n\n📱 Tempo de uso do aplicativo\n\n🛒 Histórico de compras\n\n🏷️ Categoria do cliente\n\n\n\n🎯 Objetivo\nConstruir um modelo capaz de responder:\n\nQuanto este cliente provavelmente gastará nos próximos meses?"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#lime-transforma-uma-caixa-preta-em-decisões-explicáveis-cliente-a-cliente.",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#lime-transforma-uma-caixa-preta-em-decisões-explicáveis-cliente-a-cliente.",
-    "title": "Parte 1 : Regressão",
-    "section": "💡 LIME transforma uma “caixa-preta” em decisões explicáveis cliente a cliente.",
-    "text": "💡 LIME transforma uma “caixa-preta” em decisões explicáveis cliente a cliente."
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#de-explicações-locais-para-explicações-globais",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#de-explicações-locais-para-explicações-globais",
-    "title": "Parte 1 : Regressão",
-    "section": "De explicações locais para explicações globais",
-    "text": "De explicações locais para explicações globais\n\n\n👤 LIME\nExplica:\n\nPor que este cliente recebeu esta predição?\n\n✔ individual\n✔ local\n✔ observação específica\n\n🌎 PDP e ICE\nExplicam:\n\nComo o modelo reage quando uma variável muda?\n\n✔ comportamento global\n✔ relações não lineares\n✔ efeitos médios e individuais"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#lime-explica-indivíduos.",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#lime-explica-indivíduos.",
-    "title": "Parte 1 : Regressão",
-    "section": "🚀 LIME explica indivíduos.",
-    "text": "🚀 LIME explica indivíduos."
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#pdp-e-ice-explicam-o-modelo.",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#pdp-e-ice-explicam-o-modelo.",
-    "title": "Parte 1 : Regressão",
-    "section": "PDP e ICE explicam o modelo.",
-    "text": "PDP e ICE explicam o modelo."
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#intuição-matemática",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#intuição-matemática",
-    "title": "Parte 1 : Regressão",
-    "section": "Intuição matemática",
-    "text": "Intuição matemática\n\n\n🌎 PDP\n\\[\nh_i(x)=\n\\frac{1}{n}\n\\sum_{j=1}^{n}\ng(x_{j,1},...,x_i,...,x_{j,d})\n\\]\n👉 mostra o efeito médio\n\n👤 ICE\n\\[\nh_{i,j}(x)=\ng(x_{j,1},...,x_i,...,x_{j,d})\n\\]\n👉 mostra o efeito individual\n\n\nPDP = média das curvas ICE"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-1",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-1",
-    "title": "Parte 1 : Regressão",
-    "section": "Exemplo: previsão de gastos de clientes",
-    "text": "Exemplo: previsão de gastos de clientes\n\nClientes com maior renda tendem a apresentar maior potencial de consumo"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-2",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-2",
-    "title": "Parte 1 : Regressão",
-    "section": "Exemplo: previsão de gastos de clientes",
-    "text": "Exemplo: previsão de gastos de clientes\n\nEm média, a idade isoladamente não altera drasticamente o gasto previsto"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-3",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#exemplo-previsão-de-gastos-de-clientes-3",
-    "title": "Parte 1 : Regressão",
-    "section": "Exemplo: previsão de gastos de clientes",
-    "text": "Exemplo: previsão de gastos de clientes"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#shap-values",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#shap-values",
-    "title": "Parte 1 : Regressão",
-    "section": "SHAP Values",
-    "text": "SHAP Values\n\n\nLIME responde:\n\n“Por que esta observação recebeu esta predição?”\n\nPDP/ICE respondem:\n\n“Como uma variável afeta o modelo?”\n\n\n💡 SHAP responde:\n\n“Quem puxou a predição para cima ou para baixo?” “Quanto cada variável contribuiu para a predição”?\n\n✔ local\n✔ global\n✔ consistente matematicamente\n✔ baseado em teoria dos jogos"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#cada-variável-recebe-uma-contribuição-explícita.",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#cada-variável-recebe-uma-contribuição-explícita.",
-    "title": "Parte 1 : Regressão",
-    "section": "🚀 Cada variável recebe uma contribuição explícita.",
-    "text": "🚀 Cada variável recebe uma contribuição explícita."
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#como-o-shap-funciona",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#como-o-shap-funciona",
-    "title": "Parte 1 : Regressão",
-    "section": "Como o SHAP funciona?",
-    "text": "Como o SHAP funciona?\n\\[\ng(x)=\n\\phi_0+\\phi_1+\\phi_2+\\cdots+\\phi_p\n\\]\nonde:\n\n\n\\(\\phi_0\\) → predição média do modelo\n\n\\(\\phi_i\\) → contribuição da variável \\(i\\)\n\n\nInterpretação\n\n\n🟢 \\(\\phi_i&gt;0\\)\n→ aumenta a predição\n\n🔴 \\(\\phi_i&lt;0\\)\n→ reduz a predição\n\nA soma das contribuições recupera exatamente a predição"
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#teoria-dos-jogos-cooperativos",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#teoria-dos-jogos-cooperativos",
-    "title": "Parte 1 : Regressão",
-    "section": "Teoria dos jogos cooperativos",
-    "text": "Teoria dos jogos cooperativos\n🎲 Ideia\nCada variável é um “jogador”. O modelo final é o “prêmio”.\nQuanto cada jogador contribuiu para o resultado?\n👉 SHAP calcula a contribuição média de cada variável em todas as coalizões possíveis."
-  },
-  {
-    "objectID": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#variáveis-cooperam-para-formar-a-predição.",
-    "href": "aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.html#variáveis-cooperam-para-formar-a-predição.",
-    "title": "Parte 1 : Regressão",
-    "section": "💡 Variáveis cooperam para formar a predição.",
-    "text": "💡 Variáveis cooperam para formar a predição."
   }
 ]

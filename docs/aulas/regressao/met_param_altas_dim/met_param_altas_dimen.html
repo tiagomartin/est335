@@ -6,16 +6,16 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.29">
-
-  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte 1 : Regressão</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
-  <style>
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+<style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -48,14 +48,14 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-  <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
+<link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+<link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+<style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -142,7 +142,7 @@
       margin-right: 0; 
     }
   </style>
-<meta property="og:title" content="Parte 1 : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:title" content="Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
 <meta property="og:description" content="Métodos Paramétricos em Altas Dimensões">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
 </head>
@@ -150,49 +150,41 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">Parte 1 : Regressão</h1>
+<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Regressão</h1>
   <p class="subtitle"><span class="custom-subtitle">Métodos Paramétricos em Altas Dimensões</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section>
-<section id="busca-pelo-melhor-subconjunto-de-covariáveis" class="slide level2">
-<h2>Busca pelo melhor subconjunto de covariáveis</h2>
+</section><section id="busca-pelo-melhor-subconjunto-de-covariáveis" class="slide level2"><h2>Busca pelo melhor subconjunto de covariáveis</h2>
 <p>Quando o número de covariáveis é grande, uma estratégia natural é <strong>remover algumas variáveis do modelo</strong>.</p>
 <p>O objetivo é <strong>reduzir a variância da função de predição estimada</strong>.</p>
 <p><br></p>
 <h3 id="ideia-central">Ideia central</h3>
 <p>Ao retirar algumas covariáveis do modelo:</p>
 <ul>
-<li>a <strong>variância do estimador diminui</strong></li>
-<li>mas o <strong>viés pode aumentar</strong></li>
+<li>a <strong>variância do estimador diminui</strong>
+</li>
+<li>mas o <strong>viés pode aumentar</strong>
+</li>
 </ul>
 <p>Esse é mais um exemplo do <strong>trade-off viés–variância</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="quando-isso-funciona-bem">Quando isso funciona bem?</h3>
+</section><section class="slide level2"><h3 id="quando-isso-funciona-bem">Quando isso funciona bem?</h3>
 <p>Se algumas covariáveis possuem <strong>pouca ou nenhuma relação com a resposta <span class="math inline">\(\boldsymbol{y}\)</span></strong>, então removê-las:</p>
 <ul>
-<li>aumenta <strong>pouco o viés</strong></li>
-<li>reduz <strong>consideravelmente a variância</strong></li>
+<li>aumenta <strong>pouco o viés</strong>
+</li>
+<li>reduz <strong>consideravelmente a variância</strong>
+</li>
 </ul>
 <p>Como consequência, o <strong>poder preditivo do modelo pode aumentar</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="estratégia">Estratégia</h3>
+</section><section class="slide level2"><h3 id="estratégia">Estratégia</h3>
 <p>A solução consiste em encontrar um <strong>subconjunto de covariáveis</strong></p>
 <p><span class="math display">\[
 S \subset \{1,2,\dots,p\}
 \]</span></p>
 <p>que produza o <strong>melhor desempenho preditivo</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="formulação-do-problema">Formulação do problema</h3>
+</section><section class="slide level2"><h3 id="formulação-do-problema">Formulação do problema</h3>
 <p>Podemos escrever o problema como</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}}_{L_0} =
@@ -204,10 +196,7 @@ y_k - \beta_0 - \sum_{i=1}^{p} \beta_i x_{k,i}
 +
 \lambda \sum_{i=1}^{p} I(\beta_i \neq 0)
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-da-expressão">Interpretação da expressão</h3>
+</section><section class="slide level2"><h3 id="interpretação-da-expressão">Interpretação da expressão</h3>
 <p>A função objetivo possui <strong>duas partes</strong>:</p>
 <p>1️⃣ <strong>Erro de ajuste</strong></p>
 <p><span class="math display">\[
@@ -217,19 +206,13 @@ y_k - \beta_0 - \sum_{i=1}^{p} \beta_i x_{k,i}
 \right)^2
 \]</span></p>
 <p>mede o <strong>erro quadrático de treinamento</strong>.</p>
-</section>
-<section class="slide level2">
-
-<p>2️⃣ <strong>Penalização pela complexidade</strong></p>
+</section><section class="slide level2"><p>2️⃣ <strong>Penalização pela complexidade</strong></p>
 <p><span class="math display">\[
 \lambda \sum_{i=1}^{p} I(\beta_i \neq 0)
 \]</span></p>
 <p>conta <strong>quantos coeficientes são diferentes de zero</strong>.</p>
 <p>Ou seja, penaliza modelos com <strong>muitas variáveis</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="ideia-central-1">Ideia central</h3>
+</section><section class="slide level2"><h3 id="ideia-central-1">Ideia central</h3>
 <p>O parâmetro <span class="math inline">\(\lambda\)</span> controla o compromisso entre:</p>
 <ul>
 <li><strong>qualidade de ajuste</strong></li>
@@ -239,11 +222,7 @@ y_k - \beta_0 - \sum_{i=1}^{p} \beta_i x_{k,i}
 <ul>
 <li>menos variáveis são selecionadas</li>
 <li>o modelo se torna <strong>mais simples</strong>.</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="caso-sem-penalização">Caso sem penalização</h3>
+</ul></section><section class="slide level2"><h3 id="caso-sem-penalização">Caso sem penalização</h3>
 <p>Quando <span class="math inline">\(\lambda = 0\)</span> não existe penalização.</p>
 <p>Nesse caso, <span class="math inline">\(\hat{\beta}_{L_0}\)</span> coincide com o <strong>estimador de mínimos quadrados</strong>.</p>
 <p>Ou seja:</p>
@@ -252,20 +231,14 @@ y_k - \beta_0 - \sum_{i=1}^{p} \beta_i x_{k,i}
 <li>todas as covariáveis permanecem no modelo.</li>
 </ul>
 <p><span class="body-text-m teal-text center">É importante notar que não há penalização para <span class="math inline">\(\beta_0\)</span></span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="busca-entre-todos-os-subconjuntos">Busca entre todos os subconjuntos</h3>
+</section><section class="slide level2"><h3 id="busca-entre-todos-os-subconjuntos">Busca entre todos os subconjuntos</h3>
 <p>Para um valor específico de <span class="math inline">\(\lambda = \dfrac{2 \hat{\sigma}^2}{n}\)</span>, encontrar a solução para <span class="math inline">\(\hat{\boldsymbol{\beta}}_{L_0}\)</span> equivale a buscar entre todos os modelos da classe</p>
 <p><span class="math display">\[
 G =
 \{g(x)\}
 \]</span></p>
 <p>que correspondem a diferentes <strong>subconjuntos de covariáveis</strong>.</p>
-</section>
-<section class="slide level2">
-
-<p>Por exemplo:</p>
+</section><section class="slide level2"><p>Por exemplo:</p>
 <p><span class="math display">\[
 \begin{aligned}
 G = \{g(\mathbf{x})&amp;=\hat{\beta}_0,\\
@@ -279,10 +252,7 @@ g(\mathbf{x}) &amp;=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_3 x_3\\
 g(\mathbf{x}) &amp;=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_2 x_2+\cdots+\hat{\beta}_p x_p\}
 \end{aligned}
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="como-escolher-o-melhor-modelo">Como escolher o melhor modelo?</h3>
+</section><section class="slide level2"><h3 id="como-escolher-o-melhor-modelo">Como escolher o melhor modelo?</h3>
 <p>Uma estratégia é ajustar <strong>cada um dos <span class="math inline">\(2^p\)</span> modelos</strong> e comparar seus desempenhos.</p>
 <p>Para isso utilizamos critérios de seleção de modelos, como:</p>
 <ul>
@@ -291,68 +261,54 @@ g(\mathbf{x}) &amp;=\hat{\beta}_0+\hat{\beta}_1 x_1+\hat{\beta}_2 x_2+\cdots+\ha
 <li><strong>validação cruzada</strong></li>
 </ul>
 <p>O modelo escolhido é aquele que apresenta o <strong>menor risco estimado</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="dificuldade-computacional">Dificuldade computacional</h3>
+</section><section class="slide level2"><h3 id="dificuldade-computacional">Dificuldade computacional</h3>
 <p>Apesar da ideia ser conceitualmente simples, resolver o problema exatamente pode ser <strong>computacionalmente caro</strong>.</p>
 <p>Se existem <span class="math inline">\(p\)</span> covariáveis, então existem <span class="math inline">\(2^p\)</span> subconjuntos possíveis de variáveis.</p>
 <p>Logo, precisaríamos ajustar <strong><span class="math inline">\(2^p\)</span> modelos diferentes</strong>.</p>
 <p>Por exemplo:</p>
 <ul>
-<li><span class="math inline">\(p=10\)</span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(2^{10}=1024\)</span> modelos</li>
-<li><span class="math inline">\(p=20\)</span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(2^{20}=1.048.576\)</span> modelos</li>
-</ul>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_param_altas_dimen_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="ideia-alternativa">Ideia alternativa</h3>
+<li>
+<span class="math inline">\(p=10\)</span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(2^{10}=1024\)</span> modelos</li>
+<li>
+<span class="math inline">\(p=20\)</span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(2^{20}=1.048.576\)</span> modelos</li>
+</ul></section><section class="slide level2">
+<img data-src="met_param_altas_dimen_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="ideia-alternativa">Ideia alternativa</h3>
 <p>Uma solução é utilizar <strong>heurísticas</strong> que exploram apenas <strong>uma pequena parte do espaço de modelos</strong>, mas ainda assim produzem modelos com <strong>baixo erro preditivo</strong>.</p>
 <p>Ou seja, buscamos uma <strong>aproximação da solução ótima</strong>, sem precisar avaliar todos os <span class="math inline">\(2^p\)</span> modelos.</p>
-</section>
-<section id="regressão-stepwise" class="slide level2">
-<h2>Regressão Stepwise</h2>
+</section><section id="regressão-stepwise" class="slide level2"><h2>Regressão Stepwise</h2>
 <p>Uma família de algoritmos que utiliza essa ideia é chamada de <strong>regressão stepwise</strong>.</p>
 <p>Esses métodos analisam apenas <strong>um subconjunto dos modelos possíveis</strong>, reduzindo drasticamente o custo computacional.</p>
 <p><br></p>
 <h3 id="ideia-do-algoritmo">Ideia do algoritmo</h3>
 <p>Os métodos stepwise constroem o modelo <strong>sequencialmente</strong>, adicionando ou removendo variáveis.</p>
 <p>Em cada etapa, o algoritmo avalia um pequeno conjunto de candidatos e escolhe o modelo que <strong>melhora mais o critério de ajuste</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="tipos-principais">Tipos principais</h3>
+</section><section class="slide level2"><h3 id="tipos-principais">Tipos principais</h3>
 <p>Existem três variantes clássicas:</p>
 <ul>
-<li><strong>Forward stepwise</strong>
+<li>
+<strong>Forward stepwise</strong>
 <ul>
 <li>começa com modelo vazio</li>
 <li>adiciona uma variável por vez</li>
-</ul></li>
-<li><strong>Backward stepwise</strong>
+</ul>
+</li>
+<li>
+<strong>Backward stepwise</strong>
 <ul>
 <li>começa com todas as variáveis</li>
 <li>remove uma variável por vez</li>
-</ul></li>
-<li><strong>Stepwise bidirecional</strong>
+</ul>
+</li>
+<li>
+<strong>Stepwise bidirecional</strong>
 <ul>
 <li>pode adicionar ou remover variáveis em cada etapa</li>
-</ul></li>
 </ul>
-</section>
-<section class="slide level2">
-
-<h3 id="forward-stepwise-selection">Forward Stepwise Selection</h3>
+</li>
+</ul></section><section class="slide level2"><h3 id="forward-stepwise-selection">Forward Stepwise Selection</h3>
 <p>O método <strong>forward stepwise</strong> constrói o modelo <strong>sequencialmente</strong>, adicionando uma variável por vez.</p>
 <p>Em cada etapa escolhemos a variável que <strong>mais reduz o risco estimado</strong> (por exemplo, usando <strong>AIC</strong> ou <strong>validação cruzada</strong>).</p>
-</section>
-<section class="slide level2">
-
-<h3 id="passo-1-escolher-a-melhor-variável-isolada">Passo 1: Escolher a melhor variável isolada</h3>
+</section><section class="slide level2"><h3 id="passo-1-escolher-a-melhor-variável-isolada">Passo 1: Escolher a melhor variável isolada</h3>
 <p>Para cada variável <span class="math inline">\(X_j\)</span>, com <span class="math inline">\(j=1,\dots,p\)</span>, ajustamos o modelo</p>
 <p><span class="math display">\[
 Y = \beta_j X_j + \varepsilon
@@ -362,10 +318,7 @@ Y = \beta_j X_j + \varepsilon
 \hat{j} = \arg\min_j \hat{R}(g_j)
 \]</span></p>
 <p>e definimos <span class="math inline">\(S = \{\hat{j}\}\)</span>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="passo-2-adicionar-uma-nova-variável">Passo 2: Adicionar uma nova variável</h3>
+</section><section class="slide level2"><h3 id="passo-2-adicionar-uma-nova-variável">Passo 2: Adicionar uma nova variável</h3>
 <p>Para cada variável <span class="math inline">\(j \notin S\)</span>, ajustamos</p>
 <p><span class="math display">\[
 Y = \beta_j X_j + \sum_{s \in S} \beta_s X_s + \varepsilon
@@ -375,29 +328,20 @@ Y = \beta_j X_j + \sum_{s \in S} \beta_s X_s + \varepsilon
 \hat{j} = \arg\min_{j \notin S} \hat{R}(g_j)
 \]</span></p>
 <p>e atualizamos <span class="math inline">\(S \leftarrow S \cup \{\hat{j}\}.\)</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="passo-3-repetir">Passo 3: Repetir</h3>
+</section><section class="slide level2"><h3 id="passo-3-repetir">Passo 3: Repetir</h3>
 <p>Repetimos o processo:</p>
 <ul>
-<li>adicionando <strong>uma variável por vez</strong></li>
+<li>adicionando <strong>uma variável por vez</strong>
+</li>
 <li>sempre escolhendo a que <strong>mais reduz o risco estimado</strong>.</li>
 </ul>
 <p>O procedimento continua até:</p>
 <ul>
 <li>todas as variáveis entrarem no modelo, ou</li>
 <li>não ser mais possível melhorar o ajuste.</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="passo-4-escolher-o-melhor-modelo">Passo 4: Escolher o melhor modelo</h3>
+</ul></section><section class="slide level2"><h3 id="passo-4-escolher-o-melhor-modelo">Passo 4: Escolher o melhor modelo</h3>
 <p>Ao final, escolhemos o modelo com <strong>menor risco estimado</strong> ao longo da sequência de modelos gerados.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="vantagem-computacional">Vantagem computacional</h3>
+</section><section class="slide level2"><h3 id="vantagem-computacional">Vantagem computacional</h3>
 <p>No <strong>best subset selection</strong> precisaríamos avaliar <span class="math inline">\(2^p\)</span> modelos.</p>
 <p>No <strong>forward stepwise</strong> precisamos ajustar apenas</p>
 <p><span class="math display">\[
@@ -405,22 +349,15 @@ Y = \beta_j X_j + \sum_{s \in S} \beta_s X_s + \varepsilon
 \]</span></p>
 <p>modelos.</p>
 <p>Isso representa uma <strong>redução enorme no custo computacional</strong>.</p>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_param_altas_dimen_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="lasso" class="slide level2">
-<h2>Lasso</h2>
+</section><section class="slide level2">
+<img data-src="met_param_altas_dimen_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="lasso" class="slide level2"><h2>Lasso</h2>
 <p>O <strong>Lasso</strong> (Least Absolute Shrinkage and Selection Operator) foi proposto por <span class="citation" data-cites="tibshirani1996lasso">Tibshirani (<a href="#/references" role="doc-biblioref" onclick="">1996</a>)</span>.</p>
 <p>Seu objetivo é encontrar um estimador da regressão linear que tenha <strong>menor risco preditivo</strong> que o método de mínimos quadrados.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="ideia-central-2">Ideia central</h3>
+</section><section class="slide level2"><h3 id="ideia-central-2">Ideia central</h3>
 <p>Assim como em outros métodos de regularização, o Lasso busca minimizar:</p>
 <ul>
-<li>o <strong>erro de ajuste</strong></li>
+<li>o <strong>erro de ajuste</strong>
+</li>
 <li>mais uma <strong>penalização de complexidade</strong>.</li>
 </ul>
 <p>A função objetivo é</p>
@@ -435,57 +372,41 @@ y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
 +
 \lambda \sum_{j=1}^{p} |\beta_j|
 \]</span></p>
-</section>
-<section class="slide level2">
-
-<h3 id="penalização-l_1">Penalização <span class="math inline">\(L_1\)</span></h3>
+</section><section class="slide level2"><h3 id="penalização-l_1">Penalização <span class="math inline">\(L_1\)</span>
+</h3>
 <p>No Lasso, a complexidade do modelo é medida pela <strong>norma <span class="math inline">\(L_1\)</span></strong>:</p>
 <p><span class="math display">\[
 \sum_{j=1}^{p} |\beta_j|
 \]</span></p>
 <p>Essa penalização favorece modelos com <strong>coeficientes pequenos</strong> e frequentemente <strong>iguais a zero</strong>.</p>
 <p>Por isso, o Lasso realiza <strong>seleção automática de variáveis</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="comparação-com-seleção-de-subconjuntos">Comparação com seleção de subconjuntos</h3>
+</section><section class="slide level2"><h3 id="comparação-com-seleção-de-subconjuntos">Comparação com seleção de subconjuntos</h3>
 <p>Nos métodos de seleção de variáveis clássicos utilizamos a penalização</p>
 <p><span class="math display">\[
 \sum_{j=1}^{p} I(\beta_j \neq 0)
 \]</span></p>
 <p>que corresponde à <strong>norma <span class="math inline">\(L_0\)</span></strong>.</p>
-</section>
-<section class="slide level2">
-
-<p>No Lasso utilizamos</p>
+</section><section class="slide level2"><p>No Lasso utilizamos</p>
 <p><span class="math display">\[
 \sum_{j=1}^{p} |\beta_j|
 \]</span></p>
 <p>que é a <strong>norma <span class="math inline">\(L_1\)</span></strong>.</p>
 <p>Essa substituição torna o problema <strong>computacionalmente muito mais fácil de resolver</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="vantagens-do-lasso">Vantagens do Lasso</h3>
+</section><section class="slide level2"><h3 id="vantagens-do-lasso">Vantagens do Lasso</h3>
 <p>Em relação a métodos como <strong>stepwise selection</strong>, o Lasso possui:</p>
 <ul>
-<li>solução <strong>computacionalmente mais rápida</strong></li>
+<li>solução <strong>computacionalmente mais rápida</strong>
+</li>
 <li><strong>melhores propriedades teóricas</strong></li>
 <li>capacidade de realizar <strong>seleção automática de variáveis</strong>.</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="o-papel-do-parâmetro-lambda-no-lasso">O papel do parâmetro <span class="math inline">\(\lambda\)</span> no Lasso</h3>
+</ul></section><section class="slide level2"><h3 id="o-papel-do-parâmetro-lambda-no-lasso">O papel do parâmetro <span class="math inline">\(\lambda\)</span> no Lasso</h3>
 <p>Cada valor do <strong>parâmetro de regularização <span class="math inline">\(\lambda\)</span></strong> produz um conjunto diferente de coeficientes</p>
 <p><span class="math display">\[
 \hat{\beta}_{L_1,\lambda}
 \]</span></p>
 <p>Esse parâmetro controla o <strong>grau de penalização aplicado ao modelo</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="caso-1-lambda-0">Caso 1: <span class="math inline">\(\lambda = 0\)</span></h3>
+</section><section class="slide level2"><h3 id="caso-1-lambda-0">Caso 1: <span class="math inline">\(\lambda = 0\)</span>
+</h3>
 <p>Quando <span class="math inline">\(\lambda = 0\)</span> o problema do Lasso se reduz a</p>
 <p><span class="math display">\[
 \min_\beta \sum_{k=1}^{n}
@@ -498,11 +419,7 @@ y_k - \beta_0 - \sum_{j=1}^{p}\beta_j x_{k,j}
 <ul>
 <li>não há penalização</li>
 <li>todos os coeficientes podem ser diferentes de zero</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="caso-2-lambda-grande">Caso 2: <span class="math inline">\(\lambda\)</span> grande</h3>
+</ul></section><section class="slide level2"><h3 id="caso-2-lambda-grande">Caso 2: <span class="math inline">\(\lambda\)</span> grande</h3>
 <p>Quando <span class="math inline">\(\lambda\)</span> cresce, o termo de penalização domina:</p>
 <p><span class="math display">\[
 \sum_{k=1}^{n}
@@ -520,49 +437,41 @@ y_k - \beta_0 - \sum_{j=1}^{p}\beta_j x_{k,j}
 \]</span></p>
 <p>Portanto:</p>
 <ul>
-<li>o modelo torna-se <strong>extremamente simples</strong></li>
-<li>a <strong>variância é muito pequena</strong></li>
-<li>mas o <strong>viés é alto</strong></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="como-escolher-lambda">Como escolher <span class="math inline">\(\lambda\)</span>?</h3>
+<li>o modelo torna-se <strong>extremamente simples</strong>
+</li>
+<li>a <strong>variância é muito pequena</strong>
+</li>
+<li>mas o <strong>viés é alto</strong>
+</li>
+</ul></section><section class="slide level2"><h3 id="como-escolher-lambda">Como escolher <span class="math inline">\(\lambda\)</span>?</h3>
 <p>Na prática, <span class="math inline">\(\lambda\)</span> é escolhido por <strong>validação cruzada</strong>.</p>
 <p>Procedimento:</p>
 <ol type="1">
-<li>Ajustar o modelo para vários valores de <span class="math inline">\(\lambda\)</span></li>
-<li>Estimar o risco preditivo <span class="math inline">\(R(g_\lambda)\)</span></li>
-<li>Selecionar o valor de <span class="math inline">\(\lambda\)</span> que <strong>minimiza o erro de validação</strong></li>
+<li>Ajustar o modelo para vários valores de <span class="math inline">\(\lambda\)</span>
+</li>
+<li>Estimar o risco preditivo <span class="math inline">\(R(g_\lambda)\)</span>
+</li>
+<li>Selecionar o valor de <span class="math inline">\(\lambda\)</span> que <strong>minimiza o erro de validação</strong>
+</li>
 </ol>
 <p>Esse processo está ilustrado no <strong>caminho de regularização do Lasso</strong>.</p>
-</section>
-<section class="slide level2">
-
-
-<img data-src="met_param_altas_dimen_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-
-<h3 id="caminho-dos-coeficientes-no-lasso">Caminho dos coeficientes no Lasso</h3>
+</section><section class="slide level2">
+<img data-src="met_param_altas_dimen_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="caminho-dos-coeficientes-no-lasso">Caminho dos coeficientes no Lasso</h3>
 <ul>
 <li>Cada curva representa um <strong>coeficiente do modelo</strong>.</li>
 <li>Quando <span class="math inline">\(\lambda\)</span> é pequeno, os coeficientes ficam próximos do ajuste por mínimos quadrados.</li>
 <li>À medida que <span class="math inline">\(\lambda\)</span> aumenta, os coeficientes são <strong>encolhidos em direção a zero</strong>.</li>
 <li>Alguns coeficientes tornam-se <strong>exatamente zero</strong>, realizando <strong>seleção automática de variáveis</strong>.</li>
-</ul>
-</section>
-<section id="regressão-ridge" class="slide level2">
-<h2>Regressão Ridge</h2>
+</ul></section><section id="regressão-ridge" class="slide level2"><h2>Regressão Ridge</h2>
 <p>Uma alternativa ao <strong>Lasso</strong> é a <strong>Regressão Ridge</strong>, introduzida por <span class="citation" data-cites="hoerl1970ridge">Hoerl and Kennard (<a href="#/references" role="doc-biblioref" onclick="">1970</a>)</span>. A ideia é buscar um modelo que minimize simultaneamente:</p>
 <ul>
-<li>o <strong>erro de ajuste do modelo</strong></li>
-<li>uma <strong>medida da complexidade do vetor de coeficientes</strong></li>
+<li>o <strong>erro de ajuste do modelo</strong>
+</li>
+<li>uma <strong>medida da complexidade do vetor de coeficientes</strong>
+</li>
 </ul>
 <p>Na regressão Ridge isso é feito penalizando a <strong>norma <span class="math inline">\(L_2\)</span> dos coeficientes</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="formulação-do-problema-1">Formulação do Problema</h3>
+</section><section class="slide level2"><h3 id="formulação-do-problema-1">Formulação do Problema</h3>
 <p>O estimador da regressão Ridge é definido como</p>
 <p><span class="math display">\[
 \hat{\beta}_{L_2,\lambda}
@@ -577,18 +486,19 @@ y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
 \]</span></p>
 <p>onde</p>
 <ul>
-<li><span class="math inline">\(y_k\)</span> é a variável resposta da <span class="math inline">\(k\)</span>-ésima observação<br>
+<li>
+<span class="math inline">\(y_k\)</span> é a variável resposta da <span class="math inline">\(k\)</span>-ésima observação<br>
 </li>
-<li><span class="math inline">\(x_{k,j}\)</span> é o valor da <span class="math inline">\(j\)</span>-ésima covariável<br>
+<li>
+<span class="math inline">\(x_{k,j}\)</span> é o valor da <span class="math inline">\(j\)</span>-ésima covariável<br>
 </li>
-<li><span class="math inline">\(\beta_j\)</span> são os coeficientes do modelo<br>
+<li>
+<span class="math inline">\(\beta_j\)</span> são os coeficientes do modelo<br>
 </li>
-<li><span class="math inline">\(\lambda \ge 0\)</span> é o <strong>parâmetro de regularização</strong></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="estrutura-da-função-objetivo">Estrutura da Função Objetivo</h3>
+<li>
+<span class="math inline">\(\lambda \ge 0\)</span> é o <strong>parâmetro de regularização</strong>
+</li>
+</ul></section><section class="slide level2"><h3 id="estrutura-da-função-objetivo">Estrutura da Função Objetivo</h3>
 <h4 id="erro-de-ajuste">Erro de ajuste</h4>
 <p><span class="math display">\[
 \sum_{k=1}^{n}
@@ -602,10 +512,8 @@ y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
 \lambda \sum_{j=1}^{d} \beta_j^2
 \]</span></p>
 <p>Esse termo penaliza coeficientes grandes, reduzindo a complexidade do modelo.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="norma-l_2">Norma <span class="math inline">\(L_2\)</span></h3>
+</section><section class="slide level2"><h3 id="norma-l_2">Norma <span class="math inline">\(L_2\)</span>
+</h3>
 <p>A penalização utilizada corresponde à <strong>norma <span class="math inline">\(L_2\)</span> do vetor de coeficientes</strong></p>
 <p><span class="math display">\[
 \|\beta\|_{L_2}^2
@@ -614,38 +522,34 @@ y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
 \]</span></p>
 <p>Essa medida representa o <strong>comprimento euclidiano do vetor de parâmetros</strong>.</p>
 <p>Penalizar essa quantidade implica restringir a magnitude dos coeficientes.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="papel-do-parâmetro-lambda">Papel do Parâmetro <span class="math inline">\(\lambda\)</span></h3>
+</section><section class="slide level2"><h3 id="papel-do-parâmetro-lambda">Papel do Parâmetro <span class="math inline">\(\lambda\)</span>
+</h3>
 <p>O parâmetro <span class="math inline">\(\lambda\)</span> controla o grau de regularização do modelo.</p>
 <table class="caption-top">
-<thead>
-<tr class="header">
-<th>Valor de <span class="math inline">\(\lambda\)</span></th>
+<thead><tr class="header">
+<th>Valor de <span class="math inline">\(\lambda\)</span>
+</th>
 <th>Interpretação</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\lambda = 0\)</span></td>
 <td>regressão linear clássica</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\(\lambda\)</span> pequeno</td>
+<td>
+<span class="math inline">\(\lambda\)</span> pequeno</td>
 <td>penalização fraca</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(\lambda\)</span> grande</td>
+<td>
+<span class="math inline">\(\lambda\)</span> grande</td>
 <td>coeficientes próximos de zero</td>
 </tr>
 </tbody>
 </table>
 <p>Assim, <span class="math inline">\(\lambda\)</span> controla o <strong>trade-off entre ajuste e complexidade do modelo</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="solução-analítica">Solução Analítica</h3>
+</section><section class="slide level2"><h3 id="solução-analítica">Solução Analítica</h3>
 <p>Diferentemente do Lasso, a regressão Ridge possui <strong>solução analítica fechada</strong>, dada por</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}}_{L_2,\lambda}
@@ -654,14 +558,13 @@ y_k - \beta_0 - \sum_{j=1}^{p} \beta_j x_{k,j}
 \]</span></p>
 <p>onde</p>
 <ul>
-<li><span class="math inline">\(\boldsymbol{X}\)</span> é a matriz de covariáveis</li>
-<li><span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
-<li><span class="math inline">\(I_0\)</span> é uma matriz identidade modificada.</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="papel-da-matriz-identidade">Papel da Matriz Identidade</h3>
+<li>
+<span class="math inline">\(\boldsymbol{X}\)</span> é a matriz de covariáveis</li>
+<li>
+<span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
+<li>
+<span class="math inline">\(I_0\)</span> é uma matriz identidade modificada.</li>
+</ul></section><section class="slide level2"><h3 id="papel-da-matriz-identidade">Papel da Matriz Identidade</h3>
 <p>A matriz <span class="math inline">\(I_0\)</span> é construída de modo que o <strong>intercepto não seja penalizado</strong>.</p>
 <p><span class="math display">\[
 I_0 =
@@ -674,10 +577,7 @@ I_0 =
 \end{pmatrix}
 \]</span></p>
 <p>Ou seja, o coeficiente <span class="math inline">\(\beta_0\)</span> não sofre regularização.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="comparação-com-regressão-linear">Comparação com Regressão Linear</h3>
+</section><section class="slide level2"><h3 id="comparação-com-regressão-linear">Comparação com Regressão Linear</h3>
 <p>Na regressão linear clássica temos</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}}_{OLS}
@@ -689,10 +589,7 @@ I_0 =
 \boldsymbol{X}^t \boldsymbol{X} + \lambda I_0
 \]</span></p>
 <p>mais estável numericamente, especialmente quando existe <strong>alta correlação entre variáveis explicativas</strong>.</p>
-</section>
-<section class="slide level2">
-
-<h3 id="interpretação-geométrica">Interpretação Geométrica</h3>
+</section><section class="slide level2"><h3 id="interpretação-geométrica">Interpretação Geométrica</h3>
 <p>A regressão Ridge pode ser interpretada como o problema</p>
 <p><span class="math display">\[
 \min \text{Erro}
@@ -703,21 +600,16 @@ I_0 =
 \]</span></p>
 <p>Geometricamente:</p>
 <ul>
-<li>a restrição define uma <strong>esfera no espaço dos coeficientes</strong></li>
+<li>a restrição define uma <strong>esfera no espaço dos coeficientes</strong>
+</li>
 <li>a solução ocorre onde essa esfera toca a superfície do erro mínimo.</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="comparação-entre-ridge-e-lasso">Comparação entre Ridge e Lasso</h3>
+</ul></section><section class="slide level2"><h3 id="comparação-entre-ridge-e-lasso">Comparação entre Ridge e Lasso</h3>
 <table class="caption-top">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th>Método</th>
 <th>Penalização</th>
 <th>Efeito</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td>Ridge</td>
@@ -733,13 +625,12 @@ I_0 =
 </table>
 <p>Assim:</p>
 <ul>
-<li><strong>Ridge</strong> reduz a magnitude dos coeficientes</li>
-<li><strong>Lasso</strong> pode realizar <strong>seleção automática de variáveis</strong></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3 id="conclusão">Conclusão</h3>
+<li>
+<strong>Ridge</strong> reduz a magnitude dos coeficientes</li>
+<li>
+<strong>Lasso</strong> pode realizar <strong>seleção automática de variáveis</strong>
+</li>
+</ul></section><section class="slide level2"><h3 id="conclusão">Conclusão</h3>
 <p>A regressão Ridge é um método fundamental em aprendizado estatístico porque</p>
 <ul>
 <li>reduz a variância dos estimadores</li>
@@ -748,9 +639,7 @@ I_0 =
 <li>funciona bem em presença de <strong>multicolinearidade</strong>.</li>
 </ul>
 <p>Por essas razões, métodos de regularização são amplamente utilizados em problemas modernos de <strong>aprendizado de máquina e análise de dados de alta dimensão</strong>.</p>
-</section>
-<section id="references" class="slide level2 smaller scrollable" data-visibility="uncounted">
-<h2>References</h2>
+</section><section id="references" class="slide level2 smaller scrollable" data-visibility="uncounted"><h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-hoerl1970ridge" class="csl-entry" role="listitem">
 Hoerl, Arthur E., and Robert W. Kennard. 1970. <span>“Ridge Regression: Biased Estimation for Nonorthogonal Problems.”</span> <em>Technometrics</em> 12 (1): 55–67. <a href="https://doi.org/10.1080/00401706.1970.10488634">https://doi.org/10.1080/00401706.1970.10488634</a>.
@@ -762,31 +651,14 @@ Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via the La
 
 
 </section>
-    </div>
+</div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../../../site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../../../site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -978,84 +850,42 @@ Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via the La
           RevealZoom
         ]
       });
-    </script>
-    
-
-    <script>
-
+    </script><script>
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
     
-
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
-
     
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
     
-
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
-
     
-
       })();
-
-    </script>
-
-    
-
-    <script id="quarto-html-after-body" type="application/javascript">
+    </script><script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1222,6 +1052,6 @@ Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via the La
         }
       });
       </script>
-    
+
 
 </body></html>
