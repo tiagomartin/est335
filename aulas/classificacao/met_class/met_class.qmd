@@ -1,0 +1,2400 @@
+---
+title: "Parte II : Classificação"
+subtitle: "<span class='custom-subtitle'>Métodos de classificação</span>"
+format: 
+  revealjs:
+    width: 1600
+    height: 900
+    footer: ""
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    preview-links: auto
+    self-contained: false
+    embed-resources: false
+    code-link: true
+    highlight-style: a11y
+    chalkboard: true
+  # beamer:          # Slides em PDF (LaTeX/Beamer)
+  #   aspectratio: 169   # 16:9
+  #   keep-tex: true     # opcional, guarda o .tex gerado
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+    data-background-image: /images/back.png
+    data-background-size: cover
+    data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+
+# Classificadores Plug-in
+
+
+## Ideia central dos classificadores Plug-in
+
+<br>
+
+A regra de Bayes depende de $\mathbb{P}(Y = c \mid \mathbf{x} = x)$, que é **desconhecida** na prática.
+
+**Ideia:** estimar $\hat{p}_c(\mathbf{x}) \approx \mathbb{P}(Y = c \mid \mathbf{x} = x)$ e **"plugar"** na regra de Bayes:
+
+$$
+\hat{g}(\mathbf{x}) = \arg\max_c \hat{p}_c(\mathbf{x})
+$$
+
+
+## Ideia central dos classificadores Plug-in
+
+
+Duas abordagens principais:<br><br>
+
+- **Discriminativa:** modela diretamente $\mathbb{P}(Y = c \mid \mathbf{x} = x)$. 
+    - Ex.: regressão logística.<br><br>
+    
+- **Generativa:** modela $\pi_c = \mathbb{P}(Y = c)$ e $f_c(\mathbf{x}) = f(\mathbf{x} \mid Y = c)$ separadamente e usa Bayes. 
+    - Ex.: Naive Bayes, LDA, QDA.
+
+
+## Regressão logística: Motivação
+
+A regressão linear não é adequada para probabilidades, pois pode gerar valores fora de $[0,1]$.
+
+Usamos a **função logística** (sigmoide):
+
+$$
+\sigma(z) = \frac{e^z}{1 + e^z}
+$$
+
+Propriedades:
+
+- $0 < \sigma(z) < 1$ para todo $z \in \mathbb{R}$
+- $\sigma(z) \to 0$ quando $z \to -\infty$
+- $\sigma(z) \to 1$ quando $z \to +\infty$
+
+
+## Modelo logístico
+
+Para classificação binária $\left(Y \in \{0,1\}\right)$:
+
+$$
+\log\left(\frac{p(\mathbf{x})}{1-p(\mathbf{x})}\right) = \beta^\top \mathbf{x}
+$$
+
+de modo que:
+
+$$
+\mathbb{P}(Y = c \mid \mathbf{x}) = p(\mathbf{x}) = \frac{e^{\beta^\top \mathbf{x}}}{1 + e^{\beta^\top \mathbf{x}}} = \frac{e^{\beta_0+\sum_{i=1}^{p}\beta_i x_i}}{1+e^{\beta_0+\sum_{i=1}^{p}\beta_i x_i}}
+$$
+
+
+## Modelo logístico
+
+
+A quantidade $$\frac{p(\mathbf{x})}{1-p(\mathbf{x})}$$ é a **chance (odds)**.
+
+**Interpretação:** um aumento de 1 unidade em $x_j$ multiplica as chances por $e^{\beta_j}$ (odds ratio).
+
+
+
+
+
+## Estimação por Máxima Verossimilhança
+
+A verossimilhança para $n$ observações i.i.d. $(\mathbf{x}_1, y_1), \cdots, (\mathbf{x}_n, y_n)$:
+
+$$
+L(\beta) = \prod_{i=1}^n p(\mathbf{x}_i)^{y_i} (1-p(\mathbf{x}_i))^{1-y_i}
+$$
+
+Log-verossimilhança:
+
+$$
+\ell(\beta) = \sum_{i=1}^n \left[ y_i \log p(\mathbf{x}_i) + (1-y_i) \log(1-p(\mathbf{x}_i)) \right]
+$$
+
+
+## Estimação por Máxima Verossimilhança
+
+Não há forma fechada para $\hat{\beta}$. Usamos o algoritmo **IRLS** (Iteratively Reweighted Least Squares).
+
+A função de log-verossimilhança é côncava, garantindo um único máximo global.
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 9
+#| fig-height: 5
+
+library(ggplot2)
+
+set.seed(123)
+
+#--------------------------------------------------
+# Simulação de um problema de classificação binária
+#--------------------------------------------------
+n <- 300
+
+x <- rnorm(n)
+
+beta_0 <- -0.5
+beta_1 <- 1.8
+
+probabilidade <- plogis(beta_0 + beta_1 * x)
+
+y <- rbinom(
+  n = n,
+  size = 1,
+  prob = probabilidade
+)
+
+#--------------------------------------------------
+# Log-verossimilhança em função de beta_1
+# Mantemos beta_0 fixo apenas para visualização
+#--------------------------------------------------
+log_verossimilhanca <- function(b1) {
+  
+  eta <- beta_0 + b1 * x
+  
+  # Forma numericamente estável:
+  sum(y * eta - log1p(exp(eta)))
+}
+
+grade_beta <- seq(
+  from = -2,
+  to = 5,
+  length.out = 500
+)
+
+df_loglik <- data.frame(
+  beta_1 = grade_beta,
+  logLik = vapply(
+    grade_beta,
+    log_verossimilhanca,
+    numeric(1)
+  )
+)
+
+# Ponto de máximo na grade
+ponto_maximo <- df_loglik[
+  which.max(df_loglik$logLik),
+]
+
+#--------------------------------------------------
+# Gráfico
+#--------------------------------------------------
+ggplot(
+  df_loglik,
+  aes(x = beta_1, y = logLik)
+) +
+  geom_line(
+    linewidth = 1.5,
+    color = "#36436E"
+  ) +
+  geom_vline(
+    xintercept = ponto_maximo$beta_1,
+    linetype = "dashed",
+    linewidth = 0.8,
+    color = "#7A7A6A"
+  ) +
+  geom_point(
+    data = ponto_maximo,
+    size = 4,
+    color = "#E8505B"
+  ) +
+  annotate(
+    "label",
+    x = ponto_maximo$beta_1 + 0.15,
+    y = ponto_maximo$logLik + 18,
+    label = paste0(
+      "Máximo global\n",
+      "\u03B2\u0302\u2081 \u2248 ",
+      round(ponto_maximo$beta_1, 2)
+    ),
+    hjust = 0,
+    vjust = 0.5,
+    size = 4.5,
+    fontface = "bold",
+    label.size = 0.25,
+    label.padding = unit(0.25, "lines")
+  ) +
+  coord_cartesian(
+    ylim = c(
+      min(df_loglik$logLik),
+      max(df_loglik$logLik) + 35
+    ),
+    clip = "off"
+  ) +
+  labs(
+    title = "Log-verossimilhança da regressão logística",
+    subtitle = "A curvatura voltada para baixo evidencia a concavidade",
+    x = expression(beta[1]),
+    y = expression(ell(beta[1]))
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    plot.title = element_text(
+      face = "bold",
+      size = 21,
+      color = "#36436E"
+    ),
+    plot.subtitle = element_text(size = 14),
+    axis.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(15, 25, 10, 10)
+  )
+```
+
+
+
+
+
+
+
+
+## R: Regressão logística
+
+```{r}
+#| eval: true
+#| echo: true
+library(ISLR2)
+data(Default)
+
+modelo_log <- glm(default ~ student, data = Default, family = binomial)
+summary(modelo_log)
+```
+
+## R: Regressão logística
+
+**Interpretação:** O coeficiente associado à variável `student` é **positivo e estatisticamente significativo** $(p<0,001)$. Seu `odds ratio` é $e^{0.40489} \approx 1,50$, indicando que, segundo este modelo, estudantes apresentam chances (`odds`) de inadimplência aproximadamente 50% maiores do que não estudantes.
+
+
+---
+
+## Regressão logística múltipla
+
+Para modelos com mais de um preditor, a interpretação de cada coeficiente $\beta_j$ é **condicional** aos demais preditores: representa o efeito de $x_j$ mantendo as outras variáveis fixas.
+
+
+```{r}
+#| eval: true
+#| echo: true
+modelo_multi <- glm(default ~ balance + income + student,
+                    data = Default, family = binomial)
+summary(modelo_multi)
+```
+
+
+## Regressão logística múltipla
+
+### Principais resultados<br><br>
+
+- **Saldo devedor (`balance`)** apresenta efeito **positivo** e altamente significativo sobre a inadimplência.
+  - Cada aumento no saldo aumenta as **chances (odds)** de inadimplência.
+
+- **Renda (`income`)** não é estatisticamente significativa $(p=0,71)$.
+  - Após controlar pelas demais variáveis, não há evidências de efeito sobre a inadimplência.
+
+- **Estudante (`student`)** apresenta coeficiente **negativo** $(OR \approx 0,52)$.
+  - Mantidos constantes saldo devedor e renda, estudantes possuem cerca de **48% menores chances** de inadimplência.
+
+
+
+## Regressão logística múltipla
+
+
+### Observação importante
+
+O sinal da variável `student` mudou em relação ao modelo simples.
+
+Isso ocorre porque estudantes possuem, em média, **maiores saldos de cartão**, e o saldo devedor é o principal fator associado à inadimplência.
+
+Ao controlar por `balance`, o modelo revela o efeito próprio da variável `student`, caracterizando um **caso clássico de confundimento (confounding)**. 
+
+O fenômeno de **confounding** ocorre quando uma variável omitida distorce a relação entre um preditor e a resposta.
+
+
+
+
+
+## Regularização (Lasso e Ridge)
+
+Quando há muitas variáveis preditoras ou multicolinearidade, a regressão logística pode sofrer de **overfitting** ou alta variância.
+
+Uma solução é adicionar um termo de penalização à log-verossimilhança:
+
+**Ridge (penalização L2):**
+
+$$
+\min_{\beta} \left[ -\ell(\beta) + \lambda \sum_{j=1}^p \beta_j^2 \right]
+$$
+
+Penaliza o quadrado dos coeficientes, encolhendo-os em direção a zero, sem zerá-los.
+
+
+## Regularização (Lasso e Ridge)
+
+
+**Lasso (penalização L1):**
+
+$$
+\min_{\beta} \left[ -\ell(\beta) + \lambda \sum_{j=1}^p |\beta_j| \right]
+$$
+
+Penaliza o valor absoluto dos coeficientes, podendo zerá-los e fazer **seleção automática de variáveis**.
+
+O parâmetro $\lambda > 0$ controla o grau de regularização e é escolhido por **validação cruzada**.
+
+
+## Regularização (Lasso e Ridge)
+
+```{r}
+#| eval: true
+#| echo: true
+library(glmnet)
+
+X <- model.matrix(default ~ balance + income + student,
+                  data = Default)[, -1]
+y <- ifelse(Default$default == "Yes", 1, 0)
+
+# Lasso
+cv_lasso <- cv.glmnet(X, y, family = "binomial", alpha = 1)
+coef(cv_lasso, s = "lambda.min")
+
+# Ridge
+cv_ridge <- cv.glmnet(X, y, family = "binomial", alpha = 0)
+coef(cv_ridge, s = "lambda.min")
+```
+
+
+
+## Regularização (Lasso e Ridge): Interpretação
+
+### 🔹 Lasso $(\alpha = 1)$
+
+- Penalização do tipo **L1**.
+- Encolhe os coeficientes em direção a zero.
+- Pode eliminar variáveis pouco relevantes (coeficientes iguais a zero).
+- Realiza **seleção automática de variáveis**.
+
+#### Resultado observado
+
+- **`balance`** permanece como a variável mais importante;
+- **`student`** continua apresentando efeito negativo;
+- **`income`** possui coeficiente muito próximo de zero, indicando baixa contribuição para o modelo.
+
+
+## Regularização (Lasso e Ridge): Interpretação
+
+### 🔹 Ridge $(\alpha = 0)$
+
+- Penalização do tipo **L2**.
+- Reduz a magnitude dos coeficientes.
+- Mantém todas as variáveis no modelo.
+- É indicado quando os preditores apresentam correlação.
+
+#### Resultado observado
+
+- Todos os coeficientes permanecem no modelo;
+- A penalização reduz suas magnitudes em relação ao modelo sem regularização;
+- **balance** continua sendo a variável com maior efeito.
+
+
+## Regularização (Lasso e Ridge): Comparação
+
+| Lasso | Ridge |
+|:------|:------|
+| Penalização L1 | Penalização L2 |
+| Pode eliminar variáveis | Mantém todas as variáveis |
+| Realiza seleção de variáveis | Apenas reduz os coeficientes |
+| Modelo mais interpretável | Modelo mais estável<br><br> |
+
+### Conclusão
+
+Neste exemplo, **`balance`** permanece como o principal preditor da inadimplência em ambos os métodos. A variável **`income`** apresenta efeito praticamente nulo, enquanto **`student`** mantém efeito negativo após o ajuste. A regularização reduz a magnitude dos coeficientes, produzindo modelos potencialmente mais robustos para previsão.
+
+
+
+
+## Regressão logística multinomial (Softmax)
+
+Para problemas com $|\mathcal{C}| > 2$ classes, estendemos a regressão logística usando a função **Softmax**:
+
+$$
+\mathbb{P}(Y = c \mid x) = \frac{\exp(\beta_c^\top x)}{\sum_{j=1}^C \exp(\beta_j^\top x)}
+$$
+
+Para identificabilidade, fixamos $$\beta_C = 0$$ (classe de referência).
+
+
+## Regressão logística multinomial (Softmax)
+
+A log-verossimilhança é:
+
+$$
+\ell(\beta) = \sum_{i=1}^n \sum_{c=1}^C y_{ic} \log \mathbb{P}(Y = c \mid x_i)
+$$
+
+onde $y_{ic} = 1$ se a observação $i$ pertence à classe $c$, e $0$ caso contrário.
+
+
+
+## Regressão logística multinomial (Softmax)
+
+
+
+```{r}
+#| eval: true
+#| echo: true
+library(nnet)
+
+data(iris) # Dados iris: 3 especies de flores, 4 variaveis
+# Ajusta regressao logistica multinomial
+modelo_multi <- multinom(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,data = iris, trace = FALSE)
+summary(modelo_multi)
+```
+
+
+## Regressão logística multinomial (Softmax)
+
+### Principais resultados
+
+- A categoria **`Setosa`** é utilizada como **classe de referência**.
+- O modelo estima coeficientes para comparar:
+  - **`Versicolor` × `Setosa`**;
+  - **`Virginica` × `Setosa`**.
+
+---
+
+### Interpretação dos coeficientes
+
+- **`Petal.Length`** apresenta coeficientes positivos elevados para ambas as espécies.
+  - Pétalas mais longas aumentam a probabilidade de uma observação pertencer às classes **`Versicolor`** ou **`Virginica`**.<br><br>
+
+- **`Sepal.Length`** e **`Sepal.Width`** possuem coeficientes negativos.
+  - Essas variáveis exercem menor influência quando comparadas às medidas das pétalas.<br><br>
+
+
+- **`Petal.Width`** apresenta efeito distinto entre as espécies.
+  - O efeito é fortemente positivo para **`Virginica`**, indicando maior capacidade de discriminação dessa espécie.
+
+---
+
+### Conclusões
+
+- As **medidas das pétalas** são as variáveis mais importantes para distinguir as espécies da base *Iris*.<br><br>
+- A regressão logística multinomial permite modelar problemas com **mais de duas classes**, estimando uma equação logística para cada classe em relação à classe de referência.<br><br>
+- A interpretação dos coeficientes segue o mesmo princípio da regressão logística binária: coeficientes positivos aumentam as **chances (`odds`)** de pertencer à classe analisada, enquanto coeficientes negativos reduzem essas chances.
+
+
+
+
+## Naive Bayes: Abordagem generativa
+
+Pelo Teorema de Bayes:
+
+$$
+\mathbb{P}(Y = c \mid \mathbf{x} = x) \propto \pi_c f_c(\mathbf{x})
+$$
+
+A **suposição ingênua (naive)** assume que, dado $Y = c$, as variáveis preditoras são independentes:
+
+$$
+f_c(\mathbf{x}) = \prod_{j=1}^p f_{cj}(x_j)
+$$
+
+
+## Naive Bayes: Abordagem generativa
+
+
+Portanto:
+
+$$
+\mathbb{P}(Y = c \mid \mathbf{x} = x) \propto \pi_c \prod_{j=1}^p f_{cj}(x_j)
+$$
+
+
+
+
+
+
+O classificador Naive Bayes é:
+
+$$
+\hat{g}(\mathbf{x}) = \arg\max_c \left[ \hat{\pi}_c \prod_{j=1}^p \hat{f}_{cj}(x_j) \right]
+$$
+
+
+---
+
+## Naive Bayes: Estimação
+
+A estimação depende do tipo de variável:
+
+**Variáveis contínuas:** assume-se $$X_j \mid Y = c \sim N(\mu_{cj}, \sigma_{cj}^2)$$
+
+$$
+\hat{f}_{cj}(x_j) = \frac{1}{\sqrt{2\pi\hat{\sigma}_{cj}^2}} \exp\left(-\frac{(x_j - \hat{\mu}_{cj})^2}{2\hat{\sigma}_{cj}^2}\right)
+$$
+
+**Variáveis categóricas:** estimam-se as frequências relativas
+
+$$
+\hat{f}_{cj}(x_j) = \frac{n_{cj}(x_j)}{n_c}
+$$
+
+
+
+## Naive Bayes: Estimação
+
+**Priori:** $$\hat{\pi}_c = \frac{n_c}{n}$$
+
+**Vantagens:** simples, rápido, funciona bem mesmo com $p$ grande e $n$ pequeno, lida naturalmente com variáveis mistas.
+
+
+## R: Naive Bayes
+
+```{r}
+#| eval: true
+#| echo: true
+library(e1071)
+library(ISLR2)
+
+nb_fit <- naiveBayes(default ~ balance + student, data = Default)
+nb_fit
+
+pred_nb <- predict(nb_fit, Default)
+mean(pred_nb == Default$default)
+```
+
+
+## R: Naive Bayes
+
+### Interpretação das probabilidades condicionais
+
+- **Variáveis contínuas** (ex.: `balance`)
+  - Assume-se que a variável segue uma **distribuição Normal (Gaussiana)** em cada classe.
+  - A saída apresenta a **média ($\mu$)** e o **desvio-padrão ($\sigma$)** estimados para cada classe.
+
+- **Variáveis categóricas** (ex.: `student`)
+  - A saída apresenta as **probabilidades condicionais** estimadas por frequência relativa.
+  - Exemplo: $P(\text{student = Yes} \mid Y=\text{Yes}) = 0.3814$
+
+## R: Naive Bayes
+
+
+
+- **Classificação**
+  - O Naive Bayes combina as **probabilidades a priori** das classes com as **probabilidades condicionais** dos preditores para calcular a **probabilidade posterior** de cada classe, assumindo independência condicional entre as variáveis explicativas.<br><br>
+  - A elevada acurácia deve ser interpretada com cautela, pois a classe **"No"** é predominante na base.<br><br>
+  - Em bases desbalanceadas, recomenda-se complementar a avaliação com métricas como **sensibilidade, especificidade, precisão, F1-score** e **AUC**, além da matriz de confusão.
+  
+  
+  
+
+
+
+## Função Discriminante Linear (LDA)
+
+A **Análise Discriminante Linear (LDA)** assume que a densidade condicional de $\mathbf{x}$ dada a classe $Y = c$ é normal multivariada:
+
+$$
+\mathbf{x} \mid Y = c \sim N_p(\boldsymbol{\mu}_c, \boldsymbol{\Sigma})
+$$
+
+com matriz de covariância $\boldsymbol{\Sigma}$ **comum** a todas as classes.
+
+A função discriminante linear é obtida aplicando `log` à regra de Bayes:
+
+$$
+\delta_c(\mathbf{x}) = \mathbf{x}^\top \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_c - \frac{1}{2} \boldsymbol{\mu}_c^\top \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_c + \log \pi_c
+$$
+
+## Função Discriminante Linear (LDA)
+
+O classificador LDA é:
+
+$$
+\hat{g}(\mathbf{x}) = \arg\max_c \delta_c(\mathbf{x})
+$$
+
+Como $\boldsymbol{\Sigma}$ é comum, os termos quadráticos se cancelam e a fronteira entre classes é **linear** em $\mathbf{x}$.
+
+---
+
+## LDA: Estimação
+
+Os estimadores de máxima verossimilhança são:
+
+$$
+\hat{\boldsymbol{\mu}}_c = \frac{1}{n_c} \sum_{i: y_i = c} x_i
+$$
+
+$$
+\hat{\boldsymbol{\Sigma}} = \frac{1}{n - C} \sum_{c=1}^C \sum_{i: y_i = c} (x_i - \hat{\boldsymbol{\mu}}_c)(x_i - \hat{\boldsymbol{\mu}}_c)^\top
+$$
+
+$$
+\hat{\pi}_c = \frac{n_c}{n}
+$$
+
+## R: LDA
+
+
+```{r}
+#| eval: true
+#| echo: true
+library(MASS)
+library(ISLR2)
+
+lda_fit <- lda(default ~ balance + student, data = Default)
+lda_fit
+
+# Predicao
+pred_lda <- predict(lda_fit, Default)
+table(Predito = pred_lda$class, Real = Default$default)
+```
+
+
+## LDA: Dimensionalidade reduzida
+
+A LDA projeta os dados em um subespaço de dimensão no máximo $C−1$.
+
+As **variáveis canônicas discriminantes** são combinações lineares que maximizam a separação entre as classes.
+
+- Para $C = 2$, há apenas **uma direção** discriminante
+- Para $C = 3$, há no máximo **duas direções**
+
+
+
+Isso permite:
+
+- Visualização dos dados em baixa dimensão
+- Redução de dimensionalidade supervisionada
+- Interpretação geométrica das direções que melhor separam as classes
+
+
+## LDA: Dimensionalidade reduzida
+
+```{r}
+#| eval: true
+#| echo: true
+# Com 3 classes (iris), obtemos 2 variaveis canonicas
+lda_iris <- lda(Species ~ ., data = iris)
+lda_iris
+
+# Projecao dos dados
+proj <- predict(lda_iris, iris)$x
+head(proj)
+```
+
+
+
+
+
+## Função Discriminante Quadrática (QDA)
+
+A **Análise Discriminante Quadrática (QDA)** permite que cada classe tenha sua própria matriz de covariância:
+
+$$
+\mathbf{x} \mid Y = c \sim N(\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)
+$$
+
+A função discriminante quadrática é obtida aplicando `log` à regra de Bayes:
+
+$$
+\delta_c(\mathbf{x}) = -\frac{1}{2} \log|\boldsymbol{\Sigma}_c| - \frac{1}{2} (\mathbf{x} - \boldsymbol{\mu}_c)^\top \boldsymbol{\Sigma}_ck^{-1} (\mathbf{x} - \boldsymbol{\mu}_c) + \log \pi_c
+$$
+
+## Função Discriminante Quadrática (QDA)
+
+
+O classificador QDA é:
+
+$$
+\hat{g}(\mathbf{x}) = \arg\max_c \delta_c(\mathbf{x})
+$$
+
+Como $\boldsymbol{\Sigma}_c$ são distintas, os termos quadráticos **não se cancelam** e a fronteira entre classes é **quadrática** em $\mathbf{x}$.
+
+
+
+## R: QDA
+
+```{r}
+#| eval: true
+#| echo: true
+library(MASS)
+library(ISLR2)
+
+qda_fit <- qda(default ~ balance + student, data = Default)
+qda_fit
+
+# Predicao
+pred_qda <- predict(qda_fit, Default)
+table(Predito = pred_qda$class, Real = Default$default)
+```
+
+
+## LDA vs QDA: Trade-off viés-variância
+
+| **Critério** | **LDA** | **QDA** |
+|:--------------|:--------|:--------|
+| **Covariância** | Comum $(\boldsymbol{\Sigma})$ | Distinta $(\boldsymbol{\Sigma}_c)$ |
+| **Fronteira de decisão** | Linear | Quadrática |
+| **Número de parâmetros** | $Cp + \dfrac{p(p+1)}{2}$ | $Cp + c\cdot\dfrac{p(p+1)}{2}$ |
+| **Viés** (quando $\boldsymbol{\Sigma}_c$) diferem) | Maior | Menor |
+| **Variância** | Menor | Maior |
+
+
+
+## LDA vs QDA
+
+
+### Quando usar LDA
+
+- Amostras pequenas ($n$ pequeno) ou problemas com muitas variáveis ($p$ grande);
+- As matrizes de covariância das classes são aproximadamente iguais;
+- Busca-se um modelo mais simples e estável, com menor variância.
+
+### Quando usar QDA
+
+- Há amostras suficientes para estimar uma matriz de covariância para cada classe;
+- As covariâncias diferem significativamente entre as classes;
+- A fronteira de decisão esperada é não linear (quadrática).
+
+
+
+
+## RDA: Análise Discriminante Regularizada
+
+A **Análise Discriminante Regularizada (RDA)** combina as ideias do **LDA** e do **QDA**, controlando o grau de regularização por meio do parâmetro $\alpha \in [0,1]$.
+
+$$
+\boldsymbol{\Sigma}_c(\alpha)=\alpha\boldsymbol{\Sigma}_c+(1-\alpha)\boldsymbol{\Sigma}
+$$
+
+### Interpretação do parâmetro $\alpha$
+
+- **$\alpha = 0$** → **LDA**
+  - Assume uma única matriz de covariância comum $(\boldsymbol{\Sigma})$ para todas as classes.
+
+- **$\alpha = 1$** → **QDA**
+  - Estima uma matriz de covariância específica $(\boldsymbol{\Sigma}_c)$ para cada classe.
+
+- **$0 < \alpha < 1$** → **RDA**
+  - Interpola entre LDA e QDA, controlando o **trade-off entre viés e variância**.
+
+
+## RDA: Análise Discriminante Regularizada
+
+
+### Escolha do parâmetro
+
+- O valor de $\alpha$ é normalmente selecionado por **validação cruzada**, buscando o melhor desempenho preditivo.
+
+### Quando utilizar
+
+- Bases com número moderado de observações ($n$);
+- Problemas com muitas variáveis ($p$ não pequeno);
+- Situações em que a estimação das matrizes de covariância do QDA é instável.
+
+> **Resumo:** a RDA oferece um compromisso entre a simplicidade do LDA e a flexibilidade do QDA, utilizando regularização para obter classificadores mais robustos.
+
+
+
+## R: RDA
+
+```{r}
+#| eval: true
+#| echo: true
+# install.packages("klaR")
+library(klaR)
+rda_model <- rda(default ~ balance + student + income,
+                 data = Default)
+rda_model
+```
+
+
+
+## Interpretação do modelo RDA
+
+### Principais resultados
+
+- O modelo ajusta uma **Análise Discriminante Regularizada (RDA)** utilizando as variáveis: **`balance`**, **`student`** e  **`income`**.<br><br>
+
+- Os parâmetros de regularização estimados foram:
+  - **$\gamma = 0.75$** → maior regularização das matrizes de covariância, aproximando o modelo do **LDA**.
+  - **$\lambda = 0.42$** → regularização intermediária das covariâncias, reduzindo a variabilidade das estimativas.
+
+
+---
+
+### Principais resultados
+
+
+- As probabilidades *a priori* refletem o desbalanceamento da base:
+  - $P(\text{No}) = 0.9667$
+  - $P(\text{Yes}) = 0.0333$<br><br>
+
+- A taxa de erro foi de apenas **3,33%**, tanto no conjunto de treinamento (*apparent*) quanto na validação cruzada (*cross-validated*).
+
+---
+
+### Conclusões
+
+- O modelo apresentou **boa capacidade de generalização**, pois o erro de validação cruzada foi igual ao erro de treinamento.<br><br>
+- A regularização produziu um classificador estável, reduzindo o risco de sobreajuste.<br><br>
+- A RDA representa um compromisso entre **LDA** e **QDA**, adaptando automaticamente o nível de regularização às características dos dados.
+
+
+# Support Vector Machines (SVM)
+
+
+## Ideia central
+
+O **Support Vector Machine (SVM)** é um método de classificação supervisionada que busca construir um **hiperplano** capaz de separar as classes com a **maior margem possível**, aumentando a capacidade de generalização do modelo.
+
+- Características principais
+    - Não modela diretamente probabilidades de classe.
+    - Produz uma função de decisão linear:
+      $$
+      f(\mathbf{x})=\beta_0+\beta_1x_1+\cdots+\beta_px_p
+      $$
+    - A classificação é obtida pelo sinal da função:
+      $$
+      g(\mathbf{x})=
+      \begin{cases}
+      -1, & \text{se } f(\mathbf{x})<0,\\[2mm]
+      +1, & \text{se } f(\mathbf{x})\ge0.
+      \end{cases}
+      $$
+
+---
+
+### Objetivo do SVM
+
+Encontrar o **hiperplano separador** que maximize a distância entre as duas classes, tornando o classificador mais robusto a novas observações.
+
+> **Intuição:** entre todos os hiperplanos possíveis, o SVM escolhe aquele que proporciona a **maior margem de separação** entre as classes.
+
+
+
+
+## Hiperplano separador
+
+Um **hiperplano** em $\mathbb{R}^p$ é definido por:
+
+$$
+\{\mathbf{x} \in \mathbb{R}^p : \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p = 0\}
+$$
+
+Para classificação binária $(y_i \in \{-1, 1\})$, dizemos que um hiperplano **separa** os dados se:
+
+$$
+y_i (\beta_0 + \beta^\top x_i) > 0 \quad \text{para todo } i
+$$
+
+Quando isso é possível, os dados são **linearmente separáveis**.
+
+
+
+## Margem máxima
+
+O **classificador de margem máxima** encontra o hiperplano que maximiza a menor distância entre as observações e o hiperplano.
+
+Essa menor distância é chamada de **margem**.
+
+**Intuição:** quanto maior a margem, maior a confiança na classificação.
+
+As observações que estão exatamente na borda da margem são chamadas de **vetores de suporte**.
+
+---
+
+
+![](/images/classificacao/hiperplano_separador.png){fig-align="center"}
+
+
+## Classificador de margem máxima
+
+Problema de otimização:
+
+$$
+\max_{\beta_0, \beta} M
+$$
+
+sujeito a:
+
+$$
+y_i (\beta_0 + \beta^\top x_i) \geq M, \quad \forall i
+$$
+
+e $$||\beta|| = 1$$
+
+**Limitação:** só funciona quando os dados são linearmente separáveis. Muito sensível a outliers.
+
+
+
+## Classificador de margem suave (Soft Margin)
+
+Permite que algumas observações estejam **do lado errado** do hiperplano ou dentro da margem.
+
+Introduzimos **variáveis de folga** $\xi_i \geq 0$:
+
+$$
+y_i (\beta_0 + \beta^\top x_i) \geq M (1 - \xi_i)
+$$
+
+- $\xi_i = 0$: observação do lado correto e fora da margem
+- $0 < \xi_i < 1$: observação dentro da margem, mas do lado correto
+- $\xi_i \geq 1$: observação do lado errado
+
+
+
+
+## Support Vector Classifier
+
+Problema de otimização:
+
+$$
+\max_{\beta_0, \beta, \xi} M
+$$
+
+sujeito a:
+
+$$
+y_i (\beta_0 + \beta^\top x_i) \geq M (1 - \xi_i), \quad \forall i
+$$
+
+$$
+\sum_{i=1}^n \xi_i \leq C, \quad \xi_i \geq 0
+$$
+
+
+## Support Vector Classifier
+
+O parâmetro $C$ controla o **trade-off viés-variância**:
+
+- **$C$ pequeno:** margem estreita, baixo viés, alta variância, aceita mais violações, produzindo margem mais larga e maior regularização<br><br>
+- **$C$ grande:** margem larga, alto viés, baixa variância, penaliza fortemente os erros, produzindo margem mais rígida
+
+
+
+---
+
+
+![](/images/classificacao/soft_margin.png){fig-align="center"}
+
+
+
+
+## Support Vector Machines (SVM)
+
+Para dados **não linearmente separáveis**, o SVC linear não é suficiente.
+
+**Ideia:** transformar os dados para um espaço de maior dimensão onde eles se tornem linearmente separáveis.
+
+Seja $$\phi: \mathbb{R}^p \to \mathbb{R}^q, q>p$$ uma transformação dos preditores.
+
+No espaço transformado, ajustamos um SVC linear:
+
+$$
+f(\mathbf{x}) = \beta_0 + \beta^\top \phi(\mathbf{x})
+$$
+
+## O truque do kernel (Kernel Trick)
+
+![](/images/classificacao/kernel_trick.png){fig-align="center"}
+
+## O truque do kernel (Kernel Trick)
+
+Calcular $\phi(\mathbf{x})$ explicitamente pode ser caro ou inviável quando $q$ é grande.
+
+**Kernel Trick:** o SVC depende apenas dos produtos internos $\langle \mathbf{x}_i, \mathbf{x}_j \rangle$. Substituímos por uma função kernel:
+
+$$
+K(\mathbf{x}_i, \mathbf{x}_j) = \langle \phi(\mathbf{x}_i), \phi(\mathbf{x}_j) \rangle
+$$
+
+Sem precisar calcular $\phi$ explicitamente!
+
+
+## O truque do kernel (Kernel Trick)
+
+
+A função de decisão fica:
+
+$$
+f(\mathbf{x}) = \beta_0 + \sum_{i=1}^n \alpha_i K(\mathbf{x}, \mathbf{x}_i)
+$$
+
+onde $\alpha_i \neq 0$ apenas para os **vetores de suporte**.
+
+
+
+
+
+## Kernel linear
+
+$$
+K(x_i, x_j) = \langle x_i, x_j \rangle
+$$
+
+Equivalente ao SVC linear. Útil quando os dados já são aproximadamente separáveis no espaço original.
+
+**Vantagem:** interpretável, rápida, poucos parâmetros.
+
+**Quando usar:** $p$ grande, $n$ moderado, dados aproximadamente lineares.
+
+
+## R: SVM com Kernel Linear
+
+```{r}
+#| eval: true
+#| echo: true
+library(e1071)
+library(ISLR2)
+
+svm_linear <- svm(default ~ balance + student,
+                  data = Default,
+                  kernel = "linear",
+                  cost = 1,
+                  scale = TRUE)
+summary(svm_linear)
+```
+
+
+---
+
+### Principais resultados
+
+- O modelo identificou **669 vetores de suporte**:
+  - **336** da classe **No**;
+  - **333** da classe **Yes**.<br><br>
+
+- Os vetores de suporte são as observações mais próximas da fronteira de decisão e são os únicos pontos que determinam a posição do hiperplano.
+
+---
+
+### Interpretação
+
+- O uso do **kernel linear** indica que a separação entre as classes é realizada por um **hiperplano linear**.<br><br>
+- O valor **$C=1$** estabelece um equilíbrio entre maximizar a margem e penalizar erros de classificação.<br><br>
+- O elevado número de vetores de suporte sugere que muitas observações estão próximas da fronteira de decisão, indicando que a separação entre as classes não é completamente evidente.
+
+
+
+
+
+
+## Kernel Polinomial
+
+$$
+K(x_i, x_j) = (\gamma \langle x_i, x_j \rangle + r)^d
+$$
+
+- $d$: grau do polinômio
+- $\gamma$: coeficiente de escala
+- $r$: termo de intercepto
+
+Permite fronteiras de decisão não lineares com forma polinomial.
+
+**Quando usar:** dados com interações moderadas entre variáveis.
+
+
+## R: SVM com Kernel Polinomial
+
+```{r}
+```{r}
+#| eval: true
+#| echo: true
+library(e1071)
+library(ISLR2)
+
+svm_poly <- svm(default ~ balance + student,
+                data = Default,
+                kernel = "polynomial",
+                degree = 3,
+                cost = 1,
+                scale = TRUE)
+summary(svm_poly)
+```
+
+---
+
+### Principais resultados
+
+- O modelo utilizou **613 vetores de suporte**:
+  - **307** da classe **No**;
+  - **306** da classe **Yes**.<br><br>
+
+- Em comparação com o **SVM Linear** (669 vetores de suporte), foram necessários **menos vetores de suporte** para definir a fronteira de decisão.
+
+---
+
+### Interpretação
+
+- O **kernel polinomial** permite modelar **fronteiras de decisão não lineares**, capturando interações entre as variáveis sem criar explicitamente novos atributos.<br><br>
+- O **grau 3** torna o modelo mais flexível do que o SVM linear, permitindo separar padrões mais complexos.<br><br>
+- O parâmetro **$C=1$** mantém o equilíbrio entre uma margem ampla e a penalização por erros de classificação.
+
+
+
+
+
+## Kernel radial (RBF)
+
+$$
+K(x_i, x_j) = \exp(-\gamma ||x_i - x_j||^2)
+$$
+
+- $\gamma > 0$: controla o alcance do kernel
+- $\gamma$ pequeno: fronteira mais suave (alto viés)
+- $\gamma$ grande: fronteira mais flexível (alta variância)
+
+O kernel RBF é o mais usado na prática. Ele mapeia os dados para um espaço de dimensão **infinita**.
+
+**Quando usar:** relação não linear complexa, $n$ moderado, $p$ não muito grande.
+
+
+## R: SVM com Kernel RBF
+
+```{r}
+#| eval: true
+#| echo: true
+svm_rbf <- svm(default ~ balance + student,
+               data = Default,
+               kernel = "radial",
+               gamma = 0.1,
+               cost = 1,
+               scale = TRUE)
+summary(svm_rbf)
+```
+
+
+---
+
+### Principais resultados
+
+- O modelo utilizou **665 vetores de suporte**:
+  - **338** da classe **No**;
+  - **327** da classe **Yes**.<br><br>
+
+- O número de vetores de suporte é semelhante ao obtido no SVM linear, indicando que muitas observações estão próximas da fronteira de decisão.
+
+---
+
+### Interpretação
+
+- O **kernel RBF** permite construir **fronteiras de decisão altamente não lineares**, adaptando-se a padrões complexos nos dados.<br><br>
+- O parâmetro **$\gamma = 0.1$** controla o alcance da influência de cada vetor de suporte:
+  - valores menores produzem fronteiras mais suaves;
+  - valores maiores geram fronteiras mais complexas e sensíveis aos dados.<br><br>
+- O parâmetro **$C = 1$** controla o compromisso entre maximizar a margem e minimizar os erros de classificação.
+
+
+
+
+
+## O truque do kernel (Kernel Trick)
+
+
+![](/images/classificacao/comp_kernel_trick.png){fig-align="center"}
+
+
+
+
+
+
+<!-- ## SVM como problema de otimização -->
+
+<!-- Formulação primal: -->
+
+<!-- $$ -->
+<!-- \min_{\beta_0, \beta, \xi} \frac{1}{2} ||\beta||^2 + C \sum_{i=1}^n \xi_i -->
+<!-- $$ -->
+
+<!-- sujeito a: -->
+
+<!-- $$ -->
+<!-- y_i (\beta_0 + \beta^\top \phi(x_i)) \geq 1 - \xi_i, \quad \xi_i \geq 0, \quad \forall i -->
+<!-- $$ -->
+
+
+<!-- ## SVM como problema de otimização -->
+
+
+
+<!-- Formulação dual (com kernel): -->
+
+
+<!-- $$ -->
+<!-- \max_{\alpha} \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j K(x_i, x_j) -->
+<!-- $$ -->
+
+<!-- sujeito a $0 \leq \alpha_i \leq C$ e $\sum_{i=1}^n \alpha_i y_i = 0$. -->
+
+
+
+## SVM: tuning de hiperparâmetros
+
+Para kernel RBF, os principais hiperparâmetros são:
+
+- $C$: penalidade por erro (inverso da regularização)
+- $\gamma$: alcance do kernel radial
+
+Escolha por **validação cruzada** com grid search.
+
+
+
+## R: tuning de hiperparâmetros de SVM
+
+```{r}
+#| eval: true
+#| echo: true
+library(e1071)
+
+set.seed(335)
+tune_svm <- tune(svm, default ~ balance + student,
+                 data = Default,
+                 kernel = "radial",
+                 ranges = list(cost = c(0.1, 1, 10, 100),
+                               gamma = c(0.01, 0.1, 0.5, 1)))
+summary(tune_svm)
+```
+
+
+
+## R: tuning de hiperparâmetros de SVM
+
+```{r}
+#| eval: true
+#| echo: true
+# Melhor modelo
+best_svm <- tune_svm$best.model
+summary(best_svm)
+```
+
+
+---
+
+### Melhor configuração encontrada
+
+- **Kernel:** Radial (RBF)
+- **$C = 1$**
+- **$\gamma = 1$**
+- **Erro médio de validação cruzada:** **2,69%**<br><br>
+
+
+### Modelo selecionado
+
+- O modelo ótimo utiliza **663 vetores de suporte**, (**372** da classe **No** e **291** da classe **Yes**) indicando que apenas uma parcela das observações define a fronteira de decisão.<br><br>
+
+- O erro obtido é inferior ao observado nas configurações iniciais, evidenciando o benefício do ajuste dos hiperparâmetros.
+
+
+
+
+## SVM: multi-classe
+
+SVM é naturalmente binário. Para $C > 2$ classes, duas estratégias principais:
+
+**One-vs-One (OVO):**
+
+- Ajusta $\binom{C}{2}$ classificadores binários
+- Cada par de classes tem seu próprio SVM
+- Votação: cada classificador "vota" na classe vencedora
+
+
+**One-vs-Rest (OVR):**
+
+- Ajusta $C$ classificadores binários
+- Cada classe vs. todas as outras
+- Classe com maior pontuação é escolhida
+
+
+---
+
+![](/images/classificacao/ovo_ovr.png){fig-align="center"}
+
+
+
+
+## R: SVM multi-classe
+
+```{r}
+#| eval: true
+#| echo: true
+svm_iris <- svm(Species ~ ., data = iris, kernel = "radial",
+                cost = 1, gamma = 0.5)
+pred_iris <- predict(svm_iris, iris)
+table(Predito = pred_iris, Real = iris$Species)
+mean(pred_iris == iris$Species)
+```
+
+
+---
+
+### Interpretação dos resultados
+
+- O SVM foi ajustado para classificar as três espécies do conjunto Iris utilizando kernel radial (RBF).
+- A matriz de confusão mostra desempenho quase perfeito:
+    - **`Setosa`:** 50/50 classificações corretas (100%).
+    - **`Versicolor`**: 48 acertos e 2 confusões com Virginica.
+    - **`Virginica`**: 48 acertos e 2 confusões com Versicolor.
+- A única dificuldade ocorre entre Versicolor e Virginica, indicando que essas espécies apresentam maior sobreposição no espaço das variáveis.
+- A acurácia global foi de 97,3%, evidenciando excelente capacidade de discriminação do SVM.
+- O kernel RBF conseguiu modelar adequadamente a fronteira não linear entre as classes.
+
+---
+
+### Observações importantes
+
+
+- O pacote `e1071` (LIBSVM) utiliza **One-vs-One (OvO)** automaticamente para classificação multiclasse. Não existe um parâmetro para alterar isso para **OvR**.<br><br>
+
+
+- Se desejar utilizar **One-vs-Rest (OvR)** em R, é necessário usar outro pacote (como `caret`, `mlr3`, `tidymodels` com wrappers apropriados) ou implementar a estratégia manualmente treinando um SVM para cada classe.
+
+
+# Arvores de classificação
+
+## Árvores de decisão
+
+**Ideia:** particionar recursivamente o espaço dos preditores em regiões retangulares, atribuindo uma predição simples a cada região.
+
+**Vantagens:**
+
+- Fácil interpretação (simula decisão humana)
+- Não requer transformação das variáveis
+- Lida naturalmente com variáveis mistas
+- Captura interações não lineares
+
+**Desvantagens:**
+
+- Alta variância (pequenas mudanças nos dados → árvore muito diferente)
+- Baixa precisão preditiva isoladamente
+
+
+
+## Árvore de regressão
+
+Particionamos o espaço em $M$ regiões $R_1, \ldots, R_M$.
+
+A predição em cada região é a **média** dos valores de resposta:
+
+$$
+\hat{f}(\mathbf{x}) = \sum_{m=1}^M c_m \cdot I(\mathbf{x} \in R_m), \quad c_m = \frac{1}{n_m} \sum_{i \in R_m} y_i
+$$
+
+Critério de divisão: minimizar a **SQR** (Soma dos Quadrados dos Resíduos).
+
+Para uma divisão na variável $j$ no ponto $s$:
+
+$$
+\min_{j, s} \left[ \sum_{i: x_i \in R_1(j,s)} (y_i - \bar{y}_{R_1})^2 + \sum_{i: x_i \in R_2(j,s)} (y_i - \bar{y}_{R_2})^2 \right]
+$$
+
+
+
+
+## Algoritmo CART (Breiman et al., 1984)
+
+**Construção top-down, gulosa (recursiva):**
+
+1. Para cada variável preditora $X_j$, encontre o ponto de corte $s$ que minimiza a SQR
+2. Escolha a melhor variável e ponto de corte
+3. Divida os dados em dois nós filhos
+4. Repita recursivamente até um critério de parada
+
+**Critérios de parada:**
+
+- Número mínimo de observações por nó (geralmente 5-20)
+- Profundidade máxima da árvore
+- Redução mínima no erro
+
+
+## R: Algoritmo CART
+
+```{r}
+#| eval: true
+#| echo: true
+library(rpart)
+library(ISLR2)
+
+# Arvore de regressao
+arvore <- rpart(balance ~ income + student, data = Default,
+                control = rpart.control(minsplit = 10, cp = 0.001))
+summary(arvore)
+```
+
+
+---
+
+### Árvore CART para previsão do saldo (balance)
+
+- Modelo ajustado com o algoritmo CART (rpart) para regressão.
+- A primeira e melhor divisão foi realizada pela variável `student`, indicando ser o principal fator explicativo.
+- A variável `income` apresentou importância secundária e apareceu como melhor divisão alternativa (`surrogate split`).
+- A árvore gerou apenas um split, reduzindo o erro relativo em aproximadamente 4,1%, indicando que a estrutura dos dados é simples.
+- Os grupos resultantes apresentam médias distintas:
+    - 771,8 em um ramo;
+    - 987,8 no outro.
+- **Conclusão:** o status de estudante é o principal determinante do saldo médio, enquanto income complementa a explicação, mas não justifica novas divisões na árvore.
+
+
+
+## Árvore de classificação
+
+Regra de decisão:
+
+$$
+\hat{y}(\mathbf{x}) = \arg\max_c \hat{p}_{mc}
+$$
+
+onde $\hat{p}_{mc}$ é a proporção da classe $c$ na região $R_m$.
+
+Critérios de divisão (para medir a **impureza** do nó):
+
+**Gini:**
+
+$$
+G = \sum_{c=1}^C \hat{p}_{mc} (1 - \hat{p}_{mc})
+$$
+
+
+
+## Árvore de classificação
+
+
+**Entropia (Deviance):**
+
+$$
+D = - \sum_{c=1}^C \hat{p}_{mc} \log \hat{p}_{mc}
+$$
+
+**Taxa de erro de classificação:**
+
+$$
+E = 1 - \max_c \hat{p}_{mc}
+$$
+
+## R:  Árvore de classificação
+
+```{r}
+#| eval: true
+#| echo: true
+library(rpart)
+library(rpart.plot)
+
+arvore_class <- rpart(default ~ balance + student + income,
+                      data = Default, method = "class")
+
+rpart.plot(arvore_class, extra = 104, fallen.leaves = TRUE,
+           main = "Árvore de classificação - Default")
+```
+
+
+---
+
+
+### Interpretação da árvore CART
+
+- A primeira divisão ocorre em `balance < 1800`, indicando que o saldo é o principal fator de decisão.
+- Clientes com `balance < 1800` apresentam apenas 2% de probabilidade de inadimplência.
+- Clientes com `balance ≥ 1972` apresentam aproximadamente 76% de probabilidade de `default`.
+- Para saldos intermediários (1800–1972), a variável `income` melhora a separação entre as classes.
+- A variável `student` não foi utilizada, indicando baixa contribuição adicional após considerar `balance`.
+- **Conclusão:** o risco de inadimplência é explicado principalmente pelo saldo da conta, sendo a renda relevante apenas em situações de maior risco.
+
+
+
+## Poda (pruning)
+
+Para evitar **overfitting**, o CART seleciona a árvore que minimiza uma função de custo composta por dois termos:
+
+$$
+C_\alpha(T)=\sum_{m=1}^{|T|} N_m\,Q_m(T)+\alpha|T|
+$$
+
+onde:
+
+- $Q_m(T)$: impureza do nó terminal $m$ (por exemplo, índice de Gini ou entropia);
+- $N_m$: número de observações no nó terminal $m$;
+- $|T|$: número de folhas da árvore;
+- $\alpha \ge 0$: parâmetro de penalização da complexidade.
+
+
+---
+
+### Observações sobre o parâmetro $\alpha$
+
+- $\alpha = 0$: árvore completa (máximo ajuste)
+- $\alpha$ grande: árvore pequena (mais regularização)  
+
+
+O parâmetro $\alpha$ é escolhido por **validação cruzada**.<br><br>
+
+
+
+> **Interpretação:** o primeiro termo mede o erro (impureza) da árvore, enquanto o segundo penaliza árvores muito grandes. O valor de $\alpha$ controla o trade-off entre ajuste aos dados e capacidade de generalização.
+
+
+---
+
+```{r}
+#| eval: true
+#| echo: true
+library(rpart)
+library(ISLR2)
+
+# Árvore completa (super-ajustada)
+arvore_full <- rpart(default ~ balance + student + income,
+                     data = Default, method = "class",
+                     control = rpart.control(cp = 0, minsplit = 2))
+
+# Poda por validação cruzada
+plotcp(arvore_full)
+```
+
+
+---
+
+### Poda por validação cruzada
+
+- O erro de validação diminui inicialmente à medida que a árvore cresce.
+- O menor erro ocorre em $cp \approx 0,018$ (árvore com aproximadamente 4 folhas).
+- Árvores maiores passam a apresentar aumento do erro de validação, evidenciando **overfitting**.
+- A linha tracejada representa a `regra do 1-SE`, que favorece a escolha da árvore mais simples com desempenho estatisticamente equivalente ao melhor modelo.
+- **Conclusão:** a poda seleciona automaticamente uma árvore menor, com melhor capacidade de generalização do que a árvore completamente desenvolvida.
+
+---
+
+
+```{r}
+#| eval: true
+#| echo: true
+# Melhor cp
+cp_otimo <- arvore_full$cptable[which.min(arvore_full$cptable[, "xerror"]), "CP"]
+cp_otimo
+
+# Árvore podada
+arvore_poda <- prune(arvore_full, cp = cp_otimo)
+rpart.plot(arvore_poda, extra = 104, main = "Árvore podada")
+```
+
+
+---
+
+
+### Interpretação
+
+- `cp ótimo = 0,009009`, escolhido por validação cruzada.
+- A poda removeu divisões pouco informativas, reduzindo a complexidade da árvore.
+- `Balance` permaneceu como a variável mais importante; `income` foi usada apenas para refinar uma região específica.
+- `Student` foi descartada, pois não melhorava suficientemente o desempenho.
+- A árvore final é mais simples, interpretável e menos suscetível ao overfitting, preservando a capacidade de generalização.
+
+
+
+
+
+## Viés e variância em árvores
+
+**Árvores individuais:** baixo viés, **altíssima variância**.
+
+- Mudança pequena nos dados → estrutura completamente diferente
+- Fronteiras de decisão "retangulares" (pobres para relações lineares)
+- Instáveis, mas interpretáveis
+
+**Solução:** combinar muitas árvores para reduzir variância sem aumentar o viés: **ensemble methods**.
+
+
+
+## Bagging (Bootstrap Aggregating)
+
+**Ideia:** gerar $B$ amostras bootstrap, ajustar uma árvore em cada, e combinar as predições.
+
+$$
+\hat{f}_{\text{bag}}(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B \hat{f}^{*b}(\mathbf{x})
+$$
+
+Para classificação: **votação majoritária** entre as $B$ árvores.
+
+**Efeito:** reduz a variância ao combinar modelos aproximadamente não correlacionados.
+
+**OOB (Out-of-Bag):** cada observação não é selecionada em ~37% das amostras bootstrap. Essas observações servem como conjunto de validação interno.
+
+
+
+## R: Bagging
+
+
+```{r}
+#| eval: true
+#| echo: true
+library(randomForest)
+set.seed(335)
+
+bag <- randomForest(default ~ balance + student + income,
+                    data = Default, mtry = 3, ntree = 500)
+bag
+```
+
+---
+
+### Interpretação do Bagging
+
+- Foram construídas **500 árvores** (`ntree = 500`) utilizando amostras bootstrap.
+- Como **`mtry = 3`** (igual ao número de preditores), todas as variáveis foram consideradas em cada divisão, caracterizando o **Bagging**.
+- O erro **Out-of-Bag (OOB)** foi de **3,31%**, indicando boa capacidade de generalização.
+- A matriz de confusão mostra excelente desempenho para a classe **No Default**:
+  - **9.564** clientes corretamente classificados.
+  - Apenas **103** falsos positivos.
+  - Erro da classe **No = 1,07%**.
+  
+---
+
+
+### Interpretação do Bagging
+
+- Para a classe **Default**, o desempenho foi inferior:
+  - **105** inadimplentes corretamente identificados.
+  - **228** inadimplentes classificados incorretamente como **No**.
+  - Erro da classe **Yes = 68,47%**.
+- O elevado erro na classe **Yes** é consequência do **desbalanceamento das classes**, fazendo o modelo favorecer a classe majoritária.
+
+
+---
+
+
+### Conclusões
+
+- O Bagging reduz a **variância** ao combinar diversas árvores treinadas em amostras bootstrap.
+- O modelo apresenta **baixo erro OOB (3,31%)**, indicando boa generalização.
+- Possui excelente desempenho para identificar clientes **sem inadimplência**.
+- A detecção de inadimplentes ainda é limitada devido ao forte desbalanceamento da base de dados.
+
+
+
+
+
+## Random Forest
+
+**Problema do bagging:** as árvores bootstrap são correlacionadas (mesmas variáveis fortes são escolhidas sempre).
+
+**Solução:** a cada divisão, considerar apenas um subconjunto **aleatório** de $m$ variáveis preditoras (tipicamente $m \approx \sqrt{p}$ para classificação, $p/3$ para regressão).
+
+Isso **descorrelaciona** as árvores, reduzindo ainda mais a variância.
+
+**Hiperparâmetros:**
+
+- `ntree`: número de árvores ($B$)
+- `mtry`: número de variáveis sorteadas a cada divisão
+- `nodesize`: tamanho mínimo do nó folha
+
+
+---
+
+![](/images/classificacao/rf_bagging.png){fig-align="center"}
+
+
+## R: Random Forest
+
+```{r}
+#| eval: true
+#| echo: true
+library(randomForest)
+library(ISLR2)
+
+set.seed(335)
+
+rf <- randomForest(default ~ balance + student + income,
+                   data = Default,
+                   ntree = 500,
+                   mtry = 2,   # sqrt(3) ~ 1.7, arredonda p/ 2
+                   importance = TRUE)
+rf
+```
+
+---
+
+### Interpretação do Random Forest
+
+- Foram construídas **500 árvores** (`ntree = 500`) utilizando amostras bootstrap.
+- Em cada divisão, apenas **2 das 3 variáveis** (`mtry = 2`) foram selecionadas aleatoriamente, aumentando a diversidade entre as árvores.
+- O erro **Out-of-Bag (OOB)** foi de **3,08%**, ligeiramente menor que o obtido pelo Bagging (**3,31%**), indicando melhor capacidade de generalização.
+- A matriz de confusão mostra excelente desempenho para a classe **No Default**:
+  - **9.582** clientes corretamente classificados.
+  - Apenas **85** falsos positivos.
+  - Erro da classe **No = 0,88%**.
+  
+---
+
+### Interpretação do Random Forest
+
+- Para a classe **Default**, o desempenho permaneceu limitado:
+  - **110** inadimplentes corretamente identificados.
+  - **223** inadimplentes classificados incorretamente como **No**.
+  - Erro da classe **Yes = 66,97%**.
+- A redução de `mtry` diminuiu a correlação entre as árvores, tornando o conjunto mais robusto que o Bagging.
+
+---
+
+### Conclusões
+
+- O **Random Forest** apresentou desempenho ligeiramente superior ao **Bagging**, reduzindo o erro OOB de **3,31% para 3,08%**.
+- A seleção aleatória de variáveis em cada divisão aumenta a diversidade das árvores e melhora a capacidade de generalização.
+- O modelo mantém excelente desempenho para identificar clientes **sem inadimplência**.
+- A identificação da classe **Default** continua sendo o principal desafio devido ao forte desbalanceamento da base de dados.
+
+
+## R: Importância de Variáveis no Random Forest
+
+```{r}
+#| eval: true
+#| echo: true
+# Importancia das variaveis
+importance(rf)
+varImpPlot(rf)
+```
+
+---
+
+### Importância das Variáveis no Random Forest
+
+- A importância foi avaliada por duas métricas:
+  - **Mean Decrease Accuracy**: redução da acurácia quando a variável é embaralhada.
+  - **Mean Decrease Gini**: redução média da impureza de Gini proporcionada pela variável.<br><br>
+
+- A variável **balance** foi, de longe, a mais importante:
+  - **MeanDecreaseAccuracy = 134,72**
+  - **MeanDecreaseGini = 429,77**
+  - Sua remoção causa a maior perda de desempenho do modelo.
+
+
+---
+
+### Importância das Variáveis no Random Forest
+
+- A variável **income** apresentou importância intermediária:
+  - **MeanDecreaseAccuracy = 10,24**
+  - **MeanDecreaseGini = 206,64**
+  - Contribui para a classificação, mas muito menos que **balance**.<br><br>
+
+- A variável **student** foi a menos relevante:
+  - **MeanDecreaseAccuracy = 13,11**
+  - **MeanDecreaseGini = 7,65**
+  - Sua contribuição para as divisões da floresta foi pequena.
+
+---
+
+
+### Conclusões
+
+- **Balance** é a principal variável para prever inadimplência.
+- **Income** possui influência secundária, auxiliando algumas divisões da floresta.
+- **Student** apresenta baixo poder discriminativo e pouca contribuição para o desempenho do modelo.
+- Os gráficos confirmam visualmente a mesma ordem de importância:
+  **balance >> income > student**.
+  
+  
+
+
+
+## Boosting: ideia geral
+
+Diferente do bagging (modelos independentes em paralelo), o **boosting** constrói modelos **sequencialmente**, cada novo modelo corrigindo os erros do anterior.
+
+**Sequência:**
+
+1. Ajuste um modelo simples aos dados
+2. Calcule os resíduos (erros)
+3. Ajuste um novo modelo para **predizer os resíduos**
+4. Adicione o novo modelo ao ensemble
+5. Repita
+
+O boosting converte aprendizes fracos *(weak learners)* em um aprendiz forte.
+
+
+---
+
+![](/images/classificacao/boosting.png){fig-align="center"}
+
+
+
+## AdaBoost (Adaptive Boosting)
+
+Freund & Schapire (1997). Primeiro algoritmo de boosting prático.<br><br>
+
+**Ideia:** cada nova árvore dá mais peso às observações que foram classificadas erradas pela combinação anterior.
+
+---
+
+
+**Algoritmo para classificação binária $(y_i \in \{-1, 1\})$:**
+
+1. Inicialize pesos $w_i = 1/n$
+2. Para $b = 1$ a $B$:
+   - Ajuste uma árvore $f_b(\mathbf{x})$ ponderada pelos pesos
+   - Calcule o erro ponderado: $\text{err}_b = \frac{\sum w_i I(y_i \neq f_b(\mathbf{x}_i))}{\sum w_i}$
+   - Calcule $\alpha_b = \log\left(\frac{1 - \text{err}_b}{\text{err}_b}\right)$
+   - Atualize pesos: $w_i \leftarrow w_i \cdot \exp(\alpha_b \cdot I(y_i \neq f_b(\mathbf{x}_i)))$
+3. Predição final: $\hat{f}(\mathbf{x}) = \text{sinal}\left(\sum_{b=1}^B \alpha_b f_b(\mathbf{x})\right)$
+
+
+
+## R: AdaBoost
+
+```{r}
+#| eval: true
+#| echo: true
+
+library(adabag)
+library(ISLR2)
+
+set.seed(335)
+
+# AdaBoost com stumps (arvores de 1 no)
+ada_fit <- boosting(default ~ balance + student + income,
+                    data = Default,
+                    mfinal = 100,          # numero de iteracoes
+                    coeflearn = "Breiman") # metodo de calculo dos pesos
+ada_fit
+```
+
+---
+
+```{r}
+#| eval: true
+#| echo: true
+
+# Importancia das variaveis
+importanceplot(ada_fit)
+
+# Matriz de confusao
+pred <- predict(ada_fit, Default)
+pred$confusion
+cat("Acurácia:", 1 - pred$error, "\n")
+```
+
+
+## Gradient Boosting
+
+Generalização do AdaBoost para **qualquer função de perda diferenciável**.
+
+**Ideia:** a cada iteração, ajusta-se uma árvore aos **gradientes negativos** da função de perda.
+
+
+---
+
+
+**Algoritmo:**
+
+1. Inicialize $f_0(\mathbf{x}) = \arg\min_\gamma \sum_{i=1}^n L(y_i, \gamma)$
+2. Para $m = 1$ a $M$:
+   - Calcule os pseudo-resíduos: $r_{im} = -\left[\frac{\partial L(y_i, f(x_i))}{\partial f(x_i)}\right]_{f = f_{m-1}}$
+   - Ajuste uma árvore aos $r_{im}$, criando regiões $R_{jm}$
+   - Calcule $\gamma_{jm} = \arg\min_\gamma \sum_{\mathbf{x}_i \in R_{jm}} L(y_i, f_{m-1}(\mathbf{x}_i) + \gamma)$
+   - Atualize: $f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \nu \sum_j \gamma_{jm} I(\mathbf{x} \in R_{jm})$
+
+onde $\nu \in (0, 1]$ é a **taxa de aprendizado** (learning rate).
+
+
+
+
+## Gradient Boosting: hiperparâmetros
+
+Os principais hiperparâmetros:
+
+- **`n.trees`** ($M$): número de iterações. Mais árvores → menor viés, mas maior risco de overfitting
+- **`interaction.depth`**: profundidade das árvores (1 = stumps, 2-3 = comum)
+- **`shrinkage`** ($\nu$): taxa de aprendizado (0.001 a 0.1). Menor $\nu$ requer mais árvores
+- **`n.minobsinnode`**: número mínimo de observações por nó
+
+
+## R: Gradient Boosting
+
+
+```{r}
+#| eval: true
+#| echo: true
+library(gbm)
+
+set.seed(335)
+
+# Converter a resposta para 0 e 1
+Default$default_num <- ifelse(Default$default == "Yes", 1, 0)
+
+gbm_fit <- gbm(default_num ~ balance + student + income,
+               data = Default,
+               distribution = "bernoulli",
+               n.trees = 1000,
+               interaction.depth = 2,
+               shrinkage = 0.01,
+               cv.folds = 5)
+summary(gbm_fit)
+```
+
+
+
+## XGBoost (eXtreme Gradient Boosting)
+
+Chen & Guestrin (2016). Versão otimizada do Gradient Boosting.
+
+**Principais inovações:**
+
+- **Regularização L1 e L2** nos pesos das folhas
+- **Amostragem** de linhas e colunas (como Random Forest)
+- **Tratamento nativo de missing values**
+- **Paralelização** (diferente do GBM clássico)
+- **Approximate greedy algorithm** para splits
+
+
+## XGBoost (eXtreme Gradient Boosting)
+
+Função objetivo regularizada:
+
+$$
+\mathcal{L}^{(t)} = \sum_{i=1}^n L(y_i, \hat{y}_i^{(t-1)} + f_t(\mathbf{x}_i)) + \sum_{k=1}^t \Omega(f_k)
+$$
+
+onde $\Omega(f) = \gamma T + \frac{1}{2} \lambda ||w||^2$ ($T$ = número de folhas, $w$ = pesos).
+
+
+
+## R: XGBoost
+
+```{r}
+#| eval: true
+#| echo: true
+library(xgboost)
+
+# Preparação dos dados
+X <- model.matrix(default ~ balance + student + income - 1,
+                  data = Default)
+y <- ifelse(Default$default == "Yes", 1, 0)
+
+dtrain <- xgb.DMatrix(X, label = y)
+
+# Ajuste do modelo
+params <- list(objective = "binary:logistic",
+               max_depth = 3,
+               eta = 0.1,
+               subsample = 0.8,
+               colsample_bytree = 0.8)
+
+xgb_fit <- xgb.train(params, dtrain, nrounds = 100,
+                     verbose = 0)
+
+# Importância
+xgb.importance(model = xgb_fit, feature_names = colnames(X))
+```
+
+---
+
+### Interpretação da importância das variáveis no XGBoost
+
+- O XGBoost avaliou a importância das variáveis utilizando três métricas:
+  - **Gain:** contribuição da variável para reduzir a função de perda.
+  - **Cover:** proporção de observações afetadas pelas divisões da variável.
+  - **Frequency:** frequência com que a variável foi utilizada nas divisões das árvores.<br><br>
+
+- A variável **`balance`** foi a mais importante em todas as métricas:
+  - **Gain = 0,911**, indicando que respondeu por aproximadamente **91% da melhoria** obtida nas divisões.
+  - **Cover = 0,581**, participando de divisões que envolveram cerca de **58% das observações**.
+  - **Frequency = 0,519**, utilizada em aproximadamente **52% das divisões** realizadas.
+
+
+---
+
+### Interpretação da importância das variáveis no XGBoost
+
+
+- A variável **`income`** apresentou importância intermediária:
+  - **Gain = 0,077**.
+  - **Cover = 0,386**.
+  - **Frequency = 0,434**.
+  - Atua como variável complementar ao **balance**.<br><br>
+
+- A variável **`student`** teve contribuição muito pequena:
+  - **studentNo:** Gain = **0,011**.
+  - **studentYes:** Gain = **0,001**.
+  - Ambas apresentaram baixa frequência e pequena redução da função de perda.
+
+
+---
+
+### Conclusões
+
+- **`Balance`** é, de longe, o principal preditor da inadimplência.
+- **`Income`** possui importância secundária, refinando algumas decisões do modelo.
+- A variável **`Student`** praticamente não contribui para o desempenho do XGBoost.
+- O ranking de importância obtido é consistente com os resultados observados em **Árvores de Decisão** e **Random Forest**, reforçando que **`balance`** é a variável mais informativa para prever inadimplência.
+
+
+
+
+
+## Stacking (Stacked Generalization)
+
+**Ideia:** combinar múltiplos modelos base (nível 0) treinando um **meta-modelo** (nível 1) que aprende a ponderar as predições de cada um.
+
+**Diferente de Bagging/Boosting:**
+
+- Bagging: média/votação de modelos paralelos
+- Boosting: correção sequencial de erros
+- Stacking: meta-aprendiz — um modelo treinado para **combinar** as saídas de outros modelos
+
+
+## Stacking (Stacked Generalization)
+
+
+**Fluxo:**
+
+1. Divida os dados em $K$ folds (ex.: 5-fold)
+2. Para cada fold, treine os modelos base nos $K-1$ folds restantes
+3. Use as predições do fold left-out como **features** de treino do meta-modelo
+4. Repita até ter predições out-of-fold para todas as observações
+5. Treine o meta-modelo nessas predições
+6. Para novas observações: cada modelo base prediz → meta-modelo combina
+
+
+
+## R: Stacking
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+
+library(caret)
+library(caretEnsemble)
+library(randomForest)
+library(gbm)
+
+set.seed(335)
+
+# Garantir que a classe de interesse seja "Yes"
+Default$default <- relevel(Default$default, ref = "Yes")
+
+# Mesmas partições de validação cruzada para todos os modelos
+folds <- createFolds(
+  y = Default$default,
+  k = 5,
+  returnTrain = TRUE
+)
+
+# Controle dos modelos-base
+ctrl <- trainControl(
+  method = "cv",
+  number = 5,
+  index = folds,
+  savePredictions = "final",
+  classProbs = TRUE,
+  summaryFunction = twoClassSummary,
+  verboseIter = FALSE,
+  allowParallel = FALSE
+)
+
+# Ajuste dos modelos-base
+modelos_base <- caretList(
+  default ~ balance + student + income,
+  data = Default,
+  trControl = ctrl,
+  metric = "ROC",
+  tuneList = list(
+    rf = caretModelSpec(
+      method = "rf",
+      tuneLength = 3,
+      ntree = 500
+    ),
+    gbm = caretModelSpec(
+      method = "gbm",
+      tuneLength = 3,
+      verbose = FALSE
+    ),
+    glm = caretModelSpec(
+      method = "glm",
+      family = binomial()
+    )
+  )
+)
+
+# Controle do meta-modelo
+stack_ctrl <- trainControl(
+  method = "cv",
+  number = 5,
+  savePredictions = "final",
+  classProbs = TRUE,
+  summaryFunction = twoClassSummary,
+  verboseIter = FALSE,
+  allowParallel = FALSE
+)
+
+# Empilhamento com regressão logística
+stack <- caretStack(
+  all.models = modelos_base,
+  method = "glm",
+  metric = "ROC",
+  trControl = stack_ctrl,
+  family = binomial()
+)
+```
+
+
+---
+
+
+```{r}
+#| eval: true
+#| echo: true
+
+modelos_base
+stack
+```
+
+
+
+---
+
+### Interpretação:
+
+
+- Foram treinados três modelos base: `Random Forest`, `GBM` e `Regressão Logística`.
+- O `GBM` apresentou desempenho superior ao `Random Forest`.
+- A `Regressão Logística` foi o melhor modelo individual `$(ROC \approx 0,949)$`.
+- O `Stacking` utilizou uma `regressão logística` como meta-modelo para combinar as previsões dos três modelos.
+- O meta-modelo atribuiu maior peso ao `GLM (coeficiente 11,7)`, indicando que suas previsões eram as mais informativas, enquanto `RF` e `GBM` receberam pesos negativos de pequena magnitude.
+- O ensemble obteve `$ROC \approx 0,946$`, desempenho muito próximo ao do `GLM` isolado, mostrando que, neste problema, a combinação dos modelos não proporcionou ganho expressivo em relação ao melhor modelo base.
+
+
+
+## KNN (K-Nearest Neighbors)
+
+Algoritmo de aprendizado **preguiçoso** (lazy learner): não constrói um modelo explícito, **memoriza** os dados de treino e classifica novas observações por similaridade.
+
+**Classificação:** a classe de $x_0$ é a **moda** das classes dos $K$ vizinhos mais próximos.
+
+**Distância:** tipicamente Euclidiana:
+
+$$
+d(x_i, x_j) = \sqrt{\sum_{k=1}^p (x_{ik} - x_{jk})^2}
+$$
+
+
+**Hiperparâmetro crítico:** K (número de vizinhos).
+
+
+## R: KNN
+
+```{r}
+#| eval: true
+#| echo: true
+library(class)
+library(ISLR2)
+
+set.seed(335)
+
+# Normalizar os dados
+X <- scale(Default[, c("balance", "income")])
+y <- Default$default
+
+# Treino e teste
+idx <- sample(nrow(Default), 0.7 * nrow(Default))
+train <- X[idx, ]; test <- X[-idx, ]
+ytrain <- y[idx]; ytest <- y[-idx]
+
+# KNN com K = 5
+knn_pred <- knn(train, test, ytrain, k = 5)
+mean(knn_pred == ytest) # acurácia
+```
+
+
+
+## KNN: escolha de K
+
+**K pequeno:** baixo viés, alta variância (fronteira muito flexível)
+
+**K grande:** alto viés, baixa variância (fronteira muito suave)
+
+- $K = 1$: vizinho mais próximo — overfitting
+- $K = n$: classe majoritária global — underfitting
+
+
+## R: Escolha de K
+
+
+```{r}
+#| eval: true
+#| echo: true
+# Escolha do K por validacao cruzada
+Ks <- 1:50
+acuracia <- sapply(Ks, function(k) {
+  pred <- knn.cv(train, ytrain, k = k)
+  mean(pred == ytrain)
+})
+
+plot(Ks, acuracia, type = "b", pch = 19,
+     xlab = "K", ylab = "Acurácia (CV)")
+abline(v = which.max(acuracia), col = "red", lty = 2)
+```
+
+---
+
+### Interpretação
+
+- A acurácia foi avaliada para valores de $K$ entre 1 e 50 utilizando **validação cruzada leave-one-out (LOOCV)** por meio da função `knn.cv()`.<br><br>
+
+- Para valores pequenos de $K$, a acurácia é menor, pois o modelo torna-se mais sensível a ruídos e apresenta maior variância, caracterizando um cenário de **sobreajuste (overfitting)**.<br><br>
+
+- À medida que $K$ aumenta, a acurácia cresce rapidamente e se estabiliza em torno de **97%**, indicando maior capacidade de generalização.
+
+
+---
+
+
+### Interpretação
+
+
+- A linha vermelha indica o valor de $K$ que produziu a maior acurácia durante a validação cruzada. Neste exemplo, o valor ótimo foi:
+
+$$
+K = 39
+$$
+
+- Observa-se que diversos valores de $K$ entre aproximadamente **10 e 40** apresentam desempenho muito semelhante, evidenciando que o modelo é relativamente robusto à escolha exata desse hiperparâmetro nessa faixa.
+
+---
+
+### Conclusão
+
+- O melhor desempenho foi obtido com **$K = 39$**.<br><br>
+- Valores muito pequenos de $K$ tendem ao **overfitting**, enquanto valores excessivamente grandes podem levar ao **underfitting**.<br><br>
+- Como a curva de acurácia permanece praticamente constante para vários valores de $K$, pequenas variações em torno do valor ótimo produzem desempenho semelhante.
+
+
+
+# Redes neurais artificiais
+
+## Redes Neurais: visão geral
+
+Inspiradas no funcionamento dos neurônios biológicos.
+
+**Neurônio artificial (perceptron):**
+
+$$
+y = \phi\left(\sum_{j=1}^p w_j x_j + b\right)
+$$
+
+onde
+
+$\phi$ é uma **função de ativação** não-linear.
+
+
+
+## Redes Neurais: visão geral
+
+
+**Arquitetura típica (MLP — Multilayer Perceptron):**
+
+- **Camada de entrada:** variáveis preditoras
+
+$$x_1, \dots, x_p$$
+
+- **Camadas ocultas:** neurônios com ativação não-linear
+- **Camada de saída:** predição final
+
+
+
+## Funções de ativação
+
+São funções **não-lineares** que transformam a saída de cada neurônio. Sem elas, a rede seria apenas uma combinação linear — equivalente a uma regressão logística.
+
+**Sigmoide:** $$\sigma(z) = \frac{1}{1 + e^{-z}}$$
+
+- Saída entre 0 e 1: útil para classificação binária
+- Problema: satura (gradiente ~0) para valores extremos
+
+
+
+## Funções de ativação
+
+**Tanh:** $$\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}$$
+
+- Saída entre -1 e 1: centrada em zero
+- Mesmo problema de saturação da sigmoide
+
+
+## Funções de ativação
+
+**ReLU (Rectified Linear Unit):** $$\text{ReLU}(z) = \max(0, z)$$
+
+- **Mais usada hoje** em camadas ocultas
+- Não satura para valores positivos
+- Problema: neurônios "mortos" para $z < 0$
+
+
+## Funções de ativação
+
+
+**Leaky ReLU / ELU:** variantes que permitem gradiente pequeno para $z < 0$, resolvendo o problema de neurônios mortos.
+
+**Softmax:** usada na camada de saída para classificação multiclasse: transforma logits em probabilidades que somam 1.
+
+---
+
+![](/images/classificacao/func_ativ.png){fig-align="center"}
+
+
+
+
+## Backpropagation
+
+Algoritmo que **treina** redes neurais ajustando os pesos para minimizar o erro: combina **forward pass** (predição) com **backward pass** (correção).
+
+**Forward pass:**
+
+- Entrada $\mathbf{x}$ passa camada por camada até a saída $\hat{y}$
+- Calcula-se o erro (loss): $L(y, \hat{y})$
+
+
+## Backpropagation
+
+
+**Backward pass (regra da cadeia):**
+
+O gradiente do erro em relação a cada peso é calculado **da saída para a entrada**:
+
+$$
+\frac{\partial L}{\partial w_{jk}^{(l)}} = \frac{\partial L}{\partial a_k^{(l)}} \cdot \frac{\partial a_k^{(l)}}{\partial z_k^{(l)}} \cdot \frac{\partial z_k^{(l)}}{\partial w_{jk}^{(l)}}
+$$
+
+onde:
+
+- $w_{jk}^{(l)}$ = peso do neurônio $j$ para o neurônio $k$ na camada $l$
+- $z_k^{(l)}$ = combinação linear de entrada do neurônio $k$
+- $a_k^{(l)}$ = ativação (saída) do neurônio $k$
+
+
+## Backpropagation
+
+
+**Atualização dos pesos (Gradient Descent):**
+
+$$
+w_{jk}^{(l)} \leftarrow w_{jk}^{(l)} - \eta \cdot \frac{\partial L}{\partial w_{jk}^{(l)}}
+$$
+
+onde $\eta$ é a **taxa de aprendizado**.
