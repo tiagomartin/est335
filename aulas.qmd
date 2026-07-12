@@ -135,6 +135,38 @@ Esta página contém aulas que serão apresentadas ao longo do semestre.
 </span>
 :::
 
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+  Métodos de classificação
+</span>
+
+<span>
+[Ver slides](/aulas/classificacao/met_class/met_class.html#/title-slide){.btn .btn-est304-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+</span>
+:::
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+  Outros Aspectos de Classificação
+</span>
+
+<span>
+[Ver slides](/aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#/title-slide){.btn .btn-est304-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+</span>
+:::
+
+
+
+
+<br>
+
+<p style="font-size: 30px; font-weight: bold;">Parte III: Aprendizado não supervisionado</p>
+
+
+
+
 
 
 :::
