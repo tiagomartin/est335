@@ -1677,5 +1677,194 @@
     "title": "Parte II : Classificação",
     "section": "Backpropagation",
     "text": "Backpropagation\nAtualização dos pesos (Gradient Descent):\n\\[\nw_{jk}^{(l)} \\leftarrow w_{jk}^{(l)} - \\eta \\cdot \\frac{\\partial L}{\\partial w_{jk}^{(l)}}\n\\]\nonde \\(\\eta\\) é a taxa de aprendizado."
+  },
+  {
+    "objectID": "aulas/classificacao/met_class/met_class.html#redes-neurais-tuning",
+    "href": "aulas/classificacao/met_class/met_class.html#redes-neurais-tuning",
+    "title": "Parte II : Classificação",
+    "section": "Redes Neurais: tuning",
+    "text": "Redes Neurais: tuning\nHiperparâmetros principais\n\n\n\n\n\n\n\nParâmetro\nDescrição\nFaixa comum\n\n\n\nsize\nNº de neurônios na camada oculta\n1–100\n\n\ndecay\nRegularização (weight decay)\n0.001–0.1\n\n\nmaxit\nNº máximo de iterações\n100–1000\n\n\nlinout\nSaída linear (regressão) ou sigmoide (classificação)\nTRUE/FALSE"
+  },
+  {
+    "objectID": "aulas/classificacao/met_class/met_class.html#r-redes-neurais",
+    "href": "aulas/classificacao/met_class/met_class.html#r-redes-neurais",
+    "title": "Parte II : Classificação",
+    "section": "R: Redes Neurais",
+    "text": "R: Redes Neurais\n\nlibrary(nnet)\nlibrary(ISLR2)\n\nset.seed(335)\n\n# Ajuste da rede neural\n# size = numero de neuronios na camada oculta\n# decay = regularizacao (weight decay)\nnn_fit &lt;- nnet(default ~ balance + student + income,\n               data = Default,\n               size = 5,\n               decay = 0.1,\n               maxit = 500,\n               trace = FALSE)\n\nnn_fit\n\na 3-5-1 network with 26 weights\ninputs: balance studentYes income \noutput(s): default \noptions were - entropy fitting  decay=0.1"
+  },
+  {
+    "objectID": "aulas/classificacao/met_class/met_class.html#forward-pass-da-rede-neural",
+    "href": "aulas/classificacao/met_class/met_class.html#forward-pass-da-rede-neural",
+    "title": "Parte II : Classificação",
+    "section": "Forward Pass da Rede Neural",
+    "text": "Forward Pass da Rede Neural\nUma MLP com 1 camada oculta (a que o nnet ajusta) funciona assim:\n1. Combinação linear na camada oculta\n\\[a_j^{(1)} = b_j^{(1)} + \\sum_{i=1}^p w_{ij}^{(1)} x_i\\]\nonde:\n\n\n\\(x_i\\) = variável preditora \\(i\\) (entrada)\n\n\\(w_{ij}^{(1)}\\) = peso conectando a entrada \\(i\\) ao neurônio \\(j\\) da camada oculta\n\n\\(b_j^{(1)}\\) = bias do neurônio \\(j\\)\n\n\n\\(p\\) = número de variáveis preditoras"
+  },
+  {
+    "objectID": "aulas/classificacao/met_class/met_class.html#papel-dos-parâmetros",
+    "href": "aulas/classificacao/met_class/met_class.html#papel-dos-parâmetros",
+    "title": "Parte II : Classificação",
+    "section": "Papel dos parâmetros",
+    "text": "Papel dos parâmetros\n\nsize (número de neurônios na camada oculta)\nControla a capacidade da rede:\n\n\n\n\n\n\nsize\nEfeito\n\n\n\nPequeno (1-3)\nFronteira simples, baixa flexibilidade, underfitting\n\n\n\nMédio (5-15)\nBom equilíbrio para maioria dos problemas\n\n\nGrande (20+)\nAlta flexibilidade, risco de overfitting\n\n\n\n\nCada neurônio oculto aprende uma transformação diferente dos dados. Mais neurônios = mais “pedaços” para moldar a fronteira de decisão.\n\ndecay (regularização — weight decay)\nPenaliza pesos grandes para evitar overfitting:\n\\[L_{\\text{total}} = L(y, \\hat{y}) + \\frac{\\lambda}{2} \\sum_{\\text{todos os pesos}} w^2\\]\nonde \\[\\lambda\\] é o decay.\n\n\ndecay\nEfeito\n\n\n\n0 (sem regularização)\nPesos podem crescer muito, overfitting\n\n\n0.001-0.01\nRegularização leve\n\n\n0.1-0.5\nRegularização forte, fronteira mais suave\n\n\nMuito alto (&gt;1)\nPesos próximos de zero, underfitting\n\n\n\n\n\nmaxit (número máximo de iterações)\nControla quanto tempo o algoritmo de otimização (gradiente descendente) roda:\n\nPoucas iterações (50-100): pode parar antes de convergir\n500-1000: suficiente para a maioria dos casos\nSe não convergir em maxit, o nnet avisa: \"maxit reached\" — aumente o valor"
+  },
+  {
+    "objectID": "aulas/classificacao/met_class/met_class.html#r-tuning-em-redes-neurais",
+    "href": "aulas/classificacao/met_class/met_class.html#r-tuning-em-redes-neurais",
+    "title": "Parte II : Classificação",
+    "section": "R: Tuning em Redes Neurais",
+    "text": "R: Tuning em Redes Neurais\n\nlibrary(nnet)\nlibrary(caret)\nlibrary(pROC)\n\nset.seed(335)\n\n# Garantir a ordem correta das classes\nDefault$default &lt;- factor(\n  Default$default,\n  levels = c(\"No\", \"Yes\")\n)\n\n# Grade de hiperparâmetros\nresultados &lt;- expand.grid(\n  size  = c(1, 3, 5, 10, 15, 20),\n  decay = c(0.001, 0.01, 0.1, 0.5)\n)\n\nresultados$acuracia &lt;- NA_real_\nresultados$auc      &lt;- NA_real_\n\n# Índices das observações de validação de cada fold\nfolds &lt;- createFolds(\n  y = Default$default,\n  k = 5,\n  returnTrain = FALSE\n)\n\n# Validação cruzada manual\nfor (i in seq_len(nrow(resultados))) {\n\n  acc_fold &lt;- numeric(length(folds))\n  auc_fold &lt;- numeric(length(folds))\n\n  for (j in seq_along(folds)) {\n\n    idx_valid &lt;- folds[[j]]\n\n    treino &lt;- Default[-idx_valid, , drop = FALSE]\n    valid  &lt;- Default[ idx_valid, , drop = FALSE]\n\n    modelo &lt;- nnet(\n      default ~ balance + student + income,\n      data = treino,\n      size = resultados$size[i],\n      decay = resultados$decay[i],\n      maxit = 500,\n      MaxNWts = 5000,\n      trace = FALSE\n    )\n\n    # Predição das classes\n    pred_classe &lt;- predict(\n      modelo,\n      newdata = valid,\n      type = \"class\"\n    )\n\n    acc_fold[j] &lt;- mean(pred_classe == valid$default)\n\n    # Probabilidade de default = \"Yes\"\n    pred_prob &lt;- predict(\n      modelo,\n      newdata = valid,\n      type = \"raw\"\n    )\n\n    # Em classificação binária, nnet pode devolver vetor ou matriz\n    if (is.matrix(pred_prob)) {\n      if (\"Yes\" %in% colnames(pred_prob)) {\n        pred_prob &lt;- pred_prob[, \"Yes\"]\n      } else {\n        pred_prob &lt;- pred_prob[, ncol(pred_prob)]\n      }\n    }\n\n    roc_obj &lt;- roc(\n      response = valid$default,\n      predictor = as.numeric(pred_prob),\n      levels = c(\"No\", \"Yes\"),\n      direction = \"&lt;\",\n      quiet = TRUE\n    )\n\n    auc_fold[j] &lt;- as.numeric(auc(roc_obj))\n  }\n\n  resultados$acuracia[i] &lt;- mean(acc_fold, na.rm = TRUE)\n  resultados$auc[i]      &lt;- mean(auc_fold, na.rm = TRUE)\n}\n\n# Ordenar as combinações pela maior AUC\nresultados &lt;- resultados[\n  order(resultados$auc, decreasing = TRUE),\n]\n\nrow.names(resultados) &lt;- NULL\n\n# Melhor combinação\nbest &lt;- resultados[1, ]\n\nresultados\n\n   size decay  acuracia       auc\n1    15 0.500 0.9722002 0.9473840\n2    20 0.500 0.9730004 0.9461433\n3    10 0.500 0.9720002 0.9457201\n4    20 0.100 0.9706994 0.9236276\n5    15 0.100 0.9698994 0.8971999\n6    10 0.010 0.9709995 0.8571673\n7     3 0.500 0.9713005 0.8568092\n8    15 0.010 0.9700000 0.8284057\n9    15 0.001 0.9707004 0.8167466\n10   10 0.100 0.9705009 0.8128967\n11    1 0.500 0.9706009 0.8124886\n12    5 0.500 0.9706009 0.8026357\n13    5 0.100 0.9707002 0.7682205\n14   20 0.001 0.9695995 0.7672416\n15   20 0.010 0.9694996 0.7654351\n16    3 0.010 0.9694009 0.7345809\n17    5 0.010 0.9675000 0.6201241\n18    1 0.100 0.9681000 0.5905846\n19   10 0.001 0.9678000 0.5894888\n20    3 0.001 0.9678000 0.5827365\n21    1 0.010 0.9667000 0.5001034\n22    1 0.001 0.9667000 0.5000000\n23    3 0.100 0.9667000 0.4997932\n24    5 0.001 0.9667000 0.4989235\n\nbest\n\n  size decay  acuracia      auc\n1   15   0.5 0.9722002 0.947384"
+  },
+  {
+    "objectID": "aulas/classificacao/met_class/met_class.html#base-de-dados-default-islr2",
+    "href": "aulas/classificacao/met_class/met_class.html#base-de-dados-default-islr2",
+    "title": "Parte II : Classificação",
+    "section": "Base de dados: Default (ISLR2)",
+    "text": "Base de dados: Default (ISLR2)\nFonte: pacote ISLR2 (livro An Introduction to Statistical Learning)\nProblema: prever se um cliente entrará em default (inadimplência) no cartão de crédito.\n\n\n\n\n\n\n\nVariável\nTipo\nDescrição\n\n\n\ndefault\ncategórica (Yes/No)\nCliente deu calote? (variável resposta)\n\n\nstudent\ncategórica (Yes/No)\nCliente é estudante?\n\n\nbalance\nnumérica\nSaldo médio do cartão de crédito\n\n\nincome\nnumérica\nRenda anual do cliente"
+  },
+  {
+    "objectID": "aulas/classificacao/met_class/met_class.html#base-de-dados-default-islr2-1",
+    "href": "aulas/classificacao/met_class/met_class.html#base-de-dados-default-islr2-1",
+    "title": "Parte II : Classificação",
+    "section": "Base de dados: Default (ISLR2)",
+    "text": "Base de dados: Default (ISLR2)\n\n\n10.000 observações, 3 variáveis preditoras\nClasses desbalanceadas: ~97% No, ~3% Yes\n\nUsada ao longo de todo o curso como exemplo unificado de classificação binária\n\n\n\nlibrary(ISLR2)\ndata(Default)\n\nsummary(Default)\n\n default    student       balance           income     \n No :9667   No :7056   Min.   :   0.0   Min.   :  772  \n Yes: 333   Yes:2944   1st Qu.: 481.7   1st Qu.:21340  \n                       Median : 823.6   Median :34553  \n                       Mean   : 835.4   Mean   :33517  \n                       3rd Qu.:1166.3   3rd Qu.:43808  \n                       Max.   :2654.3   Max.   :73554"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-1",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-1",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\n\nSe uma classe é rara, ou seja, \\(\\mathbb{P}(Y=1\\mid\\mathbf{x}) &lt;&lt; 0.5\\) para quase todas as observações, então o classificador de Bayes, \\(\\mathbb{I}\\!\\left(\\mathbb{P}(Y=1\\mid\\mathbf{x}) \\geq 0.5\\right)\\),passa a prever sempre \\(g(\\mathbf{x})=0\\) (classificador trivial), minimizando a perda \\(\\mathbb{P}(g(\\mathbf{X}) \\neq Y)\\).\nComo os métodos de classificação tendem aproximar o classificador de Bayes, naturalmente irão se aproximar do classificador trivial, neste caso."
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\nNem todo problema de classificação é simétrico. Na prática, os erros têm custos diferentes e as classes raramente são balanceadas.\nAssimetria na Função de Perda\nAté aqui assumimos que FN e FP têm o mesmo custo (perda 0-1), isto é, a função \\(\\mathbb{I}(g(\\mathbf{x}) \\neq Y)\\) atribui perda 1 para todo erro cometido. Na prática, os custos são diferentes.\nExemplos:\n\n\nDiagnóstico de câncer: FN (não diagnosticar) é muito mais grave que FP\n\n\nDetecção de default: não detectar um calote custa mais que um falso alarme"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-2",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-2",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\nTrês abordagens\n\nFunção de risco assimétrica:\n\n\\[R(g) = \\ell_1 P(Y \\neq g(\\mathbf{x}), Y=0) + \\ell_0 P(Y \\neq g(\\mathbf{x}), Y=1)\\]\n\n\n\\(\\ell_1\\) = custo do Falso Positivo\n\n\\(\\ell_0\\) = custo do Falso Negativo"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#assimetria-na-função-de-perda",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#assimetria-na-função-de-perda",
+    "title": "Parte II : Classificação",
+    "section": "Assimetria na Função de Perda",
+    "text": "Assimetria na Função de Perda\nAté aqui assumimos que FN e FP têm o mesmo custo (perda 0-1). Na prática, os custos são diferentes.\nExemplos:\n\n\nDiagnóstico de câncer: FN (não diagnosticar) é muito mais grave que FP\n\n\nDetecção de default: não detectar um calote custa mais que um falso alarme\n\nFunção de risco assimétrica:\n\\[R(g) = \\ell_1 P(Y \\neq g(X), Y=0) + \\ell_0 P(Y \\neq g(X), Y=1)\\]\n\n\n\\(\\ell_1\\) = custo do Falso Positivo\n\n\\(\\ell_0\\) = custo do Falso Negativo"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-3",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-3",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\nTrês abordagens\n\nFunção de risco assimétrica:\n\nO classificador de Bayes com perda assimétrica é:\n\\[g(x) = \\mathbb{I}\\left(P(Y=1|\\mathbf{x}) &gt; \\frac{\\ell_1}{\\ell_0 + \\ell_1}\\right)\\]\n\nCutoff padrão (0,5) é um caso particular quando \\(\\ell_0 = \\ell_1\\)\n\nSe FN custa 9 vezes mais que FP (\\(\\ell_0 = 9\\), \\(\\ell_1 = 1\\)) → cutoff ótimo = 0,1\n\nDefinir os custos é um problema de negócio, não estatístico"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-4",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-4",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\nTrês abordagens\n\nCurva ROC (Receiver Operating Characteristic):\n\nA Curva ROC permite avaliar o classificador para todos os limiares de decisão, possibilitando escolher aquele mais adequado aos custos da aplicação.\nRepresenta o compromisso entre\n\\[\n\\text{TPR}=\\frac{TP}{TP+FN}\n\\qquad\\text{e}\\qquad\n\\text{FPR}=\\frac{FP}{FP+TN}.\n\\]\nEm vez de utilizar o limiar fixo\n\\[\n\\mathbb{P}(Y=1\\mid\\mathbf{x})\\ge0.5,\n\\]"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#slide-3-cutoff-ótimo-sob-perda-assimétrica",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#slide-3-cutoff-ótimo-sob-perda-assimétrica",
+    "title": "Parte II : Classificação",
+    "section": "Slide 3 — Cutoff Ótimo sob Perda Assimétrica",
+    "text": "Slide 3 — Cutoff Ótimo sob Perda Assimétrica\nO classificador de Bayes com perda assimétrica é:\n\\[g(x) = \\mathbb{I}\\left(P(Y=1|X=x) &gt; \\frac{\\ell_1}{\\ell_0 + \\ell_1}\\right)\\]\n\nCutoff padrão (0,5) é um caso particular quando \\(\\ell_0 = \\ell_1\\)\n\nSe FN custa 9× mais que FP (\\(\\ell_0 = 9\\), \\(\\ell_1 = 1\\)) → cutoff ótimo = 0,1\n\nDefinir os custos é um problema de negócio, não estatístico"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#conjuntos-desbalanceados",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#conjuntos-desbalanceados",
+    "title": "Parte II : Classificação",
+    "section": "Conjuntos desbalanceados",
+    "text": "Conjuntos desbalanceados\nUm dataset é desbalanceado quando uma classe tem muito mais observações que a outra.\n\n\nExemplos clássicos: fraude, diagnóstico de doenças raras, inadimplência."
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#cutoff-ótimo-sob-perda-assimétrica",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#cutoff-ótimo-sob-perda-assimétrica",
+    "title": "Parte II : Classificação",
+    "section": "Cutoff Ótimo sob Perda Assimétrica",
+    "text": "Cutoff Ótimo sob Perda Assimétrica\nO classificador de Bayes com perda assimétrica é:\n\\[g(x) = \\mathbb{I}\\left(P(Y=1|X=x) &gt; \\frac{\\ell_1}{\\ell_0 + \\ell_1}\\right)\\]\n\nCutoff padrão (0,5) é um caso particular quando \\(\\ell_0 = \\ell_1\\)\n\nSe FN custa 9× mais que FP (\\(\\ell_0 = 9\\), \\(\\ell_1 = 1\\)) → cutoff ótimo = 0,1\n\nDefinir os custos é um problema de negócio, não estatístico"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-5",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-5",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\nTrês abordagens\n\nCurva ROC (Receiver Operating Characteristic):\n\nescolhe-se um limiar \\(\\tau\\) (threshold), resultando no classificador\n\\[\ng(\\mathbf{x})=\n\\mathbb{I}\\!\\left(\\mathbb{P}(Y=1\\mid\\mathbf{x})\\ge\\tau\\right).\n\\]\nQuanto maior o custo do falso negativo, menor tende a ser \\(\\tau\\); quanto maior o custo do falso positivo, maior tende a ser \\(\\tau\\)."
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-6",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-6",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-7",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-7",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\nTrês abordagens\n\n\nSuper-sampling e Sub-sampling\n\n\n\nAlterar artificialmente a prevalência de cada categoria na amostra de treinamento\n\nSuper-sampling: replicar observações da classe minoritária\n\nSub-sampling: remover observações da classe majoritária"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-8",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#classificação-assimetria-desbalanceamento-e-cortes-8",
+    "title": "Parte II : Classificação",
+    "section": "Classificação: assimetria, desbalanceamento e cortes",
+    "text": "Classificação: assimetria, desbalanceamento e cortes\n\n\n⚠️ Ponto central: A fonte do problema não é o desbalanceamento em si, mas sim os custos de classificação serem diferentes. O classificador de Bayes padrão minimiza apenas a probabilidade de erro,ignorando custos assimétricos entre FN e FP."
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending",
+    "title": "Parte II : Classificação",
+    "section": "Combinando Classificadores (Stacking / Blending)",
+    "text": "Combinando Classificadores (Stacking / Blending)\nIdeia central: em vez de escolher um único modelo, combinar as predições de múltiplos classificadores base para obter um desempenho melhor que qualquer um individualmente.\nArquitetura\n\n\nNível 0 (base): \\(K\\) classificadores treinados no dataset original (ex.: logística, árvore, SVM, KNN, etc.)\n\nNível 1 (meta): um meta-classificador treinado para aprender a ponderar as saídas dos modelos base\n\nProblema: se os modelos base forem treinados e suas predições usadas no mesmo dataset, o meta-classificador sofre overfitting."
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending-1",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending-1",
+    "title": "Parte II : Classificação",
+    "section": "Combinando Classificadores (Stacking / Blending)",
+    "text": "Combinando Classificadores (Stacking / Blending)\nSolução: out-of-fold predictions\n\nDivida os dados em \\(V\\) folds (ex.: 5)\nPara cada fold \\(v\\):\n\nTreine cada modelo base nos \\(V-1\\) folds restantes\nFaça predição sobre o fold \\(v\\) (dados não vistos)\n\n\nUse as predições out-of-fold de todos os modelos como features para treinar o meta-classificador"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending-2",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending-2",
+    "title": "Parte II : Classificação",
+    "section": "Combinando Classificadores (Stacking / Blending)",
+    "text": "Combinando Classificadores (Stacking / Blending)\nCombinações comuns\n\n\n\n\n\n\n\nTipo\nMeta-classificador\nDescrição\n\n\n\nBlending simples\nMédia/votação\nSem meta-modelo, apenas média das probabilidades ou voto majoritário\n\n\nStacking linear\nRegressão logística\nAprende pesos lineares para cada modelo base\n\n\nStacking não-linear\nÁrvore/Rede Neural\nAprende interações complexas entre as predições"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#r-stacking-blending",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#r-stacking-blending",
+    "title": "Parte II : Classificação",
+    "section": "R: Stacking / Blending",
+    "text": "R: Stacking / Blending\n\nlibrary(caret)\nlibrary(ISLR2)\n\nset.seed(335)\n\n# Modelos base com CV\nctrl &lt;- trainControl(method = \"cv\", number = 5,\n                     savePredictions = \"final\",\n                     classProbs = TRUE)\n\nmodelos &lt;- list(\n  logistica = train(default ~ balance + student + income,\n                    data = Default, method = \"glm\", trControl = ctrl),\n  arvore    = train(default ~ balance + student + income,\n                    data = Default, method = \"rpart\", trControl = ctrl),\n  knn       = train(default ~ balance + student + income,\n                    data = Default, method = \"knn\", trControl = ctrl)\n)\n\n# Extrair predicoes out-of-fold para cada modelo\npreds &lt;- data.frame(\n  logistica = modelos$logistica$pred$Yes,\n  arvore    = modelos$arvore$pred$Yes,\n  knn       = modelos$knn$pred$Yes,\n  obs       = modelos$logistica$pred$obs\n)\n\n# Meta-classificador: regressao logistica\nmeta &lt;- train(obs ~ ., data = preds, method = \"glm\",\n              trControl = trainControl(method = \"none\"))\nsummary(meta)\n\n\nCall:\nNULL\n\nCoefficients:\n            Estimate Std. Error z value Pr(&gt;|z|)    \n(Intercept) -4.36666    0.09314 -46.885   &lt;2e-16 ***\nlogistica    9.52348    0.35288  26.988   &lt;2e-16 ***\narvore      -0.52831    0.79842  -0.662    0.508    \nknn         -0.98458    0.89516  -1.100    0.271    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 2920.6  on 9999  degrees of freedom\nResidual deviance: 1834.4  on 9996  degrees of freedom\nAIC: 1842.4\n\nNumber of Fisher Scoring iterations: 7"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending-3",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#combinando-classificadores-stacking-blending-3",
+    "title": "Parte II : Classificação",
+    "section": "Combinando Classificadores (Stacking / Blending)",
+    "text": "Combinando Classificadores (Stacking / Blending)\n\n\nPonto importante: o stacking funciona melhor quando os modelos base são diversos. Nestes casos, cometem erros em padrões diferentes, de modo que o meta-classificador consegue aprender qual modelo é mais confiável em cada situação."
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#dataset-shift-e-viés-de-seleção",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#dataset-shift-e-viés-de-seleção",
+    "title": "Parte II : Classificação",
+    "section": "Dataset Shift e Viés de Seleção",
+    "text": "Dataset Shift e Viés de Seleção\nContexto: quando os dados de treino e teste vêm de distribuições diferentes, as premissas do aprendizado de máquina são violadas e o modelo degrada.\nTipos de dataset shift\n1. Covariate Shift\nA distribuição das variáveis preditoras muda, mas a relação \\(P(Y|\\mathbf{x})\\) permanece a mesma:\n\\[\nP_{\\text{treino}}(\\mathbf{x}) \\neq P_{\\text{teste}}(\\mathbf{x}) \\quad \\text{e} \\quad P_{\\text{treino}}(Y|\\mathbf{x}) = P_{\\text{teste}}(Y|\\mathbf{x})\n\\]\n\n\nExemplo: modelo treinado com clientes de SP, aplicado em clientes do RJ"
+  },
+  {
+    "objectID": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#r-dataset-shift-e-viés-de-seleção",
+    "href": "aulas/classificacao/outros_aspec_classificacao/outros_aspec_classificacao.html#r-dataset-shift-e-viés-de-seleção",
+    "title": "Parte II : Classificação",
+    "section": "R: Dataset Shift e Viés de Seleção",
+    "text": "R: Dataset Shift e Viés de Seleção\n\n# Exemplo: correcao de Covariate Shift\n# Dados de treino viezados e teste com distribuicao diferente\nset.seed(335)\n\nn_treino &lt;- 500\nn_teste &lt;- 200\n\n# Treino: X ~ N(0, 1); Teste: X ~ N(1.5, 1)\nX_treino &lt;- rnorm(n_treino, 0, 1)\nX_teste  &lt;- rnorm(n_teste, 1.5, 1)\n\n# Fator de correcao beta(x) = P_teste(X) / P_treino(X)\n# Neste caso: beta(x) = dnorm(x, 1.5, 1) / dnorm(x, 0, 1)\npesos &lt;- dnorm(X_treino, 1.5, 1) / dnorm(X_treino, 0, 1)\nsummary(pesos)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n 0.0037  0.1113  0.3156  1.1676  0.9503 37.4111"
   }
 ]

@@ -258,6 +258,36 @@ ggplot(
 
 
 
+## Base de dados: Default (ISLR2)
+
+**Fonte:** pacote `ISLR2` (livro *An Introduction to Statistical Learning*)
+
+**Problema:** prever se um cliente entrará em **default** (inadimplência) no cartão de crédito.
+
+| Variável | Tipo | Descrição |
+|----------|------|-----------|
+| `default` | categórica (Yes/No) | Cliente deu calote? (**variável resposta**) |
+| `student` | categórica (Yes/No) | Cliente é estudante? |
+| `balance` | numérica | Saldo médio do cartão de crédito |
+| `income` | numérica | Renda anual do cliente |
+
+
+## Base de dados: Default (ISLR2)
+
+
+- **10.000 observações**, 3 variáveis preditoras
+- Classes desbalanceadas: ~97% `No`, ~3% `Yes`
+- Usada ao longo de todo o curso como exemplo unificado de **classificação binária**
+
+
+```{r}
+#| eval: true
+#| echo: true
+library(ISLR2)
+data(Default)
+
+summary(Default)
+```
 
 
 
@@ -2398,3 +2428,273 @@ w_{jk}^{(l)} \leftarrow w_{jk}^{(l)} - \eta \cdot \frac{\partial L}{\partial w_{
 $$
 
 onde $\eta$ é a **taxa de aprendizado**.
+
+
+
+
+
+
+## Redes Neurais: tuning 
+
+### Hiperparâmetros principais
+
+| Parâmetro | Descrição | Faixa comum |
+|-----------|-----------|-------------|
+| `size` | Nº de neurônios na camada oculta | 1–100 |
+| `decay` | Regularização (weight decay) | 0.001–0.1 |
+| `maxit` | Nº máximo de iterações | 100–1000 |
+| `linout` | Saída linear (regressão) ou sigmoide (classificação) | TRUE/FALSE |
+
+
+
+
+
+## R: Redes Neurais
+
+```{r}
+#| eval: true
+#| echo: true
+library(nnet)
+library(ISLR2)
+
+set.seed(335)
+
+# Ajuste da rede neural
+# size = numero de neuronios na camada oculta
+# decay = regularizacao (weight decay)
+nn_fit <- nnet(default ~ balance + student + income,
+               data = Default,
+               size = 5,
+               decay = 0.1,
+               maxit = 500,
+               trace = FALSE)
+
+nn_fit
+```
+
+
+---
+
+### Interpretação
+
+- Foi ajustada uma **Rede Neural Artificial (RNA)** para um problema de classificação binária, utilizando a variável **`default`** como resposta e as variáveis **`balance`**, **`student`** e **`income`** como preditoras.<br><br>
+
+- A arquitetura da rede é **3–5–1**, indicando:
+  - **3 neurônios de entrada**, correspondentes às variáveis de entrada (`balance`, `studentYes` e `income`);
+  - **5 neurônios na camada oculta** (`size = 5`);
+  - **1 neurônio de saída**, responsável por estimar a probabilidade de inadimplência.<br><br>
+
+- A variável categórica **`student`** foi automaticamente transformada em uma variável indicadora (**`studentYes`**), resultando em três entradas para a rede.
+
+---
+
+### Interpretação
+
+
+
+- A rede possui **26 pesos (weights)**, que incluem as conexões entre os neurônios e os termos de viés (*bias*). Esses pesos são ajustados durante o treinamento para minimizar a função de perda.<br><br>
+
+- O treinamento utilizou a função de custo **entropia cruzada (cross-entropy)** (`entropy fitting`), apropriada para problemas de classificação binária.<br><br>
+
+- Foi aplicada uma regularização do tipo **Weight Decay** com parâmetro
+
+$$
+\lambda = 0.1,
+$$
+
+que penaliza pesos muito elevados, reduzindo a complexidade do modelo e diminuindo o risco de **overfitting**.
+
+
+---
+
+### Interpretação
+
+
+
+- O algoritmo foi configurado para realizar até **500 iterações** (`maxit = 500`) durante o processo de otimização dos pesos.
+
+### Resumo da arquitetura
+
+- **Entradas:** 3 (`balance`, `studentYes` e `income`);
+- **Camada oculta:** 5 neurônios;
+- **Saída:** 1 neurônio (probabilidade de `default = Yes`);
+- **Número total de pesos:** 26;
+- **Função de perda:** Entropia cruzada;
+- **Regularização:** Weight Decay ($\lambda = 0.1$);
+- **Máximo de iterações:** 500.
+
+
+
+
+## R: Tuning em Redes Neurais
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| cache: true
+
+library(nnet)
+library(caret)
+library(pROC)
+
+set.seed(335)
+
+# Garantir a ordem correta das classes
+Default$default <- factor(
+  Default$default,
+  levels = c("No", "Yes")
+)
+
+# Grade de hiperparâmetros
+resultados <- expand.grid(
+  size  = c(1, 3, 5, 10, 15, 20),
+  decay = c(0.001, 0.01, 0.1, 0.5)
+)
+
+resultados$acuracia <- NA_real_
+resultados$auc      <- NA_real_
+
+# Índices das observações de validação de cada fold
+folds <- createFolds(
+  y = Default$default,
+  k = 5,
+  returnTrain = FALSE
+)
+
+# Validação cruzada manual
+for (i in seq_len(nrow(resultados))) {
+
+  acc_fold <- numeric(length(folds))
+  auc_fold <- numeric(length(folds))
+
+  for (j in seq_along(folds)) {
+
+    idx_valid <- folds[[j]]
+
+    treino <- Default[-idx_valid, , drop = FALSE]
+    valid  <- Default[ idx_valid, , drop = FALSE]
+
+    modelo <- nnet(
+      default ~ balance + student + income,
+      data = treino,
+      size = resultados$size[i],
+      decay = resultados$decay[i],
+      maxit = 500,
+      MaxNWts = 5000,
+      trace = FALSE
+    )
+
+    # Predição das classes
+    pred_classe <- predict(
+      modelo,
+      newdata = valid,
+      type = "class"
+    )
+
+    acc_fold[j] <- mean(pred_classe == valid$default)
+
+    # Probabilidade de default = "Yes"
+    pred_prob <- predict(
+      modelo,
+      newdata = valid,
+      type = "raw"
+    )
+
+    # Em classificação binária, nnet pode devolver vetor ou matriz
+    if (is.matrix(pred_prob)) {
+      if ("Yes" %in% colnames(pred_prob)) {
+        pred_prob <- pred_prob[, "Yes"]
+      } else {
+        pred_prob <- pred_prob[, ncol(pred_prob)]
+      }
+    }
+
+    roc_obj <- roc(
+      response = valid$default,
+      predictor = as.numeric(pred_prob),
+      levels = c("No", "Yes"),
+      direction = "<",
+      quiet = TRUE
+    )
+
+    auc_fold[j] <- as.numeric(auc(roc_obj))
+  }
+
+  resultados$acuracia[i] <- mean(acc_fold, na.rm = TRUE)
+  resultados$auc[i]      <- mean(auc_fold, na.rm = TRUE)
+}
+
+# Ordenar as combinações pela maior AUC
+resultados <- resultados[
+  order(resultados$auc, decreasing = TRUE),
+]
+
+row.names(resultados) <- NULL
+
+# Melhor combinação
+best <- resultados[1, ]
+
+resultados
+best
+```
+
+
+---
+
+### Interpretação do tuning da rede neural
+
+- Foram avaliadas diferentes combinações dos hiperparâmetros:
+  - `size`: número de neurônios na camada oculta;
+  - `decay`: intensidade da regularização dos pesos.
+
+- A seleção foi realizada por validação cruzada, comparando:
+  - **acurácia**;
+  - **AUC**.
+
+- A melhor combinação segundo a maior AUC foi:
+
+$$
+\text{size} = 15
+\qquad \text{e} \qquad
+\text{decay} = 0.5
+$$
+
+- Essa configuração apresentou:
+
+$$
+\text{Acurácia} = 97,22\%
+\qquad \text{e} \qquad
+\text{AUC} = 0,9474
+$$
+
+---
+
+
+### Interpretação do tuning da rede neural
+
+
+- A combinação com `size = 20` e `decay = 0.5` apresentou acurácia ligeiramente maior, mas AUC inferior:
+
+$$
+\text{Acurácia} = 97,30\%
+\qquad
+\text{AUC} = 0,9461
+$$
+
+- Como a base é desbalanceada, a **AUC** é um critério mais adequado do que a acurácia para selecionar o modelo.<br><br>
+
+- Os melhores resultados ocorreram com `decay = 0.5`, indicando que uma regularização mais forte ajudou a controlar a complexidade da rede e reduziu o risco de overfitting.
+
+
+---
+
+
+### Conclusão
+
+- A rede selecionada possui **15 neurônios na camada oculta** e **regularização igual a 0,5**.<br><br>
+- O resultado mostra que redes mais flexíveis, combinadas com regularização adequada, apresentaram melhor capacidade de discriminação.<br><br>
+- A acurácia permaneceu próxima de 97% em várias configurações, mas a AUC revelou diferenças importantes entre os modelos.
+

@@ -269,13 +269,73 @@ L(\beta) = \prod_{i=1}^n p(\mathbf{x}_i)^{y_i} (1-p(\mathbf{x}_i))^{1-y_i}
 <p>Não há forma fechada para <span class="math inline">\(\hat{\beta}\)</span>. Usamos o algoritmo <strong>IRLS</strong> (Iteratively Reweighted Least Squares).</p>
 <p>A função de log-verossimilhança é côncava, garantindo um único máximo global.</p>
 
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section><section id="r-regressão-logística" class="slide level2"><h2>R: Regressão logística</h2>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section><section id="base-de-dados-default-islr2" class="slide level2"><h2>Base de dados: Default (ISLR2)</h2>
+<p><strong>Fonte:</strong> pacote <code>ISLR2</code> (livro <em>An Introduction to Statistical Learning</em>)</p>
+<p><strong>Problema:</strong> prever se um cliente entrará em <strong>default</strong> (inadimplência) no cartão de crédito.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 22%">
+<col style="width: 40%">
+</colgroup>
+<thead><tr class="header">
+<th>Variável</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>default</code></td>
+<td>categórica (Yes/No)</td>
+<td>Cliente deu calote? (<strong>variável resposta</strong>)</td>
+</tr>
+<tr class="even">
+<td><code>student</code></td>
+<td>categórica (Yes/No)</td>
+<td>Cliente é estudante?</td>
+</tr>
+<tr class="odd">
+<td><code>balance</code></td>
+<td>numérica</td>
+<td>Saldo médio do cartão de crédito</td>
+</tr>
+<tr class="even">
+<td><code>income</code></td>
+<td>numérica</td>
+<td>Renda anual do cliente</td>
+</tr>
+</tbody>
+</table></section><section id="base-de-dados-default-islr2-1" class="slide level2"><h2>Base de dados: Default (ISLR2)</h2>
+<ul>
+<li>
+<strong>10.000 observações</strong>, 3 variáveis preditoras</li>
+<li>Classes desbalanceadas: ~97% <code>No</code>, ~3% <code>Yes</code>
+</li>
+<li>Usada ao longo de todo o curso como exemplo unificado de <strong>classificação binária</strong>
+</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(ISLR2)</span>
 <span id="cb1-2"><a></a><span class="fu">data</span>(Default)</span>
 <span id="cb1-3"><a></a></span>
-<span id="cb1-4"><a></a>modelo_log <span class="ot">&lt;-</span> <span class="fu">glm</span>(default <span class="sc">~</span> student, <span class="at">data =</span> Default, <span class="at">family =</span> binomial)</span>
-<span id="cb1-5"><a></a><span class="fu">summary</span>(modelo_log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a></a><span class="fu">summary</span>(Default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> default    student       balance           income     
+ No :9667   No :7056   Min.   :   0.0   Min.   :  772  
+ Yes: 333   Yes:2944   1st Qu.: 481.7   1st Qu.:21340  
+                       Median : 823.6   Median :34553  
+                       Mean   : 835.4   Mean   :33517  
+                       3rd Qu.:1166.3   3rd Qu.:43808  
+                       Max.   :2654.3   Max.   :73554  </code></pre>
+</div>
+</div>
+</section><section id="r-regressão-logística" class="slide level2"><h2>R: Regressão logística</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb3-2"><a></a><span class="fu">data</span>(Default)</span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a>modelo_log <span class="ot">&lt;-</span> <span class="fu">glm</span>(default <span class="sc">~</span> student, <span class="at">data =</span> Default, <span class="at">family =</span> binomial)</span>
+<span id="cb3-5"><a></a><span class="fu">summary</span>(modelo_log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -302,9 +362,9 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </section><section id="regressão-logística-múltipla" class="slide level2"><h2>Regressão logística múltipla</h2>
 <p>Para modelos com mais de um preditor, a interpretação de cada coeficiente <span class="math inline">\(\beta_j\)</span> é <strong>condicional</strong> aos demais preditores: representa o efeito de <span class="math inline">\(x_j\)</span> mantendo as outras variáveis fixas.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>modelo_multi <span class="ot">&lt;-</span> <span class="fu">glm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> income <span class="sc">+</span> student,</span>
-<span id="cb3-2"><a></a>                    <span class="at">data =</span> Default, <span class="at">family =</span> binomial)</span>
-<span id="cb3-3"><a></a><span class="fu">summary</span>(modelo_multi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>modelo_multi <span class="ot">&lt;-</span> <span class="fu">glm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> income <span class="sc">+</span> student,</span>
+<span id="cb5-2"><a></a>                    <span class="at">data =</span> Default, <span class="at">family =</span> binomial)</span>
+<span id="cb5-3"><a></a><span class="fu">summary</span>(modelo_multi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -374,15 +434,15 @@ Number of Fisher Scoring iterations: 8</code></pre>
 <p>O parâmetro <span class="math inline">\(\lambda &gt; 0\)</span> controla o grau de regularização e é escolhido por <strong>validação cruzada</strong>.</p>
 </section><section id="regularização-lasso-e-ridge-2" class="slide level2"><h2>Regularização (Lasso e Ridge)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">library</span>(glmnet)</span>
-<span id="cb5-2"><a></a></span>
-<span id="cb5-3"><a></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(default <span class="sc">~</span> balance <span class="sc">+</span> income <span class="sc">+</span> student,</span>
-<span id="cb5-4"><a></a>                  <span class="at">data =</span> Default)[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb5-5"><a></a>y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Default<span class="sc">$</span>default <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb5-6"><a></a></span>
-<span id="cb5-7"><a></a><span class="co"># Lasso</span></span>
-<span id="cb5-8"><a></a>cv_lasso <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(X, y, <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">alpha =</span> <span class="dv">1</span>)</span>
-<span id="cb5-9"><a></a><span class="fu">coef</span>(cv_lasso, <span class="at">s =</span> <span class="st">"lambda.min"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">library</span>(glmnet)</span>
+<span id="cb7-2"><a></a></span>
+<span id="cb7-3"><a></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(default <span class="sc">~</span> balance <span class="sc">+</span> income <span class="sc">+</span> student,</span>
+<span id="cb7-4"><a></a>                  <span class="at">data =</span> Default)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb7-5"><a></a>y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Default<span class="sc">$</span>default <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb7-6"><a></a></span>
+<span id="cb7-7"><a></a><span class="co"># Lasso</span></span>
+<span id="cb7-8"><a></a>cv_lasso <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(X, y, <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">alpha =</span> <span class="dv">1</span>)</span>
+<span id="cb7-9"><a></a><span class="fu">coef</span>(cv_lasso, <span class="at">s =</span> <span class="st">"lambda.min"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>4 x 1 sparse Matrix of class "dgCMatrix"
                lambda.min
@@ -391,9 +451,9 @@ balance      5.654906e-03
 income       2.543176e-06
 studentYes  -6.203973e-01</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co"># Ridge</span></span>
-<span id="cb7-2"><a></a>cv_ridge <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(X, y, <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">alpha =</span> <span class="dv">0</span>)</span>
-<span id="cb7-3"><a></a><span class="fu">coef</span>(cv_ridge, <span class="at">s =</span> <span class="st">"lambda.min"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co"># Ridge</span></span>
+<span id="cb9-2"><a></a>cv_ridge <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(X, y, <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">alpha =</span> <span class="dv">0</span>)</span>
+<span id="cb9-3"><a></a><span class="fu">coef</span>(cv_ridge, <span class="at">s =</span> <span class="st">"lambda.min"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>4 x 1 sparse Matrix of class "dgCMatrix"
                lambda.min
@@ -477,12 +537,12 @@ studentYes  -2.119418e-01</code></pre>
 <p>onde <span class="math inline">\(y_{ic} = 1\)</span> se a observação <span class="math inline">\(i\)</span> pertence à classe <span class="math inline">\(c\)</span>, e <span class="math inline">\(0\)</span> caso contrário.</p>
 </section><section id="regressão-logística-multinomial-softmax-2" class="slide level2"><h2>Regressão logística multinomial (Softmax)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">library</span>(nnet)</span>
-<span id="cb9-2"><a></a></span>
-<span id="cb9-3"><a></a><span class="fu">data</span>(iris) <span class="co"># Dados iris: 3 especies de flores, 4 variaveis</span></span>
-<span id="cb9-4"><a></a><span class="co"># Ajusta regressao logistica multinomial</span></span>
-<span id="cb9-5"><a></a>modelo_multi <span class="ot">&lt;-</span> <span class="fu">multinom</span>(Species <span class="sc">~</span> Sepal.Length <span class="sc">+</span> Sepal.Width <span class="sc">+</span> Petal.Length <span class="sc">+</span> Petal.Width,<span class="at">data =</span> iris, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb9-6"><a></a><span class="fu">summary</span>(modelo_multi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">library</span>(nnet)</span>
+<span id="cb11-2"><a></a></span>
+<span id="cb11-3"><a></a><span class="fu">data</span>(iris) <span class="co"># Dados iris: 3 especies de flores, 4 variaveis</span></span>
+<span id="cb11-4"><a></a><span class="co"># Ajusta regressao logistica multinomial</span></span>
+<span id="cb11-5"><a></a>modelo_multi <span class="ot">&lt;-</span> <span class="fu">multinom</span>(Species <span class="sc">~</span> Sepal.Length <span class="sc">+</span> Sepal.Width <span class="sc">+</span> Petal.Length <span class="sc">+</span> Petal.Width,<span class="at">data =</span> iris, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-6"><a></a><span class="fu">summary</span>(modelo_multi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 multinom(formula = Species ~ Sepal.Length + Sepal.Width + Petal.Length + 
@@ -576,11 +636,11 @@ f_c(\mathbf{x}) = \prod_{j=1}^p f_{cj}(x_j)
 <p><strong>Vantagens:</strong> simples, rápido, funciona bem mesmo com <span class="math inline">\(p\)</span> grande e <span class="math inline">\(n\)</span> pequeno, lida naturalmente com variáveis mistas.</p>
 </section><section id="r-naive-bayes" class="slide level2"><h2>R: Naive Bayes</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">library</span>(e1071)</span>
-<span id="cb11-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb11-3"><a></a></span>
-<span id="cb11-4"><a></a>nb_fit <span class="ot">&lt;-</span> <span class="fu">naiveBayes</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">data =</span> Default)</span>
-<span id="cb11-5"><a></a>nb_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">library</span>(e1071)</span>
+<span id="cb13-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb13-3"><a></a></span>
+<span id="cb13-4"><a></a>nb_fit <span class="ot">&lt;-</span> <span class="fu">naiveBayes</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">data =</span> Default)</span>
+<span id="cb13-5"><a></a>nb_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Naive Bayes Classifier for Discrete Predictors
@@ -604,8 +664,8 @@ Y            No       Yes
   No  0.7085963 0.2914037
   Yes 0.6186186 0.3813814</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>pred_nb <span class="ot">&lt;-</span> <span class="fu">predict</span>(nb_fit, Default)</span>
-<span id="cb13-2"><a></a><span class="fu">mean</span>(pred_nb <span class="sc">==</span> Default<span class="sc">$</span>default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>pred_nb <span class="ot">&lt;-</span> <span class="fu">predict</span>(nb_fit, Default)</span>
+<span id="cb15-2"><a></a><span class="fu">mean</span>(pred_nb <span class="sc">==</span> Default<span class="sc">$</span>default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.971</code></pre>
 </div>
@@ -669,11 +729,11 @@ Y            No       Yes
 \]</span></p>
 </section><section id="r-lda" class="slide level2"><h2>R: LDA</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a><span class="fu">library</span>(MASS)</span>
-<span id="cb15-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb15-3"><a></a></span>
-<span id="cb15-4"><a></a>lda_fit <span class="ot">&lt;-</span> <span class="fu">lda</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">data =</span> Default)</span>
-<span id="cb15-5"><a></a>lda_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="fu">library</span>(MASS)</span>
+<span id="cb17-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb17-3"><a></a></span>
+<span id="cb17-4"><a></a>lda_fit <span class="ot">&lt;-</span> <span class="fu">lda</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">data =</span> Default)</span>
+<span id="cb17-5"><a></a>lda_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 lda(default ~ balance + student, data = Default)
@@ -692,9 +752,9 @@ Coefficients of linear discriminants:
 balance     0.002244397
 studentYes -0.249059498</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="co"># Predicao</span></span>
-<span id="cb17-2"><a></a>pred_lda <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_fit, Default)</span>
-<span id="cb17-3"><a></a><span class="fu">table</span>(<span class="at">Predito =</span> pred_lda<span class="sc">$</span>class, <span class="at">Real =</span> Default<span class="sc">$</span>default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="co"># Predicao</span></span>
+<span id="cb19-2"><a></a>pred_lda <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_fit, Default)</span>
+<span id="cb19-3"><a></a><span class="fu">table</span>(<span class="at">Predito =</span> pred_lda<span class="sc">$</span>class, <span class="at">Real =</span> Default<span class="sc">$</span>default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       Real
 Predito   No  Yes
@@ -717,9 +777,9 @@ Predito   No  Yes
 <li>Interpretação geométrica das direções que melhor separam as classes</li>
 </ul></section><section id="lda-dimensionalidade-reduzida-1" class="slide level2"><h2>LDA: Dimensionalidade reduzida</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="co"># Com 3 classes (iris), obtemos 2 variaveis canonicas</span></span>
-<span id="cb19-2"><a></a>lda_iris <span class="ot">&lt;-</span> <span class="fu">lda</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris)</span>
-<span id="cb19-3"><a></a>lda_iris</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="co"># Com 3 classes (iris), obtemos 2 variaveis canonicas</span></span>
+<span id="cb21-2"><a></a>lda_iris <span class="ot">&lt;-</span> <span class="fu">lda</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris)</span>
+<span id="cb21-3"><a></a>lda_iris</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 lda(Species ~ ., data = iris)
@@ -745,9 +805,9 @@ Proportion of trace:
    LD1    LD2 
 0.9912 0.0088 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="co"># Projecao dos dados</span></span>
-<span id="cb21-2"><a></a>proj <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_iris, iris)<span class="sc">$</span>x</span>
-<span id="cb21-3"><a></a><span class="fu">head</span>(proj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a><span class="co"># Projecao dos dados</span></span>
+<span id="cb23-2"><a></a>proj <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_iris, iris)<span class="sc">$</span>x</span>
+<span id="cb23-3"><a></a><span class="fu">head</span>(proj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       LD1        LD2
 1 8.061800 -0.3004206
@@ -775,11 +835,11 @@ Proportion of trace:
 <p>Como <span class="math inline">\(\boldsymbol{\Sigma}_c\)</span> são distintas, os termos quadráticos <strong>não se cancelam</strong> e a fronteira entre classes é <strong>quadrática</strong> em <span class="math inline">\(\mathbf{x}\)</span>.</p>
 </section><section id="r-qda" class="slide level2"><h2>R: QDA</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a><span class="fu">library</span>(MASS)</span>
-<span id="cb23-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb23-3"><a></a></span>
-<span id="cb23-4"><a></a>qda_fit <span class="ot">&lt;-</span> <span class="fu">qda</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">data =</span> Default)</span>
-<span id="cb23-5"><a></a>qda_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="fu">library</span>(MASS)</span>
+<span id="cb25-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb25-3"><a></a></span>
+<span id="cb25-4"><a></a>qda_fit <span class="ot">&lt;-</span> <span class="fu">qda</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">data =</span> Default)</span>
+<span id="cb25-5"><a></a>qda_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 qda(default ~ balance + student, data = Default)
@@ -793,9 +853,9 @@ Group means:
 No   803.9438  0.2914037
 Yes 1747.8217  0.3813814</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="co"># Predicao</span></span>
-<span id="cb25-2"><a></a>pred_qda <span class="ot">&lt;-</span> <span class="fu">predict</span>(qda_fit, Default)</span>
-<span id="cb25-3"><a></a><span class="fu">table</span>(<span class="at">Predito =</span> pred_qda<span class="sc">$</span>class, <span class="at">Real =</span> Default<span class="sc">$</span>default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="co"># Predicao</span></span>
+<span id="cb27-2"><a></a>pred_qda <span class="ot">&lt;-</span> <span class="fu">predict</span>(qda_fit, Default)</span>
+<span id="cb27-3"><a></a><span class="fu">table</span>(<span class="at">Predito =</span> pred_qda<span class="sc">$</span>class, <span class="at">Real =</span> Default<span class="sc">$</span>default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       Real
 Predito   No  Yes
@@ -899,11 +959,11 @@ Predito   No  Yes
 </blockquote>
 </section><section id="r-rda" class="slide level2"><h2>R: RDA</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="co"># install.packages("klaR")</span></span>
-<span id="cb27-2"><a></a><span class="fu">library</span>(klaR)</span>
-<span id="cb27-3"><a></a>rda_model <span class="ot">&lt;-</span> <span class="fu">rda</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb27-4"><a></a>                 <span class="at">data =</span> Default)</span>
-<span id="cb27-5"><a></a>rda_model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a><span class="co"># install.packages("klaR")</span></span>
+<span id="cb29-2"><a></a><span class="fu">library</span>(klaR)</span>
+<span id="cb29-3"><a></a>rda_model <span class="ot">&lt;-</span> <span class="fu">rda</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb29-4"><a></a>                 <span class="at">data =</span> Default)</span>
+<span id="cb29-5"><a></a>rda_model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call: 
 rda(formula = default ~ balance + student + income, data = Default)
@@ -1072,15 +1132,15 @@ K(x_i, x_j) = \langle x_i, x_j \rangle
 <p><strong>Quando usar:</strong> <span class="math inline">\(p\)</span> grande, <span class="math inline">\(n\)</span> moderado, dados aproximadamente lineares.</p>
 </section><section id="r-svm-com-kernel-linear" class="slide level2"><h2>R: SVM com Kernel Linear</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a><span class="fu">library</span>(e1071)</span>
-<span id="cb29-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb29-3"><a></a></span>
-<span id="cb29-4"><a></a>svm_linear <span class="ot">&lt;-</span> <span class="fu">svm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
-<span id="cb29-5"><a></a>                  <span class="at">data =</span> Default,</span>
-<span id="cb29-6"><a></a>                  <span class="at">kernel =</span> <span class="st">"linear"</span>,</span>
-<span id="cb29-7"><a></a>                  <span class="at">cost =</span> <span class="dv">1</span>,</span>
-<span id="cb29-8"><a></a>                  <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-9"><a></a><span class="fu">summary</span>(svm_linear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a><span class="fu">library</span>(e1071)</span>
+<span id="cb31-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb31-3"><a></a></span>
+<span id="cb31-4"><a></a>svm_linear <span class="ot">&lt;-</span> <span class="fu">svm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
+<span id="cb31-5"><a></a>                  <span class="at">data =</span> Default,</span>
+<span id="cb31-6"><a></a>                  <span class="at">kernel =</span> <span class="st">"linear"</span>,</span>
+<span id="cb31-7"><a></a>                  <span class="at">cost =</span> <span class="dv">1</span>,</span>
+<span id="cb31-8"><a></a>                  <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-9"><a></a><span class="fu">summary</span>(svm_linear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1139,16 +1199,16 @@ K(x_i, x_j) = (\gamma \langle x_i, x_j \rangle + r)^d
 <p><strong>Quando usar:</strong> dados com interações moderadas entre variáveis.</p>
 </section><section id="r-svm-com-kernel-polinomial" class="slide level2"><h2>R: SVM com Kernel Polinomial</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a><span class="fu">library</span>(e1071)</span>
-<span id="cb31-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb31-3"><a></a></span>
-<span id="cb31-4"><a></a>svm_poly <span class="ot">&lt;-</span> <span class="fu">svm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
-<span id="cb31-5"><a></a>                <span class="at">data =</span> Default,</span>
-<span id="cb31-6"><a></a>                <span class="at">kernel =</span> <span class="st">"polynomial"</span>,</span>
-<span id="cb31-7"><a></a>                <span class="at">degree =</span> <span class="dv">3</span>,</span>
-<span id="cb31-8"><a></a>                <span class="at">cost =</span> <span class="dv">1</span>,</span>
-<span id="cb31-9"><a></a>                <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-10"><a></a><span class="fu">summary</span>(svm_poly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a><span class="fu">library</span>(e1071)</span>
+<span id="cb33-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb33-3"><a></a></span>
+<span id="cb33-4"><a></a>svm_poly <span class="ot">&lt;-</span> <span class="fu">svm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
+<span id="cb33-5"><a></a>                <span class="at">data =</span> Default,</span>
+<span id="cb33-6"><a></a>                <span class="at">kernel =</span> <span class="st">"polynomial"</span>,</span>
+<span id="cb33-7"><a></a>                <span class="at">degree =</span> <span class="dv">3</span>,</span>
+<span id="cb33-8"><a></a>                <span class="at">cost =</span> <span class="dv">1</span>,</span>
+<span id="cb33-9"><a></a>                <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-10"><a></a><span class="fu">summary</span>(svm_poly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1209,13 +1269,13 @@ K(x_i, x_j) = \exp(-\gamma ||x_i - x_j||^2)
 <p><strong>Quando usar:</strong> relação não linear complexa, <span class="math inline">\(n\)</span> moderado, <span class="math inline">\(p\)</span> não muito grande.</p>
 </section><section id="r-svm-com-kernel-rbf" class="slide level2"><h2>R: SVM com Kernel RBF</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a>svm_rbf <span class="ot">&lt;-</span> <span class="fu">svm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
-<span id="cb33-2"><a></a>               <span class="at">data =</span> Default,</span>
-<span id="cb33-3"><a></a>               <span class="at">kernel =</span> <span class="st">"radial"</span>,</span>
-<span id="cb33-4"><a></a>               <span class="at">gamma =</span> <span class="fl">0.1</span>,</span>
-<span id="cb33-5"><a></a>               <span class="at">cost =</span> <span class="dv">1</span>,</span>
-<span id="cb33-6"><a></a>               <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb33-7"><a></a><span class="fu">summary</span>(svm_rbf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a>svm_rbf <span class="ot">&lt;-</span> <span class="fu">svm</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
+<span id="cb35-2"><a></a>               <span class="at">data =</span> Default,</span>
+<span id="cb35-3"><a></a>               <span class="at">kernel =</span> <span class="st">"radial"</span>,</span>
+<span id="cb35-4"><a></a>               <span class="at">gamma =</span> <span class="fl">0.1</span>,</span>
+<span id="cb35-5"><a></a>               <span class="at">cost =</span> <span class="dv">1</span>,</span>
+<span id="cb35-6"><a></a>               <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb35-7"><a></a><span class="fu">summary</span>(svm_rbf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1291,15 +1351,15 @@ Levels:
 <p>Escolha por <strong>validação cruzada</strong> com grid search.</p>
 </section><section id="r-tuning-de-hiperparâmetros-de-svm" class="slide level2"><h2>R: tuning de hiperparâmetros de SVM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a><span class="fu">library</span>(e1071)</span>
-<span id="cb35-2"><a></a></span>
-<span id="cb35-3"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb35-4"><a></a>tune_svm <span class="ot">&lt;-</span> <span class="fu">tune</span>(svm, default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
-<span id="cb35-5"><a></a>                 <span class="at">data =</span> Default,</span>
-<span id="cb35-6"><a></a>                 <span class="at">kernel =</span> <span class="st">"radial"</span>,</span>
-<span id="cb35-7"><a></a>                 <span class="at">ranges =</span> <span class="fu">list</span>(<span class="at">cost =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>),</span>
-<span id="cb35-8"><a></a>                               <span class="at">gamma =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>)))</span>
-<span id="cb35-9"><a></a><span class="fu">summary</span>(tune_svm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a><span class="fu">library</span>(e1071)</span>
+<span id="cb37-2"><a></a></span>
+<span id="cb37-3"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb37-4"><a></a>tune_svm <span class="ot">&lt;-</span> <span class="fu">tune</span>(svm, default <span class="sc">~</span> balance <span class="sc">+</span> student,</span>
+<span id="cb37-5"><a></a>                 <span class="at">data =</span> Default,</span>
+<span id="cb37-6"><a></a>                 <span class="at">kernel =</span> <span class="st">"radial"</span>,</span>
+<span id="cb37-7"><a></a>                 <span class="at">ranges =</span> <span class="fu">list</span>(<span class="at">cost =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>),</span>
+<span id="cb37-8"><a></a>                               <span class="at">gamma =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>)))</span>
+<span id="cb37-9"><a></a><span class="fu">summary</span>(tune_svm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Parameter tuning of 'svm':
@@ -1334,9 +1394,9 @@ Parameter tuning of 'svm':
 </div>
 </section><section id="r-tuning-de-hiperparâmetros-de-svm-1" class="slide level2"><h2>R: tuning de hiperparâmetros de SVM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a><span class="co"># Melhor modelo</span></span>
-<span id="cb37-2"><a></a>best_svm <span class="ot">&lt;-</span> tune_svm<span class="sc">$</span>best.model</span>
-<span id="cb37-3"><a></a><span class="fu">summary</span>(best_svm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a><span class="co"># Melhor modelo</span></span>
+<span id="cb39-2"><a></a>best_svm <span class="ot">&lt;-</span> tune_svm<span class="sc">$</span>best.model</span>
+<span id="cb39-3"><a></a><span class="fu">summary</span>(best_svm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1391,10 +1451,10 @@ Levels:
 </ul></section><section class="slide level2">
 <img data-src="../../..\images/classificacao/ovo_ovr.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="r-svm-multi-classe" class="slide level2"><h2>R: SVM multi-classe</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>svm_iris <span class="ot">&lt;-</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris, <span class="at">kernel =</span> <span class="st">"radial"</span>,</span>
-<span id="cb39-2"><a></a>                <span class="at">cost =</span> <span class="dv">1</span>, <span class="at">gamma =</span> <span class="fl">0.5</span>)</span>
-<span id="cb39-3"><a></a>pred_iris <span class="ot">&lt;-</span> <span class="fu">predict</span>(svm_iris, iris)</span>
-<span id="cb39-4"><a></a><span class="fu">table</span>(<span class="at">Predito =</span> pred_iris, <span class="at">Real =</span> iris<span class="sc">$</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a>svm_iris <span class="ot">&lt;-</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris, <span class="at">kernel =</span> <span class="st">"radial"</span>,</span>
+<span id="cb41-2"><a></a>                <span class="at">cost =</span> <span class="dv">1</span>, <span class="at">gamma =</span> <span class="fl">0.5</span>)</span>
+<span id="cb41-3"><a></a>pred_iris <span class="ot">&lt;-</span> <span class="fu">predict</span>(svm_iris, iris)</span>
+<span id="cb41-4"><a></a><span class="fu">table</span>(<span class="at">Predito =</span> pred_iris, <span class="at">Real =</span> iris<span class="sc">$</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Real
 Predito      setosa versicolor virginica
@@ -1402,7 +1462,7 @@ Predito      setosa versicolor virginica
   versicolor      0         48         2
   virginica       0          2        48</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a><span class="fu">mean</span>(pred_iris <span class="sc">==</span> iris<span class="sc">$</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a><span class="fu">mean</span>(pred_iris <span class="sc">==</span> iris<span class="sc">$</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9733333</code></pre>
 </div>
@@ -1468,13 +1528,13 @@ Predito      setosa versicolor virginica
 <li>Redução mínima no erro</li>
 </ul></section><section id="r-algoritmo-cart" class="slide level2"><h2>R: Algoritmo CART</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a><span class="fu">library</span>(rpart)</span>
-<span id="cb43-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb43-3"><a></a></span>
-<span id="cb43-4"><a></a><span class="co"># Arvore de regressao</span></span>
-<span id="cb43-5"><a></a>arvore <span class="ot">&lt;-</span> <span class="fu">rpart</span>(balance <span class="sc">~</span> income <span class="sc">+</span> student, <span class="at">data =</span> Default,</span>
-<span id="cb43-6"><a></a>                <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">10</span>, <span class="at">cp =</span> <span class="fl">0.001</span>))</span>
-<span id="cb43-7"><a></a><span class="fu">summary</span>(arvore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a><span class="fu">library</span>(rpart)</span>
+<span id="cb45-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb45-3"><a></a></span>
+<span id="cb45-4"><a></a><span class="co"># Arvore de regressao</span></span>
+<span id="cb45-5"><a></a>arvore <span class="ot">&lt;-</span> <span class="fu">rpart</span>(balance <span class="sc">~</span> income <span class="sc">+</span> student, <span class="at">data =</span> Default,</span>
+<span id="cb45-6"><a></a>                <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">10</span>, <span class="at">cp =</span> <span class="fl">0.001</span>))</span>
+<span id="cb45-7"><a></a><span class="fu">summary</span>(arvore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 rpart(formula = balance ~ income + student, data = Default, control = rpart.control(minsplit = 10, 
@@ -1541,17 +1601,17 @@ E = 1 - \max_c \hat{p}_{mc}
 \]</span></p>
 </section><section id="r-árvore-de-classificação" class="slide level2"><h2>R: Árvore de classificação</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a><span class="fu">library</span>(rpart)</span>
-<span id="cb45-2"><a></a><span class="fu">library</span>(rpart.plot)</span>
-<span id="cb45-3"><a></a></span>
-<span id="cb45-4"><a></a>arvore_class <span class="ot">&lt;-</span> <span class="fu">rpart</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb45-5"><a></a>                      <span class="at">data =</span> Default, <span class="at">method =</span> <span class="st">"class"</span>)</span>
-<span id="cb45-6"><a></a></span>
-<span id="cb45-7"><a></a><span class="fu">rpart.plot</span>(arvore_class, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">fallen.leaves =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb45-8"><a></a>           <span class="at">main =</span> <span class="st">"Árvore de classificação - Default"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a><span class="fu">library</span>(rpart)</span>
+<span id="cb47-2"><a></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb47-3"><a></a></span>
+<span id="cb47-4"><a></a>arvore_class <span class="ot">&lt;-</span> <span class="fu">rpart</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb47-5"><a></a>                      <span class="at">data =</span> Default, <span class="at">method =</span> <span class="st">"class"</span>)</span>
+<span id="cb47-6"><a></a></span>
+<span id="cb47-7"><a></a><span class="fu">rpart.plot</span>(arvore_class, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">fallen.leaves =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb47-8"><a></a>           <span class="at">main =</span> <span class="st">"Árvore de classificação - Default"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-19-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-da-árvore-cart">Interpretação da árvore CART</h3>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-20-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-da-árvore-cart">Interpretação da árvore CART</h3>
 <ul>
 <li>A primeira divisão ocorre em <code>balance &lt; 1800</code>, indicando que o saldo é o principal fator de decisão.</li>
 <li>Clientes com <code>balance &lt; 1800</code> apresentam apenas 2% de probabilidade de inadimplência.</li>
@@ -1588,19 +1648,19 @@ C_\alpha(T)=\sum_{m=1}^{|T|} N_m\,Q_m(T)+\alpha|T|
 <p><strong>Interpretação:</strong> o primeiro termo mede o erro (impureza) da árvore, enquanto o segundo penaliza árvores muito grandes. O valor de <span class="math inline">\(\alpha\)</span> controla o trade-off entre ajuste aos dados e capacidade de generalização.</p>
 </blockquote>
 </section><section class="slide level2"><div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a><span class="fu">library</span>(rpart)</span>
-<span id="cb46-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb46-3"><a></a></span>
-<span id="cb46-4"><a></a><span class="co"># Árvore completa (super-ajustada)</span></span>
-<span id="cb46-5"><a></a>arvore_full <span class="ot">&lt;-</span> <span class="fu">rpart</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb46-6"><a></a>                     <span class="at">data =</span> Default, <span class="at">method =</span> <span class="st">"class"</span>,</span>
-<span id="cb46-7"><a></a>                     <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="dv">0</span>, <span class="at">minsplit =</span> <span class="dv">2</span>))</span>
-<span id="cb46-8"><a></a></span>
-<span id="cb46-9"><a></a><span class="co"># Poda por validação cruzada</span></span>
-<span id="cb46-10"><a></a><span class="fu">plotcp</span>(arvore_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a><span class="fu">library</span>(rpart)</span>
+<span id="cb48-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb48-3"><a></a></span>
+<span id="cb48-4"><a></a><span class="co"># Árvore completa (super-ajustada)</span></span>
+<span id="cb48-5"><a></a>arvore_full <span class="ot">&lt;-</span> <span class="fu">rpart</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb48-6"><a></a>                     <span class="at">data =</span> Default, <span class="at">method =</span> <span class="st">"class"</span>,</span>
+<span id="cb48-7"><a></a>                     <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="dv">0</span>, <span class="at">minsplit =</span> <span class="dv">2</span>))</span>
+<span id="cb48-8"><a></a></span>
+<span id="cb48-9"><a></a><span class="co"># Poda por validação cruzada</span></span>
+<span id="cb48-10"><a></a><span class="fu">plotcp</span>(arvore_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-20-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="poda-por-validação-cruzada">Poda por validação cruzada</h3>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-21-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="poda-por-validação-cruzada">Poda por validação cruzada</h3>
 <ul>
 <li>O erro de validação diminui inicialmente à medida que a árvore cresce.</li>
 <li>O menor erro ocorre em <span class="math inline">\(cp \approx 0,018\)</span> (árvore com aproximadamente 4 folhas).</li>
@@ -1609,18 +1669,18 @@ C_\alpha(T)=\sum_{m=1}^{|T|} N_m\,Q_m(T)+\alpha|T|
 <li>
 <strong>Conclusão:</strong> a poda seleciona automaticamente uma árvore menor, com melhor capacidade de generalização do que a árvore completamente desenvolvida.</li>
 </ul></section><section class="slide level2"><div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a><span class="co"># Melhor cp</span></span>
-<span id="cb47-2"><a></a>cp_otimo <span class="ot">&lt;-</span> arvore_full<span class="sc">$</span>cptable[<span class="fu">which.min</span>(arvore_full<span class="sc">$</span>cptable[, <span class="st">"xerror"</span>]), <span class="st">"CP"</span>]</span>
-<span id="cb47-3"><a></a>cp_otimo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a><span class="co"># Melhor cp</span></span>
+<span id="cb49-2"><a></a>cp_otimo <span class="ot">&lt;-</span> arvore_full<span class="sc">$</span>cptable[<span class="fu">which.min</span>(arvore_full<span class="sc">$</span>cptable[, <span class="st">"xerror"</span>]), <span class="st">"CP"</span>]</span>
+<span id="cb49-3"><a></a>cp_otimo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.009009009</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a><span class="co"># Árvore podada</span></span>
-<span id="cb49-2"><a></a>arvore_poda <span class="ot">&lt;-</span> <span class="fu">prune</span>(arvore_full, <span class="at">cp =</span> cp_otimo)</span>
-<span id="cb49-3"><a></a><span class="fu">rpart.plot</span>(arvore_poda, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">main =</span> <span class="st">"Árvore podada"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a></a><span class="co"># Árvore podada</span></span>
+<span id="cb51-2"><a></a>arvore_poda <span class="ot">&lt;-</span> <span class="fu">prune</span>(arvore_full, <span class="at">cp =</span> cp_otimo)</span>
+<span id="cb51-3"><a></a><span class="fu">rpart.plot</span>(arvore_poda, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">main =</span> <span class="st">"Árvore podada"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-21-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-3">Interpretação</h3>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-22-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-3">Interpretação</h3>
 <ul>
 <li>
 <code>cp ótimo = 0,009009</code>, escolhido por validação cruzada.</li>
@@ -1648,12 +1708,12 @@ C_\alpha(T)=\sum_{m=1}^{|T|} N_m\,Q_m(T)+\alpha|T|
 <p><strong>OOB (Out-of-Bag):</strong> cada observação não é selecionada em ~37% das amostras bootstrap. Essas observações servem como conjunto de validação interno.</p>
 </section><section id="r-bagging" class="slide level2"><h2>R: Bagging</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a><span class="fu">library</span>(randomForest)</span>
-<span id="cb50-2"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb50-3"><a></a></span>
-<span id="cb50-4"><a></a>bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb50-5"><a></a>                    <span class="at">data =</span> Default, <span class="at">mtry =</span> <span class="dv">3</span>, <span class="at">ntree =</span> <span class="dv">500</span>)</span>
-<span id="cb50-6"><a></a>bag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb52-2"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb52-3"><a></a></span>
+<span id="cb52-4"><a></a>bag <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb52-5"><a></a>                    <span class="at">data =</span> Default, <span class="at">mtry =</span> <span class="dv">3</span>, <span class="at">ntree =</span> <span class="dv">500</span>)</span>
+<span id="cb52-6"><a></a>bag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1715,17 +1775,17 @@ Yes  228 105  0.68468468</code></pre>
 </ul></section><section class="slide level2">
 <img data-src="../../..\images/classificacao/rf_bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="r-random-forest" class="slide level2"><h2>R: Random Forest</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a><span class="fu">library</span>(randomForest)</span>
-<span id="cb52-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb52-3"><a></a></span>
-<span id="cb52-4"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb52-5"><a></a></span>
-<span id="cb52-6"><a></a>rf <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb52-7"><a></a>                   <span class="at">data =</span> Default,</span>
-<span id="cb52-8"><a></a>                   <span class="at">ntree =</span> <span class="dv">500</span>,</span>
-<span id="cb52-9"><a></a>                   <span class="at">mtry =</span> <span class="dv">2</span>,   <span class="co"># sqrt(3) ~ 1.7, arredonda p/ 2</span></span>
-<span id="cb52-10"><a></a>                   <span class="at">importance =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb52-11"><a></a>rf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb54-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb54-3"><a></a></span>
+<span id="cb54-4"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb54-5"><a></a></span>
+<span id="cb54-6"><a></a>rf <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb54-7"><a></a>                   <span class="at">data =</span> Default,</span>
+<span id="cb54-8"><a></a>                   <span class="at">ntree =</span> <span class="dv">500</span>,</span>
+<span id="cb54-9"><a></a>                   <span class="at">mtry =</span> <span class="dv">2</span>,   <span class="co"># sqrt(3) ~ 1.7, arredonda p/ 2</span></span>
+<span id="cb54-10"><a></a>                   <span class="at">importance =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-11"><a></a>rf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1774,18 +1834,18 @@ Yes  223 110   0.6696697</code></pre>
 <li>A identificação da classe <strong>Default</strong> continua sendo o principal desafio devido ao forte desbalanceamento da base de dados.</li>
 </ul></section><section id="r-importância-de-variáveis-no-random-forest" class="slide level2"><h2>R: Importância de Variáveis no Random Forest</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a></a><span class="co"># Importancia das variaveis</span></span>
-<span id="cb54-2"><a></a><span class="fu">importance</span>(rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a></a><span class="co"># Importancia das variaveis</span></span>
+<span id="cb56-2"><a></a><span class="fu">importance</span>(rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              No       Yes MeanDecreaseAccuracy MeanDecreaseGini
 balance 85.75412 158.56961            134.71669       429.770307
 student 14.25434 -14.12159             13.10852         7.646924
 income  12.09037 -14.41486             10.24280       206.637568</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a></a><span class="fu">varImpPlot</span>(rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a></a><span class="fu">varImpPlot</span>(rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-24-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="importância-das-variáveis-no-random-forest">Importância das Variáveis no Random Forest</h3>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-25-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="importância-das-variáveis-no-random-forest">Importância das Variáveis no Random Forest</h3>
 <ul>
 <li>A importância foi avaliada por duas métricas:
 <ul>
@@ -1864,17 +1924,17 @@ income  12.09037 -14.41486             10.24280       206.637568</code></pre>
 </li>
 </ol></section><section id="r-adaboost" class="slide level2"><h2>R: AdaBoost</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a><span class="fu">library</span>(adabag)</span>
-<span id="cb57-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb57-3"><a></a></span>
-<span id="cb57-4"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb57-5"><a></a></span>
-<span id="cb57-6"><a></a><span class="co"># AdaBoost com stumps (arvores de 1 no)</span></span>
-<span id="cb57-7"><a></a>ada_fit <span class="ot">&lt;-</span> <span class="fu">boosting</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb57-8"><a></a>                    <span class="at">data =</span> Default,</span>
-<span id="cb57-9"><a></a>                    <span class="at">mfinal =</span> <span class="dv">100</span>,          <span class="co"># numero de iteracoes</span></span>
-<span id="cb57-10"><a></a>                    <span class="at">coeflearn =</span> <span class="st">"Breiman"</span>) <span class="co"># metodo de calculo dos pesos</span></span>
-<span id="cb57-11"><a></a>ada_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a><span class="fu">library</span>(adabag)</span>
+<span id="cb59-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb59-3"><a></a></span>
+<span id="cb59-4"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb59-5"><a></a></span>
+<span id="cb59-6"><a></a><span class="co"># AdaBoost com stumps (arvores de 1 no)</span></span>
+<span id="cb59-7"><a></a>ada_fit <span class="ot">&lt;-</span> <span class="fu">boosting</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb59-8"><a></a>                    <span class="at">data =</span> Default,</span>
+<span id="cb59-9"><a></a>                    <span class="at">mfinal =</span> <span class="dv">100</span>,          <span class="co"># numero de iteracoes</span></span>
+<span id="cb59-10"><a></a>                    <span class="at">coeflearn =</span> <span class="st">"Breiman"</span>) <span class="co"># metodo de calculo dos pesos</span></span>
+<span id="cb59-11"><a></a>ada_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$formula
 default ~ balance + student + income
@@ -24575,24 +24635,24 @@ attr(,"class")
 </div>
 </div>
 </section><section class="slide level2"><div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a><span class="co"># Importancia das variaveis</span></span>
-<span id="cb59-2"><a></a><span class="fu">importanceplot</span>(ada_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a></a><span class="co"># Importancia das variaveis</span></span>
+<span id="cb61-2"><a></a><span class="fu">importanceplot</span>(ada_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a></a><span class="co"># Matriz de confusao</span></span>
-<span id="cb60-2"><a></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(ada_fit, Default)</span>
-<span id="cb60-3"><a></a>pred<span class="sc">$</span>confusion</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a><span class="co"># Matriz de confusao</span></span>
+<span id="cb62-2"><a></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(ada_fit, Default)</span>
+<span id="cb62-3"><a></a>pred<span class="sc">$</span>confusion</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               Observed Class
 Predicted Class   No  Yes
             No  9615  192
             Yes   52  141</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a><span class="fu">cat</span>(<span class="st">"Acurácia:"</span>, <span class="dv">1</span> <span class="sc">-</span> pred<span class="sc">$</span>error, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a><span class="fu">cat</span>(<span class="st">"Acurácia:"</span>, <span class="dv">1</span> <span class="sc">-</span> pred<span class="sc">$</span>error, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Acurácia: 0.9756 </code></pre>
 </div>
 </div>
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-26-1.png" class="r-stretch"></section><section id="gradient-boosting" class="slide level2"><h2>Gradient Boosting</h2>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-27-1.png" class="r-stretch"></section><section id="gradient-boosting" class="slide level2"><h2>Gradient Boosting</h2>
 <p>Generalização do AdaBoost para <strong>qualquer função de perda diferenciável</strong>.</p>
 <p><strong>Ideia:</strong> a cada iteração, ajusta-se uma árvore aos <strong>gradientes negativos</strong> da função de perda.</p>
 </section><section class="slide level2"><p><strong>Algoritmo:</strong></p>
@@ -24626,21 +24686,21 @@ Predicted Class   No  Yes
 <strong><code>n.minobsinnode</code></strong>: número mínimo de observações por nó</li>
 </ul></section><section id="r-gradient-boosting" class="slide level2"><h2>R: Gradient Boosting</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a><span class="fu">library</span>(gbm)</span>
-<span id="cb64-2"><a></a></span>
-<span id="cb64-3"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb64-4"><a></a></span>
-<span id="cb64-5"><a></a><span class="co"># Converter a resposta para 0 e 1</span></span>
-<span id="cb64-6"><a></a>Default<span class="sc">$</span>default_num <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Default<span class="sc">$</span>default <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb64-7"><a></a></span>
-<span id="cb64-8"><a></a>gbm_fit <span class="ot">&lt;-</span> <span class="fu">gbm</span>(default_num <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb64-9"><a></a>               <span class="at">data =</span> Default,</span>
-<span id="cb64-10"><a></a>               <span class="at">distribution =</span> <span class="st">"bernoulli"</span>,</span>
-<span id="cb64-11"><a></a>               <span class="at">n.trees =</span> <span class="dv">1000</span>,</span>
-<span id="cb64-12"><a></a>               <span class="at">interaction.depth =</span> <span class="dv">2</span>,</span>
-<span id="cb64-13"><a></a>               <span class="at">shrinkage =</span> <span class="fl">0.01</span>,</span>
-<span id="cb64-14"><a></a>               <span class="at">cv.folds =</span> <span class="dv">5</span>)</span>
-<span id="cb64-15"><a></a><span class="fu">summary</span>(gbm_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a></a><span class="fu">library</span>(gbm)</span>
+<span id="cb66-2"><a></a></span>
+<span id="cb66-3"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb66-4"><a></a></span>
+<span id="cb66-5"><a></a><span class="co"># Converter a resposta para 0 e 1</span></span>
+<span id="cb66-6"><a></a>Default<span class="sc">$</span>default_num <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Default<span class="sc">$</span>default <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb66-7"><a></a></span>
+<span id="cb66-8"><a></a>gbm_fit <span class="ot">&lt;-</span> <span class="fu">gbm</span>(default_num <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb66-9"><a></a>               <span class="at">data =</span> Default,</span>
+<span id="cb66-10"><a></a>               <span class="at">distribution =</span> <span class="st">"bernoulli"</span>,</span>
+<span id="cb66-11"><a></a>               <span class="at">n.trees =</span> <span class="dv">1000</span>,</span>
+<span id="cb66-12"><a></a>               <span class="at">interaction.depth =</span> <span class="dv">2</span>,</span>
+<span id="cb66-13"><a></a>               <span class="at">shrinkage =</span> <span class="fl">0.01</span>,</span>
+<span id="cb66-14"><a></a>               <span class="at">cv.folds =</span> <span class="dv">5</span>)</span>
+<span id="cb66-15"><a></a><span class="fu">summary</span>(gbm_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <div class="cell-output cell-output-stdout">
 <pre><code>            var    rel.inf
@@ -24649,7 +24709,7 @@ income   income  5.2570892
 student student  0.8317025</code></pre>
 </div>
 </div>
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-27-1.png" class="r-stretch"></section><section id="xgboost-extreme-gradient-boosting" class="slide level2"><h2>XGBoost (eXtreme Gradient Boosting)</h2>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-28-1.png" class="r-stretch"></section><section id="xgboost-extreme-gradient-boosting" class="slide level2"><h2>XGBoost (eXtreme Gradient Boosting)</h2>
 <p>Chen &amp; Guestrin (2016). Versão otimizada do Gradient Boosting.</p>
 <p><strong>Principais inovações:</strong></p>
 <ul>
@@ -24670,27 +24730,27 @@ student student  0.8317025</code></pre>
 <p>onde <span class="math inline">\(\Omega(f) = \gamma T + \frac{1}{2} \lambda ||w||^2\)</span> (<span class="math inline">\(T\)</span> = número de folhas, <span class="math inline">\(w\)</span> = pesos).</p>
 </section><section id="r-xgboost" class="slide level2"><h2>R: XGBoost</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a></a><span class="fu">library</span>(xgboost)</span>
-<span id="cb66-2"><a></a></span>
-<span id="cb66-3"><a></a><span class="co"># Preparação dos dados</span></span>
-<span id="cb66-4"><a></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income <span class="sc">-</span> <span class="dv">1</span>,</span>
-<span id="cb66-5"><a></a>                  <span class="at">data =</span> Default)</span>
-<span id="cb66-6"><a></a>y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Default<span class="sc">$</span>default <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb66-7"><a></a></span>
-<span id="cb66-8"><a></a>dtrain <span class="ot">&lt;-</span> <span class="fu">xgb.DMatrix</span>(X, <span class="at">label =</span> y)</span>
-<span id="cb66-9"><a></a></span>
-<span id="cb66-10"><a></a><span class="co"># Ajuste do modelo</span></span>
-<span id="cb66-11"><a></a>params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">objective =</span> <span class="st">"binary:logistic"</span>,</span>
-<span id="cb66-12"><a></a>               <span class="at">max_depth =</span> <span class="dv">3</span>,</span>
-<span id="cb66-13"><a></a>               <span class="at">eta =</span> <span class="fl">0.1</span>,</span>
-<span id="cb66-14"><a></a>               <span class="at">subsample =</span> <span class="fl">0.8</span>,</span>
-<span id="cb66-15"><a></a>               <span class="at">colsample_bytree =</span> <span class="fl">0.8</span>)</span>
-<span id="cb66-16"><a></a></span>
-<span id="cb66-17"><a></a>xgb_fit <span class="ot">&lt;-</span> <span class="fu">xgb.train</span>(params, dtrain, <span class="at">nrounds =</span> <span class="dv">100</span>,</span>
-<span id="cb66-18"><a></a>                     <span class="at">verbose =</span> <span class="dv">0</span>)</span>
-<span id="cb66-19"><a></a></span>
-<span id="cb66-20"><a></a><span class="co"># Importância</span></span>
-<span id="cb66-21"><a></a><span class="fu">xgb.importance</span>(<span class="at">model =</span> xgb_fit, <span class="at">feature_names =</span> <span class="fu">colnames</span>(X))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a><span class="fu">library</span>(xgboost)</span>
+<span id="cb68-2"><a></a></span>
+<span id="cb68-3"><a></a><span class="co"># Preparação dos dados</span></span>
+<span id="cb68-4"><a></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb68-5"><a></a>                  <span class="at">data =</span> Default)</span>
+<span id="cb68-6"><a></a>y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Default<span class="sc">$</span>default <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb68-7"><a></a></span>
+<span id="cb68-8"><a></a>dtrain <span class="ot">&lt;-</span> <span class="fu">xgb.DMatrix</span>(X, <span class="at">label =</span> y)</span>
+<span id="cb68-9"><a></a></span>
+<span id="cb68-10"><a></a><span class="co"># Ajuste do modelo</span></span>
+<span id="cb68-11"><a></a>params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">objective =</span> <span class="st">"binary:logistic"</span>,</span>
+<span id="cb68-12"><a></a>               <span class="at">max_depth =</span> <span class="dv">3</span>,</span>
+<span id="cb68-13"><a></a>               <span class="at">eta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb68-14"><a></a>               <span class="at">subsample =</span> <span class="fl">0.8</span>,</span>
+<span id="cb68-15"><a></a>               <span class="at">colsample_bytree =</span> <span class="fl">0.8</span>)</span>
+<span id="cb68-16"><a></a></span>
+<span id="cb68-17"><a></a>xgb_fit <span class="ot">&lt;-</span> <span class="fu">xgb.train</span>(params, dtrain, <span class="at">nrounds =</span> <span class="dv">100</span>,</span>
+<span id="cb68-18"><a></a>                     <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb68-19"><a></a></span>
+<span id="cb68-20"><a></a><span class="co"># Importância</span></span>
+<span id="cb68-21"><a></a><span class="fu">xgb.importance</span>(<span class="at">model =</span> xgb_fit, <span class="at">feature_names =</span> <span class="fu">colnames</span>(X))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      Feature        Gain       Cover   Frequency
        &lt;char&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;
@@ -24772,81 +24832,81 @@ student student  0.8317025</code></pre>
 <li>Para novas observações: cada modelo base prediz → meta-modelo combina</li>
 </ol></section><section id="r-stacking" class="slide level2"><h2>R: Stacking</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a><span class="fu">library</span>(caret)</span>
-<span id="cb68-2"><a></a><span class="fu">library</span>(caretEnsemble)</span>
-<span id="cb68-3"><a></a><span class="fu">library</span>(randomForest)</span>
-<span id="cb68-4"><a></a><span class="fu">library</span>(gbm)</span>
-<span id="cb68-5"><a></a></span>
-<span id="cb68-6"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb68-7"><a></a></span>
-<span id="cb68-8"><a></a><span class="co"># Garantir que a classe de interesse seja "Yes"</span></span>
-<span id="cb68-9"><a></a>Default<span class="sc">$</span>default <span class="ot">&lt;-</span> <span class="fu">relevel</span>(Default<span class="sc">$</span>default, <span class="at">ref =</span> <span class="st">"Yes"</span>)</span>
-<span id="cb68-10"><a></a></span>
-<span id="cb68-11"><a></a><span class="co"># Mesmas partições de validação cruzada para todos os modelos</span></span>
-<span id="cb68-12"><a></a>folds <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(</span>
-<span id="cb68-13"><a></a>  <span class="at">y =</span> Default<span class="sc">$</span>default,</span>
-<span id="cb68-14"><a></a>  <span class="at">k =</span> <span class="dv">5</span>,</span>
-<span id="cb68-15"><a></a>  <span class="at">returnTrain =</span> <span class="cn">TRUE</span></span>
-<span id="cb68-16"><a></a>)</span>
-<span id="cb68-17"><a></a></span>
-<span id="cb68-18"><a></a><span class="co"># Controle dos modelos-base</span></span>
-<span id="cb68-19"><a></a>ctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(</span>
-<span id="cb68-20"><a></a>  <span class="at">method =</span> <span class="st">"cv"</span>,</span>
-<span id="cb68-21"><a></a>  <span class="at">number =</span> <span class="dv">5</span>,</span>
-<span id="cb68-22"><a></a>  <span class="at">index =</span> folds,</span>
-<span id="cb68-23"><a></a>  <span class="at">savePredictions =</span> <span class="st">"final"</span>,</span>
-<span id="cb68-24"><a></a>  <span class="at">classProbs =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb68-25"><a></a>  <span class="at">summaryFunction =</span> twoClassSummary,</span>
-<span id="cb68-26"><a></a>  <span class="at">verboseIter =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb68-27"><a></a>  <span class="at">allowParallel =</span> <span class="cn">FALSE</span></span>
-<span id="cb68-28"><a></a>)</span>
-<span id="cb68-29"><a></a></span>
-<span id="cb68-30"><a></a><span class="co"># Ajuste dos modelos-base</span></span>
-<span id="cb68-31"><a></a>modelos_base <span class="ot">&lt;-</span> <span class="fu">caretList</span>(</span>
-<span id="cb68-32"><a></a>  default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
-<span id="cb68-33"><a></a>  <span class="at">data =</span> Default,</span>
-<span id="cb68-34"><a></a>  <span class="at">trControl =</span> ctrl,</span>
-<span id="cb68-35"><a></a>  <span class="at">metric =</span> <span class="st">"ROC"</span>,</span>
-<span id="cb68-36"><a></a>  <span class="at">tuneList =</span> <span class="fu">list</span>(</span>
-<span id="cb68-37"><a></a>    <span class="at">rf =</span> <span class="fu">caretModelSpec</span>(</span>
-<span id="cb68-38"><a></a>      <span class="at">method =</span> <span class="st">"rf"</span>,</span>
-<span id="cb68-39"><a></a>      <span class="at">tuneLength =</span> <span class="dv">3</span>,</span>
-<span id="cb68-40"><a></a>      <span class="at">ntree =</span> <span class="dv">500</span></span>
-<span id="cb68-41"><a></a>    ),</span>
-<span id="cb68-42"><a></a>    <span class="at">gbm =</span> <span class="fu">caretModelSpec</span>(</span>
-<span id="cb68-43"><a></a>      <span class="at">method =</span> <span class="st">"gbm"</span>,</span>
-<span id="cb68-44"><a></a>      <span class="at">tuneLength =</span> <span class="dv">3</span>,</span>
-<span id="cb68-45"><a></a>      <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
-<span id="cb68-46"><a></a>    ),</span>
-<span id="cb68-47"><a></a>    <span class="at">glm =</span> <span class="fu">caretModelSpec</span>(</span>
-<span id="cb68-48"><a></a>      <span class="at">method =</span> <span class="st">"glm"</span>,</span>
-<span id="cb68-49"><a></a>      <span class="at">family =</span> <span class="fu">binomial</span>()</span>
-<span id="cb68-50"><a></a>    )</span>
-<span id="cb68-51"><a></a>  )</span>
-<span id="cb68-52"><a></a>)</span>
-<span id="cb68-53"><a></a></span>
-<span id="cb68-54"><a></a><span class="co"># Controle do meta-modelo</span></span>
-<span id="cb68-55"><a></a>stack_ctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(</span>
-<span id="cb68-56"><a></a>  <span class="at">method =</span> <span class="st">"cv"</span>,</span>
-<span id="cb68-57"><a></a>  <span class="at">number =</span> <span class="dv">5</span>,</span>
-<span id="cb68-58"><a></a>  <span class="at">savePredictions =</span> <span class="st">"final"</span>,</span>
-<span id="cb68-59"><a></a>  <span class="at">classProbs =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb68-60"><a></a>  <span class="at">summaryFunction =</span> twoClassSummary,</span>
-<span id="cb68-61"><a></a>  <span class="at">verboseIter =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb68-62"><a></a>  <span class="at">allowParallel =</span> <span class="cn">FALSE</span></span>
-<span id="cb68-63"><a></a>)</span>
-<span id="cb68-64"><a></a></span>
-<span id="cb68-65"><a></a><span class="co"># Empilhamento com regressão logística</span></span>
-<span id="cb68-66"><a></a>stack <span class="ot">&lt;-</span> <span class="fu">caretStack</span>(</span>
-<span id="cb68-67"><a></a>  <span class="at">all.models =</span> modelos_base,</span>
-<span id="cb68-68"><a></a>  <span class="at">method =</span> <span class="st">"glm"</span>,</span>
-<span id="cb68-69"><a></a>  <span class="at">metric =</span> <span class="st">"ROC"</span>,</span>
-<span id="cb68-70"><a></a>  <span class="at">trControl =</span> stack_ctrl,</span>
-<span id="cb68-71"><a></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
-<span id="cb68-72"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a></a><span class="fu">library</span>(caret)</span>
+<span id="cb70-2"><a></a><span class="fu">library</span>(caretEnsemble)</span>
+<span id="cb70-3"><a></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb70-4"><a></a><span class="fu">library</span>(gbm)</span>
+<span id="cb70-5"><a></a></span>
+<span id="cb70-6"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb70-7"><a></a></span>
+<span id="cb70-8"><a></a><span class="co"># Garantir que a classe de interesse seja "Yes"</span></span>
+<span id="cb70-9"><a></a>Default<span class="sc">$</span>default <span class="ot">&lt;-</span> <span class="fu">relevel</span>(Default<span class="sc">$</span>default, <span class="at">ref =</span> <span class="st">"Yes"</span>)</span>
+<span id="cb70-10"><a></a></span>
+<span id="cb70-11"><a></a><span class="co"># Mesmas partições de validação cruzada para todos os modelos</span></span>
+<span id="cb70-12"><a></a>folds <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(</span>
+<span id="cb70-13"><a></a>  <span class="at">y =</span> Default<span class="sc">$</span>default,</span>
+<span id="cb70-14"><a></a>  <span class="at">k =</span> <span class="dv">5</span>,</span>
+<span id="cb70-15"><a></a>  <span class="at">returnTrain =</span> <span class="cn">TRUE</span></span>
+<span id="cb70-16"><a></a>)</span>
+<span id="cb70-17"><a></a></span>
+<span id="cb70-18"><a></a><span class="co"># Controle dos modelos-base</span></span>
+<span id="cb70-19"><a></a>ctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(</span>
+<span id="cb70-20"><a></a>  <span class="at">method =</span> <span class="st">"cv"</span>,</span>
+<span id="cb70-21"><a></a>  <span class="at">number =</span> <span class="dv">5</span>,</span>
+<span id="cb70-22"><a></a>  <span class="at">index =</span> folds,</span>
+<span id="cb70-23"><a></a>  <span class="at">savePredictions =</span> <span class="st">"final"</span>,</span>
+<span id="cb70-24"><a></a>  <span class="at">classProbs =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb70-25"><a></a>  <span class="at">summaryFunction =</span> twoClassSummary,</span>
+<span id="cb70-26"><a></a>  <span class="at">verboseIter =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb70-27"><a></a>  <span class="at">allowParallel =</span> <span class="cn">FALSE</span></span>
+<span id="cb70-28"><a></a>)</span>
+<span id="cb70-29"><a></a></span>
+<span id="cb70-30"><a></a><span class="co"># Ajuste dos modelos-base</span></span>
+<span id="cb70-31"><a></a>modelos_base <span class="ot">&lt;-</span> <span class="fu">caretList</span>(</span>
+<span id="cb70-32"><a></a>  default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb70-33"><a></a>  <span class="at">data =</span> Default,</span>
+<span id="cb70-34"><a></a>  <span class="at">trControl =</span> ctrl,</span>
+<span id="cb70-35"><a></a>  <span class="at">metric =</span> <span class="st">"ROC"</span>,</span>
+<span id="cb70-36"><a></a>  <span class="at">tuneList =</span> <span class="fu">list</span>(</span>
+<span id="cb70-37"><a></a>    <span class="at">rf =</span> <span class="fu">caretModelSpec</span>(</span>
+<span id="cb70-38"><a></a>      <span class="at">method =</span> <span class="st">"rf"</span>,</span>
+<span id="cb70-39"><a></a>      <span class="at">tuneLength =</span> <span class="dv">3</span>,</span>
+<span id="cb70-40"><a></a>      <span class="at">ntree =</span> <span class="dv">500</span></span>
+<span id="cb70-41"><a></a>    ),</span>
+<span id="cb70-42"><a></a>    <span class="at">gbm =</span> <span class="fu">caretModelSpec</span>(</span>
+<span id="cb70-43"><a></a>      <span class="at">method =</span> <span class="st">"gbm"</span>,</span>
+<span id="cb70-44"><a></a>      <span class="at">tuneLength =</span> <span class="dv">3</span>,</span>
+<span id="cb70-45"><a></a>      <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
+<span id="cb70-46"><a></a>    ),</span>
+<span id="cb70-47"><a></a>    <span class="at">glm =</span> <span class="fu">caretModelSpec</span>(</span>
+<span id="cb70-48"><a></a>      <span class="at">method =</span> <span class="st">"glm"</span>,</span>
+<span id="cb70-49"><a></a>      <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb70-50"><a></a>    )</span>
+<span id="cb70-51"><a></a>  )</span>
+<span id="cb70-52"><a></a>)</span>
+<span id="cb70-53"><a></a></span>
+<span id="cb70-54"><a></a><span class="co"># Controle do meta-modelo</span></span>
+<span id="cb70-55"><a></a>stack_ctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(</span>
+<span id="cb70-56"><a></a>  <span class="at">method =</span> <span class="st">"cv"</span>,</span>
+<span id="cb70-57"><a></a>  <span class="at">number =</span> <span class="dv">5</span>,</span>
+<span id="cb70-58"><a></a>  <span class="at">savePredictions =</span> <span class="st">"final"</span>,</span>
+<span id="cb70-59"><a></a>  <span class="at">classProbs =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb70-60"><a></a>  <span class="at">summaryFunction =</span> twoClassSummary,</span>
+<span id="cb70-61"><a></a>  <span class="at">verboseIter =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb70-62"><a></a>  <span class="at">allowParallel =</span> <span class="cn">FALSE</span></span>
+<span id="cb70-63"><a></a>)</span>
+<span id="cb70-64"><a></a></span>
+<span id="cb70-65"><a></a><span class="co"># Empilhamento com regressão logística</span></span>
+<span id="cb70-66"><a></a>stack <span class="ot">&lt;-</span> <span class="fu">caretStack</span>(</span>
+<span id="cb70-67"><a></a>  <span class="at">all.models =</span> modelos_base,</span>
+<span id="cb70-68"><a></a>  <span class="at">method =</span> <span class="st">"glm"</span>,</span>
+<span id="cb70-69"><a></a>  <span class="at">metric =</span> <span class="st">"ROC"</span>,</span>
+<span id="cb70-70"><a></a>  <span class="at">trControl =</span> stack_ctrl,</span>
+<span id="cb70-71"><a></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb70-72"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section class="slide level2"><div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a>modelos_base</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a></a>modelos_base</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$rf
 Random Forest 
@@ -24898,7 +24958,7 @@ Resampling results:
 attr(,"class")
 [1] "caretList" "list"     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a></a>stack</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a></a>stack</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The following models were ensembled: rf, gbm, glm  
 
@@ -24949,23 +25009,23 @@ d(x_i, x_j) = \sqrt{\sum_{k=1}^p (x_{ik} - x_{jk})^2}
 <p><strong>Hiperparâmetro crítico:</strong> K (número de vizinhos).</p>
 </section><section id="r-knn" class="slide level2"><h2>R: KNN</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a></a><span class="fu">library</span>(class)</span>
-<span id="cb73-2"><a></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb73-3"><a></a></span>
-<span id="cb73-4"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb73-5"><a></a></span>
-<span id="cb73-6"><a></a><span class="co"># Normalizar os dados</span></span>
-<span id="cb73-7"><a></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(Default[, <span class="fu">c</span>(<span class="st">"balance"</span>, <span class="st">"income"</span>)])</span>
-<span id="cb73-8"><a></a>y <span class="ot">&lt;-</span> Default<span class="sc">$</span>default</span>
-<span id="cb73-9"><a></a></span>
-<span id="cb73-10"><a></a><span class="co"># Treino e teste</span></span>
-<span id="cb73-11"><a></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(Default), <span class="fl">0.7</span> <span class="sc">*</span> <span class="fu">nrow</span>(Default))</span>
-<span id="cb73-12"><a></a>train <span class="ot">&lt;-</span> X[idx, ]; test <span class="ot">&lt;-</span> X[<span class="sc">-</span>idx, ]</span>
-<span id="cb73-13"><a></a>ytrain <span class="ot">&lt;-</span> y[idx]; ytest <span class="ot">&lt;-</span> y[<span class="sc">-</span>idx]</span>
-<span id="cb73-14"><a></a></span>
-<span id="cb73-15"><a></a><span class="co"># KNN com K = 5</span></span>
-<span id="cb73-16"><a></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(train, test, ytrain, <span class="at">k =</span> <span class="dv">5</span>)</span>
-<span id="cb73-17"><a></a><span class="fu">mean</span>(knn_pred <span class="sc">==</span> ytest) <span class="co"># acurácia</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a></a><span class="fu">library</span>(class)</span>
+<span id="cb75-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb75-3"><a></a></span>
+<span id="cb75-4"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb75-5"><a></a></span>
+<span id="cb75-6"><a></a><span class="co"># Normalizar os dados</span></span>
+<span id="cb75-7"><a></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(Default[, <span class="fu">c</span>(<span class="st">"balance"</span>, <span class="st">"income"</span>)])</span>
+<span id="cb75-8"><a></a>y <span class="ot">&lt;-</span> Default<span class="sc">$</span>default</span>
+<span id="cb75-9"><a></a></span>
+<span id="cb75-10"><a></a><span class="co"># Treino e teste</span></span>
+<span id="cb75-11"><a></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(Default), <span class="fl">0.7</span> <span class="sc">*</span> <span class="fu">nrow</span>(Default))</span>
+<span id="cb75-12"><a></a>train <span class="ot">&lt;-</span> X[idx, ]; test <span class="ot">&lt;-</span> X[<span class="sc">-</span>idx, ]</span>
+<span id="cb75-13"><a></a>ytrain <span class="ot">&lt;-</span> y[idx]; ytest <span class="ot">&lt;-</span> y[<span class="sc">-</span>idx]</span>
+<span id="cb75-14"><a></a></span>
+<span id="cb75-15"><a></a><span class="co"># KNN com K = 5</span></span>
+<span id="cb75-16"><a></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(train, test, ytrain, <span class="at">k =</span> <span class="dv">5</span>)</span>
+<span id="cb75-17"><a></a><span class="fu">mean</span>(knn_pred <span class="sc">==</span> ytest) <span class="co"># acurácia</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.969</code></pre>
 </div>
@@ -24980,19 +25040,19 @@ d(x_i, x_j) = \sqrt{\sum_{k=1}^p (x_{ik} - x_{jk})^2}
 <span class="math inline">\(K = n\)</span>: classe majoritária global — underfitting</li>
 </ul></section><section id="r-escolha-de-k" class="slide level2"><h2>R: Escolha de K</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a></a><span class="co"># Escolha do K por validacao cruzada</span></span>
-<span id="cb75-2"><a></a>Ks <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span></span>
-<span id="cb75-3"><a></a>acuracia <span class="ot">&lt;-</span> <span class="fu">sapply</span>(Ks, <span class="cf">function</span>(k) {</span>
-<span id="cb75-4"><a></a>  pred <span class="ot">&lt;-</span> <span class="fu">knn.cv</span>(train, ytrain, <span class="at">k =</span> k)</span>
-<span id="cb75-5"><a></a>  <span class="fu">mean</span>(pred <span class="sc">==</span> ytrain)</span>
-<span id="cb75-6"><a></a>})</span>
-<span id="cb75-7"><a></a></span>
-<span id="cb75-8"><a></a><span class="fu">plot</span>(Ks, acuracia, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">19</span>,</span>
-<span id="cb75-9"><a></a>     <span class="at">xlab =</span> <span class="st">"K"</span>, <span class="at">ylab =</span> <span class="st">"Acurácia (CV)"</span>)</span>
-<span id="cb75-10"><a></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">which.max</span>(acuracia), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a></a><span class="co"># Escolha do K por validacao cruzada</span></span>
+<span id="cb77-2"><a></a>Ks <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span></span>
+<span id="cb77-3"><a></a>acuracia <span class="ot">&lt;-</span> <span class="fu">sapply</span>(Ks, <span class="cf">function</span>(k) {</span>
+<span id="cb77-4"><a></a>  pred <span class="ot">&lt;-</span> <span class="fu">knn.cv</span>(train, ytrain, <span class="at">k =</span> k)</span>
+<span id="cb77-5"><a></a>  <span class="fu">mean</span>(pred <span class="sc">==</span> ytrain)</span>
+<span id="cb77-6"><a></a>})</span>
+<span id="cb77-7"><a></a></span>
+<span id="cb77-8"><a></a><span class="fu">plot</span>(Ks, acuracia, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb77-9"><a></a>     <span class="at">xlab =</span> <span class="st">"K"</span>, <span class="at">ylab =</span> <span class="st">"Acurácia (CV)"</span>)</span>
+<span id="cb77-10"><a></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">which.max</span>(acuracia), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="met_class_files/figure-revealjs/unnamed-chunk-32-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-5">Interpretação</h3>
+<img data-src="met_class_files/figure-revealjs/unnamed-chunk-33-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-5">Interpretação</h3>
 <ul>
 <li><p>A acurácia foi avaliada para valores de <span class="math inline">\(K\)</span> entre 1 e 50 utilizando <strong>validação cruzada leave-one-out (LOOCV)</strong> por meio da função <code>knn.cv()</code>.<br><br></p></li>
 <li><p>Para valores pequenos de <span class="math inline">\(K\)</span>, a acurácia é menor, pois o modelo torna-se mais sensível a ruídos e apresenta maior variância, caracterizando um cenário de <strong>sobreajuste (overfitting)</strong>.<br><br></p></li>
@@ -25089,6 +25149,302 @@ y = \phi\left(\sum_{j=1}^p w_j x_j + b\right)
 w_{jk}^{(l)} \leftarrow w_{jk}^{(l)} - \eta \cdot \frac{\partial L}{\partial w_{jk}^{(l)}}
 \]</span></p>
 <p>onde <span class="math inline">\(\eta\)</span> é a <strong>taxa de aprendizado</strong>.</p>
+</section><section id="redes-neurais-tuning" class="slide level2"><h2>Redes Neurais: tuning</h2>
+<h3 id="hiperparâmetros-principais">Hiperparâmetros principais</h3>
+<table class="caption-top">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 31%">
+<col style="width: 37%">
+</colgroup>
+<thead><tr class="header">
+<th>Parâmetro</th>
+<th>Descrição</th>
+<th>Faixa comum</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>size</code></td>
+<td>Nº de neurônios na camada oculta</td>
+<td>1–100</td>
+</tr>
+<tr class="even">
+<td><code>decay</code></td>
+<td>Regularização (weight decay)</td>
+<td>0.001–0.1</td>
+</tr>
+<tr class="odd">
+<td><code>maxit</code></td>
+<td>Nº máximo de iterações</td>
+<td>100–1000</td>
+</tr>
+<tr class="even">
+<td><code>linout</code></td>
+<td>Saída linear (regressão) ou sigmoide (classificação)</td>
+<td>TRUE/FALSE</td>
+</tr>
+</tbody>
+</table></section><section id="r-redes-neurais" class="slide level2"><h2>R: Redes Neurais</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a></a><span class="fu">library</span>(nnet)</span>
+<span id="cb78-2"><a></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb78-3"><a></a></span>
+<span id="cb78-4"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb78-5"><a></a></span>
+<span id="cb78-6"><a></a><span class="co"># Ajuste da rede neural</span></span>
+<span id="cb78-7"><a></a><span class="co"># size = numero de neuronios na camada oculta</span></span>
+<span id="cb78-8"><a></a><span class="co"># decay = regularizacao (weight decay)</span></span>
+<span id="cb78-9"><a></a>nn_fit <span class="ot">&lt;-</span> <span class="fu">nnet</span>(default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb78-10"><a></a>               <span class="at">data =</span> Default,</span>
+<span id="cb78-11"><a></a>               <span class="at">size =</span> <span class="dv">5</span>,</span>
+<span id="cb78-12"><a></a>               <span class="at">decay =</span> <span class="fl">0.1</span>,</span>
+<span id="cb78-13"><a></a>               <span class="at">maxit =</span> <span class="dv">500</span>,</span>
+<span id="cb78-14"><a></a>               <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb78-15"><a></a></span>
+<span id="cb78-16"><a></a>nn_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a 3-5-1 network with 26 weights
+inputs: balance studentYes income 
+output(s): default 
+options were - entropy fitting  decay=0.1</code></pre>
+</div>
+</div>
+</section><section class="slide level2"><h3 id="interpretação-7">Interpretação</h3>
+<ul>
+<li><p>Foi ajustada uma <strong>Rede Neural Artificial (RNA)</strong> para um problema de classificação binária, utilizando a variável <strong><code>default</code></strong> como resposta e as variáveis <strong><code>balance</code></strong>, <strong><code>student</code></strong> e <strong><code>income</code></strong> como preditoras.<br><br></p></li>
+<li>
+<p>A arquitetura da rede é <strong>3–5–1</strong>, indicando:</p>
+<ul>
+<li>
+<strong>3 neurônios de entrada</strong>, correspondentes às variáveis de entrada (<code>balance</code>, <code>studentYes</code> e <code>income</code>);</li>
+<li>
+<strong>5 neurônios na camada oculta</strong> (<code>size = 5</code>);</li>
+<li>
+<strong>1 neurônio de saída</strong>, responsável por estimar a probabilidade de inadimplência.<br><br>
+</li>
+</ul>
+</li>
+<li><p>A variável categórica <strong><code>student</code></strong> foi automaticamente transformada em uma variável indicadora (<strong><code>studentYes</code></strong>), resultando em três entradas para a rede.</p></li>
+</ul></section><section class="slide level2"><h3 id="interpretação-8">Interpretação</h3>
+<ul>
+<li><p>A rede possui <strong>26 pesos (weights)</strong>, que incluem as conexões entre os neurônios e os termos de viés (<em>bias</em>). Esses pesos são ajustados durante o treinamento para minimizar a função de perda.<br><br></p></li>
+<li><p>O treinamento utilizou a função de custo <strong>entropia cruzada (cross-entropy)</strong> (<code>entropy fitting</code>), apropriada para problemas de classificação binária.<br><br></p></li>
+<li><p>Foi aplicada uma regularização do tipo <strong>Weight Decay</strong> com parâmetro</p></li>
+</ul>
+<p><span class="math display">\[
+\lambda = 0.1,
+\]</span></p>
+<p>que penaliza pesos muito elevados, reduzindo a complexidade do modelo e diminuindo o risco de <strong>overfitting</strong>.</p>
+</section><section class="slide level2"><h3 id="interpretação-9">Interpretação</h3>
+<ul>
+<li>O algoritmo foi configurado para realizar até <strong>500 iterações</strong> (<code>maxit = 500</code>) durante o processo de otimização dos pesos.</li>
+</ul>
+<h3 id="resumo-da-arquitetura">Resumo da arquitetura</h3>
+<ul>
+<li>
+<strong>Entradas:</strong> 3 (<code>balance</code>, <code>studentYes</code> e <code>income</code>);</li>
+<li>
+<strong>Camada oculta:</strong> 5 neurônios;</li>
+<li>
+<strong>Saída:</strong> 1 neurônio (probabilidade de <code>default = Yes</code>);</li>
+<li>
+<strong>Número total de pesos:</strong> 26;</li>
+<li>
+<strong>Função de perda:</strong> Entropia cruzada;</li>
+<li>
+<strong>Regularização:</strong> Weight Decay (<span class="math inline">\(\lambda = 0.1\)</span>);</li>
+<li>
+<strong>Máximo de iterações:</strong> 500.</li>
+</ul></section><section id="r-tuning-em-redes-neurais" class="slide level2"><h2>R: Tuning em Redes Neurais</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a></a><span class="fu">library</span>(nnet)</span>
+<span id="cb80-2"><a></a><span class="fu">library</span>(caret)</span>
+<span id="cb80-3"><a></a><span class="fu">library</span>(pROC)</span>
+<span id="cb80-4"><a></a></span>
+<span id="cb80-5"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb80-6"><a></a></span>
+<span id="cb80-7"><a></a><span class="co"># Garantir a ordem correta das classes</span></span>
+<span id="cb80-8"><a></a>Default<span class="sc">$</span>default <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb80-9"><a></a>  Default<span class="sc">$</span>default,</span>
+<span id="cb80-10"><a></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)</span>
+<span id="cb80-11"><a></a>)</span>
+<span id="cb80-12"><a></a></span>
+<span id="cb80-13"><a></a><span class="co"># Grade de hiperparâmetros</span></span>
+<span id="cb80-14"><a></a>resultados <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb80-15"><a></a>  <span class="at">size  =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>),</span>
+<span id="cb80-16"><a></a>  <span class="at">decay =</span> <span class="fu">c</span>(<span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb80-17"><a></a>)</span>
+<span id="cb80-18"><a></a></span>
+<span id="cb80-19"><a></a>resultados<span class="sc">$</span>acuracia <span class="ot">&lt;-</span> <span class="cn">NA_real_</span></span>
+<span id="cb80-20"><a></a>resultados<span class="sc">$</span>auc      <span class="ot">&lt;-</span> <span class="cn">NA_real_</span></span>
+<span id="cb80-21"><a></a></span>
+<span id="cb80-22"><a></a><span class="co"># Índices das observações de validação de cada fold</span></span>
+<span id="cb80-23"><a></a>folds <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(</span>
+<span id="cb80-24"><a></a>  <span class="at">y =</span> Default<span class="sc">$</span>default,</span>
+<span id="cb80-25"><a></a>  <span class="at">k =</span> <span class="dv">5</span>,</span>
+<span id="cb80-26"><a></a>  <span class="at">returnTrain =</span> <span class="cn">FALSE</span></span>
+<span id="cb80-27"><a></a>)</span>
+<span id="cb80-28"><a></a></span>
+<span id="cb80-29"><a></a><span class="co"># Validação cruzada manual</span></span>
+<span id="cb80-30"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(resultados))) {</span>
+<span id="cb80-31"><a></a></span>
+<span id="cb80-32"><a></a>  acc_fold <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(folds))</span>
+<span id="cb80-33"><a></a>  auc_fold <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(folds))</span>
+<span id="cb80-34"><a></a></span>
+<span id="cb80-35"><a></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(folds)) {</span>
+<span id="cb80-36"><a></a></span>
+<span id="cb80-37"><a></a>    idx_valid <span class="ot">&lt;-</span> folds[[j]]</span>
+<span id="cb80-38"><a></a></span>
+<span id="cb80-39"><a></a>    treino <span class="ot">&lt;-</span> Default[<span class="sc">-</span>idx_valid, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb80-40"><a></a>    valid  <span class="ot">&lt;-</span> Default[ idx_valid, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb80-41"><a></a></span>
+<span id="cb80-42"><a></a>    modelo <span class="ot">&lt;-</span> <span class="fu">nnet</span>(</span>
+<span id="cb80-43"><a></a>      default <span class="sc">~</span> balance <span class="sc">+</span> student <span class="sc">+</span> income,</span>
+<span id="cb80-44"><a></a>      <span class="at">data =</span> treino,</span>
+<span id="cb80-45"><a></a>      <span class="at">size =</span> resultados<span class="sc">$</span>size[i],</span>
+<span id="cb80-46"><a></a>      <span class="at">decay =</span> resultados<span class="sc">$</span>decay[i],</span>
+<span id="cb80-47"><a></a>      <span class="at">maxit =</span> <span class="dv">500</span>,</span>
+<span id="cb80-48"><a></a>      <span class="at">MaxNWts =</span> <span class="dv">5000</span>,</span>
+<span id="cb80-49"><a></a>      <span class="at">trace =</span> <span class="cn">FALSE</span></span>
+<span id="cb80-50"><a></a>    )</span>
+<span id="cb80-51"><a></a></span>
+<span id="cb80-52"><a></a>    <span class="co"># Predição das classes</span></span>
+<span id="cb80-53"><a></a>    pred_classe <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb80-54"><a></a>      modelo,</span>
+<span id="cb80-55"><a></a>      <span class="at">newdata =</span> valid,</span>
+<span id="cb80-56"><a></a>      <span class="at">type =</span> <span class="st">"class"</span></span>
+<span id="cb80-57"><a></a>    )</span>
+<span id="cb80-58"><a></a></span>
+<span id="cb80-59"><a></a>    acc_fold[j] <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_classe <span class="sc">==</span> valid<span class="sc">$</span>default)</span>
+<span id="cb80-60"><a></a></span>
+<span id="cb80-61"><a></a>    <span class="co"># Probabilidade de default = "Yes"</span></span>
+<span id="cb80-62"><a></a>    pred_prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb80-63"><a></a>      modelo,</span>
+<span id="cb80-64"><a></a>      <span class="at">newdata =</span> valid,</span>
+<span id="cb80-65"><a></a>      <span class="at">type =</span> <span class="st">"raw"</span></span>
+<span id="cb80-66"><a></a>    )</span>
+<span id="cb80-67"><a></a></span>
+<span id="cb80-68"><a></a>    <span class="co"># Em classificação binária, nnet pode devolver vetor ou matriz</span></span>
+<span id="cb80-69"><a></a>    <span class="cf">if</span> (<span class="fu">is.matrix</span>(pred_prob)) {</span>
+<span id="cb80-70"><a></a>      <span class="cf">if</span> (<span class="st">"Yes"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(pred_prob)) {</span>
+<span id="cb80-71"><a></a>        pred_prob <span class="ot">&lt;-</span> pred_prob[, <span class="st">"Yes"</span>]</span>
+<span id="cb80-72"><a></a>      } <span class="cf">else</span> {</span>
+<span id="cb80-73"><a></a>        pred_prob <span class="ot">&lt;-</span> pred_prob[, <span class="fu">ncol</span>(pred_prob)]</span>
+<span id="cb80-74"><a></a>      }</span>
+<span id="cb80-75"><a></a>    }</span>
+<span id="cb80-76"><a></a></span>
+<span id="cb80-77"><a></a>    roc_obj <span class="ot">&lt;-</span> <span class="fu">roc</span>(</span>
+<span id="cb80-78"><a></a>      <span class="at">response =</span> valid<span class="sc">$</span>default,</span>
+<span id="cb80-79"><a></a>      <span class="at">predictor =</span> <span class="fu">as.numeric</span>(pred_prob),</span>
+<span id="cb80-80"><a></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>),</span>
+<span id="cb80-81"><a></a>      <span class="at">direction =</span> <span class="st">"&lt;"</span>,</span>
+<span id="cb80-82"><a></a>      <span class="at">quiet =</span> <span class="cn">TRUE</span></span>
+<span id="cb80-83"><a></a>    )</span>
+<span id="cb80-84"><a></a></span>
+<span id="cb80-85"><a></a>    auc_fold[j] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">auc</span>(roc_obj))</span>
+<span id="cb80-86"><a></a>  }</span>
+<span id="cb80-87"><a></a></span>
+<span id="cb80-88"><a></a>  resultados<span class="sc">$</span>acuracia[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(acc_fold, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb80-89"><a></a>  resultados<span class="sc">$</span>auc[i]      <span class="ot">&lt;-</span> <span class="fu">mean</span>(auc_fold, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb80-90"><a></a>}</span>
+<span id="cb80-91"><a></a></span>
+<span id="cb80-92"><a></a><span class="co"># Ordenar as combinações pela maior AUC</span></span>
+<span id="cb80-93"><a></a>resultados <span class="ot">&lt;-</span> resultados[</span>
+<span id="cb80-94"><a></a>  <span class="fu">order</span>(resultados<span class="sc">$</span>auc, <span class="at">decreasing =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb80-95"><a></a>]</span>
+<span id="cb80-96"><a></a></span>
+<span id="cb80-97"><a></a><span class="fu">row.names</span>(resultados) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb80-98"><a></a></span>
+<span id="cb80-99"><a></a><span class="co"># Melhor combinação</span></span>
+<span id="cb80-100"><a></a>best <span class="ot">&lt;-</span> resultados[<span class="dv">1</span>, ]</span>
+<span id="cb80-101"><a></a></span>
+<span id="cb80-102"><a></a>resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   size decay  acuracia       auc
+1    15 0.500 0.9722002 0.9473840
+2    20 0.500 0.9730004 0.9461433
+3    10 0.500 0.9720002 0.9457201
+4    20 0.100 0.9706994 0.9236276
+5    15 0.100 0.9698994 0.8971999
+6    10 0.010 0.9709995 0.8571673
+7     3 0.500 0.9713005 0.8568092
+8    15 0.010 0.9700000 0.8284057
+9    15 0.001 0.9707004 0.8167466
+10   10 0.100 0.9705009 0.8128967
+11    1 0.500 0.9706009 0.8124886
+12    5 0.500 0.9706009 0.8026357
+13    5 0.100 0.9707002 0.7682205
+14   20 0.001 0.9695995 0.7672416
+15   20 0.010 0.9694996 0.7654351
+16    3 0.010 0.9694009 0.7345809
+17    5 0.010 0.9675000 0.6201241
+18    1 0.100 0.9681000 0.5905846
+19   10 0.001 0.9678000 0.5894888
+20    3 0.001 0.9678000 0.5827365
+21    1 0.010 0.9667000 0.5001034
+22    1 0.001 0.9667000 0.5000000
+23    3 0.100 0.9667000 0.4997932
+24    5 0.001 0.9667000 0.4989235</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a></a>best</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  size decay  acuracia      auc
+1   15   0.5 0.9722002 0.947384</code></pre>
+</div>
+</div>
+</section><section class="slide level2"><h3 id="interpretação-do-tuning-da-rede-neural">Interpretação do tuning da rede neural</h3>
+<ul>
+<li>Foram avaliadas diferentes combinações dos hiperparâmetros:
+<ul>
+<li>
+<code>size</code>: número de neurônios na camada oculta;</li>
+<li>
+<code>decay</code>: intensidade da regularização dos pesos.</li>
+</ul>
+</li>
+<li>A seleção foi realizada por validação cruzada, comparando:
+<ul>
+<li>
+<strong>acurácia</strong>;</li>
+<li>
+<strong>AUC</strong>.</li>
+</ul>
+</li>
+<li>A melhor combinação segundo a maior AUC foi:</li>
+</ul>
+<p><span class="math display">\[
+\text{size} = 15
+\qquad \text{e} \qquad
+\text{decay} = 0.5
+\]</span></p>
+<ul>
+<li>Essa configuração apresentou:</li>
+</ul>
+<p><span class="math display">\[
+\text{Acurácia} = 97,22\%
+\qquad \text{e} \qquad
+\text{AUC} = 0,9474
+\]</span></p>
+</section><section class="slide level2"><h3 id="interpretação-do-tuning-da-rede-neural-1">Interpretação do tuning da rede neural</h3>
+<ul>
+<li>A combinação com <code>size = 20</code> e <code>decay = 0.5</code> apresentou acurácia ligeiramente maior, mas AUC inferior:</li>
+</ul>
+<p><span class="math display">\[
+\text{Acurácia} = 97,30\%
+\qquad
+\text{AUC} = 0,9461
+\]</span></p>
+<ul>
+<li><p>Como a base é desbalanceada, a <strong>AUC</strong> é um critério mais adequado do que a acurácia para selecionar o modelo.<br><br></p></li>
+<li><p>Os melhores resultados ocorreram com <code>decay = 0.5</code>, indicando que uma regularização mais forte ajudou a controlar a complexidade da rede e reduziu o risco de overfitting.</p></li>
+</ul></section><section class="slide level2"><h3 id="conclusão-2">Conclusão</h3>
+<ul>
+<li>A rede selecionada possui <strong>15 neurônios na camada oculta</strong> e <strong>regularização igual a 0,5</strong>.<br><br>
+</li>
+<li>O resultado mostra que redes mais flexíveis, combinadas com regularização adequada, apresentaram melhor capacidade de discriminação.<br><br>
+</li>
+<li>A acurácia permaneceu próxima de 97% em várias configurações, mas a AUC revelou diferenças importantes entre os modelos.</li>
+</ul>
 
 
 </section></section>
