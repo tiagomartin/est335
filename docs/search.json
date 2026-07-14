@@ -1866,5 +1866,922 @@
     "title": "Parte II : Classificação",
     "section": "R: Dataset Shift e Viés de Seleção",
     "text": "R: Dataset Shift e Viés de Seleção\n\n# Exemplo: correcao de Covariate Shift\n# Dados de treino viezados e teste com distribuicao diferente\nset.seed(335)\n\nn_treino &lt;- 500\nn_teste &lt;- 200\n\n# Treino: X ~ N(0, 1); Teste: X ~ N(1.5, 1)\nX_treino &lt;- rnorm(n_treino, 0, 1)\nX_teste  &lt;- rnorm(n_teste, 1.5, 1)\n\n# Fator de correcao beta(x) = P_teste(X) / P_treino(X)\n# Neste caso: beta(x) = dnorm(x, 1.5, 1) / dnorm(x, 0, 1)\npesos &lt;- dnorm(X_treino, 1.5, 1) / dnorm(X_treino, 0, 1)\nsummary(pesos)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n 0.0037  0.1113  0.3156  1.1676  0.9503 37.4111"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#redução-de-dimensionalidade-e-mudança-de-representação",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#redução-de-dimensionalidade-e-mudança-de-representação",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Redução de Dimensionalidade e Mudança de Representação",
+    "text": "Redução de Dimensionalidade e Mudança de Representação\nProblema: Quando temos \\(p\\) variáveis (features), a “maldição da dimensionalidade” faz com que o espaço se torne esparso, ou seja, os dados se distanciam uns dos outros e qualquer método estatístico precisa de amostras exponencialmente maiores para manter o mesmo desempenho.\nSolução: Reduzir a dimensionalidade preservando o máximo de informação possível."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-principal-component-analysis",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-principal-component-analysis",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "PCA (Principal Component Analysis)",
+    "text": "PCA (Principal Component Analysis)\nO PCA encontra uma sequência de componentes principais, obtidas através de combinações lineares das variáveis originais, que maximizam a variância dos dados, sujeitas a serem ortogonais entre si.\n\\[Z_1 = \\phi_{11} X_1 + \\phi_{21} X_2 + \\dots + \\phi_{d1} X_d\\]\n\nO primeiro componente \\(Z_1\\) captura a máxima variância possível em uma única direção\nO segundo componente \\(Z_2\\) captura a máxima variância ortogonal a \\(Z_1\\)\n\nE assim sucessivamente…"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-principal-component-analysis-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-principal-component-analysis-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "PCA (Principal Component Analysis)",
+    "text": "PCA (Principal Component Analysis)\nSolução: Autodecomposição da matriz de covariância \\(\\boldsymbol{\\Sigma}\\). Os autovetores são as direções dos componentes, e os autovalores medem a variância explicada por cada um.\nCritério prático: Escolha \\(k\\) componentes que expliquem 80-95% da variância total: \\[\\frac{\\sum_{i=1}^k \\lambda_i}{\\sum_{i=1}^d \\lambda_i} \\geq \\text{limiar}\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "\nR:",
+    "text": "R:\ndistancias &lt;- dist(cidades)\nmds &lt;- cmdscale(distancias, k = 2)\nplot(mds, type = \"n\")\ntext(mds, labels = names(cidades))"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R:",
+    "text": "R:\n\n# Compressão de imagem com SVD\nlibrary(jpeg)\n\n# Ler a imagem\nimg &lt;- readJPEG(\"img.jpg\")\n\n# Verificar se a imagem possui três canais RGB\nif (length(dim(img)) != 3 || dim(img)[3] != 3) {\n  stop(\"A imagem deve estar no formato RGB, com três canais.\")\n}\n\nimg_dim &lt;- dim(img)\n\n# Extrair os canais RGB\ncanal_r &lt;- img[, , 1]\ncanal_g &lt;- img[, , 2]\ncanal_b &lt;- img[, , 3]\n\n# Decomposição SVD de cada canal\nsvd_r &lt;- svd(canal_r)\nsvd_g &lt;- svd(canal_g)\nsvd_b &lt;- svd(canal_b)\n\n# Número máximo possível de componentes\nk_max &lt;- min(img_dim[1], img_dim[2])\n\n# Função para reconstrução com k componentes\nreconstroi &lt;- function(k, svd_obj) {\n  \n  k &lt;- min(k, length(svd_obj$d))\n  \n  U_k &lt;- svd_obj$u[, 1:k, drop = FALSE]\n  V_k &lt;- svd_obj$v[, 1:k, drop = FALSE]\n  d_k &lt;- svd_obj$d[1:k]\n  \n  # Multiplica cada coluna de U pelo valor singular correspondente\n  U_k_d &lt;- sweep(U_k, 2, d_k, FUN = \"*\")\n  \n  U_k_d %*% t(V_k)\n}\n\n# Níveis de compressão válidos\nks &lt;- c(5, 20, 50, 100, 200)\nks &lt;- ks[ks &lt;= k_max]\n\n# Preparar painel gráfico\npar(\n  mfrow = c(2, 3),\n  mar = c(1, 1, 3, 1)\n)\n\n# Imagem original\nplot(\n  c(0, 1),\n  c(0, 1),\n  type = \"n\",\n  axes = FALSE,\n  xlab = \"\",\n  ylab = \"\",\n  asp = 1,\n  main = \"Original\"\n)\n\nrasterImage(img, 0, 0, 1, 1)\n\n# Imagens comprimidas\nfor (k in ks) {\n  \n  img_k &lt;- array(\n    0,\n    dim = img_dim\n  )\n  \n  img_k[, , 1] &lt;- reconstroi(k, svd_r)\n  img_k[, , 2] &lt;- reconstroi(k, svd_g)\n  img_k[, , 3] &lt;- reconstroi(k, svd_b)\n  \n  # Corrigir valores fora do intervalo [0,1]\n  img_k &lt;- pmin(\n    pmax(img_k, 0),\n    1\n  )\n  \n  # Quantidade aproximada de valores armazenados\n  original &lt;- prod(img_dim)\n  \n  comprimido &lt;- 3 * k * (\n    img_dim[1] +\n    img_dim[2] +\n    1\n  )\n  \n  razao &lt;- round(\n    original / comprimido,\n    1\n  )\n  \n  plot(\n    c(0, 1),\n    c(0, 1),\n    type = \"n\",\n    axes = FALSE,\n    xlab = \"\",\n    ylab = \"\",\n    asp = 1,\n    main = paste0(\n      \"k = \", k,\n      \"  (\", razao, \"x)\"\n    )\n  )\n  \n  rasterImage(\n    img_k,\n    0, 0, 1, 1\n  )\n}"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-1-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-1-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R:",
+    "text": "R:"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#podemos-representar-os-mesmos-dados-utilizando-menos-informação",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#podemos-representar-os-mesmos-dados-utilizando-menos-informação",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Podemos representar os mesmos dados utilizando menos informação?",
+    "text": "Podemos representar os mesmos dados utilizando menos informação?\nImagine uma base de dados contendo centenas ou milhares de variáveis.\n\n\nO objetivo da redução de dimensionalidade é construir uma nova representação que:\n\npreserve a maior quantidade possível de informação;\nelimine redundâncias;\nfacilite a visualização e a interpretação dos dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#podemos-representar-os-mesmos-dados-utilizando-menos-informação-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#podemos-representar-os-mesmos-dados-utilizando-menos-informação-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Podemos representar os mesmos dados utilizando menos informação?",
+    "text": "Podemos representar os mesmos dados utilizando menos informação?\n\nIdeia central: substituir um conjunto de muitas variáveis por um número menor de componentes que preservem a estrutura essencial dos dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-significa-reduzir-a-dimensionalidade",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-significa-reduzir-a-dimensionalidade",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O que significa reduzir a dimensionalidade?",
+    "text": "O que significa reduzir a dimensionalidade?\nReduzir a dimensionalidade não significa perder informação, mas encontrar uma representação mais compacta dos dados.\n\n\nAntes\n\nMuitas variáveis\nAlta redundância\nDifícil interpretação\nAlto custo computacional\n\n\nDepois\n\nPoucos componentes\nInformação concentrada\nVisualização facilitada\nModelos mais simples\n\n\n\nO objetivo é representar os dados em um espaço de menor dimensão preservando, tanto quanto possível, sua estrutura original."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-reduzir-a-dimensionalidade",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-reduzir-a-dimensionalidade",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que reduzir a dimensionalidade?",
+    "text": "Por que reduzir a dimensionalidade?\nA redução da dimensionalidade traz diversos benefícios para a análise de dados.\n\n📊 Facilita a visualização de dados de alta dimensão.\n⚡ Reduz o custo computacional de armazenamento e processamento.\n📉 Elimina redundâncias entre variáveis.\n🔍 Atenua o efeito do ruído nos dados.\n🤖 Pode melhorar o desempenho de algoritmos de aprendizado de máquina.\n\n\nQuanto maior o número de variáveis, maior tende a ser a complexidade da análise."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-maldição-da-dimensionalidade",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-maldição-da-dimensionalidade",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A maldição da dimensionalidade",
+    "text": "A maldição da dimensionalidade\nÀ medida que o número de variáveis aumenta,\n\no volume do espaço cresce exponencialmente;\nos dados tornam-se cada vez mais esparsos;\ndistâncias entre observações tornam-se menos informativas;\naumenta a dificuldade para identificar padrões.\n\n\n\nEsse fenômeno é conhecido como Maldição da Dimensionalidade (Curse of Dimensionality)."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#existem-duas-estratégias-principais",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#existem-duas-estratégias-principais",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Existem duas estratégias principais",
+    "text": "Existem duas estratégias principais\nA redução da dimensionalidade pode ser realizada por duas abordagens distintas.\n\n\n\n\n\n\nEstratégia\nIdeia\n\n\n\nMudança de representação\nConstruir novas variáveis a partir das originais.\n\n\nSeleção de variáveis\nEscolher apenas um subconjunto das variáveis existentes.\n\n\n\nNesta aula estudaremos principalmente os métodos baseados em mudança de representação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#qual-é-a-ideia-do-pca",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#qual-é-a-ideia-do-pca",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Qual é a ideia do PCA?",
+    "text": "Qual é a ideia do PCA?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#qual-problema-o-pca-resolve",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#qual-problema-o-pca-resolve",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Qual problema o PCA resolve?",
+    "text": "Qual problema o PCA resolve?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-o-pca-resolve-esse-problema",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-o-pca-resolve-esse-problema",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como o PCA resolve esse problema?",
+    "text": "Como o PCA resolve esse problema?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-é-uma-componente-principal",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-é-uma-componente-principal",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O que é uma componente principal?",
+    "text": "O que é uma componente principal?\nUma componente principal é uma combinação linear das variáveis originais.\n\\[\nPC_j =\na_{1j}X_1+\na_{2j}X_2+\\cdots+\na_{pj}X_p\n\\]\nonde:\n\n\n\\(a_{ij}\\) são os pesos (loadings);\ncada componente representa uma nova direção no espaço dos dados;\nas componentes são ortogonais entre si."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#objetivo-do-pca",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#objetivo-do-pca",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Objetivo do PCA",
+    "text": "Objetivo do PCA\nEncontrar uma sequência de componentes ortogonais que:\n\nexpliquem a maior parte da variabilidade dos dados;\nsejam não correlacionadas entre si;\nutilizem o menor número possível de componentes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#primeira-componente-principal",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#primeira-componente-principal",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Primeira componente principal",
+    "text": "Primeira componente principal\nA primeira componente (\\(PC_1\\)) é a direção que maximiza a variância projetada dos dados.\n\\[\nPC_1\n=\n\\arg\\max_{\\|a\\|=1}\nVar(Xa)\n\\]\nEla representa a direção de maior variabilidade existente na base de dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#segunda-componente-principal",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#segunda-componente-principal",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Segunda componente principal",
+    "text": "Segunda componente principal\nA segunda componente (\\(PC_2\\)):\n\nmaximiza a variabilidade remanescente;\né ortogonal à primeira componente.\n\n\\[\nPC_2 \\perp PC_1\n\\]\nCada nova componente explica uma parcela cada vez menor da variabilidade."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#variância-da-projeção",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#variância-da-projeção",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Variância da projeção",
+    "text": "Variância da projeção\nProjetando os dados na direção \\(a\\),\n\\[\nz=\\mathbf a^\\top \\mathbf{x}\n\\]\na variância projetada é\n\\[\nVar(z)\n=\n\\mathbf a^\\top \\boldsymbol{S}\\mathbf a,\n\\]\nonde \\(\\boldsymbol{S}\\) é a matriz de covariâncias amostral de \\(\\mathbf{x}\\).\nO PCA procura a direção que maximiza essa variância."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#problema-de-otimização",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#problema-de-otimização",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Problema de otimização",
+    "text": "Problema de otimização\nEncontrar\n\\[\n\\max_{\\mathbf a} \\mathbf a^\\top \\boldsymbol{S} \\mathbf a\n\\]\nsujeito a\n\\[\n\\mathbf a^\\top \\mathbf a}=1\n\\]\nA restrição impede que a variância seja aumentada apenas multiplicando o vetor por uma constante.\n\n\n\n\n\n\nimportante\n\n\nO PCA é, portanto, um problema clássico de otimização com restrição."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#solução",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#solução",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Solução",
+    "text": "Solução\nAplicando multiplicadores de Lagrange\nPara incorporar a restrição, constrói-se a função Lagrangiana\n\\[\n\\mathcal L(\\mathbf a,\\lambda)\n=\n\\mathbf a^\\top S\\mathbf a\n-\n\\lambda\n(\\mathbf a^\\top\\mathbf a-1).\n\\]\nDerivando em relação a \\(\\mathbf a\\),\n\\[\n\\frac{\\partial\\mathcal L}{\\partial\\mathbf a}\n=\n2S\\mathbf a\n-\n2\\lambda\\mathbf a\n=\n0.\n\\]\nDividindo ambos os lados por \\(2\\),\n\\[\nS\\mathbf a=\\lambda\\mathbf a.\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#solução-multiplicadores-de-lagrange",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#solução-multiplicadores-de-lagrange",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Solução: multiplicadores de Lagrange",
+    "text": "Solução: multiplicadores de Lagrange\nPara incorporar a restrição, constrói-se a função Lagrangiana\n\\[\n\\mathcal L(\\mathbf a,\\lambda)\n=\n\\mathbf a^\\top \\boldsymbol{S}\\mathbf a\n-\n\\lambda\n(\\mathbf a^\\top\\mathbf a-1)\n\\]\nDerivando em relação a \\(\\mathbf a\\),\n\\[\n\\frac{\\partial\\mathcal L}{\\partial\\mathbf a}\n=\n2\\boldsymbol{S}\\mathbf a\n-\n2\\lambda\\mathbf a\n=\n0\n\\]\nDividindo ambos os lados por \\(2\\),\n\\[\n\\boldsymbol{S}\\mathbf a=\\lambda\\mathbf a\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#surge-um-problema-de-autovalores",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#surge-um-problema-de-autovalores",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Surge um problema de autovalores",
+    "text": "Surge um problema de autovalores\nA condição ótima obtida é\n\\[\n\\boldsymbol{S}\\mathbf a=\\lambda\\mathbf a,\n\\]\nque corresponde exatamente ao problema clássico de autovalores e autovetores.\nAssim,\n\n\n\\(\\mathbf a\\) é um autovetor da matriz de covariâncias;\n\n\\(\\lambda\\) é o autovalor associado."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#surge-um-problema-de-autovalores-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#surge-um-problema-de-autovalores-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Surge um problema de autovalores",
+    "text": "Surge um problema de autovalores\nO primeiro componente principal é o autovetor associado ao maior autovalor, pois essa direção maximiza a variância dos dados projetados.\n\n\n\n\n\n\nObservação\n\n\nOs componentes seguintes são obtidos pelos demais autovetores, sempre ortogonais entre si e ordenados pelos respectivos autovalores.\n\n\n\n\n\nAutovalor\nComponente\nVariância explicada\n\n\n\n\\(\\lambda_1\\)\nPC1\nMaior\n\n\n\\(\\lambda_2\\)\nPC2\nSegunda maior\n\n\n\\(\\lambda_3\\)\nPC3\n…"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-alternativa-do-pca",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-alternativa-do-pca",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação alternativa do PCA",
+    "text": "Interpretação alternativa do PCA\nAté agora interpretamos o PCA como um problema de\n\nmaximização da variância;\nautovalores e autovetores da matriz de covariâncias.\n\nExiste, porém, outra interpretação igualmente importante.\n\n\n\n\n\n\nNota\n\n\nO PCA também pode ser visto como um problema de representação geométrica, cujo objetivo é preservar ao máximo as distâncias entre as observações após a redução de dimensionalidade."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#escalonamento-multidimensional-mds",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#escalonamento-multidimensional-mds",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Escalonamento Multidimensional (MDS)",
+    "text": "Escalonamento Multidimensional (MDS)\nO Escalonamento Multidimensional (MDS) procura representar um conjunto de objetos em um espaço de menor dimensão preservando suas distâncias originais.\nO problema consiste em encontrar coordenadas\n\\[\nz_1,\\ldots,z_n\n\\]\ntais que\n\\[\nd(z_i,z_j)\\approx d(x_i,x_j),\n\\]\npara todos os pares de observações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#escalonamento-multidimensional-mds-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#escalonamento-multidimensional-mds-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Escalonamento Multidimensional (MDS)",
+    "text": "Escalonamento Multidimensional (MDS)\n\nEnquanto o PCA utiliza diretamente as variáveis, o MDS utiliza apenas a matriz de distâncias entre as observações.\n\nQuando as distâncias utilizadas são as distâncias Euclidianas,\n\\[\nd_{ij}\n=\n\\left\\|\nx_i-x_j\n\\right\\|,\n\\]\no Escalonamento Multidimensional Clássico produz exatamente a mesma representação obtida pelo PCA (desconsiderando rotações e reflexões)."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#escalonamento-multidimensional-mds-2",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#escalonamento-multidimensional-mds-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Escalonamento Multidimensional (MDS)",
+    "text": "Escalonamento Multidimensional (MDS)\nAssim,\n\nPCA maximiza a variância das projeções;\nMDS preserva as distâncias entre observações;\n\nmas ambos conduzem às mesmas coordenadas quando as distâncias são Euclidianas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-conexão-matemática",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-conexão-matemática",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A conexão matemática",
+    "text": "A conexão matemática\nA matriz de distâncias Euclidianas contém implicitamente a informação sobre a matriz de covariâncias.\nApós um procedimento denominado centralização dupla, obtém-se\n\\[\nB\n=\n-\\frac12\nJD^2J,\n\\]\nem que\n\n\n\\(D\\) é a matriz de distâncias;\n\n\\(J=I-\\frac1n\\mathbf{11}^\\top\\) é a matriz de centralização.\n\nA matriz \\(B\\) possui os mesmos autovetores utilizados pelo PCA."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-alternativa-do-pca-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-alternativa-do-pca-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação alternativa do PCA",
+    "text": "Interpretação alternativa do PCA"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-mds",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-mds",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "PCA × MDS",
+    "text": "PCA × MDS\n\n\n\n\n\n\nPCA\nMDS\n\n\n\nUtiliza a matriz de dados\nUtiliza apenas a matriz de distâncias\n\n\nRequer variáveis quantitativas\nPode utilizar qualquer medida de dissimilaridade\n\n\nMaximiza a variância\nPreserva distâncias\n\n\nMais eficiente computacionalmente\nMais flexível\n\n\n\n\n\n\n\n\n\nImportante\n\n\nO PCA pode ser interpretado como um caso particular do Escalonamento Multidimensional Clássico."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#aplicação-compressão-de-imagens",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#aplicação-compressão-de-imagens",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Aplicação: Compressão de Imagens",
+    "text": "Aplicação: Compressão de Imagens"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-comprimir-uma-imagem",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-comprimir-uma-imagem",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que comprimir uma imagem?",
+    "text": "Por que comprimir uma imagem?\nUma imagem digital pode conter milhões de pixels, exigindo grande espaço para armazenamento e transmissão.\nEntretanto,\n\nregiões vizinhas costumam ser semelhantes;\nexiste muita redundância nos dados;\né possível representar a imagem utilizando muito menos informação.\n\n\nObjetivo: armazenar praticamente a mesma imagem utilizando muito menos dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-comprimir-uma-imagem-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-comprimir-uma-imagem-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que comprimir uma imagem?",
+    "text": "Por que comprimir uma imagem?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#uma-imagem-é-apenas-uma-matriz",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#uma-imagem-é-apenas-uma-matriz",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Uma imagem é apenas uma matriz",
+    "text": "Uma imagem é apenas uma matriz\n\n\n\n\nImagem Original\n\n\nCada pixel da imagem corresponde a um elemento de uma matriz.\n\\[\n\\boldsymbol{A}=\n\\begin{bmatrix}\n123 &120&118&\\cdots\\\\\n125&121&117&\\cdots\\\\\n124&122&119&\\cdots\\\\\n\\vdots&\\vdots&\\vdots&\n\\end{bmatrix}\n\\]\nNo caso de imagens coloridas, existem três matrizes:\n\nCanal Vermelho (R)\nCanal Verde (G)\nCanal Azul (B)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#onde-está-a-redundância",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#onde-está-a-redundância",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Onde está a redundância?",
+    "text": "Onde está a redundância?\n\n\nRegião suave\n\n\n\n\n\n\n\n\n\npequena variação entre pixels vizinhos;\nalta redundância;\nmaior potencial de compressão.\n\n\nRegião com detalhes\n\n\n\n\n\n\n\n\n\nmudanças rápidas de cor e textura;\nmenor redundância;\nmaior quantidade de informação visual."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#onde-está-a-redundância-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#onde-está-a-redundância-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Onde está a redundância?",
+    "text": "Onde está a redundância?\nA maior parte das imagens apresenta forte redundância espacial, especialmente em regiões homogêneas.\nEssa redundância pode ser explorada para obter uma representação muito mais compacta.\n\nQuanto maior a semelhança entre pixels vizinhos, maior o potencial de compressão da imagem."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva-da-svd",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva-da-svd",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia intuitiva da SVD",
+    "text": "Ideia intuitiva da SVD"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva-da-svd-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva-da-svd-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia intuitiva da SVD",
+    "text": "Ideia intuitiva da SVD\nUma imagem pode ser vista como a soma de padrões simples.\nCada componente da SVD representa:\n\numa estrutura básica da imagem;\numa importância associada;\numa contribuição para a reconstrução.\n\nÀ medida que novos componentes são adicionados, a imagem torna-se cada vez mais próxima da original.\n\nA SVD organiza automaticamente os componentes da imagem do mais importante para o menos importante."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-decomposição-da-imagem",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-decomposição-da-imagem",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A decomposição da imagem",
+    "text": "A decomposição da imagem\nA SVD decompõe a matriz da imagem em três matrizes:\n\\[\n\\boldsymbol{A} = \\boldsymbol{U}\\boldsymbol{D}\\boldsymbol{V}^\\top\n\\]\nonde\n\n\n\\(\\boldsymbol{U}\\) contém os padrões das linhas;\n\n\\(\\boldsymbol{V}\\) contém os padrões das colunas;\n\n\\(\\boldsymbol{D}\\) contém a importância de cada componente."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-decomposição-da-imagem-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-decomposição-da-imagem-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A decomposição da imagem",
+    "text": "A decomposição da imagem\nOs elementos da diagonal de \\(\\boldsymbol{D}\\)\n\\[\n\\sigma_1 \\ge \\sigma_2 \\ge \\cdots \\ge \\sigma_r\n\\]\nsão chamados valores singulares.\n\nOs valores singulares são ordenados do maior para o menor, indicando quanto cada componente contribui para reconstruir a imagem."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#nem-todos-os-componentes-são-igualmente-importantes",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#nem-todos-os-componentes-são-igualmente-importantes",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Nem todos os componentes são igualmente importantes",
+    "text": "Nem todos os componentes são igualmente importantes\nOs valores singulares estão ordenados \\(\\sigma_1 \\ge \\sigma_2 \\ge \\cdots \\ge \\sigma_r\\) e indicam a contribuição de cada componente para reconstruir a imagem.\nConsequentemente,\n\nos primeiros componentes concentram a maior parte da informação;\nos últimos componentes contribuem muito pouco;\npodemos descartá-los com pequena perda visual.\n\n\nA ideia da compressão é manter apenas os componentes mais importantes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução-utilizando-apenas-k-componentes",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução-utilizando-apenas-k-componentes",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Reconstrução utilizando apenas \\(k\\) componentes",
+    "text": "Reconstrução utilizando apenas \\(k\\) componentes\nA imagem comprimida é obtida utilizando apenas os \\(k\\) maiores valores singulares.\n\\[\n\\boldsymbol{A}_k = \\boldsymbol{U}_k \\boldsymbol{D}_k \\boldsymbol{V}_k^\\top\n\\]\nonde\n\n\n\\(\\boldsymbol{U}_k\\) contém os primeiros vetores singulares à esquerda;\n\n\\(\\boldsymbol{D}_k\\) contém apenas os \\(k\\) maiores valores singulares;\n\n\\(\\boldsymbol{V}_k\\) contém os primeiros vetores singulares à direita."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução-utilizando-apenas-k-componentes-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução-utilizando-apenas-k-componentes-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Reconstrução utilizando apenas \\(k\\) componentes",
+    "text": "Reconstrução utilizando apenas \\(k\\) componentes\nQuando\n\\[\nk &lt; r,\n\\]\nobtém-se uma aproximação da imagem original utilizando muito menos informação.\n\nQuanto maior o valor de \\(k\\), maior a qualidade da reconstrução e menor a taxa de compressão."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#efeito-do-número-de-componentes-na-reconstrução",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#efeito-do-número-de-componentes-na-reconstrução",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Efeito do número de componentes na reconstrução",
+    "text": "Efeito do número de componentes na reconstrução"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#efeito-do-número-de-componentes-na-reconstrução-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#efeito-do-número-de-componentes-na-reconstrução-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Efeito do número de componentes na reconstrução",
+    "text": "Efeito do número de componentes na reconstrução\nÀ medida que o número de componentes (\\(k\\)) aumenta, a imagem reconstruída torna-se mais próxima da original.\n\n\n\n\n\n\nImportante\n\n\nQuanto maior o valor de \\(k\\):\n\nmaior a qualidade da imagem reconstruída;\nmaior a quantidade de informação armazenada;\nmenor a taxa de compressão."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-poucos-componentes-são-suficientes",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-poucos-componentes-são-suficientes",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que poucos componentes são suficientes?",
+    "text": "Por que poucos componentes são suficientes?\nOs valores singulares normalmente decrescem rapidamente.\nAssim,\n\npoucos componentes concentram a maior parte da informação;\nmuitos componentes possuem contribuição muito pequena;\neliminar esses componentes provoca pequena perda visual."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-poucos-componentes-são-suficientes-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-poucos-componentes-são-suficientes-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que poucos componentes são suficientes?",
+    "text": "Por que poucos componentes são suficientes?\n\\[\n\\boldsymbol{A}\n=\n\\sum_{i=1}^{r}\n\\sigma_i\nu_i\nv_i^\\top\n\\]\nSe utilizarmos apenas os primeiros componentes,\n\\[\n\\boldsymbol{A}_k\n\\approx\n\\sum_{i=1}^{k}\n\\sigma_i\nu_i\nv_i^\\top,\n\\]\nobtém-se uma excelente aproximação da imagem original.\n\nA SVD concentra a informação mais importante nos primeiros termos da decomposição."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-compressão-de-imagens",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-compressão-de-imagens",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Compressão de imagens",
+    "text": "R: Compressão de imagens\n\nlibrary(png)\n\n# --------------------------------------------------\n# 1. Leitura da imagem\n# --------------------------------------------------\n\nimg &lt;- readPNG(\"imagem_original.png\")\n\n# Remover o canal alfa, caso exista\nif (length(dim(img)) == 3 && dim(img)[3] == 4) {\n  img &lt;- img[, , 1:3]\n}\n\nif (length(dim(img)) != 3 || dim(img)[3] != 3) {\n  stop(\"A imagem deve possuir três canais RGB.\")\n}\n\nn_linhas  &lt;- dim(img)[1]\nn_colunas &lt;- dim(img)[2]\n\n# --------------------------------------------------\n# 2. SVD dos canais RGB\n# --------------------------------------------------\n\nsvd_r &lt;- svd(img[, , 1])\nsvd_g &lt;- svd(img[, , 2])\nsvd_b &lt;- svd(img[, , 3])\n\n# --------------------------------------------------\n# 3. Reconstrução de um canal\n# --------------------------------------------------\n\nreconstruir_canal &lt;- function(svd_obj, k) {\n\n  k &lt;- min(k, length(svd_obj$d))\n\n  U_k &lt;- svd_obj$u[, 1:k, drop = FALSE]\n  V_k &lt;- svd_obj$v[, 1:k, drop = FALSE]\n  d_k &lt;- svd_obj$d[1:k]\n\n  # U_k %*% diag(d_k) %*% t(V_k)\n  sweep(U_k, 2, d_k, FUN = \"*\") %*% t(V_k)\n}\n\n# --------------------------------------------------\n# 4. Reconstrução da imagem RGB\n# --------------------------------------------------\n\nreconstruir_imagem &lt;- function(k) {\n\n  img_k &lt;- array(\n    data = 0,\n    dim = c(n_linhas, n_colunas, 3)\n  )\n\n  img_k[, , 1] &lt;- reconstruir_canal(svd_r, k)\n  img_k[, , 2] &lt;- reconstruir_canal(svd_g, k)\n  img_k[, , 3] &lt;- reconstruir_canal(svd_b, k)\n\n  # Garantir intensidades RGB no intervalo [0,1]\n  img_k[img_k &lt; 0] &lt;- 0\n  img_k[img_k &gt; 1] &lt;- 1\n\n  img_k\n}\n\n# --------------------------------------------------\n# 5. Razão teórica aproximada de compressão\n# --------------------------------------------------\n\nrazao_compressao &lt;- function(k) {\n\n  armazenamento_original &lt;- 3 * n_linhas * n_colunas\n\n  armazenamento_svd &lt;- 3 * k * (\n    n_linhas + n_colunas + 1\n  )\n\n  armazenamento_original / armazenamento_svd\n}\n\n# --------------------------------------------------\n# 6. Função para desenhar corretamente a imagem\n# --------------------------------------------------\n\nmostrar_imagem &lt;- function(imagem, titulo) {\n\n  plot.new()\n\n  # Região gráfica em coordenadas de 0 a 1\n  plot.window(\n    xlim = c(0, 1),\n    ylim = c(0, 1),\n    asp = n_colunas / n_linhas\n  )\n\n  rasterImage(\n    image = as.raster(imagem),\n    xleft = 0,\n    ybottom = 0,\n    xright = 1,\n    ytop = 1,\n    interpolate = TRUE\n  )\n\n  title(\n    main = titulo,\n    line = 0.5,\n    cex.main = 1\n  )\n}\n\n# --------------------------------------------------\n# 7. Comparação visual\n# --------------------------------------------------\n\nks &lt;- c(5, 20, 50, 100, 200)\n\n# Remover valores incompatíveis com o tamanho da imagem\nks &lt;- ks[ks &lt;= min(n_linhas, n_colunas)]\n\nop &lt;- par(\n  mfrow = c(2, 3),\n  mar = c(0.5, 0.5, 3, 0.5),\n  oma = c(0, 0, 0, 0)\n)\n\nmostrar_imagem(\n  imagem = img,\n  titulo = \"Original\"\n)\n\nfor (k in ks) {\n\n  img_k &lt;- reconstruir_imagem(k)\n\n  mostrar_imagem(\n    imagem = img_k,\n    titulo = paste0(\n      \"k = \", k,\n      \"\\nCompressão ≈ \",\n      round(razao_compressao(k), 1),\n      \"x\"\n    )\n  )\n}"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-compressão-de-imagens-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-compressão-de-imagens-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Compressão de imagens",
+    "text": "R: Compressão de imagens\n\n\n\n\n\n\npar(op)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-energia-acumulada",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-energia-acumulada",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Energia acumulada",
+    "text": "R: Energia acumulada\n\n# Energia acumulada em cada canal RGB\nenergia_r &lt;- cumsum(svd_r$d^2) / sum(svd_r$d^2)\nenergia_g &lt;- cumsum(svd_g$d^2) / sum(svd_g$d^2)\nenergia_b &lt;- cumsum(svd_b$d^2) / sum(svd_b$d^2)\n\n# Média da proporção acumulada nos três canais\nenergia_media &lt;- (\n  energia_r +\n  energia_g +\n  energia_b\n) / 3\n\n# Valores mínimos de k para preservar 90%, 95% e 99%\nniveis &lt;- c(0.90, 0.95, 0.99)\n\nks_niveis &lt;- sapply(\n  niveis,\n  function(nivel) {\n    which(energia_media &gt;= nivel)[1]\n  }\n)\n\nnames(ks_niveis) &lt;- c(\"90%\", \"95%\", \"99%\")\n\n# Limites do eixo horizontal\nk_max_grafico &lt;- length(energia_media)\n\n# Gráfico da informação acumulada\nplot(\n  x = seq_along(energia_media),\n  y = energia_media,\n  type = \"l\",\n  lwd = 2.5,\n  xlab = \"Número de componentes (k)\",\n  ylab = \"Proporção acumulada da informação\",\n  main = \"Informação preservada pela reconstrução SVD\",\n  ylim = c(\n    max(0, min(energia_media) - 0.03),\n    1.01\n  ),\n  xlim = c(1, k_max_grafico)\n)\n\n# Linhas horizontais de referência\nabline(\n  h = niveis,\n  lty = 2,\n  col = \"gray60\"\n)\n\n# Linhas verticais nos valores de k\nabline(\n  v = ks_niveis,\n  lty = 3,\n  col = \"gray40\"\n)\n\n# Pontos destacados\npoints(\n  x = ks_niveis,\n  y = niveis,\n  pch = 19,\n  cex = 1.3\n)\n\n# Rótulos dos pontos\noffsets &lt;- c(0.012, 0.012, -0.018)\n\nfor (i in seq_along(niveis)) {\n\n  posicao &lt;- if (i == length(niveis)) 1 else 3\n\n  text(\n    x = ks_niveis[i],\n    y = niveis[i] + offsets[i],\n    labels = paste0(\n      \"k = \", ks_niveis[i],\n      \"  (\", niveis[i] * 100, \"%)\"\n    ),\n    pos = posicao,\n    cex = 0.85,\n    font = 2\n  )\n}\n\n# Legenda\nlegend(\n  \"bottomright\",\n  legend = paste0(\n    names(ks_niveis),\n    \" da informação: k = \",\n    ks_niveis\n  ),\n  pch = 19,\n  bty = \"n\",\n  cex = 0.9\n)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-energia-acumulada-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-energia-acumulada-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Energia acumulada",
+    "text": "R: Energia acumulada\n\n\n\n\n\n\n# Exibir os valores encontrados\nks_niveis\n\n90% 95% 99% \n  2   7  45"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#kernel-pca-kpca",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#kernel-pca-kpca",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Kernel PCA (KPCA)",
+    "text": "Kernel PCA (KPCA)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#quando-o-pca-não-é-suficiente",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#quando-o-pca-não-é-suficiente",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Quando o PCA não é suficiente?",
+    "text": "Quando o PCA não é suficiente?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-pca-é-uma-transformação-linear",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-pca-é-uma-transformação-linear",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O PCA é uma transformação linear",
+    "text": "O PCA é uma transformação linear\n\nProcura direções de máxima variância.\nAs novas variáveis são combinações lineares das variáveis originais.\nFunciona muito bem quando os dados possuem estrutura aproximadamente linear.\nEntretanto, muitos conjuntos de dados apresentam relações não lineares.\n\n\n\n\n\n\n\nIdeia principal\n\n\nQuando os dados estão distribuídos sobre um manifold não linear, nenhuma projeção linear consegue preservar sua estrutura."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-o-que-acontece-com-o-swiss-roll",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-o-que-acontece-com-o-swiss-roll",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Exemplo: o que acontece com o Swiss Roll?",
+    "text": "Exemplo: o que acontece com o Swiss Roll?\n\n\n\n\n\n\n\nNota\n\n\nO PCA procura a melhor projeção linear dos dados. Entretanto, no Swiss Roll, observações que estão distantes ao longo da superfície tornam-se artificialmente próximas após a projeção."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-ideia-do-kernel-pca",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-ideia-do-kernel-pca",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A ideia do Kernel PCA",
+    "text": "A ideia do Kernel PCA"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-ideia-do-kernel-pca-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-ideia-do-kernel-pca-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A ideia do Kernel PCA",
+    "text": "A ideia do Kernel PCA\nEm vez de aplicar o PCA diretamente aos dados originais,\n\nprimeiro transformamos os dados para um espaço de maior dimensão;\nnesse novo espaço, relações não lineares tornam-se aproximadamente lineares;\nsomente então aplicamos o PCA.\n\n\\[\n\\mathbf{x}\n\\longrightarrow\n\\phi(\\mathbf{x})\n\\longrightarrow\n\\text{PCA}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-problema-da-transformação-explícita",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-problema-da-transformação-explícita",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O problema da transformação explícita",
+    "text": "O problema da transformação explícita"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-problema-da-transformação-explícita-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-problema-da-transformação-explícita-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O problema da transformação explícita",
+    "text": "O problema da transformação explícita\nA ideia do Kernel PCA é transformar os dados\n\\[\n\\mathbf{x}\n\\longrightarrow\n\\phi(\\mathbf{x})\n\\]\npara um espaço de maior dimensão.\nEntretanto,\n\nesse espaço pode possuir milhares ou até infinitas dimensões;\nconstruir explicitamente essas novas variáveis seria extremamente caro.\n\n\n\n\n\n\n\nPergunta\n\n\nComo realizar essa transformação sem construir explicitamente o novo espaço de características?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-kernel-trick",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-kernel-trick",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O Kernel Trick",
+    "text": "O Kernel Trick\nO truque consiste em não calcular explicitamente\n\\[\n\\phi(\\mathbf{x})\n\\]\nEm vez disso, calcula-se apenas o produto interno entre observações no espaço transformado\n\\[\n\\phi(\\mathbf{x_i})^\\top\n\\phi(\\mathbf{x_j})\n\\]\nEsse produto é obtido diretamente por meio de uma função kernel.\n\\[\nK(\\mathbf{x_i},\\mathbf{x_j})\n=\n\\phi(\\mathbf{x_i})^\\top\n\\phi(\\mathbf{x_j})\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-função-kernel",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#a-função-kernel",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A função Kernel",
+    "text": "A função Kernel\nUma função kernel calcula diretamente o produto interno entre duas observações no espaço transformado.\n\\[\nK(\\mathbf{x_i},\\mathbf{x_j})\n=\n\\phi(\\mathbf{x_i})^\\top\n\\phi(\\mathbf{x_j})\n\\]\nAssim,\n\nnunca é necessário calcular explicitamente \\(\\phi(\\mathbf{x})\\);\ntodo o algoritmo trabalha apenas com a matriz Kernel.\n\n\n\n\n\n\n\nNota\n\n\nA matriz Kernel substitui a matriz de covariâncias utilizada no PCA tradicional."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#fluxo-do-kernel-pca",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#fluxo-do-kernel-pca",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Fluxo do Kernel PCA",
+    "text": "Fluxo do Kernel PCA\n\n\n\n\n\n\n\nNota\n\n\nO Kernel PCA realiza o PCA no espaço de características sem construir explicitamente esse espaço."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#intuição-do-kernel-trick",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#intuição-do-kernel-trick",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Intuição do Kernel Trick",
+    "text": "Intuição do Kernel Trick\nSem o Kernel Trick:\n\\[\n\\mathbf{x}\n\\rightarrow\n\\phi(\\mathbf{x})\n\\rightarrow\n\\text{PCA}\n\\]\né necessário construir explicitamente todas as novas variáveis.\nCom o Kernel Trick:\n\\[\nK(\\mathbf{x_i},\\mathbf{x_j})\n=\n\\phi(\\mathbf{x_i})^\\top\n\\phi(\\mathbf{x_j}),\n\\]\no algoritmo utiliza apenas os produtos internos entre observações.\n\n\n\n\n\n\nImportante\n\n\nO Kernel Trick torna viável a aplicação do PCA em espaços de dimensão muito elevada, inclusive infinitos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-pca-kernel-pca",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-pca-kernel-pca",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: PCA × Kernel PCA",
+    "text": "R: PCA × Kernel PCA\n\nlibrary(kernlab)\nlibrary(ggplot2)\nlibrary(patchwork)\n\nset.seed(335)\n\n#--------------------------------------------------\n# 1. Simular dois círculos concêntricos\n#--------------------------------------------------\n\nn &lt;- 500\n\nclasse &lt;- factor(\n  rep(c(\"Interno\", \"Externo\"), each = n / 2),\n  levels = c(\"Externo\", \"Interno\")\n)\n\nangulo &lt;- runif(n, 0, 2 * pi)\n\nraio &lt;- c(\n  rnorm(n / 2, mean = 1.0, sd = 0.08),\n  rnorm(n / 2, mean = 2.0, sd = 0.10)\n)\n\ndados &lt;- data.frame(\n  x1 = raio * cos(angulo),\n  x2 = raio * sin(angulo),\n  classe = classe\n)\n\n# Padronização\nX &lt;- scale(dados[, c(\"x1\", \"x2\")])\n\n#--------------------------------------------------\n# 2. PCA linear\n#--------------------------------------------------\n\npca_fit &lt;- prcomp(\n  X,\n  center = FALSE,\n  scale. = FALSE\n)\n\npca_coord &lt;- data.frame(\n  PC1 = pca_fit$x[, 1],\n  PC2 = pca_fit$x[, 2],\n  classe = dados$classe\n)\n\n#--------------------------------------------------\n# 3. Kernel PCA com kernel RBF\n#--------------------------------------------------\n\nkpca_fit &lt;- kpca(\n  ~ .,\n  data = as.data.frame(X),\n  kernel = \"rbfdot\",\n  kpar = list(sigma = 2),\n  features = 2\n)\n\nkpca_rot &lt;- rotated(kpca_fit)\n\nkpca_coord &lt;- data.frame(\n  KPC1 = kpca_rot[, 1],\n  KPC2 = kpca_rot[, 2],\n  classe = dados$classe\n)\n\n#--------------------------------------------------\n# 4. Tema comum\n#--------------------------------------------------\n\ntema_comum &lt;- theme_minimal(base_size = 15) +\n  theme(\n    plot.title = element_text(\n      face = \"bold\",\n      hjust = 0\n    ),\n    plot.subtitle = element_text(\n      size = 11\n    ),\n    legend.position = \"bottom\",\n    legend.direction = \"horizontal\",\n    legend.title = element_text(face = \"bold\"),\n    panel.grid.minor = element_blank()\n  )\n\n#--------------------------------------------------\n# 5. Dados originais\n#--------------------------------------------------\n\ng_original &lt;- ggplot(\n  dados,\n  aes(\n    x = x1,\n    y = x2,\n    color = classe\n  )\n) +\n  geom_point(\n    alpha = 0.75,\n    size = 2\n  ) +\n  coord_equal() +\n  labs(\n    title = \"Dados originais\",\n    subtitle = \"Dois círculos concêntricos\",\n    x = expression(X[1]),\n    y = expression(X[2]),\n    color = \"Classe\"\n  ) +\n  tema_comum\n\n#--------------------------------------------------\n# 6. PCA linear\n#--------------------------------------------------\n\ng_pca &lt;- ggplot(\n  pca_coord,\n  aes(\n    x = PC1,\n    y = PC2,\n    color = classe\n  )\n) +\n  geom_point(\n    alpha = 0.75,\n    size = 2\n  ) +\n  coord_equal() +\n  labs(\n    title = \"PCA linear\",\n    subtitle = \"A estrutura circular não é desenrolada\",\n    x = \"PC1\",\n    y = \"PC2\",\n    color = \"Classe\"\n  ) +\n  tema_comum\n\n#--------------------------------------------------\n# 7. Kernel PCA\n#--------------------------------------------------\n\ng_kpca &lt;- ggplot(\n  kpca_coord,\n  aes(\n    x = KPC1,\n    y = KPC2,\n    color = classe\n  )\n) +\n  geom_point(\n    alpha = 0.75,\n    size = 2\n  ) +\n  labs(\n    title = \"Kernel PCA — RBF\",\n    subtitle = \"A estrutura não linear torna-se separável\",\n    x = \"KPC1\",\n    y = \"KPC2\",\n    color = \"Classe\"\n  ) +\n  tema_comum\n\n#--------------------------------------------------\n# 8. Combinar os gráficos\n#--------------------------------------------------\n\ngrafico_final &lt;- (\n  g_original +\n  g_pca +\n  g_kpca\n) +\n  plot_layout(\n    guides = \"collect\",\n    widths = c(1, 1, 1)\n  ) +\n  plot_annotation(\n    theme = theme(\n      legend.position = \"bottom\",\n      legend.direction = \"horizontal\",\n      legend.justification = \"center\"\n    )\n  )\n\ngrafico_final"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-pca-kernel-pca-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-pca-kernel-pca-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: PCA × Kernel PCA",
+    "text": "R: PCA × Kernel PCA"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#será-que-precisamos-encontrar-as-melhores-direções",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#será-que-precisamos-encontrar-as-melhores-direções",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Será que precisamos encontrar as melhores direções?",
+    "text": "Será que precisamos encontrar as melhores direções?\nAté agora vimos que:\n\nPCA procura as direções de maior variabilidade;\nKernel PCA procura componentes não lineares.\n\nEntretanto, para bases com milhares de variáveis, calcular essas direções pode ser computacionalmente caro.\nA pergunta é:\n\nSerá que direções aleatórias já seriam suficientes?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia Intuitiva",
+    "text": "Ideia Intuitiva"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-intuitiva-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia intuitiva",
+    "text": "Ideia intuitiva\nAo contrário do PCA,\n\nnão procuramos a direção que maximiza a variância;\nnão calculamos autovalores ou autovetores;\nsimplesmente projetamos os dados em direções escolhidas aleatoriamente.\n\n\n\n\n\n\n\nNote\n\n\nA ideia central é surpreendente:\nMesmo utilizando direções aleatórias, é possível preservar aproximadamente as distâncias entre as observações quando os dados estão em alta dimensão."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#lema-de-johnsonlindenstrauss",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#lema-de-johnsonlindenstrauss",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Lema de Johnson–Lindenstrauss",
+    "text": "Lema de Johnson–Lindenstrauss\nConsidere um conjunto contendo \\(n\\) observações em um espaço de alta dimensão.\nExiste uma projeção linear\n\\[\n\\boldsymbol R:\\mathbb R^p\\rightarrow\\mathbb R^k,\n\\]\ntal que\n\\[\nk=\nO\\!\\left(\n\\frac{\\log n}{\\varepsilon^2}\n\\right),\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#definição-matemática",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#definição-matemática",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Definição matemática",
+    "text": "Definição matemática\nConsidere uma matriz de dados\n\\[\n\\boldsymbol{X}\\in\\mathbb{R}^{n\\times p},\n\\]\ncontendo \\(n\\) observações descritas por \\(p\\) variáveis.\nO objetivo é obter uma representação reduzida\n\\[\n\\boldsymbol{Z}\\in\\mathbb{R}^{n\\times k},\n\\qquad\nk&lt;p\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#definição-matemática-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#definição-matemática-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Definição matemática",
+    "text": "Definição matemática\nA projeção é obtida por\n\\[\n\\boxed{\n\\boldsymbol{Z}\n=\n\\boldsymbol{X}\\boldsymbol{R},\n}\n\\]\nonde\n\n\n\\(\\boldsymbol{X}\\) é a matriz de dados original;\n\n\\(\\boldsymbol{R}\\in\\mathbb{R}^{p\\times k}\\) é uma matriz de projeção aleatória;\n\n\\(\\boldsymbol{Z}\\) é a representação dos dados em baixa dimensão."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-construir-a-matriz-de-projeção",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-construir-a-matriz-de-projeção",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como construir a matriz de projeção?",
+    "text": "Como construir a matriz de projeção?\nA matriz de projeção\n\\[\n\\boldsymbol{R}\n=\n(r_{ij})\n\\]\né construída gerando cada elemento aleatoriamente segundo uma distribuição de probabilidade,\n\\[\nr_{ij}\n\\sim\nf(.)\n\\]\nA escolha da distribuição \\(f\\) define o tipo de projeção aleatória utilizada."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-construir-a-matriz-de-projeção-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-construir-a-matriz-de-projeção-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como construir a matriz de projeção?",
+    "text": "Como construir a matriz de projeção?\nA escolha da distribuição \\(f\\) define o tipo de projeção aleatória utilizada.\n\n\n\n\n\n\nTip\n\n\nNos próximos slides veremos as duas construções mais utilizadas:\n\nprojeções Gaussianas;\nprojeções esparsas de Achlioptas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeção-aleatória-gaussiana",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeção-aleatória-gaussiana",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Projeção Aleatória Gaussiana",
+    "text": "Projeção Aleatória Gaussiana\nA construção mais utilizada consiste em gerar cada elemento da matriz de projeção de forma independente segundo uma distribuição Normal.\n\\[\nr_{ij}\n\\sim\nN\\!\\left(0,\\frac1k\\right)\n\\]\nEquivalentemente,\n\\[\n\\boxed{\nr_{ij}\n=\n\\frac1{\\sqrt{k}}\\,z_{ij},\n\\qquad\nz_{ij}\\sim N(0,1)\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeção-aleatória-gaussiana-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeção-aleatória-gaussiana-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Projeção Aleatória Gaussiana",
+    "text": "Projeção Aleatória Gaussiana\nAssim, a projeção reduzida é obtida por\n\\[\n\\boxed{\n\\boldsymbol Z=\\boldsymbol X\\boldsymbol R\n}\n\\]\n\n\n\n\n\n\nCaracterísticas\n\n\n\nmédia igual a zero;\nvariância igual a \\(\\frac1k\\);\nelementos independentes;\npreservação aproximada da geometria dos dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-utilizar-o-fator-frac1sqrtk",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-utilizar-o-fator-frac1sqrtk",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que utilizar o fator \\(\\frac1{\\sqrt{k}}\\)?",
+    "text": "Por que utilizar o fator \\(\\frac1{\\sqrt{k}}\\)?\nConsidere uma componente projetada\n\\[\nz_j\n=\n\\boldsymbol r_j^\\top\\mathbf x\n=\n\\sum_{i=1}^{p}\nr_{ij}x_i\n\\]\nComo\n\\[\nE(r_{ij})=0,\n\\qquad\nVar(r_{ij})=\\frac1k,\n\\]\nsegue que\n\\[\nVar(z_j)\n=\n\\frac1k\n\\sum_{i=1}^{p}\nx_i^2\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-utilizar-o-fator-frac1sqrtk-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-utilizar-o-fator-frac1sqrtk-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que utilizar o fator \\(\\frac1{\\sqrt{k}}\\)?",
+    "text": "Por que utilizar o fator \\(\\frac1{\\sqrt{k}}\\)?\nSomando as variâncias das \\(k\\) componentes,\n\\[\n\\boxed{\nE\\!\\left(\n\\|\\boldsymbol z\\|^2\n\\right)\n=\n\\|\\mathbf x\\|^2\n}\n\\]\n\n\n\n\n\n\nImportante\n\n\nO fator \\(\\frac1{\\sqrt{k}}\\) garante que, em média, a energia do vetor seja preservada após a projeção."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeções-aleatórias-esparsas",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeções-aleatórias-esparsas",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Projeções Aleatórias Esparsas",
+    "text": "Projeções Aleatórias Esparsas\nAchlioptas (2003) propôs substituir a distribuição Gaussiana por uma distribuição discreta.\n\\[\n\\boxed{\nr_{ij}\n=\n\\sqrt3\n\\left\\{\n\\begin{array}{rl}\n+1,&\\frac16\\\\\n0,&\\frac23\\\\\n-1,&\\frac16\n\\end{array}\n\\right.\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeções-aleatórias-esparsas-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#projeções-aleatórias-esparsas-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Projeções Aleatórias Esparsas",
+    "text": "Projeções Aleatórias Esparsas\nAssim,\naproximadamente dois terços dos elementos da matriz são iguais a zero.\n\n\n\n\n\n\nVantagens\n\n\n\nmenor consumo de memória;\nmultiplicações muito mais rápidas;\nmesma garantia assintótica do Lema de Johnson–Lindenstrauss."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-geométrica",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-geométrica",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação geométrica",
+    "text": "Interpretação geométrica\nCada componente reduzida é dada por\n\\[\n\\boxed{\nz_j\n=\n\\boldsymbol r_j^T\n\\mathbf x,\n}\n\\]\nonde \\(\\boldsymbol r_j\\) é um vetor aleatório."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-geométrica-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-geométrica-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação geométrica",
+    "text": "Interpretação geométrica\nAssim,\n\ncada componente corresponde à projeção dos dados sobre uma direção escolhida ao acaso;\ndiferentes colunas de \\(\\boldsymbol R\\) produzem diferentes projeções;\no conjunto dessas projeções forma uma nova representação dos dados em baixa dimensão.\n\n\n\n\n\n\n\nNota\n\n\nAo contrário do PCA, essas novas componentes não possuem interpretação física, mas preservam aproximadamente a geometria do conjunto de dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-as-projeções-aleatórias-funcionam",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-as-projeções-aleatórias-funcionam",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que as Projeções Aleatórias funcionam?",
+    "text": "Por que as Projeções Aleatórias funcionam?\nAté aqui vimos que a redução de dimensionalidade é obtida utilizando uma matriz completamente aleatória.\nSurge então uma pergunta natural:\n\n\n\n\n\n\nComo uma projeção aleatória consegue preservar a estrutura dos dados?\n\n\n\n\n\n\nA resposta é dada pelo Lema de Johnson–Lindenstrauss, um dos resultados mais importantes da Geometria Computacional e da Aprendizagem de Máquina.\n\nEm alta dimensão, projeções aleatórias preservam, com alta probabilidade, as distâncias entre as observações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#lema-de-johnsonlindenstrauss-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#lema-de-johnsonlindenstrauss-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Lema de Johnson–Lindenstrauss",
+    "text": "Lema de Johnson–Lindenstrauss\ne, para quaisquer observações \\(\\mathbf x_i\\) e \\(\\mathbf x_j\\),\n\\[\n\\boxed{\n(1-\\varepsilon)\n\\|\\mathbf x_i-\\mathbf x_j\\|^2\n\\le\n\\|\n\\boldsymbol R\\mathbf x_i-\n\\boldsymbol R\\mathbf x_j\n\\|^2\n\\le\n(1+\\varepsilon)\n\\|\\mathbf x_i-\\mathbf x_j\\|^2\n}\n\\]\n\n\n\n\n\n\nNota\n\n\nAs distâncias são preservadas com erro relativo máximo de aproximadamente \\(\\varepsilon\\)."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretando-o-resultado",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretando-o-resultado",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretando o resultado",
+    "text": "Interpretando o resultado\nObserve que\n\\[\nk=\nO\\!\\left(\n\\frac{\\log n}{\\varepsilon^2}\n\\right)\n\\]\ndepende apenas de\n\n\\(n\\): número de observações;\n\\(\\varepsilon\\): erro admissível."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretando-o-resultado-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretando-o-resultado-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretando o resultado",
+    "text": "Interpretando o resultado\nNão depende da dimensão original \\(p\\).\n\n\n\n\n\n\nImportante\n\n\nMesmo quando\n\\[\np=10^5\n\\quad\\text{ou}\\quad\np=10^6,\n\\]\né possível reduzir os dados para algumas centenas de componentes preservando aproximadamente todas as distâncias."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-projeções-aleatórias",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-projeções-aleatórias",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "PCA × Projeções Aleatórias",
+    "text": "PCA × Projeções Aleatórias\n\n\n\n\n\n\n\nCaracterística\nPCA\nProjeções Aleatórias\n\n\n\nCritério\nMaximiza a variância\nPreserva aproximadamente as distâncias\n\n\nDireções\nAutovetores\nAleatórias\n\n\nDepende dos dados\nSim\nNão\n\n\nInterpretação\nAlta\nBaixa\n\n\nComplexidade\nElevada\nMuito baixa\n\n\nEscalabilidade\nModerada\nExcelente"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-quantas-dimensões-são-suficientes",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-quantas-dimensões-são-suficientes",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Exemplo: Quantas dimensões são suficientes?",
+    "text": "Exemplo: Quantas dimensões são suficientes?\nConsidere um conjunto contendo\n\\[\nn=10\\,000\n\\]\nobservações.\nSuponha que desejamos preservar as distâncias com erro máximo de\n\\[\n\\varepsilon=0,20\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-quantas-dimensões-são-suficientes-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-quantas-dimensões-são-suficientes-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Exemplo: Quantas dimensões são suficientes?",
+    "text": "Exemplo: Quantas dimensões são suficientes?\nUma versão quantitativa do Lema de Johnson–Lindenstrauss estabelece que\n\\[\nk\n\\ge\n\\frac{4\\ln(n)}\n{\\dfrac{\\varepsilon^2}{2}-\\dfrac{\\varepsilon^3}{3}}\n\\]\nSubstituindo os valores,\n\\[\nk\n\\ge\n\\frac{4\\ln(10\\,000)}\n{\\dfrac{0,20^2}{2}-\\dfrac{0,20^3}{3}}\n=\n\\frac{4(9,21)}\n{0,02-0,00267}\n\\approx\n2126.\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-quantas-dimensões-são-suficientes-2",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-quantas-dimensões-são-suficientes-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Exemplo: Quantas dimensões são suficientes?",
+    "text": "Exemplo: Quantas dimensões são suficientes?\n\n\n\n\n\n\nImportante\n\n\nEmbora os dados possam possuir milhares ou milhões de variáveis, basta projetá-los em aproximadamente 2.126 dimensões para preservar as distâncias com erro relativo de até 20%, com alta probabilidade.\nNa prática, frequentemente são utilizadas dimensões ainda menores, obtendo-se excelente desempenho empírico."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-projeções-aleatórias-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-projeções-aleatórias-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "PCA × Projeções Aleatórias",
+    "text": "PCA × Projeções Aleatórias\n\n\n\n\n\n\nConclusão\n\n\nO PCA procura as melhores direções.\nAs Projeções Aleatórias mostram que, em altas dimensões, direções escolhidas ao acaso já são suficientes para preservar a geometria dos dados com alta probabilidade."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#quando-utilizar-projeções-aleatórias",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#quando-utilizar-projeções-aleatórias",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Quando utilizar Projeções Aleatórias?",
+    "text": "Quando utilizar Projeções Aleatórias?\nAs Projeções Aleatórias são particularmente indicadas quando:\n\no número de variáveis é muito elevado;\nvelocidade é mais importante que interpretabilidade;\ndeseja-se um pré-processamento simples e eficiente;\nalgoritmos dependem principalmente das distâncias entre observações.\n\nExemplos: KNN, clusterização, recuperação de informação, processamento de textos, embeddings, busca aproximada por vizinhos mais próximos (ANN)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Projeções Aleatórias",
+    "text": "R: Projeções Aleatórias\n\nlibrary(ggplot2)\n\nset.seed(335)\n\n#--------------------------------------------------\n# Dados simulados\n#--------------------------------------------------\n\nn &lt;- 300      # observações\np &lt;- 500      # dimensão original\nk &lt;- 50       # dimensão reduzida\n\nX &lt;- matrix(\n  rnorm(n * p),\n  nrow = n,\n  ncol = p\n)\n\n#--------------------------------------------------\n# Distâncias originais\n#--------------------------------------------------\n\nD_original &lt;- dist(X)\n\n#--------------------------------------------------\n# Matriz de projeção gaussiana\n#--------------------------------------------------\n\nR &lt;- matrix(\n  rnorm(p * k, mean = 0, sd = 1),\n  nrow = p,\n  ncol = k\n)\n\nR &lt;- R / sqrt(k)\n\n#--------------------------------------------------\n# Projeção aleatória\n#--------------------------------------------------\n\nZ &lt;- X %*% R\n\n#--------------------------------------------------\n# Distâncias projetadas\n#--------------------------------------------------\n\nD_proj &lt;- dist(Z)\n\n#--------------------------------------------------\n# Comparação\n#--------------------------------------------------\n\ncomparacao &lt;- data.frame(\n  original = as.vector(D_original),\n  projetada = as.vector(D_proj)\n)\n\nggplot(\n  comparacao,\n  aes(original, projetada)\n) +\n  geom_point(\n    alpha = 0.20,\n    size = 1.3\n  ) +\n  geom_abline(\n    intercept = 0,\n    slope = 1,\n    colour = \"red\",\n    linewidth = 1\n  ) +\n  labs(\n    title = \"Preservação das distâncias após Projeção Aleatória\",\n    x = \"Distância original\",\n    y = \"Distância projetada\"\n  ) +\n  theme_minimal(base_size = 15)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Projeções Aleatórias",
+    "text": "R: Projeções Aleatórias"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Projeções Aleatórias",
+    "text": "R: Projeções Aleatórias\n\ncor(\n  comparacao$original,\n  comparacao$projetada\n)\n\n[1] 0.2911465\n\nrmse &lt;- sqrt(\n  mean(\n    (comparacao$original -\n       comparacao$projetada)^2\n  )\n)\n\nrmse\n\n[1] 3.159009"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-2",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Projeções Aleatórias",
+    "text": "R: Projeções Aleatórias\n\nks &lt;- c(5,10,20,50,100,200,500)\n\nresultado &lt;- data.frame()\n\nfor(k in ks){\n\n  R &lt;- matrix(\n    rnorm(p*k),\n    p,\n    k\n  )/sqrt(k)\n\n  Z &lt;- X %*% R\n\n  D_proj &lt;- dist(Z)\n\n  resultado &lt;- rbind(\n    resultado,\n    data.frame(\n      k = k,\n      correlacao = cor(\n        as.vector(D_original),\n        as.vector(D_proj)\n      )\n    )\n  )\n\n}\n\nggplot(\n  resultado,\n  aes(k, correlacao)\n)+\ngeom_line(linewidth=1)+\ngeom_point(size=3)+\nylim(0,1)+\ntheme_minimal(base_size=15)+\nlabs(\ntitle=\"Efeito da dimensão reduzida\",\nx=\"Número de componentes\",\ny=\"Correlação entre distâncias\"\n)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-2-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-projeções-aleatórias-2-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Projeções Aleatórias",
+    "text": "R: Projeções Aleatórias"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação",
+    "text": "Interpretação\n\nÀ medida que \\(k\\) aumenta, as distâncias projetadas tornam-se mais próximas das distâncias originais.\nMesmo utilizando uma matriz completamente aleatória, a geometria dos dados é preservada com boa aproximação.\nEsse comportamento ilustra empiricamente o Lema de Johnson–Lindenstrauss, segundo o qual projeções aleatórias preservam aproximadamente as distâncias entre observações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#autoencoders-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#autoencoders-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Autoencoders",
+    "text": "Autoencoders\nAté agora estudamos métodos capazes de reduzir a dimensionalidade dos dados.\n\n\nPCA: procura as direções de maior variabilidade;\n\nKernel PCA: captura relações não lineares por meio de funções kernel;\n\nProjeções Aleatórias: preservam aproximadamente as distâncias utilizando projeções aleatórias.\n\nTodos esses métodos transformam os dados para obter uma representação mais compacta.\n\n\n\n\n\n\nPergunta\n\n\nSerá que uma rede neural consegue aprender automaticamente essa representação sem que precisemos definir explicitamente como ela deve ser construída?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-o-gargalo-é-necessário",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-o-gargalo-é-necessário",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que o gargalo é necessário?",
+    "text": "Por que o gargalo é necessário?\nConsidere uma rede neural cujo objetivo seja reconstruir a própria entrada.\nSe a rede possuir capacidade suficiente, ela poderá simplesmente aprender a copiar os dados:\n\\[\n\\mathbf{x}\n\\longrightarrow\n\\hat{\\mathbf{x}}\n=\n\\mathbf{x}\n\\]\nNesse caso,\n\nnenhuma informação é comprimida;\nnenhuma representação útil é aprendida;\na rede apenas memoriza os dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-o-gargalo-é-necessário-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#por-que-o-gargalo-é-necessário-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que o gargalo é necessário?",
+    "text": "Por que o gargalo é necessário?\n\n\n\n\n\n\nImportante\n\n\nA solução consiste em obrigar a rede a passar por um gargalo (bottleneck).\nComo o número de neurônios é muito menor, a rede precisa aprender quais informações são realmente importantes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-papel-do-gargalo-bottleneck",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-papel-do-gargalo-bottleneck",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O papel do gargalo (bottleneck)",
+    "text": "O papel do gargalo (bottleneck)\nConsidere uma rede neural cujo objetivo seja reconstruir a própria entrada.\nSe a rede possuir capacidade suficiente, ela poderá simplesmente aprender a copiar os dados:\n\\[\n\\mathbf{x}\n\\longrightarrow\n\\hat{\\mathbf{x}}\n=\n\\mathbf{x}\n\\]\nNesse caso,\n\nnenhuma informação é comprimida;\nnenhuma representação útil é aprendida;\na rede apenas memoriza os dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-papel-do-gargalo-bottleneck-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-papel-do-gargalo-bottleneck-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O papel do gargalo (bottleneck)",
+    "text": "O papel do gargalo (bottleneck)\n\n\n\n\n\n\nImportante\n\n\nA solução consiste em obrigar a rede a passar por um gargalo (bottleneck).\nComo o número de neurônios é muito menor, a rede precisa aprender quais informações são realmente importantes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-geral",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#ideia-geral",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia geral",
+    "text": "Ideia geral\nUm Autoencoder é composto por duas partes:\n\n\nEncoder: transforma os dados originais em uma representação compacta;\n\nDecoder: utiliza essa representação para reconstruir a entrada.\n\nO espaço intermediário é denominado espaço latente (latent space).\n\n\n\n\n\n\nNota\n\n\nO treinamento consiste em minimizar o erro entre a entrada original e sua reconstrução."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#arquitetura-matemática",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#arquitetura-matemática",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Arquitetura Matemática",
+    "text": "Arquitetura Matemática\nUm Autoencoder é composto por duas funções:\n\nEncoder: transforma os dados originais em uma representação latente.\nDecoder: reconstrói os dados a partir dessa representação.\n\nA arquitetura pode ser representada por\n\\[\n\\boxed{\n\\mathbf{x}\n\\longrightarrow\n\\boldsymbol{z}\n\\longrightarrow\n\\hat{\\mathbf{x}}\n}\n\\]\nonde\n\n\n\\(\\mathbf{x}\\) representa a entrada;\n\n\\(\\boldsymbol{z}\\) representa o código latente (latent code);\n\n\\(\\hat{\\mathbf{x}}\\) representa a reconstrução da entrada."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#arquitetura-matemática-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#arquitetura-matemática-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Arquitetura Matemática",
+    "text": "Arquitetura Matemática\n\n\n\n\n\n\nNota\n\n\nO espaço latente possui dimensão muito menor que a entrada,\n\\[\n\\dim(\\boldsymbol z)\\ll\\dim(\\mathbf x)\n\\]\nÉ exatamente essa restrição que força a compressão da informação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-encoder",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-encoder",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O Encoder",
+    "text": "O Encoder\nO Encoder transforma os dados originais em uma representação de menor dimensão.\nMatematicamente,\n\\[\n\\boxed{\n\\boldsymbol z\n=\nf_\\theta(\\mathbf x)\n}\n\\]\nonde\n\n\n\\(\\mathbf{x}\\) é o vetor de entrada;\n\n\\(\\boldsymbol{z}\\) é o código latente;\n\n\\(f_\\theta(\\cdot)\\) representa a rede do Encoder;\n\n\\(\\theta\\) corresponde aos parâmetros (pesos e vieses)."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-encoder-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-encoder-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O Encoder",
+    "text": "O Encoder\nEm uma camada totalmente conectada,\n\\[\n\\boxed{\n\\boldsymbol z\n=\n\\sigma\n\\left(\nW_e\\mathbf x+b_e\n\\right)\n}\n\\]\nem que\n\n\n\\(W_e\\) é a matriz de pesos;\n\n\\(b_e\\) é o vetor de vieses;\n\n\\(\\sigma(\\cdot)\\) representa uma função de ativação.\n\n\n\n\n\n\n\nObservação\n\n\nO Encoder aprende automaticamente quais combinações das variáveis originais são mais úteis para representar os dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-decoder",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-decoder",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O Decoder",
+    "text": "O Decoder\nO Decoder realiza a operação inversa.\nSeu objetivo é reconstruir a entrada original utilizando apenas o código latente.\n\\[\n\\boxed{\n\\hat{\\mathbf x}\n=\ng_\\phi(\\boldsymbol z)\n}\n\\]\nonde\n\n\n\\(\\hat{\\mathbf{x}}\\) representa a reconstrução;\n\n\\(g_\\phi(\\cdot)\\) representa a rede Decoder;\n\n\\(\\phi\\) corresponde aos parâmetros da reconstrução."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-decoder-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-decoder-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O Decoder",
+    "text": "O Decoder\nPara uma camada totalmente conectada,\n\\[\n\\boxed{\n\\hat{\\mathbf x}\n=\n\\sigma\n\\left(\nW_d\\boldsymbol z+b_d\n\\right)\n}\n\\]\nEm geral,\n\\[\n\\hat{\\mathbf x}\n\\approx\n\\mathbf x\n\\]\nA igualdade exata raramente é possível, pois parte da informação é perdida durante a compressão."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-o-autoencoder-aprende",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-o-autoencoder-aprende",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como o Autoencoder aprende?",
+    "text": "Como o Autoencoder aprende?\nO objetivo do treinamento é tornar a reconstrução o mais próxima possível da entrada original.\nAssim, define-se uma função de perda\n\\[\n\\boxed{\nL(\\mathbf x,\\hat{\\mathbf x})\n=\nd(\\mathbf x,\\hat{\\mathbf x})\n}\n\\]\nque mede o erro de reconstrução.\nA escolha mais comum é o Erro Quadrático Médio (MSE),\n\\[\n\\boxed{\nL\n=\n\\|\n\\mathbf x-\n\\hat{\\mathbf x}\n\\|^2\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-o-autoencoder-aprende-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#como-o-autoencoder-aprende-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como o Autoencoder aprende?",
+    "text": "Como o Autoencoder aprende?\nDurante o treinamento, os pesos da rede são ajustados para minimizar essa função.\n\n\n\n\n\n\nImportante\n\n\nO Autoencoder não utiliza rótulos.\nSeu treinamento é totalmente não supervisionado, pois a própria entrada funciona como alvo da aprendizagem."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-geométrica-2",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#interpretação-geométrica-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação Geométrica",
+    "text": "Interpretação Geométrica\nO Autoencoder aprende duas transformações sucessivas:\n\\[\n\\boxed{\n\\mathbf{x}\n\\overset{\\text{Encoder}}{\\longrightarrow}\n\\boldsymbol{z}\n\\overset{\\text{Decoder}}{\\longrightarrow}\n\\hat{\\mathbf{x}}\n}\n\\]\nDurante o treinamento,\n\no Encoder aprende uma representação compacta dos dados;\no Decoder aprende como reconstruir os dados originais a partir dessa representação.\n\nO espaço intermediário \\(\\boldsymbol z\\) é denominado espaço latente (latent space).\n\n\n\n\n\n\nImportante\n\n\nO espaço latente procura preservar apenas as características essenciais necessárias para reconstruir os dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-autoencoder",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-autoencoder",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "PCA × Autoencoder",
+    "text": "PCA × Autoencoder\n\n\nPCA\nAutoencoder\n\n\n\nProjeção linear\nTransformação não linear\n\n\nBaseado em autovetores\nBaseado em redes neurais\n\n\nSolução analítica\nOtimização por gradiente\n\n\nComponentes principais\nRepresentação latente\n\n\nMuito interpretável\nPouco interpretável\n\n\n\n\n\n\n\n\n\nImportante\n\n\nO PCA procura um subespaço linear.\nO Autoencoder aprende uma representação não linear, capaz de adaptar-se à geometria dos dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-representa-o-espaço-latente",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-representa-o-espaço-latente",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O que representa o espaço latente?",
+    "text": "O que representa o espaço latente?\nCada observação é representada por um novo vetor\n\\[\n\\boxed{\\boldsymbol z = f_\\theta(\\mathbf x)}\n\\]\nEssas novas variáveis\n\nnão correspondem às variáveis originais;\nnão são componentes principais;\nnão possuem interpretação física direta."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-representa-o-espaço-latente-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#o-que-representa-o-espaço-latente-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O que representa o espaço latente?",
+    "text": "O que representa o espaço latente?\nEntretanto,\nelas representam uma codificação compacta dos fatores mais importantes presentes nos dados.\n\n\n\n\n\n\nNota\n\n\nO espaço latente pode ser interpretado como uma representação interna aprendida automaticamente pela rede neural."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#aprendendo-um-manifold",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#aprendendo-um-manifold",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Aprendendo um manifold",
+    "text": "Aprendendo um manifold\nConsidere dados distribuídos sobre uma variedade não linear (manifold). Durante o treinamento, o Encoder aprende uma transformação\n\\[\n\\mathbf x\n\\longrightarrow\n\\boldsymbol z\n\\]\ncapaz de “desenrolar” essa variedade. O Decoder aprende a transformação inversa,\n\\[\n\\boldsymbol z\n\\longrightarrow\n\\hat{\\mathbf x}\n\\]\n\n\n\n\n\n\nImportante\n\n\nAo contrário do PCA, o Autoencoder não procura apenas uma projeção.\nEle aprende uma transformação não linear entre dois espaços."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders\nGerando um conjunto de dados não linear\n\nlibrary(plotly)\nlibrary(viridisLite)\n\nset.seed(335)\n\nn &lt;- 1500\n\nt &lt;- 1.5 * pi * (1 + 2 * runif(n))\n\nx &lt;- t * cos(t)\ny &lt;- runif(n, -10, 10)\nz &lt;- t * sin(t)\n\ndados &lt;- data.frame(\n  x = x,\n  y = y,\n  z = z,\n  t = t\n)\n\nplot_ly(\n  data = dados,\n  x = ~x,\n  y = ~y,\n  z = ~z,\n  color = ~t,\n  colors = viridisLite::viridis(256),\n  type = \"scatter3d\",\n  mode = \"markers\",\n  marker = list(\n    size = 2,\n    opacity = 0.8\n  )\n) |&gt;\n  layout(\n    title = \"Swiss Roll — dados originais\",\n    scene = list(\n      xaxis = list(title = \"X\"),\n      yaxis = list(title = \"Y\"),\n      zaxis = list(title = \"Z\"),\n      aspectmode = \"data\"\n    )\n  )"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-em-r",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-em-r",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Exemplo em R",
+    "text": "Exemplo em R\nGerando um conjunto de dados não linear\n\nlibrary(mlbench)\nlibrary(ggplot2)\n\nset.seed(335)\n\ndados &lt;- mlbench.spirals(\n  800,\n  cycles = 1,\n  sd = 0.03\n)\n\nX &lt;- as.data.frame(dados$x)\n\ncolnames(X) &lt;- c(\"x1\",\"x2\")\n\nggplot(\n  X,\n  aes(x1,x2)\n)+\ngeom_point(\n  color=\"#2C7FB8\",\n  size=2,\n  alpha=.7\n)+\ncoord_equal()+\ntheme_minimal(base_size=18)+\nlabs(\ntitle=\"Dados Originais\",\nx=NULL,\ny=NULL\n)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-em-r-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#exemplo-em-r-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Exemplo em R",
+    "text": "Exemplo em R"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders\nPCA\n\nlibrary(ggplot2)\n\nX &lt;- scale(dados[,1:3])\n\npca &lt;- prcomp(X)\n\ncoord &lt;- data.frame(\nPC1=pca$x[,1],\nPC2=pca$x[,2],\nt=dados$t\n)\n\nggplot(\ncoord,\naes(\nPC1,\nPC2,\ncolor=t\n)\n)+\ngeom_point(size=2)+\ncoord_equal()+\nscale_color_viridis_c()+\ntheme_minimal(base_size=18)+\nlabs(\ntitle=\"PCA\",\nsubtitle=\"O Swiss Roll continua enrolado\"\n)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-1-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-1-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-2",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders\nAutoencoder\n\nlibrary(keras)\n\nX &lt;- scale(as.matrix(dados[,1:3]))\n\nentrada &lt;- layer_input(shape=3)\n\nencoder &lt;- entrada |&gt;\nlayer_dense(32, activation=\"relu\") |&gt;\nlayer_dense(16, activation=\"relu\") |&gt;\nlayer_dense(2,activation=\"linear\",name=\"latent\")\n\ndecoder &lt;- encoder |&gt;\nlayer_dense(16, activation=\"relu\") |&gt;\nlayer_dense(32, activation=\"relu\") |&gt;\nlayer_dense(3)\n\nmodelo &lt;- keras_model(entrada,decoder)\nmodelo |&gt;\ncompile(optimizer=\"adam\", loss=\"mse\")\n\nmodelo |&gt; fit(X, X, epochs=150, batch_size=64, verbose=0)\n\nencoder_model &lt;- keras_model(inputs=entrada, outputs=get_layer(modelo,\n\"latent\")$output)\n\nlatent &lt;- predict( encoder_model, X)\n\nlatent &lt;- data.frame(z1=latent[,1], z2=latent[,2], t=dados$t)\n\nggplot( latent, aes(z1,z2,color=t))+\n  geom_point(size=2)+\n  coord_equal()+\n  scale_color_viridis_c()+\n  theme_minimal(base_size=18)+\n  labs(title=\"Espaço Latente Aprendido\")"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-2-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-2-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Reconstrução",
+    "text": "Reconstrução\n\nlibrary(plotly)\nlibrary(viridisLite)\n\nXrec &lt;- predict(\n  modelo,\n  X,\n  verbose = 0\n)\n\nrec &lt;- data.frame(\n  x = Xrec[, 1],\n  y = Xrec[, 2],\n  z = Xrec[, 3],\n  t = dados$t\n)\n\nplot_ly(\n  data = rec,\n  x = ~x,\n  y = ~y,\n  z = ~z,\n  color = ~t,\n  colors = viridisLite::viridis(256),\n  type = \"scatter3d\",\n  mode = \"markers\",\n  marker = list(\n    size = 2,\n    opacity = 0.8\n  )\n) |&gt;\n  layout(\n    title = \"Swiss Roll reconstruído pelo Autoencoder\",\n    scene = list(\n      xaxis = list(title = \"X\"),\n      yaxis = list(title = \"Y\"),\n      zaxis = list(title = \"Z\"),\n      aspectmode = \"data\"\n    )\n  )"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#reconstrução-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Reconstrução",
+    "text": "Reconstrução"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-3",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders\nReconstrução\n\nlibrary(plotly)\nlibrary(viridisLite)\n\nXrec &lt;- predict(\n  modelo,\n  X,\n  verbose = 0\n)\n\nrec &lt;- data.frame(\n  x = Xrec[, 1],\n  y = Xrec[, 2],\n  z = Xrec[, 3],\n  t = dados$t\n)\n\nplot_ly(\n  data = rec,\n  x = ~x,\n  y = ~y,\n  z = ~z,\n  color = ~t,\n  colors = viridisLite::viridis(256),\n  type = \"scatter3d\",\n  mode = \"markers\",\n  marker = list(\n    size = 2,\n    opacity = 0.8\n  )\n) |&gt;\n  layout(\n    title = \"Swiss Roll reconstruído pelo Autoencoder\",\n    scene = list(\n      xaxis = list(title = \"X\"),\n      yaxis = list(title = \"Y\"),\n      zaxis = list(title = \"Z\"),\n      aspectmode = \"data\"\n    )\n  )"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-3-output",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#r-autoencoders-3-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Autoencoders",
+    "text": "R: Autoencoders"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-autoencoder-1",
+    "href": "aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#pca-autoencoder-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "PCA × Autoencoder",
+    "text": "PCA × Autoencoder\n\n\nPCA\n\nprojeção linear;\npreserva máxima variância;\nnão desenrola o Swiss Roll;\ncomponentes principais.\n\n\nAutoencoder\n\ntransformação não linear;\naprende uma representação latente;\ndesenrola o manifold;\nreconstrói os dados.\n\n\n\n\n\n\n\n\nImportante\n\n\nNo PCA a transformação é fixa (linear).\nNo Autoencoder a transformação é aprendida pela própria rede neural."
   }
 ]
