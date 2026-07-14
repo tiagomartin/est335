@@ -164,7 +164,16 @@ Esta página contém aulas que serão apresentadas ao longo do semestre.
 
 <p style="font-size: 30px; font-weight: bold;">Parte III: Aprendizado não supervisionado</p>
 
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+Redução de dimensionalidade e mudança de representação
+</span>
 
+<span>
+[Ver slides](/aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#/title-slide){.btn .btn-est304-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+</span>
+:::
 
 
 
