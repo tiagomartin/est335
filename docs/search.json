@@ -2783,5 +2783,684 @@
     "title": "Parte III : Aprendizado não supervisionado",
     "section": "PCA × Autoencoder",
     "text": "PCA × Autoencoder\n\n\nPCA\n\nprojeção linear;\npreserva máxima variância;\nnão desenrola o Swiss Roll;\ncomponentes principais.\n\n\nAutoencoder\n\ntransformação não linear;\naprende uma representação latente;\ndesenrola o manifold;\nreconstrói os dados.\n\n\n\n\n\n\n\n\nImportante\n\n\nNo PCA a transformação é fixa (linear).\nNo Autoencoder a transformação é aprendida pela própria rede neural."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#análise-de-agrupamento-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#análise-de-agrupamento-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Análise de Agrupamento",
+    "text": "Análise de Agrupamento\nAté este momento estudamos métodos para representar os dados em um espaço de menor dimensão.\nAgora surge uma nova pergunta:\n\nSerá que existem grupos naturais nos dados?\n\nA análise de agrupamento (Cluster Analysis) procura responder essa questão, identificando automaticamente conjuntos de observações semelhantes entre si."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#análise-de-agrupamento-2",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#análise-de-agrupamento-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Análise de Agrupamento",
+    "text": "Análise de Agrupamento\nCaracterísticas importantes:\n\nnão existem rótulos conhecidos;\no algoritmo deve descobrir a estrutura dos dados;\nobservações semelhantes devem pertencer ao mesmo grupo.\n\n\n\n\n\n\n\nImportante\n\n\nA análise de agrupamento é um problema clássico de aprendizagem não supervisionada."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#aprendizagem-supervisionada-não-supervisionada",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#aprendizagem-supervisionada-não-supervisionada",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Aprendizagem supervisionada × não supervisionada",
+    "text": "Aprendizagem supervisionada × não supervisionada\n\n\nAprendizagem Supervisionada\nAprendizagem Não Supervisionada\n\n\n\nClasses conhecidas\nClasses desconhecidas\n\n\nVariável resposta disponível\nNão existe variável resposta\n\n\nClassificação\nAgrupamento\n\n\nRegressão\nDescoberta de padrões \n\n\n\n\n\n\n\n\n\n\nNota\n\n\nEnquanto os métodos supervisionados aprendem a partir de exemplos rotulados, os métodos de agrupamento procuram identificar padrões presentes apenas nas variáveis explicativas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-que-caracteriza-um-grupo",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-que-caracteriza-um-grupo",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O que caracteriza um grupo?",
+    "text": "O que caracteriza um grupo?\nIntuitivamente, um agrupamento deve apresentar duas propriedades:\n\nAlta similaridade interna: observações pertencentes ao mesmo grupo devem ser semelhantes entre si.\nBaixa similaridade externa: observações pertencentes a grupos diferentes devem ser suficientemente distintas.\n\nEsses dois objetivos geralmente são conflitantes e dependem da forma como a similaridade é definida.\n\n\n\n\n\n\nImportante\n\n\nNão existe uma definição única de “grupo”.\nCada algoritmo utiliza um conceito diferente de proximidade e similaridade."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#existe-um-algoritmo-ideal",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#existe-um-algoritmo-ideal",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Existe um algoritmo ideal?",
+    "text": "Existe um algoritmo ideal?\nDiferentes algoritmos são adequados para diferentes estruturas dos dados.\n\n\nEstrutura dos dados\nAlgoritmo mais indicado\n\n\n\nGrupos aproximadamente esféricos\nK-means\n\n\nEstruturas hierárquicas\nAgrupamento Hierárquico\n\n\nEstruturas não lineares\nAgrupamento Espectral\n\n\n\n\n\n\n\n\n\n\nNota\n\n\nA escolha do algoritmo depende da geometria dos dados e da definição de similaridade adotada."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#como-medir-a-semelhança-entre-observações",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#como-medir-a-semelhança-entre-observações",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como medir a semelhança entre observações?",
+    "text": "Como medir a semelhança entre observações?\nA ideia central da análise de agrupamento é reunir observações semelhantes.\nMas surge uma questão fundamental:\n\nComo medir o quão semelhantes são duas observações?\n\nPara isso, utilizamos medidas de distância ou medidas de similaridade.\nQuanto menor a distância entre duas observações,\nmais semelhantes elas tendem a ser.\n\n\n\n\n\n\nImportante\n\n\nA escolha da medida de distância influencia diretamente os grupos encontrados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#distância-euclidiana",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#distância-euclidiana",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Distância Euclidiana",
+    "text": "Distância Euclidiana\nA distância Euclidiana corresponde ao comprimento do segmento de reta que liga duas observações.\nPara duas observações \\(\\mathbf{x}_i=(x_{i1},\\ldots,x_{ip})\\) e \\(\\mathbf{x}_j=(x_{j1},\\ldots,x_{jp})\\), a distância Euclidiana é dada por\n\\[\n\\boxed{\nd(\\mathbf{x}_i,\\mathbf{x}_j)=\n\\sqrt{\n\\sum_{k=1}^{p}\n(x_{ik}-x_{jk})^2\n}\n}\n\\]\n\n\n\n\n\n\nObservação\n\n\nO algoritmo K-means utiliza, por padrão, a distância Euclidiana."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#outras-medidas-de-distância",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#outras-medidas-de-distância",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Outras medidas de distância",
+    "text": "Outras medidas de distância\nDependendo do problema, outras medidas podem ser mais adequadas.\n\n\nMedida\nAplicações\n\n\n\nEuclidiana\nDados contínuos\n\n\nManhattan\nDados urbanos, trajetórias em grade\n\n\nMahalanobis\nVariáveis correlacionadas\n\n\nCosseno\nTextos, documentos e embeddings\n\n\nJaccard\nDados binários e conjuntos\n\n\n\n\n\n\n\n\n\nNota\n\n\nNão existe uma medida universalmente melhor.\nA escolha depende da natureza dos dados e do objetivo da análise."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-importância-da-padronização",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-importância-da-padronização",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A importância da padronização",
+    "text": "A importância da padronização\nConsidere duas variáveis:\n\n\nIdade (anos): valores entre 18 e 80;\n\nRenda (R$): valores entre 2.000 e 50.000.\n\nAo calcular a distância Euclidiana, a variável com maior escala tende a dominar o cálculo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-importância-da-padronização-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-importância-da-padronização-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A importância da padronização",
+    "text": "A importância da padronização\nPor esse motivo, é comum padronizar os dados antes da análise de agrupamento.\n\\[\n\\boxed{\nz=\n\\frac{x-\\mu}{\\sigma}\n}\n\\]\nA padronização garante que todas as variáveis contribuam de forma equilibrada para o cálculo das distâncias."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-nome-k-médias",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-nome-k-médias",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que o nome K-médias?",
+    "text": "Por que o nome K-médias?\nO nome do algoritmo possui dois significados importantes.\nO parâmetro K\n\nRepresenta o número de grupos que desejamos encontrar.\nExemplos:\n\n\\(K=2\\)\n\\(K=3\\)\n\\(K=5\\)\n\nEsse valor deve ser definido antes da execução do algoritmo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-nome-k-médias-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-nome-k-médias-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que o nome K-médias?",
+    "text": "Por que o nome K-médias?\nA palavra médias\n\nCada grupo é representado por um centróide, calculado como a média das observações pertencentes ao grupo.\n\\[\n\\boxed{\n\\mu_k\n=\n\\frac1{n_k}\n\\sum_{i\\in C_k}\nx_i\n}\n\\]\n\n\n\n\n\n\nNota\n\n\nCada centróide representa o “centro” de um grupo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia intuitiva",
+    "text": "Ideia intuitiva\nO algoritmo K-médias procura encontrar\n\num centróide para cada grupo;\na melhor atribuição das observações aos centróides.\n\nO processo ocorre de forma iterativa:\n\nInicializar os centróides.\nAtribuir cada observação ao centróide mais próximo.\nRecalcular os centróides.\nRepetir até a convergência."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#funcionamento-do-algoritmo-k-médias",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#funcionamento-do-algoritmo-k-médias",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Funcionamento do algoritmo K-médias",
+    "text": "Funcionamento do algoritmo K-médias\n\nlibrary(plotly)\nlibrary(dplyr)\n\nset.seed(335)\n\n# ============================================================\n# 1. Gerar três grupos\n# ============================================================\n\nn_por_grupo &lt;- 10\n\ndados &lt;- bind_rows(\n  data.frame(\n    x = rnorm(n_por_grupo, mean = -3.2, sd = 0.55),\n    y = rnorm(n_por_grupo, mean =  2.5, sd = 0.55)\n  ),\n  data.frame(\n    x = rnorm(n_por_grupo, mean =  0.0, sd = 0.55),\n    y = rnorm(n_por_grupo, mean = -2.3, sd = 0.55)\n  ),\n  data.frame(\n    x = rnorm(n_por_grupo, mean =  3.4, sd = 0.55),\n    y = rnorm(n_por_grupo, mean =  2.0, sd = 0.55)\n  )\n) |&gt;\n  mutate(id = row_number())\n\nK &lt;- 3\n\nnomes_grupos &lt;- paste0(\"Grupo \", 1:K)\n\ncores &lt;- c(\n  \"Não alocado\" = \"#BDBDBD\",\n  \"Grupo 1\"      = \"#2C7FB8\",\n  \"Grupo 2\"      = \"#1B9E77\",\n  \"Grupo 3\"      = \"#D95F02\"\n)\n\ncores_centroides &lt;- c(\n  \"#2C7FB8\",\n  \"#1B9E77\",\n  \"#D95F02\"\n)\n\n# ============================================================\n# 2. Centróides iniciais\n# ============================================================\n\ncentroides &lt;- data.frame(\n  cluster = factor(\n    nomes_grupos,\n    levels = nomes_grupos\n  ),\n  rotulo = c(\"C1\", \"C2\", \"C3\"),\n  x = c(-4.4, 0.9, 2.4),\n  y = c( 3.6, 0.1, 3.3)\n)\n\n# ============================================================\n# 3. Funções do K-médias\n# ============================================================\n\natribuir_grupos &lt;- function(dados, centroides) {\n\n  matriz_distancias &lt;- sapply(\n    seq_len(K),\n    function(j) {\n      (dados$x - centroides$x[j])^2 +\n        (dados$y - centroides$y[j])^2\n    }\n  )\n\n  factor(\n    paste0(\"Grupo \", max.col(-matriz_distancias)),\n    levels = nomes_grupos\n  )\n}\n\natualizar_centroides &lt;- function(\n  dados,\n  grupos,\n  centroides_anteriores\n) {\n\n  medias &lt;- dados |&gt;\n    mutate(cluster = grupos) |&gt;\n    group_by(cluster) |&gt;\n    summarise(\n      x = mean(x),\n      y = mean(y),\n      .groups = \"drop\"\n    )\n\n  novos &lt;- centroides_anteriores\n\n  for (j in seq_len(K)) {\n\n    nome_j &lt;- nomes_grupos[j]\n\n    linha_j &lt;- which(\n      as.character(medias$cluster) == nome_j\n    )\n\n    # Se o grupo não estiver vazio, atualiza sua média\n    if (length(linha_j) == 1) {\n      novos$x[j] &lt;- medias$x[linha_j]\n      novos$y[j] &lt;- medias$y[linha_j]\n    }\n  }\n\n  novos\n}\n\n# ============================================================\n# 4. Construir os estados da animação\n# ============================================================\n\nestados &lt;- list()\n\nadicionar_estado &lt;- function(\n  titulo,\n  alocacoes,\n  centroides,\n  individuo = NA_integer_,\n  destino = NA_integer_,\n  mostrar_linha = FALSE\n) {\n\n  cor_pontos &lt;- unname(\n    cores[alocacoes]\n  )\n\n  if (mostrar_linha && !is.na(individuo) && !is.na(destino)) {\n\n    linha_x &lt;- c(\n      dados$x[individuo],\n      centroides$x[destino]\n    )\n\n    linha_y &lt;- c(\n      dados$y[individuo],\n      centroides$y[destino]\n    )\n\n    destaque_x &lt;- dados$x[individuo]\n    destaque_y &lt;- dados$y[individuo]\n\n  } else {\n\n    linha_x &lt;- c(NA_real_, NA_real_)\n    linha_y &lt;- c(NA_real_, NA_real_)\n\n    destaque_x &lt;- NA_real_\n    destaque_y &lt;- NA_real_\n  }\n\n  estados[[length(estados) + 1]] &lt;&lt;- list(\n    titulo = titulo,\n    cor_pontos = cor_pontos,\n    centroides = centroides,\n    linha_x = linha_x,\n    linha_y = linha_y,\n    destaque_x = destaque_x,\n    destaque_y = destaque_y\n  )\n}\n\n# ------------------------------------------------------------\n# Estado inicial: todos cinza\n# ------------------------------------------------------------\n\nalocacoes_exibidas &lt;- rep(\n  \"Não alocado\",\n  nrow(dados)\n)\n\nadicionar_estado(\n  titulo = \"Inicialização: todos os indivíduos ainda não estão alocados\",\n  alocacoes = alocacoes_exibidas,\n  centroides = centroides\n)\n\n# ------------------------------------------------------------\n# Iterações\n# ------------------------------------------------------------\n\nmax_iter &lt;- 10\ntolerancia &lt;- 1e-4\n\nfor (iteracao in seq_len(max_iter)) {\n\n  grupos_calculados &lt;- atribuir_grupos(\n    dados,\n    centroides\n  )\n\n  # Na primeira iteração, todos começam cinza.\n  # Nas seguintes, mantêm-se as cores da iteração anterior.\n  if (iteracao == 1) {\n    alocacoes_exibidas &lt;- rep(\n      \"Não alocado\",\n      nrow(dados)\n    )\n  }\n\n  # Alocar cada indivíduo separadamente\n  for (i in seq_len(nrow(dados))) {\n\n    destino_nome &lt;- as.character(\n      grupos_calculados[i]\n    )\n\n    destino_numero &lt;- match(\n      destino_nome,\n      nomes_grupos\n    )\n\n    # Quadro 1: indivíduo ainda cinza e ligado ao centróide\n    adicionar_estado(\n      titulo = paste0(\n        \"Iteração \", iteracao,\n        \": indivíduo \", i,\n        \" é associado ao centróide \",\n        centroides$rotulo[destino_numero]\n      ),\n      alocacoes = alocacoes_exibidas,\n      centroides = centroides,\n      individuo = i,\n      destino = destino_numero,\n      mostrar_linha = TRUE\n    )\n\n    # Quadro 2: indivíduo recebe a cor do grupo\n    alocacoes_exibidas[i] &lt;- destino_nome\n\n    adicionar_estado(\n      titulo = paste0(\n        \"Iteração \", iteracao,\n        \": indivíduo \", i,\n        \" alocado ao \", destino_nome\n      ),\n      alocacoes = alocacoes_exibidas,\n      centroides = centroides\n    )\n  }\n\n  # Todos os indivíduos já foram alocados\n  adicionar_estado(\n    titulo = paste0(\n      \"Iteração \", iteracao,\n      \": todos os indivíduos foram alocados\"\n    ),\n    alocacoes = alocacoes_exibidas,\n    centroides = centroides\n  )\n\n  # Atualização das médias\n  novos_centroides &lt;- atualizar_centroides(\n    dados = dados,\n    grupos = grupos_calculados,\n    centroides_anteriores = centroides\n  )\n\n  deslocamentos &lt;- sqrt(\n    rowSums(\n      (\n        novos_centroides[, c(\"x\", \"y\")] -\n          centroides[, c(\"x\", \"y\")]\n      )^2\n    )\n  )\n\n  centroides &lt;- novos_centroides\n\n  adicionar_estado(\n    titulo = paste0(\n      \"Iteração \", iteracao,\n      \": centróides atualizados pelas médias dos grupos\"\n    ),\n    alocacoes = as.character(grupos_calculados),\n    centroides = centroides\n  )\n\n  alocacoes_exibidas &lt;- as.character(\n    grupos_calculados\n  )\n\n  if (max(deslocamentos) &lt; tolerancia) {\n    break\n  }\n}\n\n# ------------------------------------------------------------\n# Estado final repetido para permanecer mais tempo visível\n# ------------------------------------------------------------\n\nfor (r in 1:5) {\n\n  adicionar_estado(\n    titulo = paste0(\n      \"Convergência: três grupos estabilizados — \",\n      \"C1, C2 e C3 representam suas respectivas médias\"\n    ),\n    alocacoes = alocacoes_exibidas,\n    centroides = centroides\n  )\n}\n\n# ============================================================\n# 5. Criar os frames do Plotly manualmente\n# ============================================================\n\nnomes_frames &lt;- sprintf(\n  \"quadro_%03d\",\n  seq_along(estados)\n)\n\nframes_plotly &lt;- lapply(\n  seq_along(estados),\n  function(i) {\n\n    estado_i &lt;- estados[[i]]\n\n    list(\n      name = nomes_frames[i],\n\n      # Os quatro elementos abaixo correspondem exatamente\n      # aos quatro traços adicionados ao gráfico.\n      data = list(\n\n        # Traço 0: observações\n        list(\n          x = dados$x,\n          y = dados$y,\n          marker = list(\n            color = estado_i$cor_pontos,\n            size = 11,\n            opacity = 0.88,\n            symbol = \"circle\",\n            line = list(\n              color = \"white\",\n              width = 0.6\n            )\n          )\n        ),\n\n        # Traço 1: centróides\n        list(\n          x = estado_i$centroides$x,\n          y = estado_i$centroides$y,\n          text = estado_i$centroides$rotulo,\n          marker = list(\n            color = cores_centroides,\n            size = 24,\n            symbol = \"star\",\n            opacity = 1,\n            line = list(\n              color = \"#222222\",\n              width = 2\n            )\n          )\n        ),\n\n        # Traço 2: linha de alocação\n        list(\n          x = estado_i$linha_x,\n          y = estado_i$linha_y\n        ),\n\n        # Traço 3: indivíduo analisado\n        list(\n          x = estado_i$destaque_x,\n          y = estado_i$destaque_y\n        )\n      ),\n\n      traces = c(0, 1, 2, 3),\n\n      layout = list(\n        annotations = list(\n          list(\n            text = estado_i$titulo,\n            x = 0.5,\n            y = 1.08,\n            xref = \"paper\",\n            yref = \"paper\",\n            showarrow = FALSE,\n            font = list(\n              size = 17,\n              color = \"#333333\"\n            )\n          )\n        )\n      )\n    )\n  }\n)\n\n# ============================================================\n# 6. Gráfico inicial com quatro traços fixos\n# ============================================================\n\nestado_inicial &lt;- estados[[1]]\n\ngrafico &lt;- plot_ly() |&gt;\n\n  # ----------------------------------------------------------\n  # Traço 0 — todas as observações\n  # ----------------------------------------------------------\n\n  add_markers(\n    x = dados$x,\n    y = dados$y,\n    ids = dados$id,\n    name = \"Observações\",\n    marker = list(\n      color = estado_inicial$cor_pontos,\n      size = 11,\n      opacity = 0.88,\n      symbol = \"circle\",\n      line = list(\n        color = \"white\",\n        width = 0.6\n      )\n    ),\n    text = paste0(\"Indivíduo \", dados$id),\n    hovertemplate = paste0(\n      \"&lt;b&gt;%{text}&lt;/b&gt;\",\n      \"&lt;br&gt;x = %{x:.2f}\",\n      \"&lt;br&gt;y = %{y:.2f}\",\n      \"&lt;extra&gt;&lt;/extra&gt;\"\n    )\n  ) |&gt;\n\n  # ----------------------------------------------------------\n  # Traço 1 — centróides explicitamente rotulados\n  # ----------------------------------------------------------\n\n  add_trace(\n    x = estado_inicial$centroides$x,\n    y = estado_inicial$centroides$y,\n    type = \"scatter\",\n    mode = \"markers+text\",\n    name = \"Centróides\",\n    text = estado_inicial$centroides$rotulo,\n    textposition = \"top center\",\n    textfont = list(\n      size = 17,\n      color = \"#111111\"\n    ),\n    marker = list(\n      color = cores_centroides,\n      size = 24,\n      symbol = \"star\",\n      opacity = 1,\n      line = list(\n        color = \"#222222\",\n        width = 2\n      )\n    ),\n    hovertemplate = paste0(\n      \"&lt;b&gt;Centróide %{text}&lt;/b&gt;\",\n      \"&lt;br&gt;x = %{x:.2f}\",\n      \"&lt;br&gt;y = %{y:.2f}\",\n      \"&lt;extra&gt;&lt;/extra&gt;\"\n    )\n  ) |&gt;\n\n  # ----------------------------------------------------------\n  # Traço 2 — linha entre indivíduo e centróide\n  # ----------------------------------------------------------\n\n  add_lines(\n    x = c(NA_real_, NA_real_),\n    y = c(NA_real_, NA_real_),\n    name = \"Alocação\",\n    line = list(\n      color = \"#555555\",\n      width = 2.5,\n      dash = \"dot\"\n    ),\n    hoverinfo = \"skip\",\n    showlegend = FALSE\n  ) |&gt;\n\n  # ----------------------------------------------------------\n  # Traço 3 — destaque do indivíduo atual\n  # ----------------------------------------------------------\n\n  add_markers(\n    x = NA_real_,\n    y = NA_real_,\n    name = \"Indivíduo em análise\",\n    marker = list(\n      size = 19,\n      symbol = \"circle-open\",\n      color = \"#111111\",\n      line = list(\n        width = 3,\n        color = \"#111111\"\n      )\n    ),\n    hoverinfo = \"skip\",\n    showlegend = FALSE\n  )\n\n# Inserir os frames\ngrafico$x$frames &lt;- frames_plotly\n\n# ============================================================\n# 7. Controles de reprodução\n# ============================================================\n\npassos_slider &lt;- lapply(\n  seq_along(nomes_frames),\n  function(i) {\n\n    # Mostrar rótulos apenas nos estados principais,\n    # evitando uma barra excessivamente carregada.\n    rotulo_slider &lt;- if (\n      i == 1 ||\n      i == length(nomes_frames) ||\n      grepl(\"centróides atualizados\", estados[[i]]$titulo)\n    ) {\n      paste0(\"Etapa \", i)\n    } else {\n      \"\"\n    }\n\n    list(\n      method = \"animate\",\n      label = rotulo_slider,\n      args = list(\n        list(nomes_frames[i]),\n        list(\n          mode = \"immediate\",\n          transition = list(duration = 0),\n          frame = list(\n            duration = 0,\n            redraw = TRUE\n          )\n        )\n      )\n    )\n  }\n)\n\ngrafico &lt;- grafico |&gt;\n  layout(\n    title = list(\n      text = \"Funcionamento do algoritmo K-médias\",\n      x = 0.5,\n      xanchor = \"center\"\n    ),\n\n    annotations = list(\n      list(\n        text = estado_inicial$titulo,\n        x = 0.5,\n        y = 1.08,\n        xref = \"paper\",\n        yref = \"paper\",\n        showarrow = FALSE,\n        font = list(size = 17)\n      )\n    ),\n\n    xaxis = list(\n      title = \"\",\n      showgrid = FALSE,\n      zeroline = FALSE,\n      showticklabels = FALSE,\n      range = c(\n        min(dados$x) - 1,\n        max(dados$x) + 1\n      )\n    ),\n\n    yaxis = list(\n      title = \"\",\n      showgrid = FALSE,\n      zeroline = FALSE,\n      showticklabels = FALSE,\n      scaleanchor = \"x\",\n      scaleratio = 1,\n      range = c(\n        min(dados$y) - 1,\n        max(dados$y) + 1\n      )\n    ),\n\n    legend = list(\n      orientation = \"h\",\n      x = 0.5,\n      xanchor = \"center\",\n      y = -0.08\n    ),\n\n    updatemenus = list(\n      list(\n        type = \"buttons\",\n        direction = \"left\",\n        x = 0,\n        y = -0.15,\n        showactive = FALSE,\n\n        buttons = list(\n          list(\n            label = \"▶ Reproduzir\",\n            method = \"animate\",\n            args = list(\n              NULL,\n              list(\n                fromcurrent = TRUE,\n                mode = \"immediate\",\n                transition = list(\n                  duration = 200\n                ),\n                frame = list(\n                  duration = 500,\n                  redraw = TRUE\n                )\n              )\n            )\n          ),\n\n          list(\n            label = \"⏸ Pausar\",\n            method = \"animate\",\n            args = list(\n              list(NULL),\n              list(\n                mode = \"immediate\",\n                transition = list(duration = 0),\n                frame = list(\n                  duration = 0,\n                  redraw = FALSE\n                )\n              )\n            )\n          )\n        )\n      )\n    ),\n\n    sliders = list(\n      list(\n        active = 0,\n        currentvalue = list(\n          prefix = \"\",\n          font = list(size = 14)\n        ),\n        pad = list(t = 45),\n        steps = passos_slider\n      )\n    ),\n\n    margin = list(\n      l = 20,\n      r = 20,\n      t = 110,\n      b = 130\n    ),\n\n    paper_bgcolor = \"white\",\n    plot_bgcolor = \"white\"\n  )\n\ngrafico"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#funcionamento-do-algoritmo-k-médias-output",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#funcionamento-do-algoritmo-k-médias-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Funcionamento do algoritmo K-médias",
+    "text": "Funcionamento do algoritmo K-médias"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia intuitiva",
+    "text": "Ideia intuitiva\nO algoritmo alterna continuamente entre atribuir observações e atualizar centróides."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#etapa-1-atribuição-das-observações",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#etapa-1-atribuição-das-observações",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Etapa 1: Atribuição das observações",
+    "text": "Etapa 1: Atribuição das observações\nMantendo os centróides fixos, cada observação é atribuída ao centróide mais próximo.\nMatematicamente,\n\\[\n\\boxed{\nC_i\n=\n\\arg\\min_k\nd(x_i,\\mu_k)\n}\n\\]\nonde\n\n\n\\(x_i\\) representa uma observação;\n\n\\(\\mu_k\\) representa o centróide do grupo \\(k\\).\n\n\n\n\n\n\n\nNota\n\n\nCada observação pertence ao grupo cujo centróide apresenta a menor distância Euclidiana."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#etapa-2-atualização-dos-centróides",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#etapa-2-atualização-dos-centróides",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Etapa 2 — Atualização dos centróides",
+    "text": "Etapa 2 — Atualização dos centróides\nApós definir os grupos, cada centróide é recalculado utilizando a média das observações pertencentes ao grupo.\n\\[\n\\boxed{\n\\mu_k\n=\n\\frac1{n_k}\n\\sum_{i\\in C_k}\nx_i\n}\n\\]\nAssim, os centróides deslocam-se para posições mais representativas dos grupos.\n\n\n\n\n\n\nObservação\n\n\nOs novos centróides geralmente ocupam posições diferentes das posições iniciais."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-k-médias-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-k-médias-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Algoritmo K-médias",
+    "text": "Algoritmo K-médias\n\nEscolher o número de grupos \\(K\\).\nInicializar os centróides.\nAtribuir cada observação ao centróide mais próximo.\nAtualizar os centróides.\nRepetir os passos 3 e 4 até que não ocorram mudanças significativas.\n\n\n\n\n\n\n\nImportante\n\n\nO algoritmo converge porque, a cada iteração, a variabilidade interna dos grupos nunca aumenta."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-que-exatamente-o-algoritmo-está-tentando-otimizar",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-que-exatamente-o-algoritmo-está-tentando-otimizar",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O que exatamente o algoritmo está tentando otimizar?",
+    "text": "O que exatamente o algoritmo está tentando otimizar?\nO objetivo do K-médias é formar grupos\n\ninternamente homogêneos;\nexternamente bem separados.\n\nEm outras palavras, o algoritmo procura tornar cada grupo o mais compacto possível.\nQuanto mais próximas as observações estiverem do centróide, melhor será o agrupamento.\nA qualidade de um agrupamento é medida pela proximidade das observações em relação ao centróide do seu grupo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#variabilidade-dentro-de-um-grupo",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#variabilidade-dentro-de-um-grupo",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Variabilidade dentro de um grupo",
+    "text": "Variabilidade dentro de um grupo\nConsidere um grupo\n\\[\nC_k\n\\]\nCada observação possui uma distância até o centróide\n\\[\n\\mu_k\n\\]\nEssas distâncias medem o espalhamento interno do grupo.\nQuanto menores forem essas distâncias, mais compacto será o agrupamento."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#soma-dos-quadrados-intra-grupos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#soma-dos-quadrados-intra-grupos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Soma dos Quadrados Intra-Grupos",
+    "text": "Soma dos Quadrados Intra-Grupos\nPara um grupo, a variabilidade é medida por\n\\[\n\\boxed{\nW_k\n=\n\\sum_{x_i\\in C_k}\n\\|x_i-\\mu_k\\|^2\n}\n\\]\nA variabilidade total é\n\\[\n\\boxed{\nWCSS\n=\n\\sum_{k=1}^{K}\n\\sum_{x_i\\in C_k}\n\\|x_i-\\mu_k\\|^2\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#soma-dos-quadrados-intra-grupos-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#soma-dos-quadrados-intra-grupos-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Soma dos Quadrados Intra-Grupos",
+    "text": "Soma dos Quadrados Intra-Grupos\nonde\n\n\n\\(x_i\\) representa uma observação;\n\n\\(\\mu_k\\) representa o centróide do grupo \\(k\\).\n\n\n\n\n\n\n\nNota\n\n\nWCSS significa Within-Cluster Sum of Squares."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-problema-de-otimização",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-problema-de-otimização",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O problema de otimização",
+    "text": "O problema de otimização\nO algoritmo procura resolver\n\\[\n\\boxed{\n\\min_{C_1,\\ldots,C_K}\n\\;\n\\sum_{k=1}^{K}\n\\sum_{x_i\\in C_k}\n\\|x_i-\\mu_k\\|^2\n}\n\\]\nObserve que o algoritmo procura simultaneamente\n\ndefinir os grupos;\ncalcular os centróides.\n\nEsses dois problemas dependem um do outro.\nPor isso, o K-médias utiliza um procedimento iterativo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-elevar-as-distâncias-ao-quadrado",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-elevar-as-distâncias-ao-quadrado",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que elevar as distâncias ao quadrado?",
+    "text": "Por que elevar as distâncias ao quadrado?\nExistem três razões principais.\n\nEvitar cancelamento entre distâncias positivas e negativas;\nPenalizar mais fortemente observações muito distantes do centróide;\nProduzir uma função objetivo diferenciável e conveniente para otimização.\n\n\n\n\n\n\n\nObservação\n\n\nO uso das distâncias quadráticas faz com que o centróide ótimo seja exatamente a média das observações do grupo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-centróide-é-a-média",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-centróide-é-a-média",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que o centróide é a média?",
+    "text": "Por que o centróide é a média?\nConsidere um único grupo contendo \\(n_k\\) observações\n\\[\nx_1,x_2,\\ldots,x_{n_k}.\n\\]\nMantendo esse grupo fixo, o problema consiste em minimizar\n\\[\n\\boxed{\nf(\\mu)\n=\n\\sum_{i=1}^{n_k}\n\\|x_i-\\mu\\|^2\n}\n\\]\nem relação ao centróide \\(\\mu\\).\nOu seja, queremos encontrar o ponto que torna mínima a soma das distâncias quadráticas até todas as observações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-solução-do-problema",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-solução-do-problema",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A solução do problema",
+    "text": "A solução do problema\nExpandindo a função objetivo,\n\\[\nf(\\mu)\n=\n\\sum_{i=1}^{n_k}\n(x_i-\\mu)^2\n\\]\nDerivando em relação ao centróide,\n\\[\n\\frac{\\partial f}{\\partial\\mu}\n=\n-2\n\\sum_{i=1}^{n_k}\n(x_i-\\mu)\n\\]\nNo ponto de mínimo,\n\\[\n\\frac{\\partial f}{\\partial\\mu}=0\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-solução-do-problema-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#a-solução-do-problema-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "A solução do problema",
+    "text": "A solução do problema\nLogo,\n\\[\n\\sum_{i=1}^{n_k}(x_i-\\mu)=0,\n\\]\no que implica\n\\[\n\\boxed{\n\\mu\n=\n\\frac1{n_k}\n\\sum_{i=1}^{n_k}\nx_i\n}\n\\]\n\n\n\n\n\n\nImportante\n\n\nO melhor centróide, no sentido de minimizar a soma dos quadrados das distâncias, é exatamente a média das observações do grupo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#como-tudo-se-conecta",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#como-tudo-se-conecta",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como tudo se conecta?",
+    "text": "Como tudo se conecta?\nAgora entendemos por que o algoritmo possui exatamente duas etapas.\n1. Manter os centróides fixos\nCada observação é atribuída ao centróide mais próximo.\n↓\n2. Manter os grupos fixos\nCada centróide é atualizado para a média das observações do grupo.\n↓\nEssas duas etapas reduzem sucessivamente\n\\[\n\\boxed{\nWCSS=\n\\sum_{k=1}^{K}\n\\sum_{x_i\\in C_k}\n\\|x_i-\\mu_k\\|^2\n}\n\\]\naté que os grupos se estabilizem.\n\n\n\n\n\n\nNote\n\n\nO algoritmo K-médias é um procedimento iterativo de otimização por minimizações alternadas (alternating minimization): alterna entre otimizar as atribuições dos pontos e otimizar as posições dos centróides."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-algoritmo-converge",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-algoritmo-converge",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que o algoritmo converge?",
+    "text": "Por que o algoritmo converge?\nEm cada iteração, o algoritmo executa duas operações:\n\n\nAtribuição das observações\nCada observação é enviada ao centróide mais próximo.\n\n\nAtualização dos centróides\nCada centróide é recalculado como a média das observações do grupo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-algoritmo-converge-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#por-que-o-algoritmo-converge-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Por que o algoritmo converge?",
+    "text": "Por que o algoritmo converge?\nEm ambas as etapas, a função objetivo\n\\[\nWCSS=\n\\sum_{k=1}^{K}\n\\sum_{x_i\\in C_k}\n\\|x_i-\\mu_k\\|^2\n\\]\nnunca aumenta.\n\n\n\n\n\n\nImportante\n\n\nA cada iteração, o valor de WCSS diminui ou permanece constante."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-algoritmo-encontra-sempre-a-melhor-solução",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#o-algoritmo-encontra-sempre-a-melhor-solução",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O algoritmo encontra sempre a melhor solução?",
+    "text": "O algoritmo encontra sempre a melhor solução?\nInfelizmente, não.\nO problema de otimização do K-médias é não convexo.\nIsso significa que diferentes inicializações podem levar a diferentes soluções.\n\\[\n\\boxed{\n\\text{K-means}\n\\Longrightarrow\n\\text{mínimo local}\n}\n\\]\n\n\n\n\n\n\nCuidado\n\n\nO resultado depende da escolha inicial dos centróides."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#como-reduzir-a-dependência-da-inicialização",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#como-reduzir-a-dependência-da-inicialização",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Como reduzir a dependência da inicialização?",
+    "text": "Como reduzir a dependência da inicialização?\nNa prática, duas estratégias são amplamente utilizadas.\nMúltiplas inicializações\nExecutar o algoritmo diversas vezes, mantendo a solução com menor WCSS.\nInicialização K-means++\nSelecionar centróides iniciais bem distribuídos, reduzindo a probabilidade de convergência para soluções ruins.\nA maioria das implementações modernas utiliza K-means++ como padrão."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#quando-o-algoritmo-termina",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#quando-o-algoritmo-termina",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Quando o algoritmo termina?",
+    "text": "Quando o algoritmo termina?\nO algoritmo encerra quando ocorre uma das seguintes situações:\n\nos centróides deixam de se mover;\nnenhuma observação muda de grupo;\na redução em WCSS torna-se desprezível;\né atingido o número máximo de iterações.\n\nEm geral, a convergência ocorre após poucas iterações.\nO K-médias sempre converge em um número finito de passos, embora não necessariamente para o mínimo global."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-do-número-de-grupos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-do-número-de-grupos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Escolha do número de grupos",
+    "text": "Escolha do número de grupos\nO algoritmo K-médias exige que o número de grupos seja definido antes da execução.\nNa prática, raramente esse valor é conhecido antecipadamente.\nPor esse motivo, diversos critérios foram desenvolvidos para auxiliar na escolha de um valor adequado para \\(K\\)."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-do-número-de-grupos-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-do-número-de-grupos-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Escolha do número de grupos",
+    "text": "Escolha do número de grupos\nOs mais utilizados são:\n\nMétodo do Cotovelo (Elbow Method);\nCoeficiente de Silhouette;\nGap Statistic.\n\nA escolha de \\(K\\) influencia diretamente a qualidade do agrupamento obtido."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#método-do-cotovelo",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#método-do-cotovelo",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Método do Cotovelo",
+    "text": "Método do Cotovelo\nÀ medida que aumentamos o número de grupos, a variabilidade interna dos grupos diminui.\nEssa redução pode ser medida por\n\\[\nWCSS\n=\n\\sum_{k=1}^{K}\n\\sum_{x_i\\in C_k}\n\\|x_i-\\mu_k\\|^2.\n\\]\nO Método do Cotovelo consiste em representar o valor de WCSS em função de \\(K.\\)\nO ponto onde a redução deixa de ser significativa sugere um valor adequado para o número de grupos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-do-método-do-cotovelo",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-do-método-do-cotovelo",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação do Método do Cotovelo",
+    "text": "Interpretação do Método do Cotovelo\nInicialmente, cada novo grupo reduz significativamente a variabilidade interna.\nEntretanto, a partir de determinado valor, o ganho obtido torna-se cada vez menor.\nO cotovelo representa um equilíbrio entre\n\nsimplicidade do modelo;\nqualidade do agrupamento.\n\n\n\n\n\n\n\nObservação\n\n\nNem sempre o cotovelo é claramente definido."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#coeficiente-de-silhouette",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#coeficiente-de-silhouette",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Coeficiente de Silhouette",
+    "text": "Coeficiente de Silhouette\nO coeficiente de Silhouette avalia simultaneamente\n\na coesão dentro dos grupos;\na separação entre grupos diferentes.\n\nPara cada observação, define-se \\(a(i)\\) como a distância média às observações do próprio grupo, e \\(b(i)\\) como a menor distância média aos demais grupos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#coeficiente-de-silhouette-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#coeficiente-de-silhouette-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Coeficiente de Silhouette",
+    "text": "Coeficiente de Silhouette\nO índice é definido por\n\\[\n\\boxed{\ns(i)=\n\\frac{b(i)-a(i)}\n{\\max\\{a(i),b(i)\\}}\n}\n\\]\nonde\n\\[\n-1\\le s(i)\\le1\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-do-coeficiente-de-silhouette",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-do-coeficiente-de-silhouette",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação do coeficiente de Silhouette",
+    "text": "Interpretação do coeficiente de Silhouette\nValores próximos de \\(1\\) indicam observações bem agrupadas. Valores próximos de \\(0\\) indicam observações localizadas na fronteira entre grupos.\nValores negativos indicam provável classificação incorreta.\n\n\nValor de \\(s(i)\\)\n\nInterpretação\n\n\n\npróximo de 1\nexcelente agrupamento\n\n\npróximo de 0\nfronteira entre grupos\n\n\nmenor que 0\nprovável grupo incorreto\n\n\n\n\n\n\n\n\n\nObservação\n\n\nNa prática, utiliza-se a média dos coeficientes de Silhouette para comparar diferentes valores de \\(K.\\)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#critérios-para-escolha-do-número-de-grupos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#critérios-para-escolha-do-número-de-grupos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Critérios para escolha do número de grupos",
+    "text": "Critérios para escolha do número de grupos\n\n\nCritério\nIdeia principal\nMelhor valor\n\n\n\nMétodo do Cotovelo\nredução de WCSS\nponto de inflexão\n\n\nSilhouette\nseparação entre grupos\nmaior valor médio\n\n\nGap Statistic\ncomparação com dados aleatórios\nmaior Gap\n\n\n\nCada critério fornece uma perspectiva diferente sobre a estrutura dos dados.\nPor esse motivo, é recomendável utilizar mais de um método na escolha de \\(K.\\)\n\n\n\n\n\n\nObservação\n\n\nEm aplicações práticas, o Método do Cotovelo e o coeficiente de Silhouette são frequentemente utilizados em conjunto."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#efeito-da-escolha-do-número-de-grupos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#efeito-da-escolha-do-número-de-grupos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Efeito da escolha do número de grupos",
+    "text": "Efeito da escolha do número de grupos\nA escolha do número de grupos influencia diretamente a interpretação dos dados.\nUma mesma base pode produzir agrupamentos bastante diferentes dependendo do valor adotado para \\(K.\\)\n\n\nValor de \\(K\\)\n\nConsequência\n\n\n\nPequeno\nGrupos distintos são fundidos.\n\n\nAdequado\nA estrutura natural é bem representada.\n\n\nGrande\nUm mesmo grupo é dividido em vários subgrupos.\n\n\n\nO objetivo não é obter o maior número possível de grupos, mas encontrar uma representação simples e consistente da estrutura dos dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#efeito-da-escolha-do-número-de-grupos-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#efeito-da-escolha-do-número-de-grupos-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Efeito da escolha do número de grupos",
+    "text": "Efeito da escolha do número de grupos\n\nO melhor valor de K depende do objetivo da análise e da estrutura dos dados. Os critérios estatísticos auxiliam essa escolha, mas a interpretação do problema continua sendo fundamental."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-k-médias-utilizando-a-base-iris",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-k-médias-utilizando-a-base-iris",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: K-médias utilizando a base Iris",
+    "text": "R: K-médias utilizando a base Iris\n\nlibrary(tidyverse)\n\ndados &lt;-\n  iris |&gt;\n  select(-Species)\n\nmodelo &lt;-\n  kmeans(\n    dados,\n    centers = 3,\n    nstart = 50\n  )\n\nmodelo"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-k-médias-utilizando-a-base-iris-output",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-k-médias-utilizando-a-base-iris-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: K-médias utilizando a base Iris",
+    "text": "R: K-médias utilizando a base Iris\n\nK-means clustering with 3 clusters of sizes 38, 50, 62\n\nCluster means:\n  Sepal.Length Sepal.Width Petal.Length Petal.Width\n1     6.850000    3.073684     5.742105    2.071053\n2     5.006000    3.428000     1.462000    0.246000\n3     5.901613    2.748387     4.393548    1.433871\n\nClustering vector:\n  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2\n [38] 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n [75] 3 3 3 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 3 1 1 1 1 3 1 1 1 1\n[112] 1 1 3 3 1 1 1 1 3 1 3 1 3 1 1 3 3 1 1 1 1 1 3 1 1 1 1 3 1 1 1 3 1 1 1 3 1\n[149] 1 3\n\nWithin cluster sum of squares by cluster:\n[1] 23.87947 15.15100 39.82097\n (between_SS / total_SS =  88.4 %)\n\nAvailable components:\n\n[1] \"cluster\"      \"centers\"      \"totss\"        \"withinss\"     \"tot.withinss\"\n[6] \"betweenss\"    \"size\"         \"iter\"         \"ifault\""
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#limitações-do-algoritmo-k-médias",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#limitações-do-algoritmo-k-médias",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Limitações do algoritmo K-médias",
+    "text": "Limitações do algoritmo K-médias\nEmbora seja um dos algoritmos mais utilizados, o K-médias apresenta algumas limitações importantes.\n\nexige a definição prévia do número de grupos;\nassume grupos aproximadamente esféricos;\né sensível à inicialização dos centróides;\napresenta dificuldade para identificar estruturas hierárquicas.\n\nEssas limitações motivaram o desenvolvimento de outros métodos de agrupamento.\n\n\n\n\n\n\nImportante\n\n\nNem todos os conjuntos de dados possuem grupos aproximadamente circulares."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#agrupamento-hierárquico-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#agrupamento-hierárquico-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Agrupamento Hierárquico",
+    "text": "Agrupamento Hierárquico\nO agrupamento hierárquico constrói sucessivamente grupos maiores a partir das observações individuais.\nEm vez de produzir apenas uma partição dos dados, o algoritmo constrói uma estrutura em árvore, denominada dendrograma.\nEssa representação permite visualizar agrupamentos em diferentes níveis de detalhamento.\nO número de grupos pode ser definido posteriormente por meio do corte do dendrograma."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#formação-sucessiva-dos-grupos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#formação-sucessiva-dos-grupos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Formação sucessiva dos grupos",
+    "text": "Formação sucessiva dos grupos\nInicialmente, cada observação constitui um grupo independente.\nA cada etapa, os dois grupos mais próximos são unidos.\nEsse processo continua até que todas as observações pertençam a um único grupo.\nO agrupamento hierárquico é um processo sucessivo de fusões entre grupos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-hierárquico-aglomerativo",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-hierárquico-aglomerativo",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Algoritmo Hierárquico Aglomerativo",
+    "text": "Algoritmo Hierárquico Aglomerativo\nO procedimento pode ser resumido em quatro etapas.\n\nInicializar cada observação como um grupo.\nCalcular as distâncias entre todos os grupos.\nUnir os dois grupos mais próximos.\nAtualizar as distâncias e repetir o processo.\n\nO algoritmo termina quando todas as observações pertencem ao mesmo grupo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#formação-sucessiva-dos-grupos-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#formação-sucessiva-dos-grupos-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Formação sucessiva dos grupos",
+    "text": "Formação sucessiva dos grupos"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#construção-do-dendrograma",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#construção-do-dendrograma",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Construção do dendrograma",
+    "text": "Construção do dendrograma\nO dendrograma registra todas as fusões realizadas pelo algoritmo ao longo do processo de agrupamento.\nCada união representa a combinação de dois grupos.\nA altura em que ocorre cada fusão corresponde à distância entre esses grupos.\n\n\n\n\n\n\nImportante\n\n\nO dendrograma é um registro da sequência de fusões realizada pelo algoritmo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-dos-ramos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-dos-ramos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação dos ramos",
+    "text": "Interpretação dos ramos\nCada ramo do dendrograma representa um agrupamento formado durante a execução do algoritmo.\nQuanto menor a altura da união, mais semelhantes eram os grupos que foram combinados.\nUniões realizadas em alturas maiores indicam grupos menos semelhantes.\nA altura do ramo representa a distância utilizada para unir dois grupos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#corte-do-dendrograma",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#corte-do-dendrograma",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Corte do dendrograma",
+    "text": "Corte do dendrograma\nO agrupamento final é obtido por meio de um corte horizontal no dendrograma.\nCada ramo interceptado pelo corte corresponde a um grupo distinto.\nAssim, diferentes alturas produzem diferentes números de grupos.\n\n\n\n\n\n\nImportante\n\n\nO número de grupos não precisa ser definido antes da execução do algoritmo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#relação-entre-altura-de-corte-e-número-de-grupos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#relação-entre-altura-de-corte-e-número-de-grupos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Relação entre altura de corte e número de grupos",
+    "text": "Relação entre altura de corte e número de grupos\nÀ medida que o corte é realizado em alturas menores, o número de grupos aumenta.\nPor outro lado, cortes realizados em alturas maiores produzem agrupamentos mais amplos.\n\n\nAltura do corte\nNúmero de grupos\n\n\n\nAlta\nPoucos grupos\n\n\nIntermediária\nNúmero moderado de grupos\n\n\nBaixa\nMuitos grupos\n\n\n\nO dendrograma permite analisar simultaneamente diversas soluções de agrupamento."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-da-altura-de-corte",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-da-altura-de-corte",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Escolha da altura de corte",
+    "text": "Escolha da altura de corte\nEm muitos problemas, o melhor ponto de corte coincide com um grande salto nas distâncias entre fusões consecutivas.\nEsses saltos indicam que grupos relativamente distintos passaram a ser unidos.\nAssim, é recomendável realizar o corte imediatamente antes dessas grandes fusões.\n\n\n\n\n\n\nDica\n\n\nGrandes espaços verticais no dendrograma costumam indicar boas escolhas para o corte."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#características-do-agrupamento-hierárquico",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#características-do-agrupamento-hierárquico",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Características do agrupamento hierárquico",
+    "text": "Características do agrupamento hierárquico\nVantagens\n\nnão exige a definição prévia do número de grupos;\nproduz uma representação hierárquica dos dados;\npermite explorar diferentes níveis de agrupamento.\n\nLimitações\n\ncusto computacional elevado para grandes bases;\ndecisões de fusão não podem ser desfeitas;\nsensível à medida de distância e ao método de ligação.\n\n\n\n\n\n\n\nImportante\n\n\nO agrupamento hierárquico oferece maior flexibilidade de interpretação, porém possui maior custo computacional que o K-médias."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#distância-entre-grupos",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#distância-entre-grupos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Distância entre grupos",
+    "text": "Distância entre grupos\nApós as primeiras fusões, cada grupo passa a conter várias observações.\nNesse momento surge uma nova questão:\n\nComo calcular a distância entre dois grupos?\n\nExistem diferentes maneiras de definir essa distância.\nCada definição conduz a um método de ligação (linkage) diferente.\n\n\n\n\n\n\nImportante\n\n\nA definição da distância entre grupos influencia diretamente a estrutura do dendrograma."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ligação-simples-single-linkage",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ligação-simples-single-linkage",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ligação simples (Single Linkage)",
+    "text": "Ligação simples (Single Linkage)\nNa ligação simples, a distância entre dois grupos é definida como a menor distância entre quaisquer duas observações pertencentes a grupos diferentes.\n\\[\n\\boxed{\nd(A,B)=\n\\min_{x_i\\in A,\\;x_j\\in B}\nd(x_i,x_j)\n}\n\\]\nCaracterísticas:\n\npreserva estruturas alongadas;\nconecta rapidamente grupos próximos;\npode produzir o efeito de encadeamento (chaining effect).\n\n\n\n\n\n\n\nNota\n\n\nA união ocorre pelos dois pontos mais próximos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ligação-completa-complete-linkage",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ligação-completa-complete-linkage",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ligação completa (Complete Linkage)",
+    "text": "Ligação completa (Complete Linkage)\nNa ligação completa, a distância entre dois grupos corresponde à maior distância entre quaisquer duas observações pertencentes aos grupos.\n\\[\n\\boxed{\nd(A,B)=\n\\max_{x_i\\in A,\\;x_j\\in B}\nd(x_i,x_j)\n}\n\\]\nCaracterísticas:\n\nfavorece grupos compactos;\nreduz o efeito de encadeamento;\né mais sensível a observações extremas.\n\n\n\n\n\n\n\nNota\n\n\nA união considera o par de observações mais distante."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ligação-média-average-linkage",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ligação-média-average-linkage",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ligação média (Average Linkage)",
+    "text": "Ligação média (Average Linkage)\nNa ligação média, a distância entre dois grupos é calculada pela média de todas as distâncias entre pares de observações pertencentes aos dois grupos.\n\\[\n\\boxed{\nd(A,B)=\n\\frac1{|A||B|}\n\\sum_{x_i\\in A}\n\\sum_{x_j\\in B}\nd(x_i,x_j)\n}\n\\]\nCaracterísticas:\n\nutiliza toda a informação disponível;\nproduz agrupamentos mais equilibrados;\nreduz a influência de casos extremos.\n\n\n\n\n\n\n\nNota\n\n\nRepresenta um compromisso entre os métodos de ligação simples e completa."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#método-de-ward",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#método-de-ward",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Método de Ward",
+    "text": "Método de Ward\nO método de Ward adota uma estratégia diferente.\nEm vez de utilizar uma distância entre observações, ele seleciona a fusão que provoca o menor aumento da variabilidade interna dos grupos.\nEquivalentemente, procura minimizar o aumento da soma dos quadrados intra-grupos (WCSS).\n\\[\n\\boxed{\n\\Delta WCSS\n=\nWCSS_{após}\n-\nWCSS_{antes}\n}\n\\]\n\n\n\n\n\n\nImportante\n\n\nO método de Ward aproxima a ideia utilizada pelo algoritmo K-médias."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos de ligação",
+    "text": "Comparação dos métodos de ligação\nA mesma base de dados pode produzir dendrogramas diferentes dependendo do método de ligação utilizado.\nEssa diferença altera diretamente os agrupamentos obtidos após o corte da árvore.\n\n\n\n\n\n\nObservação\n\n\nO método de ligação influencia tanto a forma do dendrograma quanto os grupos finais."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-visual-dos-métodos-de-ligação",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-visual-dos-métodos-de-ligação",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação visual dos métodos de ligação",
+    "text": "Comparação visual dos métodos de ligação\nA mesma base de dados pode produzir dendrogramas diferentes dependendo do método de ligação utilizado.\nEssa diferença altera diretamente os agrupamentos obtidos após o corte da árvore.\n\n\n\n\n\n\nObservação\n\n\nO método de ligação influencia tanto a forma do dendrograma quanto os grupos finais."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-do-método-de-ligação",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#escolha-do-método-de-ligação",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Escolha do método de ligação",
+    "text": "Escolha do método de ligação\n\n\nSingle\n✓ menor distância\n✓ formas alongadas\n⚠ chaining\n\nComplete\n✓ grupos compactos\n⚠ sensível a extremos\n\n(inserir a figura comparando os quatro dendrogramas)\n\n\n\n\n\n\n\nImportant\n\n\nWard é geralmente o método recomendado para variáveis quantitativas padronizadas, pois produz grupos compactos e minimiza a variabilidade interna."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos de ligação",
+    "text": "Comparação dos métodos de ligação\n\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(patchwork)\nlibrary(ggdendro)\n\nset.seed(335)\n\n# --------------------------------------------------\n# 1. Construir uma única base com formas arbitrárias\n# --------------------------------------------------\n\n# Meia-lua superior\nn_lua &lt;- 75\ntheta1 &lt;- runif(n_lua, 0, pi)\n\nlua_superior &lt;- data.frame(\n  x = 2.8 * cos(theta1) + rnorm(n_lua, 0, 0.12),\n  y = 1.6 * sin(theta1) + rnorm(n_lua, 0, 0.12)\n)\n\n# Meia-lua inferior deslocada\ntheta2 &lt;- runif(n_lua, 0, pi)\n\nlua_inferior &lt;- data.frame(\n  x = 2.8 * cos(theta2) + 1.2 + rnorm(n_lua, 0, 0.12),\n  y = -1.6 * sin(theta2) - 0.45 + rnorm(n_lua, 0, 0.12)\n)\n\n# Grupo compacto à direita\nn_compacto &lt;- 45\n\ngrupo_compacto &lt;- data.frame(\n  x = rnorm(n_compacto, mean = 5.2, sd = 0.38),\n  y = rnorm(n_compacto, mean = 1.5, sd = 0.38)\n)\n\n# Pequena ponte de pontos\nponte &lt;- data.frame(\n  x = seq(3.1, 4.5, length.out = 12) + rnorm(12, 0, 0.05),\n  y = seq(0.25, 1.15, length.out = 12) + rnorm(12, 0, 0.05)\n)\n\ndados &lt;- bind_rows(\n  lua_superior,\n  lua_inferior,\n  grupo_compacto,\n  ponte\n) |&gt;\n  mutate(id = row_number())\n\n# Padronização\nX &lt;- scale(dados[, c(\"x\", \"y\")])\n\n# Mesma matriz de distâncias para todos os métodos\nD &lt;- dist(X, method = \"euclidean\")\n\n# --------------------------------------------------\n# 2. Ajustar os métodos de ligação\n# --------------------------------------------------\n\nmetodos &lt;- c(\n  \"single\",\n  \"complete\",\n  \"average\",\n  \"ward.D2\"\n)\n\nnomes &lt;- c(\n  \"Single\",\n  \"Complete\",\n  \"Average\",\n  \"Ward\"\n)\n\najustes &lt;- lapply(\n  metodos,\n  function(metodo) {\n    hclust(D, method = metodo)\n  }\n)\n\nnames(ajustes) &lt;- nomes\n\n# Número de grupos usado na comparação\nK &lt;- 3\n\n# --------------------------------------------------\n# 3. Função para produzir a partição\n# --------------------------------------------------\n\ngrafico_particao &lt;- function(ajuste, titulo) {\n\n  grupos &lt;- cutree(\n    ajuste,\n    k = K\n  )\n\n  dados_plot &lt;- dados |&gt;\n    mutate(\n      grupo = factor(grupos)\n    )\n\n  ggplot(\n    dados_plot,\n    aes(\n      x = x,\n      y = y,\n      color = grupo\n    )\n  ) +\n    geom_point(\n      size = 2.1,\n      alpha = 0.85\n    ) +\n    coord_equal(\n      xlim = range(dados$x),\n      ylim = range(dados$y)\n    ) +\n    labs(\n      title = titulo,\n      subtitle = paste0(\"Corte em K = \", K),\n      x = NULL,\n      y = NULL,\n      color = \"Grupo\"\n    ) +\n    theme_minimal(base_size = 13) +\n    theme(\n      plot.title = element_text(\n        face = \"bold\",\n        hjust = 0.5\n      ),\n      plot.subtitle = element_text(\n        hjust = 0.5,\n        size = 10\n      ),\n      legend.position = \"none\",\n      panel.grid.minor = element_blank(),\n      axis.text = element_blank(),\n      axis.ticks = element_blank()\n    )\n}\n\n# --------------------------------------------------\n# 4. Função para produzir o dendrograma\n# --------------------------------------------------\n\ngrafico_dendrograma &lt;- function(ajuste, titulo) {\n\n  dendro &lt;- ggdendro::dendro_data(\n    ajuste,\n    type = \"rectangle\"\n  )\n\n  alturas &lt;- sort(\n    ajuste$height,\n    decreasing = TRUE\n  )\n\n  altura_corte &lt;- mean(\n    c(\n      alturas[K - 1],\n      alturas[K]\n    )\n  )\n\n  ggplot(\n    ggdendro::segment(dendro)\n  ) +\n    geom_segment(\n      aes(\n        x = x,\n        y = y,\n        xend = xend,\n        yend = yend\n      ),\n      linewidth = 0.35\n    ) +\n    geom_hline(\n      yintercept = altura_corte,\n      linetype = 2,\n      linewidth = 0.65\n    ) +\n    labs(\n      title = titulo,\n      x = NULL,\n      y = \"Distância\"\n    ) +\n    scale_x_continuous(\n      breaks = NULL\n    ) +\n    theme_minimal(base_size = 12) +\n    theme(\n      plot.title = element_text(\n        face = \"bold\",\n        hjust = 0.5\n      ),\n      legend.position = \"none\",\n      panel.grid.minor = element_blank(),\n      panel.grid.major.x = element_blank()\n    )\n}\n\n# --------------------------------------------------\n# 5. Gráfico dos dados originais\n# --------------------------------------------------\n\ng_original &lt;- ggplot(\n  dados,\n  aes(x, y)\n) +\n  geom_point(\n    color = \"gray45\",\n    size = 2.1,\n    alpha = 0.85\n  ) +\n  coord_equal() +\n  labs(\n    title = \"Base original\",\n    subtitle = \"Formas arbitrárias e pontos de conexão\",\n    x = NULL,\n    y = NULL\n  ) +\n  theme_minimal(base_size = 13) +\n  theme(\n    plot.title = element_text(\n      face = \"bold\",\n      hjust = 0.5\n    ),\n    plot.subtitle = element_text(\n      hjust = 0.5,\n      size = 10\n    ),\n    panel.grid.minor = element_blank(),\n    axis.text = element_blank(),\n    axis.ticks = element_blank()\n  )\n\n# --------------------------------------------------\n# 6. Criar todos os painéis\n# --------------------------------------------------\n\ng_single_d &lt;- grafico_dendrograma(\n  ajustes[[\"Single\"]],\n  \"Single\"\n)\n\ng_complete_d &lt;- grafico_dendrograma(\n  ajustes[[\"Complete\"]],\n  \"Complete\"\n)\n\ng_average_d &lt;- grafico_dendrograma(\n  ajustes[[\"Average\"]],\n  \"Average\"\n)\n\ng_ward_d &lt;- grafico_dendrograma(\n  ajustes[[\"Ward\"]],\n  \"Ward\"\n)\n\ng_single_p &lt;- grafico_particao(\n  ajustes[[\"Single\"]],\n  \"Single\"\n)\n\ng_complete_p &lt;- grafico_particao(\n  ajustes[[\"Complete\"]],\n  \"Complete\"\n)\n\ng_average_p &lt;- grafico_particao(\n  ajustes[[\"Average\"]],\n  \"Average\"\n)\n\ng_ward_p &lt;- grafico_particao(\n  ajustes[[\"Ward\"]],\n  \"Ward\"\n)\n\n# --------------------------------------------------\n# 7. Comparação final\n# --------------------------------------------------\n\nlinha_dendrogramas &lt;- (\n  g_single_d |\n  g_complete_d |\n  g_average_d |\n  g_ward_d\n)\n\nlinha_particoes &lt;- (\n  g_single_p |\n  g_complete_p |\n  g_average_p |\n  g_ward_p\n)\n\nfigura_final &lt;- (\n  linha_dendrogramas /\n  linha_particoes\n) +\n  plot_layout(\n    heights = c(0.9, 1.1)\n  ) +\n  plot_annotation(\n    title = \"Métodos de ligação aplicados à mesma base\",\n    subtitle = \"Mesmos dados, mesma distância Euclidiana e mesmo corte em K = 3\",\n    theme = theme(\n      plot.title = element_text(\n        face = \"bold\",\n        size = 20,\n        hjust = 0.5\n      ),\n      plot.subtitle = element_text(\n        size = 13,\n        hjust = 0.5\n      )\n    )\n  )\n\nfigura_final"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#aplicações-dos-métodos-de-ligação",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#aplicações-dos-métodos-de-ligação",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Aplicações dos métodos de ligação",
+    "text": "Aplicações dos métodos de ligação\n\n\n\n\n\n\n\nMétodo\nQuando utilizar\nLimitação\n\n\n\nSingle\nEstruturas alongadas ou conexões naturais\nEfeito de encadeamento\n\n\nComplete\nGrupos compactos e bem separados\nSensível a extremos\n\n\nAverage\nSituações gerais\nMenor interpretação geométrica\n\n\nWard\nVariáveis quantitativas padronizadas\nNão indicado para variáveis categóricas\n\n\n\n\n\n\n\n\n\nNota\n\n\nEm aplicações de mineração de dados e estatística multivariada, o método de Ward costuma ser a primeira escolha."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-visual-dos-métodos-de-ligação-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-visual-dos-métodos-de-ligação-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação visual dos métodos de ligação",
+    "text": "Comparação visual dos métodos de ligação\n\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(patchwork)\nlibrary(ggdendro)\n\nset.seed(335)\n\n#--------------------------------------------------\n# 1. Gerar uma única base de dados\n#--------------------------------------------------\n\nn_por_grupo &lt;- 45\n\ndados &lt;- bind_rows(\n  data.frame(\n    x = rnorm(n_por_grupo, mean = -3.2, sd = 0.75),\n    y = rnorm(n_por_grupo, mean =  2.4, sd = 0.75)\n  ),\n  data.frame(\n    x = rnorm(n_por_grupo, mean =  0.0, sd = 0.85),\n    y = rnorm(n_por_grupo, mean = -2.2, sd = 0.85)\n  ),\n  data.frame(\n    x = rnorm(n_por_grupo, mean =  3.3, sd = 0.75),\n    y = rnorm(n_por_grupo, mean =  2.0, sd = 0.75)\n  )\n) |&gt;\n  mutate(id = row_number())\n\n# Padronização\nX &lt;- scale(dados[, c(\"x\", \"y\")])\n\n# Matriz de distâncias única para todos os métodos\nD &lt;- dist(X, method = \"euclidean\")\n\n#--------------------------------------------------\n# 2. Ajustar os quatro métodos\n#--------------------------------------------------\n\nmetodos &lt;- c(\n  \"single\",\n  \"complete\",\n  \"average\",\n  \"ward.D2\"\n)\n\nrotulos &lt;- c(\n  \"Single Linkage\",\n  \"Complete Linkage\",\n  \"Average Linkage\",\n  \"Ward\"\n)\n\najustes &lt;- lapply(\n  metodos,\n  function(metodo) {\n    hclust(\n      D,\n      method = metodo\n    )\n  }\n)\n\nnames(ajustes) &lt;- rotulos\n\n#--------------------------------------------------\n# 3. Tema comum\n#--------------------------------------------------\n\ntema_base &lt;- theme_minimal(base_size = 12) +\n  theme(\n    plot.title = element_text(\n      face = \"bold\",\n      hjust = 0.5\n    ),\n    panel.grid.minor = element_blank(),\n    legend.position = \"none\"\n  )\n\n#--------------------------------------------------\n# 4. Função para gerar o dendrograma\n#--------------------------------------------------\n\ngrafico_dendrograma &lt;- function(ajuste, titulo, k = 3) {\n\n  dendro &lt;- ggdendro::dendro_data(\n    ajuste,\n    type = \"rectangle\"\n  )\n\n  # Altura de corte correspondente a k grupos\n  alturas &lt;- sort(\n    ajuste$height,\n    decreasing = TRUE\n  )\n\n  altura_corte &lt;- mean(\n    c(\n      alturas[k - 1],\n      alturas[k]\n    )\n  )\n\n  ggplot(\n    ggdendro::segment(dendro)\n  ) +\n    geom_segment(\n      aes(\n        x = x,\n        y = y,\n        xend = xend,\n        yend = yend\n      ),\n      linewidth = 0.45\n    ) +\n    geom_hline(\n      yintercept = altura_corte,\n      linetype = 2,\n      linewidth = 0.7\n    ) +\n    labs(\n      title = titulo,\n      x = NULL,\n      y = \"Distância\"\n    ) +\n    scale_x_continuous(\n      breaks = NULL\n    ) +\n    tema_base\n}\n\n#--------------------------------------------------\n# 5. Função para gerar a partição\n#--------------------------------------------------\n\ngrafico_particao &lt;- function(ajuste, titulo, k = 3) {\n\n  grupos &lt;- cutree(\n    ajuste,\n    k = k\n  )\n\n  dados_plot &lt;- dados |&gt;\n    mutate(\n      grupo = factor(grupos)\n    )\n\n  ggplot(\n    dados_plot,\n    aes(\n      x = x,\n      y = y,\n      color = grupo\n    )\n  ) +\n    geom_point(\n      size = 2.1,\n      alpha = 0.82\n    ) +\n    coord_equal(\n      xlim = range(dados$x),\n      ylim = range(dados$y)\n    ) +\n    labs(\n      title = paste0(titulo, \" — K = \", k),\n      x = expression(X[1]),\n      y = expression(X[2]),\n      color = \"Grupo\"\n    ) +\n    tema_base +\n    theme(\n      plot.title = element_text(\n        size = 11,\n        face = \"bold\",\n        hjust = 0.5\n      )\n    )\n}\n\n#--------------------------------------------------\n# 6. Criar os gráficos\n#--------------------------------------------------\n\ng_single_d &lt;- grafico_dendrograma(\n  ajustes[[\"Single Linkage\"]],\n  \"Single Linkage\"\n)\n\ng_complete_d &lt;- grafico_dendrograma(\n  ajustes[[\"Complete Linkage\"]],\n  \"Complete Linkage\"\n)\n\ng_average_d &lt;- grafico_dendrograma(\n  ajustes[[\"Average Linkage\"]],\n  \"Average Linkage\"\n)\n\ng_ward_d &lt;- grafico_dendrograma(\n  ajustes[[\"Ward\"]],\n  \"Ward\"\n)\n\ng_single_p &lt;- grafico_particao(\n  ajustes[[\"Single Linkage\"]],\n  \"Single Linkage\"\n)\n\ng_complete_p &lt;- grafico_particao(\n  ajustes[[\"Complete Linkage\"]],\n  \"Complete Linkage\"\n)\n\ng_average_p &lt;- grafico_particao(\n  ajustes[[\"Average Linkage\"]],\n  \"Average Linkage\"\n)\n\ng_ward_p &lt;- grafico_particao(\n  ajustes[[\"Ward\"]],\n  \"Ward\"\n)\n\n#--------------------------------------------------\n# 7. Organizar em quatro colunas\n#--------------------------------------------------\n\nlinha_dendrogramas &lt;- (\n  g_single_d |\n  g_complete_d |\n  g_average_d |\n  g_ward_d\n)\n\nlinha_particoes &lt;- (\n  g_single_p |\n  g_complete_p |\n  g_average_p |\n  g_ward_p\n)\n\nfigura_final &lt;- (\n  linha_dendrogramas /\n  linha_particoes\n) +\n  plot_layout(\n    heights = c(1, 1.05)\n  ) +\n  plot_annotation(\n    title = \"Comparação dos métodos de ligação\",\n    subtitle = paste0(\n      \"Mesma base, mesma matriz de distâncias e corte em K = 3\"\n    ),\n    theme = theme(\n      plot.title = element_text(\n        face = \"bold\",\n        size = 20,\n        hjust = 0.5\n      ),\n      plot.subtitle = element_text(\n        size = 13,\n        hjust = 0.5\n      )\n    )\n  )\n\nfigura_final"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-visual-dos-métodos-de-ligação-1-output",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-visual-dos-métodos-de-ligação-1-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação visual dos métodos de ligação",
+    "text": "Comparação visual dos métodos de ligação"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#observação-importante",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#observação-importante",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Observação importante",
+    "text": "Observação importante\n\nO método de Ward é frequentemente considerado a alternativa hierárquica mais próxima do K-médias, pois ambos buscam formar grupos compactos por meio da minimização da variabilidade interna."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-1-output",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-1-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos de ligação",
+    "text": "Comparação dos métodos de ligação"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-2",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos de ligação",
+    "text": "Comparação dos métodos de ligação\nA mesma base de dados foi analisada utilizando quatro critérios diferentes para medir a distância entre grupos.\nObserva-se que:\n\n\nSingle Linkage apresenta o efeito de encadeamento (chaining), conectando a ponte de observações e formando um grupo alongado.\n\n\nComplete Linkage evita esse encadeamento, privilegiando grupos mais compactos, embora possa separar observações próximas para preservar a compacidade."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-3",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos de ligação",
+    "text": "Comparação dos métodos de ligação\nA mesma base de dados foi analisada utilizando quatro critérios diferentes para medir a distância entre grupos.\nObserva-se que:\n\n\nAverage Linkage produz uma solução intermediária, reduzindo o efeito de encadeamento sem ser tão restritivo quanto o método Complete.\n\n\nWard forma grupos mais homogêneos e compactos ao minimizar o aumento da variabilidade interna (WCSS), comportamento semelhante ao algoritmo K-médias.\n\n\n\n\n\n\n\nImportante\n\n\nComo todos os métodos utilizam exatamente a mesma base de dados, as diferenças observadas decorrem exclusivamente da forma como cada método define a distância entre grupos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-4",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#comparação-dos-métodos-de-ligação-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos de ligação",
+    "text": "Comparação dos métodos de ligação\n\n\nMétodo\nCritério\nCaracterística principal\n\n\n\nSingle\nMenor distância\nPreserva estruturas alongadas\n\n\nComplete\nMaior distância\nProduz grupos compactos\n\n\nAverage\nMédia das distâncias\nSolução intermediária\n\n\nWard\nMenor aumento do WCSS\nGrupos homogêneos"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#motivação-para-o-agrupamento-espectral",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#motivação-para-o-agrupamento-espectral",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Motivação para o Agrupamento Espectral",
+    "text": "Motivação para o Agrupamento Espectral\nAlguns conjuntos de dados apresentam estruturas que não podem ser representadas adequadamente por grupos aproximadamente esféricos.\nNesses casos, algoritmos como o K-médias podem produzir agrupamentos inadequados, mesmo quando os grupos são visualmente bem definidos.\nO agrupamento espectral foi desenvolvido para lidar com estruturas complexas, explorando as relações de similaridade entre as observações.\n\n\n\n\n\n\nImportante\n\n\nEm vez de agrupar diretamente os pontos, o algoritmo agrupa um grafo de similaridades construído a partir dos dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva-do-agrupamento-espectral",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva-do-agrupamento-espectral",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia intuitiva do Agrupamento Espectral",
+    "text": "Ideia intuitiva do Agrupamento Espectral\nO Agrupamento Espectral transforma o conjunto de dados em um grafo de similaridade.\nNesse grafo:\n\ncada observação é representada por um vértice (nó);\nobservações semelhantes são conectadas por arestas;\nquanto maior a similaridade, mais forte é a conexão entre os nós."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva-do-agrupamento-espectral-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#ideia-intuitiva-do-agrupamento-espectral-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Ideia intuitiva do Agrupamento Espectral",
+    "text": "Ideia intuitiva do Agrupamento Espectral\nAssim, o problema deixa de ser “agrupar pontos no espaço” e passa a ser identificar comunidades fortemente conectadas dentro do grafo.\n\n\n\n\n\n\nImportante\n\n\nO Agrupamento Espectral procura separar o grafo em grupos com muitas conexões internas e poucas conexões entre grupos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#construção-do-grafo-de-similaridade",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#construção-do-grafo-de-similaridade",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Construção do grafo de similaridade",
+    "text": "Construção do grafo de similaridade\nO primeiro passo do Agrupamento Espectral consiste em transformar o conjunto de dados em um grafo ponderado.\nPara isso, é necessário definir o grau de similaridade entre cada par de observações.\nQuanto maior a similaridade, mais forte será a conexão entre os respectivos nós do grafo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#construção-do-grafo-de-similaridade-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#construção-do-grafo-de-similaridade-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Construção do grafo de similaridade",
+    "text": "Construção do grafo de similaridade\nAs conexões podem ser construídas de diferentes maneiras:\n\n\nε-vizinhança: conecta observações cuja distância é inferior a um limite \\(\\varepsilon\\);\n\nk-vizinhos mais próximos (k-NN): conecta cada observação aos seus \\(k\\) vizinhos mais próximos;\n\nKernel Gaussiano (RBF): atribui pesos às conexões de acordo com a distância entre as observações.\n\n\n\n\n\n\n\nImportante\n\n\nA forma de construir o grafo influencia diretamente a qualidade dos agrupamentos obtidos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-de-adjacência-matriz-de-similaridade",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-de-adjacência-matriz-de-similaridade",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matriz de adjacência (matriz de similaridade)",
+    "text": "Matriz de adjacência (matriz de similaridade)\nO grafo de similaridade pode ser representado por uma matriz quadrada denominada matriz de adjacência, indicada por\n\\[\n\\mathbf{W}=[w_{ij}]\n\\]\nCada elemento \\(w_{ij}\\) representa a intensidade da conexão entre as observações \\(i\\) e \\(j\\).\nQuanto maior o valor de \\(w_{ij}\\), mais semelhantes são as duas observações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-de-adjacência-matriz-de-similaridade-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-de-adjacência-matriz-de-similaridade-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matriz de adjacência (matriz de similaridade)",
+    "text": "Matriz de adjacência (matriz de similaridade)\nNo caso do kernel Gaussiano (RBF),\n\\[\nw_{ij}\n=\n\\exp\\!\\left(\n-\\frac{\\|x_i-x_j\\|^2}{2\\sigma^2}\n\\right),\n\\]\nonde:\n\n\n\\(\\|x_i-x_j\\|\\) é a distância Euclidiana entre as observações;\n\n\\(\\sigma\\) controla a largura da vizinhança.\n\n\n\n\n\n\n\nImportante\n\n\nA matriz \\(\\mathbf{W}\\) descreve completamente o grafo de similaridade utilizado pelo Agrupamento Espectral."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-grau",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-grau",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matriz grau",
+    "text": "Matriz grau\nAlém da matriz de adjacência, o Agrupamento Espectral utiliza uma segunda matriz denominada matriz grau, representada por \\(\\mathbf{D}\\)\nO grau de um nó corresponde à soma dos pesos de todas as conexões incidentes sobre ele.\nMatematicamente,\n\\[\n\\boxed{\nd_i\n=\n\\sum_{j=1}^{n}\nw_{ij}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-grau-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-grau-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matriz grau",
+    "text": "Matriz grau\nA matriz grau é uma matriz diagonal,\n\\[\n\\mathbf{D}\n=\n\\begin{bmatrix}\nd_1&0&\\cdots&0\\\\\n0&d_2&\\cdots&0\\\\\n\\vdots&\\vdots&\\ddots&\\vdots\\\\\n0&0&\\cdots&d_n\n\\end{bmatrix}\n\\]\nonde cada elemento da diagonal representa o grau de uma observação.\n\n\n\n\n\n\nNota\n\n\nA matriz grau resume a intensidade total das conexões de cada nó no grafo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-laplaciana",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-laplaciana",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matriz Laplaciana",
+    "text": "Matriz Laplaciana\nA matriz Laplaciana combina a informação de conectividade da matriz grau com as relações de similaridade da matriz de adjacência.\nEla é definida por\n\\[\n\\boxed{\n\\mathbf{L}\n=\n\\mathbf{D}\n-\n\\mathbf{W}\n}\n\\]\nonde\n\n\n\\(\\mathbf{D}\\) representa o grau de cada nó;\n\n\\(\\mathbf{W}\\) representa a similaridade entre os nós."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-laplaciana-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#matriz-laplaciana-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matriz Laplaciana",
+    "text": "Matriz Laplaciana\nCada elemento da matriz Laplaciana mede o equilíbrio entre\n\na conectividade de um nó;\nsuas conexões com os demais nós.\n\nA matriz Laplaciana descreve a estrutura global do grafo e constitui a base matemática do Agrupamento Espectral."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-da-matriz-laplaciana",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-da-matriz-laplaciana",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação da matriz Laplaciana",
+    "text": "Interpretação da matriz Laplaciana\nA matriz Laplaciana combina duas informações fundamentais do grafo:\n\na intensidade das conexões de cada observação (matriz grau);\na similaridade entre observações (matriz de adjacência).\n\nSeu papel é medir quanto uma função definida sobre os nós varia ao longo das conexões do grafo.\nQuando dois nós fortemente conectados recebem valores muito diferentes, a matriz Laplaciana penaliza essa diferença."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-da-matriz-laplaciana-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-da-matriz-laplaciana-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação da matriz Laplaciana",
+    "text": "Interpretação da matriz Laplaciana\nAssim, o Agrupamento Espectral procura encontrar representações nas quais:\n\nobservações fortemente conectadas permaneçam próximas;\ngrupos distintos tornem-se naturalmente separáveis.\n\n\n\n\n\n\n\nImportante\n\n\nA matriz Laplaciana preserva a estrutura de conectividade do grafo e revela suas comunidades por meio de seus autovetores."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-matemática-da-matriz-laplaciana",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#interpretação-matemática-da-matriz-laplaciana",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Interpretação matemática da matriz Laplaciana",
+    "text": "Interpretação matemática da matriz Laplaciana\nConsidere um grafo ponderado com matriz de adjacência \\(\\mathbf{W}\\) e matriz grau \\(\\mathbf{D}\\).\nA matriz Laplaciana é definida por\n\\[\n\\boxed{\n\\mathbf{L}\n=\n\\mathbf{D}-\\mathbf{W}\n}\n\\]\nUma propriedade fundamental é sua forma quadrática:\n\\[\n\\boxed{\n\\mathbf{x}^{\\top}\\mathbf{L}\\mathbf{x}\n=\n\\frac12\n\\sum_{i=1}^{n}\n\\sum_{j=1}^{n}\nw_{ij}(x_i-x_j)^2\n}\n\\]\nonde \\(\\mathbf{x}=(x_1,\\ldots,x_n)^\\top\\) representa um valor associado a cada nó do grafo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#autovalores-e-autovetores-da-matriz-laplaciana",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#autovalores-e-autovetores-da-matriz-laplaciana",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Autovalores e autovetores da matriz Laplaciana",
+    "text": "Autovalores e autovetores da matriz Laplaciana\nO problema de minimizar a energia do grafo pode ser formulado como\n\\[\n\\min_{\\mathbf{x}}\n\\mathbf{x}^{\\top}\\mathbf{L}\\mathbf{x},\n\\]\nsujeito às restrições\n\\[\n\\mathbf{x}^{\\top}\\mathbf{x}=1,\n\\qquad\n\\mathbf{x}^{\\top}\\mathbf{1}=0.\n\\]\nA solução desse problema é obtida resolvendo\n\\[\n\\boxed{\n\\mathbf{L}\\mathbf{v}\n=\n\\lambda\\mathbf{v}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-do-agrupamento-espectral",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-do-agrupamento-espectral",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Algoritmo do Agrupamento Espectral",
+    "text": "Algoritmo do Agrupamento Espectral\nO Agrupamento Espectral transforma os dados para um novo espaço definido pelos autovetores da matriz Laplaciana e, nesse novo espaço, aplica um algoritmo tradicional de agrupamento.\nEtapas do algoritmo\n\nConstruir o grafo de similaridade dos dados;\nCalcular a matriz de adjacência \\(\\mathbf{W}\\);\nCalcular a matriz grau \\(\\mathbf{D}\\);\nConstruir a matriz Laplaciana\n\n\n\\[\n\\mathbf{L}=\\mathbf{D}-\\mathbf{W};\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-do-agrupamento-espectral-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#algoritmo-do-agrupamento-espectral-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Algoritmo do Agrupamento Espectral",
+    "text": "Algoritmo do Agrupamento Espectral\nO Agrupamento Espectral transforma os dados para um novo espaço definido pelos autovetores da matriz Laplaciana e, nesse novo espaço, aplica um algoritmo tradicional de agrupamento.\nEtapas do algoritmo\n\nCalcular os autovalores e autovetores de \\(\\mathbf{L}\\);\nSelecionar os \\(k\\) autovetores associados aos menores autovalores não nulos;\nFormar uma nova representação dos dados utilizando esses autovetores;\nAplicar o algoritmo K-médias nesse novo espaço.\n\n\n\n\n\n\n\nImportante\n\n\nO Agrupamento Espectral não substitui o K-médias. Ele transforma os dados em um espaço onde o K-médias consegue identificar corretamente grupos que originalmente não eram separáveis."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#espaço-espectral-onde-os-grupos-tornam-se-separáveis",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#espaço-espectral-onde-os-grupos-tornam-se-separáveis",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Espaço espectral: onde os grupos tornam-se separáveis",
+    "text": "Espaço espectral: onde os grupos tornam-se separáveis\nOs autovetores da matriz Laplaciana definem um novo sistema de coordenadas para as observações.\nNesse novo espaço:\n\nobservações fortemente conectadas no grafo permanecem próximas;\nobservações pertencentes a comunidades diferentes tornam-se naturalmente separáveis;\nestruturas complexas podem ser transformadas em grupos aproximadamente convexos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#espaço-espectral-onde-os-grupos-tornam-se-separáveis-1",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#espaço-espectral-onde-os-grupos-tornam-se-separáveis-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Espaço espectral: onde os grupos tornam-se separáveis",
+    "text": "Espaço espectral: onde os grupos tornam-se separáveis\nAssim, um algoritmo simples como o K-médias passa a identificar corretamente os agrupamentos.\nO Agrupamento Espectral não altera os grupos existentes nos dados; ele altera a forma de representá-los."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-agrupamento-espectral",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-agrupamento-espectral",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Agrupamento Espectral",
+    "text": "R: Agrupamento Espectral\n\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(patchwork)\nlibrary(cowplot)\n\nset.seed(335)\n\n#--------------------------------------------------\n# 1. Gerar a base Two Moons\n#--------------------------------------------------\n\nn &lt;- 400\nn_meia &lt;- n / 2\n\ntheta1 &lt;- runif(n_meia, 0, pi)\ntheta2 &lt;- runif(n_meia, 0, pi)\n\ndados &lt;- bind_rows(\n  data.frame(\n    x1 = cos(theta1) +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    x2 = sin(theta1) +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    estrutura = \"Lua 1\"\n  ),\n\n  data.frame(\n    x1 = 1 - cos(theta2) +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    x2 = -sin(theta2) + 0.45 +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    estrutura = \"Lua 2\"\n  )\n)\n\nX &lt;- scale(\n  as.matrix(\n    dados[, c(\"x1\", \"x2\")]\n  )\n)\n\n#--------------------------------------------------\n# 2. K-médias no espaço original\n#--------------------------------------------------\n\najuste_kmeans &lt;- kmeans(\n  X,\n  centers = 2,\n  nstart = 50\n)\n\ndados$grupo_kmeans &lt;- factor(\n  ajuste_kmeans$cluster\n)\n\n#--------------------------------------------------\n# 3. Construir a matriz de similaridade W\n#--------------------------------------------------\n\ndistancias2 &lt;- as.matrix(\n  dist(X)\n)^2\n\nsigma &lt;- 0.35\n\nW_completa &lt;- exp(\n  -distancias2 / (2 * sigma^2)\n)\n\ndiag(W_completa) &lt;- 0\n\n# Manter apenas os k vizinhos mais próximos\nk_vizinhos &lt;- 10\n\nW_knn &lt;- matrix(\n  0,\n  nrow = nrow(W_completa),\n  ncol = ncol(W_completa)\n)\n\nfor (i in seq_len(nrow(W_completa))) {\n\n  vizinhos &lt;- order(\n    W_completa[i, ],\n    decreasing = TRUE\n  )[seq_len(k_vizinhos)]\n\n  W_knn[i, vizinhos] &lt;-\n    W_completa[i, vizinhos]\n}\n\n# Tornar o grafo não direcionado\nW &lt;- pmax(\n  W_knn,\n  t(W_knn)\n)\n\n#--------------------------------------------------\n# 4. Matriz grau e Laplaciana normalizada\n#--------------------------------------------------\n\ngraus &lt;- rowSums(W)\n\nD_inv_sqrt &lt;- diag(\n  1 / sqrt(\n    pmax(graus, 1e-12)\n  )\n)\n\nL_norm &lt;- diag(nrow(W)) -\n  D_inv_sqrt %*%\n  W %*%\n  D_inv_sqrt\n\n# Garantir simetria numérica\nL_norm &lt;- (\n  L_norm + t(L_norm)\n) / 2\n\n#--------------------------------------------------\n# 5. Autovalores e autovetores\n#--------------------------------------------------\n\ndecomp &lt;- eigen(\n  L_norm,\n  symmetric = TRUE\n)\n\nordem &lt;- order(\n  decomp$values\n)\n\nautovalores &lt;- decomp$values[ordem]\nautovetores &lt;- decomp$vectors[, ordem]\n\n# Para K = 2, utilizar os dois menores autovetores\n# e normalizar as linhas, conforme a formulação\n# da Laplaciana simétrica normalizada.\nZ &lt;- autovetores[, 1:2, drop = FALSE]\n\nnormas &lt;- sqrt(\n  rowSums(Z^2)\n)\n\nZ &lt;- Z / pmax(\n  normas,\n  1e-12\n)\n\n#--------------------------------------------------\n# 6. K-médias no espaço espectral\n#--------------------------------------------------\n\najuste_espectral &lt;- kmeans(\n  Z,\n  centers = 2,\n  nstart = 50\n)\n\ndados$grupo_espectral &lt;- factor(\n  ajuste_espectral$cluster\n)\n\nespaco_espectral &lt;- data.frame(\n  v1 = Z[, 1],\n  v2 = Z[, 2],\n  grupo = dados$grupo_espectral,\n  estrutura = dados$estrutura\n)\n\n#--------------------------------------------------\n# 7. Tema comum\n#--------------------------------------------------\n\ntema_comum &lt;- theme_minimal(\n  base_size = 15\n) +\n  theme(\n    plot.title = element_text(\n      face = \"bold\",\n      hjust = 0.5\n    ),\n    plot.subtitle = element_text(\n      hjust = 0.5\n    ),\n    panel.grid.minor = element_blank()\n  )\n\n#--------------------------------------------------\n# 8. Paleta comum\n#--------------------------------------------------\n\ncores_grupos &lt;- c(\n  \"1\" = \"#F8766D\",\n  \"2\" = \"#00BFC4\"\n)\n\n#--------------------------------------------------\n# 9. Gráficos\n#--------------------------------------------------\n\ng_original &lt;- ggplot(\n  dados,\n  aes(x1, x2)\n) +\n  geom_point(\n    color = \"gray55\",\n    size = 2,\n    alpha = 0.8\n  ) +\n  coord_equal() +\n  labs(\n    title = \"Dados originais\",\n    subtitle = \"Estrutura não convexa\",\n    x = expression(X[1]),\n    y = expression(X[2])\n  ) +\n  tema_comum +\n  theme(\n    legend.position = \"none\"\n  )\n\ng_kmeans &lt;- ggplot(\n  dados,\n  aes(\n    x1,\n    x2,\n    color = grupo_kmeans\n  )\n) +\n  geom_point(\n    size = 2,\n    alpha = 0.8\n  ) +\n  coord_equal() +\n  scale_color_manual(\n    values = cores_grupos,\n    breaks = c(\"1\", \"2\"),\n    labels = c(\"Grupo 1\", \"Grupo 2\"),\n    drop = FALSE\n  ) +\n  labs(\n    title = \"K-médias\",\n    subtitle = \"Aplicado ao espaço original\",\n    x = expression(X[1]),\n    y = expression(X[2]),\n    color = \"Grupo\"\n  ) +\n  tema_comum\n\ng_espectral &lt;- ggplot(\n  dados,\n  aes(\n    x1,\n    x2,\n    color = grupo_espectral\n  )\n) +\n  geom_point(\n    size = 2,\n    alpha = 0.8\n  ) +\n  coord_equal() +\n  scale_color_manual(\n    values = cores_grupos,\n    breaks = c(\"1\", \"2\"),\n    labels = c(\"Grupo 1\", \"Grupo 2\"),\n    drop = FALSE\n  ) +\n  labs(\n    title = \"Agrupamento Espectral\",\n    subtitle = \"A conectividade das luas é preservada\",\n    x = expression(X[1]),\n    y = expression(X[2]),\n    color = \"Grupo\"\n  ) +\n  tema_comum\n\n#--------------------------------------------------\n# 10. Extrair uma legenda horizontal\n#--------------------------------------------------\n\nlegenda_inferior &lt;- cowplot::get_legend(\n  g_espectral +\n    guides(\n      color = guide_legend(\n        title.position = \"left\",\n        title.hjust = 0.5,\n        nrow = 1,\n        byrow = TRUE\n      )\n    ) +\n    theme(\n      legend.position = \"bottom\",\n      legend.direction = \"horizontal\",\n      legend.box = \"horizontal\",\n      legend.justification = \"center\",\n      legend.title = element_text(\n        face = \"bold\"\n      ),\n      legend.margin = margin(\n        t = 0,\n        r = 0,\n        b = 0,\n        l = 0\n      )\n    )\n)\n\n#--------------------------------------------------\n# 11. Remover legendas dos painéis\n#--------------------------------------------------\n\ng_kmeans_sem_legenda &lt;- g_kmeans +\n  theme(\n    legend.position = \"none\"\n  )\n\ng_espectral_sem_legenda &lt;- g_espectral +\n  theme(\n    legend.position = \"none\"\n  )\n\n#--------------------------------------------------\n# 12. Linha com os três gráficos\n#--------------------------------------------------\n\nlinha_graficos &lt;- cowplot::plot_grid(\n  g_original,\n  g_kmeans_sem_legenda,\n  g_espectral_sem_legenda,\n  nrow = 1,\n  align = \"hv\",\n  axis = \"tblr\",\n  rel_widths = c(1, 1, 1)\n)\n\n#--------------------------------------------------\n# 13. Cabeçalho\n#--------------------------------------------------\n\ncabecalho &lt;- cowplot::ggdraw() +\n  cowplot::draw_label(\n    \"K-médias × Agrupamento Espectral\",\n    x = 0.5,\n    y = 0.72,\n    hjust = 0.5,\n    fontface = \"bold\",\n    size = 21\n  ) +\n  cowplot::draw_label(\n    paste0(\n      \"Kernel RBF com σ = \",\n      sigma,\n      \" e grafo com \",\n      k_vizinhos,\n      \" vizinhos\"\n    ),\n    x = 0.5,\n    y = 0.22,\n    hjust = 0.5,\n    size = 13\n  )\n\n#--------------------------------------------------\n# 14. Figura final\n#--------------------------------------------------\n\nfigura_comparacao &lt;- cowplot::plot_grid(\n  cabecalho,\n  linha_graficos,\n  legenda_inferior,\n  ncol = 1,\n  rel_heights = c(\n    0.16,\n    1,\n    0.10\n  )\n)\n\nfigura_comparacao"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-agrupamento-espectral-output",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#r-agrupamento-espectral-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Agrupamento Espectral",
+    "text": "R: Agrupamento Espectral"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#agrupamento-espectral-no-r",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#agrupamento-espectral-no-r",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Agrupamento Espectral no R",
+    "text": "Agrupamento Espectral no R\n\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(patchwork)\n\nset.seed(335)\n\n# ============================================================\n# 1. Gerar a base Two Moons\n# ============================================================\n\nn &lt;- 400\nn_meia &lt;- n / 2\n\ntheta1 &lt;- runif(\n  n_meia,\n  min = 0,\n  max = pi\n)\n\ntheta2 &lt;- runif(\n  n_meia,\n  min = 0,\n  max = pi\n)\n\ndados &lt;- bind_rows(\n\n  # Lua superior\n  data.frame(\n    x1 = cos(theta1) +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    x2 = sin(theta1) +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    estrutura = \"Lua 1\"\n  ),\n\n  # Lua inferior\n  data.frame(\n    x1 = 1 - cos(theta2) +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    x2 = -sin(theta2) + 0.45 +\n      rnorm(n_meia, mean = 0, sd = 0.06),\n\n    estrutura = \"Lua 2\"\n  )\n) |&gt;\n  mutate(\n    id = row_number(),\n    estrutura = factor(\n      estrutura,\n      levels = c(\"Lua 1\", \"Lua 2\")\n    )\n  )\n\n# Matriz com as variáveis quantitativas\nX_original &lt;- as.matrix(\n  dados[, c(\"x1\", \"x2\")]\n)\n\n# Padronização\nX &lt;- scale(X_original)\n\n# ============================================================\n# 2. K-médias aplicado ao espaço original\n# ============================================================\n\najuste_kmeans &lt;- kmeans(\n  X,\n  centers = 2,\n  nstart = 100,\n  iter.max = 100\n)\n\ndados$grupo_kmeans &lt;- factor(\n  ajuste_kmeans$cluster,\n  levels = c(1, 2),\n  labels = c(\"Grupo 1\", \"Grupo 2\")\n)\n\n# ============================================================\n# 3. Matriz de similaridade com kernel RBF\n# ============================================================\n\ndistancias &lt;- as.matrix(\n  dist(X, method = \"euclidean\")\n)\n\ndistancias2 &lt;- distancias^2\n\nsigma &lt;- 0.35\n\nW_completa &lt;- exp(\n  -distancias2 / (2 * sigma^2)\n)\n\n# Não considerar autoconexões\ndiag(W_completa) &lt;- 0\n\n# ============================================================\n# 4. Grafo dos k vizinhos mais próximos\n# ============================================================\n\nk_vizinhos &lt;- 10\n\nW_knn &lt;- matrix(\n  0,\n  nrow = nrow(W_completa),\n  ncol = ncol(W_completa)\n)\n\nfor (i in seq_len(nrow(W_completa))) {\n\n  vizinhos_i &lt;- order(\n    W_completa[i, ],\n    decreasing = TRUE\n  )[seq_len(k_vizinhos)]\n\n  W_knn[i, vizinhos_i] &lt;-\n    W_completa[i, vizinhos_i]\n}\n\n# Tornar o grafo simétrico:\n# existe conexão quando i é vizinho de j\n# ou j é vizinho de i\nW &lt;- pmax(\n  W_knn,\n  t(W_knn)\n)\n\n# ============================================================\n# 5. Matriz grau\n# ============================================================\n\ngraus &lt;- rowSums(W)\n\n# Proteção numérica para possíveis graus iguais a zero\ngraus_seguros &lt;- pmax(\n  graus,\n  1e-12\n)\n\nD_inv_sqrt &lt;- diag(\n  1 / sqrt(graus_seguros)\n)\n\n# ============================================================\n# 6. Laplaciana simétrica normalizada\n# ============================================================\n\nn_obs &lt;- nrow(W)\n\nL_norm &lt;- diag(n_obs) -\n  D_inv_sqrt %*%\n  W %*%\n  D_inv_sqrt\n\n# Corrigir pequenas assimetrias de arredondamento numérico\nL_norm &lt;- (\n  L_norm + t(L_norm)\n) / 2\n\n# ============================================================\n# 7. Decomposição espectral\n# ============================================================\n\ndecomp &lt;- eigen(\n  L_norm,\n  symmetric = TRUE\n)\n\n# Organizar do menor para o maior autovalor\nordem &lt;- order(\n  decomp$values\n)\n\nautovalores &lt;- decomp$values[ordem]\nautovetores &lt;- decomp$vectors[, ordem, drop = FALSE]\n\n# Para K = 2, selecionar os dois autovetores\n# associados aos dois menores autovalores\nK &lt;- 2\n\nZ_bruto &lt;- autovetores[\n  ,\n  seq_len(K),\n  drop = FALSE\n]\n\n# ============================================================\n# 8. Normalização das linhas do embedding espectral\n# ============================================================\n\nnormas_linhas &lt;- sqrt(\n  rowSums(Z_bruto^2)\n)\n\nZ &lt;- Z_bruto /\n  pmax(normas_linhas, 1e-12)\n\ncolnames(Z) &lt;- c(\"v1\", \"v2\")\n\n# Cada linha de Z representa a mesma observação\n# correspondente à mesma linha da base dados\nespaco_espectral &lt;- data.frame(\n  id = dados$id,\n  v1 = Z[, 1],\n  v2 = Z[, 2],\n  estrutura = dados$estrutura\n)\n\n# ============================================================\n# 9. K-médias no espaço espectral\n# ============================================================\n\najuste_espectral &lt;- kmeans(\n  Z,\n  centers = K,\n  nstart = 100,\n  iter.max = 100\n)\n\ndados$grupo_espectral &lt;- factor(\n  ajuste_espectral$cluster,\n  levels = c(1, 2),\n  labels = c(\"Grupo 1\", \"Grupo 2\")\n)\n\nespaco_espectral$grupo_espectral &lt;-\n  dados$grupo_espectral\n\n# ============================================================\n# 10. Paleta comum\n# ============================================================\n\ncores_grupos &lt;- c(\n  \"Grupo 1\" = \"#F8766D\",\n  \"Grupo 2\" = \"#00BFC4\"\n)\n\n# ============================================================\n# 11. Tema comum\n# ============================================================\n\ntema_comum &lt;- theme_minimal(\n  base_size = 14\n) +\n  theme(\n    plot.title = element_text(\n      face = \"bold\",\n      size = 16,\n      hjust = 0.5\n    ),\n    plot.subtitle = element_text(\n      size = 11,\n      hjust = 0.5\n    ),\n    axis.title = element_text(\n      size = 13\n    ),\n    axis.text = element_text(\n      size = 10\n    ),\n    panel.grid.minor = element_blank(),\n\n    # A legenda de cada gráfico fica na parte inferior.\n    # O patchwork reunirá essas legendas posteriormente.\n    legend.position = \"bottom\",\n    legend.direction = \"horizontal\",\n    legend.title = element_text(\n      face = \"bold\"\n    ),\n    legend.box = \"horizontal\"\n  )\n\n# ============================================================\n# 12. Gráfico 1: dados originais\n# ============================================================\n\ng_original &lt;- ggplot(\n  dados,\n  aes(x = x1, y = x2)\n) +\n  geom_point(\n    color = \"gray55\",\n    size = 1.9,\n    alpha = 0.82\n  ) +\n  coord_equal() +\n  labs(\n    title = \"Dados originais\",\n    subtitle = \"Estrutura não convexa\",\n    x = expression(X[1]),\n    y = expression(X[2])\n  ) +\n  tema_comum +\n  theme(\n    legend.position = \"none\"\n  )\n\n# ============================================================\n# 13. Gráfico 2: K-médias no espaço original\n# ============================================================\n\ng_kmeans &lt;- ggplot(\n  dados,\n  aes(\n    x = x1,\n    y = x2,\n    color = grupo_kmeans\n  )\n) +\n  geom_point(\n    size = 1.9,\n    alpha = 0.82\n  ) +\n  coord_equal() +\n  scale_color_manual(\n    values = cores_grupos,\n    breaks = c(\"Grupo 1\", \"Grupo 2\"),\n    drop = FALSE\n  ) +\n  labs(\n    title = \"K-médias\",\n    subtitle = \"Aplicado diretamente ao espaço original\",\n    x = expression(X[1]),\n    y = expression(X[2]),\n    color = \"Grupo\"\n  ) +\n  tema_comum\n\n# ============================================================\n# 14. Gráfico 3: espaço espectral\n# ============================================================\n\ng_espaco &lt;- ggplot(\n  espaco_espectral,\n  aes(\n    x = v1,\n    y = v2,\n    color = grupo_espectral\n  )\n) +\n  geom_point(\n    size = 1.9,\n    alpha = 0.82\n  ) +\n  scale_color_manual(\n    values = cores_grupos,\n    breaks = c(\"Grupo 1\", \"Grupo 2\"),\n    drop = FALSE\n  ) +\n  labs(\n    title = \"Espaço espectral\",\n    subtitle = \"Coordenadas obtidas pelos autovetores\",\n    x = expression(v[1]),\n    y = expression(v[2]),\n    color = \"Grupo\"\n  ) +\n  tema_comum\n\n# ============================================================\n# 15. Gráfico 4: resultado espectral no espaço original\n# ============================================================\n\ng_espectral &lt;- ggplot(\n  dados,\n  aes(\n    x = x1,\n    y = x2,\n    color = grupo_espectral\n  )\n) +\n  geom_point(\n    size = 1.9,\n    alpha = 0.82\n  ) +\n  coord_equal() +\n  scale_color_manual(\n    values = cores_grupos,\n    breaks = c(\"Grupo 1\", \"Grupo 2\"),\n    drop = FALSE\n  ) +\n  labs(\n    title = \"Agrupamento Espectral\",\n    subtitle = \"Resultado exibido no espaço original\",\n    x = expression(X[1]),\n    y = expression(X[2]),\n    color = \"Grupo\"\n  ) +\n  tema_comum\n\n# ============================================================\n# 16. Figura completa com legenda única embaixo\n# ============================================================\n\nfigura_comparacao &lt;- wrap_plots(\n  g_original,\n  g_kmeans,\n  g_espaco,\n  g_espectral,\n  nrow = 1,\n  guides = \"collect\"\n) +\n  plot_annotation(\n    title = \"K-médias × Agrupamento Espectral\",\n    subtitle = paste0(\n      \"Kernel RBF com σ = \",\n      sigma,\n      \" e grafo com \",\n      k_vizinhos,\n      \" vizinhos\"\n    ),\n    theme = theme(\n      plot.title = element_text(\n        face = \"bold\",\n        size = 21,\n        hjust = 0.5\n      ),\n      plot.subtitle = element_text(\n        size = 13,\n        hjust = 0.5\n      )\n    )\n  )\n\nfigura_comparacao"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#agrupamento-espectral-no-r-output",
+    "href": "aulas/aprendizado_nao_supervisionado/analise_agrupamento/agrupamento.html#agrupamento-espectral-no-r-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Agrupamento Espectral no R",
+    "text": "Agrupamento Espectral no R"
   }
 ]
