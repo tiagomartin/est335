@@ -1,0 +1,3475 @@
+---
+title: "Parte III : Aprendizado não supervisionado"
+subtitle: "<span class='custom-subtitle'>Regras de Associação</span>"
+format: 
+  revealjs:
+    width: 1600
+    height: 900
+    footer: ""
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    preview-links: auto
+    self-contained: false
+    embed-resources: false
+    code-link: true
+    highlight-style: a11y
+    chalkboard: true
+  # beamer:          # Slides em PDF (LaTeX/Beamer)
+  #   aspectratio: 169   # 16:9
+  #   keep-tex: true     # opcional, guarda o .tex gerado
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+# Regras de Associação
+
+
+
+## Regras de Associação
+
+Regras de associação são utilizadas para identificar padrões de ocorrência conjunta entre itens.
+
+Uma aplicação clássica é a **análise de cesta de compras**:
+
+> Quais produtos costumam aparecer juntos em uma mesma transação?
+
+
+## Regras de Associação
+
+Exemplos:
+
+$$
+\{\text{pão}\}
+\Rightarrow
+\{\text{manteiga}\}
+$$
+
+$$
+\{\text{fraldas},\text{leite}\}
+\Rightarrow
+\{\text{cerveja}\}
+$$
+
+::: {.callout-important}
+## Importante
+O objetivo não é prever uma variável resposta, mas descobrir relações frequentes entre itens presentes nas transações.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc01.png){width=100%}
+
+
+
+## Estrutura dos dados transacionais
+
+Uma base de regras de associação é composta por um conjunto de transações.
+
+Cada transação contém um subconjunto de itens.
+
+| Transação | Itens |
+|:---------:|:------|
+| $T_1$ | pão, leite, manteiga |
+| $T_2$ | leite, iogurte |
+| $T_3$ | pão, manteiga |
+| $T_4$ | leite, frutas, iogurte |
+| $T_5$ | pão, leite |
+
+
+## Estrutura dos dados transacionais
+
+Formalmente,
+
+$$
+T_i \subseteq \mathcal{I},
+$$
+
+onde $\mathcal{I}$ representa o conjunto de todos os itens disponíveis.<br><br>
+
+::: {.callout-note}
+## Nota
+Diferentemente de uma base tabular tradicional, cada transação pode conter uma quantidade diferente de itens.
+
+:::
+
+
+
+
+## Estrutura de uma regra de associação
+
+Uma regra possui a forma
+
+$$
+X \Rightarrow Y
+$$
+
+onde:
+
+- $X$ é o **antecedente**;
+- $Y$ é o **consequente**;
+- $X\cap Y=\varnothing$.
+
+
+## Estrutura de uma regra de associação
+
+
+Exemplo:
+
+$$
+\{\text{pão},\text{manteiga}\}
+\Rightarrow
+\{\text{leite}\}
+$$
+
+A regra indica que transações contendo os itens de $X$ tendem também a conter os itens de $Y$.<br><br>
+
+::: {.callout-warning}
+## Cuidado
+Uma regra de associação representa coocorrência, não uma relação de causa e efeito.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc02.png){width=100%}
+
+
+
+
+## Suporte
+
+O suporte mede a frequência de ocorrência de um conjunto de itens.
+
+$$
+\operatorname{supp}(X)
+=
+\frac{
+\#\{\text{transações contendo }X\}
+}{
+\#\{\text{transações}\}
+}
+$$
+
+Para uma regra $X\Rightarrow Y$,
+
+$$
+\operatorname{supp}(X\Rightarrow Y)
+=
+\operatorname{supp}(X\cup Y)
+$$
+
+---
+
+
+### Exemplo
+
+A combinação
+
+$$
+\{\text{pão},\text{leite}\}
+$$
+
+aparece em 3 de 5 transações:
+
+$$
+\operatorname{supp}
+\left(
+\{\text{pão}\}\Rightarrow\{\text{leite}\}
+\right)
+=
+\frac{3}{5}
+=
+0{,}60
+$$
+
+::: {.callout-important}
+## Importante
+O suporte considera **toda a base de transações**, e não apenas as transações que contêm o antecedente.
+
+:::
+
+
+
+
+
+## Confiança
+
+A confiança mede a proporção de transações com $X$ que também contêm $Y$.
+
+$$
+\operatorname{conf}(X\Rightarrow Y)
+=
+\frac{
+\operatorname{supp}(X\cup Y)
+}{
+\operatorname{supp}(X)
+}
+$$
+
+Equivalentemente,
+
+$$
+\operatorname{conf}(X\Rightarrow Y)
+=
+\frac{
+\#\{\text{transações contendo }X\cup Y\}
+}{
+\#\{\text{transações contendo }X\}
+}
+=
+P(Y\mid X)
+$$
+
+---
+
+
+### Exemplo
+
+Se
+
+$$
+\operatorname{supp}(X)=0{,}80
+\qquad\text{e}\qquad
+\operatorname{supp}(X\cup Y)=0{,}60,
+$$
+
+então
+
+$$
+\operatorname{conf}(X\Rightarrow Y)
+=
+\frac{0{,}60}{0{,}80}
+=
+0{,}75
+$$
+
+::: {.callout-important}
+## Importante
+Quando $X$ ocorre, $Y$ também ocorre em **75% das transações**.
+
+:::
+
+
+
+
+## Lift
+
+O **lift** compara a frequência observada de uma regra com a frequência esperada caso o antecedente e o consequente fossem independentes.
+
+A definição é
+
+$$
+\operatorname{lift}(X\Rightarrow Y)
+=
+\frac{
+\operatorname{conf}(X\Rightarrow Y)
+}{
+\operatorname{supp}(Y)
+}
+$$
+
+Substituindo a expressão da confiança,
+
+$$
+\operatorname{lift}(X\Rightarrow Y)
+=
+\frac{
+\dfrac{\operatorname{supp}(X\cup Y)}
+{\operatorname{supp}(X)}
+}{
+\operatorname{supp}(Y)
+}
+$$
+
+
+## Lift
+
+obtemos
+
+$$
+\operatorname{lift}(X\Rightarrow Y)
+=
+\frac{
+\operatorname{supp}(X\cup Y)
+}{
+\operatorname{supp}(X)\,
+\operatorname{supp}(Y)
+}
+$$
+
+Como
+
+$$
+\operatorname{supp}(X)=P(X),
+\qquad
+\operatorname{supp}(Y)=P(Y),
+\qquad
+\operatorname{supp}(X\cup Y)=P(X\cap Y),
+$$
+
+## Lift
+
+
+segue que
+
+$$
+\operatorname{lift}(X\Rightarrow Y)
+=
+\frac{
+P(X\cap Y)
+}{
+P(X)\,P(Y)
+}
+$$
+
+::: {.callout-note}
+## Observação
+O lift mede quanto a ocorrência conjunta de $X$ e $Y$ difere da situação em que ambos seriam independentes.
+
+:::
+
+
+
+---
+
+
+### Exemplo
+
+Considere a regra
+
+$$
+\{\text{pão}\}
+\Rightarrow
+\{\text{leite}\}
+$$
+
+Suponha que
+
+$$
+\operatorname{supp}(\{\text{pão}\})=0{,}80,
+\qquad
+\operatorname{supp}(\{\text{leite}\})=0{,}75,
+\qquad
+\operatorname{supp}(\{\text{pão},\text{leite}\})=0{,}60,
+$$
+
+
+A confiança da regra é
+
+$$
+\operatorname{conf}
+\left(
+\{\text{pão}\}\Rightarrow\{\text{leite}\}
+\right)
+=
+\frac{
+\operatorname{supp}(\{\text{pão},\text{leite}\})
+}{
+\operatorname{supp}(\{\text{pão}\})
+}
+=
+\frac{0{,}60}{0{,}80}
+=
+0{,}75
+$$
+
+
+---
+
+
+### Exemplo
+
+
+O lift é dado por
+
+$$
+\operatorname{lift}
+\left(
+\{\text{pão}\}\Rightarrow\{\text{leite}\}
+\right)
+=
+\frac{
+\operatorname{conf}
+\left(
+\{\text{pão}\}\Rightarrow\{\text{leite}\}
+\right)
+}{
+\operatorname{supp}(\{\text{leite}\})
+}
+$$
+
+Substituindo os valores,
+
+$$
+\operatorname{lift}
+\left(
+\{\text{pão}\}\Rightarrow\{\text{leite}\}
+\right)
+=
+\frac{0{,}75}{0{,}75}
+=
+1
+$$
+
+Equivalentemente,
+
+$$
+\operatorname{lift}
+\left(
+\{\text{pão}\}\Rightarrow\{\text{leite}\}
+\right)
+=
+\frac{
+0{,}60
+}{
+0{,}80\times 0{,}75
+}
+=
+1
+$$
+
+
+---
+
+
+### Exemplo
+
+
+
+::: {.callout-important}
+## Importante
+O valor $\operatorname{lift}=1$ indica que a presença de pão não altera a probabilidade de compra de leite.
+
+Apesar da confiança de 75%, a associação não é maior do que seria esperado caso os dois itens fossem independentes.
+
+:::
+
+## Interpretação do Lift
+
+
+::: {.callout-important}
+## Interpretação do Lift
+lift > 1: associação positiva;
+
+lift = 1: associação equivalente ao acaso (independência);
+
+lift < 1: associação negativa.<br><br>
+:::
+
+
+
+### Exemplo 
+
+| Situação            | Confiança | Lift | Interpretação                             |
+| :------------------ | :-------: | :--: | :---------------------------------------- |
+| Leite → Pão         |    0,90   | 1,05 | Alta confiança, mas pouca informação nova |
+| Caviar → Champagne  |    0,45   |  6,8 | Associação rara, porém muito forte        |
+| Refrigerante → Água |    0,30   | 0,55 | Associação negativa                       |
+
+
+
+
+
+## Explosão combinatória
+
+Considere uma base contendo $m$ itens distintos.
+
+O número de possíveis conjuntos de itens (*itemsets*) é
+
+$$
+2^{m}-1
+$$
+
+Esse crescimento é exponencial.
+
+| Número de itens | Possíveis itemsets |
+|:---------------:|------------------:|
+| 10 | 1 023 |
+| 20 | 1 048 575 |
+| 30 | 1 073 741 823 |
+| 50 | $1,13\times10^{15}$ |
+
+
+## Explosão combinatória
+
+Mesmo para bases moderadas, torna-se inviável avaliar todas as combinações possíveis.
+
+
+O principal desafio das regras de associação não é calcular suporte ou confiança, mas reduzir drasticamente o número de combinações que precisam ser avaliadas.
+
+
+
+---
+
+![](/images/aprendNsuper/assoc03.png){width=100%}
+
+# Algoritmo Apriori
+
+## Propriedade Apriori
+
+O algoritmo Apriori baseia-se em uma propriedade simples, porém extremamente poderosa.
+
+> **Se um conjunto de itens é frequente, então todos os seus subconjuntos também são frequentes.**
+
+Equivalentemente,
+
+> **Se um subconjunto não é frequente, nenhum de seus superconjuntos poderá ser frequente.**
+
+
+
+## Propriedade Apriori
+
+
+Por exemplo,
+
+$$
+\{\text{leite},\text{pão},\text{manteiga}\}
+$$
+
+somente poderá ser frequente se
+
+- $\{\text{leite},\text{pão}\}$;
+- $\{\text{leite},\text{manteiga}\}$;
+- $\{\text{pão},\text{manteiga}\}$
+
+também forem frequentes.
+
+::: {.callout-important}
+## Importante
+Essa propriedade permite eliminar milhões de combinações antes mesmo de calcular seus suportes.
+
+:::
+
+
+
+
+---
+
+![](/images/aprendNsuper/assoc04.png){width=100%}
+
+
+## Geração dos conjuntos frequentes
+
+O algoritmo Apriori constrói os conjuntos frequentes de forma iterativa.
+
+### Passo 1
+
+- Calcular o suporte de todos os conjuntos com **1 item**.
+
+- Eliminar aqueles cujo suporte seja inferior ao suporte mínimo.
+
+
+### Passo 2
+
+- Combinar apenas os itens frequentes para formar conjuntos com **2 itens**.
+
+- Eliminar novamente aqueles cujo suporte seja inferior ao limite estabelecido.
+
+- Repetir esse procedimento para conjuntos de tamanho crescente.
+
+::: {.callout-note}
+## Nota
+A quantidade de candidatos diminui rapidamente graças à propriedade Apriori.
+
+:::
+
+
+
+
+
+---
+
+![](/images/aprendNsuper/assoc05.png){width=100%}
+
+
+
+
+
+## Fluxo do algoritmo Apriori
+
+O algoritmo pode ser resumido nas seguintes etapas:
+
+1. Definir o suporte mínimo;
+2. Encontrar todos os itemsets frequentes;
+3. Gerar candidatos de tamanho crescente;
+4. Eliminar candidatos usando a propriedade Apriori;
+5. Repetir até não existirem novos candidatos;
+6. Gerar as regras de associação;
+7. Filtrar regras por confiança e lift.
+
+::: {.callout-important}
+## Importante
+O Apriori primeiro encontra os **conjuntos frequentes**. As regras de associação são geradas somente após essa etapa.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc06.png){width=100%}
+
+
+
+
+
+## Exemplo manual do algoritmo Apriori
+
+Considere a seguinte base transacional:
+
+| Transação | Itens |
+|:---------:|:------|
+| $T_1$ | leite, pão, manteiga |
+| $T_2$ | leite, pão |
+| $T_3$ | leite |
+| $T_4$ | pão, manteiga |
+| $T_5$ | leite, pão, manteiga |
+| $T_6$ | leite, pão |
+
+Adotaremos
+
+$$
+\boxed{\operatorname{minsup}=0{,}50}
+$$
+
+
+## Exemplo manual do algoritmo Apriori
+
+
+Como existem seis transações, um itemset será frequente se ocorrer em pelo menos três delas.
+
+::: {.callout-note}
+## Nota
+O Apriori começa avaliando os conjuntos com um item e avança para conjuntos maiores apenas quando seus subconjuntos são frequentes.
+
+:::
+
+
+---
+
+### Etapa 1: conjuntos frequentes de tamanho 1
+
+Os candidatos iniciais são
+
+$$
+C_1=
+\left\{
+\{\text{leite}\},
+\{\text{pão}\},
+\{\text{manteiga}\}
+\right\}
+$$
+
+| Itemset | Frequência | Suporte | Resultado |
+|:--------|-----------:|--------:|:----------|
+| $\{\text{leite}\}$ | 5 | $5/6=0,83$ | Frequente |
+| $\{\text{pão}\}$ | 5 | $5/6=0,83$ | Frequente |
+| $\{\text{manteiga}\}$ | 3 | $3/6=0,50$ | Frequente |
+
+
+---
+
+### Etapa 1: conjuntos frequentes de tamanho 1
+
+Portanto,
+
+$$
+L_1=
+\left\{
+\{\text{leite}\},
+\{\text{pão}\},
+\{\text{manteiga}\}
+\right\}
+$$
+
+Todos os itens individuais possuem suporte maior ou igual a 0,50 e podem gerar candidatos de tamanho 2.
+
+
+
+
+
+---
+
+### Etapa 2: candidatos de tamanho 2
+
+Combinando os elementos de $L_1$, obtemos
+
+$$
+C_2=
+\left\{
+\{\text{leite},\text{pão}\},
+\{\text{leite},\text{manteiga}\},
+\{\text{pão},\text{manteiga}\}
+\right\}
+$$
+
+| Itemset | Transações | Frequência | Suporte | Resultado |
+|:--------|:-----------|-----------:|--------:|:----------|
+| $\{\text{leite},\text{pão}\}$ | $T_1,T_2,T_5,T_6$ | 4 | $4/6=0,67$ | Frequente |
+| $\{\text{leite},\text{manteiga}\}$ | $T_1,T_5$ | 2 | $2/6=0,33$ | **Infrequente** |
+| $\{\text{pão},\text{manteiga}\}$ | $T_1,T_4,T_5$ | 3 | $3/6=0,50$ | Frequente |
+
+
+
+---
+
+### Etapa 2: candidatos de tamanho 2
+
+
+Assim,
+
+$$
+L_2=
+\{
+\{\text{leite},\text{pão}\},
+\{\text{pão},\text{manteiga}\}
+\}
+$$
+
+::: {.callout-important}
+## Importante
+O conjunto
+
+$$
+\{\text{leite},\text{manteiga}\}
+$$
+
+é eliminado por possuir suporte inferior ao suporte mínimo.
+:::
+
+
+---
+
+### Etapa 3: candidato de tamanho 3
+
+O único candidato possível é
+
+$$
+C_3=
+\left\{
+\{\text{leite},\text{pão},\text{manteiga}\}
+\right\}
+$$
+
+Antes de calcular seu suporte, o Apriori verifica seus subconjuntos de tamanho 2:
+
+$$
+\{\text{leite},\text{pão}\},
+\qquad
+\{\text{leite},\text{manteiga}\},
+\qquad
+\{\text{pão},\text{manteiga}\}
+$$
+
+Como
+
+$$
+\boxed{
+\{\text{leite},\text{manteiga}\}
+\notin L_2
+}
+$$
+
+
+
+---
+
+### Etapa 3: candidato de tamanho 3
+
+
+
+o algoritmo conclui imediatamente que
+
+$$
+\boxed{
+\{\text{leite},\text{pão},\text{manteiga}\}
+\notin C_3.
+}
+$$
+
+Nenhum cálculo de suporte é realizado.
+
+
+
+A propriedade Apriori evita calcular o suporte de candidatos que certamente não poderão ser frequentes.
+
+
+
+
+
+
+---
+
+
+### Resultado do algoritmo
+
+A execução termina com
+
+$$
+L_1=
+\{
+\{\text{leite}\},
+\{\text{pão}\},
+\{\text{manteiga}\}
+\}
+$$
+
+$$
+L_2=
+\{
+\{\text{leite},\text{pão}\},
+\{\text{pão},\text{manteiga}\}
+\}
+$$
+
+e
+
+$$
+L_3=\varnothing
+$$
+
+Observe que
+
+$$
+\{\text{leite},\text{pão},\text{manteiga}\}
+$$
+
+nem chegou a ser avaliado.
+
+
+---
+
+### Geração das regras de associação
+
+Após identificar os conjuntos frequentes, o algoritmo gera regras de associação.
+
+No exemplo,
+
+$$
+L_2=
+\left\{
+\{\text{leite},\text{pão}\},
+\{\text{pão},\text{manteiga}\}
+\right\}
+$$
+
+Cada conjunto frequente de dois itens origina duas regras:
+
+
+- $\{\text{leite},\text{pão}\}$
+
+$$
+\{\text{leite}\}
+\Rightarrow
+\{\text{pão}\}
+$$
+
+$$
+\{\text{pão}\}
+\Rightarrow
+\{\text{leite}\}
+$$
+
+
+---
+
+### Geração das regras de associação
+
+- $\{\text{pão},\text{manteiga}\}$
+
+
+$$
+\{\text{pão}\}
+\Rightarrow
+\{\text{manteiga}\}
+$$
+
+$$
+\{\text{manteiga}\}
+\Rightarrow
+\{\text{pão}\}
+$$<br><br>
+
+::: {.callout-note}
+## Observação
+Como nenhum conjunto frequente de três itens foi encontrado, nenhuma regra envolvendo três itens poderá ser gerada.
+
+:::
+
+
+
+
+---
+
+
+### Cálculo da confiança
+
+Considere a regra
+
+$$
+\{\text{leite}\}
+\Rightarrow
+\{\text{pão}\}
+$$
+
+Temos
+
+$$
+\operatorname{supp}
+(\{\text{leite},\text{pão}\})
+=
+\frac46
+=
+0,67
+$$
+
+e
+
+$$
+\operatorname{supp}
+(\{\text{leite}\})
+=
+\frac56
+=
+0,83
+$$
+
+
+---
+
+
+### Cálculo da confiança
+
+
+Assim,
+
+$$
+\operatorname{conf}
+=
+\frac{0,67}{0,83}
+=
+0,80
+$$
+
+Interpretação:
+
+> Entre todas as compras contendo leite, **80% também continham pão**.
+
+
+
+
+---
+
+### Confiança das regras geradas
+
+| Regra | Confiança |
+|:-----------------------------|------:|
+| leite → pão | $\frac{4/6}{5/6}=0,80$ |
+| pão → leite | $\frac{4/6}{5/6}=0,80$ |
+| pão → manteiga | $\frac{3/6}{5/6}=0,60$ |
+| manteiga → pão | $\frac{3/6}{3/6}=1,00$ |
+
+Supondo
+
+$$
+\boxed{
+\operatorname{minconf}=0,70
+}
+$$
+
+---
+
+### Confiança das regras geradas
+
+
+
+temos
+
+| Regra | Resultado |
+|:-----------------------------|:----------|
+| leite → pão | Mantida |
+| pão → leite | Mantida |
+| pão → manteiga | Eliminada |
+| manteiga → pão | Mantida |
+
+::: {.callout-important}
+## Observação
+O suporte identifica conjuntos frequentes. A confiança filtra as regras geradas a partir desses conjuntos.
+
+:::
+
+
+
+---
+
+
+### Cálculo do lift
+
+Para a regra
+
+$$
+\{\text{leite}\}
+\Rightarrow
+\{\text{pão}\},
+$$
+
+temos
+
+$$
+\operatorname{conf}=0,80
+$$
+
+e
+
+$$
+\operatorname{supp}
+(\{\text{pão}\})
+=
+\frac56
+=
+0,83
+$$
+
+---
+
+
+### Cálculo do lift
+
+
+Logo,
+
+$$
+\operatorname{lift}
+=
+\frac{0,80}{0,83}
+=
+0,96
+$$
+
+Como
+
+$$
+\operatorname{lift}<1,
+$$
+
+a associação é ligeiramente inferior ao esperado sob independência.
+
+::: {.callout-note}
+## Interpretação
+Apesar da elevada confiança, a compra de leite praticamente não aumenta a probabilidade de compra de pão.
+
+:::
+
+
+
+---
+
+
+### Lift das regras geradas
+
+| Regra | Confiança | Lift |
+|:-----------------------------|---------:|------:|
+| leite → pão | 0,80 | 0,96 |
+| pão → leite | 0,80 | 0,96 |
+| pão → manteiga | 0,60 | 1,20 |
+| manteiga → pão | 1,00 | 1,20 |
+
+
+
+---
+
+
+### Interpretação
+
+- **leite → pão:** elevada confiança, porém lift próximo de 1.
+- **pão → leite:** comportamento semelhante.
+- **pão → manteiga:** confiança moderada, mas associação positiva.
+- **manteiga → pão:** sempre que manteiga aparece, pão também aparece.
+
+::: {.callout-important}
+## Importante
+O lift mostra o ganho em relação ao comportamento esperado por acaso, enquanto a confiança mede apenas a proporção de ocorrências condicionais.
+
+:::
+
+
+
+
+## R: Regras de associação 
+
+A base `Online Retail II` contém transações reais de uma varejista on-line do Reino Unido, registradas entre dezembro de 2009 e dezembro de 2011. O arquivo possui mais de um milhão de registros e inclui número da fatura, produto, quantidade, data, preço, cliente e país.
+
+
+
+## R: Regras de associação 
+
+```{r}
+#| eval: true
+#| echo: true
+#| cache: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+
+
+# ============================================================
+# REGRAS DE ASSOCIAÇÃO — ONLINE RETAIL II
+# Base real da UCI Machine Learning Repository
+# ============================================================
+
+# ------------------------------------------------------------
+# 0. Pacotes
+# ------------------------------------------------------------
+
+pacotes <- c(
+  "readxl",
+  "dplyr",
+  "tidyr",
+  "stringr",
+  "purrr",
+  "janitor",
+  "arules",
+  "arulesViz",
+  "ggplot2",
+  "scales",
+  "tibble"
+)
+
+faltantes <- pacotes[
+  !vapply(
+    pacotes,
+    requireNamespace,
+    logical(1),
+    quietly = TRUE
+  )
+]
+
+if (length(faltantes) > 0) {
+  install.packages(faltantes)
+}
+
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(purrr)
+library(janitor)
+library(arules)
+library(arulesViz)
+library(ggplot2)
+library(scales)
+library(tibble)
+
+set.seed(335)
+
+# ============================================================
+# 1. Download da base oficial
+# ============================================================
+
+pasta_dados <- "dados_online_retail"
+dir.create(
+  pasta_dados,
+  showWarnings = FALSE,
+  recursive = TRUE
+)
+
+arquivo_zip <- file.path(
+  pasta_dados,
+  "online_retail_II.zip"
+)
+
+arquivo_xlsx <- file.path(
+  pasta_dados,
+  "online_retail_II.xlsx"
+)
+
+url_uci <- paste0(
+  "https://archive.ics.uci.edu/static/public/502/",
+  "online%2Bretail%2Bii.zip"
+)
+
+if (!file.exists(arquivo_xlsx)) {
+
+  if (!file.exists(arquivo_zip)) {
+    message("Baixando a base Online Retail II...")
+
+    download.file(
+      url = url_uci,
+      destfile = arquivo_zip,
+      mode = "wb",
+      quiet = FALSE
+    )
+  }
+
+  unzip(
+    zipfile = arquivo_zip,
+    exdir = pasta_dados
+  )
+}
+
+# Localizar automaticamente o arquivo Excel
+arquivos_excel <- list.files(
+  pasta_dados,
+  pattern = "\\.xlsx$",
+  full.names = TRUE,
+  recursive = TRUE
+)
+
+if (length(arquivos_excel) == 0) {
+  stop("O arquivo Excel não foi encontrado após a descompactação.")
+}
+
+arquivo_xlsx <- arquivos_excel[1]
+
+message("Arquivo utilizado: ", arquivo_xlsx)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+# ============================================================
+# 2. Ler as duas planilhas
+# ============================================================
+
+abas <- excel_sheets(arquivo_xlsx)
+
+dados_brutos <- map_dfr(
+  abas,
+  function(aba) {
+
+    read_excel(
+      path = arquivo_xlsx,
+      sheet = aba,
+      guess_max = 100000
+    ) |>
+      clean_names() |>
+      mutate(
+        origem_planilha = aba
+      )
+  }
+)
+
+dim(dados_brutos)
+names(dados_brutos)
+```
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+
+
+# ============================================================
+# 3. Padronizar nomes das variáveis
+# ============================================================
+
+# A versão original do Excel pode utilizar nomes como:
+# invoice, price e customer_id.
+# Esta função permite reconhecer variações dos nomes.
+
+localizar_coluna <- function(dados, candidatos) {
+
+  encontrada <- candidatos[
+    candidatos %in% names(dados)
+  ]
+
+  if (length(encontrada) == 0) {
+    return(NA_character_)
+  }
+
+  encontrada[1]
+}
+
+col_invoice <- localizar_coluna(
+  dados_brutos,
+  c("invoice_no", "invoice", "invoiceno")
+)
+
+col_stock <- localizar_coluna(
+  dados_brutos,
+  c("stock_code", "stockcode")
+)
+
+col_description <- localizar_coluna(
+  dados_brutos,
+  c("description")
+)
+
+col_quantity <- localizar_coluna(
+  dados_brutos,
+  c("quantity")
+)
+
+col_date <- localizar_coluna(
+  dados_brutos,
+  c("invoice_date", "invoicedate")
+)
+
+col_price <- localizar_coluna(
+  dados_brutos,
+  c("unit_price", "price", "unitprice")
+)
+
+col_customer <- localizar_coluna(
+  dados_brutos,
+  c("customer_id", "customerid")
+)
+
+col_country <- localizar_coluna(
+  dados_brutos,
+  c("country")
+)
+
+colunas_obrigatorias <- c(
+  col_invoice,
+  col_stock,
+  col_description,
+  col_quantity,
+  col_date,
+  col_price,
+  col_country
+)
+
+if (any(is.na(colunas_obrigatorias))) {
+  stop(
+    paste(
+      "Não foi possível identificar todas as colunas obrigatórias.",
+      "Colunas encontradas:",
+      paste(names(dados_brutos), collapse = ", ")
+    )
+  )
+}
+
+dados <- dados_brutos |>
+  transmute(
+    invoice_no = as.character(
+      .data[[col_invoice]]
+    ),
+    stock_code = as.character(
+      .data[[col_stock]]
+    ),
+    description = as.character(
+      .data[[col_description]]
+    ),
+    quantity = as.numeric(
+      .data[[col_quantity]]
+    ),
+    invoice_date = .data[[col_date]],
+    unit_price = as.numeric(
+      .data[[col_price]]
+    ),
+    customer_id = if (!is.na(col_customer)) {
+      as.character(.data[[col_customer]])
+    } else {
+      NA_character_
+    },
+    country = as.character(
+      .data[[col_country]]
+    ),
+    origem_planilha
+  )
+
+glimpse(dados)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+# ============================================================
+# 4. Limpeza dos registros
+# ============================================================
+
+dados_limpos <- dados |>
+  mutate(
+    invoice_no = str_trim(invoice_no),
+    stock_code = str_trim(stock_code),
+    description = description |>
+      str_squish() |>
+      str_to_upper(),
+    country = str_squish(country)
+  ) |>
+  filter(
+    !is.na(invoice_no),
+    invoice_no != "",
+    !is.na(description),
+    description != "",
+    !is.na(quantity),
+    !is.na(unit_price),
+
+    # Excluir devoluções ou quantidades inválidas
+    quantity > 0,
+
+    # Excluir preços inválidos
+    unit_price > 0,
+
+    # Cancelamentos começam por C ou c
+    !str_detect(
+      invoice_no,
+      regex("^C", ignore_case = TRUE)
+    )
+  ) |>
+  filter(
+    # Remover códigos administrativos e registros
+    # que não representam produtos comercializados
+    !stock_code %in% c(
+      "POST",
+      "DOT",
+      "M",
+      "D",
+      "BANK CHARGES",
+      "AMAZONFEE",
+      "CRUK",
+      "S",
+      "C2",
+      "ADJUST",
+      "ADJUST2",
+      "TEST001",
+      "TEST002"
+    )
+  ) |>
+  filter(
+    !str_detect(
+      description,
+      regex(
+        paste(
+          c(
+            "POSTAGE",
+            "CARRIAGE",
+            "BANK CHARGES",
+            "AMAZON FEE",
+            "ADJUSTMENT",
+            "MANUAL",
+            "DISCOUNT",
+            "DOTCOM POSTAGE",
+            "TEST"
+          ),
+          collapse = "|"
+        ),
+        ignore_case = TRUE
+      )
+    )
+  ) |>
+  distinct(
+    invoice_no,
+    stock_code,
+    description,
+    .keep_all = TRUE
+  )
+
+cat(
+  "\nRegistros após limpeza:",
+  nrow(dados_limpos),
+  "\nPedidos distintos:",
+  n_distinct(dados_limpos$invoice_no),
+  "\nProdutos distintos:",
+  n_distinct(dados_limpos$description),
+  "\n"
+)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+
+
+
+# ============================================================
+# 5. Análise descritiva inicial
+# ============================================================
+
+resumo_base <- tibble(
+  Medida = c(
+    "Linhas válidas",
+    "Pedidos",
+    "Produtos distintos",
+    "Clientes identificados",
+    "Países"
+  ),
+  Valor = c(
+    nrow(dados_limpos),
+    n_distinct(dados_limpos$invoice_no),
+    n_distinct(dados_limpos$description),
+    n_distinct(
+      dados_limpos$customer_id[
+        !is.na(dados_limpos$customer_id)
+      ]
+    ),
+    n_distinct(dados_limpos$country)
+  )
+)
+
+print(resumo_base)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 6. Identificar produtos mais presentes nos pedidos
+# ============================================================
+
+numero_produtos_manter <- 60
+
+frequencia_produtos <- dados_limpos |>
+  distinct(
+    invoice_no,
+    description
+  ) |>
+  count(
+    description,
+    name = "numero_pedidos",
+    sort = TRUE
+  ) |>
+  mutate(
+    proporcao_pedidos =
+      numero_pedidos /
+      n_distinct(dados_limpos$invoice_no)
+  )
+
+top_produtos <- frequencia_produtos |>
+  slice_head(
+    n = numero_produtos_manter
+  )
+
+print(
+  top_produtos |>
+    slice_head(n = 20)
+)
+
+```
+
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+
+
+# ============================================================
+# 7. Manter os produtos selecionados
+# ============================================================
+
+dados_top <- dados_limpos |>
+  semi_join(
+    top_produtos,
+    by = "description"
+  )
+
+# Pedidos com pelo menos dois produtos distintos
+pedidos_elegiveis <- dados_top |>
+  distinct(
+    invoice_no,
+    description
+  ) |>
+  count(
+    invoice_no,
+    name = "numero_itens"
+  ) |>
+  filter(
+    numero_itens >= 2
+  )
+
+cat(
+  "\nPedidos elegíveis:",
+  nrow(pedidos_elegiveis),
+  "\n"
+)
+```
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+
+# ============================================================
+# 8. Selecionar 4.000 pedidos
+# ============================================================
+
+numero_pedidos_desejado <- 4000
+
+if (nrow(pedidos_elegiveis) < 2000) {
+  stop(
+    paste0(
+      "Foram encontrados apenas ",
+      nrow(pedidos_elegiveis),
+      " pedidos elegíveis. ",
+      "Aumente numero_produtos_manter."
+    )
+  )
+}
+
+numero_pedidos_amostra <- min(
+  numero_pedidos_desejado,
+  nrow(pedidos_elegiveis)
+)
+
+pedidos_amostrados <- pedidos_elegiveis |>
+  slice_sample(
+    n = numero_pedidos_amostra
+  )
+
+dados_amostra <- dados_top |>
+  semi_join(
+    pedidos_amostrados,
+    by = "invoice_no"
+  ) |>
+  distinct(
+    invoice_no,
+    description
+  ) |>
+  arrange(
+    invoice_no,
+    description
+  )
+
+cat(
+  "\nPedidos selecionados:",
+  n_distinct(dados_amostra$invoice_no),
+  "\nItens distintos na amostra:",
+  n_distinct(dados_amostra$description),
+  "\n"
+)
+```
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 9. Distribuição do tamanho das cestas
+# ============================================================
+
+tamanho_cestas <- dados_amostra |>
+  count(
+    invoice_no,
+    name = "numero_produtos"
+  )
+
+grafico_tamanho_cesta <- ggplot(
+  tamanho_cestas,
+  aes(x = numero_produtos)
+) +
+  geom_histogram(
+    binwidth = 1,
+    boundary = 0,
+    color = "white"
+  ) +
+  coord_cartesian(
+    xlim = c(2, 20)
+  ) +
+  scale_x_continuous(
+    breaks = seq(2, 20, by = 2)
+  ) +
+  labs(
+    title = "Número de produtos distintos por pedido",
+    subtitle = paste0(
+      "Amostra com ",
+      scales::comma(numero_pedidos_amostra),
+      " pedidos reais"
+    ),
+    x = "Número de produtos",
+    y = "Quantidade de pedidos"
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+grafico_tamanho_cesta
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+
+# ============================================================
+# 10. Converter para lista de cestas
+# ============================================================
+
+lista_cestas <- split(
+  x = dados_amostra$description,
+  f = dados_amostra$invoice_no
+)
+
+# Garantir que não existem produtos duplicados na cesta
+lista_cestas <- lapply(
+  lista_cestas,
+  unique
+)
+
+# Remover cestas com menos de dois produtos,
+# caso alguma inconsistência tenha permanecido
+lista_cestas <- lista_cestas[
+  lengths(lista_cestas) >= 2
+]
+
+length(lista_cestas)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 11. Converter para objeto transactions
+# ============================================================
+
+transacoes <- as(
+  lista_cestas,
+  "transactions"
+)
+
+inspect(
+  transacoes[1:5]
+)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 12. Frequência dos itens
+# ============================================================
+
+frequencias_itens <- itemFrequency(
+  transacoes,
+  type = "relative"
+)
+
+tabela_frequencias <- tibble(
+  Produto = names(frequencias_itens),
+  Suporte = as.numeric(frequencias_itens),
+  Pedidos = round(
+    as.numeric(frequencias_itens) *
+      length(transacoes)
+  )
+) |>
+  arrange(
+    desc(Suporte)
+  )
+
+print(
+  tabela_frequencias |>
+    slice_head(n = 20)
+)
+```
+
+
+
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# Gráfico dos 20 produtos mais frequentes
+itemFrequencyPlot(
+  transacoes,
+  topN = 20,
+  type = "relative",
+  main = "Produtos mais frequentes nos pedidos",
+  xlab = "Produto",
+  ylab = "Suporte",
+  cex.names = 0.7
+)
+```
+
+
+## R: Regras de associação
+
+
+### Produtos mais frequentes nos pedidos
+
+O gráfico apresenta a proporção de pedidos que contêm cada produto.
+
+- O **WHITE HANGING HEART T-LIGHT HOLDER** é o item mais frequente, presente em aproximadamente **23% dos pedidos** — cerca de 920 das 4.000 transações.
+- Em seguida aparecem **REGENCY CAKESTAND 3 TIER** e **JUMBO BAG RED RETROSPOT**, com suportes próximos de **16%** e **15%**.
+- Os demais produtos apresentam frequências mais homogêneas, geralmente entre **9% e 12%** dos pedidos.
+- Há forte presença de linhas de produtos relacionadas a **bolsas**, **artigos decorativos**, **utensílios de cozinha** e **itens para festas**.
+
+
+
+## R: Regras de associação
+
+
+### Observação Importante
+
+> O gráfico descreve a popularidade individual dos produtos, mas ainda não informa quais itens são comprados conjuntamente. Essa coocorrência será investigada pelas regras de associação.
+
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+
+
+# ============================================================
+# 13. Definição dos parâmetros do Apriori
+# ============================================================
+
+# Exigir que a regra apareça em pelo menos 20 pedidos
+numero_minimo_pedidos <- 20
+
+suporte_minimo <- numero_minimo_pedidos /
+  length(transacoes)
+
+confianca_minima <- 0.40
+
+cat(
+  "\nSuporte mínimo:",
+  round(suporte_minimo, 5),
+  "\nConfiança mínima:",
+  confianca_minima,
+  "\nNúmero mínimo de pedidos:",
+  numero_minimo_pedidos,
+  "\n"
+)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+
+# ============================================================
+# 14. Executar o algoritmo Apriori
+# ============================================================
+
+regras <- apriori(
+  data = transacoes,
+  parameter = list(
+    supp = suporte_minimo,
+    conf = confianca_minima,
+    minlen = 2,
+    maxlen = 4,
+    target = "rules"
+  ),
+  control = list(
+    verbose = FALSE
+  )
+)
+
+summary(regras)
+```
+
+
+
+
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 15. Ordenar as regras por lift
+# ============================================================
+
+regras_lift <- sort(
+  regras,
+  by = "lift",
+  decreasing = TRUE
+)
+
+inspect(
+  head(
+    regras_lift,
+    20
+  )
+)
+```
+
+
+
+---
+
+![](/images/aprendNsuper/assoc08.png){width=100%}
+
+
+
+---
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 16. Remover regras redundantes
+# ============================================================
+
+redundantes <- is.redundant(
+  regras_lift,
+  measure = "confidence"
+)
+
+cat(
+  "\nNúmero de regras redundantes:",
+  sum(redundantes),
+  "\n"
+)
+
+regras_nao_redundantes <- regras_lift[
+  !redundantes
+]
+
+summary(regras_nao_redundantes)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 17. Filtrar regras com associação positiva
+# ============================================================
+
+regras_interessantes <- subset(
+  regras_nao_redundantes,
+  subset =
+    lift > 1.20 &
+    confidence >= 0.50 &
+    count >= numero_minimo_pedidos
+)
+
+regras_interessantes <- sort(
+  regras_interessantes,
+  by = "lift",
+  decreasing = TRUE
+)
+
+inspect(
+  head(
+    regras_interessantes,
+    20
+  )
+)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 18. Converter regras para tabela
+# ============================================================
+
+converter_regras_tabela <- function(regras_objeto) {
+
+  if (length(regras_objeto) == 0) {
+    return(tibble())
+  }
+
+  tibble(
+    Regra = labels(regras_objeto),
+    Antecedente = labels(
+      lhs(regras_objeto)
+    ),
+    Consequente = labels(
+      rhs(regras_objeto)
+    ),
+    support = quality(regras_objeto)$support,
+    confidence = quality(regras_objeto)$confidence,
+    coverage = quality(regras_objeto)$coverage,
+    lift = quality(regras_objeto)$lift,
+    count = quality(regras_objeto)$count
+  ) |>
+    mutate(
+      across(
+        c(
+          support,
+          confidence,
+          coverage,
+          lift
+        ),
+        ~ round(.x, 4)
+      )
+    ) |>
+    arrange(
+      desc(lift),
+      desc(confidence),
+      desc(support)
+    )
+}
+
+tabela_regras <- converter_regras_tabela(
+  regras_interessantes
+)
+
+print(
+  tabela_regras |>
+    slice_head(n = 20),
+  n = 20,
+  width = Inf
+)
+```
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 19. Gráfico suporte × confiança × lift
+# ============================================================
+
+dados_plot <- converter_regras_tabela(
+  regras_nao_redundantes
+)
+
+grafico_regras <- ggplot(
+  dados_plot,
+  aes(
+    x = support,
+    y = confidence,
+    size = count,
+    color = lift
+  )
+) +
+  geom_point(
+    alpha = 0.78
+  ) +
+  scale_x_continuous(
+    labels = percent_format(
+      accuracy = 0.1
+    )
+  ) +
+  scale_y_continuous(
+    labels = percent_format(
+      accuracy = 1
+    ),
+    limits = c(0, 1)
+  ) +
+  labs(
+    title = "Regras de associação — Online Retail II",
+    subtitle = paste0(
+      nrow(dados_plot),
+      " regras não redundantes"
+    ),
+    x = "Suporte",
+    y = "Confiança",
+    color = "Lift",
+    size = "Pedidos"
+  ) +
+  theme_minimal(
+    base_size = 15
+  ) +
+  theme(
+    plot.title = element_text(
+      face = "bold"
+    ),
+    legend.position = "bottom",
+    panel.grid.minor = element_blank()
+  ) +
+  guides(
+    color = guide_colorbar(
+      title.position = "top"
+    ),
+    size = guide_legend(
+      title.position = "top"
+    )
+  )
+
+grafico_regras
+```
+
+
+
+
+---
+
+### Interpretação das regras de associação
+
+Cada ponto representa uma regra de associação extraída da base **Online Retail II**.
+
+- O **suporte** (eixo x) indica a proporção de pedidos em que a regra ocorre.
+- A **confiança** (eixo y) representa a probabilidade de ocorrência do consequente quando o antecedente está presente.
+- O **tamanho do ponto** é proporcional ao número de pedidos em que a regra aparece.
+- A **cor** representa o valor do **lift**, indicando a força da associação.
+
+
+---
+
+### Principais padrões observados
+
+- A maior concentração de regras ocorre com **baixo suporte (inferior a 2%)**, indicando que a maioria das associações envolve combinações relativamente específicas de produtos.<br><br>
+
+- Mesmo com baixo suporte, muitas regras apresentam **confiança entre 50% e 80%**, evidenciando que essas combinações são consistentes quando ocorrem.<br><br>
+
+- Existem poucas regras com **suporte acima de 4%**, mostrando que associações envolvendo muitos pedidos são relativamente raras.
+
+
+
+
+---
+
+### Principais padrões observados
+
+- Os maiores círculos concentram-se nas regiões de maior suporte, pois representam regras presentes em um número maior de pedidos.<br><br>
+
+- As regras com maior **lift** aparecem destacadas pelas cores mais intensas, indicando associações muito superiores ao esperado sob independência.
+
+::: {.callout-important}
+## Observação
+A maioria das regras descobertas é **forte**, mas envolve subconjuntos relativamente pequenos de pedidos. Em Market Basket Analysis, regras extremamente frequentes são raras; normalmente busca-se identificar associações específicas, porém confiáveis e com lift elevado.
+
+:::
+
+---
+
+### Principais padrões observados
+
+::: {.callout-important}
+## Observação Importante
+Esse gráfico mostra claramente um trade-off entre suporte e confiança:
+
+regras com alto suporte tendem a apresentar confiança moderada (cerca de 40–60%);
+regras com confiança muito alta (acima de 90%) quase sempre possuem baixo suporte, ou seja, descrevem padrões muito específicos.
+
+Esse comportamento é esperado em bases de varejo: quanto mais específica é uma combinação de produtos, menos vezes ela ocorre, mas maior tende a ser sua capacidade preditiva. É justamente por isso que, na prática, a seleção de regras não deve considerar apenas uma métrica isoladamente, mas o equilíbrio entre suporte, confiança e lift.
+:::
+
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 20. Grafo das principais regras
+# ============================================================
+
+numero_regras_grafo <- min(
+  20,
+  length(regras_interessantes)
+)
+
+if (numero_regras_grafo >= 2) {
+
+  regras_grafo <- head(
+    regras_interessantes,
+    numero_regras_grafo
+  )
+
+  plot(
+    regras_grafo,
+    method = "graph",
+    engine = "htmlwidget",
+    shading = "lift"
+  )
+}
+```
+
+
+
+---
+
+
+### Grafo das regras de associação
+
+Nesta visualização:
+
+- **Retângulos azuis** representam os **produtos** (itens).
+- **Círculos vermelhos** representam as **regras de associação**.
+- As **arestas** conectam os produtos aos antecedentes e consequentes das regras.
+- Produtos ligados a muitas regras aparecem como **nós centrais**, enquanto produtos pouco conectados permanecem na periferia.
+
+::: {.callout-note}
+## Nota
+O grafo permite visualizar simultaneamente **quais produtos participam das regras** e **como essas regras compartilham itens entre si**.
+:::
+
+---
+
+### Interpretação do grafo
+
+Observam-se alguns padrões importantes:
+
+- Produtos como **Pack of 72 Retrospot Cake Cases**, **Woodland Charlotte Bag** e **Lunch Bag Spaceboy Design** aparecem conectados a diversas regras, indicando que são **itens centrais** da base.
+- A maior parte das regras forma um **grande componente conectado**, evidenciando que diferentes combinações compartilham produtos em comum.
+- Pequenos grupos isolados representam **associações específicas**, envolvendo poucos produtos.
+
+::: {.callout-important}
+## Importante
+O grafo mostra que as regras não são independentes: elas se organizam em torno de alguns produtos centrais, revelando **comunidades de itens frequentemente comprados em conjunto**. Essas informações são úteis para recomendação de produtos, promoções combinadas e organização do catálogo.
+:::
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 21. Selecionar regras equilibradas
+# ============================================================
+
+# Regras com suporte, confiança e lift razoáveis
+regras_equilibradas <- subset(
+  regras_nao_redundantes,
+  subset =
+    support >= 0.01 &
+    confidence >= 0.50 &
+    lift >= 3.0
+)
+
+regras_equilibradas <- sort(
+  regras_equilibradas,
+  by = "lift",
+  decreasing = TRUE
+)
+
+inspect(
+  head(
+    regras_equilibradas,
+    20
+  )
+)
+```
+
+
+
+## R: Regras de associação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 14
+#| fig-height: 7
+#| out-width: 100%
+#| output-location: slide
+
+
+# ============================================================
+# 22. Diagnóstico final
+# ============================================================
+
+cat(
+  "\n================ RESUMO FINAL ================\n",
+  "Pedidos analisados: ",
+  length(transacoes),
+  "\nProdutos considerados: ",
+  length(itemLabels(transacoes)),
+  "\nRegras iniciais: ",
+  length(regras),
+  "\nRegras não redundantes: ",
+  length(regras_nao_redundantes),
+  "\nRegras interessantes: ",
+  length(regras_interessantes),
+  "\nSuporte mínimo: ",
+  round(suporte_minimo, 5),
+  "\nConfiança mínima: ",
+  confianca_minima,
+  "\n==============================================\n",
+  sep = ""
+)
+```
+
+
+
+#  Algoritmo FP-Growth
+
+
+## FP-Growth
+
+### Por que surgiu o FP-Growth?
+
+O algoritmo **Apriori** é simples e eficiente para bases pequenas.
+
+Entretanto, em bases com milhares de produtos, ele apresenta duas limitações importantes.<br><br>
+
+::: {.callout-warning appearance="simple"}
+
+- gera um grande número de **candidatos**;
+- realiza **várias leituras completas da base de dados**.<br><br>
+
+:::
+
+
+### Consequência
+
+À medida que cresce o número de itens, o tempo de processamento aumenta rapidamente.
+
+
+
+
+
+---
+
+![](/images/aprendNsuper/assoc09.png){width=100%}
+
+
+## Limitações do Apriori
+
+### Onde está o gargalo?
+
+Durante a execução do Apriori, a maior parte do tempo é consumida em duas tarefas:
+
+- geração dos candidatos;
+- verificação do suporte de cada candidato.
+
+
+
+::: {.callout-note appearance="simple"}
+
+Grande parte dos candidatos gerados será posteriormente descartada por não atingir o suporte mínimo.
+
+:::
+
+
+
+
+---
+
+![](/images/aprendNsuper/assoc10.png){width=100%}
+
+
+
+## FP-Growth
+
+### Uma estratégia diferente
+
+Em vez de gerar candidatos, o FP-Growth:
+
+- realiza apenas **duas leituras** da base;
+- comprime as transações em uma **FP-Tree**;
+- extrai diretamente os padrões frequentes.
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+A principal inovação do FP-Growth é substituir milhares de candidatos por uma estrutura compacta denominada **Frequent Pattern Tree (FP-Tree)**.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc11.png){width=100%}
+
+
+
+## Construção da FP-Tree
+
+
+
+Considere as seguintes transações:
+
+| Transação | Itens |
+|:---------:|:----------------------|
+| T1 | A, B, D |
+| T2 | B, C, E |
+| T3 | A, B, C, E |
+| T4 | B, E |
+| T5 | A, B, C, E |
+
+<br>
+
+::: {.callout-note appearance="simple"}
+
+Utilizaremos essa mesma base para construir a **FP-Tree** passo a passo.
+
+:::
+
+
+
+
+## Construção da FP-Tree
+
+### 1ª leitura: contagem dos itens
+
+Na primeira passagem pela base, o algoritmo apenas contabiliza a frequência de cada item.
+
+| Item | Frequência |
+|:----:|-----------:|
+| B | 5 |
+| A | 3 |
+| C | 3 |
+| E | 4 |
+| D | 1 |
+
+
+## Construção da FP-Tree
+
+
+Supondo:
+
+$$
+\text{minsup}=2
+$$
+
+o item **D** é eliminado por não atingir o suporte mínimo.
+
+
+
+---
+
+![](/images/aprendNsuper/assoc12.png){width=100%}
+
+
+## Construção da FP-Tree
+
+### Reordenando as transações
+
+Após eliminar os itens infrequentes, cada transação é reorganizada de acordo com a frequência global dos itens.
+
+
+| Antes | Depois |
+|:------|:-------|
+| A B D | **B A** |
+| B C E | **B E C** |
+| A B C E | **B E A C** |
+| B E | **B E** |
+| A B C E | **B E A C** |
+
+
+
+::: {.callout-tip appearance="simple"}
+
+Essa ordenação faz com que diferentes transações compartilhem longos prefixos, tornando a árvore muito mais compacta.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/assoc13.png){width=100%}
+
+
+
+## Construção da FP-Tree
+
+### Por que ordenar os itens?
+
+Sem ordenação, transações semelhantes dificilmente compartilham o mesmo caminho.
+
+Após a ordenação, diversas transações passam a possuir o mesmo prefixo.
+
+<br>
+
+<div style="text-align:center;font-size:1.2em">
+
+B → E → ...
+
+</div>
+
+<br>
+
+Esse compartilhamento reduz drasticamente o tamanho da árvore.
+
+
+
+
+---
+
+![](/images/aprendNsuper/assoc14.png){width=100%}
+
+
+## Construção da FP-Tree
+
+### Inserindo a primeira transação
+
+Após a ordenação, a primeira transação é
+
+$$
+T_1 = (B,\ A)
+$$
+
+Como a árvore está vazia, todos os nós são criados.
+
+<br>
+
+::: {.callout-note appearance="simple"}
+
+Cada nó armazena:
+
+- o item;
+- o contador de ocorrências;
+- um ponteiro para o pai.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc15.png){width=100%}
+
+## Construção da FP-Tree
+
+### Inserindo a segunda transação
+
+A segunda transação é
+
+$$
+T_2=(B,\ E,\ C)
+$$
+
+O item **B** já existe na árvore.
+
+Assim, seu contador é incrementado e apenas os novos ramos são adicionados.
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+Sempre que um prefixo já existir, ele é reutilizado.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/assoc16.png){width=100%}
+
+
+
+## Construção da FP-Tree
+
+### Compartilhando caminhos
+
+A terceira transação é
+
+$$
+T_3=(B,\ E,\ A,\ C)
+$$
+
+Os itens **B** e **E** já existem.
+
+Portanto, apenas os nós inexistentes são criados.
+
+
+---
+
+![](/images/aprendNsuper/assoc17.png){width=100%}
+
+
+## Construção da FP-Tree
+
+### FP-Tree após processar todas as transações
+
+Após inserir todas as transações, obtém-se uma representação compacta da base de dados.
+
+Características da FP-Tree:
+
+- caminhos comuns são compartilhados;
+- cada nó mantém um contador de ocorrências;
+- a árvore preserva as relações entre os itens frequentes.
+
+::: {.callout-important appearance="simple"}
+
+Quanto maior o compartilhamento entre as transações, menor será a árvore construída.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc18.png){width=100%}
+
+
+
+
+## Header Table
+
+Além da árvore, o FP-Growth mantém uma **Header Table**, que armazena todos os itens frequentes em ordem de frequência.
+
+Cada entrada da tabela aponta para a **primeira ocorrência** do item na FP-Tree.
+
+
+| Item | Frequência | Primeiro nó |
+|:----:|-----------:|:-----------:|
+| B | 5 | → B |
+| E | 4 | → E |
+| A | 3 | → A |
+| C | 3 | → C |
+
+::: {.callout-note appearance="simple"}
+
+A Header Table permite localizar rapidamente todos os nós associados a um determinado item, sem percorrer toda a árvore.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/assoc19.png){width=100%}
+
+
+
+## Node Links
+
+Um mesmo item pode aparecer em diferentes ramos da FP-Tree.
+
+Por isso, todos os nós que representam o mesmo item são conectados por uma lista encadeada (*Node Links*).
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+Essas ligações permitem recuperar rapidamente todas as ocorrências de um item durante a mineração dos padrões frequentes.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/assoc20.png){width=100%}
+
+
+
+
+
+## Mineração dos padrões
+
+### Conditional Pattern Base
+
+Para descobrir todos os padrões envolvendo um item, o FP-Growth percorre os **Node Links** desse item.
+
+Para cada ocorrência, recupera o caminho entre o nó e a raiz da árvore.
+
+Esses caminhos formam a **Conditional Pattern Base**.
+
+Por exemplo, para o item **C**:
+
+```text
+Root → B → E → C
+
+Root → B → E → A → C
+
+Root → B → A → C
+```
+
+::: {.callout-important appearance="simple"}
+
+A mineração é realizada sobre esses caminhos, e não diretamente sobre a base de dados original.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc21.png){width=100%}
+
+
+
+## Mineração dos padrões
+
+### Construindo a Conditional FP-Tree
+
+A Conditional Pattern Base é tratada como uma nova base de dados.
+
+Sobre ela são aplicados novamente:
+
+1. contagem dos itens;
+2. remoção dos infrequentes;
+3. construção de uma nova FP-Tree.
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+O processo é repetido recursivamente até que não existam novos padrões frequentes.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/assoc22.png){width=100%}
+
+
+## Algoritmo FP-Growth
+
+### Resumo das etapas
+
+O algoritmo pode ser resumido em seis passos:
+
+1. realizar a primeira leitura da base;
+2. eliminar os itens infrequentes;
+3. ordenar as transações por frequência;
+4. construir a FP-Tree;
+5. gerar as Conditional Pattern Bases;
+6. extrair recursivamente os itemsets frequentes.
+
+::: {.callout-important appearance="simple"}
+
+Ao contrário do Apriori, o FP-Growth **não gera conjuntos candidatos**. Os padrões frequentes são obtidos diretamente a partir da estrutura da FP-Tree.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/assoc23.png){width=100%}
+
+
+
+
+## Exemplo
+
+### Base de transações
+
+
+![](/images/aprendNsuper/assoc24.png){width=100%}
+
+
+
+
+
+
+
+## Exemplo: Passo 1
+
+### Primeira passagem pela base
+
+O FP-Growth realiza inicialmente apenas a contagem dos itens.
+
+![](/images/aprendNsuper/assoc25.png){width=100%}
+
+
+
+
+
+
+## Exemplo: Passo 1
+
+### Ordenação global dos itens
+
+Os itens são ordenados pela frequência decrescente.
+
+| Ordem | Item | Frequência |
+|:----:|:------------|---------:|
+|1|Café|6|
+|2|Pão|5|
+|3|Queijo|5|
+|4|Leite|4|
+|5|Manteiga|4|
+
+Em caso de empate, adotamos ordem alfabética.
+
+
+
+## Exemplo: Passo 2
+
+### Reordenando cada transação
+
+Cada transação passa a seguir a ordem global.
+
+![](/images/aprendNsuper/assoc26.png){width=100%}
+
+
+## Exemplo: Passo 3
+
+### Inserindo T1
+
+![](/images/aprendNsuper/assoc27.png){width=100%}
+
+
+
+## Exemplo: Passo 4
+
+### Inserindo T2
+
+
+![](/images/aprendNsuper/assoc28.png){width=100%}
+
+
+
+## Exemplo: Passo 5
+
+### Inserindo T3
+
+![](/images/aprendNsuper/assoc29.png){width=100%}
+
+
+## Exemplo: Passo 6
+
+### Inserindo T4
+
+![](/images/aprendNsuper/assoc30.png){width=100%}
+
+
+
+## Exemplo: Passos 7, 8 e 9
+
+### Inserindo T5, T6 e T7
+
+As transações restantes reutilizam diversos caminhos já existentes.
+
+Os contadores são incrementados sempre que um prefixo já está presente.
+
+Ao final, obtém-se uma FP-Tree compacta, na qual diferentes transações compartilham grande parte da estrutura.
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+A compactação ocorre porque diversas transações possuem prefixos comuns.
+
+:::
+
+
+
+## Exemplo: Construção da FP-Tree
+
+### FP-Tree final
+
+A árvore construída resume toda a base de transações.
+
+Principais características:
+
+- Café aparece em **6** transações.
+- Quatro transações compartilham o caminho inicial **Café → Pão**.
+- Diversos ramos reutilizam os mesmos prefixos.
+- Alguns itens aparecem em diferentes ramos, justificando a utilização da **Header Table** e dos **Node Links**.
+
+::: {.callout-important appearance="simple"}
+
+A FP-Tree armazena a base de dados de forma compacta, preservando toda a informação necessária para extrair os itemsets frequentes.
+
+:::
+
+
+## Exemplo: Construção da FP-Tree
+
+
+![](/images/aprendNsuper/assoc31.png){width=100%}
+
+
+## Exemplo: Header Table
+
+![](/images/aprendNsuper/assoc32.png){width=100%}
+
+
+## Exemplo: Node Links
+
+
+![](/images/aprendNsuper/assoc33.png){width=100%}
+
+
+## Exemplo: Conditional Pattern Base
+
+![](/images/aprendNsuper/assoc34.png){width=100%}
+
+
+## Exemplo: Conditional FP-Tree
+
+![](/images/aprendNsuper/assoc35.png){width=100%}
+
+
+
+## FP-Growth
+
+
+O algoritmo **FP-Growth** termina quando todos os **itemsets frequentes** são encontrados.
+
+A partir desse ponto, a geração das regras segue exatamente o mesmo procedimento utilizado no algoritmo **Apriori**.
+
+
+
+<br>
+
+::: {.callout-important appearance="simple"}
+
+A diferença entre **Apriori** e **FP-Growth** está apenas na mineração dos **itemsets frequentes**. A geração das regras de associação e o cálculo das métricas (**suporte, confiança e lift**) são idênticos nos dois algoritmos.
+
+:::
+
+
+
+## Apriori × FP-Growth
+
+| Etapa | Apriori | FP-Growth |
+|:-------------------------------|:---------------------------:|:---------------------------:|
+| Encontra itemsets frequentes | Geração de candidatos | FP-Tree |
+| Leituras da base | Diversas | Apenas duas |
+| Geração das regras | ✔ | ✔ |
+| Cálculo da confiança | ✔ | ✔ |
+| Cálculo do lift | ✔ | ✔ |
+| Resultado final | Regras de associação | Regras de associação |
+
+::: {.callout-tip appearance="simple"}
+
+Ambos os algoritmos produzem as **mesmas regras de associação** quando executados com os mesmos valores de suporte mínimo e confiança mínima. O ganho do **FP-Growth** está exclusivamente na eficiência da etapa de mineração dos itemsets frequentes.
+
+:::
+
+
+
+
+
+## R: FP-Growth
+
+Utilizaremos a mesma base transacional preparada para o algoritmo Apriori:
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+library(arules)
+library(arulesViz)
+library(dplyr)
+library(ggplot2)
+
+# Objeto criado anteriormente
+transacoes
+```
+
+## R: FP-Growth
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+summary(transacoes)
+```
+
+
+## R: FP-Growth
+
+Também manteremos os mesmos critérios:
+
+```{r}
+#| eval: true
+#| echo: true
+
+numero_minimo_pedidos <- 20
+
+suporte_minimo <- numero_minimo_pedidos / length(transacoes)
+
+confianca_minima <- 0.40
+```
+
+<br>
+
+::: {.callout-note}
+## Nota
+Ao manter os mesmos dados e parâmetros, podemos comparar diretamente os resultados do **Apriori** e do **FP-Growth**.
+
+:::
+
+
+## R: FP-Growth
+
+### Interface do FP-Growth
+
+A função `fim4r()` fornece acesso a diferentes algoritmos de mineração, incluindo o FP-Growth.
+
+```{r}
+#| eval: false
+#| echo: true
+
+library(arules)
+
+# A primeira chamada verifica se o pacote fim4r
+# está disponível e oferece sua instalação.
+arules::fim4r()
+```
+
+::: {.callout-warning appearance="simple"}
+
+Na primeira execução, o R poderá perguntar:
+
+```text
+Package fim4r is required.
+Download and install the package?
+```
+
+Selecione **Yes**.
+
+No Windows, é necessário ter o **RTools** correspondente à versão do R.
+
+:::
+
+
+
+
+## R: FP-Growth
+
+
+### Itemsets frequentes com FP-Growth
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+inicio_fp_itemsets <- Sys.time()
+
+itemsets_fp <- arules::fim4r(
+  transactions = transacoes,
+  method = "fpgrowth",
+  target = "frequent",
+  support = suporte_minimo,
+  zmin = 1,
+  zmax = 4,
+  verbose = FALSE
+)
+
+fim_fp_itemsets <- Sys.time()
+
+tempo_fp_itemsets <- as.numeric(
+  difftime(
+    fim_fp_itemsets,
+    inicio_fp_itemsets,
+    units = "secs"
+  )
+)
+
+itemsets_fp
+tempo_fp_itemsets
+```
+
+
+## R: FP-Growth
+
+
+O argumento
+
+```r
+target = "frequent"
+```
+
+faz com que o algoritmo retorne os conjuntos frequentes, e não as regras.
+
+<br>
+
+::: {.callout-important appearance="simple"}
+
+O FP-Growth encontra os itemsets frequentes diretamente por meio da FP-Tree, sem gerar explicitamente os conjuntos candidatos utilizados pelo Apriori.
+
+:::
+
+
+
+## R: FP-Growth
+
+### Principais itemsets frequentes
+
+Os itemsets podem ser ordenados pelo suporte.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| output-location: slide
+
+itemsets_fp_ordenados <- sort(
+  itemsets_fp,
+  by = "support",
+  decreasing = TRUE
+)
+
+inspect(
+  head(
+    itemsets_fp_ordenados,
+    20
+  )
+)
+```
+
+
+## R: FP-Growth
+
+### Principais itemsets frequentes
+
+
+Para visualizar apenas conjuntos com dois ou mais itens:
+
+```{r}
+#| eval: true
+#| echo: true
+#| output-location: slide
+
+itemsets_fp_multiplos <- subset(
+  itemsets_fp,
+  subset = size(items) >= 2
+)
+
+inspect(
+  head(
+    sort(
+      itemsets_fp_multiplos,
+      by = "support",
+      decreasing = TRUE
+    ),
+    20
+  )
+)
+```
+
+::: {.callout-note appearance="simple"}
+
+Itemsets com apenas um produto descrevem sua frequência individual. Os conjuntos com dois ou mais produtos revelam padrões de compra conjunta.
+
+:::
+
+
+
+## R: FP-Growth
+
+### Regras de associação com FP-Growth
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| output-location: slide
+
+
+inicio_fp <- Sys.time()
+
+regras_fp <- arules::fim4r(
+  transactions = transacoes,
+  method = "fpgrowth",
+  target = "rules",
+  support = suporte_minimo,
+  confidence = confianca_minima,
+  zmin = 2,
+  zmax = 4,
+  verbose = FALSE
+)
+
+fim_fp <- Sys.time()
+
+tempo_fp <- as.numeric(
+  difftime(
+    fim_fp,
+    inicio_fp,
+    units = "secs"
+  )
+)
+
+summary(regras_fp)
+```
+
+::: {.callout-important appearance="simple"}
+
+A FP-Tree é utilizada para encontrar os itemsets frequentes. Depois disso, as regras são construídas e avaliadas por suporte, confiança e lift da mesma forma que no Apriori.
+
+:::
+
+
+
+
+## R: FP-Growth
+
+### Seleção das regras
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| output-location: slide
+
+
+# Ordenar pelo lift
+regras_fp_lift <- sort(
+  regras_fp,
+  by = "lift",
+  decreasing = TRUE
+)
+
+# Identificar regras redundantes
+redundantes_fp <- is.redundant(
+  regras_fp_lift,
+  measure = "confidence"
+)
+
+# Manter somente regras não redundantes
+regras_fp_nao_redundantes <-
+  regras_fp_lift[!redundantes_fp]
+
+inspect(
+  head(
+    regras_fp_nao_redundantes,
+    20
+  )
+)
+```
+
+::: {.callout-note appearance="simple"}
+
+A remoção de redundâncias não faz parte da construção da FP-Tree. Trata-se de uma etapa posterior de seleção e simplificação das regras encontradas.
+
+:::
+
+
+
+
+## R: FP-Growth
+
+### Regras equilibradas
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| output-location: slide
+
+
+regras_fp_equilibradas <- subset(
+  regras_fp_nao_redundantes,
+  subset =
+    support >= 0.01 &
+    confidence >= 0.50 &
+    lift >= 1.30
+)
+
+regras_fp_equilibradas <- sort(
+  regras_fp_equilibradas,
+  by = "lift",
+  decreasing = TRUE
+)
+
+inspect(
+  head(
+    regras_fp_equilibradas,
+    20
+  )
+)
+```
+
+
+## R: FP-Growth
+
+### Regras equilibradas
+
+Os critérios selecionam regras que:
+
+- aparecem em pelo menos **1% dos pedidos**;
+- possuem confiança mínima de **50%**;
+- apresentam associação positiva, com lift de pelo menos **1,30**.
