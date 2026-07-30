@@ -1,0 +1,3258 @@
+---
+title: "Parte III : Aprendizado não supervisionado"
+subtitle: "<span class='custom-subtitle'>Sistemas de Recomendação</span>"
+format: 
+  revealjs:
+    width: 1600
+    height: 900
+    footer: ""
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    preview-links: auto
+    self-contained: false
+    embed-resources: false
+    code-link: true
+    highlight-style: a11y
+    chalkboard: true
+  # beamer:          # Slides em PDF (LaTeX/Beamer)
+  #   aspectratio: 169   # 16:9
+  #   keep-tex: true     # opcional, guarda o .tex gerado
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+
+# Sistemas de Recomendação
+
+## O que é um sistema de recomendação?
+
+Um **sistema de recomendação** é um algoritmo capaz de sugerir itens que sejam potencialmente relevantes para cada usuário.
+
+Os itens recomendados podem ser:
+
+:::: columns
+::: {.column width="50%"}
+- filmes;
+- músicas;
+- livros;
+- produtos;
+:::
+
+::: {.column width="50%"}
+- notícias;
+- restaurantes;
+- cursos;
+- vídeos.
+:::
+::::
+
+
+
+
+
+<br>
+
+::: {.callout-note appearance="simple"}
+
+O objetivo é identificar automaticamente itens de maior interesse para cada usuário, utilizando informações sobre seu comportamento ou suas preferências.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom01.png){width=100%}
+
+
+
+## Aplicações
+
+### Sistemas de recomendação estão presentes no cotidiano
+
+Diversas plataformas utilizam algoritmos de recomendação para personalizar a experiência do usuário.
+
+Exemplos incluem:
+
+
+:::: columns
+::: {.column width="50%"}
+- Netflix
+- Amazon
+- Spotify
+- YouTube
+:::
+
+::: {.column width="50%"}
+- TikTok
+- Mercado Livre
+- iFood
+:::
+::::
+
+
+
+::: {.callout-important appearance="simple"}
+
+Em muitas empresas, os sistemas de recomendação representam uma das principais ferramentas para aumentar o engajamento dos usuários e impulsionar vendas.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom02.png){width=100%}
+
+
+
+## Abordagens
+
+### Como um sistema decide o que recomendar?
+
+Existem três estratégias principais para construir sistemas de recomendação.
+
+| Abordagem | Ideia principal |
+|:-----------------------|:------------------------------------------------|
+| **Baseada em conteúdo** | recomenda itens semelhantes aos já apreciados pelo usuário. |
+| **Filtragem colaborativa** | recomenda itens apreciados por usuários com preferências semelhantes. |
+| **Sistemas híbridos** | combinam múltiplas estratégias para melhorar a qualidade das recomendações. |
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+Neste capítulo estudaremos a **filtragem colaborativa**, uma das abordagens mais utilizadas em plataformas de recomendação.
+
+:::
+
+---
+
+![](/images/aprendNsuper/recom03.png){width=100%}
+
+
+## Filtragem colaborativa
+
+
+A hipótese da **filtragem colaborativa** é simples:
+
+> Usuários que apresentaram comportamentos semelhantes no passado tendem a possuir preferências semelhantes no futuro.
+
+<br>
+
+Assim, um sistema pode recomendar a um usuário itens que foram bem avaliados por outros usuários com gostos parecidos.
+
+<br>
+
+::: {.callout-note appearance="simple"}
+
+As recomendações são construídas a partir do comportamento coletivo dos usuários, e não das características dos produtos.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/recom04.png){width=100%}
+
+
+## Representação dos dados
+
+### Matriz usuário × item
+
+Toda técnica de filtragem colaborativa parte de uma matriz de avaliações.
+
+Cada linha representa um usuário. 
+
+Cada coluna representa um item.
+
+Cada célula corresponde à avaliação atribuída pelo usuário ao item.
+
+
+
+
+## Representação dos dados
+
+### Matriz usuário × item
+
+
+| Usuário | Filme A | Filme B | Filme C | Filme D |
+|:-------:|:--------:|:--------:|:--------:|:--------:|
+| U1 | ★★★★★ | ★★★★☆ | — | ★★★★★ |
+| U2 | ★★★★☆ | ★★★★★ | ★★★☆☆ | — |
+| U3 | — | ★★★☆☆ | ★★★★★ | ★★★★☆ |
+| U4 | ★★★★★ | — | ★★★★☆ | ★★★★★ |
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+As células vazias representam itens que ainda não foram avaliados e que poderão ser recomendados futuramente.
+
+:::
+
+
+
+
+
+## O desafio
+
+### A matriz é extremamente esparsa
+
+Na prática, cada usuário avalia apenas uma pequena fração dos itens disponíveis.
+
+Consequentemente, a maior parte da matriz permanece vazia.
+
+<br>
+
+::: {.callout-warning appearance="simple"}
+
+O principal desafio dos sistemas de recomendação é prever corretamente os valores ausentes da matriz.
+
+:::
+
+
+
+
+
+---
+
+![](/images/aprendNsuper/recom05.png){width=100%}
+
+
+## Pergunta central
+
+### Como prever uma avaliação desconhecida?
+
+Considere a seguinte situação:
+
+- João avaliou diversos filmes.
+- Ainda não assistiu ao **Filme D**.
+
+Como estimar a nota que João provavelmente atribuiria a esse filme?
+
+
+
+## Pergunta central
+
+### Como prever uma avaliação desconhecida?
+
+
+A estratégia da filtragem colaborativa baseada no usuário consiste em:
+
+1. encontrar usuários semelhantes a João;
+2. observar como esses usuários avaliaram o Filme D;
+3. utilizar essas avaliações para estimar a nota de João.
+
+::: {.callout-important appearance="simple"}
+
+A recomendação é baseada na similaridade entre usuários.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom06.png){width=100%}
+
+
+
+# User-Based Collaborative Filtering
+
+
+## User-Based Collaborative Filtering
+
+### O que significa "usuários semelhantes"?
+
+Na filtragem colaborativa baseada no usuário, o primeiro passo é identificar usuários com padrões de avaliação semelhantes.
+
+Por exemplo:
+
+| Filme | João | Maria | Pedro |
+|:------|:----:|:-----:|:-----:|
+| A | ★★★★★ | ★★★★★ | ★★☆☆☆ |
+| B | ★★★★☆ | ★★★★☆ | ★☆☆☆☆ |
+| C | ★★★★★ | ★★★★★ | ★★☆☆☆ |
+| D | ? | ★★★★★ | ★☆☆☆☆ |
+
+João e Maria apresentam avaliações muito semelhantes para os filmes já assistidos.
+
+
+
+## User-Based Collaborative Filtering
+
+### O que significa "usuários semelhantes"?
+
+
+Assim, a avaliação de **Maria** para o Filme D pode ser utilizada para estimar a avaliação de **João**.<br><br>
+
+::: {.callout-note appearance="simple"}
+
+A similaridade é calculada apenas utilizando os itens avaliados em comum pelos usuários.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom07.png){width=100%}
+
+
+## User-Based Collaborative Filtering
+
+### Medindo a similaridade entre usuários
+
+Diversas medidas podem ser utilizadas para comparar dois usuários.
+
+As mais comuns são:
+
+- **Similaridade do cosseno**
+- **Correlação de Pearson**
+
+Cada medida transforma as avaliações dos usuários em um valor de similaridade, geralmente compreendido entre **−1 e 1** ou entre **0 e 1**, dependendo da métrica utilizada.
+
+
+
+::: {.callout-tip appearance="simple"}
+
+Quanto maior a similaridade, maior será a influência daquele usuário na recomendação.
+
+:::
+
+
+
+## Similaridade do Cosseno
+
+A similaridade do cosseno mede o ângulo entre os vetores de avaliações de dois usuários.
+
+$$
+\operatorname{sim}(u,v)=
+\frac{
+\sum_{i\in I_{uv}} r_{ui}\,r_{vi}
+}{
+\sqrt{\sum_{i\in I_{uv}} r_{ui}^{2}}
+\sqrt{\sum_{i\in I_{uv}} r_{vi}^{2}}
+}
+$$
+
+onde:
+
+- $r_{ui}$: avaliação do usuário $u$ para o item $i$;
+- $r_{vi}$: avaliação do usuário $v$;
+- $I_{uv}$: conjunto de itens avaliados por ambos.
+
+
+
+Quanto menor o ângulo entre os vetores, maior será a similaridade.
+
+
+---
+
+![](/images/aprendNsuper/recom08.png){width=100%}
+
+
+
+## Correlação de Pearson
+
+A correlação de Pearson compara os padrões de avaliação após remover a média individual de cada usuário.
+
+$$
+\operatorname{sim}(u,v)=
+\frac{
+\sum_{i\in I_{uv}}
+(r_{ui}-\bar r_u)
+(r_{vi}-\bar r_v)
+}{
+\sqrt{\sum_{i\in I_{uv}}(r_{ui}-\bar r_u)^2}
+\sqrt{\sum_{i\in I_{uv}}(r_{vi}-\bar r_v)^2}
+}
+$$
+
+onde:
+
+- $\bar r_u$: média das avaliações do usuário $u$;
+- $\bar r_v$: média das avaliações do usuário $v$.
+
+::: {.callout-important appearance="simple"}
+
+Ao centralizar as avaliações pela média, a correlação de Pearson reduz o efeito de usuários naturalmente mais rigorosos ou mais generosos ao atribuir notas.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom09.png){width=100%}
+
+
+
+## Comparação das medidas
+
+| Característica | Cosseno | Pearson |
+|:-------------------------------|:-------:|:--------:|
+| Considera apenas o ângulo entre os vetores | ✔ | ✘ |
+| Remove diferenças na escala das avaliações | ✘ | ✔ |
+| Sensível a usuários muito generosos ou rigorosos | ✔ | ✘ |
+| Muito utilizada em sistemas de recomendação | ✔ | ✔ <br><br>|
+
+::: {.callout-tip appearance="simple"}
+
+Na prática, a correlação de **Pearson** costuma produzir melhores resultados quando diferentes usuários utilizam escalas de avaliação distintas.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom10.png){width=100%}
+
+
+
+## Exemplo: matriz de avaliações
+
+### Matriz de avaliações
+
+Considere a seguinte matriz de avaliações (1 a 5 estrelas).
+
+| Usuário | Matrix | Titanic | Avatar | Interestelar | Toy Story | Gladiador |
+|:-------:|:------:|:--------:|:-------:|:------------:|:---------:|:----------:|
+| **Ana**   | 5 | 4 | 5 | ? | 2 | 1 |
+| **Bruno** | 5 | 5 | 4 | 5 | 1 | 1 |
+| **Carla** | 1 | 2 | 1 | 1 | 5 | 5 |
+| **Daniel**| 4 | 4 | 5 | 4 | 2 | 1 |
+| **Eduardo**| 2 | 1 | 2 | 2 | 4 | 5 |
+
+Nosso objetivo será estimar a avaliação que **Ana** atribuiria ao filme **Interestelar**.
+
+
+
+## User-Based Collaborative Filtering
+
+### Quem é mais parecido com Ana?
+
+Para prever a avaliação de **Ana**, devemos compará-la com os demais usuários utilizando apenas os filmes avaliados por ambos.
+
+| Usuário | Filmes em comum |
+|:---------|:----------------|
+| Bruno | Matrix, Titanic, Avatar, Toy Story, Gladiador |
+| Carla | Matrix, Titanic, Avatar, Toy Story, Gladiador |
+| Daniel | Matrix, Titanic, Avatar, Toy Story, Gladiador |
+| Eduardo | Matrix, Titanic, Avatar, Toy Story, Gladiador |
+
+O próximo passo consiste em calcular uma medida de similaridade entre Ana e cada um desses usuários.
+
+
+
+
+---
+
+![](/images/aprendNsuper/recom11.png){width=100%}
+
+## User-Based Collaborative Filtering
+
+### Similaridade entre Ana e os demais usuários
+
+Após calcular a similaridade (por exemplo, utilizando a correlação de Pearson), obtém-se:
+
+| Usuário | Similaridade |
+|:---------|------------:|
+| Bruno | **0,96** |
+| Daniel | **0,93** |
+| Eduardo | -0,88 |
+| Carla | -0,95 |
+
+Observa-se que **Bruno** e **Daniel** apresentam preferências muito semelhantes às de Ana.
+
+
+
+## User-Based Collaborative Filtering
+
+### Similaridade entre Ana e os demais usuários
+
+Já **Carla** e **Eduardo** possuem gostos bastante diferentes.<br><br>
+
+::: {.callout-tip appearance="simple"}
+
+Normalmente são utilizados apenas os usuários mais semelhantes (vizinhos mais próximos) para realizar a recomendação.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom12.png){width=100%}
+
+
+## User-Based Collaborative Filtering
+
+### Selecionando os vizinhos mais próximos
+
+Suponha que adotemos $k=2$. Assim, utilizaremos apenas:
+
+- Bruno
+- Daniel
+
+Esses usuários formarão a vizinhança de Ana para realizar a predição da avaliação desconhecida.
+
+::: {.callout-important appearance="simple"}
+
+Usuários com similaridade negativa normalmente são descartados, pois representam preferências opostas às do usuário-alvo.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/recom13.png){width=100%}
+
+
+## User-Based Collaborative Filtering
+
+### Predizendo uma avaliação desconhecida
+
+Após identificar os **$k$ vizinhos mais próximos**, a avaliação desconhecida é estimada a partir das avaliações desses usuários, ponderadas pela similaridade.
+
+$$
+\hat{r}_{ui}
+=
+\bar{r}_u
++
+\frac{
+\displaystyle\sum_{v \in N(u)}
+\operatorname{sim}(u,v)
+\left(r_{vi}-\bar{r}_v\right)
+}{
+\displaystyle\sum_{v \in N(u)}
+\left|\operatorname{sim}(u,v)\right|
+}
+$$
+
+
+## User-Based Collaborative Filtering
+
+### Predizendo uma avaliação desconhecida
+
+
+em que:
+
+- $\hat{r}_{ui}$ é a avaliação prevista do usuário $u$ para o item $i$;
+- $\bar{r}_u$ é a média das avaliações do usuário $u$;
+- $\bar{r}_v$ é a média das avaliações do usuário $v$;
+- $N(u)$ representa o conjunto dos $k$ usuários mais semelhantes a $u$;
+- $\operatorname{sim}(u,v)$ é a similaridade entre os usuários $u$ e $v$;
+- $r_{vi}$ é a avaliação atribuída pelo usuário $v$ ao item $i$.
+
+::: {.callout-note appearance="simple"}
+
+A influência de cada vizinho é proporcional à sua similaridade com o usuário-alvo. Usuários mais semelhantes exercem maior peso na predição da avaliação.
+
+:::
+
+
+
+## User-Based Collaborative Filtering
+
+### Exemplo de predição
+
+Desejamos estimar a avaliação que **Ana** atribuiria ao filme **Interestelar**.
+
+Considere:
+
+- $\bar r_{\text{Ana}} = 3,40$
+- $\bar r_{\text{Bruno}} = 3,50$
+- $\bar r_{\text{Daniel}} = 3,20$
+
+- $\operatorname{sim}(\text{Ana},\text{Bruno}) = 0,96$
+- $\operatorname{sim}(\text{Ana},\text{Daniel}) = 0,93$
+
+
+
+## User-Based Collaborative Filtering
+
+Além disso,
+
+- Bruno avaliou **Interestelar** com **5** estrelas;
+- Daniel avaliou **Interestelar** com **4** estrelas.
+
+Aplicando a equação,
+
+$$
+\begin{eqnarray}
+\hat r_{\text{Ana},\,\text{Interestelar}}
+&=&
+3,40
++
+\frac{
+0,96(5-3,50)
++
+0,93(4-3,20)
+}
+{
+0,96+0,93
+} \\ &=&
+3,40
++
+\frac{
+1,44+0,744
+}{
+1,89
+}
+=
+3,40+1,16
+=
+4,56
+\end{eqnarray}
+$$
+
+
+
+::: {.callout-important appearance="simple"}
+
+Como a avaliação prevista é **4,56 estrelas**, o sistema recomendaria o filme **Interestelar** para Ana.
+
+:::
+
+
+## R: User-Based Collaborative Filtering
+
+### MovieLens 100K
+
+Utilizaremos a base **MovieLens 100K**, composta por avaliações de filmes atribuídas por diferentes usuários.
+
+Características principais:
+
+- avaliações explícitas de $1$ a $5$ estrelas;
+- matriz usuário $\times$ filme;
+- grande quantidade de valores ausentes;
+- amplamente utilizada na avaliação de sistemas de recomendação.
+
+
+---
+
+![](/images/aprendNsuper/recom14.png){width=100%}
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Carregando a base MovieLens
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| fig-width: 16
+#| fig-height: 8
+
+library(recommenderlab)
+
+data("MovieLense")
+
+MovieLense
+```
+
+
+## R: User-Based Collaborative Filtering
+
+### Inspecionando as avaliações
+
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+as(
+  MovieLense[1:6, 1:8],
+  "matrix"
+)
+```
+
+Os valores numéricos representam as avaliações atribuídas aos filmes. As células com `NA` correspondem a filmes que ainda não foram avaliados pelo usuário.
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Inspecionando as avaliações
+
+Também podemos contar quantas avaliações cada usuário realizou:
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+rowCounts(MovieLense)[1:10]
+```
+
+<br>
+
+::: {.callout-warning appearance="simple"}
+
+A matriz não deve ser convertida integralmente para uma matriz densa, pois isso aumenta consideravelmente o uso de memória.
+
+:::
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Como os usuários avaliam os filmes?
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+avaliacoes <- getRatings(MovieLense)
+
+hist(
+  avaliacoes,
+  breaks = seq(0.5, 5.5, by = 1),
+  main = "Distribuição das avaliações",
+  xlab = "Número de estrelas",
+  ylab = "Frequência"
+)
+```
+
+
+## R: User-Based Collaborative Filtering
+
+### Como os usuários avaliam os filmes?
+
+O gráfico permite verificar:
+
+- quais notas são mais frequentes;
+- se os usuários tendem a avaliar positivamente;
+- se existem poucas avaliações extremas;
+- como a escala de avaliação é utilizada.
+
+::: {.callout-tip appearance="simple"}
+
+Conhecer a distribuição das notas ajuda a interpretar as predições produzidas pelo modelo.
+
+:::
+
+
+
+
+
+## R: User-Based Collaborative Filtering
+
+
+### Divisão entre treino e teste
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+set.seed(123)
+
+esquema <- evaluationScheme(
+  MovieLense,
+  method = "split",
+  train = 0.8,
+  given = 10,
+  goodRating = 4
+)
+
+dados_treino <- getData(esquema, "train")
+dados_teste  <- getData(esquema, "known")
+dados_reais  <- getData(esquema, "unknown")
+```
+
+
+## R: User-Based Collaborative Filtering
+
+### Divisão entre treino e teste
+
+Nesse esquema:
+
+- $80\%$ dos usuários são utilizados no treinamento;
+- para cada usuário de teste, $10$ avaliações permanecem conhecidas;
+- as demais avaliações são ocultadas para avaliar o modelo;
+- notas maiores ou iguais a $4$ são consideradas positivas.
+
+::: {.callout-important appearance="simple"}
+
+O modelo recebe apenas as avaliações conhecidas e deve prever as avaliações que foram ocultadas.
+
+:::
+
+
+## R: User-Based Collaborative Filtering
+
+### Ajustando o modelo
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+modelo_ubcf <- Recommender(
+  dados_treino,
+  method = "UBCF",
+  parameter = list(
+    method = "Pearson",
+    nn = 30,
+    normalize = "center"
+  )
+)
+
+modelo_ubcf
+```
+
+
+## R: User-Based Collaborative Filtering
+
+### Ajustando o modelo
+
+Os principais parâmetros são:
+
+| Parâmetro | Função |
+|:----------|:-------|
+| `method` | medida de similaridade |
+| `nn` | número de vizinhos |
+| `normalize` | normalização das avaliações |
+
+Neste exemplo, $k=30$ e a similaridade entre usuários é calculada pela correlação de Pearson.<br><br>
+
+::: {.callout-note appearance="simple"}
+
+A normalização `center` remove a média de cada usuário antes do cálculo das recomendações.
+
+:::
+
+
+## R: User-Based Collaborative Filtering
+
+### Predição das avaliações ocultadas
+
+O modelo pode estimar as notas dos filmes que foram ocultados no conjunto de teste.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+predicoes_notas <- predict(
+  modelo_ubcf,
+  dados_teste,
+  type = "ratings"
+)
+
+predicoes_notas
+```
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Predição das avaliações ocultadas
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+as(
+  predicoes_notas[1:5, 1:8],
+  "matrix"
+)
+```
+
+
+
+::: {.callout-note appearance="simple"}
+
+As células com `NA` correspondem a avaliações que já eram conhecidas pelo modelo. O algoritmo prevê apenas as avaliações ocultadas durante a construção do conjunto de teste.
+
+:::
+
+
+
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Erro das avaliações previstas
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+resultado_erros <- calcPredictionAccuracy(
+  predicoes_notas,
+  dados_reais
+)
+
+resultado_erros
+```
+
+## R: User-Based Collaborative Filtering
+
+As principais métricas são:
+
+| Métrica | Interpretação |
+|:--------|:--------------|
+| RMSE | penaliza mais intensamente erros grandes |
+| MSE | média dos erros ao quadrado |
+| MAE | média dos erros em valor absoluto |
+
+O RMSE é calculado por:
+
+$$
+\operatorname{RMSE}
+=
+\sqrt{
+\frac{1}{n}
+\sum_{j=1}^{n}
+\left(r_j-\hat r_j\right)^2
+}
+$$
+
+::: {.callout-tip appearance="simple"}
+
+Quanto menores os valores de RMSE e MAE, mais próximas estão as predições das avaliações reais.
+
+:::
+
+
+
+## R: User-Based Collaborative Filtering
+
+### O que o RMSE representa?
+
+Suponha que o modelo produza:
+
+$$
+\operatorname{RMSE}=0{,}94
+$$
+
+Isso indica que, em média, as avaliações previstas se afastam das avaliações reais em aproximadamente uma unidade da escala de notas.
+
+
+## R: User-Based Collaborative Filtering
+
+### O que o RMSE representa?
+
+Por exemplo:
+
+| Avaliação real | Avaliação prevista | Erro |
+|:--------------:|:------------------:|:----:|
+| $5$ | $4{,}4$ | $0{,}6$ |
+| $3$ | $4{,}1$ | $1{,}1$ |
+| $2$ | $2{,}5$ | $0{,}5$<br><br> |
+
+::: {.callout-warning appearance="simple"}
+
+Um RMSE baixo não garante, isoladamente, que os melhores filmes serão colocados no topo da lista de recomendações.
+
+:::
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Gerando recomendações Top-$N$
+
+Em muitas aplicações, o objetivo não é prever todas as notas, mas recomendar os $N$ itens mais relevantes para cada usuário.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+recomendacoes <- predict(
+  modelo_ubcf,
+  dados_teste,
+  type = "topNList",
+  n = 5
+)
+
+recomendacoes
+```
+
+
+## R: User-Based Collaborative Filtering
+
+### Gerando recomendações Top-$N$
+
+
+
+Neste exemplo, o modelo retorna os $N=5$ filmes com maiores avaliações previstas para cada usuário.<br><br>
+
+::: {.callout-important appearance="simple"}
+
+Os filmes já avaliados pelo usuário não devem aparecer novamente na lista de recomendações.
+
+:::
+
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Quais filmes foram recomendados?
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+lista_recomendacoes <- as(
+  recomendacoes,
+  "list"
+)
+
+lista_recomendacoes[1:3]
+```
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Quais filmes foram recomendados?
+
+
+Para obter os filmes recomendados ao primeiro usuário:
+
+```{r}
+lista_recomendacoes[[1]]
+```
+
+
+::: {.callout-note appearance="simple"}
+
+A ordem dos filmes corresponde à ordem de relevância estimada pelo modelo.
+
+:::
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Lista personalizada para um usuário
+
+Suponha que o modelo produza a seguinte recomendação:
+
+| Posição | Filme |
+|:------:|:------|
+| $1$ | Star Wars |
+| $2$ | The Godfather |
+| $3$ | Raiders of the Lost Ark |
+| $4$ | The Empire Strikes Back |
+| $5$ | Back to the Future |
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Lista personalizada para um usuário
+
+A posição do filme na lista depende das avaliações previstas pelo modelo.
+
+$$
+\hat r_{u,i_1}
+\geq
+\hat r_{u,i_2}
+\geq
+\cdots
+\geq
+\hat r_{u,i_N}
+$$
+
+::: {.callout-tip appearance="simple"}
+
+O sistema recomenda os filmes com maior relevância prevista entre aqueles que o usuário ainda não avaliou.
+
+:::
+
+---
+
+![](/images/aprendNsuper/recom15.png){width=100%}
+
+
+
+
+## R: User-Based Collaborative Filtering
+
+### As recomendações foram relevantes?
+
+Para avaliar listas Top-$N$, comparamos os filmes recomendados com os filmes ocultados que receberam avaliações positivas.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+metricas <- calcPredictionAccuracy(
+  recomendacoes,
+  dados_reais,
+  given = 10,
+  goodRating = 4
+)
+
+metricas
+```
+
+
+## R: User-Based Collaborative Filtering
+
+Um filme é considerado relevante quando:
+
+$$
+r_{ui} \geq 4
+$$
+
+A avaliação considera:
+
+- filmes relevantes recomendados;
+- filmes irrelevantes recomendados;
+- filmes relevantes não recomendados;
+- filmes irrelevantes não recomendados.
+
+
+## R: User-Based Collaborative Filtering
+
+### Matriz de confusão da recomendação
+
+| | Filme relevante | Filme não relevante |
+|:----------------------|:----------------:|:-------------------:|
+| **Recomendado** | Verdadeiro positivo | Falso positivo |
+| **Não recomendado** | Falso negativo | Verdadeiro negativo |
+
+Em sistemas de recomendação:
+
+- **verdadeiro positivo:** filme relevante que foi recomendado;
+- **falso positivo:** filme recomendado, mas não relevante;
+- **falso negativo:** filme relevante que não apareceu na lista;
+- **verdadeiro negativo:** filme não relevante e não recomendado.
+
+::: {.callout-note appearance="simple"}
+
+Como o número de filmes não recomendados é muito grande, a acurácia pode ser pouco informativa nesse contexto.
+
+:::
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Precisão e revocação
+
+A **precisão** mede a proporção de recomendações que eram realmente relevantes:
+
+$$
+\operatorname{Precisão}
+=
+\frac{VP}{VP+FP}
+$$
+
+A **revocação** mede a proporção dos itens relevantes que foram recomendados:
+
+$$
+\operatorname{Revocação}
+=
+\frac{VP}{VP+FN}
+$$
+
+
+
+::: {.callout-tip appearance="simple"}
+
+- Alta precisão: poucas recomendações irrelevantes.
+- Alta revocação: grande parte dos itens relevantes foi recuperada.
+
+:::
+
+
+
+
+## R: User-Based Collaborative Filtering
+
+### O valor de $N$ influencia o resultado
+
+Quando aumentamos o tamanho da lista Top-$N$:
+
+- mais itens relevantes podem ser recuperados;
+- a revocação tende a aumentar;
+- mais itens irrelevantes também podem ser incluídos;
+- a precisão pode diminuir.
+
+
+
+## R: User-Based Collaborative Filtering
+
+Assim, existe um compromisso entre precisão e revocação.
+
+$$
+N \uparrow
+\quad\Longrightarrow\quad
+\begin{cases}
+\operatorname{Revocação} \uparrow\\
+\operatorname{Precisão} \text{ pode diminuir}
+\end{cases}
+$$
+
+::: {.callout-important appearance="simple"}
+
+O tamanho da lista deve ser escolhido de acordo com a aplicação e com a quantidade de recomendações que o usuário consegue analisar.
+
+:::
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Curva precisão × revocação
+
+Podemos avaliar o modelo para diferentes tamanhos de lista.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+resultados_ubcf <- evaluate(
+  esquema,
+  method = list(
+    UBCF = list(
+      name = "UBCF",
+      param = list(
+        method = "Pearson",
+        nn = 30,
+        normalize = "center"
+      )
+    )
+  ),
+  type = "topNList",
+  n = c(1, 3, 5, 10, 15, 20)
+)
+```
+
+
+
+## R: User-Based Collaborative Filtering
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+plot(
+  resultados_ubcf,
+  annotate = TRUE
+)
+```
+
+Cada ponto representa o desempenho do modelo para um valor diferente de $N$.
+
+::: {.callout-note appearance="simple"}
+
+Modelos mais próximos do canto superior direito apresentam melhor equilíbrio entre precisão e revocação.
+
+:::
+
+
+
+## R: User-Based Collaborative Filtering
+
+### Como escolher o número de vizinhos?
+
+O parâmetro $k$ controla quantos usuários semelhantes participam da recomendação.
+
+- valores pequenos de $k$ utilizam poucos usuários muito semelhantes;
+- valores grandes de $k$ incorporam mais informações;
+- valores muito grandes podem incluir usuários pouco relacionados.
+
+$$
+k \text{ pequeno}
+\quad\Longrightarrow\quad
+\text{maior personalização e maior variabilidade}
+$$
+
+$$
+k \text{ grande}
+\quad\Longrightarrow\quad
+\text{maior estabilidade e menor personalização}
+$$
+
+::: {.callout-warning appearance="simple"}
+
+O valor de $k$ deve ser selecionado empiricamente utilizando dados de validação.
+
+:::
+
+
+
+# Item-Based Collaborative Filtering
+
+
+## Item-Based Collaborative Filtering
+
+### Uma limitação da abordagem baseada em usuários
+
+O User-Based Collaborative Filtering compara cada usuário com todos os demais usuários.
+
+Em aplicações reais, isso pode ser computacionalmente caro.
+
+Por exemplo:
+
+- milhões de usuários;
+- milhares de filmes;
+- novos usuários chegam continuamente.
+
+
+::: {.callout-warning appearance="simple"}
+
+À medida que o número de usuários cresce, encontrar os vizinhos mais semelhantes torna-se cada vez mais custoso.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom16.png){width=100%}
+
+
+## Item-Based Collaborative Filtering
+
+
+### Em vez de comparar usuários...
+
+...podemos comparar os próprios itens.
+
+A hipótese é simples:
+
+> Itens que costumam receber avaliações semelhantes pelos mesmos usuários tendem a ser semelhantes entre si.
+
+
+## Item-Based Collaborative Filtering
+
+Assim,
+
+- filmes semelhantes;
+- livros semelhantes;
+- músicas semelhantes;
+
+podem ser recomendados com base no histórico do usuário.<br><br>
+
+::: {.callout-note appearance="simple"}
+
+Agora a similaridade é calculada entre itens, e não entre usuários.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom17.png){width=100%}
+
+
+## Item-Based Collaborative Filtering
+
+
+A matriz de avaliações permanece exatamente igual.
+
+| Usuário | Matrix | Titanic | Avatar | Interestelar | Toy Story | Gladiador |
+|:-------:|:------:|:--------:|:-------:|:------------:|:---------:|:----------:|
+| Ana | 5 | 4 | 5 | ? | 2 | 1 |
+| Bruno | 5 | 5 | 4 | 5 | 1 | 1 |
+| Carla | 1 | 2 | 1 | 1 | 5 | 5 |
+| Daniel | 4 | 4 | 5 | 4 | 2 | 1 |
+| Eduardo | 2 | 1 | 2 | 2 | 4 | 5 |
+
+A diferença está apenas no sentido da comparação.
+
+
+
+
+## Item-Based Collaborative Filtering
+
+### User-Based × Item-Based
+
+| User-Based CF | Item-Based CF |
+|:--------------|:--------------|
+| compara usuários | compara itens |
+| procura usuários semelhantes | procura itens semelhantes |
+| usa avaliações dos vizinhos | usa itens semelhantes já avaliados |
+| similaridade entre linhas | similaridade entre colunas |
+
+## Item-Based Collaborative Filtering
+
+Observe que:
+
+- a matriz de avaliações é a mesma;
+- as medidas de similaridade também podem ser as mesmas;
+- apenas o eixo da comparação é alterado.
+
+::: {.callout-important appearance="simple"}
+
+O algoritmo permanece praticamente o mesmo. Apenas trocamos usuários por itens.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/recom18.png){width=100%}
+
+
+## Item-Based Collaborative Filtering
+
+### Como funciona?
+
+Ana avaliou:
+
+| Filme | Avaliação |
+|:------|:---------:|
+| Matrix | ★★★★★ |
+| Titanic | ★★★★☆ |
+| Avatar | ★★★★★ |
+| Toy Story | ★★☆☆☆ |
+| Gladiador | ★☆☆☆☆ |
+
+
+
+Ainda não avaliou:
+
+- **Interestelar**
+
+
+## Item-Based Collaborative Filtering
+
+
+Se **Interestelar** for muito semelhante a **Matrix** e **Avatar**, então existe uma boa chance de Ana também gostar desse filme.<br><br>
+
+::: {.callout-tip appearance="simple"}
+
+A recomendação é baseada na similaridade entre os filmes já avaliados pelo usuário.
+
+:::
+
+
+
+
+
+
+## Item-Based Collaborative Filtering
+
+### Similaridade entre itens
+
+No Item-Based Collaborative Filtering, a similaridade é calculada entre os itens da base de dados.
+
+Cada item é representado por um vetor contendo as avaliações recebidas dos usuários.
+
+Por exemplo, os filmes **Matrix** e **Avatar** podem ser representados pelos vetores
+
+$$
+\text{Matrix} =
+(5,\;5,\;1,\;4,\;2)
+$$
+
+$$
+\text{Avatar} =
+(5,\;4,\;1,\;5,\;2)
+$$
+
+
+## Item-Based Collaborative Filtering
+
+A similaridade entre esses vetores pode ser calculada utilizando:
+
+- Similaridade do cosseno;
+- Correlação de Pearson.
+
+::: {.callout-note appearance="simple"}
+
+Agora os vetores representam filmes, e não usuários.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom20.png){width=100%}
+
+
+## Item-Based Collaborative Filtering
+
+
+Calculando a similaridade do cosseno entre os vetores dos filmes, obtemos:
+
+| | Matrix | Titanic | Avatar | Interestelar | Toy Story | Gladiador |
+|:-------------|-------:|--------:|-------:|-------------:|----------:|-----------:|
+| **Matrix** | 1,000 | 0,980 | 0,986 | **1,000** | 0,604 | 0,473 |
+| **Titanic** | 0,980 | 1,000 | 0,965 | **0,978** | 0,629 | 0,488 |
+| **Avatar** | 0,986 | 0,965 | 1,000 | **0,978** | 0,621 | 0,473 |
+| **Interestelar** | **1,000** | **0,978** | **0,978** | 1,000 | 0,565 | 0,491 |
+| **Toy Story** | 0,604 | 0,629 | 0,621 | 0,565 | 1,000 | **0,971** |
+| **Gladiador** | 0,473 | 0,488 | 0,473 | 0,491 | **0,971** | 1,000 |
+
+
+Cada elemento representa a similaridade entre dois filmes, calculada a partir das avaliações dos usuários.
+
+::: {.callout-tip appearance="simple"}
+
+Quanto mais próximo de 1, mais semelhantes são os padrões de avaliação dos filmes.
+
+:::
+
+
+
+
+## Item-Based Collaborative Filtering
+
+### Quais filmes são mais semelhantes?
+
+Desejamos prever a avaliação de Ana para **Interestelar**.
+
+Primeiro identificamos os filmes mais semelhantes a Interestelar.
+
+| Filme | Similaridade com Interestelar |
+|:-------|------------------------------:|
+| Matrix | **1,000** |
+| Avatar | **0,978** |
+| Titanic | **0,978** |
+| Toy Story | 0,565 |
+| Gladiador | 0,491 |
+
+
+
+## Item-Based Collaborative Filtering
+
+
+Considerando
+
+$$
+k=2,
+$$
+
+serão utilizados apenas:
+
+- Matrix;
+- Avatar.
+
+::: {.callout-important appearance="simple"}
+
+Somente os itens mais semelhantes participam da predição.
+
+:::
+
+
+
+
+## Item-Based Collaborative Filtering
+
+### Predizendo uma avaliação
+
+A avaliação desconhecida é estimada por uma média ponderada pelas similaridades entre os itens.
+
+$$
+\hat r_{ui}
+=
+\frac{
+\displaystyle
+\sum_{j\in N(i)}
+\operatorname{sim}(i,j)\,r_{uj}
+}{
+\displaystyle
+\sum_{j\in N(i)}
+|\operatorname{sim}(i,j)|
+}
+$$
+
+
+## Item-Based Collaborative Filtering
+
+onde:
+
+- $\hat r_{ui}$ é a avaliação prevista;
+- $N(i)$ representa os itens mais semelhantes ao item $i$;
+- $\operatorname{sim}(i,j)$ é a similaridade entre os itens;
+- $r_{uj}$ é a avaliação do usuário para o item semelhante.
+
+::: {.callout-note appearance="simple"}
+
+Filmes muito semelhantes recebem maior peso na predição.
+
+:::
+
+
+
+## Item-Based Collaborative Filtering
+
+
+Considerando que Ana avaliou:
+
+- Matrix = $5$
+- Avatar = $5$
+
+Para prever a nota de **Interestelar**, selecionamos os dois filmes mais semelhantes ($k=2$):
+
+- $\operatorname{sim}(\text{Interestelar},\text{Matrix}) = 1,000$
+- $\operatorname{sim}(\text{Interestelar},\text{Avatar}) = 0,978$
+
+
+## Item-Based Collaborative Filtering
+
+Aplicando a média ponderada,
+
+$$
+\hat{r}_{\text{Ana},\text{Interestelar}}
+=
+\frac{
+1,000\times5
++
+0,978\times5
+}{
+1,000+0,978
+}
+=
+5,00
+$$
+
+Como a avaliação prevista é máxima, o sistema recomendaria o filme **Interestelar** para Ana.<br><br>
+
+::: {.callout-important appearance="simple"}
+
+Neste exemplo, **Matrix** e **Avatar** foram utilizados como vizinhos de Interestelar. Embora **Titanic** apresente a mesma similaridade que Avatar ($0,978$), foi adotado Avatar apenas como critério de desempate para simplificar o cálculo.
+
+:::
+
+---
+
+![](/images/aprendNsuper/recom19.png){width=100%}
+
+
+
+
+## R: Item-Based Collaborative Filtering
+
+O pacote **recommenderlab** implementa diversos algoritmos de recomendação, incluindo o Item-Based Collaborative Filtering (IBCF).
+
+O fluxo de trabalho é semelhante ao utilizado no User-Based Collaborative Filtering:
+
+1. carregar a base de avaliações;
+2. definir o esquema de avaliação;
+3. treinar o modelo IBCF;
+4. gerar recomendações;
+5. avaliar o desempenho.
+
+::: {.callout-tip appearance="simple"}
+
+A principal diferença é que a similaridade é calculada entre **itens**, e não entre usuários.
+
+:::
+
+
+## R: Item-Based Collaborative Filtering
+
+### Carregando a base MovieLense
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+library(recommenderlab)
+
+data(MovieLense)
+
+MovieLense
+```
+
+A base **MovieLense** contém milhares de avaliações realizadas por usuários para diferentes filmes.
+
+Cada linha representa um usuário e cada coluna representa um filme.
+
+
+
+
+<!-- ## R: Item-Based Collaborative Filtering -->
+
+<!-- ### Separando treino e teste -->
+
+<!-- ```{r} -->
+<!-- #| eval: true -->
+<!-- #| echo: true -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+
+<!-- esquema <- evaluationScheme( -->
+<!--   MovieLense, -->
+<!--   method = "split", -->
+<!--   train = 0.8, -->
+<!--   given = 10, -->
+<!--   goodRating = 4 -->
+<!-- ) -->
+
+
+<!-- treino <- getData(esquema, "train") -->
+<!-- teste  <- getData(esquema, "known") -->
+<!-- ``` -->
+
+<!-- O conjunto de treino é utilizado para construir o modelo, enquanto o conjunto de teste permite avaliar a qualidade das recomendações. -->
+
+
+
+
+## R: Item-Based Collaborative Filtering
+
+### Treinando o modelo
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+modelo_ibcf <- Recommender(
+  dados_treino,
+  method = "IBCF"
+)
+
+modelo_ibcf
+```
+
+Durante o treinamento, o algoritmo calcula a matriz de similaridade entre os filmes.
+
+Essas similaridades são utilizadas posteriormente para estimar as avaliações ainda desconhecidas.
+
+
+## R: Item-Based Collaborative Filtering
+
+### Gerando recomendações
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+recomendacoes <- predict(
+  modelo_ibcf,
+  dados_teste,
+  n = 5
+)
+
+as(recomendacoes, "list")
+```
+
+Para cada usuário são retornados até cinco filmes considerados mais relevantes pelo modelo.
+
+
+## R: Item-Based Collaborative Filtering
+
+### Predição das avaliações
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| output-location: slide
+
+
+predicoes <- predict(
+  modelo_ibcf,
+  dados_teste,
+  type = "ratings"
+)
+
+pred <- as(predicoes, "matrix")
+
+posicoes <- which(!is.na(pred), arr.ind = TRUE)
+
+resultado_predicoes <- data.frame(
+  usuario = rownames(pred)[posicoes[, "row"]],
+  filme = colnames(pred)[posicoes[, "col"]],
+  nota_prevista = pred[posicoes]
+)
+
+head(resultado_predicoes, 10)
+```
+
+
+## R: Item-Based Collaborative Filtering
+
+
+O modelo estima avaliações apenas para combinações usuário–filme que:
+
+- ainda não possuem avaliação conhecida;
+- apresentam informação suficiente para o cálculo da predição.
+
+::: {.callout-note appearance="simple"}
+
+Os valores `NA` indicam avaliações conhecidas ou casos nos quais o modelo não conseguiu produzir uma estimativa.
+
+:::
+
+
+
+## R: Item-Based Collaborative Filtering
+
+### Avaliando o modelo
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| output-location: slide
+
+
+resultado_ibcf <- evaluate(
+  esquema,
+  method = "IBCF",
+  type = "topNList",
+  n = c(1, 3, 5, 10),
+  progress = FALSE
+)
+
+avg(resultado_ibcf)
+```
+
+
+
+## R: Item-Based Collaborative Filtering
+
+
+A função `evaluate()` calcula diversas métricas de desempenho para diferentes tamanhos da lista de recomendações.
+
+O argumento `goodRating = 4` determina que filmes com avaliação real igual ou superior a 4 sejam considerados relevantes.<br><br>
+
+::: {.callout-important appearance="simple"}
+
+O parâmetro `goodRating` deve ser informado na criação do `evaluationScheme()`, pois ele define quais itens ocultados serão considerados positivos durante a avaliação.
+
+:::
+
+
+
+## R: Item-Based Collaborative Filtering
+
+### UserCF × ItemCF
+
+| Característica | UserCF | ItemCF |
+|:---------------|:------:|:------:|
+| Similaridade entre usuários | ✔ | |
+| Similaridade entre filmes | | ✔ |
+| Recomendação baseada em vizinhos | ✔ | ✔ |
+| Escalabilidade | Média | Alta |
+| Estabilidade | Menor | Maior |
+| Aplicações comerciais | Pouco comum | Muito comum<br><br> |
+
+::: {.callout-note appearance="simple"}
+
+Em grandes plataformas, como Netflix e Amazon, o Item-Based Collaborative Filtering costuma apresentar melhor desempenho devido à maior estabilidade das similaridades entre itens.
+
+:::
+
+
+
+# Matrix Factorization - FunkSVD
+
+
+## Matrix Factorization
+
+### Limitações dos métodos baseados em vizinhos
+
+Os métodos UserCF e ItemCF produzem boas recomendações, porém apresentam algumas limitações.
+
+- matrizes extremamente esparsas;
+- dificuldade para recomendar itens novos;
+- baixa cobertura em bases muito grandes;
+- dependência direta das avaliações observadas;
+- dificuldade em capturar preferências implícitas.
+
+::: {.callout-important appearance="simple"}
+
+Em grandes plataformas, essas limitações motivaram o desenvolvimento de modelos baseados em fatores latentes.
+
+:::
+
+
+## Matrix Factorization
+
+### A ideia principal
+
+Em vez de comparar usuários ou itens diretamente, procuramos descobrir características ocultas que explicam as avaliações.
+
+Essas características são chamadas de **fatores latentes**.
+
+Por exemplo, em uma base de filmes, um fator latente pode representar:
+
+- preferência por ação;
+- preferência por comédia;
+- intensidade dramática;
+- efeitos especiais;
+- filmes clássicos.
+
+
+## Matrix Factorization
+
+
+
+Esses fatores não são informados explicitamente.
+
+Eles são aprendidos automaticamente a partir das avaliações.
+
+
+---
+
+![](/images/aprendNsuper/recom21.png){width=100%}
+
+
+
+
+## Matrix Factorization
+
+### Da matriz original aos fatores latentes
+
+Considere a matriz de avaliações
+
+$$
+R
+=
+\begin{bmatrix}
+5 & 4 & ? & 2\\
+5 & ? & 5 & 1\\
+1 & 2 & 1 & 5\\
+4 & 4 & 4 & ?
+\end{bmatrix}
+$$
+
+
+## Matrix Factorization
+
+
+O objetivo é aproximar essa matriz por
+
+$$
+R \approx P\,Q^{\top},
+$$
+
+em que
+
+- $P$ representa os usuários em um espaço latente;
+- $Q$ representa os itens no mesmo espaço.
+
+Cada linha dessas matrizes possui apenas alguns fatores latentes.
+
+
+
+
+## Matrix Factorization
+
+### Fatoração da matriz
+
+A matriz original é decomposta em duas matrizes menores.
+
+$$
+R_{m\times n}
+\approx
+P_{m\times k}
+Q_{n\times k}^{\top}
+$$
+
+onde
+
+- $m$ é o número de usuários;
+- $n$ é o número de itens;
+- $k$ é o número de fatores latentes.
+
+
+
+## Matrix Factorization
+
+
+Em geral,
+
+$$
+k \ll m,n
+$$
+
+Assim, reduzimos significativamente a dimensionalidade do problema.
+
+
+
+
+---
+
+![](/images/aprendNsuper/recom22.png){width=100%}
+
+
+
+
+
+## Matrix Factorization
+
+### Interpretando os fatores latentes
+
+Os fatores latentes não possuem um significado previamente definido.
+
+O algoritmo aprende automaticamente combinações capazes de explicar os padrões de avaliação observados.
+
+Assim, usuários com preferências semelhantes ficam próximos no espaço latente, enquanto filmes com características semelhantes também tendem a ocupar regiões próximas.
+
+
+
+## Matrix Factorization
+
+### Como prever uma nova avaliação?
+
+Após aprender as matrizes $P$ e $Q$, a avaliação prevista é obtida pelo produto interno entre os vetores latentes do usuário e do item.
+
+$$
+\hat r_{ui}
+=
+\mathbf{p}_u^{\top}
+\mathbf{q}_i
+$$
+
+Cada fator contribui para a nota prevista de acordo com sua importância para aquele usuário e para aquele item.
+
+
+
+## Matrix Factorization
+
+
+
+Sabemos que
+
+$$
+R \approx P\,Q^{\top}
+$$
+
+No entanto, ainda não conhecemos os valores das matrizes $P$ e $Q$.
+
+O objetivo do treinamento é encontrar os valores dessas matrizes de forma que as avaliações previstas sejam o mais próximas possível das avaliações observadas.<br><br>
+
+::: {.callout-important appearance="simple"}
+
+Aprender os fatores latentes significa estimar automaticamente os valores das matrizes $P$ e $Q$.
+
+:::
+
+
+
+---
+
+![](/images/aprendNsuper/recom23.png){width=100%}
+
+
+## FunkSVD
+
+O FunkSVD foi um dos primeiros algoritmos capazes de aprender fatores latentes de forma eficiente.
+
+A ideia central é simples:
+
+- iniciar as matrizes $P$ e $Q$ com valores aleatórios;
+- calcular as avaliações previstas;
+- medir o erro;
+- ajustar os fatores latentes;
+- repetir esse processo até que o erro seja suficientemente pequeno.
+
+Esse procedimento é conhecido como **gradiente descendente**.
+
+
+---
+
+![](/images/aprendNsuper/recom24.png){width=100%}
+
+
+## FunkSVD
+
+### Medindo o erro
+
+Para cada avaliação conhecida,
+
+o erro é definido por
+
+$$
+e_{ui}
+=
+r_{ui}
+-
+\hat r_{ui}
+$$
+
+onde
+
+- $r_{ui}$ é a avaliação observada;
+
+- $\hat r_{ui}$ é a avaliação prevista.
+
+Quanto menor esse erro, melhor é a aproximação produzida pela fatoração.
+
+
+
+
+
+---
+
+![](/images/aprendNsuper/recom25.png){width=100%}
+
+
+## FunkSVD
+
+### Minimizar o erro
+
+O treinamento procura minimizar a soma dos erros quadráticos.
+
+$$
+\min
+\sum_{(u,i)\in\Omega}
+\left(
+r_{ui}
+-
+\mathbf p_u^{\top}\mathbf q_i
+\right)^2
+$$
+
+em que $\Omega$ representa o conjunto de avaliações conhecidas.
+
+Somente as avaliações observadas participam do treinamento.
+
+
+
+## FunkSVD
+
+### Atualizando os fatores latentes
+
+Após calcular o erro, o algoritmo ajusta os vetores do usuário e do item.
+
+Em cada iteração, os fatores latentes são modificados para reduzir o erro observado.
+
+Após milhares de pequenas atualizações, as matrizes convergem para uma boa aproximação da matriz original.
+
+
+---
+
+![](/images/aprendNsuper/recom26.png){width=100%}
+
+
+
+## FunkSVD
+
+### Processo iterativo
+
+1. Inicializar $P$ e $Q$.
+
+2. Calcular as avaliações previstas.
+
+3. Medir o erro.
+
+4. Atualizar os fatores.
+
+5. Repetir até convergência.
+
+Cada iteração reduz gradualmente o erro de reconstrução da matriz.
+
+
+
+---
+
+![](/images/aprendNsuper/recom27.png){width=100%}
+
+
+
+
+## FunkSVD
+
+### Evitando overfitting
+
+Se o modelo possuir fatores latentes em excesso, ele poderá memorizar as avaliações observadas, perdendo capacidade de generalização.
+
+Para evitar esse problema, adiciona-se um termo de regularização.
+
+$$
+\min
+\sum_{(u,i)\in\Omega}
+(r_{ui}-\mathbf p_u^{\top}\mathbf q_i)^2
++
+\lambda
+\left(
+\|\mathbf P\|_F^2
++
+\|\mathbf Q\|_F^2
+\right)
+$$
+
+O parâmetro $\lambda$ controla a intensidade da penalização.
+
+
+---
+
+![](/images/aprendNsuper/recom28.png){width=100%}
+
+
+## FunkSVD
+
+### Interpretando o produto interno
+
+Após o treinamento, cada usuário e cada filme passam a ser representados por um vetor no espaço latente.
+
+A avaliação prevista é calculada pelo produto interno entre esses vetores.
+
+$$
+\hat r_{ui}
+=
+\mathbf p_u^{\top}\mathbf q_i
+$$
+
+Quando os vetores apresentam direções semelhantes, o produto interno tende a ser maior, resultando em uma avaliação prevista mais elevada.<br><br>
+
+::: {.callout-tip appearance="simple"}
+
+Em vez de comparar usuários ou filmes diretamente, a Matrix Factorization compara suas representações no espaço latente.
+
+:::
+
+
+---
+
+![](/images/aprendNsuper/recom29.png){width=100%}
+
+
+---
+
+![](/images/aprendNsuper/recom30.png){width=100%}
+
+
+
+
+## FunkSVD
+
+### Aprendendo os fatores latentes
+
+Inicialmente, os fatores latentes dos usuários e dos itens são atribuídos aleatoriamente.
+
+A cada iteração, o algoritmo:
+
+- calcula as avaliações previstas;
+- compara com as avaliações observadas;
+- calcula o erro;
+- ajusta os fatores latentes para reduzir esse erro.
+
+
+
+## FunkSVD
+
+
+Esse processo é repetido até que as previsões se tornem suficientemente precisas.<br><br>
+
+::: {.callout-tip appearance="simple"}
+
+Em vez de procurar a solução de uma única vez, o algoritmo melhora gradualmente as estimativas dos fatores latentes.
+
+:::
+
+
+
+
+
+
+## FunkSVD
+
+### Ajustando o vetor do usuário
+
+Considere a previsão da avaliação do usuário $u$ para o filme $i$:
+
+$$
+\hat r_{ui}
+=
+\mathbf p_u^{T}\mathbf q_i
+$$
+
+Após calcular o erro
+
+$$
+e_{ui}=r_{ui}-\hat r_{ui},
+$$
+
+o vetor do usuário é atualizado para reduzir esse erro.
+
+Cada atualização move o vetor em direção a uma representação mais consistente com as avaliações observadas.
+
+
+## FunkSVD
+
+### Ajustando o vetor do filme
+
+O mesmo processo é realizado para os fatores latentes do filme.
+
+Após cada observação, tanto o vetor do usuário quanto o vetor do filme são ajustados.
+
+Com milhares de pequenas atualizações, os vetores passam a representar padrões de preferência presentes na base de dados.
+
+
+## FunkSVD
+
+### Usuário e filme aprendem juntos
+
+Cada avaliação conhecida produz pequenas correções em dois vetores:
+
+- vetor do usuário;
+- vetor do filme.
+
+Essas correções acumuladas fazem com que usuários semelhantes e filmes semelhantes ocupem posições compatíveis no espaço latente.
+
+
+---
+
+![](/images/aprendNsuper/recom31.png){width=100%}
+
+
+
+## FunkSVD
+
+### Atualização dos fatores latentes
+
+Após calcular o erro,
+
+os fatores são atualizados por
+
+$$
+\mathbf p_u
+\leftarrow
+\mathbf p_u
++
+\eta
+\left(
+e_{ui}\mathbf q_i
+-
+\lambda\mathbf p_u
+\right)
+$$
+
+$$
+\mathbf q_i
+\leftarrow
+\mathbf q_i
++
+\eta
+\left(
+e_{ui}\mathbf p_u
+-
+\lambda\mathbf q_i
+\right)
+$$
+
+onde
+
+- $\eta$ é a taxa de aprendizagem;
+
+- $\lambda$ controla a regularização.
+
+
+
+
+## FunkSVD
+
+### Taxa de aprendizagem
+
+A taxa de aprendizagem controla o tamanho das atualizações realizadas em cada iteração.
+
+- valores muito pequenos tornam o treinamento lento;
+
+- valores muito grandes podem impedir a convergência.
+
+O objetivo é encontrar um equilíbrio entre velocidade e estabilidade.
+
+
+
+---
+
+![](/images/aprendNsuper/recom32.png){width=100%}
+
+
+
+
+## FunkSVD
+
+### Resumo do algoritmo
+
+1. Inicializar $P$ e $Q$.
+
+2. Percorrer todas as avaliações conhecidas.
+
+3. Calcular a predição.
+
+4. Calcular o erro.
+
+5. Atualizar $P$.
+
+6. Atualizar $Q$.
+
+7. Repetir até convergência.
+
+
+
+
+## R: FunkSVD
+
+### Base de dados
+
+A base MovieLense contém avaliações explícitas fornecidas por usuários para diferentes filmes.
+
+Cada linha representa uma interação entre:
+
+- usuário;
+
+- filme;
+
+- avaliação.
+
+Durante o treinamento, apenas as avaliações conhecidas são utilizadas para aprender os fatores latentes.
+
+
+
+## R: FunkSVD
+
+
+### Carregando os pacotes
+
+Primeiro carregamos o pacote **recommenderlab**, que implementa diversos algoritmos de sistemas de recomendação, incluindo Matrix Factorization.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+library(recommenderlab)
+library(ggplot2)
+
+data(MovieLense)
+
+MovieLense
+```
+
+<br>
+
+::: {.callout-note appearance="simple"}
+
+O pacote **recommenderlab** já disponibiliza a base MovieLense e implementa o algoritmo SVD utilizado neste exemplo.
+
+
+A base é armazenada como uma matriz esparsa do tipo **realRatingMatrix**, adequada para algoritmos de recomendação.
+
+:::
+
+
+
+<!-- ## R: FunkSVD -->
+
+<!-- ### Separando treino e teste -->
+
+<!-- ```{r} -->
+<!-- #| eval: true -->
+<!-- #| echo: true -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+
+<!-- set.seed(123) -->
+
+<!-- esquema <- evaluationScheme( -->
+<!--   MovieLense, -->
+<!--   method = "split", -->
+<!--   train = 0.8, -->
+<!--   given = 10, -->
+<!--   goodRating = 4 -->
+<!-- ) -->
+
+<!-- treino <- getData(esquema, "train") -->
+<!-- teste  <- getData(esquema, "known") -->
+<!-- ``` -->
+
+<!-- ::: {.callout-note appearance="simple"} -->
+
+<!-- O modelo será treinado utilizando 80% dos usuários. -->
+
+<!-- Para cada usuário de teste, apenas 10 avaliações conhecidas serão utilizadas para gerar recomendações. -->
+
+<!-- ::: -->
+
+
+
+
+## R: FunkSVD
+
+### Treinando o modelo
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+modelo_svdf <- Recommender(
+  dados_treino,
+  method = "SVDF"
+)
+
+modelo_svdf
+```
+
+<br>
+
+::: {.callout-tip appearance="simple"}
+
+Durante essa etapa, o algoritmo aprende automaticamente os fatores latentes dos usuários e dos filmes.
+
+:::
+
+
+
+
+## R: FunkSVD
+
+
+### Recomendações Top-5
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| cache: true
+
+recomendacoes <- predict(
+  modelo_svdf,
+  dados_teste,
+  n = 5
+)
+
+as(recomendacoes, "list")[1]
+```
+
+
+
+::: {.callout-note appearance="simple"}
+
+São recomendados os filmes com maiores avaliações previstas e que ainda não foram assistidos pelo usuário.
+
+:::
+
+
+## R: FunkSVD
+
+### Predizendo notas
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+predicoes <- predict(
+  modelo_svdf,
+  dados_teste,
+  type = "ratings"
+)
+
+predicoes
+```
+
+::: {.callout-important appearance="simple"}
+
+As avaliações já conhecidas permanecem como **NA**.
+
+O algoritmo estima apenas as avaliações desconhecidas.
+
+:::
+
+
+
+## R: FunkSVD
+
+### Avaliação
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+resultado <- evaluate(
+  esquema,
+  method = "SVDF",
+  type = "topNList",
+  n = c(1,3,5,10)
+)
+
+avg(resultado)
+```
+
+A avaliação resume o desempenho do recomendador para diferentes tamanhos da lista de recomendações.
+
+
+
+
+## R: FunkSVD
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+plot(resultado, annotate = TRUE)
+```
+
+::: {.callout-warning appearance="simple"}
+
+Em bases muito esparsas, a curva pode apresentar comportamento pouco informativo.
+
+Nesse caso, métricas como **Precisão**, **Recall** e **Top-N Precision** costumam ser mais úteis.
+
+:::
+
+
+
+
+## Comparação dos modelos
+
+### Predições na mesma base de teste
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+library(recommenderlab)
+library(tidyverse)
+library(patchwork)
+
+# Converter a matriz de teste para realRatingMatrix
+teste_entrada_rrm <- as(
+  dados_teste,
+  "realRatingMatrix"
+)
+
+# User-Based Collaborative Filtering
+pred_user <- predict(
+  modelo_ubcf,
+  newdata = teste_entrada_rrm,
+  type = "ratings"
+) |>
+  as("matrix")
+
+# Item-Based Collaborative Filtering
+pred_item <- predict(
+  modelo_ibcf,
+  newdata = teste_entrada_rrm,
+  type = "ratings"
+) |>
+  as("matrix")
+
+# FunkSVD
+pred_funk <- predict(
+  modelo_svdf,
+  newdata = teste_entrada_rrm,
+  type = "ratings"
+) |>
+  as("matrix")
+
+```
+
+::: {.callout-note appearance="simple"}
+
+Os três algoritmos recebem exatamente as mesmas avaliações conhecidas e são avaliados nas mesmas avaliações ocultadas.
+
+:::
+
+
+
+## Comparação dos modelos
+
+### Métricas de erro
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+calcular_erros <- function(
+  predicoes,
+  valores_reais,
+  metodo
+) {
+
+  posicoes <- (
+    !is.na(valores_reais) &
+    !is.na(predicoes)
+  )
+
+  real <- valores_reais[posicoes]
+  prevista <- predicoes[posicoes]
+
+  tibble(
+    Metodo = metodo,
+    MAE = mean(
+      abs(real - prevista)
+    ),
+    RMSE = sqrt(
+      mean((real - prevista)^2)
+    )
+  )
+}
+```
+
+::: {.callout-note appearance="simple"}
+
+
+A função compara as avaliações previstas com as avaliações que foram ocultadas dos usuários de teste.
+
+:::
+
+
+## Comparação dos modelos
+
+Aplicação aos três modelos:
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+teste_real <- as(dados_reais, "matrix")
+
+metricas_erro <- bind_rows(
+  calcular_erros(
+    pred_user,
+    teste_real,
+    "User-Based CF"
+  ),
+  calcular_erros(
+    pred_item,
+    teste_real,
+    "Item-Based CF"
+  ),
+  calcular_erros(
+    pred_funk,
+    teste_real,
+    "FunkSVD"
+  )
+)
+
+metricas_erro
+```
+
+
+## Comparação dos modelos
+
+### Função para avaliar recomendações Top-N
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+avaliar_topn <- function(
+  predicoes,
+  valores_reais,
+  metodo,
+  n_recomendacoes = c(1, 5, 10),
+  nota_relevante = 4
+) {
+
+  resultados <- vector(
+    "list",
+    length(n_recomendacoes)
+  )
+
+  for (j in seq_along(n_recomendacoes)) {
+
+    n <- n_recomendacoes[j]
+
+    TP <- 0
+    FP <- 0
+    FN <- 0
+    TN <- 0
+
+    itens_recomendados <- integer(0)
+
+    for (u in seq_len(nrow(predicoes))) {
+
+      # Somente itens ocultados com avaliação real
+      itens_avaliados <- which(
+        !is.na(valores_reais[u, ]) &
+        !is.na(predicoes[u, ])
+      )
+
+      if (length(itens_avaliados) == 0) {
+        next
+      }
+
+      # Ordenar segundo a avaliação prevista
+      ranking <- itens_avaliados[
+        order(
+          predicoes[u, itens_avaliados],
+          decreasing = TRUE
+        )
+      ]
+
+      recomendados <- head(
+        ranking,
+        n
+      )
+
+      itens_recomendados <- c(
+        itens_recomendados,
+        recomendados
+      )
+
+      relevantes <- itens_avaliados[
+        valores_reais[u, itens_avaliados] >=
+          nota_relevante
+      ]
+
+      nao_relevantes <- setdiff(
+        itens_avaliados,
+        relevantes
+      )
+
+      TP <- TP + sum(
+        recomendados %in% relevantes
+      )
+
+      FP <- FP + sum(
+        recomendados %in% nao_relevantes
+      )
+
+      FN <- FN + sum(
+        !relevantes %in% recomendados
+      )
+
+      nao_recomendados <- setdiff(
+        itens_avaliados,
+        recomendados
+      )
+
+      TN <- TN + sum(
+        nao_recomendados %in% nao_relevantes
+      )
+    }
+
+    precisao <- ifelse(
+      TP + FP == 0,
+      NA_real_,
+      TP / (TP + FP)
+    )
+
+    recall <- ifelse(
+      TP + FN == 0,
+      NA_real_,
+      TP / (TP + FN)
+    )
+
+    f1 <- ifelse(
+      is.na(precisao) |
+        is.na(recall) |
+        precisao + recall == 0,
+      NA_real_,
+      2 * precisao * recall /
+        (precisao + recall)
+    )
+
+    resultados[[j]] <- tibble(
+      Metodo = metodo,
+      N = n,
+      TPR = recall,
+      FPR = ifelse(
+        FP + TN == 0,
+        NA_real_,
+        FP / (FP + TN)
+      ),
+      Precisao = precisao,
+      Recall = recall,
+      F1 = f1,
+      Cobertura = length(
+        unique(itens_recomendados)
+      ) / ncol(predicoes)
+    )
+  }
+
+  bind_rows(resultados)
+}
+```
+
+
+## Comparação dos modelos
+
+Aplicação aos três modelos:
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| output-location: slide
+
+metricas_topn <- bind_rows(
+  avaliar_topn(
+    pred_user,
+    teste_real,
+    "User-Based CF"
+  ),
+  avaliar_topn(
+    pred_item,
+    teste_real,
+    "Item-Based CF"
+  ),
+  avaliar_topn(
+    pred_funk,
+    teste_real,
+    "FunkSVD"
+  )
+)
+
+metricas_topn
+```
+
+
+## Comparação dos modelos
+
+### Painel A: Curvas TPR × FPR
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+cores_modelos <- c(
+  "FunkSVD" = "#33A02C",
+  "Item-Based CF" = "#1F78B4",
+  "User-Based CF" = "#E31A5F"
+)
+
+grafico_roc <- ggplot(
+  metricas_topn,
+  aes(
+    x = FPR,
+    y = TPR,
+    color = Metodo,
+    group = Metodo
+  )
+) +
+  geom_line(
+    linewidth = 1
+  ) +
+  geom_point(
+    aes(shape = factor(N)),
+    size = 3
+  ) +
+  scale_color_manual(
+    values = cores_modelos
+  ) +
+  scale_x_continuous(
+    labels = scales::label_percent(
+      accuracy = 0.1
+    ),
+    expand = expansion(
+      mult = c(0.03, 0.08)
+    )
+  ) +
+  scale_y_continuous(
+    labels = scales::label_percent(
+      accuracy = 0.1
+    ),
+    expand = expansion(
+      mult = c(0.03, 0.08)
+    )
+  ) +
+  labs(
+    title = "Desempenho Top-N",
+    subtitle = "Taxas de verdadeiros e falsos positivos",
+    x = "Taxa de Falsos Positivos — FPR",
+    y = "Taxa de Verdadeiros Positivos — TPR",
+    color = NULL,
+    shape = "N"
+  ) +
+  theme_minimal(
+    base_size = 13
+  ) +
+  theme(
+    plot.title = element_text(
+      face = "bold"
+    ),
+    legend.position = "top",
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+## Comparação dos modelos
+
+### Painel B: Erro e qualidade Top-10
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+metricas_erro_long <- metricas_erro |>
+  pivot_longer(
+    cols = c(MAE, RMSE),
+    names_to = "Metrica",
+    values_to = "Valor"
+  ) |>
+  mutate(
+    Tipo = "Erro de predição"
+  )
+
+metricas_ranking <- metricas_topn |>
+  filter(N == 10) |>
+  select(
+    Metodo,
+    Precisao,
+    Recall
+  ) |>
+  pivot_longer(
+    cols = c(Precisao, Recall),
+    names_to = "Metrica",
+    values_to = "Valor"
+  ) |>
+  mutate(
+    Tipo = "Qualidade Top-10"
+  )
+
+metricas_grafico <- bind_rows(
+  metricas_erro_long,
+  metricas_ranking
+)
+```
+
+## Comparação dos modelos
+
+### Construção do gráfico
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+grafico_metricas <- ggplot(
+  metricas_grafico,
+  aes(
+    x = Metrica,
+    y = Valor,
+    fill = Metodo
+  )
+) +
+  geom_col(
+    position = position_dodge(
+      width = 0.8
+    ),
+    width = 0.7
+  ) +
+  facet_wrap(
+    ~ Tipo,
+    scales = "free_y"
+  ) +
+  scale_fill_manual(
+    values = cores_modelos
+  ) +
+  scale_y_continuous(
+    expand = expansion(
+      mult = c(0, 0.12)
+    )
+  ) +
+  labs(
+    title = "Comparação dos algoritmos",
+    subtitle = "Erro preditivo e qualidade das recomendações",
+    x = NULL,
+    y = "Valor",
+    fill = NULL
+  ) +
+  theme_minimal(
+    base_size = 13
+  ) +
+  theme(
+    plot.title = element_text(
+      face = "bold"
+    ),
+    legend.position = "top",
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    strip.text = element_text(
+      face = "bold"
+    )
+  )
+```
+
+
+## Comparação dos modelos
+
+### Construção do gráfico
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+
+tema_comum <- theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "top",
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 11)
+  )
+
+grafico_roc <- grafico_roc +
+  tema_comum
+
+grafico_metricas <- grafico_metricas +
+  tema_comum +
+  theme(
+    legend.position = "none"
+  )
+
+figura_comparacao <- patchwork::wrap_plots(
+  grafico_roc,
+  grafico_metricas,
+  nrow = 1,
+  widths = c(1, 1.25)
+) +
+  patchwork::plot_annotation(
+    title = paste0(
+      "Comparação entre User-Based CF, ",
+      "Item-Based CF e FunkSVD"
+    ),
+    subtitle = paste0(
+      "Avaliação realizada nas mesmas observações ",
+      "ocultadas do conjunto de teste"
+    ),
+    tag_levels = "A",
+    theme = ggplot2::theme(
+      plot.title = ggplot2::element_text(
+        face = "bold",
+        size = 17
+      ),
+      plot.subtitle = ggplot2::element_text(
+        size = 12
+      )
+    )
+  )
+
+```
+
+
+
+## Comparação dos métodos
+
+
+```{r}
+#| echo: false
+#| fig-width: 14
+#| fig-height: 6.5
+#| out-width: 100%
+#| fig-align: center
+
+figura_comparacao
+```
+
+
+## Comparação dos métodos
+
+### UserCF × ItemCF × FunkSVD
+
+::: {.callout-note appearance="simple"}
+
+No painel A, curvas mais próximas do canto superior esquerdo indicam melhor capacidade de recomendar itens relevantes sem aumentar excessivamente os falsos positivos.
+
+No painel B, valores menores de MAE e RMSE são desejáveis, enquanto valores maiores de precisão e recall indicam melhores recomendações Top-10.
+
+:::
+
+
+
+## Comparação dos algoritmos
+
+### Interpretação dos resultados
+
+A comparação evidencia que cada algoritmo apresenta vantagens distintas, não existindo um método universalmente superior.
+
+- **Item-Based CF** apresentou o menor erro de predição (MAE e RMSE) e o maior **Recall**, recuperando uma quantidade maior de itens relevantes.
+
+- **FunkSVD** obteve a maior **Precisão**, produzindo recomendações mais seletivas e com menor proporção de itens irrelevantes.
+
+- **User-Based CF** apresentou desempenho intermediário, sem superar os demais em nenhuma das métricas avaliadas.
+
+::: {.callout-note appearance="simple"}
+
+A escolha do algoritmo depende do objetivo da aplicação:
+
+- **Maior cobertura de itens relevantes:** Item-Based CF;
+- **Recomendações mais precisas:** FunkSVD.
+
+:::
+
+
+## Pontos fortes e limitações
+
+| Método            | Pontos fortes                                                                      | Limitações                                             |
+| ----------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| **User-Based CF** | Fácil interpretação; utiliza usuários semelhantes                                  | Sensível à esparsidade e pouco escalável               |
+| **Item-Based CF** | Recomendação rápida; itens mudam pouco                                             | Ainda depende de similaridades explícitas              |
+| **FunkSVD**       | Aprende fatores latentes; melhor desempenho em bases esparsas; alta escalabilidade | Menor interpretabilidade; requer treinamento iterativo |
+

@@ -4505,5 +4505,999 @@
     "title": "Parte III : Aprendizado não supervisionado",
     "section": "R: FP-Growth",
     "text": "R: FP-Growth\nRegras equilibradas\nOs critérios selecionam regras que:\n\naparecem em pelo menos 1% dos pedidos;\npossuem confiança mínima de 50%;\napresentam associação positiva, com lift de pelo menos 1,30."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#o-que-é-um-sistema-de-recomendação",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#o-que-é-um-sistema-de-recomendação",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O que é um sistema de recomendação?",
+    "text": "O que é um sistema de recomendação?\nUm sistema de recomendação é um algoritmo capaz de sugerir itens que sejam potencialmente relevantes para cada usuário.\nOs itens recomendados podem ser:\n\n\n\nfilmes;\nmúsicas;\nlivros;\nprodutos;\n\n\n\nnotícias;\nrestaurantes;\ncursos;\nvídeos.\n\n\n\n\n\n\n\n\n\nO objetivo é identificar automaticamente itens de maior interesse para cada usuário, utilizando informações sobre seu comportamento ou suas preferências."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#aplicações",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#aplicações",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Aplicações",
+    "text": "Aplicações\nSistemas de recomendação estão presentes no cotidiano\nDiversas plataformas utilizam algoritmos de recomendação para personalizar a experiência do usuário.\nExemplos incluem:\n\n\n\nNetflix\nAmazon\nSpotify\nYouTube\n\n\n\nTikTok\nMercado Livre\niFood\n\n\n\n\n\n\n\n\nEm muitas empresas, os sistemas de recomendação representam uma das principais ferramentas para aumentar o engajamento dos usuários e impulsionar vendas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#abordagens",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#abordagens",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Abordagens",
+    "text": "Abordagens\nComo um sistema decide o que recomendar?\nExistem três estratégias principais para construir sistemas de recomendação.\n\n\n\n\n\n\nAbordagem\nIdeia principal\n\n\n\nBaseada em conteúdo\nrecomenda itens semelhantes aos já apreciados pelo usuário.\n\n\nFiltragem colaborativa\nrecomenda itens apreciados por usuários com preferências semelhantes.\n\n\nSistemas híbridos\ncombinam múltiplas estratégias para melhorar a qualidade das recomendações.\n\n\n\n\n\n\n\n\n\n\nNeste capítulo estudaremos a filtragem colaborativa, uma das abordagens mais utilizadas em plataformas de recomendação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#filtragem-colaborativa",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#filtragem-colaborativa",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Filtragem colaborativa",
+    "text": "Filtragem colaborativa\nA hipótese da filtragem colaborativa é simples:\n\nUsuários que apresentaram comportamentos semelhantes no passado tendem a possuir preferências semelhantes no futuro.\n\n\nAssim, um sistema pode recomendar a um usuário itens que foram bem avaliados por outros usuários com gostos parecidos.\n\n\n\n\n\n\n\nAs recomendações são construídas a partir do comportamento coletivo dos usuários, e não das características dos produtos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#representação-dos-dados",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#representação-dos-dados",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Representação dos dados",
+    "text": "Representação dos dados\nMatriz usuário × item\nToda técnica de filtragem colaborativa parte de uma matriz de avaliações.\nCada linha representa um usuário.\nCada coluna representa um item.\nCada célula corresponde à avaliação atribuída pelo usuário ao item."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#representação-dos-dados-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#representação-dos-dados-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Representação dos dados",
+    "text": "Representação dos dados\nMatriz usuário × item\n\n\nUsuário\nFilme A\nFilme B\nFilme C\nFilme D\n\n\n\nU1\n★★★★★\n★★★★☆\n—\n★★★★★\n\n\nU2\n★★★★☆\n★★★★★\n★★★☆☆\n—\n\n\nU3\n—\n★★★☆☆\n★★★★★\n★★★★☆\n\n\nU4\n★★★★★\n—\n★★★★☆\n★★★★★\n\n\n\n\n\n\n\n\n\n\nAs células vazias representam itens que ainda não foram avaliados e que poderão ser recomendados futuramente."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#o-desafio",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#o-desafio",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "O desafio",
+    "text": "O desafio\nA matriz é extremamente esparsa\nNa prática, cada usuário avalia apenas uma pequena fração dos itens disponíveis.\nConsequentemente, a maior parte da matriz permanece vazia.\n\n\n\n\n\n\n\nO principal desafio dos sistemas de recomendação é prever corretamente os valores ausentes da matriz."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#pergunta-central",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#pergunta-central",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Pergunta central",
+    "text": "Pergunta central\nComo prever uma avaliação desconhecida?\nConsidere a seguinte situação:\n\nJoão avaliou diversos filmes.\nAinda não assistiu ao Filme D.\n\nComo estimar a nota que João provavelmente atribuiria a esse filme?"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#pergunta-central-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#pergunta-central-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Pergunta central",
+    "text": "Pergunta central\nComo prever uma avaliação desconhecida?\nA estratégia da filtragem colaborativa baseada no usuário consiste em:\n\nencontrar usuários semelhantes a João;\nobservar como esses usuários avaliaram o Filme D;\nutilizar essas avaliações para estimar a nota de João.\n\n\n\n\n\n\n\nA recomendação é baseada na similaridade entre usuários."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nO que significa “usuários semelhantes”?\nNa filtragem colaborativa baseada no usuário, o primeiro passo é identificar usuários com padrões de avaliação semelhantes.\nPor exemplo:\n\n\nFilme\nJoão\nMaria\nPedro\n\n\n\nA\n★★★★★\n★★★★★\n★★☆☆☆\n\n\nB\n★★★★☆\n★★★★☆\n★☆☆☆☆\n\n\nC\n★★★★★\n★★★★★\n★★☆☆☆\n\n\nD\n?\n★★★★★\n★☆☆☆☆\n\n\n\nJoão e Maria apresentam avaliações muito semelhantes para os filmes já assistidos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nO que significa “usuários semelhantes”?\nNa filtragem colaborativa baseada no usuário, o primeiro passo é identificar usuários com padrões de avaliação semelhantes.\nPor exemplo:\n\n\nFilme\nJoão\nMaria\nPedro\n\n\n\nA\n★★★★★\n★★★★★\n★★☆☆☆\n\n\nB\n★★★★☆\n★★★★☆\n★☆☆☆☆\n\n\nC\n★★★★★\n★★★★★\n★★☆☆☆\n\n\nD\n?\n★★★★★\n★☆☆☆☆\n\n\n\nJoão e Maria apresentam avaliações muito semelhantes para os filmes já assistidos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nO que significa “usuários semelhantes”?\nAssim, a avaliação de Maria para o Filme D pode ser utilizada para estimar a avaliação de João.\n\n\n\n\n\n\nA similaridade é calculada apenas utilizando os itens avaliados em comum pelos usuários."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#similaridade-do-cosseno",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#similaridade-do-cosseno",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Similaridade do Cosseno",
+    "text": "Similaridade do Cosseno\nA similaridade do cosseno mede o ângulo entre os vetores de avaliações de dois usuários.\n\\[\n\\operatorname{sim}(u,v)=\n\\frac{\n\\sum_{i\\in I_{uv}} r_{ui}\\,r_{vi}\n}{\n\\sqrt{\\sum_{i\\in I_{uv}} r_{ui}^{2}}\n\\sqrt{\\sum_{i\\in I_{uv}} r_{vi}^{2}}\n}\n\\]\nonde:\n\n\n\\(r_{ui}\\): avaliação do usuário \\(u\\) para o item \\(i\\);\n\n\\(r_{vi}\\): avaliação do usuário \\(v\\);\n\n\\(I_{uv}\\): conjunto de itens avaliados por ambos.\n\nQuanto menor o ângulo entre os vetores, maior será a similaridade."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#correlação-de-pearson",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#correlação-de-pearson",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Correlação de Pearson",
+    "text": "Correlação de Pearson\nA correlação de Pearson compara os padrões de avaliação após remover a média individual de cada usuário.\n\\[\n\\operatorname{sim}(u,v)=\n\\frac{\n\\sum_{i\\in I_{uv}}\n(r_{ui}-\\bar r_u)\n(r_{vi}-\\bar r_v)\n}{\n\\sqrt{\\sum_{i\\in I_{uv}}(r_{ui}-\\bar r_u)^2}\n\\sqrt{\\sum_{i\\in I_{uv}}(r_{vi}-\\bar r_v)^2}\n}\n\\]\nonde:\n\n\n\\(\\bar r_u\\): média das avaliações do usuário \\(u\\);\n\n\\(\\bar r_v\\): média das avaliações do usuário \\(v\\).\n\n\n\n\n\n\n\nAo centralizar as avaliações pela média, a correlação de Pearson reduz o efeito de usuários naturalmente mais rigorosos ou mais generosos ao atribuir notas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-das-medidas",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-das-medidas",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação das medidas",
+    "text": "Comparação das medidas\n\n\nCaracterística\nCosseno\nPearson\n\n\n\nConsidera apenas o ângulo entre os vetores\n✔\n✘\n\n\nRemove diferenças na escala das avaliações\n✘\n✔\n\n\nSensível a usuários muito generosos ou rigorosos\n✔\n✘\n\n\nMuito utilizada em sistemas de recomendação\n✔\n✔ \n\n\n\n\n\n\n\n\n\n\nNa prática, a correlação de Pearson costuma produzir melhores resultados quando diferentes usuários utilizam escalas de avaliação distintas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#exemplo-matriz-de-avaliações",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#exemplo-matriz-de-avaliações",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Exemplo: matriz de avaliações",
+    "text": "Exemplo: matriz de avaliações\nMatriz de avaliações\nConsidere a seguinte matriz de avaliações (1 a 5 estrelas).\n\n\n\n\n\n\n\n\n\n\n\nUsuário\nMatrix\nTitanic\nAvatar\nInterestelar\nToy Story\nGladiador\n\n\n\nAna\n5\n4\n5\n?\n2\n1\n\n\nBruno\n5\n5\n4\n5\n1\n1\n\n\nCarla\n1\n2\n1\n1\n5\n5\n\n\nDaniel\n4\n4\n5\n4\n2\n1\n\n\nEduardo\n2\n1\n2\n2\n4\n5\n\n\n\nNosso objetivo será estimar a avaliação que Ana atribuiria ao filme Interestelar."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nMedindo a similaridade entre usuários\nDiversas medidas podem ser utilizadas para comparar dois usuários.\nAs mais comuns são:\n\nSimilaridade do cosseno\nCorrelação de Pearson\n\nCada medida transforma as avaliações dos usuários em um valor de similaridade, geralmente compreendido entre −1 e 1 ou entre 0 e 1, dependendo da métrica utilizada.\n\n\n\n\n\n\nQuanto maior a similaridade, maior será a influência daquele usuário na recomendação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nQuem é mais parecido com Ana?\nPara prever a avaliação de Ana, devemos compará-la com os demais usuários utilizando apenas os filmes avaliados por ambos.\n\n\nUsuário\nFilmes em comum\n\n\n\nBruno\nMatrix, Titanic, Avatar, Toy Story, Gladiador\n\n\nCarla\nMatrix, Titanic, Avatar, Toy Story, Gladiador\n\n\nDaniel\nMatrix, Titanic, Avatar, Toy Story, Gladiador\n\n\nEduardo\nMatrix, Titanic, Avatar, Toy Story, Gladiador\n\n\n\nO próximo passo consiste em calcular uma medida de similaridade entre Ana e cada um desses usuários."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nSimilaridade entre Ana e os demais usuários\nApós calcular a similaridade (por exemplo, utilizando a correlação de Pearson), obtém-se:\n\n\nUsuário\nSimilaridade\n\n\n\nBruno\n0,96\n\n\nDaniel\n0,93\n\n\nEduardo\n-0,88\n\n\nCarla\n-0,95\n\n\n\nObserva-se que Bruno e Daniel apresentam preferências muito semelhantes às de Ana."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nSimilaridade entre Ana e os demais usuários\nJá Carla e Eduardo possuem gostos bastante diferentes.\n\n\n\n\n\n\nNormalmente são utilizados apenas os usuários mais semelhantes (vizinhos mais próximos) para realizar a recomendação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nSelecionando os vizinhos mais próximos\nSuponha que adotemos \\(k=2\\). Assim, utilizaremos apenas:\n\nBruno\nDaniel\n\nEsses usuários formarão a vizinhança de Ana para realizar a predição da avaliação desconhecida.\n\n\n\n\n\n\nUsuários com similaridade negativa normalmente são descartados, pois representam preferências opostas às do usuário-alvo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nPredizendo uma avaliação desconhecida\nApós identificar os \\(k\\) vizinhos mais próximos, a avaliação desconhecida é estimada a partir das avaliações desses usuários, ponderadas pela similaridade.\n\\[\n\\hat{r}_{ui}\n=\n\\bar{r}_u\n+\n\\frac{\n\\displaystyle\\sum_{v \\in N(u)}\n\\operatorname{sim}(u,v)\n\\left(r_{vi}-\\bar{r}_v\\right)\n}{\n\\displaystyle\\sum_{v \\in N(u)}\n\\left|\\operatorname{sim}(u,v)\\right|\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-9",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-9",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nPredizendo uma avaliação desconhecida\nem que:\n\n\n\\(\\hat{r}_{ui}\\) é a avaliação prevista do usuário \\(u\\) para o item \\(i\\);\n\n\\(\\bar{r}_u\\) é a média das avaliações do usuário \\(u\\);\n\n\\(\\bar{r}_v\\) é a média das avaliações do usuário \\(v\\);\n\n\\(N(u)\\) representa o conjunto dos \\(k\\) usuários mais semelhantes a \\(u\\);\n\n\\(\\operatorname{sim}(u,v)\\) é a similaridade entre os usuários \\(u\\) e \\(v\\);\n\n\\(r_{vi}\\) é a avaliação atribuída pelo usuário \\(v\\) ao item \\(i\\).\n\n\n\n\n\n\n\nA influência de cada vizinho é proporcional à sua similaridade com o usuário-alvo. Usuários mais semelhantes exercem maior peso na predição da avaliação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-10",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-10",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nExemplo de predição\nDesejamos estimar a avaliação que Ana atribuiria ao filme Interestelar.\nConsidere:\n\n\\(\\bar r_{\\text{Ana}} = 3,40\\)\n\\(\\bar r_{\\text{Bruno}} = 3,50\\)\n\\(\\bar r_{\\text{Daniel}} = 3,20\\)\n\\(\\operatorname{sim}(\\text{Ana},\\text{Bruno}) = 0,96\\)\n\\(\\operatorname{sim}(\\text{Ana},\\text{Daniel}) = 0,93\\)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nMovieLens 100K\nUtilizaremos a base MovieLens 100K, composta por avaliações de filmes atribuídas por diferentes usuários.\nCaracterísticas principais:\n\navaliações explícitas de \\(1\\) a \\(5\\) estrelas;\nmatriz usuário \\(\\times\\) filme;\ngrande quantidade de valores ausentes;\namplamente utilizada na avaliação de sistemas de recomendação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nCarregando a base MovieLens\n\nlibrary(recommenderlab)\n\ndata(\"MovieLense\")\n\nMovieLense\n\n943 x 1664 rating matrix of class 'realRatingMatrix' with 99392 ratings."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-1-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-1-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\n\n943 x 1664 rating matrix of class 'realRatingMatrix' with 99392 ratings."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nInspecionando as avaliações\n\nas(\n  MovieLense[1:6, 1:8],\n  \"matrix\"\n)\n\n  Toy Story (1995) GoldenEye (1995) Four Rooms (1995) Get Shorty (1995)\n1                5                3                 4                 3\n2                4               NA                NA                NA\n3               NA               NA                NA                NA\n4               NA               NA                NA                NA\n5                4                3                NA                NA\n6                4               NA                NA                NA\n  Copycat (1995) Shanghai Triad (Yao a yao yao dao waipo qiao) (1995)\n1              3                                                    5\n2             NA                                                   NA\n3             NA                                                   NA\n4             NA                                                   NA\n5             NA                                                   NA\n6             NA                                                   NA\n  Twelve Monkeys (1995) Babe (1995)\n1                     4           1\n2                    NA          NA\n3                    NA          NA\n4                    NA          NA\n5                    NA          NA\n6                     2           4\n\n\nOs valores numéricos representam as avaliações atribuídas aos filmes. As células com NA correspondem a filmes que ainda não foram avaliados pelo usuário."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nInspecionando as avaliações\nTambém podemos contar quantas avaliações cada usuário realizou:\n\nrowCounts(MovieLense)[1:10]\n\n  1   2   3   4   5   6   7   8   9  10 \n271  61  51  23 175 208 400  59  22 184 \n\n\n\n\n\n\n\n\n\nA matriz não deve ser convertida integralmente para uma matriz densa, pois isso aumenta consideravelmente o uso de memória."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nComo os usuários avaliam os filmes?\n\navaliacoes &lt;- getRatings(MovieLense)\n\nhist(\n  avaliacoes,\n  breaks = seq(0.5, 5.5, by = 1),\n  main = \"Distribuição das avaliações\",\n  xlab = \"Número de estrelas\",\n  ylab = \"Frequência\"\n)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nComo os usuários avaliam os filmes?\nO gráfico permite verificar:\n\nquais notas são mais frequentes;\nse os usuários tendem a avaliar positivamente;\nse existem poucas avaliações extremas;\ncomo a escala de avaliação é utilizada.\n\n\n\n\n\n\n\nConhecer a distribuição das notas ajuda a interpretar as predições produzidas pelo modelo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nDivisão entre treino e teste\n\nset.seed(123)\n\nesquema &lt;- evaluationScheme(\n  MovieLense,\n  method = \"split\",\n  train = 0.8,\n  given = 10,\n  goodRating = 4\n)\n\ndados_treino &lt;- getData(esquema, \"train\")\ndados_teste  &lt;- getData(esquema, \"known\")\ndados_reais  &lt;- getData(esquema, \"unknown\")"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nDivisão entre treino e teste\nNesse esquema:\n\n\n\\(80\\%\\) dos usuários são utilizados no treinamento;\npara cada usuário de teste, \\(10\\) avaliações permanecem conhecidas;\nas demais avaliações são ocultadas para avaliar o modelo;\nnotas maiores ou iguais a \\(4\\) são consideradas positivas.\n\n\n\n\n\n\n\nO modelo recebe apenas as avaliações conhecidas e deve prever as avaliações que foram ocultadas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nAjustando o modelo\n\nmodelo_ubcf &lt;- Recommender(\n  dados_treino,\n  method = \"UBCF\",\n  parameter = list(\n    method = \"Pearson\",\n    nn = 30,\n    normalize = \"center\"\n  )\n)\n\nmodelo_ubcf\n\nRecommender of type 'UBCF' for 'realRatingMatrix' \nlearned using 754 users."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-9",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-9",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nAjustando o modelo\nOs principais parâmetros são:\n\n\nParâmetro\nFunção\n\n\n\nmethod\nmedida de similaridade\n\n\nnn\nnúmero de vizinhos\n\n\nnormalize\nnormalização das avaliações\n\n\n\nNeste exemplo, \\(k=30\\) e a similaridade entre usuários é calculada pela correlação de Pearson.\n\n\n\n\n\n\nA normalização center remove a média de cada usuário antes do cálculo das recomendações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-10",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-10",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nPredição das avaliações ocultadas\nO modelo pode estimar as notas dos filmes que foram ocultados no conjunto de teste.\n\npredicoes_notas &lt;- predict(\n  modelo_ubcf,\n  dados_teste,\n  type = \"ratings\"\n)\n\npredicoes_notas\n\n189 x 1664 rating matrix of class 'realRatingMatrix' with 140180 ratings."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-11",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-11",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nPredição das avaliações ocultadas\n\nas(\n  predicoes_notas[1:5, 1:8],\n  \"matrix\"\n)\n\n   Toy Story (1995) GoldenEye (1995) Four Rooms (1995) Get Shorty (1995)\n1          4.244109         3.462245          4.218182                NA\n3          3.012583         2.149131                NA          4.149131\n7          4.593162               NA          3.490693          3.675056\n9          3.792930         2.380206          2.640372          3.553686\n12         4.927795         4.689936          3.359117          4.330527\n   Copycat (1995) Shanghai Triad (Yao a yao yao dao waipo qiao) (1995)\n1        3.345455                                             5.196785\n3        1.375974                                                   NA\n7        4.703571                                                   NA\n9        3.499060                                             3.380862\n12       4.292007                                             4.003480\n   Twelve Monkeys (1995) Babe (1995)\n1               3.897254    3.919627\n3               1.558079    3.722333\n7               3.778142          NA\n9               3.812799    3.860861\n12              4.695352    5.012729\n\n\n\n\n\n\n\n\nAs células com NA correspondem a avaliações que já eram conhecidas pelo modelo. O algoritmo prevê apenas as avaliações ocultadas durante a construção do conjunto de teste."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-12",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-12",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nErro das avaliações previstas\n\nresultado_erros &lt;- calcPredictionAccuracy(\n  predicoes_notas,\n  dados_reais\n)\n\nresultado_erros\n\n     RMSE       MSE       MAE \n1.1352195 1.2887234 0.8948365"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-13",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-13",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nAs principais métricas são:\n\n\nMétrica\nInterpretação\n\n\n\nRMSE\npenaliza mais intensamente erros grandes\n\n\nMSE\nmédia dos erros ao quadrado\n\n\nMAE\nmédia dos erros em valor absoluto\n\n\n\nO RMSE é calculado por:\n\\[\n\\operatorname{RMSE}\n=\n\\sqrt{\n\\frac{1}{n}\n\\sum_{j=1}^{n}\n\\left(r_j-\\hat r_j\\right)^2\n}\n\\]\n\n\n\n\n\n\nQuanto menores os valores de RMSE e MAE, mais próximas estão as predições das avaliações reais."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-14",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-14",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nO que o RMSE representa?\nSuponha que o modelo produza:\n\\[\n\\operatorname{RMSE}=0{,}94\n\\]\nIsso indica que, em média, as avaliações previstas se afastam das avaliações reais em aproximadamente uma unidade da escala de notas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-15",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-15",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nO que o RMSE representa?\nPor exemplo:\n\n\nAvaliação real\nAvaliação prevista\nErro\n\n\n\n\\(5\\)\n\\(4{,}4\\)\n\\(0{,}6\\)\n\n\n\\(3\\)\n\\(4{,}1\\)\n\\(1{,}1\\)\n\n\n\\(2\\)\n\\(2{,}5\\)\n\n\\(0{,}5\\)\n\n\n\n\n\n\n\n\n\n\nUm RMSE baixo não garante, isoladamente, que os melhores filmes serão colocados no topo da lista de recomendações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-16",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-16",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nGerando recomendações Top-\\(N\\)\n\nEm muitas aplicações, o objetivo não é prever todas as notas, mas recomendar os \\(N\\) itens mais relevantes para cada usuário.\n\nrecomendacoes &lt;- predict(\n  modelo_ubcf,\n  dados_teste,\n  type = \"topNList\",\n  n = 5\n)\n\nrecomendacoes\n\nRecommendations as 'topNList' with n = 5 for 189 users."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-17",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-17",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nGerando recomendações Top-\\(N\\)\n\nNeste exemplo, o modelo retorna os \\(N=5\\) filmes com maiores avaliações previstas para cada usuário.\n\n\n\n\n\n\nOs filmes já avaliados pelo usuário não devem aparecer novamente na lista de recomendações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-18",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-18",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nQuais filmes foram recomendados?\n\nlista_recomendacoes &lt;- as(\n  recomendacoes,\n  \"list\"\n)\n\nlista_recomendacoes[1:3]\n\n$`0`\n[1] \"Richard III (1995)\"             \"While You Were Sleeping (1995)\"\n[3] \"Little Big League (1994)\"       \"Home for the Holidays (1995)\"  \n[5] \"Raise the Red Lantern (1991)\"  \n\n$`1`\n[1] \"Desperado (1995)\"                             \n[2] \"Stargate (1994)\"                              \n[3] \"Independence Day (ID4) (1996)\"                \n[4] \"Swingers (1996)\"                              \n[5] \"Star Trek VI: The Undiscovered Country (1991)\"\n\n$`2`\n[1] \"Postman, The (1997)\"      \"Big Lebowski, The (1998)\"\n[3] \"Brassed Off (1996)\"       \"Wizard of Oz, The (1939)\"\n[5] \"L.A. Confidential (1997)\""
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-19",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-19",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nQuais filmes foram recomendados?\nPara obter os filmes recomendados ao primeiro usuário:\n\n\n[1] \"Richard III (1995)\"             \"While You Were Sleeping (1995)\"\n[3] \"Little Big League (1994)\"       \"Home for the Holidays (1995)\"  \n[5] \"Raise the Red Lantern (1991)\"  \n\n\n\n\n\n\n\n\nA ordem dos filmes corresponde à ordem de relevância estimada pelo modelo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-20",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-20",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nLista personalizada para um usuário\nSuponha que o modelo produza a seguinte recomendação:\n\n\nPosição\nFilme\n\n\n\n\\(1\\)\nStar Wars\n\n\n\\(2\\)\nThe Godfather\n\n\n\\(3\\)\nRaiders of the Lost Ark\n\n\n\\(4\\)\nThe Empire Strikes Back\n\n\n\\(5\\)\nBack to the Future"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-21",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-21",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nLista personalizada para um usuário\nA posição do filme na lista depende das avaliações previstas pelo modelo.\n\\[\n\\hat r_{u,i_1}\n\\geq\n\\hat r_{u,i_2}\n\\geq\n\\cdots\n\\geq\n\\hat r_{u,i_N}\n\\]\n\n\n\n\n\n\nO sistema recomenda os filmes com maior relevância prevista entre aqueles que o usuário ainda não avaliou."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-22",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-22",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nAs recomendações foram relevantes?\nPara avaliar listas Top-\\(N\\), comparamos os filmes recomendados com os filmes ocultados que receberam avaliações positivas.\n\nmetricas &lt;- calcPredictionAccuracy(\n  recomendacoes,\n  dados_reais,\n  given = 10,\n  goodRating = 4\n)\n\nmetricas\n\n          TP           FP           FN           TN            N    precision \n1.322751e-01 4.047619e+00 4.728571e+01 1.602534e+03 1.654000e+03 3.164557e-02 \n      recall          TPR          FPR \n3.309585e-03 3.309585e-03 2.529058e-03"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-23",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-23",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nUm filme é considerado relevante quando:\n\\[\nr_{ui} \\geq 4\n\\]\nA avaliação considera:\n\nfilmes relevantes recomendados;\nfilmes irrelevantes recomendados;\nfilmes relevantes não recomendados;\nfilmes irrelevantes não recomendados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-24",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-24",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nMatriz de confusão da recomendação\n\n\n\nFilme relevante\nFilme não relevante\n\n\n\nRecomendado\nVerdadeiro positivo\nFalso positivo\n\n\nNão recomendado\nFalso negativo\nVerdadeiro negativo\n\n\n\nEm sistemas de recomendação:\n\n\nverdadeiro positivo: filme relevante que foi recomendado;\n\nfalso positivo: filme recomendado, mas não relevante;\n\nfalso negativo: filme relevante que não apareceu na lista;\n\nverdadeiro negativo: filme não relevante e não recomendado.\n\n\n\n\n\n\n\nComo o número de filmes não recomendados é muito grande, a acurácia pode ser pouco informativa nesse contexto."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-25",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-25",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nPrecisão e revocação\nA precisão mede a proporção de recomendações que eram realmente relevantes:\n\\[\n\\operatorname{Precisão}\n=\n\\frac{VP}{VP+FP}\n\\]\nA revocação mede a proporção dos itens relevantes que foram recomendados:\n\\[\n\\operatorname{Revocação}\n=\n\\frac{VP}{VP+FN}\n\\]\n\n\n\n\n\n\n\nAlta precisão: poucas recomendações irrelevantes.\nAlta revocação: grande parte dos itens relevantes foi recuperada."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-26",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-26",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nO valor de \\(N\\) influencia o resultado\nQuando aumentamos o tamanho da lista Top-\\(N\\):\n\nmais itens relevantes podem ser recuperados;\na revocação tende a aumentar;\nmais itens irrelevantes também podem ser incluídos;\na precisão pode diminuir."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-27",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-27",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nAssim, existe um compromisso entre precisão e revocação.\n\\[\nN \\uparrow\n\\quad\\Longrightarrow\\quad\n\\begin{cases}\n\\operatorname{Revocação} \\uparrow\\\\\n\\operatorname{Precisão} \\text{ pode diminuir}\n\\end{cases}\n\\]\n\n\n\n\n\n\nO tamanho da lista deve ser escolhido de acordo com a aplicação e com a quantidade de recomendações que o usuário consegue analisar."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-28",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-28",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nCurva precisão × revocação\nPodemos avaliar o modelo para diferentes tamanhos de lista.\n\nresultados_ubcf &lt;- evaluate(\n  esquema,\n  method = list(\n    UBCF = list(\n      name = \"UBCF\",\n      param = list(\n        method = \"Pearson\",\n        nn = 30,\n        normalize = \"center\"\n      )\n    )\n  ),\n  type = \"topNList\",\n  n = c(1, 3, 5, 10, 15, 20)\n)\n\nUBCF run fold/sample [model time/prediction time]\n     1  [0.02sec/0.78sec]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-29",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-29",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\n\nplot(\n  resultados_ubcf,\n  annotate = TRUE\n)\n\n\nCada ponto representa o desempenho do modelo para um valor diferente de \\(N\\).\n\n\n\n\n\n\nModelos mais próximos do canto superior direito apresentam melhor equilíbrio entre precisão e revocação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-30",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-user-based-collaborative-filtering-30",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: User-Based Collaborative Filtering",
+    "text": "R: User-Based Collaborative Filtering\nComo escolher o número de vizinhos?\nO parâmetro \\(k\\) controla quantos usuários semelhantes participam da recomendação.\n\nvalores pequenos de \\(k\\) utilizam poucos usuários muito semelhantes;\nvalores grandes de \\(k\\) incorporam mais informações;\nvalores muito grandes podem incluir usuários pouco relacionados.\n\n\\[\nk \\text{ pequeno}\n\\quad\\Longrightarrow\\quad\n\\text{maior personalização e maior variabilidade}\n\\]\n\\[\nk \\text{ grande}\n\\quad\\Longrightarrow\\quad\n\\text{maior estabilidade e menor personalização}\n\\]\n\n\n\n\n\n\nO valor de \\(k\\) deve ser selecionado empiricamente utilizando dados de validação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-11",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#user-based-collaborative-filtering-11",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "User-Based Collaborative Filtering",
+    "text": "User-Based Collaborative Filtering\nAlém disso,\n\nBruno avaliou Interestelar com 5 estrelas;\nDaniel avaliou Interestelar com 4 estrelas.\n\nAplicando a equação,\n\\[\n\\begin{eqnarray}\n\\hat r_{\\text{Ana},\\,\\text{Interestelar}}\n&=&\n3,40\n+\n\\frac{\n0,96(5-3,50)\n+\n0,93(4-3,20)\n}\n{\n0,96+0,93\n} \\\\ &=&\n3,40\n+\n\\frac{\n1,44+0,744\n}{\n1,89\n}\n=\n3,40+1,16\n=\n4,56\n\\end{eqnarray}\n\\]\n\n\n\n\n\n\nComo a avaliação prevista é 4,56 estrelas, o sistema recomendaria o filme Interestelar para Ana."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nUma limitação da abordagem baseada em usuários\nO User-Based Collaborative Filtering compara cada usuário com todos os demais usuários.\nEm aplicações reais, isso pode ser computacionalmente caro.\nPor exemplo:\n\nmilhões de usuários;\nmilhares de filmes;\nnovos usuários chegam continuamente.\n\n\n\n\n\n\n\nÀ medida que o número de usuários cresce, encontrar os vizinhos mais semelhantes torna-se cada vez mais custoso."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nEm vez de comparar usuários…\n…podemos comparar os próprios itens.\nA hipótese é simples:\n\nItens que costumam receber avaliações semelhantes pelos mesmos usuários tendem a ser semelhantes entre si."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nAssim,\n\nfilmes semelhantes;\nlivros semelhantes;\nmúsicas semelhantes;\n\npodem ser recomendados com base no histórico do usuário.\n\n\n\n\n\n\nAgora a similaridade é calculada entre itens, e não entre usuários."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nA matriz de avaliações permanece exatamente igual.\n\n\n\n\n\n\n\n\n\n\n\nUsuário\nMatrix\nTitanic\nAvatar\nInterestelar\nToy Story\nGladiador\n\n\n\nAna\n5\n4\n5\n?\n2\n1\n\n\nBruno\n5\n5\n4\n5\n1\n1\n\n\nCarla\n1\n2\n1\n1\n5\n5\n\n\nDaniel\n4\n4\n5\n4\n2\n1\n\n\nEduardo\n2\n1\n2\n2\n4\n5\n\n\n\nA diferença está apenas no sentido da comparação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nUser-Based × Item-Based\n\n\nUser-Based CF\nItem-Based CF\n\n\n\ncompara usuários\ncompara itens\n\n\nprocura usuários semelhantes\nprocura itens semelhantes\n\n\nusa avaliações dos vizinhos\nusa itens semelhantes já avaliados\n\n\nsimilaridade entre linhas\nsimilaridade entre colunas"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nObserve que:\n\na matriz de avaliações é a mesma;\nas medidas de similaridade também podem ser as mesmas;\napenas o eixo da comparação é alterado.\n\n\n\n\n\n\n\nO algoritmo permanece praticamente o mesmo. Apenas trocamos usuários por itens."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nComo funciona?\nAna avaliou:\n\n\nFilme\nAvaliação\n\n\n\nMatrix\n★★★★★\n\n\nTitanic\n★★★★☆\n\n\nAvatar\n★★★★★\n\n\nToy Story\n★★☆☆☆\n\n\nGladiador\n★☆☆☆☆\n\n\n\nAinda não avaliou:\n\nInterestelar"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nSe Interestelar for muito semelhante a Matrix e Avatar, então existe uma boa chance de Ana também gostar desse filme.\n\n\n\n\n\n\nA recomendação é baseada na similaridade entre os filmes já avaliados pelo usuário."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-9",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-9",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nSimilaridade entre itens\nNo Item-Based Collaborative Filtering, a similaridade é calculada entre os itens da base de dados.\nCada item é representado por um vetor contendo as avaliações recebidas dos usuários.\nPor exemplo, os filmes Matrix e Avatar podem ser representados pelos vetores\n\\[\n\\text{Matrix} =\n(5,\\;5,\\;1,\\;4,\\;2)\n\\]\n\\[\n\\text{Avatar} =\n(5,\\;4,\\;1,\\;5,\\;2)\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-10",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-10",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nA similaridade entre esses vetores pode ser calculada utilizando:\n\nSimilaridade do cosseno;\nCorrelação de Pearson.\n\n\n\n\n\n\n\nAgora os vetores representam filmes, e não usuários."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-11",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-11",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nCalculando a similaridade do cosseno entre os vetores dos filmes, obtemos:\n\n\n\n\n\n\n\n\n\n\n\n\nMatrix\nTitanic\nAvatar\nInterestelar\nToy Story\nGladiador\n\n\n\nMatrix\n1,000\n0,980\n0,986\n1,000\n0,604\n0,473\n\n\nTitanic\n0,980\n1,000\n0,965\n0,978\n0,629\n0,488\n\n\nAvatar\n0,986\n0,965\n1,000\n0,978\n0,621\n0,473\n\n\nInterestelar\n1,000\n0,978\n0,978\n1,000\n0,565\n0,491\n\n\nToy Story\n0,604\n0,629\n0,621\n0,565\n1,000\n0,971\n\n\nGladiador\n0,473\n0,488\n0,473\n0,491\n0,971\n1,000\n\n\n\nCada elemento representa a similaridade entre dois filmes, calculada a partir das avaliações dos usuários.\n\n\n\n\n\n\nQuanto mais próximo de 1, mais semelhantes são os padrões de avaliação dos filmes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-12",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-12",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nQuais filmes são mais semelhantes?\nDesejamos prever a avaliação de Ana para Interestelar.\nPrimeiro identificamos os filmes mais semelhantes a Interestelar.\n\n\nFilme\nSimilaridade com Interestelar\n\n\n\nMatrix\n1,000\n\n\nAvatar\n0,978\n\n\nTitanic\n0,978\n\n\nToy Story\n0,565\n\n\nGladiador\n0,491"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-13",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-13",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nConsiderando\n\\[\nk=2,\n\\]\nserão utilizados apenas:\n\nMatrix;\nAvatar.\n\n\n\n\n\n\n\nSomente os itens mais semelhantes participam da predição."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-14",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-14",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nPredizendo uma avaliação\nA avaliação desconhecida é estimada por uma média ponderada pelas similaridades entre os itens.\n\\[\n\\hat r_{ui}\n=\n\\frac{\n\\displaystyle\n\\sum_{j\\in N(i)}\n\\operatorname{sim}(i,j)\\,r_{uj}\n}{\n\\displaystyle\n\\sum_{j\\in N(i)}\n|\\operatorname{sim}(i,j)|\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-15",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-15",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nonde:\n\n\n\\(\\hat r_{ui}\\) é a avaliação prevista;\n\n\\(N(i)\\) representa os itens mais semelhantes ao item \\(i\\);\n\n\\(\\operatorname{sim}(i,j)\\) é a similaridade entre os itens;\n\n\\(r_{uj}\\) é a avaliação do usuário para o item semelhante.\n\n\n\n\n\n\n\nFilmes muito semelhantes recebem maior peso na predição."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-16",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-16",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nConsiderando que Ana avaliou:\n\nMatrix = \\(5\\)\n\nAvatar = \\(5\\)\n\n\nPara prever a nota de Interestelar, selecionamos os dois filmes mais semelhantes (\\(k=2\\)):\n\n\\(\\operatorname{sim}(\\text{Interestelar},\\text{Matrix}) = 1,000\\)\n\\(\\operatorname{sim}(\\text{Interestelar},\\text{Avatar}) = 0,978\\)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-17",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#item-based-collaborative-filtering-17",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Item-Based Collaborative Filtering",
+    "text": "Item-Based Collaborative Filtering\nAplicando a média ponderada,\n\\[\n\\hat{r}_{\\text{Ana},\\text{Interestelar}}\n=\n\\frac{\n1,000\\times5\n+\n0,978\\times5\n}{\n1,000+0,978\n}\n=\n5,00\n\\]\nComo a avaliação prevista é máxima, o sistema recomendaria o filme Interestelar para Ana.\n\n\n\n\n\n\nNeste exemplo, Matrix e Avatar foram utilizados como vizinhos de Interestelar. Embora Titanic apresente a mesma similaridade que Avatar (\\(0,978\\)), foi adotado Avatar apenas como critério de desempate para simplificar o cálculo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nO pacote recommenderlab implementa diversos algoritmos de recomendação, incluindo o Item-Based Collaborative Filtering (IBCF).\nO fluxo de trabalho é semelhante ao utilizado no User-Based Collaborative Filtering:\n\ncarregar a base de avaliações;\ndefinir o esquema de avaliação;\ntreinar o modelo IBCF;\ngerar recomendações;\navaliar o desempenho.\n\n\n\n\n\n\n\nA principal diferença é que a similaridade é calculada entre itens, e não entre usuários."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nCarregando a base MovieLense\n\nlibrary(recommenderlab)\n\ndata(MovieLense)\n\nMovieLense\n\n943 x 1664 rating matrix of class 'realRatingMatrix' with 99392 ratings.\n\n\nA base MovieLense contém milhares de avaliações realizadas por usuários para diferentes filmes.\nCada linha representa um usuário e cada coluna representa um filme."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nTreinando o modelo\n\nmodelo_ibcf &lt;- Recommender(\n  dados_treino,\n  method = \"IBCF\"\n)\n\nmodelo_ibcf\n\nRecommender of type 'IBCF' for 'realRatingMatrix' \nlearned using 754 users.\n\n\nDurante o treinamento, o algoritmo calcula a matriz de similaridade entre os filmes.\nEssas similaridades são utilizadas posteriormente para estimar as avaliações ainda desconhecidas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nGerando recomendações\n\nrecomendacoes &lt;- predict(\n  modelo_ibcf,\n  dados_teste,\n  n = 5\n)\n\nas(recomendacoes, \"list\")\n\n$`0`\n[1] \"Rough Magic (1995)\"                   \n[2] \"Quiet Room, The (1996)\"               \n[3] \"Very Natural Thing, A (1974)\"         \n[4] \"Walk in the Sun, A (1945)\"            \n[5] \"Visitors, The (Visiteurs, Les) (1993)\"\n\n$`1`\n[1] \"Truman Show, The (1998)\"          \"Letter From Death Row, A (1998)\" \n[3] \"Quiet Room, The (1996)\"           \"Cyclo (1995)\"                    \n[5] \"Other Voices, Other Rooms (1997)\"\n\n$`2`\n[1] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[2] \"King of New York (1990)\"                                  \n[3] \"Very Natural Thing, A (1974)\"                             \n[4] \"Walk in the Sun, A (1945)\"                                \n[5] \"Temptress Moon (Feng Yue) (1996)\"                         \n\n$`3`\n[1] \"Legal Deceit (1997)\"              \"Big Bang Theory, The (1994)\"     \n[3] \"Guantanamera (1994)\"              \"Temptress Moon (Feng Yue) (1996)\"\n[5] \"Mirage (1995)\"                   \n\n$`4`\n[1] \"Big Bang Theory, The (1994)\"        \"Truth or Consequences, N.M. (1997)\"\n[3] \"Further Gesture, A (1996)\"         \n\n$`5`\n[1] \"Temptress Moon (Feng Yue) (1996)\"          \n[2] \"Visitors, The (Visiteurs, Les) (1993)\"     \n[3] \"Angel Baby (1995)\"                         \n[4] \"Substance of Fire, The (1996)\"             \n[5] \"Marlene Dietrich: Shadow and Light (1996) \"\n\n$`6`\n[1] \"Quiet Room, The (1996)\" \"Faces (1968)\"           \"Grateful Dead (1995)\"  \n[4] \"Best Men (1997)\"        \"Coldblooded (1995)\"    \n\n$`7`\n[1] \"Quiet Room, The (1996)\"             \"Truth or Consequences, N.M. (1997)\"\n[3] \"King of New York (1990)\"           \n\n$`8`\n[1] \"Quiet Room, The (1996)\"           \"They Made Me a Criminal (1939)\"  \n[3] \"Letter From Death Row, A (1998)\"  \"Other Voices, Other Rooms (1997)\"\n[5] \"Men With Guns (1997)\"            \n\n$`9`\n[1] \"Big Bang Theory, The (1994)\"        \"Foreign Student (1994)\"            \n[3] \"Truth or Consequences, N.M. (1997)\" \"King of New York (1990)\"           \n[5] \"Promesse, La (1996)\"               \n\n$`10`\n[1] \"Quiet Room, The (1996)\"           \"Other Voices, Other Rooms (1997)\"\n[3] \"Price Above Rubies, A (1998)\"    \n\n$`11`\n[1] \"Visitors, The (Visiteurs, Les) (1993)\"\n[2] \"Quiet Room, The (1996)\"               \n[3] \"Price Above Rubies, A (1998)\"         \n[4] \"Truth or Consequences, N.M. (1997)\"   \n[5] \"King of New York (1990)\"              \n\n$`12`\n[1] \"Rough Magic (1995)\"          \"Further Gesture, A (1996)\"  \n[3] \"Quiet Room, The (1996)\"      \"Big Bang Theory, The (1994)\"\n[5] \"Men With Guns (1997)\"       \n\n$`13`\n[1] \"Time Tracers (1995)\"              \"Quiet Room, The (1996)\"          \n[3] \"Nowhere (1997)\"                   \"Guantanamera (1994)\"             \n[5] \"Temptress Moon (Feng Yue) (1996)\"\n\n$`14`\n[1] \"Quiet Room, The (1996)\"           \"Cyclo (1995)\"                    \n[3] \"Other Voices, Other Rooms (1997)\" \"Very Natural Thing, A (1974)\"    \n[5] \"Walk in the Sun, A (1945)\"       \n\n$`15`\n[1] \"Truman Show, The (1998)\"          \"Cyclo (1995)\"                    \n[3] \"Very Natural Thing, A (1974)\"     \"Walk in the Sun, A (1945)\"       \n[5] \"Temptress Moon (Feng Yue) (1996)\"\n\n$`16`\n[1] \"Quiet Room, The (1996)\"                    \n[2] \"Substance of Fire, The (1996)\"             \n[3] \"Cyclo (1995)\"                              \n[4] \"Marlene Dietrich: Shadow and Light (1996) \"\n[5] \"Foreign Student (1994)\"                    \n\n$`17`\n[1] \"Brother Minister: The Assassination of Malcolm X (1994)\"\n[2] \"Promesse, La (1996)\"                                    \n[3] \"3 Ninjas: High Noon At Mega Mountain (1998)\"            \n[4] \"Body Snatchers (1993)\"                                  \n[5] \"Dark City (1998)\"                                       \n\n$`18`\n[1] \"Guantanamera (1994)\"    \"New Age, The (1994)\"    \"Quiet Room, The (1996)\"\n[4] \"Coldblooded (1995)\"     \"Turning, The (1992)\"   \n\n$`19`\n[1] \"Quiet Room, The (1996)\"       \"Very Natural Thing, A (1974)\"\n[3] \"Walk in the Sun, A (1945)\"    \"Coldblooded (1995)\"          \n[5] \"Turning, The (1992)\"         \n\n$`20`\n[1] \"Quiet Room, The (1996)\"             \"Big Bang Theory, The (1994)\"       \n[3] \"Truth or Consequences, N.M. (1997)\" \"King of New York (1990)\"           \n[5] \"Further Gesture, A (1996)\"         \n\n$`21`\n[1] \"Cyclo (1995)\"                         \n[2] \"Big Bang Theory, The (1994)\"          \n[3] \"Visitors, The (Visiteurs, Les) (1993)\"\n[4] \"Truth or Consequences, N.M. (1997)\"   \n[5] \"Quiet Room, The (1996)\"               \n\n$`22`\n[1] \"Quiet Room, The (1996)\"                                   \n[2] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[3] \"Wife, The (1995)\"                                         \n[4] \"Temptress Moon (Feng Yue) (1996)\"                         \n[5] \"Doom Generation, The (1995)\"                              \n\n$`23`\n[1] \"Time Tracers (1995)\"                       \n[2] \"Buddy (1997)\"                              \n[3] \"Nobody Loves Me (Keiner liebt mich) (1994)\"\n[4] \"Big Bang Theory, The (1994)\"               \n[5] \"Quiet Room, The (1996)\"                    \n\n$`24`\n[1] \"King of New York (1990)\"     \"Wife, The (1995)\"           \n[3] \"You So Crazy (1994)\"         \"Big Bang Theory, The (1994)\"\n[5] \"Tokyo Fist (1995)\"          \n\n$`25`\n[1] \"Twisted (1996)\"\n\n$`26`\n[1] \"Visitors, The (Visiteurs, Les) (1993)\"\n[2] \"Someone Else's America (1995)\"        \n[3] \"He Walked by Night (1948)\"            \n[4] \"Men With Guns (1997)\"                 \n[5] \"Mirage (1995)\"                        \n\n$`27`\n[1] \"Quiet Room, The (1996)\" \"Underworld (1997)\"      \"Best Men (1997)\"       \n[4] \"Cyclo (1995)\"           \"Prefontaine (1997)\"    \n\n$`28`\n[1] \"Gattaca (1997)\"           \"L.A. Confidential (1997)\"\n[3] \"Deep Rising (1998)\"       \"Mouse Hunt (1997)\"       \n[5] \"Afterglow (1997)\"        \n\n$`29`\n[1] \"Rendezvous in Paris (Rendez-vous de Paris, Les) (1995)\"\n[2] \"Cyclo (1995)\"                                          \n[3] \"Big Bang Theory, The (1994)\"                           \n[4] \"Night Flier (1997)\"                                    \n[5] \"Foreign Student (1994)\"                                \n\n$`30`\n[1] \"Letter From Death Row, A (1998)\" \"Twisted (1996)\"                 \n[3] \"Further Gesture, A (1996)\"      \n\n$`31`\n[1] \"Twisted (1996)\"            \"Further Gesture, A (1996)\"\n\n$`32`\n[1] \"Quiet Room, The (1996)\"                    \n[2] \"Cyclo (1995)\"                              \n[3] \"That Old Feeling (1997)\"                   \n[4] \"Marlene Dietrich: Shadow and Light (1996) \"\n[5] \"Other Voices, Other Rooms (1997)\"          \n\n$`33`\n[1] \"Rendezvous in Paris (Rendez-vous de Paris, Les) (1995)\"\n[2] \"Fille seule, La (A Single Girl) (1995)\"                \n[3] \"Stripes (1981)\"                                        \n[4] \"Coldblooded (1995)\"                                    \n[5] \"Turning, The (1992)\"                                   \n\n$`34`\n[1] \"Wonderful, Horrible Life of Leni Riefenstahl, The (1993)\"\n[2] \"Winter Guest, The (1997)\"                                \n[3] \"Commandments (1997)\"                                     \n[4] \"Best Men (1997)\"                                         \n[5] \"Other Voices, Other Rooms (1997)\"                        \n\n$`35`\n[1] \"Truth or Consequences, N.M. (1997)\" \"Rough Magic (1995)\"                \n\n$`36`\n[1] \"Rough Magic (1995)\"             \"They Made Me a Criminal (1939)\"\n[3] \"Quiet Room, The (1996)\"        \n\n$`37`\n[1] \"Other Voices, Other Rooms (1997)\"     \n[2] \"Price Above Rubies, A (1998)\"         \n[3] \"Men With Guns (1997)\"                 \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"Truth or Consequences, N.M. (1997)\"   \n\n$`38`\n[1] \"They Made Me a Criminal (1939)\" \"Quiet Room, The (1996)\"        \n[3] \"Guantanamera (1994)\"            \"Grateful Dead (1995)\"          \n[5] \"That Old Feeling (1997)\"       \n\n$`39`\n[1] \"Quiet Room, The (1996)\"         \"Inspector General, The (1949)\" \n[3] \"Simple Twist of Fate, A (1994)\" \"Crossfire (1947)\"              \n[5] \"Cyclo (1995)\"                  \n\n$`40`\n[1] \"Cyclo (1995)\"                   \"King of New York (1990)\"       \n[3] \"Rough Magic (1995)\"             \"Quiet Room, The (1996)\"        \n[5] \"They Made Me a Criminal (1939)\"\n\n$`41`\n[1] \"King of New York (1990)\"                             \n[2] \"Quiet Room, The (1996)\"                              \n[3] \"Shanghai Triad (Yao a yao yao dao waipo qiao) (1995)\"\n[4] \"Mad Love (1995)\"                                     \n[5] \"Unhook the Stars (1996)\"                             \n\n$`42`\n[1] \"They Made Me a Criminal (1939)\"       \n[2] \"Quiet Room, The (1996)\"               \n[3] \"Cyclo (1995)\"                         \n[4] \"Big Bang Theory, The (1994)\"          \n[5] \"Visitors, The (Visiteurs, Les) (1993)\"\n\n$`43`\n[1] \"Truman Show, The (1998)\"              \n[2] \"Quiet Room, The (1996)\"               \n[3] \"Gone Fishin' (1997)\"                  \n[4] \"Someone Else's America (1995)\"        \n[5] \"Visitors, The (Visiteurs, Les) (1993)\"\n\n$`44`\n[1] \"Horseman on the Roof, The (Hussard sur le toit, Le) (1995)\"\n[2] \"Radioland Murders (1994)\"                                  \n[3] \"My Man Godfrey (1936)\"                                     \n[4] \"Wonderful, Horrible Life of Leni Riefenstahl, The (1993)\"  \n[5] \"Tango Lesson, The (1997)\"                                  \n\n$`45`\n[1] \"Bad Moon (1996)\"     \"Loch Ness (1995)\"    \"Underworld (1997)\"  \n[4] \"Commandments (1997)\" \"Best Men (1997)\"    \n\n$`46`\n[1] \"Big Bang Theory, The (1994)\" \"Tokyo Fist (1995)\"          \n[3] \"King of New York (1990)\"     \"Wife, The (1995)\"           \n[5] \"You So Crazy (1994)\"        \n\n$`47`\n[1] \"Substance of Fire, The (1996)\"             \n[2] \"Marlene Dietrich: Shadow and Light (1996) \"\n[3] \"Last Summer in the Hamptons (1995)\"        \n[4] \"Death in Brunswick (1991)\"                 \n[5] \"Desert Winds (1995)\"                       \n\n$`48`\n[1] \"Guantanamera (1994)\"                \"Truth or Consequences, N.M. (1997)\"\n[3] \"New Age, The (1994)\"                \"Rough Magic (1995)\"                \n[5] \"Quiet Room, The (1996)\"            \n\n$`49`\n[1] \"Big Bang Theory, The (1994)\"  \"Foreign Student (1994)\"      \n[3] \"Village of the Damned (1995)\" \"Dangerous Beauty (1998)\"     \n[5] \"Primary Colors (1998)\"       \n\n$`50`\n[1] \"Last Summer in the Hamptons (1995)\"                       \n[2] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[3] \"Marlene Dietrich: Shadow and Light (1996) \"               \n[4] \"Coldblooded (1995)\"                                       \n[5] \"Turning, The (1992)\"                                      \n\n$`51`\n[1] \"Quiet Room, The (1996)\"           \"Other Voices, Other Rooms (1997)\"\n[3] \"Men With Guns (1997)\"             \"They Made Me a Criminal (1939)\"  \n[5] \"Letter From Death Row, A (1998)\" \n\n$`52`\n[1] \"Brother Minister: The Assassination of Malcolm X (1994)\" \n[2] \"Treasure of the Sierra Madre, The (1948)\"                \n[3] \"Wonderful, Horrible Life of Leni Riefenstahl, The (1993)\"\n[4] \"Substance of Fire, The (1996)\"                           \n[5] \"Simple Twist of Fate, A (1994)\"                          \n\n$`53`\n[1] \"They Made Me a Criminal (1939)\"       \n[2] \"Cyclo (1995)\"                         \n[3] \"Letter From Death Row, A (1998)\"      \n[4] \"Big Bang Theory, The (1994)\"          \n[5] \"Visitors, The (Visiteurs, Les) (1993)\"\n\n$`54`\n[1] \"They Made Me a Criminal (1939)\" \"Promesse, La (1996)\"           \n[3] \"Substance of Fire, The (1996)\"  \"Frisk (1995)\"                  \n[5] \"Best Men (1997)\"               \n\n$`55`\n[1] \"Designated Mourner, The (1997)\" \"You So Crazy (1994)\"           \n[3] \"Underworld (1997)\"              \"Commandments (1997)\"           \n[5] \"Newton Boys, The (1998)\"       \n\n$`56`\n[1] \"Temptress Moon (Feng Yue) (1996)\" \"Mirage (1995)\"                   \n[3] \"King of New York (1990)\"          \"Quiet Room, The (1996)\"          \n[5] \"Nelly & Monsieur Arnaud (1995)\"  \n\n$`57`\n[1] \"3 Ninjas: High Noon At Mega Mountain (1998)\"\n[2] \"Substance of Fire, The (1996)\"              \n[3] \"Grateful Dead (1995)\"                       \n[4] \"They Made Me a Criminal (1939)\"             \n[5] \"Best Men (1997)\"                            \n\n$`58`\n[1] \"Death in Brunswick (1991)\"       \"Reluctant Debutante, The (1958)\"\n[3] \"New Age, The (1994)\"             \"They Made Me a Criminal (1939)\" \n[5] \"Quiet Room, The (1996)\"         \n\n$`59`\n[1] \"Prefontaine (1997)\"                   \n[2] \"Twisted (1996)\"                       \n[3] \"Mr. Jones (1993)\"                     \n[4] \"Saint of Fort Washington, The (1993)\" \n[5] \"Visitors, The (Visiteurs, Les) (1993)\"\n\n$`60`\n[1] \"Visitors, The (Visiteurs, Les) (1993)\"\n[2] \"Temptress Moon (Feng Yue) (1996)\"     \n[3] \"Mirage (1995)\"                        \n[4] \"They Made Me a Criminal (1939)\"       \n[5] \"Quiet Room, The (1996)\"               \n\n$`61`\n[1] \"Men With Guns (1997)\"               \"Rough Magic (1995)\"                \n[3] \"Truth or Consequences, N.M. (1997)\" \"King of New York (1990)\"           \n\n$`62`\n[1] \"Maya Lin: A Strong Clear Vision (1994)\"\n[2] \"Spitfire Grill, The (1996)\"            \n[3] \"Unhook the Stars (1996)\"               \n[4] \"Kull the Conqueror (1997)\"             \n[5] \"U Turn (1997)\"                         \n\n$`63`\n[1] \"Quiet Room, The (1996)\"      \"Big Bang Theory, The (1994)\"\n\n$`64`\n[1] \"Truman Show, The (1998)\"     \"Star Kid (1997)\"            \n[3] \"Senseless (1998)\"            \"Tokyo Fist (1995)\"          \n[5] \"Big Bang Theory, The (1994)\"\n\n$`65`\n[1] \"Truman Show, The (1998)\"   \"Men of Means (1998)\"      \n[3] \"Buddy (1997)\"              \"Further Gesture, A (1996)\"\n[5] \"You So Crazy (1994)\"      \n\n$`66`\n[1] \"Twisted (1996)\"                                          \n[2] \"Star Kid (1997)\"                                         \n[3] \"Leading Man, The (1996)\"                                 \n[4] \"3 Ninjas: High Noon At Mega Mountain (1998)\"             \n[5] \"Wonderful, Horrible Life of Leni Riefenstahl, The (1993)\"\n\n$`67`\n[1] \"Quiet Room, The (1996)\"               \n[2] \"Cyclo (1995)\"                         \n[3] \"Big Bang Theory, The (1994)\"          \n[4] \"Twisted (1996)\"                       \n[5] \"Visitors, The (Visiteurs, Les) (1993)\"\n\n$`68`\n[1] \"Cyclo (1995)\"                         \n[2] \"Letter From Death Row, A (1998)\"      \n[3] \"Big Bang Theory, The (1994)\"          \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"Witness (1985)\"                       \n\n$`69`\n[1] \"Twisted (1996)\"                     \"Foreign Student (1994)\"            \n[3] \"Letter From Death Row, A (1998)\"    \"Big Bang Theory, The (1994)\"       \n[5] \"Truth or Consequences, N.M. (1997)\"\n\n$`70`\n[1] \"Very Natural Thing, A (1974)\" \"Walk in the Sun, A (1945)\"   \n[3] \"Coldblooded (1995)\"           \"Turning, The (1992)\"         \n[5] \"Office Killer (1997)\"        \n\n$`71`\n[1] \"Wonderful, Horrible Life of Leni Riefenstahl, The (1993)\"\n[2] \"In the Line of Duty 2 (1987)\"                            \n[3] \"Best Men (1997)\"                                         \n[4] \"Hard Eight (1996)\"                                       \n[5] \"Marlene Dietrich: Shadow and Light (1996) \"              \n\n$`72`\n[1] \"Last Summer in the Hamptons (1995)\"                       \n[2] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[3] \"Rough Magic (1995)\"                                       \n[4] \"Mirage (1995)\"                                            \n[5] \"Fille seule, La (A Single Girl) (1995)\"                   \n\n$`73`\n[1] \"Power 98 (1995)\"                     \n[2] \"Bloody Child, The (1996)\"            \n[3] \"Paris Was a Woman (1995)\"            \n[4] \"Nil By Mouth (1997)\"                 \n[5] \"Love and Death on Long Island (1997)\"\n\n$`74`\n[1] \"Quiet Room, The (1996)\"      \"Big Bang Theory, The (1994)\"\n[3] \"Men With Guns (1997)\"        \"Rough Magic (1995)\"         \n[5] \"Further Gesture, A (1996)\"  \n\n$`75`\n[1] \"Crossfire (1947)\"             \"Lady of Burlesque (1943)\"    \n[3] \"Damsel in Distress, A (1937)\" \"Witness (1985)\"              \n[5] \"Buddy (1997)\"                \n\n$`76`\n[1] \"Truman Show, The (1998)\" \"Quiet Room, The (1996)\" \n[3] \"Rough Magic (1995)\"     \n\n$`77`\n[1] \"Great Day in Harlem, A (1994)\"             \n[2] \"That Old Feeling (1997)\"                   \n[3] \"Marlene Dietrich: Shadow and Light (1996) \"\n[4] \"Van, The (1996)\"                           \n[5] \"Nelly & Monsieur Arnaud (1995)\"            \n\n$`78`\n[1] \"Foreign Student (1994)\"             \"Big Bang Theory, The (1994)\"       \n[3] \"Truth or Consequences, N.M. (1997)\" \"King of New York (1990)\"           \n[5] \"Further Gesture, A (1996)\"         \n\n$`79`\n[1] \"Big Bang Theory, The (1994)\"        \"Truth or Consequences, N.M. (1997)\"\n[3] \"King of New York (1990)\"            \"Further Gesture, A (1996)\"         \n\n$`80`\n[1] \"Quiet Room, The (1996)\"               \n[2] \"Cyclo (1995)\"                         \n[3] \"Big Bang Theory, The (1994)\"          \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"Foreign Student (1994)\"               \n\n$`81`\n[1] \"Other Voices, Other Rooms (1997)\"   \"Van, The (1996)\"                   \n[3] \"Designated Mourner, The (1997)\"     \"Stripes (1981)\"                    \n[5] \"Gate of Heavenly Peace, The (1995)\"\n\n$`82`\n[1] \"Celestial Clockwork (1994)\"            \n[2] \"Fille seule, La (A Single Girl) (1995)\"\n[3] \"A Chef in Love (1996)\"                 \n[4] \"Last Summer in the Hamptons (1995)\"    \n[5] \"Nelly & Monsieur Arnaud (1995)\"        \n\n$`83`\n[1] \"Daytrippers, The (1996)\"        \"Meet Me in St. Louis (1944)\"   \n[3] \"Primary Colors (1998)\"          \"Inspector General, The (1949)\" \n[5] \"Simple Twist of Fate, A (1994)\"\n\n$`84`\n[1] \"Promesse, La (1996)\"                                      \n[2] \"Nelly & Monsieur Arnaud (1995)\"                           \n[3] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[4] \"Office Killer (1997)\"                                     \n[5] \"Wife, The (1995)\"                                         \n\n$`85`\n[1] \"Haunted World of Edward D. Wood Jr., The (1995)\"\n[2] \"Titanic (1997)\"                                 \n[3] \"Mad City (1997)\"                                \n[4] \"Pinocchio (1940)\"                               \n[5] \"Alice in Wonderland (1951)\"                     \n\n$`86`\n[1] \"Substance of Fire, The (1996)\"         \n[2] \"Fille seule, La (A Single Girl) (1995)\"\n[3] \"Last Summer in the Hamptons (1995)\"    \n[4] \"Witness (1985)\"                        \n[5] \"Desert Winds (1995)\"                   \n\n$`87`\n[1] \"Winter Guest, The (1997)\" \"Commandments (1997)\"     \n[3] \"Best Men (1997)\"          \"That Old Feeling (1997)\" \n[5] \"Full Speed (1996)\"       \n\n$`88`\n[1] \"Guantanamera (1994)\"            \"They Made Me a Criminal (1939)\"\n\n$`89`\n[1] \"Quiet Room, The (1996)\"               \n[2] \"Visitors, The (Visiteurs, Les) (1993)\"\n[3] \"Angel Baby (1995)\"                    \n[4] \"Commandments (1997)\"                  \n[5] \"Chairman of the Board (1998)\"         \n\n$`90`\n[1] \"Quiet Room, The (1996)\"               \n[2] \"Cyclo (1995)\"                         \n[3] \"Big Bang Theory, The (1994)\"          \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"Truth or Consequences, N.M. (1997)\"   \n\n$`91`\n[1] \"Quiet Room, The (1996)\"      \"Cyclo (1995)\"               \n[3] \"Foreign Student (1994)\"      \"Big Bang Theory, The (1994)\"\n[5] \"Nil By Mouth (1997)\"        \n\n$`92`\n[1] \"Batman & Robin (1997)\"         \"Good Will Hunting (1997)\"     \n[3] \"Rainmaker, The (1997)\"         \"Wings of the Dove, The (1997)\"\n[5] \"Apt Pupil (1998)\"             \n\n$`93`\n[1] \"They Made Me a Criminal (1939)\" \"Quiet Room, The (1996)\"        \n[3] \"Death in Brunswick (1991)\"      \"Pillow Book, The (1995)\"       \n[5] \"Old Yeller (1957)\"             \n\n$`94`\n[1] \"They Made Me a Criminal (1939)\"       \n[2] \"Visitors, The (Visiteurs, Les) (1993)\"\n[3] \"Guantanamera (1994)\"                  \n[4] \"Quiet Room, The (1996)\"               \n\n$`95`\n[1] \"Quiet Room, The (1996)\"         \"New York Cop (1996)\"           \n[3] \"Butterfly Kiss (1995)\"          \"8 Heads in a Duffel Bag (1997)\"\n\n$`96`\n[1] \"Big Bang Theory, The (1994)\"      \"Other Voices, Other Rooms (1997)\"\n[3] \"Van, The (1996)\"                  \"Designated Mourner, The (1997)\"  \n[5] \"New York Cop (1996)\"             \n\n$`97`\n[1] \"Letter From Death Row, A (1998)\" \"Death in Brunswick (1991)\"      \n[3] \"Reluctant Debutante, The (1958)\" \"Flubber (1997)\"                 \n[5] \"They Made Me a Criminal (1939)\" \n\n$`98`\n[1] \"Power 98 (1995)\"                     \n[2] \"Bloody Child, The (1996)\"            \n[3] \"Paris Was a Woman (1995)\"            \n[4] \"Nil By Mouth (1997)\"                 \n[5] \"Love and Death on Long Island (1997)\"\n\n$`99`\n[1] \"Cyclo (1995)\"                       \"Other Voices, Other Rooms (1997)\"  \n[3] \"Twisted (1996)\"                     \"Further Gesture, A (1996)\"         \n[5] \"Truth or Consequences, N.M. (1997)\"\n\n$`100`\n[1] \"Power 98 (1995)\"                     \n[2] \"Bloody Child, The (1996)\"            \n[3] \"Paris Was a Woman (1995)\"            \n[4] \"Nil By Mouth (1997)\"                 \n[5] \"Love and Death on Long Island (1997)\"\n\n$`101`\n[1] \"Coldblooded (1995)\"  \"Turning, The (1992)\" \"Mr. Jones (1993)\"   \n\n$`102`\n[1] \"Quiet Room, The (1996)\"               \n[2] \"Cyclo (1995)\"                         \n[3] \"Big Bang Theory, The (1994)\"          \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"Truth or Consequences, N.M. (1997)\"   \n\n$`103`\n[1] \"Quiet Room, The (1996)\"                                   \n[2] \"Fille seule, La (A Single Girl) (1995)\"                   \n[3] \"Visitors, The (Visiteurs, Les) (1993)\"                    \n[4] \"Foreign Student (1994)\"                                   \n[5] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n\n$`104`\ncharacter(0)\n\n$`105`\n[1] \"They Made Me a Criminal (1939)\" \"Rough Magic (1995)\"            \n[3] \"Mirage (1995)\"                  \"Truman Show, The (1998)\"       \n[5] \"Death in Brunswick (1991)\"     \n\n$`106`\n[1] \"They Made Me a Criminal (1939)\"   \"King of New York (1990)\"         \n[3] \"Mirage (1995)\"                    \"Quiet Room, The (1996)\"          \n[5] \"Other Voices, Other Rooms (1997)\"\n\n$`107`\n[1] \"Crossfire (1947)\"                \"They Made Me a Criminal (1939)\" \n[3] \"Letter From Death Row, A (1998)\" \"Legal Deceit (1997)\"            \n[5] \"Lady of Burlesque (1943)\"       \n\n$`108`\n[1] \"Big Bang Theory, The (1994)\"                           \n[2] \"Star Kid (1997)\"                                       \n[3] \"Rendezvous in Paris (Rendez-vous de Paris, Les) (1995)\"\n[4] \"Cyclo (1995)\"                                          \n[5] \"All Over Me (1997)\"                                    \n\n$`109`\n[1] \"Big Bang Theory, The (1994)\"  \"Foreign Student (1994)\"      \n[3] \"Further Gesture, A (1996)\"    \"Price Above Rubies, A (1998)\"\n[5] \"Quiet Room, The (1996)\"      \n\n$`110`\n[1] \"Quiet Room, The (1996)\"               \n[2] \"Cyclo (1995)\"                         \n[3] \"Big Bang Theory, The (1994)\"          \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"GoldenEye (1995)\"                     \n\n$`111`\n[1] \"Twisted (1996)\"                       \n[2] \"Visitors, The (Visiteurs, Les) (1993)\"\n[3] \"Price Above Rubies, A (1998)\"         \n[4] \"King of New York (1990)\"              \n\n$`112`\ncharacter(0)\n\n$`113`\n[1] \"Substance of Fire, The (1996)\"        \n[2] \"Legal Deceit (1997)\"                  \n[3] \"Visitors, The (Visiteurs, Les) (1993)\"\n[4] \"Guantanamera (1994)\"                  \n[5] \"Men With Guns (1997)\"                 \n\n$`114`\n[1] \"Free Willy 2: The Adventure Home (1995)\"  \n[2] \"Village of the Damned (1995)\"             \n[3] \"Blue Angel, The (Blaue Engel, Der) (1930)\"\n[4] \"Boys Life (1995)\"                         \n[5] \"Faces (1968)\"                             \n\n$`115`\n[1] \"Quiet Room, The (1996)\"                         \n[2] \"Cyclo (1995)\"                                   \n[3] \"Visitors, The (Visiteurs, Les) (1993)\"          \n[4] \"Truth or Consequences, N.M. (1997)\"             \n[5] \"Haunted World of Edward D. Wood Jr., The (1995)\"\n\n$`116`\n[1] \"Killer: A Journal of Murder (1995)\" \"Wings of Courage (1995)\"           \n[3] \"Scarlet Letter, The (1926)\"         \"Reluctant Debutante, The (1958)\"   \n[5] \"Sweet Nothing (1995)\"              \n\n$`117`\n[1] \"Cyclo (1995)\"                         \n[2] \"Substance of Fire, The (1996)\"        \n[3] \"They Made Me a Criminal (1939)\"       \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"Foreign Student (1994)\"               \n\n$`118`\n[1] \"Quiet Room, The (1996)\"       \"Very Natural Thing, A (1974)\"\n[3] \"Walk in the Sun, A (1945)\"    \"King of New York (1990)\"     \n\n$`119`\n[1] \"Quiet Room, The (1996)\"               \n[2] \"Cyclo (1995)\"                         \n[3] \"Big Bang Theory, The (1994)\"          \n[4] \"Visitors, The (Visiteurs, Les) (1993)\"\n[5] \"Truth or Consequences, N.M. (1997)\"   \n\n$`120`\n[1] \"Copycat (1995)\"                      \"Mr. Holland's Opus (1995)\"          \n[3] \"Brothers McMullen, The (1995)\"       \"Doom Generation, The (1995)\"        \n[5] \"Faster Pussycat! Kill! Kill! (1965)\"\n\n$`121`\n[1] \"Very Natural Thing, A (1974)\" \"Walk in the Sun, A (1945)\"   \n\n$`122`\n[1] \"Big Bang Theory, The (1994)\"        \"Truth or Consequences, N.M. (1997)\"\n[3] \"King of New York (1990)\"            \"Further Gesture, A (1996)\"         \n\n$`123`\n[1] \"Letter From Death Row, A (1998)\"\n\n$`124`\n[1] \"Time Tracers (1995)\"                       \n[2] \"Buddy (1997)\"                              \n[3] \"Nobody Loves Me (Keiner liebt mich) (1994)\"\n\n$`125`\n[1] \"Quiet Room, The (1996)\"\n\n$`126`\n[1] \"Very Natural Thing, A (1974)\" \"Walk in the Sun, A (1945)\"   \n[3] \"Quiet Room, The (1996)\"       \"Cyclo (1995)\"                \n[5] \"Big Bang Theory, The (1994)\" \n\n$`127`\n[1] \"Quiet Room, The (1996)\"    \"Death in Brunswick (1991)\"\n[3] \"Twisted (1996)\"            \"Further Gesture, A (1996)\"\n\n$`128`\n[1] \"Letter From Death Row, A (1998)\" \"Big Bang Theory, The (1994)\"    \n[3] \"Very Natural Thing, A (1974)\"    \"Walk in the Sun, A (1945)\"      \n\n$`129`\n[1] \"Substance of Fire, The (1996)\"                            \n[2] \"Very Natural Thing, A (1974)\"                             \n[3] \"Walk in the Sun, A (1945)\"                                \n[4] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[5] \"Big Bang Theory, The (1994)\"                              \n\n$`130`\n[1] \"Coldblooded (1995)\"        \"Turning, The (1992)\"      \n[3] \"Death in Brunswick (1991)\" \"Tokyo Fist (1995)\"        \n[5] \"King of New York (1990)\"  \n\n$`131`\n[1] \"Quiet Room, The (1996)\"                                \n[2] \"Rendezvous in Paris (Rendez-vous de Paris, Les) (1995)\"\n[3] \"Someone Else's America (1995)\"                         \n[4] \"Some Mother's Son (1996)\"                              \n[5] \"They Made Me a Criminal (1939)\"                        \n\n$`132`\n[1] \"Radioland Murders (1994)\"                \n[2] \"My Man Godfrey (1936)\"                   \n[3] \"Innocents, The (1961)\"                   \n[4] \"Fresh (1994)\"                            \n[5] \"Savage Nights (Nuits fauves, Les) (1992)\"\n\n$`133`\n[1] \"Foreign Student (1994)\"             \"Truth or Consequences, N.M. (1997)\"\n[3] \"They Made Me a Criminal (1939)\"     \"Letter From Death Row, A (1998)\"   \n[5] \"Other Voices, Other Rooms (1997)\"  \n\n$`134`\ncharacter(0)\n\n$`135`\n[1] \"Copycat (1995)\"          \"Twelve Monkeys (1995)\"  \n[3] \"Babe (1995)\"             \"Dead Man Walking (1995)\"\n[5] \"Richard III (1995)\"     \n\n$`136`\n[1] \"Quiet Room, The (1996)\"\n\n$`137`\ncharacter(0)\n\n$`138`\n[1] \"They Made Me a Criminal (1939)\"                        \n[2] \"Substance of Fire, The (1996)\"                         \n[3] \"Great Day in Harlem, A (1994)\"                         \n[4] \"Hearts and Minds (1996)\"                               \n[5] \"Rendezvous in Paris (Rendez-vous de Paris, Les) (1995)\"\n\n$`139`\n[1] \"Power 98 (1995)\"          \"Bloody Child, The (1996)\"\n[3] \"Paris Was a Woman (1995)\" \"Vermin (1998)\"           \n[5] \"Nil By Mouth (1997)\"     \n\n$`140`\n[1] \"Cyclo (1995)\"                 \"Legal Deceit (1997)\"         \n[3] \"Night Flier (1997)\"           \"Very Natural Thing, A (1974)\"\n[5] \"Walk in the Sun, A (1945)\"   \n\n$`141`\n[1] \"Quiet Room, The (1996)\"                                    \n[2] \"Horseman on the Roof, The (Hussard sur le toit, Le) (1995)\"\n[3] \"3 Ninjas: High Noon At Mega Mountain (1998)\"               \n[4] \"Hearts and Minds (1996)\"                                   \n[5] \"Home Alone 3 (1997)\"                                       \n\n$`142`\n[1] \"Daytrippers, The (1996)\"       \"Meet Me in St. Louis (1944)\"  \n[3] \"Primary Colors (1998)\"         \"Inspector General, The (1949)\"\n[5] \"Farewell to Arms, A (1932)\"   \n\n$`143`\n[1] \"Very Natural Thing, A (1974)\" \"Walk in the Sun, A (1945)\"   \n[3] \"Coldblooded (1995)\"           \"Turning, The (1992)\"         \n[5] \"Office Killer (1997)\"        \n\n$`144`\n[1] \"Truth or Consequences, N.M. (1997)\"\n\n$`145`\n[1] \"They Made Me a Criminal (1939)\"   \"Letter From Death Row, A (1998)\" \n[3] \"Other Voices, Other Rooms (1997)\" \"Men With Guns (1997)\"            \n[5] \"Rough Magic (1995)\"              \n\n$`146`\n[1] \"They Made Me a Criminal (1939)\"                         \n[2] \"Brother Minister: The Assassination of Malcolm X (1994)\"\n[3] \"Incognito (1997)\"                                       \n[4] \"Dark City (1998)\"                                       \n[5] \"House of the Spirits, The (1993)\"                       \n\n$`147`\n[1] \"Visitors, The (Visiteurs, Les) (1993)\"                    \n[2] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[3] \"They Made Me a Criminal (1939)\"                           \n[4] \"Temptress Moon (Feng Yue) (1996)\"                         \n[5] \"Turbo: A Power Rangers Movie (1997)\"                      \n\n$`148`\ncharacter(0)\n\n$`149`\n[1] \"Promesse, La (1996)\"                \"Full Speed (1996)\"                 \n[3] \"Senseless (1998)\"                   \"Truth or Consequences, N.M. (1997)\"\n[5] \"Desert Winds (1995)\"               \n\n$`150`\n[1] \"Foreign Student (1994)\"             \"Truth or Consequences, N.M. (1997)\"\n[3] \"Letter From Death Row, A (1998)\"   \n\n$`151`\n[1] \"Substance of Fire, The (1996)\" \"Cyclo (1995)\"                 \n[3] \"Foreign Student (1994)\"        \"King of New York (1990)\"      \n[5] \"Rough Magic (1995)\"           \n\n$`152`\n[1] \"Horseman on the Roof, The (Hussard sur le toit, Le) (1995)\"\n[2] \"Substance of Fire, The (1996)\"                             \n[3] \"In the Line of Duty 2 (1987)\"                              \n[4] \"Hearts and Minds (1996)\"                                   \n[5] \"Winter Guest, The (1997)\"                                  \n\n$`153`\n[1] \"Substance of Fire, The (1996)\"                            \n[2] \"They Made Me a Criminal (1939)\"                           \n[3] \"Last Summer in the Hamptons (1995)\"                       \n[4] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[5] \"Bitter Sugar (Azucar Amargo) (1996)\"                      \n\n$`154`\n[1] \"Selena (1997)\"         \"Penny Serenade (1941)\" \"Raw Deal (1948)\"      \n[4] \"Nightwatch (1997)\"     \"Angela (1995)\"        \n\n$`155`\n[1] \"Promesse, La (1996)\"                \"They Made Me a Criminal (1939)\"    \n[3] \"Quiet Room, The (1996)\"             \"Mr. Jones (1993)\"                  \n[5] \"Gate of Heavenly Peace, The (1995)\"\n\n$`156`\n[1] \"Truth or Consequences, N.M. (1997)\" \"Rough Magic (1995)\"                \n\n$`157`\n[1] \"Sunset Blvd. (1950)\"          \"All About Eve (1950)\"        \n[3] \"Gigi (1958)\"                  \"Raise the Red Lantern (1991)\"\n[5] \"My Family (1995)\"            \n\n$`158`\n[1] \"Cyclo (1995)\"                     \"Quiet Room, The (1996)\"          \n[3] \"Temptress Moon (Feng Yue) (1996)\" \"Promesse, La (1996)\"             \n[5] \"Substance of Fire, The (1996)\"   \n\n$`159`\n[1] \"Quiet Room, The (1996)\"      \"Twisted (1996)\"             \n[3] \"Men With Guns (1997)\"        \"Rough Magic (1995)\"         \n[5] \"Big Bang Theory, The (1994)\"\n\n$`160`\n[1] \"They Made Me a Criminal (1939)\" \"Quiet Room, The (1996)\"        \n[3] \"King of New York (1990)\"        \"Mirage (1995)\"                 \n\n$`161`\n[1] \"Great Day in Harlem, A (1994)\"   \"Hearts and Minds (1996)\"        \n[3] \"They Made Me a Criminal (1939)\"  \"Letter From Death Row, A (1998)\"\n[5] \"Nenette et Boni (1996)\"         \n\n$`162`\n[1] \"Cyclo (1995)\"                   \"Twisted (1996)\"                \n[3] \"Guantanamera (1994)\"            \"They Made Me a Criminal (1939)\"\n[5] \"Loch Ness (1995)\"              \n\n$`163`\n[1] \"Marlene Dietrich: Shadow and Light (1996) \"\n[2] \"Temptress Moon (Feng Yue) (1996)\"          \n[3] \"Mamma Roma (1962)\"                         \n[4] \"Men With Guns (1997)\"                      \n[5] \"Rough Magic (1995)\"                        \n\n$`164`\n[1] \"Big Bang Theory, The (1994)\"        \"Designated Mourner, The (1997)\"    \n[3] \"Further Gesture, A (1996)\"          \"You So Crazy (1994)\"               \n[5] \"Truth or Consequences, N.M. (1997)\"\n\n$`165`\n[1] \"King of New York (1990)\"      \"Further Gesture, A (1996)\"   \n[3] \"Big Bang Theory, The (1994)\"  \"Twisted (1996)\"              \n[5] \"Price Above Rubies, A (1998)\"\n\n$`166`\n[1] \"Promesse, La (1996)\"             \"Truman Show, The (1998)\"        \n[3] \"Letter From Death Row, A (1998)\" \"Full Speed (1996)\"              \n[5] \"Senseless (1998)\"               \n\n$`167`\ncharacter(0)\n\n$`168`\n[1] \"Twisted (1996)\"\n\n$`169`\n[1] \"Quiet Room, The (1996)\"                                  \n[2] \"Twisted (1996)\"                                          \n[3] \"Promesse, La (1996)\"                                     \n[4] \"Letter From Death Row, A (1998)\"                         \n[5] \"Wonderful, Horrible Life of Leni Riefenstahl, The (1993)\"\n\n$`170`\n[1] \"Letter From Death Row, A (1998)\"    \"Big Bang Theory, The (1994)\"       \n[3] \"Truth or Consequences, N.M. (1997)\" \"King of New York (1990)\"           \n[5] \"Further Gesture, A (1996)\"         \n\n$`171`\n[1] \"Cyclo (1995)\"           \"Foreign Student (1994)\" \"Men With Guns (1997)\"  \n[4] \"Rough Magic (1995)\"     \"Quiet Room, The (1996)\"\n\n$`172`\n[1] \"Men of Means (1998)\"       \"Further Gesture, A (1996)\"\n\n$`173`\n[1] \"Big Bang Theory, The (1994)\"          \n[2] \"Visitors, The (Visiteurs, Les) (1993)\"\n[3] \"Men With Guns (1997)\"                 \n[4] \"Power 98 (1995)\"                      \n[5] \"Bloody Child, The (1996)\"             \n\n$`174`\n[1] \"Faces (1968)\"           \"Stonewall (1995)\"       \"Anna (1996)\"           \n[4] \"Nowhere (1997)\"         \"Quiet Room, The (1996)\"\n\n$`175`\n[1] \"Night Flier (1997)\"                   \n[2] \"Visitors, The (Visiteurs, Les) (1993)\"\n[3] \"Further Gesture, A (1996)\"            \n[4] \"Cyclo (1995)\"                         \n[5] \"Legal Deceit (1997)\"                  \n\n$`176`\n[1] \"3 Ninjas: High Noon At Mega Mountain (1998)\"           \n[2] \"Home Alone 3 (1997)\"                                   \n[3] \"Winter Guest, The (1997)\"                              \n[4] \"They Made Me a Criminal (1939)\"                        \n[5] \"Rendezvous in Paris (Rendez-vous de Paris, Les) (1995)\"\n\n$`177`\n[1] \"I Don't Want to Talk About It (De eso no se habla) (1993)\"\n[2] \"Mirage (1995)\"                                            \n[3] \"Cyclo (1995)\"                                             \n[4] \"Very Natural Thing, A (1974)\"                             \n[5] \"Walk in the Sun, A (1945)\"                                \n\n$`178`\n[1] \"Night Flier (1997)\"\n\n$`179`\n[1] \"Men With Guns (1997)\" \"Rough Magic (1995)\"   \"Twisted (1996)\"      \n[4] \"Coldblooded (1995)\"   \"Turning, The (1992)\" \n\n$`180`\n[1] \"They Made Me a Criminal (1939)\"   \"Quiet Room, The (1996)\"          \n[3] \"King of New York (1990)\"          \"Nico Icon (1995)\"                \n[5] \"Temptress Moon (Feng Yue) (1996)\"\n\n$`181`\n[1] \"King of New York (1990)\" \"Quiet Room, The (1996)\" \n\n$`182`\n[1] \"Legal Deceit (1997)\"              \"Big Bang Theory, The (1994)\"     \n[3] \"Other Voices, Other Rooms (1997)\" \"Twisted (1996)\"                  \n[5] \"King of New York (1990)\"         \n\n$`183`\n[1] \"Quiet Room, The (1996)\" \"Cyclo (1995)\"           \"Foreign Student (1994)\"\n\n$`184`\ncharacter(0)\n\n$`185`\n[1] \"They Made Me a Criminal (1939)\"            \n[2] \"Quiet Room, The (1996)\"                    \n[3] \"King of New York (1990)\"                   \n[4] \"Temptress Moon (Feng Yue) (1996)\"          \n[5] \"Marlene Dietrich: Shadow and Light (1996) \"\n\n$`186`\n[1] \"Boys Life (1995)\"           \"Paradise Road (1997)\"      \n[3] \"Farewell to Arms, A (1932)\" \"Innocents, The (1961)\"     \n[5] \"Truman Show, The (1998)\"   \n\n$`187`\n[1] \"Horseman on the Roof, The (Hussard sur le toit, Le) (1995)\"\n[2] \"Promesse, La (1996)\"                                       \n[3] \"Blue Angel, The (Blaue Engel, Der) (1930)\"                 \n[4] \"Faces (1968)\"                                              \n[5] \"Trust (1990)\"                                              \n\n$`188`\n[1] \"Visitors, The (Visiteurs, Les) (1993)\"\n\n\nPara cada usuário são retornados até cinco filmes considerados mais relevantes pelo modelo."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nPredição das avaliações\n\npredicoes &lt;- predict(\n  modelo_ibcf,\n  dados_teste,\n  type = \"ratings\"\n)\n\npred &lt;- as(predicoes, \"matrix\")\n\nposicoes &lt;- which(!is.na(pred), arr.ind = TRUE)\n\nresultado_predicoes &lt;- data.frame(\n  usuario = rownames(pred)[posicoes[, \"row\"]],\n  filme = colnames(pred)[posicoes[, \"col\"]],\n  nota_prevista = pred[posicoes]\n)\n\nhead(resultado_predicoes, 10)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nO modelo estima avaliações apenas para combinações usuário–filme que:\n\nainda não possuem avaliação conhecida;\napresentam informação suficiente para o cálculo da predição.\n\n\n\n\n\n\n\nOs valores NA indicam avaliações conhecidas ou casos nos quais o modelo não conseguiu produzir uma estimativa."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nAvaliando o modelo\n\nresultado_ibcf &lt;- evaluate(\n  esquema,\n  method = \"IBCF\",\n  type = \"topNList\",\n  n = c(1, 3, 5, 10),\n  progress = FALSE\n)\n\navg(resultado_ibcf)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-5-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-5-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\n\n   usuario                      filme nota_prevista\n1      409           Toy Story (1995)             4\n2      896           Toy Story (1995)             2\n3      399             Copycat (1995)             3\n4      603             Copycat (1995)             5\n5      846             Copycat (1995)             3\n6      270         Richard III (1995)             4\n7      291         Richard III (1995)             3\n8      409         Richard III (1995)             4\n9      409 Usual Suspects, The (1995)             4\n10     490      Antonia's Line (1995)             4"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nA função evaluate() calcula diversas métricas de desempenho para diferentes tamanhos da lista de recomendações.\nO argumento goodRating = 4 determina que filmes com avaliação real igual ou superior a 4 sejam considerados relevantes.\n\n\n\n\n\n\nO parâmetro goodRating deve ser informado na criação do evaluationScheme(), pois ele define quais itens ocultados serão considerados positivos durante a avaliação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-7-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-7-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\n\n             TP        FP       FN       TN        N   precision       recall\n[1,] 0.01058201 0.8465608 52.51323 1600.921 1654.291 0.012345679 6.764509e-05\n[2,] 0.03174603 2.4391534 52.49206 1599.328 1654.291 0.012345679 2.257863e-04\n[3,] 0.03174603 3.7777778 52.49206 1597.989 1654.291 0.007407407 2.257863e-04\n[4,] 0.04761905 6.4126984 52.47619 1595.354 1654.291 0.005555556 3.603034e-04\n              TPR          FPR  n\n[1,] 6.764509e-05 0.0005309321  1\n[2,] 2.257863e-04 0.0015313432  3\n[3,] 2.257863e-04 0.0023774934  5\n[4,] 3.603034e-04 0.0040536187 10"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nUserCF × ItemCF\n\n\nCaracterística\nUserCF\nItemCF\n\n\n\nSimilaridade entre usuários\n✔\n\n\n\nSimilaridade entre filmes\n\n✔\n\n\nRecomendação baseada em vizinhos\n✔\n✔\n\n\nEscalabilidade\nMédia\nAlta\n\n\nEstabilidade\nMenor\nMaior\n\n\nAplicações comerciais\nPouco comum\nMuito comum\n\n\n\n\n\n\n\n\n\n\nEm grandes plataformas, como Netflix e Amazon, o Item-Based Collaborative Filtering costuma apresentar melhor desempenho devido à maior estabilidade das similaridades entre itens."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-9",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-9",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\nUserCF × ItemCF\n\n\nCaracterística\nUserCF\nItemCF\n\n\n\nSimilaridade entre usuários\n✔\n\n\n\nSimilaridade entre filmes\n\n✔\n\n\nRecomendação baseada em vizinhos\n✔\n✔\n\n\nEscalabilidade\nMédia\nAlta\n\n\nEstabilidade\nMenor\nMaior\n\n\nAplicações comerciais\nPouco comum\nMuito comum\n\n\n\n\n\n\n\n\n\n\nEm grandes plataformas, como Netflix e Amazon, o Item-Based Collaborative Filtering costuma apresentar melhor desempenho devido à maior estabilidade das similaridades entre itens."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nLimitações dos métodos baseados em vizinhos\nOs métodos UserCF e ItemCF produzem boas recomendações, porém apresentam algumas limitações.\n\nmatrizes extremamente esparsas;\ndificuldade para recomendar itens novos;\nbaixa cobertura em bases muito grandes;\ndependência direta das avaliações observadas;\ndificuldade em capturar preferências implícitas.\n\n\n\n\n\n\n\nEm grandes plataformas, essas limitações motivaram o desenvolvimento de modelos baseados em fatores latentes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nA ideia principal\nEm vez de comparar usuários ou itens diretamente, procuramos descobrir características ocultas que explicam as avaliações.\nEssas características são chamadas de fatores latentes.\nPor exemplo, em uma base de filmes, um fator latente pode representar:\n\npreferência por ação;\npreferência por comédia;\nintensidade dramática;\nefeitos especiais;\nfilmes clássicos."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nEsses fatores não são informados explicitamente.\nEles são aprendidos automaticamente a partir das avaliações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nDa matriz original aos fatores latentes\nConsidere a matriz de avaliações\n\\[\nR\n=\n\\begin{bmatrix}\n5 & 4 & ? & 2\\\\\n5 & ? & 5 & 1\\\\\n1 & 2 & 1 & 5\\\\\n4 & 4 & 4 & ?\n\\end{bmatrix}\n\\]"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nO objetivo é aproximar essa matriz por\n\\[\nR \\approx P\\,Q^{\\top},\n\\]\nem que\n\n\n\\(P\\) representa os usuários em um espaço latente;\n\n\\(Q\\) representa os itens no mesmo espaço.\n\nCada linha dessas matrizes possui apenas alguns fatores latentes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nFatoração da matriz\nA matriz original é decomposta em duas matrizes menores.\n\\[\nR_{m\\times n}\n\\approx\nP_{m\\times k}\nQ_{n\\times k}^{\\top}\n\\]\nonde\n\n\n\\(m\\) é o número de usuários;\n\n\\(n\\) é o número de itens;\n\n\\(k\\) é o número de fatores latentes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nEm geral,\n\\[\nk \\ll m,n\n\\]\nAssim, reduzimos significativamente a dimensionalidade do problema."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nInterpretando os fatores latentes\nOs fatores latentes não possuem um significado previamente definido.\nO algoritmo aprende automaticamente combinações capazes de explicar os padrões de avaliação observados.\nAssim, usuários com preferências semelhantes ficam próximos no espaço latente, enquanto filmes com características semelhantes também tendem a ocupar regiões próximas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nComo prever uma nova avaliação?\nApós aprender as matrizes \\(P\\) e \\(Q\\), a avaliação prevista é obtida pelo produto interno entre os vetores latentes do usuário e do item.\n\\[\n\\hat r_{ui}\n=\n\\mathbf{p}_u^{\\top}\n\\mathbf{q}_i\n\\]\nCada fator contribui para a nota prevista de acordo com sua importância para aquele usuário e para aquele item."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-9",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#matrix-factorization-9",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Matrix Factorization",
+    "text": "Matrix Factorization\nSabemos que\n\\[\nR \\approx P\\,Q^{\\top}\n\\]\nNo entanto, ainda não conhecemos os valores das matrizes \\(P\\) e \\(Q\\).\nO objetivo do treinamento é encontrar os valores dessas matrizes de forma que as avaliações previstas sejam o mais próximas possível das avaliações observadas.\n\n\n\n\n\n\nAprender os fatores latentes significa estimar automaticamente os valores das matrizes \\(P\\) e \\(Q\\)."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nO FunkSVD foi um dos primeiros algoritmos capazes de aprender fatores latentes de forma eficiente.\nA ideia central é simples:\n\niniciar as matrizes \\(P\\) e \\(Q\\) com valores aleatórios;\ncalcular as avaliações previstas;\nmedir o erro;\najustar os fatores latentes;\nrepetir esse processo até que o erro seja suficientemente pequeno.\n\nEsse procedimento é conhecido como gradiente descendente."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nMedindo o erro\nPara cada avaliação conhecida,\no erro é definido por\n\\[\ne_{ui}\n=\nr_{ui}\n-\n\\hat r_{ui}\n\\]\nonde\n\n\\(r_{ui}\\) é a avaliação observada;\n\\(\\hat r_{ui}\\) é a avaliação prevista.\n\nQuanto menor esse erro, melhor é a aproximação produzida pela fatoração."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nMinimizar o erro\nO treinamento procura minimizar a soma dos erros quadráticos.\n\\[\n\\min\n\\sum_{(u,i)\\in\\Omega}\n\\left(\nr_{ui}\n-\n\\mathbf p_u^{\\top}\\mathbf q_i\n\\right)^2\n\\]\nem que \\(\\Omega\\) representa o conjunto de avaliações conhecidas.\nSomente as avaliações observadas participam do treinamento."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nAtualizando os fatores latentes\nApós calcular o erro, o algoritmo ajusta os vetores do usuário e do item.\nEm cada iteração, os fatores latentes são modificados para reduzir o erro observado.\nApós milhares de pequenas atualizações, as matrizes convergem para uma boa aproximação da matriz original."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nProcesso iterativo\n\nInicializar \\(P\\) e \\(Q\\).\nCalcular as avaliações previstas.\nMedir o erro.\nAtualizar os fatores.\nRepetir até convergência.\n\nCada iteração reduz gradualmente o erro de reconstrução da matriz."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nEvitando overfitting\nSe o modelo possuir fatores latentes em excesso, ele poderá memorizar as avaliações observadas, perdendo capacidade de generalização.\nPara evitar esse problema, adiciona-se um termo de regularização.\n\\[\n\\min\n\\sum_{(u,i)\\in\\Omega}\n(r_{ui}-\\mathbf p_u^{\\top}\\mathbf q_i)^2\n+\n\\lambda\n\\left(\n\\|\\mathbf P\\|_F^2\n+\n\\|\\mathbf Q\\|_F^2\n\\right)\n\\]\nO parâmetro \\(\\lambda\\) controla a intensidade da penalização."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nInterpretando o produto interno\nApós o treinamento, cada usuário e cada filme passam a ser representados por um vetor no espaço latente.\nA avaliação prevista é calculada pelo produto interno entre esses vetores.\n\\[\n\\hat r_{ui}\n=\n\\mathbf p_u^{\\top}\\mathbf q_i\n\\]\nQuando os vetores apresentam direções semelhantes, o produto interno tende a ser maior, resultando em uma avaliação prevista mais elevada.\n\n\n\n\n\n\nEm vez de comparar usuários ou filmes diretamente, a Matrix Factorization compara suas representações no espaço latente."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nAprendendo os fatores latentes\nInicialmente, os fatores latentes dos usuários e dos itens são atribuídos aleatoriamente.\nA cada iteração, o algoritmo:\n\ncalcula as avaliações previstas;\ncompara com as avaliações observadas;\ncalcula o erro;\najusta os fatores latentes para reduzir esse erro."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nEsse processo é repetido até que as previsões se tornem suficientemente precisas.\n\n\n\n\n\n\nEm vez de procurar a solução de uma única vez, o algoritmo melhora gradualmente as estimativas dos fatores latentes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-9",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-9",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nAjustando o vetor do usuário\nConsidere a previsão da avaliação do usuário \\(u\\) para o filme \\(i\\):\n\\[\n\\hat r_{ui}\n=\n\\mathbf p_u^{T}\\mathbf q_i\n\\]\nApós calcular o erro\n\\[\ne_{ui}=r_{ui}-\\hat r_{ui},\n\\]\no vetor do usuário é atualizado para reduzir esse erro.\nCada atualização move o vetor em direção a uma representação mais consistente com as avaliações observadas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-10",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-10",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nAjustando o vetor do filme\nO mesmo processo é realizado para os fatores latentes do filme.\nApós cada observação, tanto o vetor do usuário quanto o vetor do filme são ajustados.\nCom milhares de pequenas atualizações, os vetores passam a representar padrões de preferência presentes na base de dados."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-11",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-11",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nUsuário e filme aprendem juntos\nCada avaliação conhecida produz pequenas correções em dois vetores:\n\nvetor do usuário;\nvetor do filme.\n\nEssas correções acumuladas fazem com que usuários semelhantes e filmes semelhantes ocupem posições compatíveis no espaço latente."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-12",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-12",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nAtualização dos fatores latentes\nApós calcular o erro,\nos fatores são atualizados por\n\\[\n\\mathbf p_u\n\\leftarrow\n\\mathbf p_u\n+\n\\eta\n\\left(\ne_{ui}\\mathbf q_i\n-\n\\lambda\\mathbf p_u\n\\right)\n\\]\n\\[\n\\mathbf q_i\n\\leftarrow\n\\mathbf q_i\n+\n\\eta\n\\left(\ne_{ui}\\mathbf p_u\n-\n\\lambda\\mathbf q_i\n\\right)\n\\]\nonde\n\n\\(\\eta\\) é a taxa de aprendizagem;\n\\(\\lambda\\) controla a regularização."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-13",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-13",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nTaxa de aprendizagem\nA taxa de aprendizagem controla o tamanho das atualizações realizadas em cada iteração.\n\nvalores muito pequenos tornam o treinamento lento;\nvalores muito grandes podem impedir a convergência.\n\nO objetivo é encontrar um equilíbrio entre velocidade e estabilidade."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-14",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#funksvd-14",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "FunkSVD",
+    "text": "FunkSVD\nResumo do algoritmo\n\nInicializar \\(P\\) e \\(Q\\).\nPercorrer todas as avaliações conhecidas.\nCalcular a predição.\nCalcular o erro.\nAtualizar \\(P\\).\nAtualizar \\(Q\\).\nRepetir até convergência."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\nBase de dados\nA base MovieLense contém avaliações explícitas fornecidas por usuários para diferentes filmes.\nCada linha representa uma interação entre:\n\nusuário;\nfilme;\navaliação.\n\nDurante o treinamento, apenas as avaliações conhecidas são utilizadas para aprender os fatores latentes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\nCarregando os pacotes\nPrimeiro carregamos o pacote recommenderlab, que implementa diversos algoritmos de sistemas de recomendação, incluindo Matrix Factorization.\n\nlibrary(recommenderlab)\nlibrary(ggplot2)\n\ndata(MovieLense)\n\nMovieLense\n\n943 x 1664 rating matrix of class 'realRatingMatrix' with 99392 ratings.\n\n\n\n\n\n\n\n\n\nO pacote recommenderlab já disponibiliza a base MovieLense e implementa o algoritmo SVD utilizado neste exemplo.\nA base é armazenada como uma matriz esparsa do tipo realRatingMatrix, adequada para algoritmos de recomendação."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#implementação-em-r",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#implementação-em-r",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Implementação em R",
+    "text": "Implementação em R"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\nTreinando o modelo\n\nmodelo_svdf &lt;- Recommender(\n  dados_treino,\n  method = \"SVDF\"\n)\n\nmodelo_svdf\n\nRecommender of type 'SVDF' for 'realRatingMatrix' \nlearned using 754 users.\n\n\n\n\n\n\n\n\n\nDurante essa etapa, o algoritmo aprende automaticamente os fatores latentes dos usuários e dos filmes."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\nRecomendações Top-5\n\nrecomendacoes &lt;- predict(\n  modelo_svdf,\n  dados_teste,\n  n = 5\n)\n\nas(recomendacoes, \"list\")[1]\n\n$`0`\n[1] \"Star Wars (1977)\"                                      \n[2] \"Close Shave, A (1995)\"                                 \n[3] \"Wrong Trousers, The (1993)\"                            \n[4] \"Godfather, The (1972)\"                                 \n[5] \"Wallace & Gromit: The Best of Aardman Animation (1996)\"\n\n\n\n\n\n\n\n\nSão recomendados os filmes com maiores avaliações previstas e que ainda não foram assistidos pelo usuário."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\nPredizendo notas\n\npredicoes &lt;- predict(\n  modelo_svdf,\n  dados_teste,\n  type = \"ratings\"\n)\n\npredicoes\n\n189 x 1664 rating matrix of class 'realRatingMatrix' with 312836 ratings.\n\n\n\n\n\n\n\n\nAs avaliações já conhecidas permanecem como NA.\nO algoritmo estima apenas as avaliações desconhecidas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\nAvaliação\n\nresultado &lt;- evaluate(\n  esquema,\n  method = \"SVDF\",\n  type = \"topNList\",\n  n = c(1,3,5,10)\n)\n\nSVDF run fold/sample [model time/prediction time]\n     1  [58.79sec/9.64sec] \n\navg(resultado)\n\n            TP        FP       FN       TN        N precision      recall\n[1,] 0.2962963 0.6772487 47.12169 1607.122 1655.217 0.3043478 0.007025386\n[2,] 0.8042328 2.1164021 46.61376 1605.683 1655.217 0.2753623 0.017575047\n[3,] 1.3174603 3.5502646 46.10053 1604.249 1655.217 0.2706522 0.029207129\n[4,] 2.3492063 7.3862434 45.06878 1600.413 1655.217 0.2413043 0.049262503\n             TPR         FPR  n\n[1,] 0.007025386 0.000418386  1\n[2,] 0.017575047 0.001306855  3\n[3,] 0.029207129 0.002192018  5\n[4,] 0.049262503 0.004564270 10\n\n\nA avaliação resume o desempenho do recomendador para diferentes tamanhos da lista de recomendações."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\n\nplot(resultado, annotate = TRUE)\n\n\n\n\n\n\n\n\nEm bases muito esparsas, a curva pode apresentar comportamento pouco informativo.\nNesse caso, métricas como Precisão, Recall e Top-N Precision costumam ser mais úteis."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\n\nplot(resultado, annotate = TRUE)\n\n\n\n\n\n\n\n\nEm bases muito esparsas, a curva ROC pode apresentar comportamento pouco informativo.\nNesse caso, métricas como Precisão, Recall e Top-N Precision costumam ser mais úteis."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\nComparando algoritmos\n\nmetodos &lt;- list(\n  \"UBCF\" = list(name=\"UBCF\"),\n  \"IBCF\" = list(name=\"IBCF\"),\n  \"FunkSVD\"  = list(name=\"SVDF\")\n)\n\ncomparacao &lt;- evaluate(\n  esquema,\n  metodos,\n  type=\"topNList\",\n  n=c(1,3,5,10)\n)\n\n\nAgora os três métodos podem ser avaliados utilizando exatamente a mesma divisão treino/teste."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-8-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-8-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\n\nUBCF run fold/sample [model time/prediction time]\n     1  [0sec/1.17sec] \nIBCF run fold/sample [model time/prediction time]\n     1  [3.24sec/0.04sec] \nSVDF run fold/sample [model time/prediction time]\n     1  [74.69sec/11.07sec] \n\ncomparacao\n\nList of evaluation results for 3 recommenders:\n\n$UBCF\nEvaluation results for 1 folds/samples using method 'UBCF'.\n\n$IBCF\nEvaluation results for 1 folds/samples using method 'IBCF'.\n\n$FunkSVD\nEvaluation results for 1 folds/samples using method 'SVDF'."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-9",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-funksvd-9",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: FunkSVD",
+    "text": "R: FunkSVD\n\ncomparacao$UDCF\n\nNULL\n\ncomparacao$IBCF\n\nEvaluation results for 1 folds/samples using method 'IBCF'.\n\ncomparacao$FunkSVD\n\nEvaluation results for 1 folds/samples using method 'SVDF'."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#pontos-fortes-e-limitações",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#pontos-fortes-e-limitações",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Pontos fortes e limitações",
+    "text": "Pontos fortes e limitações\n\n\n\n\n\n\n\nMétodo\nPontos fortes\nLimitações\n\n\n\nUser-Based CF\nFácil interpretação; utiliza usuários semelhantes\nSensível à esparsidade e pouco escalável\n\n\nItem-Based CF\nRecomendação rápida; itens mudam pouco\nAinda depende de similaridades explícitas\n\n\nFunkSVD\nAprende fatores latentes; melhor desempenho em bases esparsas; alta escalabilidade\nMenor interpretabilidade; requer treinamento iterativo"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nPredições na mesma base de teste\n\nlibrary(recommenderlab)\nlibrary(tidyverse)\nlibrary(patchwork)\n\n# Converter a matriz de teste para realRatingMatrix\nteste_entrada_rrm &lt;- as(\n  dados_teste,\n  \"realRatingMatrix\"\n)\n\n# User-Based Collaborative Filtering\npred_user &lt;- predict(\n  modelo_ubcf,\n  newdata = teste_entrada_rrm,\n  type = \"ratings\"\n) |&gt;\n  as(\"matrix\")\n\n# Item-Based Collaborative Filtering\npred_item &lt;- predict(\n  modelo_ibcf,\n  newdata = teste_entrada_rrm,\n  type = \"ratings\"\n) |&gt;\n  as(\"matrix\")\n\n# FunkSVD\npred_funk &lt;- predict(\n  modelo_svdf,\n  newdata = teste_entrada_rrm,\n  type = \"ratings\"\n) |&gt;\n  as(\"matrix\")\n\n\n\n\n\n\n\nOs três algoritmos recebem exatamente as mesmas avaliações conhecidas e são avaliados nas mesmas avaliações ocultadas."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-4-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-4-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\n\n   usuario             filme nota_prevista\n1      312  Toy Story (1995)           4.0\n2      782  Toy Story (1995)           2.5\n3      550  GoldenEye (1995)           4.0\n4      782  GoldenEye (1995)           3.0\n5      425 Four Rooms (1995)           3.0\n6      806 Four Rooms (1995)           3.0\n7      312 Get Shorty (1995)           4.0\n8      782 Get Shorty (1995)           3.0\n9      550    Copycat (1995)           4.0\n10     587    Copycat (1995)           4.0"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-6-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#r-item-based-collaborative-filtering-6-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "R: Item-Based Collaborative Filtering",
+    "text": "R: Item-Based Collaborative Filtering\n\n              TP       FP       FN       TN        N   precision       recall\n[1,] 0.005291005 0.957672 47.41270 1606.841 1655.217 0.005494505 0.0001175779\n[2,] 0.010582011 2.751323 47.40741 1605.048 1655.217 0.003663004 0.0004482657\n[3,] 0.021164021 4.338624 47.39683 1603.460 1655.217 0.004395604 0.0006106826\n[4,] 0.042328042 7.529101 47.37566 1600.270 1655.217 0.004395604 0.0013466036\n              TPR          FPR  n\n[1,] 0.0001175779 0.0005968477  1\n[2,] 0.0004482657 0.0017166682  3\n[3,] 0.0006106826 0.0027100375  5\n[4,] 0.0013466036 0.0047157371 10"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nMétricas de erro\n\ncalcular_erros &lt;- function(\n  predicoes,\n  valores_reais,\n  metodo\n) {\n\n  posicoes &lt;- (\n    !is.na(valores_reais) &\n    !is.na(predicoes)\n  )\n\n  real &lt;- valores_reais[posicoes]\n  prevista &lt;- predicoes[posicoes]\n\n  tibble(\n    Metodo = metodo,\n    MAE = mean(\n      abs(real - prevista)\n    ),\n    RMSE = sqrt(\n      mean((real - prevista)^2)\n    )\n  )\n}\n\n\n\n\n\n\n\nA função compara as avaliações previstas com as avaliações que foram ocultadas dos usuários de teste."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-2",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-2",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nAplicação aos três modelos:\n\nteste_real &lt;- as(dados_reais, \"matrix\")\n\nmetricas_erro &lt;- bind_rows(\n  calcular_erros(\n    pred_user,\n    teste_real,\n    \"User-Based CF\"\n  ),\n  calcular_erros(\n    pred_item,\n    teste_real,\n    \"Item-Based CF\"\n  ),\n  calcular_erros(\n    pred_funk,\n    teste_real,\n    \"FunkSVD\"\n  )\n)\n\nmetricas_erro\n\n# A tibble: 3 × 3\n  Metodo          MAE  RMSE\n  &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;\n1 User-Based CF 0.895  1.14\n2 Item-Based CF 0.758  1.06\n3 FunkSVD       0.786  1.01"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-3",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-3",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nFunção para avaliar recomendações Top-N\n\navaliar_topn &lt;- function(\n  predicoes,\n  valores_reais,\n  metodo,\n  n_recomendacoes = c(1, 5, 10),\n  nota_relevante = 4\n) {\n\n  resultados &lt;- vector(\n    \"list\",\n    length(n_recomendacoes)\n  )\n\n  for (j in seq_along(n_recomendacoes)) {\n\n    n &lt;- n_recomendacoes[j]\n\n    TP &lt;- 0\n    FP &lt;- 0\n    FN &lt;- 0\n    TN &lt;- 0\n\n    itens_recomendados &lt;- integer(0)\n\n    for (u in seq_len(nrow(predicoes))) {\n\n      # Somente itens ocultados com avaliação real\n      itens_avaliados &lt;- which(\n        !is.na(valores_reais[u, ]) &\n        !is.na(predicoes[u, ])\n      )\n\n      if (length(itens_avaliados) == 0) {\n        next\n      }\n\n      # Ordenar segundo a avaliação prevista\n      ranking &lt;- itens_avaliados[\n        order(\n          predicoes[u, itens_avaliados],\n          decreasing = TRUE\n        )\n      ]\n\n      recomendados &lt;- head(\n        ranking,\n        n\n      )\n\n      itens_recomendados &lt;- c(\n        itens_recomendados,\n        recomendados\n      )\n\n      relevantes &lt;- itens_avaliados[\n        valores_reais[u, itens_avaliados] &gt;=\n          nota_relevante\n      ]\n\n      nao_relevantes &lt;- setdiff(\n        itens_avaliados,\n        relevantes\n      )\n\n      TP &lt;- TP + sum(\n        recomendados %in% relevantes\n      )\n\n      FP &lt;- FP + sum(\n        recomendados %in% nao_relevantes\n      )\n\n      FN &lt;- FN + sum(\n        !relevantes %in% recomendados\n      )\n\n      nao_recomendados &lt;- setdiff(\n        itens_avaliados,\n        recomendados\n      )\n\n      TN &lt;- TN + sum(\n        nao_recomendados %in% nao_relevantes\n      )\n    }\n\n    precisao &lt;- ifelse(\n      TP + FP == 0,\n      NA_real_,\n      TP / (TP + FP)\n    )\n\n    recall &lt;- ifelse(\n      TP + FN == 0,\n      NA_real_,\n      TP / (TP + FN)\n    )\n\n    f1 &lt;- ifelse(\n      is.na(precisao) |\n        is.na(recall) |\n        precisao + recall == 0,\n      NA_real_,\n      2 * precisao * recall /\n        (precisao + recall)\n    )\n\n    resultados[[j]] &lt;- tibble(\n      Metodo = metodo,\n      N = n,\n      TPR = recall,\n      FPR = ifelse(\n        FP + TN == 0,\n        NA_real_,\n        FP / (FP + TN)\n      ),\n      Precisao = precisao,\n      Recall = recall,\n      F1 = f1,\n      Cobertura = length(\n        unique(itens_recomendados)\n      ) / ncol(predicoes)\n    )\n  }\n\n  bind_rows(resultados)\n}"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-4",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-4",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nAplicação aos três modelos:\n\nmetricas_topn &lt;- bind_rows(\n  avaliar_topn(\n    pred_user,\n    teste_real,\n    \"User-Based CF\"\n  ),\n  avaliar_topn(\n    pred_item,\n    teste_real,\n    \"Item-Based CF\"\n  ),\n  avaliar_topn(\n    pred_funk,\n    teste_real,\n    \"FunkSVD\"\n  )\n)\n\nmetricas_topn"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-4-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-4-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\n\n# A tibble: 9 × 8\n  Metodo            N    TPR     FPR Precisao Recall     F1 Cobertura\n  &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;\n1 User-Based CF     1 0.0155 0.00818    0.722 0.0155 0.0303    0.0703\n2 User-Based CF     5 0.0775 0.0409     0.722 0.0775 0.140     0.195 \n3 User-Based CF    10 0.150  0.0885     0.699 0.150  0.247     0.267 \n4 Item-Based CF     1 0.0588 0.0422     0.441 0.0588 0.104     0.0198\n5 Item-Based CF     5 0.180  0.138      0.426 0.180  0.253     0.0613\n6 Item-Based CF    10 0.298  0.218      0.437 0.298  0.354     0.0944\n7 FunkSVD           1 0.0171 0.00437    0.826 0.0171 0.0335    0.0337\n8 FunkSVD           5 0.0837 0.0241     0.809 0.0837 0.152     0.112 \n9 FunkSVD          10 0.157  0.0601     0.761 0.157  0.261     0.209"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-5",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-5",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nPainel A: Curvas TPR × FPR\n\ncores_modelos &lt;- c(\n  \"FunkSVD\" = \"#33A02C\",\n  \"Item-Based CF\" = \"#1F78B4\",\n  \"User-Based CF\" = \"#E31A5F\"\n)\n\ngrafico_roc &lt;- ggplot(\n  metricas_topn,\n  aes(\n    x = FPR,\n    y = TPR,\n    color = Metodo,\n    group = Metodo\n  )\n) +\n  geom_line(\n    linewidth = 1\n  ) +\n  geom_point(\n    aes(shape = factor(N)),\n    size = 3\n  ) +\n  scale_color_manual(\n    values = cores_modelos\n  ) +\n  scale_x_continuous(\n    labels = scales::label_percent(\n      accuracy = 0.1\n    ),\n    expand = expansion(\n      mult = c(0.03, 0.08)\n    )\n  ) +\n  scale_y_continuous(\n    labels = scales::label_percent(\n      accuracy = 0.1\n    ),\n    expand = expansion(\n      mult = c(0.03, 0.08)\n    )\n  ) +\n  labs(\n    title = \"Desempenho Top-N\",\n    subtitle = \"Taxas de verdadeiros e falsos positivos\",\n    x = \"Taxa de Falsos Positivos — FPR\",\n    y = \"Taxa de Verdadeiros Positivos — TPR\",\n    color = NULL,\n    shape = \"N\"\n  ) +\n  theme_minimal(\n    base_size = 13\n  ) +\n  theme(\n    plot.title = element_text(\n      face = \"bold\"\n    ),\n    legend.position = \"top\",\n    panel.grid.minor = element_blank()\n  )"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-5-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-5-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-6",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-6",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nPainel B: Erro e qualidade Top-10\n\nmetricas_erro_long &lt;- metricas_erro |&gt;\n  pivot_longer(\n    cols = c(MAE, RMSE),\n    names_to = \"Metrica\",\n    values_to = \"Valor\"\n  ) |&gt;\n  mutate(\n    Tipo = \"Erro de predição\"\n  )\n\nmetricas_ranking &lt;- metricas_topn |&gt;\n  filter(N == 10) |&gt;\n  select(\n    Metodo,\n    Precisao,\n    Recall\n  ) |&gt;\n  pivot_longer(\n    cols = c(Precisao, Recall),\n    names_to = \"Metrica\",\n    values_to = \"Valor\"\n  ) |&gt;\n  mutate(\n    Tipo = \"Qualidade Top-10\"\n  )\n\nmetricas_grafico &lt;- bind_rows(\n  metricas_erro_long,\n  metricas_ranking\n)"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-6-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-6-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-7",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-7",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nConstrução do gráfico\n\ngrafico_metricas &lt;- ggplot(\n  metricas_grafico,\n  aes(\n    x = Metrica,\n    y = Valor,\n    fill = Metodo\n  )\n) +\n  geom_col(\n    position = position_dodge(\n      width = 0.8\n    ),\n    width = 0.7\n  ) +\n  facet_wrap(\n    ~ Tipo,\n    scales = \"free_y\"\n  ) +\n  scale_fill_manual(\n    values = cores_modelos\n  ) +\n  scale_y_continuous(\n    expand = expansion(\n      mult = c(0, 0.12)\n    )\n  ) +\n  labs(\n    title = \"Comparação dos algoritmos\",\n    subtitle = \"Erro preditivo e qualidade das recomendações\",\n    x = NULL,\n    y = \"Valor\",\n    fill = NULL\n  ) +\n  theme_minimal(\n    base_size = 13\n  ) +\n  theme(\n    plot.title = element_text(\n      face = \"bold\"\n    ),\n    legend.position = \"top\",\n    panel.grid.minor = element_blank(),\n    panel.grid.major.x = element_blank(),\n    strip.text = element_text(\n      face = \"bold\"\n    )\n  )"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-7-output",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-7-output",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-8",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-modelos-8",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\nConstrução do gráfico\n\ntema_comum &lt;- theme_minimal(base_size = 13) +\n  theme(\n    legend.position = \"top\",\n    panel.grid.minor = element_blank(),\n    plot.title = element_text(face = \"bold\"),\n    plot.subtitle = element_text(size = 11)\n  )\n\ngrafico_roc &lt;- grafico_roc +\n  tema_comum\n\ngrafico_metricas &lt;- grafico_metricas +\n  tema_comum +\n  theme(\n    legend.position = \"none\"\n  )\n\nfigura_comparacao &lt;- patchwork::wrap_plots(\n  grafico_roc,\n  grafico_metricas,\n  nrow = 1,\n  widths = c(1, 1.25)\n) +\n  patchwork::plot_annotation(\n    title = paste0(\n      \"Comparação entre User-Based CF, \",\n      \"Item-Based CF e FunkSVD\"\n    ),\n    subtitle = paste0(\n      \"Avaliação realizada nas mesmas observações \",\n      \"ocultadas do conjunto de teste\"\n    ),\n    tag_levels = \"A\",\n    theme = ggplot2::theme(\n      plot.title = ggplot2::element_text(\n        face = \"bold\",\n        size = 17\n      ),\n      plot.subtitle = ggplot2::element_text(\n        size = 12\n      )\n    )\n  )"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-métodos",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-métodos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos",
+    "text": "Comparação dos métodos"
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-métodos-1",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-métodos-1",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos métodos",
+    "text": "Comparação dos métodos\nUserCF × ItemCF × FunkSVD\n\n\n\n\n\n\nNo painel A, curvas mais próximas do canto superior esquerdo indicam melhor capacidade de recomendar itens relevantes sem aumentar excessivamente os falsos positivos.\nNo painel B, valores menores de MAE e RMSE são desejáveis, enquanto valores maiores de precisão e recall indicam melhores recomendações Top-10."
+  },
+  {
+    "objectID": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-algoritmos",
+    "href": "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.html#comparação-dos-algoritmos",
+    "title": "Parte III : Aprendizado não supervisionado",
+    "section": "Comparação dos algoritmos",
+    "text": "Comparação dos algoritmos\nInterpretação dos resultados\nA comparação evidencia que cada algoritmo apresenta vantagens distintas, não existindo um método universalmente superior.\n\nItem-Based CF apresentou o menor erro de predição (MAE e RMSE) e o maior Recall, recuperando uma quantidade maior de itens relevantes.\nFunkSVD obteve a maior Precisão, produzindo recomendações mais seletivas e com menor proporção de itens irrelevantes.\nUser-Based CF apresentou desempenho intermediário, sem superar os demais em nenhuma das métricas avaliadas.\n\n\n\n\n\n\n\nA escolha do algoritmo depende do objetivo da aplicação:\n\n\nMaior cobertura de itens relevantes: Item-Based CF;\n\nRecomendações mais precisas: FunkSVD."
   }
 ]
