@@ -37,7 +37,7 @@ website:
       #- resolucao.qmd
       #- formulario.qmd
       #- analises.qmd
-      #- plano.qmd
+      - plano.qmd
       - cronograma.qmd
       #- material.qmd
       #- revisao.qmd

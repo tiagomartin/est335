@@ -1,0 +1,73 @@
+---
+title: "Plano de Ensino"
+format:
+  html:
+    theme: cosmo
+    include-in-header:
+      text: |
+        <style>
+        /* Estilos visuais EST304 sem quebrar tipografia do Quarto */
+        .aulas-list .list-group-item {
+          border-left: 4px solid #2761E3;
+          padding-top: 0.8rem;
+          padding-bottom: 0.8rem;
+        }
+        .aulas-list .list-group-item:hover {
+          background-color: #F2F2F2;
+        }
+        .disciplina-badge {
+          background-color: #2761E3;
+        }
+        .btn-est304-main {
+          background-color: #2761E3;
+          border-color: #2761E3;
+          color: #fff;
+        }
+        .btn-est304-main:hover {
+          background-color: #789CEB;
+          border-color: #789CEB;
+          color: #fff;
+        }
+        .btn-est304-outline {
+          color: #2761E3;
+          border-color: #2761E3;
+        }
+        .btn-est304-outline:hover {
+          background-color: #2761E3;
+          color: #fff;
+        }
+        .due-date-badge {
+          color: red;
+          border-color: #7F2E2F;
+          font-size: 16pt;  
+          font-weight: 600;
+          padding: 4px 8px;
+        }
+        </style>
+---
+
+Leia com atenção o **plano de ensino da disciplina** que será oferecida neste período. Nele estão as regras do jogo.
+
+::: {.list-group .aulas-list}
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+  <span class="fw-bold">Plano de ensino</span>
+</div>
+
+<div class="d-flex align-items-center gap-3">
+
+  <span>
+    <a href="/documentos/Plano de Ensino MEML_26-2.pdf" class="btn btn-est304-main btn-sm">Ver plano</a>
+  </span>
+
+</div>
+
+:::
+
+:::
+
+
+
+
