@@ -7339,7 +7339,7 @@
     "href": "programacao/semana-1.html",
     "title": "Semana 01",
     "section": "",
-    "text": "Sejam bem-vindos à disciplina EST335 - Métodos Estatísticos para Machine Learning\nLeiam com atenção o plano de ensino da disciplina. Nele estão as regras do jogo!"
+    "text": "Sejam bem-vindos à disciplina EST335 - Métodos Estatísticos para Machine Learning"
   },
   {
     "objectID": "programacao/semana-1.html#slides",
@@ -7641,5 +7641,19 @@
     "title": "Semana 01",
     "section": "Plano de Ensino",
     "text": "Plano de Ensino\nLeiam com atenção o plano de ensino da disciplina. Nele estão as regras do jogo!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Métodos Estatísticos para Machine Learning",
+    "section": "",
+    "text": "Página dedicada à disciplina Métodos Estatísticos para Machine Learning\nA disciplina Métodos Estatísticos para Machine Learning tem como objetivo apresentar os principais fundamentos estatísticos que sustentam o desenvolvimento e a análise de métodos modernos de aprendizado de máquina. Ao longo do curso, são discutidos os modelos de regressão, desde uma introdução aos métodos paramétricos clássicos até extensões para cenários de altas dimensões, bem como abordagens não paramétricas e suas aplicações em contextos complexos. Também são estudados métodos de classificação, enfatizando seus princípios estatísticos, propriedades teóricas e aspectos relacionados à avaliação e interpretação dos modelos. No âmbito do aprendizado não supervisionado, a disciplina aborda técnicas de redução de dimensionalidade, mudança de representação, análise de agrupamentos, regras de associação e sistemas de recomendação, discutindo seus fundamentos matemáticos e estatísticos. Os tópicos são tratados com ênfase teórica, buscando desenvolver no estudante uma compreensão sólida dos princípios que fundamentam os algoritmos utilizados em machine learning, permitindo uma análise crítica de seus pressupostos, limitações e aplicações."
+  },
+  {
+    "objectID": "index.html#avaliações",
+    "href": "index.html#avaliações",
+    "title": "Métodos Estatísticos para Machine Learning",
+    "section": "Avaliações",
+    "text": "Avaliações\n\n\n\n\n\n\nCritérios de Avaliação\n\n\n\nA nota final do semestre será computada da seguinte forma:\n\n\n\n\n\n\n\n\n\nAtividade\nLiberação\nEntrega\nPontos\n\n\n\n\nA1 – Generalização e Regularização\n16/09\n27/09\n20\n\n\nA2 – Métodos Locais e Kernels\n30/09\n11/10\n20\n\n\nA3 – Desafio Supervisionado\n21/10\n22/11\n20\n\n\nA4 – Estruturas e Padrões\n23/11\n06/12\n20\n\n\nA5 – Sistemas de Recomendação\n07/12\n16/12\n20\n\n\n\n\n\n\nExame Final: 21/12/26"
   }
 ]

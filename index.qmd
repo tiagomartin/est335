@@ -63,8 +63,8 @@ Neste semestre, as aulas da disciplina serão ministradas no LABEST II.
 
 | Dia           | Horário         | Local        |
 |---------------|-----------------|--------------|
-| Terça-feira   | 19:00 - 20:40   | LABEST II   |
-| Quinta-feira   | 21:00 - 22:40   | LABEST II   |
+| Segunda-feira  | 19:00 - 20:40   | LABEST II   |
+| Quarta-feira   | 21:00 - 22:40   | LABEST II   |
 
 
 ## Avaliações
@@ -72,14 +72,20 @@ Neste semestre, as aulas da disciplina serão ministradas no LABEST II.
 ::: {.callout-note title="Critérios de Avaliação"}
 A nota final do semestre será computada da seguinte forma:
 
-- Duas provas valendo **70 pontos**, distribuídos da seguinte forma:
-  - **$1^{\text{a}}$ Prova:** 35 pontos — a ser realizada em **29/01/26**
-  - **$2^{\text{a}}$ Prova:** 35 pontos — a ser realizada em **26/02/26**
+| Atividade                              | Liberação |   Entrega | Pontos |
+| -------------------------------------- | --------: | --------: | -----: |
+| **A1 – Generalização e Regularização** |     16/09 | **27/09** |     20 |
+| **A2 – Métodos Locais e Kernels**      |     30/09 | **11/10** |     20 |
+| **A3 – Desafio Supervisionado**        |     21/10 | **22/11** |     20 |
+| **A4 – Estruturas e Padrões**          |     23/11 | **06/12** |     20 |
+| **A5 – Sistemas de Recomendação**      |     07/12 | **16/12** |     20 |
 
-- Listas de exercícios a serem entregues ao longo do semestre no valor de **30 pontos**.
-
-- **Exame Final: 05/03/26**
 :::
+
+
+
+- **Exame Final: 21/12/26**
+
 
 
 # Referências Bibliográficas
