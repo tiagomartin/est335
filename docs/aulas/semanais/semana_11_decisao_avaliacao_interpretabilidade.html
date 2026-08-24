@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+<meta property="og:title" content="Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Decisão, Avaliação e Interpretabilidade">
+<meta property="og:image" content="http://professortp.com.br/est335/aulas/semanais/semana_11_decisao_avaliacao_interpretabilidade_files/figure-html/unnamed-chunk-2-1.png">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1267">
+</head>
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Parte I : Aprendizado Supervisionado</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#semana-11" id="toc-semana-11" class="nav-link active" data-scroll-target="#semana-11">Semana 11</a>
+  <ul class="collapse">
+<li><a href="#fechamento-do-aprendizado-supervisionado" id="toc-fechamento-do-aprendizado-supervisionado" class="nav-link" data-scroll-target="#fechamento-do-aprendizado-supervisionado">Fechamento do aprendizado supervisionado</a></li>
+  <li><a href="#organiza%C3%A7%C3%A3o-da-semana" id="toc-organização-da-semana" class="nav-link" data-scroll-target="#organiza%C3%A7%C3%A3o-da-semana">Organização da semana</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#encontro-11.1-decis%C3%A3o-e-avalia%C3%A7%C3%A3o" id="toc-encontro-11.1-decisão-e-avaliação" class="nav-link" data-scroll-target="#encontro-11.1-decis%C3%A3o-e-avalia%C3%A7%C3%A3o">Encontro 11.1 — Decisão e avaliação</a>
+  <ul class="collapse">
+<li><a href="#regra-de-bayes" id="toc-regra-de-bayes" class="nav-link" data-scroll-target="#regra-de-bayes">Regra de Bayes</a></li>
+  <li><a href="#a-regra-%C3%B3tima-ainda-pode-errar" id="toc-a-regra-ótima-ainda-pode-errar" class="nav-link" data-scroll-target="#a-regra-%C3%B3tima-ainda-pode-errar">A regra ótima ainda pode errar</a></li>
+  <li><a href="#probabilidade-e-decis%C3%A3o" id="toc-probabilidade-e-decisão" class="nav-link" data-scroll-target="#probabilidade-e-decis%C3%A3o">Probabilidade e decisão</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#perdas-assim%C3%A9tricas" id="toc-perdas-assimétricas" class="nav-link" data-scroll-target="#perdas-assim%C3%A9tricas">Perdas assimétricas</a>
+  <ul class="collapse">
+<li><a href="#quando-os-erros-t%C3%AAm-custos-diferentes" id="toc-quando-os-erros-têm-custos-diferentes" class="nav-link" data-scroll-target="#quando-os-erros-t%C3%AAm-custos-diferentes">Quando os erros têm custos diferentes</a></li>
+  <li><a href="#cutoff-%C3%B3timo" id="toc-cutoff-ótimo" class="nav-link" data-scroll-target="#cutoff-%C3%B3timo">Cutoff ótimo</a></li>
+  <li><a href="#como-os-custos-deslocam-o-cutoff" id="toc-como-os-custos-deslocam-o-cutoff" class="nav-link" data-scroll-target="#como-os-custos-deslocam-o-cutoff">Como os custos deslocam o cutoff?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#m%C3%A9tricas-e-cutoff" id="toc-métricas-e-cutoff" class="nav-link" data-scroll-target="#m%C3%A9tricas-e-cutoff">Métricas e cutoff</a>
+  <ul class="collapse">
+<li><a href="#matriz-de-confus%C3%A3o" id="toc-matriz-de-confusão" class="nav-link" data-scroll-target="#matriz-de-confus%C3%A3o">Matriz de confusão</a></li>
+  <li><a href="#sensibilidade-e-especificidade" id="toc-sensibilidade-e-especificidade" class="nav-link" data-scroll-target="#sensibilidade-e-especificidade">Sensibilidade e especificidade</a></li>
+  <li><a href="#precis%C3%A3o-e-f_1" id="toc-precisão-e-f_1" class="nav-link" data-scroll-target="#precis%C3%A3o-e-f_1">Precisão e <span class="math inline">\(F_1\)</span></a></li>
+  </ul>
+</li>
+  <li>
+<a href="#curva-roc" id="toc-curva-roc" class="nav-link" data-scroll-target="#curva-roc">Curva ROC</a>
+  <ul class="collapse">
+<li><a href="#variando-o-cutoff" id="toc-variando-o-cutoff" class="nav-link" data-scroll-target="#variando-o-cutoff">Variando o cutoff</a></li>
+  <li><a href="#auc" id="toc-auc" class="nav-link" data-scroll-target="#auc">AUC</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#classes-desbalanceadas" id="toc-classes-desbalanceadas" class="nav-link" data-scroll-target="#classes-desbalanceadas">Classes desbalanceadas</a>
+  <ul class="collapse">
+<li><a href="#acur%C3%A1cia-pode-enganar" id="toc-acurácia-pode-enganar" class="nav-link" data-scroll-target="#acur%C3%A1cia-pode-enganar">Acurácia pode enganar</a></li>
+  <li><a href="#balanced-accuracy" id="toc-balanced-accuracy" class="nav-link" data-scroll-target="#balanced-accuracy">Balanced Accuracy</a></li>
+  <li><a href="#curva-precisionrecall" id="toc-curva-precisionrecall" class="nav-link" data-scroll-target="#curva-precisionrecall">Curva Precision–Recall</a></li>
+  <li><a href="#tr%C3%AAs-n%C3%ADveis-de-interven%C3%A7%C3%A3o" id="toc-três-níveis-de-intervenção" class="nav-link" data-scroll-target="#tr%C3%AAs-n%C3%ADveis-de-interven%C3%A7%C3%A3o">Três níveis de intervenção</a></li>
+  <li><a href="#reamostragem-sem-vazamento" id="toc-reamostragem-sem-vazamento" class="nav-link" data-scroll-target="#reamostragem-sem-vazamento">Reamostragem sem vazamento</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#combina%C3%A7%C3%A3o-de-classificadores" id="toc-combinação-de-classificadores" class="nav-link" data-scroll-target="#combina%C3%A7%C3%A3o-de-classificadores">Combinação de classificadores</a>
+  <ul class="collapse">
+<li><a href="#hard-voting" id="toc-hard-voting" class="nav-link" data-scroll-target="#hard-voting">Hard voting</a></li>
+  <li><a href="#soft-voting" id="toc-soft-voting" class="nav-link" data-scroll-target="#soft-voting">Soft voting</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#encontro-11.2-interpretabilidade" id="toc-encontro-11.2-interpretabilidade" class="nav-link" data-scroll-target="#encontro-11.2-interpretabilidade">Encontro 11.2 — Interpretabilidade</a>
+  <ul class="collapse">
+<li><a href="#por-que-interpretar-um-modelo" id="toc-por-que-interpretar-um-modelo" class="nav-link" data-scroll-target="#por-que-interpretar-um-modelo">Por que interpretar um modelo?</a></li>
+  <li><a href="#global-local" id="toc-global-local" class="nav-link" data-scroll-target="#global-local">Global × local</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#pdp" id="toc-pdp" class="nav-link" data-scroll-target="#pdp">PDP</a>
+  <ul class="collapse">
+<li><a href="#depend%C3%AAncia-parcial" id="toc-dependência-parcial" class="nav-link" data-scroll-target="#depend%C3%AAncia-parcial">Dependência parcial</a></li>
+  <li><a href="#o-que-o-pdp-descreve" id="toc-o-que-o-pdp-descreve" class="nav-link" data-scroll-target="#o-que-o-pdp-descreve">O que o PDP descreve?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#ice" id="toc-ice" class="nav-link" data-scroll-target="#ice">ICE</a>
+  <ul class="collapse">
+<li><a href="#curvas-individuais" id="toc-curvas-individuais" class="nav-link" data-scroll-target="#curvas-individuais">Curvas individuais</a></li>
+  <li><a href="#rela%C3%A7%C3%A3o-pdpice" id="toc-relação-pdpice" class="nav-link" data-scroll-target="#rela%C3%A7%C3%A3o-pdpice">Relação PDP–ICE</a></li>
+  <li><a href="#o-que-ice-acrescenta" id="toc-o-que-ice-acrescenta" class="nav-link" data-scroll-target="#o-que-ice-acrescenta">O que ICE acrescenta?</a></li>
+  <li><a href="#uma-limita%C3%A7%C3%A3o-do-pdp" id="toc-uma-limitação-do-pdp" class="nav-link" data-scroll-target="#uma-limita%C3%A7%C3%A3o-do-pdp">Uma limitação do PDP</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#lime" id="toc-lime" class="nav-link" data-scroll-target="#lime">LIME</a>
+  <ul class="collapse">
+<li><a href="#a-pergunta-local" id="toc-a-pergunta-local" class="nav-link" data-scroll-target="#a-pergunta-local">A pergunta local</a></li>
+  <li><a href="#passos" id="toc-passos" class="nav-link" data-scroll-target="#passos">Passos</a></li>
+  <li><a href="#formula%C3%A7%C3%A3o-geral" id="toc-formulação-geral" class="nav-link" data-scroll-target="#formula%C3%A7%C3%A3o-geral">Formulação geral</a></li>
+  <li><a href="#comparando-as-ferramentas" id="toc-comparando-as-ferramentas" class="nav-link" data-scroll-target="#comparando-as-ferramentas">Comparando as ferramentas</a></li>
+  <li><a href="#s%C3%ADntese" id="toc-síntese" class="nav-link" data-scroll-target="#s%C3%ADntese">Síntese</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_11_decisao_avaliacao_interpretabilidade.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="semana_11_decisao_avaliacao_interpretabilidade.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Decisão, Avaliação e Interpretabilidade</span></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="semana-11" class="level1"><h1>Semana 11</h1>
+<section id="fechamento-do-aprendizado-supervisionado" class="level2"><h2 class="anchored" data-anchor-id="fechamento-do-aprendizado-supervisionado">Fechamento do aprendizado supervisionado</h2>
+<p>Até aqui aprendemos a construir modelos</p>
+<p>Agora precisamos distinguir quatro etapas:</p>
+<p><span class="math display">\[
+\boxed{
+\text{predizer}
+\rightarrow
+\text{decidir}
+\rightarrow
+\text{avaliar}
+\rightarrow
+\text{interpretar}
+}
+\]</span></p>
+<hr></section><section id="organização-da-semana" class="level2"><h2 class="anchored" data-anchor-id="organização-da-semana">Organização da semana</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<section id="encontro-11.1" class="level3"><h3 class="anchored" data-anchor-id="encontro-11.1">Encontro 11.1</h3>
+<ul>
+<li>regra de Bayes</li>
+<li>custos assimétricos</li>
+<li>cutoff</li>
+<li>ROC e AUC</li>
+<li>desbalanceamento</li>
+<li>Precision–Recall</li>
+<li>combinação de classificadores</li>
+</ul></section>
+</div><div class="column" style="width:48%;">
+<section id="encontro-11.2" class="level3"><h3 class="anchored" data-anchor-id="encontro-11.2">Encontro 11.2</h3>
+<ul>
+<li>interpretabilidade global e local</li>
+<li>PDP</li>
+<li>ICE</li>
+<li>LIME</li>
+<li>limitações das explicações</li>
+</ul></section>
+</div>
+</div>
+</section></section><section id="encontro-11.1-decisão-e-avaliação" class="level1"><h1>Encontro 11.1 — Decisão e avaliação</h1>
+<section id="regra-de-bayes" class="level2"><h2 class="anchored" data-anchor-id="regra-de-bayes">Regra de Bayes</h2>
+<p>Para classificação binária, defina</p>
+<p><span class="math display">\[
+\eta(\mathbf x)
+=
+P(Y=1\mid\mathbf X=\mathbf x)
+\]</span></p>
+<p>Sob perda 0–1 simétrica,</p>
+<p><span class="math display">\[
+\boxed{
+g^*(\mathbf x)
+=
+I\left\{\eta(\mathbf x)&gt;\frac12\right\}
+}
+\]</span></p>
+<hr></section><section id="a-regra-ótima-ainda-pode-errar" class="level2"><h2 class="anchored" data-anchor-id="a-regra-ótima-ainda-pode-errar">A regra ótima ainda pode errar</h2>
+<p>Em um ponto <span class="math inline">\(\mathbf x\)</span>, o menor risco possível é</p>
+<p><span class="math display">\[
+\boxed{
+R^*(\mathbf x)
+=
+\min\{\eta(\mathbf x),1-\eta(\mathbf x)\}
+}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\boxed{
+R^*
+=
+E[R^*(\mathbf X)]
+}
+\]</span></p>
+<p>é o erro de Bayes</p>
+<hr></section><section id="probabilidade-e-decisão" class="level2"><h2 class="anchored" data-anchor-id="probabilidade-e-decisão">Probabilidade e decisão</h2>
+<p>Um modelo pode produzir</p>
+<p><span class="math display">\[
+\widehat\eta(\mathbf x)
+\]</span></p>
+<p>A decisão exige um cutoff</p>
+<p><span class="math display">\[
+\boxed{
+\widehat g_c(\mathbf x)
+=
+I\{\widehat\eta(\mathbf x)&gt;c\}
+}
+\]</span></p>
+<p>Alterar <span class="math inline">\(c\)</span> modifica a decisão, não as probabilidades estimadas</p>
+</section></section><section id="perdas-assimétricas" class="level1"><h1>Perdas assimétricas</h1>
+<section id="quando-os-erros-têm-custos-diferentes" class="level2"><h2 class="anchored" data-anchor-id="quando-os-erros-têm-custos-diferentes">Quando os erros têm custos diferentes</h2>
+<p>Considere</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Verdadeiro</th>
+<th style="text-align: right;">Decidir 0</th>
+<th style="text-align: right;">Decidir 1</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y=0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(C_{FP}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y=1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(C_{FN}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>O risco condicional da decisão 1 é</p>
+<p><span class="math display">\[
+R(1\mid\mathbf x)
+=
+C_{FP}[1-\eta(\mathbf x)]
+\]</span></p>
+<p>e da decisão 0 é</p>
+<p><span class="math display">\[
+R(0\mid\mathbf x)
+=
+C_{FN}\eta(\mathbf x)
+\]</span></p>
+<hr></section><section id="cutoff-ótimo" class="level2"><h2 class="anchored" data-anchor-id="cutoff-ótimo">Cutoff ótimo</h2>
+<p>Escolhemos classe 1 quando</p>
+<p><span class="math display">\[
+C_{FP}[1-\eta(\mathbf x)]
+&lt;
+C_{FN}\eta(\mathbf x)
+\]</span></p>
+<p>ou</p>
+<p><span class="math display">\[
+\boxed{
+\eta(\mathbf x)
+&gt;
+c^*
+=
+\frac{C_{FP}}
+{C_{FP}+C_{FN}}
+}
+\]</span></p>
+<hr></section><section id="como-os-custos-deslocam-o-cutoff" class="level2"><h2 class="anchored" data-anchor-id="como-os-custos-deslocam-o-cutoff">Como os custos deslocam o cutoff?</h2>
+<p>Se</p>
+<p><span class="math display">\[
+C_{FN}&gt;C_{FP}
+\]</span></p>
+<p>então</p>
+<p><span class="math display">\[
+c^*&lt;0.5
+\]</span></p>
+<p>e favorecemos sensibilidade</p>
+<p>Se</p>
+<p><span class="math display">\[
+C_{FP}&gt;C_{FN}
+\]</span></p>
+<p>então</p>
+<p><span class="math display">\[
+c^*&gt;0.5
+\]</span></p>
+<p>e exigimos mais evidência para predizer a classe positiva</p>
+</section></section><section id="métricas-e-cutoff" class="level1"><h1>Métricas e cutoff</h1>
+<section id="matriz-de-confusão" class="level2"><h2 class="anchored" data-anchor-id="matriz-de-confusão">Matriz de confusão</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th></th>
+<th style="text-align: right;">Predito 1</th>
+<th style="text-align: right;">Predito 0</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Verdadeiro 1</strong></td>
+<td style="text-align: right;">VP</td>
+<td style="text-align: right;">FN</td>
+</tr>
+<tr class="even">
+<td><strong>Verdadeiro 0</strong></td>
+<td style="text-align: right;">FP</td>
+<td style="text-align: right;">VN</td>
+</tr>
+</tbody>
+</table>
+<p>As métricas resumem tipos distintos de erro</p>
+<hr></section><section id="sensibilidade-e-especificidade" class="level2"><h2 class="anchored" data-anchor-id="sensibilidade-e-especificidade">Sensibilidade e especificidade</h2>
+<p><span class="math display">\[
+\boxed{
+Sensibilidade
+=
+\frac{VP}{VP+FN}
+}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{
+Especificidade
+=
+\frac{VN}{VN+FP}
+}
+\]</span></p>
+<p>Ao reduzir o cutoff, em geral aumentamos sensibilidade e reduzimos especificidade</p>
+<hr></section><section id="precisão-e-f_1" class="level2"><h2 class="anchored" data-anchor-id="precisão-e-f_1">Precisão e <span class="math inline">\(F_1\)</span>
+</h2>
+<p><span class="math display">\[
+\boxed{
+Precisão
+=
+\frac{VP}{VP+FP}
+}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{
+F_1
+=
+2\frac{Precisão\times Recall}
+{Precisão+Recall}
+}
+\]</span></p>
+<p>As métricas respondem a perguntas diferentes</p>
+</section></section><section id="curva-roc" class="level1"><h1>Curva ROC</h1>
+<section id="variando-o-cutoff" class="level2"><h2 class="anchored" data-anchor-id="variando-o-cutoff">Variando o cutoff</h2>
+<p>Para cada <span class="math inline">\(c\)</span> calculamos</p>
+<p><span class="math display">\[
+TPR(c)=Sensibilidade(c)
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+FPR(c)=1-Especificidade(c)
+\]</span></p>
+<p>A curva ROC representa</p>
+<p><span class="math display">\[
+\boxed{
+FPR(c)
+\quad\text{versus}\quad
+TPR(c)
+}
+\]</span></p>
+<hr>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="semana_11_decisao_avaliacao_interpretabilidade_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:62.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section><section id="auc" class="level2"><h2 class="anchored" data-anchor-id="auc">AUC</h2>
+<p>A área sob a curva ROC é</p>
+<p><span class="math display">\[
+\boxed{
+AUC
+=
+\int_0^1 ROC(u)\,du
+}
+\]</span></p>
+<p>Uma interpretação é</p>
+<p><span class="math display">\[
+\boxed{
+AUC
+=
+P(S_1&gt;S_0)
+}
+\]</span></p>
+<p>A AUC mede capacidade de ordenação, não escolhe o cutoff operacional</p>
+</section></section><section id="classes-desbalanceadas" class="level1"><h1>Classes desbalanceadas</h1>
+<section id="acurácia-pode-enganar" class="level2"><h2 class="anchored" data-anchor-id="acurácia-pode-enganar">Acurácia pode enganar</h2>
+<p>Se</p>
+<p><span class="math display">\[
+P(Y=1)=0.02
+\]</span></p>
+<p>um classificador que sempre prediz 0 tem</p>
+<p><span class="math display">\[
+Accuracy=98\%
+\]</span></p>
+<p>mas</p>
+<p><span class="math display">\[
+Sensibilidade=0
+\]</span></p>
+<hr></section><section id="balanced-accuracy" class="level2"><h2 class="anchored" data-anchor-id="balanced-accuracy">Balanced Accuracy</h2>
+<p><span class="math display">\[
+\boxed{
+Balanced\ Accuracy
+=
+\frac{Sensibilidade+Especificidade}{2}
+}
+\]</span></p>
+<p>A métrica atribui peso igual ao desempenho nas duas classes</p>
+<hr></section><section id="curva-precisionrecall" class="level2"><h2 class="anchored" data-anchor-id="curva-precisionrecall">Curva Precision–Recall</h2>
+<p>Ao variar o cutoff, obtemos</p>
+<p><span class="math display">\[
+\left(
+Recall(c),Precision(c)
+\right)
+\]</span></p>
+<p>Em problemas fortemente desbalanceados, essa curva evidencia diretamente o comportamento na classe positiva</p>
+<hr>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="semana_11_decisao_avaliacao_interpretabilidade_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:62.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section><section id="três-níveis-de-intervenção" class="level2"><h2 class="anchored" data-anchor-id="três-níveis-de-intervenção">Três níveis de intervenção</h2>
+<p>Podemos atuar sobre:</p>
+<p><span class="math display">\[
+\boxed{
+\text{dados}
+\qquad
+\text{função de perda}
+\qquad
+\text{decisão}
+}
+\]</span></p>
+<ul>
+<li>reamostragem altera os dados de treinamento</li>
+<li>pesos/custos alteram a função objetivo</li>
+<li>cutoff altera a decisão final</li>
+</ul>
+<p>Essas intervenções não são equivalentes</p>
+<hr></section><section id="reamostragem-sem-vazamento" class="level2"><h2 class="anchored" data-anchor-id="reamostragem-sem-vazamento">Reamostragem sem vazamento</h2>
+<p>Se utilizarmos oversampling, undersampling ou SMOTE dentro de validação cruzada, a reamostragem deve ocorrer apenas no conjunto de treino de cada fold</p>
+<p><span class="math display">\[
+\boxed{
+\text{reamostrar dentro do fold de treino}
+}
+\]</span></p>
+</section></section><section id="combinação-de-classificadores" class="level1"><h1>Combinação de classificadores</h1>
+<section id="hard-voting" class="level2"><h2 class="anchored" data-anchor-id="hard-voting">Hard voting</h2>
+<p>Se</p>
+<p><span class="math display">\[
+g_1(\mathbf x),\ldots,g_M(\mathbf x)
+\]</span></p>
+<p>produzem classes, podemos usar</p>
+<p><span class="math display">\[
+\boxed{
+g_{ens}(\mathbf x)
+=
+\operatorname{moda}
+\{g_1(\mathbf x),\ldots,g_M(\mathbf x)\}
+}
+\]</span></p>
+<hr></section><section id="soft-voting" class="level2"><h2 class="anchored" data-anchor-id="soft-voting">Soft voting</h2>
+<p>Se os classificadores produzem probabilidades,</p>
+<p><span class="math display">\[
+\boxed{
+\overline p_k(\mathbf x)
+=
+\frac1M
+\sum_{m=1}^{M}
+\widehat p_{mk}(\mathbf x)
+}
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\widehat g(\mathbf x)
+=
+\arg\max_k\overline p_k(\mathbf x)
+\]</span></p>
+<p>A combinação também deve ser definida usando treino e validação</p>
+</section></section><section id="encontro-11.2-interpretabilidade" class="level1"><h1>Encontro 11.2 — Interpretabilidade</h1>
+<section id="por-que-interpretar-um-modelo" class="level2"><h2 class="anchored" data-anchor-id="por-que-interpretar-um-modelo">Por que interpretar um modelo?</h2>
+<p>Depois de selecionar um modelo com bom desempenho, podemos perguntar:</p>
+<ul>
+<li>como as predições mudam com as covariáveis?</li>
+<li>o comportamento é igual para todas as observações?</li>
+<li>por que uma observação específica recebeu determinada predição?</li>
+</ul>
+<p><span class="math display">\[
+\boxed{
+\text{predição}
+\neq
+\text{interpretação}
+\neq
+\text{causalidade}
+}
+\]</span></p>
+<hr></section><section id="global-local" class="level2"><h2 class="anchored" data-anchor-id="global-local">Global × local</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<section id="global" class="level3"><h3 class="anchored" data-anchor-id="global">Global</h3>
+<p>Queremos compreender o comportamento geral de</p>
+<p><span class="math display">\[
+\widehat g(\mathbf x)
+\]</span></p>
+</section>
+</div><div class="column" style="width:48%;">
+<section id="local" class="level3"><h3 class="anchored" data-anchor-id="local">Local</h3>
+<p>Queremos compreender uma predição específica</p>
+<p><span class="math display">\[
+\widehat g(\mathbf x^*)
+\]</span></p>
+</section>
+</div>
+</div>
+</section></section><section id="pdp" class="level1"><h1>PDP</h1>
+<section id="dependência-parcial" class="level2"><h2 class="anchored" data-anchor-id="dependência-parcial">Dependência parcial</h2>
+<p>Para a covariável <span class="math inline">\(X_j\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat h_j(x)
+=
+\frac1n
+\sum_{i=1}^{n}
+\widehat g(x,\mathbf x_{i,-j})
+}
+\]</span></p>
+<p>O PDP descreve a predição média do modelo quando fixamos <span class="math inline">\(X_j=x\)</span></p>
+<hr></section><section id="o-que-o-pdp-descreve" class="level2"><h2 class="anchored" data-anchor-id="o-que-o-pdp-descreve">O que o PDP descreve?</h2>
+<p>Se</p>
+<p><span class="math display">\[
+\widehat h_j(x)
+\]</span></p>
+<p>cresce com <span class="math inline">\(x\)</span>, o modelo produz, em média, predições maiores nessa região</p>
+<p>Isso descreve</p>
+<p><span class="math display">\[
+\boxed{
+\text{o comportamento de }\widehat g
+}
+\]</span></p>
+<p>e não um efeito causal</p>
+</section></section><section id="ice" class="level1"><h1>ICE</h1>
+<section id="curvas-individuais" class="level2"><h2 class="anchored" data-anchor-id="curvas-individuais">Curvas individuais</h2>
+<p>Para a observação <span class="math inline">\(i\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat h_{j,i}(x)
+=
+\widehat g(x,\mathbf x_{i,-j})
+}
+\]</span></p>
+<p>Traçamos uma curva para cada observação em vez de calcular imediatamente a média</p>
+<hr></section><section id="relação-pdpice" class="level2"><h2 class="anchored" data-anchor-id="relação-pdpice">Relação PDP–ICE</h2>
+<p><span class="math display">\[
+\boxed{
+\widehat h_j(x)
+=
+\frac1n
+\sum_{i=1}^{n}
+\widehat h_{j,i}(x)
+}
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\boxed{
+PDP
+=
+\text{média das curvas ICE}
+}
+\]</span></p>
+<hr></section><section id="o-que-ice-acrescenta" class="level2"><h2 class="anchored" data-anchor-id="o-que-ice-acrescenta">O que ICE acrescenta?</h2>
+<p>Curvas aproximadamente paralelas sugerem comportamento homogêneo</p>
+<p>Curvas com formas distintas podem revelar heterogeneidade e interações no modelo</p>
+<hr></section><section id="uma-limitação-do-pdp" class="level2"><h2 class="anchored" data-anchor-id="uma-limitação-do-pdp">Uma limitação do PDP</h2>
+<p>Com covariáveis fortemente dependentes, fixar <span class="math inline">\(X_j=x\)</span> pode criar combinações pouco representadas pelos dados</p>
+<p><span class="math display">\[
+\boxed{
+\text{PDP pode consultar o modelo em regiões de baixo suporte}
+}
+\]</span></p>
+</section></section><section id="lime" class="level1"><h1>LIME</h1>
+<section id="a-pergunta-local" class="level2"><h2 class="anchored" data-anchor-id="a-pergunta-local">A pergunta local</h2>
+<p>Para uma observação</p>
+<p><span class="math display">\[
+\mathbf x^*
+\]</span></p>
+<p>queremos explicar</p>
+<p><span class="math display">\[
+\widehat g(\mathbf x^*)
+\]</span></p>
+<p>A ideia é aproximar localmente o modelo complexo por um modelo interpretável</p>
+<hr></section><section id="passos" class="level2"><h2 class="anchored" data-anchor-id="passos">Passos</h2>
+<p><span class="math display">\[
+\boxed{
+\mathbf x^*
+\rightarrow
+\text{perturbações}
+\rightarrow
+\widehat g(\mathbf z_b)
+\rightarrow
+\text{pesos locais}
+\rightarrow
+\text{modelo simples}
+}
+\]</span></p>
+<p>As observações mais próximas de <span class="math inline">\(\mathbf x^*\)</span> recebem maior peso</p>
+<hr></section><section id="formulação-geral" class="level2"><h2 class="anchored" data-anchor-id="formulação-geral">Formulação geral</h2>
+<p><span class="math display">\[
+\boxed{
+q^*
+=
+\arg\min_{q\in\mathcal G}
+\left\{
+\mathcal L(\widehat g,q,\pi_{\mathbf x^*})
++
+\Omega(q)
+\right\}
+}
+\]</span></p>
+<p>O primeiro termo mede fidelidade local</p>
+<p>O segundo controla a complexidade da explicação</p>
+<hr></section><section id="comparando-as-ferramentas" class="level2"><h2 class="anchored" data-anchor-id="comparando-as-ferramentas">Comparando as ferramentas</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Método</th>
+<th>Escopo</th>
+<th>Pergunta</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>PDP</td>
+<td>global</td>
+<td>como a predição média muda com <span class="math inline">\(X_j\)</span>?</td>
+</tr>
+<tr class="even">
+<td>ICE</td>
+<td>individual/conjunto</td>
+<td>esse comportamento varia entre observações?</td>
+</tr>
+<tr class="odd">
+<td>LIME</td>
+<td>local</td>
+<td>por que esta observação recebeu esta predição?</td>
+</tr>
+</tbody>
+</table>
+<hr></section><section id="síntese" class="level2"><h2 class="anchored" data-anchor-id="síntese">Síntese</h2>
+<p><span class="math display">\[
+\boxed{
+\text{predizer}
+\rightarrow
+\text{decidir}
+\rightarrow
+\text{avaliar}
+\rightarrow
+\text{interpretar}
+}
+\]</span></p>
+<p>A qualidade da explicação não substitui a avaliação fora da amostra</p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_11_decisao_avaliacao_interpretabilidade.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

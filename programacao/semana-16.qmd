@@ -1,0 +1,85 @@
+---
+title: "Semana 16"
+format:
+  html:
+    theme: cosmo
+    include-in-header:
+      text: |
+        <style>
+        /* Estilos visuais EST304 sem quebrar tipografia do Quarto */
+        .aulas-list .list-group-item {
+          border-left: 4px solid #2761E3;
+          padding-top: 0.8rem;
+          padding-bottom: 0.8rem;
+        }
+        .aulas-list .list-group-item:hover {
+          background-color: #F2F2F2;
+        }
+        .disciplina-badge {
+          background-color: #2761E3;
+        }
+        .btn-est304-main {
+          background-color: #2761E3;
+          border-color: #2761E3;
+          color: #fff;
+        }
+        .btn-est304-main:hover {
+          background-color: #789CEB;
+          border-color: #789CEB;
+          color: #fff;
+        }
+        .btn-est304-outline {
+          color: #2761E3;
+          border-color: #2761E3;
+        }
+        .btn-est304-outline:hover {
+          background-color: #2761E3;
+          color: #fff;
+        }
+        .due-date-badge {
+          color: red;
+          border-color: #7F2E2F;
+          font-size: 16pt;  
+          font-weight: 600;
+          padding: 4px 8px;
+        }
+        </style>
+---
+
+
+
+
+::: {.list-group .aulas-list}
+
+
+## Script de análise de dados
+
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+{{< fa brands r-project size=lg >}}  Classificação Antifraude em Seguros Automotivos usando LDA e QDA
+</span>
+
+<span>
+[Ver análise](/analise_dados/seguradora.html){.btn .btn-est304-main .btn-sm}
+[PDF](/analise_dados/seguradora.pdf){.btn .btn-est304-outline .btn-sm}
+</span>
+:::
+
+
+## Projeto: Análise Discriminante
+
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+<span class="fw-bold">
+{{< fa list-check size=lg >}}  Análise Discriminante em Detecção de Risco de Crédito
+</span>
+
+<span>
+[Ver projeto](/projeto/ad/ad.html){.btn .btn-est304-main .btn-sm}
+[PDF](/projeto/ad/ad.pdf){.btn .btn-est304-outline .btn-sm}
+</span>
+:::
+
+:::
+

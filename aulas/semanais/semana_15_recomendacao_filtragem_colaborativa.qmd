@@ -1,0 +1,312 @@
+---
+title: "Parte II : Aprendizado Não Supervisionado"
+subtitle: "<span class='custom-subtitle'>Sistemas de Recomendação: Filtragem Colaborativa</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 15"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+```
+
+# Sistemas de Recomendação
+
+## Um novo tipo de problema
+
+Considere:
+
+- usuários $u=1,\ldots,U$
+- itens $i=1,\ldots,I$
+- interações entre usuários e itens
+
+Queremos predizer quais itens podem ser relevantes para cada usuário
+
+$$
+\boxed{
+\text{usuário}
++
+\text{histórico}
+\rightarrow
+\text{recomendação}
+}
+$$
+
+---
+
+# Matriz usuário–item
+
+## Avaliações explícitas
+
+Podemos organizar ratings em
+
+$$
+\boxed{
+R=(r_{ui})
+}
+$$
+
+onde
+
+$$
+r_{ui}
+=
+\text{avaliação do usuário }u\text{ para o item }i
+$$
+
+---
+
+## Uma matriz incompleta
+
+Exemplo:
+
+| Usuário | Filme A | Filme B | Filme C | Filme D |
+|---|---:|---:|---:|---:|
+| $u_1$ | 5 | ? | 4 | ? |
+| $u_2$ | 4 | 2 | ? | 1 |
+| $u_3$ | ? | 5 | 4 | 4 |
+| $u_4$ | 1 | ? | 2 | 5 |
+
+Os símbolos
+
+$$
+?
+$$
+
+não são simplesmente valores ausentes convencionais
+
+São pares usuário–item ainda não observados
+
+---
+
+## O objetivo
+
+Para pares não observados,
+
+$$
+(u,i)\notin\Omega
+$$
+
+queremos estimar
+
+$$
+\boxed{
+\widehat r_{ui}
+}
+$$
+
+ou produzir diretamente uma ordenação dos itens
+
+---
+
+# Filtragem colaborativa
+
+## A ideia central
+
+Utilizamos padrões de interação de vários usuários
+
+Não precisamos necessariamente conhecer características do item ou do usuário
+
+$$
+\boxed{
+\text{quem gostou de quê?}
+}
+$$
+
+A estrutura das interações fornece informação para recomendar
+
+---
+
+# User-based Collaborative Filtering
+
+## Intuição
+
+Para recomendar ao usuário $u$:
+
+1. encontramos usuários semelhantes a $u$
+2. observamos como esses usuários avaliaram o item $i$
+3. combinamos suas avaliações
+
+$$
+\boxed{
+\text{usuários parecidos}
+\rightarrow
+\text{preferências parecidas}
+}
+$$
+
+---
+
+## Similaridade entre usuários
+
+Uma possibilidade é a correlação entre ratings observados em comum
+
+Também podemos utilizar similaridade de cosseno
+
+$$
+\boxed{
+s(u,v)
+=
+\frac{
+\mathbf r_u^t\mathbf r_v
+}{
+\|\mathbf r_u\|
+\|\mathbf r_v\|
+}
+}
+$$
+
+com os devidos cuidados sobre quais avaliações entram no cálculo
+
+---
+
+## Predição user-based
+
+Uma forma centrada pela média é
+
+$$
+\boxed{
+\widehat r_{ui}
+=
+\bar r_u
++
+\frac{
+\displaystyle
+\sum_{v\in N_k(u)}
+s(u,v)
+(r_{vi}-\bar r_v)
+}{
+\displaystyle
+\sum_{v\in N_k(u)}
+|s(u,v)|
+}
+}
+$$
+
+---
+
+## Interpretando os termos
+
+$$
+\bar r_u
+$$
+
+nível médio de avaliação do usuário-alvo
+
+$$
+s(u,v)
+$$
+
+similaridade entre usuários
+
+$$
+r_{vi}-\bar r_v
+$$
+
+quanto o usuário vizinho gostou do item relativamente ao seu padrão habitual
+
+---
+
+# Item-based Collaborative Filtering
+
+## Mudando a perspectiva
+
+Agora buscamos itens semelhantes ao item $i$
+
+Para predizer a preferência de $u$ por $i$, usamos avaliações que $u$ já forneceu a itens semelhantes
+
+$$
+\boxed{
+\text{itens parecidos}
+\rightarrow
+\text{avaliações relacionadas}
+}
+$$
+
+---
+
+## Predição item-based
+
+Uma forma simples é
+
+$$
+\boxed{
+\widehat r_{ui}
+=
+\frac{
+\displaystyle
+\sum_{j\in N_k(i)}
+s(i,j)r_{uj}
+}{
+\displaystyle
+\sum_{j\in N_k(i)}
+|s(i,j)|
+}
+}
+$$
+
+onde $N_k(i)$ contém itens semelhantes a $i$ avaliados pelo usuário $u$
+
+---
+
+# User-based × Item-based
+
+| | User-based | Item-based |
+|---|---|---|
+| vizinhança | usuários | itens |
+| similaridade | $s(u,v)$ | $s(i,j)$ |
+| pergunta | quem é parecido com $u$? | o que é parecido com $i$? |
+| informação usada | avaliações de usuários vizinhos | avaliações de itens vizinhos |
+| hiperparâmetro típico | $k$ | $k$ |
+
+---
+
+# Limitações dos métodos de vizinhança
+
+## Esparsidade
+
+Dois usuários podem ter poucos itens avaliados em comum
+
+## Escalabilidade
+
+Calcular muitas similaridades pode ser caro
+
+## Cold start
+
+Novos usuários ou novos itens possuem pouca informação
+
+Essas limitações motivam representações latentes
+
+# Avaliação e validação
+
+## O hiperparâmetro $k$
+A escolha do número de vizinhos deve ser feita por validação
+
+## Separação das interações
+$$
+\boxed{\text{treino}\rightarrow\text{validação}\rightarrow\text{teste}}
+$$
+Quando o objetivo é prever interações futuras, uma divisão temporal pode ser apropriada
+

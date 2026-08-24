@@ -30,8 +30,8 @@ Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semest
 ::: column-screen-inset-right
 | Semana | Data | Tópico | Artigo | Slides | EC | LE | Script | MC | Projeto |
 |:------:|--------|--------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| [1](programacao/semana-1.html) | Ter, 31/03 | Apresentação da disciplina |  |  |  |  |  |  |  |
-|  | Qui, 02/04 | Feriado: Semana Santa |  |  |  |  |  |  |  |
+| [1](programacao/semana-1.html) | Seg, 24/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
+|  | Qui, 26/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
 :::
 
 ```{r echo = FALSE}

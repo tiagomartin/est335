@@ -1,0 +1,968 @@
+---
+title: "Parte II : Aprendizado Não Supervisionado"
+subtitle: "<span class='custom-subtitle'>Análise de Agrupamento</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 13"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+
+azul <- "#263568"
+azul2 <- "#2C7FB8"
+tema_slide <- theme_minimal(base_size = 15) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"),
+        legend.position = "top")
+
+set.seed(335)
+n <- 60
+dados_cluster <- bind_rows(
+  data.frame(x1=rnorm(n,-2.2,.65),x2=rnorm(n,.2,.65)),
+  data.frame(x1=rnorm(n,1.9,.70),x2=rnorm(n,2,.65)),
+  data.frame(x1=rnorm(n,2.1,.65),x2=rnorm(n,-2,.70))
+)
+
+n_lua <- 120
+t1 <- runif(n_lua,0,pi)
+t2 <- runif(n_lua,0,pi)
+luas <- bind_rows(
+  data.frame(x1=cos(t1)+rnorm(n_lua,0,.055),
+             x2=sin(t1)+rnorm(n_lua,0,.055)),
+  data.frame(x1=1-cos(t2)+rnorm(n_lua,0,.055),
+             x2=-.42-sin(t2)+rnorm(n_lua,0,.055))
+)
+```
+
+# Semana 13
+
+## Análise de Agrupamento
+
+Na Semana 12, construímos novas representações dos dados
+
+Agora queremos responder a outra pergunta:
+
+$$
+\boxed{
+\text{Existem grupos naturais entre as observações?}
+}
+$$
+
+Sem uma variável resposta, a própria definição de grupo passa a fazer parte do problema
+
+---
+
+## Conhecimento prévio
+
+Em Estatística Multivariada, os alunos já estudaram métodos clássicos de agrupamento
+
+Nesta disciplina, não vamos reconstruir toda essa teoria
+
+Usaremos:
+
+$$
+\boxed{\text{K-means}}
+\qquad
+\boxed{\text{Hierárquico}}
+$$
+
+como revisão e referência para introduzir o conteúdo novo:
+
+$$
+\boxed{\text{Agrupamento espectral}}
+$$
+
+---
+
+## Organização da semana
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Encontro 13.1
+
+**O problema de agrupamento**
+
+- o que significa formar grupos?
+- revisão de K-means
+- função objetivo
+- algoritmo
+- limitações geométricas
+- revisão de agrupamento hierárquico
+- distância e ligação
+- escolha do número de grupos
+
+:::
+
+::: {.column width="48%"}
+
+### Encontro 13.2
+
+**Agrupamento espectral**
+
+- dados como grafo
+- matriz de similaridades
+- matriz de graus
+- Laplaciano
+- autovetores
+- embedding espectral
+- K-means no novo espaço
+- interpretação e limitações
+
+:::
+
+::::
+
+---
+
+## Objetivos
+
+Ao final da semana, devemos ser capazes de:
+
+- formular agrupamento como problema não supervisionado
+- revisar a função objetivo do K-means
+- reconhecer limitações dos métodos clássicos
+- representar dados por um grafo de similaridades
+- construir o Laplaciano de um grafo
+- compreender a lógica do agrupamento espectral
+- distinguir agrupamento no espaço original de agrupamento em uma representação espectral
+
+# Encontro 13.1 — O problema
+
+## O que é um cluster?
+
+Intuitivamente, queremos que
+
+$$
+\boxed{
+\text{observações do mesmo grupo sejam semelhantes}
+}
+$$
+
+e
+
+$$
+\boxed{
+\text{observações de grupos diferentes sejam distintas}
+}
+$$
+
+Mas isso depende de como definimos **semelhança**
+
+---
+
+## Não existe uma única definição de grupo
+
+Um grupo pode significar:
+
+- pequena distância Euclidiana
+- alta densidade local
+- conectividade
+- separação por regiões de baixa densidade
+- similaridade em uma representação transformada
+
+Diferentes algoritmos formalizam ideias diferentes de agrupamento
+
+---
+
+## Exemplo simples
+
+```{r}
+#| fig-width: 7.2
+#| fig-height: 4.8
+#| out-width: 68%
+#| fig-align: center
+
+ggplot(dados_cluster, aes(x1, x2)) +
+  geom_point(size = 2.5, alpha = .75, color = azul2) +
+  coord_equal() +
+  tema_slide +
+  labs(
+    title = "Há alguma estrutura de grupos?",
+    x = expression(X[1]),
+    y = expression(X[2])
+  )
+```
+
+---
+
+# Revisão — K-means
+
+## A ideia
+
+Queremos particionar as observações em $K$ grupos
+
+$$
+C_1,\ldots,C_K
+$$
+
+e representar cada grupo por um centroide
+
+$$
+\boldsymbol\mu_1,\ldots,\boldsymbol\mu_K
+$$
+
+---
+
+## Função objetivo
+
+K-means procura minimizar a variabilidade dentro dos grupos
+
+$$
+\boxed{
+J(C_1,\ldots,C_K)
+=
+\sum_{k=1}^{K}
+\sum_{i\in C_k}
+\left\|
+\mathbf x_i-\boldsymbol\mu_k
+\right\|^2
+}
+$$
+
+onde
+
+$$
+\boldsymbol\mu_k
+=
+\frac{1}{|C_k|}
+\sum_{i\in C_k}
+\mathbf x_i
+$$
+
+---
+
+## Duas operações
+
+O algoritmo alterna entre:
+
+### Atribuição
+
+$$
+\boxed{
+c_i
+=
+\arg\min_k
+\left\|
+\mathbf x_i-\boldsymbol\mu_k
+\right\|^2
+}
+$$
+
+### Atualização
+
+$$
+\boxed{
+\boldsymbol\mu_k
+=
+\frac{1}{|C_k|}
+\sum_{i:c_i=k}
+\mathbf x_i
+}
+$$
+
+até estabilização
+
+---
+
+## Geometria implícita
+
+Cada observação é atribuída ao centroide mais próximo
+
+Assim, os centroides induzem uma partição do espaço em células de Voronoi
+
+Isso favorece grupos aproximadamente:
+
+- compactos
+- convexos
+- relativamente isotrópicos
+
+---
+
+# Quando K-means encontra dificuldades?
+
+## Estruturas não convexas
+
+Considere:
+
+```{r}
+#| fig-width: 7.2
+#| fig-height: 4.8
+#| out-width: 68%
+#| fig-align: center
+
+ggplot(luas, aes(x1, x2)) +
+  geom_point(size = 2.2, alpha = .8, color = azul2) +
+  coord_equal() +
+  tema_slide +
+  labs(
+    title = "Dois grupos, mas não dois grupos esféricos",
+    x = expression(X[1]),
+    y = expression(X[2])
+  )
+```
+
+---
+
+## O problema não é apenas escolher $K$
+
+Mesmo sabendo que
+
+$$
+K=2
+$$
+
+a geometria Euclidiana em torno de centroides pode não representar a estrutura desejada
+
+Precisamos de uma noção diferente de proximidade:
+
+$$
+\boxed{\text{conectividade local}}
+$$
+
+---
+
+# Revisão — Agrupamento Hierárquico
+
+## Outra estratégia
+
+Métodos hierárquicos não exigem inicialmente uma partição fixa em $K$ grupos
+
+No procedimento aglomerativo:
+
+$$
+n
+\rightarrow
+n-1
+\rightarrow
+n-2
+\rightarrow
+\cdots
+\rightarrow
+1
+$$
+
+grupos são sucessivamente fundidos
+
+---
+
+## Duas escolhas fundamentais
+
+Precisamos definir:
+
+### Distância entre observações
+
+$$
+d(\mathbf x_i,\mathbf x_j)
+$$
+
+### Ligação entre grupos
+
+$$
+D(A,B)
+$$
+
+O resultado depende de ambas
+
+---
+
+## Ward
+
+O método de Ward procura fundir grupos de modo a produzir o menor aumento possível na variabilidade intragrupo
+
+Isso o aproxima conceitualmente do objetivo do K-means
+
+---
+
+## O dendrograma
+
+O método hierárquico produz uma árvore de fusões
+
+O corte do dendrograma em determinada altura gera uma partição
+
+$$
+\boxed{
+\text{dendrograma}
+\rightarrow
+\text{escolha do corte}
+\rightarrow
+K\text{ grupos}
+}
+$$
+
+---
+
+# Quantos grupos?
+
+## Não existe resposta puramente algorítmica
+
+Critérios como silhouette, estabilidade e conhecimento substantivo podem auxiliar a escolha
+
+Para a observação $i$,
+
+$$
+\boxed{
+s(i)
+=
+\frac{b(i)-a(i)}
+{\max\{a(i),b(i)\}}
+}
+$$
+
+Valores altos indicam melhor compatibilidade com o grupo atribuído
+# Por que precisamos de outro método?
+
+## O limite dos centroides
+
+K-means pergunta:
+
+> Qual centroide está mais próximo?
+
+Para estruturas como duas luas, seria mais natural perguntar:
+
+> Quais observações estão conectadas por uma sequência de vizinhos semelhantes?
+
+Essa mudança de perspectiva leva aos **grafos**
+
+# Encontro 13.2 — Agrupamento Espectral
+
+## Dos dados para um grafo
+
+Representamos cada observação por um vértice
+
+$$
+V=\{1,\ldots,n\}
+$$
+
+e conectamos observações consideradas semelhantes
+
+O conjunto de dados passa a ser representado por
+
+$$
+\boxed{
+G=(V,E)
+}
+$$
+
+---
+
+## Matriz de similaridades
+
+Definimos
+
+$$
+W=(w_{ij})
+$$
+
+onde
+
+$$
+w_{ij}\geq0
+$$
+
+mede a similaridade entre as observações $i$ e $j$
+
+Quanto maior $w_{ij}$, mais forte é a conexão
+
+---
+
+## Kernel Gaussiano
+
+Uma escolha comum é
+
+$$
+\boxed{
+w_{ij}
+=
+\exp
+\left(
+-\frac{
+\|\mathbf x_i-\mathbf x_j\|^2
+}{
+2\sigma^2
+}
+\right)
+}
+$$
+
+para pares de observações que decidimos conectar
+
+---
+
+## O papel de $\sigma$
+
+O parâmetro
+
+$$
+\sigma
+$$
+
+controla a escala da vizinhança
+
+### $\sigma$ pequeno
+
+apenas observações muito próximas apresentam forte similaridade
+
+### $\sigma$ grande
+
+conexões permanecem fortes mesmo para observações mais distantes
+
+---
+
+# Como construir o grafo?
+
+## Grafo completo
+
+Todas as observações são conectadas
+
+$$
+w_{ij}>0
+$$
+
+para praticamente todo par
+
+Pode ser computacionalmente caro e incluir relações pouco informativas
+
+---
+
+## $k$ vizinhos mais próximos
+
+Conectamos $i$ a $j$ apenas quando uma observação pertence à vizinhança da outra
+
+$$
+\boxed{
+j\in N_k(i)
+}
+$$
+
+Isso enfatiza a geometria local
+
+---
+
+## $\varepsilon$-vizinhança
+
+Conectamos observações quando
+
+$$
+\boxed{
+\|\mathbf x_i-\mathbf x_j\|
+<
+\varepsilon
+}
+$$
+
+O parâmetro $\varepsilon$ determina a escala de conectividade
+
+---
+
+# Matriz de graus
+
+## Grau de um vértice
+
+Para cada observação,
+
+$$
+\boxed{
+d_i
+=
+\sum_{j=1}^{n}
+w_{ij}
+}
+$$
+
+Construímos a matriz diagonal
+
+$$
+\boxed{
+D
+=
+\operatorname{diag}(d_1,\ldots,d_n)
+}
+$$
+
+---
+
+# Laplaciano do grafo
+
+## Definição
+
+O Laplaciano não normalizado é
+
+$$
+\boxed{
+L=D-W
+}
+$$
+
+Essa matriz contém informação sobre a conectividade do grafo
+
+---
+
+## Por que o Laplaciano é especial?
+
+Para qualquer vetor
+
+$$
+\mathbf f\in\mathbb R^n
+$$
+
+temos
+
+$$
+\boxed{
+\mathbf f^tL\mathbf f
+=
+\frac12
+\sum_{i=1}^{n}
+\sum_{j=1}^{n}
+w_{ij}
+(f_i-f_j)^2
+}
+$$
+
+---
+
+## Interpretação
+
+Se $w_{ij}$ é grande, minimizar
+
+$$
+\mathbf f^tL\mathbf f
+$$
+
+favorece
+
+$$
+f_i\approx f_j
+$$
+
+Portanto, os autovetores associados aos menores autovalores produzem coordenadas que variam suavemente ao longo de regiões fortemente conectadas
+
+---
+
+# Componentes conexas
+
+## Um resultado importante
+
+Se o grafo possui $K$ componentes conexas perfeitamente separadas, então o Laplaciano possui
+
+$$
+\boxed{
+K
+\text{ autovalores iguais a }0
+}
+$$
+
+Os autovetores correspondentes identificam essas componentes
+
+---
+
+## Dados reais
+
+Em geral, os grupos não estão perfeitamente desconectados
+
+Nesse caso, buscamos autovetores associados aos **menores autovalores**
+
+Eles fornecem uma aproximação contínua da estrutura de componentes do grafo
+
+---
+
+# Embedding espectral
+
+## Construção
+
+Considere os autovetores
+
+$$
+\mathbf u_1,\ldots,\mathbf u_K
+$$
+
+associados aos menores autovalores relevantes de $L$
+
+Formamos
+
+$$
+\boxed{
+U
+=
+[
+\mathbf u_1,\ldots,\mathbf u_K
+]
+\in\mathbb R^{n\times K}
+}
+$$
+
+---
+
+## Uma nova representação
+
+A linha $i$ de $U$ fornece uma nova representação da observação $i$
+
+$$
+\boxed{
+\mathbf x_i
+\longrightarrow
+\mathbf z_i
+=
+U_{i\cdot}
+}
+$$
+
+Agora agrupamos os pontos
+
+$$
+\mathbf z_1,\ldots,\mathbf z_n
+$$
+
+---
+
+## E então aparece novamente o K-means
+
+No espaço original:
+
+$$
+\boxed{
+\mathbf x_i
+\in\mathbb R^p
+}
+$$
+
+No espaço espectral:
+
+$$
+\boxed{
+\mathbf z_i
+\in\mathbb R^K
+}
+$$
+
+Aplicamos K-means aos $\mathbf z_i$
+
+---
+
+## A ideia central
+
+O agrupamento espectral não elimina o K-means
+
+Ele muda a representação na qual o K-means é aplicado
+
+$$
+\boxed{
+X
+\rightarrow
+W
+\rightarrow
+L
+\rightarrow
+\text{autovetores}
+\rightarrow
+Z
+\rightarrow
+\text{K-means}
+}
+$$
+
+---
+
+# Por que isso ajuda?
+
+## No espaço original
+
+Duas observações podem estar relativamente distantes em distância Euclidiana
+
+Mas podem pertencer à mesma estrutura se houver uma sequência de fortes conexões locais entre elas
+
+---
+
+## No espaço espectral
+
+A representação é determinada pela conectividade do grafo
+
+Regiões fortemente conectadas tendem a ficar próximas
+
+Regiões fracamente conectadas tendem a se separar
+
+$$
+\boxed{
+\text{distância Euclidiana}
+\rightarrow
+\text{estrutura de conectividade}
+}
+$$
+
+---
+
+# Comparando os métodos
+
+## K-means
+
+Agrupa em torno de centroides
+
+$$
+\boxed{
+\text{proximidade ao centro}
+}
+$$
+
+---
+
+## Hierárquico
+
+Constrói uma sequência de fusões baseada em uma regra de ligação
+
+$$
+\boxed{
+\text{distância entre grupos}
+}
+$$
+
+---
+
+## Espectral
+
+Transforma a estrutura de similaridades antes de agrupar
+
+$$
+\boxed{
+\text{conectividade}
+\rightarrow
+\text{embedding}
+\rightarrow
+\text{partição}
+}
+$$
+
+---
+
+## Visão comparativa
+
+| Aspecto | K-means | Hierárquico | Espectral |
+|---|---|---|---|
+| objeto central | centroides | distâncias/ligações | grafo |
+| grupos não convexos | dificuldade | depende da ligação | adequado |
+| requer $K$ | sim | não inicialmente | geralmente sim |
+| escala dos dados | importante | importante | importante |
+| custo | baixo | moderado/alto | pode ser alto |
+| hiperparâmetros | $K$ | distância, ligação, corte | grafo, escala, $K$ |
+
+---
+
+# Avaliação de agrupamentos
+
+## Sem $Y$, o que significa "melhor"?
+
+Podemos avaliar:
+
+- compactação e separação
+- silhouette
+- estabilidade frente a reamostragem e hiperparâmetros
+- interpretabilidade substantiva
+
+Se houver rótulos externos não usados no ajuste, medidas como ARI podem comparar partições
+
+$$
+\boxed{
+\text{estrutura matemática}
+\neq
+\text{necessariamente estrutura substantiva}
+}
+$$
+# Síntese da Semana 13
+
+## K-means
+
+$$
+\boxed{
+\min
+\sum_{k=1}^{K}
+\sum_{i\in C_k}
+\|
+\mathbf x_i-\boldsymbol\mu_k
+\|^2
+}
+$$
+
+É eficiente, mas sua geometria favorece grupos compactos em torno de centroides
+
+---
+
+## Hierárquico
+
+$$
+\boxed{
+\text{distância}
++
+\text{ligação}
+\rightarrow
+\text{dendrograma}
+}
+$$
+
+Produz uma estrutura de agrupamentos em múltiplas escalas
+
+---
+
+## Agrupamento espectral
+
+$$
+\boxed{
+X
+\rightarrow
+W
+\rightarrow
+D
+\rightarrow
+L
+\rightarrow
+U
+\rightarrow
+K\text{-means}
+}
+$$
+
+Troca a geometria original por uma representação baseada em conectividade
+
+---
+
+## Mensagem central
+
+Métodos de agrupamento diferem principalmente pela noção de estrutura que procuram preservar
+
+$$
+\boxed{
+\text{centroides}
+\qquad
+\text{distâncias}
+\qquad
+\text{conectividade}
+}
+$$
+
+---
+
+## Próxima semana
+

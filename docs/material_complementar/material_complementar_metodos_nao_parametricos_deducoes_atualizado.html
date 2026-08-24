@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Métodos Não Paramétricos: Deduções Matemáticas">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Parte I : Regressão</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#material-complementar" id="toc-material-complementar" class="nav-link active" data-scroll-target="#material-complementar">Material Complementar</a></li>
+  <li><a href="#splines" id="toc-splines" class="nav-link" data-scroll-target="#splines">1. Splines</a>
+  <ul class="collapse">
+  <li><a href="#expansão-em-funções-de-base" id="toc-expansão-em-funções-de-base" class="nav-link" data-scroll-target="#expansão-em-funções-de-base">Expansão em funções de base</a></li>
+  <li><a href="#dedução-de-mínimos-quadrados" id="toc-dedução-de-mínimos-quadrados" class="nav-link" data-scroll-target="#dedução-de-mínimos-quadrados">Dedução de mínimos quadrados</a></li>
+  <li><a href="#smoothing-spline" id="toc-smoothing-spline" class="nav-link" data-scroll-target="#smoothing-spline">Smoothing spline</a></li>
+  </ul></li>
+  <li><a href="#knn" id="toc-knn" class="nav-link" data-scroll-target="#knn">2. KNN</a>
+  <ul class="collapse">
+  <li><a href="#estimador" id="toc-estimador" class="nav-link" data-scroll-target="#estimador">Estimador</a></li>
+  <li><a href="#variância" id="toc-variância" class="nav-link" data-scroll-target="#variância">Variância</a></li>
+  </ul></li>
+  <li><a href="#nadarayawatson" id="toc-nadarayawatson" class="nav-link" data-scroll-target="#nadarayawatson">3. Nadaraya–Watson</a>
+  <ul class="collapse">
+  <li><a href="#problema-de-mínimos-quadrados-local" id="toc-problema-de-mínimos-quadrados-local" class="nav-link" data-scroll-target="#problema-de-mínimos-quadrados-local">Problema de mínimos quadrados local</a></li>
+  <li><a href="#dedução" id="toc-dedução" class="nav-link" data-scroll-target="#dedução">Dedução</a></li>
+  </ul></li>
+  <li><a href="#séries-ortogonais" id="toc-séries-ortogonais" class="nav-link" data-scroll-target="#séries-ortogonais">4. Séries ortogonais</a>
+  <ul class="collapse">
+  <li><a href="#representação" id="toc-representação" class="nav-link" data-scroll-target="#representação">Representação</a></li>
+  <li><a href="#coeficientes" id="toc-coeficientes" class="nav-link" data-scroll-target="#coeficientes">Coeficientes</a></li>
+  <li><a href="#coeficientes-1" id="toc-coeficientes-1" class="nav-link" data-scroll-target="#coeficientes-1">Coeficientes</a></li>
+  </ul></li>
+  <li><a href="#regressão-polinomial-local" id="toc-regressão-polinomial-local" class="nav-link" data-scroll-target="#regressão-polinomial-local">5. Regressão polinomial local</a>
+  <ul class="collapse">
+  <li><a href="#forma-matricial" id="toc-forma-matricial" class="nav-link" data-scroll-target="#forma-matricial">Forma matricial</a></li>
+  <li><a href="#dedução-1" id="toc-dedução-1" class="nav-link" data-scroll-target="#dedução-1">Dedução</a></li>
+  </ul></li>
+  <li><a href="#rkhs" id="toc-rkhs" class="nav-link" data-scroll-target="#rkhs">6. RKHS</a>
+  <ul class="collapse">
+  <li><a href="#propriedade-reprodutora" id="toc-propriedade-reprodutora" class="nav-link" data-scroll-target="#propriedade-reprodutora">Propriedade reprodutora</a></li>
+  <li><a href="#matriz-de-gram" id="toc-matriz-de-gram" class="nav-link" data-scroll-target="#matriz-de-gram">Matriz de Gram</a></li>
+  <li><a href="#representer-dedução-essencial" id="toc-representer-dedução-essencial" class="nav-link" data-scroll-target="#representer-dedução-essencial">Representer: dedução essencial</a></li>
+  <li><a href="#representer-dedução-essencial-1" id="toc-representer-dedução-essencial-1" class="nav-link" data-scroll-target="#representer-dedução-essencial-1">Representer: dedução essencial</a></li>
+  <li><a href="#representer-dedução-essencial-2" id="toc-representer-dedução-essencial-2" class="nav-link" data-scroll-target="#representer-dedução-essencial-2">Representer: dedução essencial</a></li>
+  <li><a href="#solução-para-perda-quadrática" id="toc-solução-para-perda-quadrática" class="nav-link" data-scroll-target="#solução-para-perda-quadrática">Solução para perda quadrática</a></li>
+  </ul></li>
+  <li><a href="#árvores" id="toc-árvores" class="nav-link" data-scroll-target="#árvores">7. Árvores</a>
+  <ul class="collapse">
+  <li><a href="#melhor-constante-numa-folha" id="toc-melhor-constante-numa-folha" class="nav-link" data-scroll-target="#melhor-constante-numa-folha">Melhor constante numa folha</a></li>
+  <li><a href="#melhor-split" id="toc-melhor-split" class="nav-link" data-scroll-target="#melhor-split">Melhor split</a></li>
+  <li><a href="#poda" id="toc-poda" class="nav-link" data-scroll-target="#poda">Poda</a></li>
+  </ul></li>
+  <li><a href="#bagging-e-random-forest" id="toc-bagging-e-random-forest" class="nav-link" data-scroll-target="#bagging-e-random-forest">8. Bagging e Random Forest</a>
+  <ul class="collapse">
+  <li><a href="#variância-da-média-correlacionada" id="toc-variância-da-média-correlacionada" class="nav-link" data-scroll-target="#variância-da-média-correlacionada">Variância da média correlacionada</a></li>
+  <li><a href="#variância-da-média-correlacionada-1" id="toc-variância-da-média-correlacionada-1" class="nav-link" data-scroll-target="#variância-da-média-correlacionada-1">Variância da média correlacionada</a></li>
+  <li><a href="#limite" id="toc-limite" class="nav-link" data-scroll-target="#limite">Limite</a></li>
+  </ul></li>
+  <li><a href="#boosting" id="toc-boosting" class="nav-link" data-scroll-target="#boosting">9. Boosting</a>
+  <ul class="collapse">
+  <li><a href="#modelo-inicial" id="toc-modelo-inicial" class="nav-link" data-scroll-target="#modelo-inicial">Modelo inicial</a></li>
+  <li><a href="#modelo-inicial-1" id="toc-modelo-inicial-1" class="nav-link" data-scroll-target="#modelo-inicial-1">Modelo inicial</a></li>
+  <li><a href="#resíduo-como-gradiente-negativo" id="toc-resíduo-como-gradiente-negativo" class="nav-link" data-scroll-target="#resíduo-como-gradiente-negativo">Resíduo como gradiente negativo</a></li>
+  <li><a href="#atualização-funcional" id="toc-atualização-funcional" class="nav-link" data-scroll-target="#atualização-funcional">Atualização funcional</a></li>
+  </ul></li>
+  <li><a href="#redes-neurais" id="toc-redes-neurais" class="nav-link" data-scroll-target="#redes-neurais">10. Redes Neurais</a>
+  <ul class="collapse">
+  <li><a href="#notação-da-rede" id="toc-notação-da-rede" class="nav-link" data-scroll-target="#notação-da-rede">Notação da rede</a></li>
+  <li><a href="#notação-da-rede-1" id="toc-notação-da-rede-1" class="nav-link" data-scroll-target="#notação-da-rede-1">Notação da rede</a></li>
+  <li><a href="#camada-de-saída-para-regressão" id="toc-camada-de-saída-para-regressão" class="nav-link" data-scroll-target="#camada-de-saída-para-regressão">Camada de saída para regressão</a></li>
+  <li><a href="#camada-de-saída-para-regressão-1" id="toc-camada-de-saída-para-regressão-1" class="nav-link" data-scroll-target="#camada-de-saída-para-regressão-1">Camada de saída para regressão</a></li>
+  <li><a href="#treinamento" id="toc-treinamento" class="nav-link" data-scroll-target="#treinamento">Treinamento</a></li>
+  <li><a href="#treinamento-1" id="toc-treinamento-1" class="nav-link" data-scroll-target="#treinamento-1">Treinamento</a></li>
+  <li><a href="#gradiente-descendente" id="toc-gradiente-descendente" class="nav-link" data-scroll-target="#gradiente-descendente">Gradiente descendente</a></li>
+  <li><a href="#backpropagation-camada-de-saída" id="toc-backpropagation-camada-de-saída" class="nav-link" data-scroll-target="#backpropagation-camada-de-saída">Backpropagation: camada de saída</a></li>
+  <li><a href="#backpropagation-camada-de-saída-1" id="toc-backpropagation-camada-de-saída-1" class="nav-link" data-scroll-target="#backpropagation-camada-de-saída-1">Backpropagation: camada de saída</a></li>
+  <li><a href="#backpropagation-camada-oculta" id="toc-backpropagation-camada-oculta" class="nav-link" data-scroll-target="#backpropagation-camada-oculta">Backpropagation: camada oculta</a></li>
+  <li><a href="#backpropagation-camada-oculta-1" id="toc-backpropagation-camada-oculta-1" class="nav-link" data-scroll-target="#backpropagation-camada-oculta-1">Backpropagation: camada oculta</a></li>
+  <li><a href="#notação-com-delta" id="toc-notação-com-delta" class="nav-link" data-scroll-target="#notação-com-delta">Notação com <span class="math inline">\(\delta\)</span></a></li>
+  <li><a href="#notação-com-delta-1" id="toc-notação-com-delta-1" class="nav-link" data-scroll-target="#notação-com-delta-1">Notação com <span class="math inline">\(\delta\)</span></a></li>
+  <li><a href="#atualização-dos-parâmetros" id="toc-atualização-dos-parâmetros" class="nav-link" data-scroll-target="#atualização-dos-parâmetros">Atualização dos parâmetros</a></li>
+  <li><a href="#atualização-dos-parâmetros-1" id="toc-atualização-dos-parâmetros-1" class="nav-link" data-scroll-target="#atualização-dos-parâmetros-1">Atualização dos parâmetros</a></li>
+  <li><a href="#regularização-e-hiperparâmetros" id="toc-regularização-e-hiperparâmetros" class="nav-link" data-scroll-target="#regularização-e-hiperparâmetros">Regularização e hiperparâmetros</a></li>
+  <li><a href="#regularização-e-hiperparâmetros-1" id="toc-regularização-e-hiperparâmetros-1" class="nav-link" data-scroll-target="#regularização-e-hiperparâmetros-1">Regularização e hiperparâmetros</a></li>
+  </ul></li>
+  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese">Síntese</a>
+  <ul class="collapse">
+  <li><a href="#estrutura-comum" id="toc-estrutura-comum" class="nav-link" data-scroll-target="#estrutura-comum">Estrutura comum</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/material_complementar/material_complementar_metodos_nao_parametricos_deducoes_atualizado.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="material_complementar_metodos_nao_parametricos_deducoes_atualizado.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Parte I : Regressão</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Métodos Não Paramétricos: Deduções Matemáticas</span></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="material-complementar" class="level1">
+<h1>Material Complementar</h1>
+</section>
+<section id="splines" class="level1">
+<h1>1. Splines</h1>
+<section id="expansão-em-funções-de-base" class="level2">
+<h2 class="anchored" data-anchor-id="expansão-em-funções-de-base">Expansão em funções de base</h2>
+<p><span class="math display">\[
+f(x)=\sum_{j=1}^{M}\beta_jb_j(x)
+\]</span></p>
+<p>Definindo <span class="math inline">\(B_{ij}=b_j(x_i)\)</span>: <span class="math display">\[
+\mathbf f=\mathbf B\boldsymbol\beta
+\]</span></p>
+<p>Minimizamos: <span class="math display">\[
+Q(\beta)=
+\|\mathbf y-\mathbf B\beta\|^2
+\]</span></p>
+</section>
+<section id="dedução-de-mínimos-quadrados" class="level2">
+<h2 class="anchored" data-anchor-id="dedução-de-mínimos-quadrados">Dedução de mínimos quadrados</h2>
+<p><span class="math display">\[
+Q(\beta)=
+(\mathbf y-\mathbf B\beta)^\top
+(\mathbf y-\mathbf B\beta)
+\]</span></p>
+<p>Então: <span class="math display">\[
+\nabla Q=-2\mathbf B^\top(\mathbf y-\mathbf B\beta)
+\]</span></p>
+<p>Igualando a zero: <span class="math display">\[
+\mathbf B^\top\mathbf B\widehat\beta
+=
+\mathbf B^\top\mathbf y
+\]</span></p>
+<p>Logo: <span class="math display">\[
+\boxed{
+\widehat\beta=
+(\mathbf B^\top\mathbf B)^{-1}\mathbf B^\top\mathbf y
+}
+\]</span></p>
+<p>quando a inversa existe.</p>
+</section>
+<section id="smoothing-spline" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-spline">Smoothing spline</h2>
+<p>O problema é: <span class="math display">\[
+\boxed{
+\min_f
+\left\{
+\sum_i[y_i-f(x_i)]^2+
+\lambda\int[f''(t)]^2dt
+\right\}
+}
+\]</span></p>
+<p>O primeiro termo mede ajuste e o segundo penaliza curvatura.</p>
+<p>Sob condições usuais, a solução é um natural cubic spline com nós nos valores observados de <span class="math inline">\(x\)</span>.</p>
+</section>
+</section>
+<section id="knn" class="level1">
+<h1>2. KNN</h1>
+<section id="estimador" class="level2">
+<h2 class="anchored" data-anchor-id="estimador">Estimador</h2>
+<p><span class="math display">\[
+\widehat r_K(x)
+=
+\frac1K\sum_{i\in N_K(x)}Y_i
+\]</span></p>
+<p>Condicionalmente aos <span class="math inline">\(X_i\)</span>: <span class="math display">\[
+E[\widehat r_K(x)\mid X]
+=
+\frac1K\sum_{i\in N_K(x)}r(X_i)
+\]</span></p>
+</section>
+<section id="variância" class="level2">
+<h2 class="anchored" data-anchor-id="variância">Variância</h2>
+<p>Se <span class="math inline">\(Var(Y_i\mid X_i)=\sigma^2\)</span> e os erros são condicionalmente independentes: <span class="math display">\[
+Var[\widehat r_K(x)\mid X]
+=
+\frac1{K^2}\sum_{i\in N_K(x)}\sigma^2
+\]</span></p>
+<p>Portanto: <span class="math display">\[
+\boxed{
+Var[\widehat r_K(x)\mid X]=\frac{\sigma^2}{K}
+}
+\]</span></p>
+<p>no caso homocedástico.</p>
+</section>
+</section>
+<section id="nadarayawatson" class="level1">
+<h1>3. Nadaraya–Watson</h1>
+<section id="problema-de-mínimos-quadrados-local" class="level2">
+<h2 class="anchored" data-anchor-id="problema-de-mínimos-quadrados-local">Problema de mínimos quadrados local</h2>
+<p>Use: <span class="math display">\[
+w_i(x)=K\left(\frac{x_i-x}{h}\right)
+\]</span></p>
+<p>Procure: <span class="math display">\[
+\widehat\beta_0
+=
+\arg\min_{\beta_0}
+\sum_iw_i(x)(y_i-\beta_0)^2
+\]</span></p>
+</section>
+<section id="dedução" class="level2">
+<h2 class="anchored" data-anchor-id="dedução">Dedução</h2>
+<p><span class="math display">\[
+\frac{\partial Q}{\partial\beta_0}
+=
+-2\sum_iw_i(y_i-\beta_0)=0
+\]</span></p>
+<p>Assim: <span class="math display">\[
+\sum_iw_iy_i
+=
+\beta_0\sum_iw_i
+\]</span></p>
+<p>Logo: <span class="math display">\[
+\boxed{
+\widehat r_h(x)
+=
+\frac{\sum_iw_i(x)y_i}
+{\sum_iw_i(x)}
+}
+\]</span></p>
+</section>
+</section>
+<section id="séries-ortogonais" class="level1">
+<h1>4. Séries ortogonais</h1>
+<section id="representação" class="level2">
+<h2 class="anchored" data-anchor-id="representação">Representação</h2>
+<p><span class="math display">\[
+f(x)=\sum_{j=1}^{\infty}\theta_j\phi_j(x),
+\]</span></p>
+<p>com: <span class="math display">\[
+\langle\phi_j,\phi_k\rangle=\delta_{jk}
+\]</span></p>
+</section>
+<section id="coeficientes" class="level2">
+<h2 class="anchored" data-anchor-id="coeficientes">Coeficientes</h2>
+<p><span class="math display">\[
+\langle f,\phi_k\rangle
+=
+\sum_j\theta_j
+\langle\phi_j,\phi_k\rangle
+=
+\theta_k
+\]</span></p>
+<p>Portanto: <span class="math display">\[
+\boxed{\theta_k=\langle f,\phi_k\rangle}
+\]</span></p>
+</section>
+<section id="coeficientes-1" class="level2">
+<h2 class="anchored" data-anchor-id="coeficientes-1">Coeficientes</h2>
+<p>Na formulação de regressão apropriada: <span class="math display">\[
+\theta_j=E[Y\phi_j(X)]
+\]</span></p>
+<p>Estimamos: <span class="math display">\[
+\boxed{
+\widehat\theta_j=
+\frac1n\sum_iY_i\phi_j(X_i)
+}
+\]</span></p>
+<p>e truncamos: <span class="math display">\[
+\widehat f_m(x)=
+\sum_{j=1}^{m}\widehat\theta_j\phi_j(x)
+\]</span></p>
+</section>
+</section>
+<section id="regressão-polinomial-local" class="level1">
+<h1>5. Regressão polinomial local</h1>
+<section id="forma-matricial" class="level2">
+<h2 class="anchored" data-anchor-id="forma-matricial">Forma matricial</h2>
+<p>Em torno de <span class="math inline">\(x_0\)</span>: <span class="math display">\[
+r(x_i)\approx
+\sum_{j=0}^{d}\beta_j(x_i-x_0)^j
+\]</span></p>
+<p>Defina <span class="math inline">\(\mathbf X_{x_0}\)</span> com colunas <span class="math display">\[
+1,(x_i-x_0),\ldots,(x_i-x_0)^d
+\]</span> e: <span class="math display">\[
+\mathbf W_{x_0}
+=
+diag\{K_h(x_i-x_0)\}
+\]</span></p>
+</section>
+<section id="dedução-1" class="level2">
+<h2 class="anchored" data-anchor-id="dedução-1">Dedução</h2>
+<p><span class="math display">\[
+Q(\beta)=
+(\mathbf y-\mathbf X\beta)^\top
+\mathbf W
+(\mathbf y-\mathbf X\beta)
+\]</span></p>
+<p><span class="math display">\[
+\nabla Q=
+-2\mathbf X^\top\mathbf W
+(\mathbf y-\mathbf X\beta)=0
+\]</span></p>
+<p>Logo: <span class="math display">\[
+\boxed{
+\widehat\beta(x_0)
+=
+(\mathbf X^\top\mathbf W\mathbf X)^{-1}
+\mathbf X^\top\mathbf W\mathbf y
+}
+\]</span></p>
+<p>e: <span class="math display">\[
+\boxed{\widehat r(x_0)=\widehat\beta_0(x_0)}
+\]</span></p>
+</section>
+</section>
+<section id="rkhs" class="level1">
+<h1>6. RKHS</h1>
+<section id="propriedade-reprodutora" class="level2">
+<h2 class="anchored" data-anchor-id="propriedade-reprodutora">Propriedade reprodutora</h2>
+<p>Em um RKHS <span class="math inline">\(\mathcal H\)</span>: <span class="math display">\[
+K_x(\cdot)=K(\cdot,x)
+\]</span> e: <span class="math display">\[
+\boxed{
+f(x)=\langle f,K_x\rangle_{\mathcal H}
+}
+\]</span></p>
+</section>
+<section id="matriz-de-gram" class="level2">
+<h2 class="anchored" data-anchor-id="matriz-de-gram">Matriz de Gram</h2>
+<p>Para kernel positivo semidefinido: <span class="math display">\[
+\sum_{i,j}c_ic_jK(x_i,x_j)\ge0
+\]</span></p>
+<p>Logo: <span class="math display">\[
+\mathbf K_{ij}=K(x_i,x_j)
+\]</span> é positiva semidefinida.</p>
+</section>
+<section id="representer-dedução-essencial" class="level2">
+<h2 class="anchored" data-anchor-id="representer-dedução-essencial">Representer: dedução essencial</h2>
+<p>Considere: <span class="math display">\[
+\min_{f\in\mathcal H}
+\left[
+\sum_iL(y_i,f(x_i))
++
+\lambda\|f\|_{\mathcal H}^2
+\right]
+\]</span></p>
+<p>Decomponha: <span class="math display">\[
+f=f_\parallel+f_\perp,
+\]</span> onde <span class="math inline">\(f_\parallel\)</span> pertence ao span de <span class="math display">\[
+K(\cdot,x_1),\ldots,K(\cdot,x_n)
+\]</span></p>
+</section>
+<section id="representer-dedução-essencial-1" class="level2">
+<h2 class="anchored" data-anchor-id="representer-dedução-essencial-1">Representer: dedução essencial</h2>
+<p>Como: <span class="math display">\[
+f_\perp(x_i)
+=
+\langle f_\perp,K(\cdot,x_i)\rangle=0,
+\]</span> a perda depende apenas de <span class="math inline">\(f_\parallel\)</span>.</p>
+<p>Além disso: <span class="math display">\[
+\|f\|^2=
+\|f_\parallel\|^2+
+\|f_\perp\|^2
+\]</span></p>
+</section>
+<section id="representer-dedução-essencial-2" class="level2">
+<h2 class="anchored" data-anchor-id="representer-dedução-essencial-2">Representer: dedução essencial</h2>
+<p>Logo qualquer <span class="math inline">\(f_\perp\neq0\)</span> aumenta a penalização sem melhorar a perda.</p>
+<p>Portanto: <span class="math display">\[
+\boxed{
+\widehat f(\cdot)
+=
+\sum_{i=1}^{n}\alpha_iK(\cdot,x_i)
+}
+\]</span></p>
+</section>
+<section id="solução-para-perda-quadrática" class="level2">
+<h2 class="anchored" data-anchor-id="solução-para-perda-quadrática">Solução para perda quadrática</h2>
+<p>O critério torna-se: <span class="math display">\[
+\|\mathbf y-\mathbf K\alpha\|^2+
+\lambda\alpha^\top\mathbf K\alpha
+\]</span></p>
+<p>Derivando: <span class="math display">\[
+-2\mathbf K(\mathbf y-\mathbf K\alpha)
++
+2\lambda\mathbf K\alpha=0
+\]</span></p>
+<p>Sob condições apropriadas: <span class="math display">\[
+\boxed{
+\widehat\alpha=
+(\mathbf K+\lambda\mathbf I)^{-1}\mathbf y
+}
+\]</span></p>
+</section>
+</section>
+<section id="árvores" class="level1">
+<h1>7. Árvores</h1>
+<section id="melhor-constante-numa-folha" class="level2">
+<h2 class="anchored" data-anchor-id="melhor-constante-numa-folha">Melhor constante numa folha</h2>
+<p><span class="math display">\[
+c_m^*
+=
+\arg\min_c
+\sum_{i:x_i\in R_m}(y_i-c)^2
+\]</span></p>
+<p>Derivando: <span class="math display">\[
+-2\sum_{i:x_i\in R_m}(y_i-c)=0
+\]</span></p>
+<p>Logo: <span class="math display">\[
+\boxed{c_m^*=\bar y_{R_m}}
+\]</span></p>
+</section>
+<section id="melhor-split" class="level2">
+<h2 class="anchored" data-anchor-id="melhor-split">Melhor split</h2>
+<p>Para: <span class="math display">\[
+R_1(j,s)=\{x:x_j\le s\},
+\qquad
+R_2(j,s)=\{x:x_j&gt;s\},
+\]</span></p>
+<p>escolhemos: <span class="math display">\[
+\boxed{
+(j^*,s^*)=
+\arg\min_{j,s}
+\left[
+\sum_{i\in R_1}(y_i-\bar y_{R_1})^2+
+\sum_{i\in R_2}(y_i-\bar y_{R_2})^2
+\right]
+}
+\]</span></p>
+</section>
+<section id="poda" class="level2">
+<h2 class="anchored" data-anchor-id="poda">Poda</h2>
+<p><span class="math display">\[
+\boxed{
+R_\alpha(T)=RSS(T)+\alpha|T|
+}
+\]</span></p>
+<p>é novamente a estrutura: <span class="math display">\[
+\text{ajuste}+\text{penalização}
+\]</span></p>
+</section>
+</section>
+<section id="bagging-e-random-forest" class="level1">
+<h1>8. Bagging e Random Forest</h1>
+<section id="variância-da-média-correlacionada" class="level2">
+<h2 class="anchored" data-anchor-id="variância-da-média-correlacionada">Variância da média correlacionada</h2>
+<p>Se: <span class="math display">\[
+\bar G_B=\frac1B\sum_bG_b,
+\]</span> <span class="math display">\[
+Var(G_b)=\sigma_G^2,
+\]</span> e: <span class="math display">\[
+Corr(G_b,G_{b'})=\rho,
+\]</span></p>
+</section>
+<section id="variância-da-média-correlacionada-1" class="level2">
+<h2 class="anchored" data-anchor-id="variância-da-média-correlacionada-1">Variância da média correlacionada</h2>
+<p>então: <span class="math display">\[
+Var(\bar G_B)
+=
+\frac1{B^2}
+\left[
+B\sigma_G^2+
+B(B-1)\rho\sigma_G^2
+\right]
+\]</span></p>
+<p>Logo: <span class="math display">\[
+\boxed{
+Var(\bar G_B)
+=
+\rho\sigma_G^2+
+\frac{1-\rho}{B}\sigma_G^2
+}
+\]</span></p>
+</section>
+<section id="limite" class="level2">
+<h2 class="anchored" data-anchor-id="limite">Limite</h2>
+<p><span class="math display">\[
+B\to\infty
+\quad\Rightarrow\quad
+\boxed{
+Var(\bar G_B)\to\rho\sigma_G^2
+}
+\]</span></p>
+<p>Isso justifica a Random Forest: além de aumentar <span class="math inline">\(B\)</span>, queremos reduzir <span class="math inline">\(\rho\)</span> por aleatorização das covariáveis candidatas em cada split.</p>
+</section>
+</section>
+<section id="boosting" class="level1">
+<h1>9. Boosting</h1>
+<section id="modelo-inicial" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-inicial">Modelo inicial</h2>
+<p>Para: <span class="math display">\[
+L(y,F)=\frac12(y-F)^2,
+\]</span></p>
+<p><span class="math display">\[
+F_0=
+\arg\min_c\sum_i\frac12(y_i-c)^2
+\]</span></p>
+<p>Derivando: <span class="math display">\[
+-\sum_i(y_i-c)=0,
+\]</span></p>
+</section>
+<section id="modelo-inicial-1" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-inicial-1">Modelo inicial</h2>
+<p>portanto: <span class="math display">\[
+\boxed{F_0=\bar y}
+\]</span></p>
+</section>
+<section id="resíduo-como-gradiente-negativo" class="level2">
+<h2 class="anchored" data-anchor-id="resíduo-como-gradiente-negativo">Resíduo como gradiente negativo</h2>
+<p><span class="math display">\[
+\frac{\partial L}{\partial F}
+=
+F-y
+\]</span></p>
+<p>Logo: <span class="math display">\[
+\boxed{
+-\frac{\partial L}{\partial F}=y-F
+}
+\]</span></p>
+</section>
+<section id="atualização-funcional" class="level2">
+<h2 class="anchored" data-anchor-id="atualização-funcional">Atualização funcional</h2>
+<p>Para perda geral: <span class="math display">\[
+r_{im}
+=
+-
+\left[
+\frac{\partial L(y_i,F(x_i))}
+{\partial F(x_i)}
+\right]_{F=F_{m-1}}
+\]</span></p>
+<p>Ajustamos: <span class="math display">\[
+h_m(x)\approx r_{im}
+\]</span> e atualizamos: <span class="math display">\[
+\boxed{
+F_m(x)=F_{m-1}(x)+\lambda h_m(x)
+}
+\]</span></p>
+</section>
+</section>
+<section id="redes-neurais" class="level1">
+<h1>10. Redes Neurais</h1>
+<section id="notação-da-rede" class="level2">
+<h2 class="anchored" data-anchor-id="notação-da-rede">Notação da rede</h2>
+<p>Considere uma rede com camada de entrada <span class="math inline">\(j=0\)</span>, uma camada oculta <span class="math inline">\(j=1\)</span> e uma camada de saída <span class="math inline">\(j=2\)</span></p>
+<p>A saída do neurônio <span class="math inline">\(i\)</span> da camada <span class="math inline">\(j\)</span> será denotada por</p>
+<p><span class="math display">\[
+x_i^j
+\]</span></p>
+<p>Na camada de entrada,</p>
+<p><span class="math display">\[
+x_i^0=x_i
+\]</span></p>
+</section>
+<section id="notação-da-rede-1" class="level2">
+<h2 class="anchored" data-anchor-id="notação-da-rede-1">Notação da rede</h2>
+<p>Para o neurônio <span class="math inline">\(j\)</span> da camada oculta, definimos primeiro a combinação linear</p>
+<p><span class="math display">\[
+z_j^1
+=
+\beta_{0,j}^{(0)}
++
+\sum_{i=1}^{p}\beta_{i,j}^{(0)}x_i^0
+\]</span></p>
+<p>A saída desse neurônio é</p>
+<p><span class="math display">\[
+\boxed{x_j^1=f(z_j^1)}
+\]</span></p>
+<p>em que <span class="math inline">\(f\)</span> é a função de ativação</p>
+</section>
+<section id="camada-de-saída-para-regressão" class="level2">
+<h2 class="anchored" data-anchor-id="camada-de-saída-para-regressão">Camada de saída para regressão</h2>
+<p>Suponha que a camada oculta possua <span class="math inline">\(H\)</span> neurônios. Para regressão, usamos ativação linear na saída</p>
+<p><span class="math display">\[
+\boxed{
+g_\beta(\mathbf x)
+=
+x_1^2
+=
+\beta_{0,1}^{(1)}
++
+\sum_{j=1}^{H}\beta_{j,1}^{(1)}x_j^1
+}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\widehat y=g_\beta(\mathbf x)=x_1^2
+\]</span></p>
+</section>
+<section id="camada-de-saída-para-regressão-1" class="level2">
+<h2 class="anchored" data-anchor-id="camada-de-saída-para-regressão-1">Camada de saída para regressão</h2>
+<p>Substituindo a expressão da camada oculta,</p>
+<p><span class="math display">\[
+\boxed{
+g_\beta(\mathbf x)
+=
+\beta_{0,1}^{(1)}
++
+\sum_{j=1}^{H}
+\beta_{j,1}^{(1)}
+f\left(
+\beta_{0,j}^{(0)}
++
+\sum_{i=1}^{p}\beta_{i,j}^{(0)}x_i^0
+\right)
+}
+\]</span></p>
+<p>A não linearidade do modelo é introduzida pelas funções de ativação das camadas ocultas</p>
+</section>
+<section id="treinamento" class="level2">
+<h2 class="anchored" data-anchor-id="treinamento">Treinamento</h2>
+<p>Reunimos todos os pesos e vieses da rede em <span class="math inline">\(\beta\)</span></p>
+<p><span class="math display">\[
+\beta
+=
+\left\{
+\beta_{i,j}^{(0)},
+\beta_{j,1}^{(1)}
+\right\}
+\]</span></p>
+<p>incluindo os interceptos <span class="math inline">\(\beta_{0,j}^{(0)}\)</span> e <span class="math inline">\(\beta_{0,1}^{(1)}\)</span></p>
+<p>Para uma observação <span class="math inline">\((\mathbf x_r,y_r)\)</span>, considere a perda quadrática</p>
+<p><span class="math display">\[
+L_r(\beta)
+=
+\frac12
+\left[y_r-g_\beta(\mathbf x_r)\right]^2
+=
+\frac12(y_r-x_{1,r}^2)^2
+\]</span></p>
+</section>
+<section id="treinamento-1" class="level2">
+<h2 class="anchored" data-anchor-id="treinamento-1">Treinamento</h2>
+<p>A função objetivo é</p>
+<p><span class="math display">\[
+\boxed{
+J(\beta)
+=
+\frac{1}{n}\sum_{r=1}^{n}L_r(\beta)
+=
+\frac{1}{2n}
+\sum_{r=1}^{n}
+\left[y_r-g_\beta(\mathbf x_r)\right]^2
+}
+\]</span></p>
+<p>O treinamento procura</p>
+<p><span class="math display">\[
+\boxed{
+\widehat\beta
+=
+\arg\min_\beta J(\beta)
+}
+\]</span></p>
+<p>Em geral, essa minimização não possui solução analítica fechada, sendo realizada numericamente</p>
+</section>
+<section id="gradiente-descendente" class="level2">
+<h2 class="anchored" data-anchor-id="gradiente-descendente">Gradiente descendente</h2>
+<p>Uma atualização por gradiente descendente tem a forma</p>
+<p><span class="math display">\[
+\boxed{
+\beta^{(t+1)}
+=
+\beta^{(t)}
+-
+\eta\nabla_\beta J\left(\beta^{(t)}\right)
+}
+\]</span></p>
+<p>em que <span class="math inline">\(\eta&gt;0\)</span> é a taxa de aprendizado</p>
+<p>Para realizar essa atualização, precisamos calcular derivadas de <span class="math inline">\(J\)</span> em relação a todos os pesos e vieses da rede</p>
+</section>
+<section id="backpropagation-camada-de-saída" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation-camada-de-saída">Backpropagation: camada de saída</h2>
+<p>Para uma observação, temos</p>
+<p><span class="math display">\[
+L
+=
+\frac12(y-x_1^2)^2
+\]</span></p>
+<p>Como a ativação da saída é linear,</p>
+<p><span class="math display">\[
+\frac{\partial L}{\partial x_1^2}
+=
+x_1^2-y
+\]</span></p>
+<p>Além disso,</p>
+<p><span class="math display">\[
+\frac{\partial x_1^2}{\partial \beta_{j,1}^{(1)}}
+=
+x_j^1
+\]</span></p>
+</section>
+<section id="backpropagation-camada-de-saída-1" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation-camada-de-saída-1">Backpropagation: camada de saída</h2>
+<p>Logo,</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial L}{\partial \beta_{j,1}^{(1)}}
+=
+(x_1^2-y)x_j^1
+}
+\]</span></p>
+<p>Para o intercepto da camada de saída,</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial L}{\partial \beta_{0,1}^{(1)}}
+=
+x_1^2-y
+}
+\]</span></p>
+</section>
+<section id="backpropagation-camada-oculta" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation-camada-oculta">Backpropagation: camada oculta</h2>
+<p>Considere agora o peso <span class="math inline">\(\beta_{i,j}^{(0)}\)</span>, que conecta a entrada <span class="math inline">\(x_i^0\)</span> ao neurônio <span class="math inline">\(x_j^1\)</span> da camada oculta</p>
+<p>O caminho desse parâmetro até a perda é</p>
+<p><span class="math display">\[
+\beta_{i,j}^{(0)}
+\longrightarrow
+z_j^1
+\longrightarrow
+x_j^1
+\longrightarrow
+x_1^2
+\longrightarrow
+L
+\]</span></p>
+<p>Pela regra da cadeia,</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial L}{\partial \beta_{i,j}^{(0)}}
+=
+\frac{\partial L}{\partial x_1^2}
+\frac{\partial x_1^2}{\partial x_j^1}
+\frac{\partial x_j^1}{\partial z_j^1}
+\frac{\partial z_j^1}{\partial \beta_{i,j}^{(0)}}
+}
+\]</span></p>
+</section>
+<section id="backpropagation-camada-oculta-1" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation-camada-oculta-1">Backpropagation: camada oculta</h2>
+<p>Os quatro fatores são</p>
+<p><span class="math display">\[
+\frac{\partial L}{\partial x_1^2} = x_1^2-y
+\qquad
+\frac{\partial x_1^2}{\partial x_j^1}
+=
+\beta_{j,1}^{(1)}
+\qquad
+\frac{\partial x_j^1}{\partial z_j^1}
+=
+f'(z_j^1)
+\qquad
+\frac{\partial z_j^1}{\partial \beta_{i,j}^{(0)}}
+=
+x_i^0
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial L}{\partial \beta_{i,j}^{(0)}}
+=
+\underbrace{(x_1^2-y)}_{\text{erro}}
+\underbrace{\beta_{j,1}^{(1)}}_{\text{peso seguinte}}
+\underbrace{f'(z_j^1)}_{\text{derivada da ativação}}
+\underbrace{x_i^0}_{\text{entrada}}
+}
+\]</span></p>
+<p>Essa expressão mostra como a influência do erro na saída é propagada para um peso da camada anterior</p>
+</section>
+<section id="notação-com-delta" class="level2">
+<h2 class="anchored" data-anchor-id="notação-com-delta">Notação com <span class="math inline">\(\delta\)</span></h2>
+<p>Definimos, para a camada de saída,</p>
+<p><span class="math display">\[
+\boxed{
+\delta_1^2
+=
+\frac{\partial L}{\partial z_1^2}
+=
+x_1^2-y
+}
+\]</span></p>
+<p>Para o neurônio <span class="math inline">\(j\)</span> da camada oculta,</p>
+<p><span class="math display">\[
+\boxed{
+\delta_j^1
+=
+f'(z_j^1)\beta_{j,1}^{(1)}\delta_1^2
+}
+\]</span></p>
+</section>
+<section id="notação-com-delta-1" class="level2">
+<h2 class="anchored" data-anchor-id="notação-com-delta-1">Notação com <span class="math inline">\(\delta\)</span></h2>
+<p>Assim, os gradientes podem ser escritos de forma compacta como</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial L}{\partial \beta_{i,j}^{(0)}}
+=
+\delta_j^1x_i^0
+}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial L}{\partial \beta_{j,1}^{(1)}}
+=
+\delta_1^2x_j^1
+}
+\]</span></p>
+<p>O backpropagation calcula os gradientes; o otimizador utiliza esses gradientes para atualizar os parâmetros</p>
+</section>
+<section id="atualização-dos-parâmetros" class="level2">
+<h2 class="anchored" data-anchor-id="atualização-dos-parâmetros">Atualização dos parâmetros</h2>
+<p>Para os pesos da primeira camada,</p>
+<p><span class="math display">\[
+\boxed{
+\beta_{i,j}^{(0)}
+\leftarrow
+\beta_{i,j}^{(0)}
+-
+\eta
+\frac{\partial J}{\partial \beta_{i,j}^{(0)}}
+}
+\]</span></p>
+<p>Para os pesos da camada de saída,</p>
+<p><span class="math display">\[
+\boxed{
+\beta_{j,1}^{(1)}
+\leftarrow
+\beta_{j,1}^{(1)}
+-
+\eta
+\frac{\partial J}{\partial \beta_{j,1}^{(1)}}
+}
+\]</span></p>
+</section>
+<section id="atualização-dos-parâmetros-1" class="level2">
+<h2 class="anchored" data-anchor-id="atualização-dos-parâmetros-1">Atualização dos parâmetros</h2>
+<p>O treinamento pode ser resumido por</p>
+<p><span class="math display">\[
+\boxed{
+\text{Forward}
+\longrightarrow
+\text{Perda}
+\longrightarrow
+\text{Backpropagation}
+\longrightarrow
+\text{Atualização}
+}
+\]</span></p>
+</section>
+<section id="regularização-e-hiperparâmetros" class="level2">
+<h2 class="anchored" data-anchor-id="regularização-e-hiperparâmetros">Regularização e hiperparâmetros</h2>
+<p>Uma penalização quadrática dos pesos pode ser escrita como</p>
+<p><span class="math display">\[
+\boxed{
+J_\lambda(\beta)
+=
+J(\beta)
++
+\lambda
+\sum_{\ell}\sum_{i,j}
+\left(\beta_{i,j}^{(\ell)}\right)^2
+}
+\]</span></p>
+<p>Além da penalização, a complexidade da rede pode ser controlada pelo número de camadas, número de neurônios, <em>early stopping</em> e <em>dropout</em></p>
+</section>
+<section id="regularização-e-hiperparâmetros-1" class="level2">
+<h2 class="anchored" data-anchor-id="regularização-e-hiperparâmetros-1">Regularização e hiperparâmetros</h2>
+<p>É importante distinguir parâmetros e hiperparâmetros</p>
+<p><span class="math display">\[
+\boxed{
+\beta_{i,j}^{(\ell)}
+\quad\text{são parâmetros aprendidos no treinamento}
+}
+\]</span></p>
+<p>enquanto</p>
+<p><span class="math display">\[
+\boxed{
+H,\quad L,\quad \eta,\quad \lambda,
+\quad \text{batch size},\quad \text{épocas}
+}
+\]</span></p>
+<p>são hiperparâmetros definidos externamente e selecionados com base em validação</p>
+</section>
+</section>
+<section id="síntese" class="level1">
+<h1>Síntese</h1>
+<section id="estrutura-comum" class="level2">
+<h2 class="anchored" data-anchor-id="estrutura-comum">Estrutura comum</h2>
+<p><span class="math display">\[
+\boxed{
+\text{representação flexível}
++
+\text{perda}
++
+\text{controle de complexidade}
++
+\text{validação}
+}
+\]</span></p>
+<p>Este material permite reconstruir matematicamente os resultados usados nas aulas principais sem transformar o tempo presencial em uma sequência de demonstrações.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/material_complementar/material_complementar_metodos_nao_parametricos_deducoes_atualizado.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

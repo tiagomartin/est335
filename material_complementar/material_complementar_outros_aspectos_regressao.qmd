@@ -1,0 +1,666 @@
+---
+title: "Material Complementar"
+subtitle: "<span class='custom-subtitle'>Outros Aspectos de Regressão</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Material Complementar"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+## Sobre este material
+
+O núcleo explicitamente previsto no conteúdo programático para **Outros aspectos de regressão** é:
+
+- Interpretabilidade
+- LIME
+- PDP
+- ICE
+
+Esses conteúdos foram tratados na aula principal
+
+Este arquivo reúne detalhes, limitações e desenvolvimentos matemáticos adicionais que ajudam a compreender melhor as ferramentas
+
+# 1 — PDP como esperança
+
+## Definição populacional
+
+Particione as covariáveis em
+
+$$
+\mathbf X=(X_j,\mathbf X_{-j})
+$$
+
+Para um modelo preditivo fixo $g$, a dependência parcial populacional pode ser escrita como
+
+$$
+\boxed{
+h_j(x)
+=
+E_{\mathbf X_{-j}}
+\left[
+g(x,\mathbf X_{-j})
+\right]
+}
+$$
+
+A esperança é tomada em relação à distribuição marginal das demais covariáveis
+
+---
+
+## Estimador empírico
+
+Substituímos a distribuição de $\mathbf X_{-j}$ por sua distribuição empírica:
+
+$$
+\boxed{
+\widehat h_j(x)
+=
+\frac1n
+\sum_{i=1}^{n}
+\widehat g(x,\mathbf x_{i,-j})
+}
+$$
+
+Essa é exatamente a expressão utilizada para construir o PDP
+
+---
+
+## O que estamos fazendo?
+
+Para cada $x$:
+
+$$
+\mathbf x_{i,-j}
+\longrightarrow
+(x,\mathbf x_{i,-j})
+\longrightarrow
+\widehat g(x,\mathbf x_{i,-j})
+$$
+
+e então calculamos a média
+
+$$
+\boxed{
+\text{PDP}
+=
+\text{integração empírica sobre as demais covariáveis}
+}
+$$
+
+# 2 — PDP em modelos lineares
+
+## Derivação completa
+
+Considere
+
+$$
+g(\mathbf x)
+=
+\beta_0+
+\sum_{k=1}^{p}\beta_kx_k
+$$
+
+Então:
+
+$$
+h_j(x)
+=
+E_{\mathbf X_{-j}}
+\left[
+\beta_0+\beta_jx+\sum_{k\neq j}\beta_kX_k
+\right]
+$$
+
+---
+
+## Aplicando linearidade da esperança
+
+Temos:
+
+$$
+h_j(x)
+=
+\beta_0+
+\beta_jx+
+\sum_{k\neq j}
+\beta_kE[X_k]
+$$
+
+Definindo
+
+$$
+C_j
+=
+\beta_0+
+\sum_{k\neq j}
+\beta_kE[X_k]
+$$
+
+obtemos:
+
+$$
+\boxed{
+h_j(x)=C_j+\beta_jx
+}
+$$
+
+---
+
+## Interpretação
+
+Em um modelo linear sem interações, o PDP não revela uma nova estrutura
+
+Ele simplesmente recupera o efeito linear já presente no modelo
+
+Isso ajuda a entender por que PDP é particularmente útil para modelos cuja forma funcional não é imediatamente visível
+
+# 3 — ICE e interações
+
+## Curva individual
+
+Para a observação $i$:
+
+$$
+h_{j,i}(x)
+=
+g(x,\mathbf x_{i,-j})
+$$
+
+O PDP é
+
+$$
+h_j(x)
+=
+E[h_{j,i}(x)]
+$$
+
+ou, empiricamente,
+
+$$
+\boxed{
+\widehat h_j(x)
+=
+\frac1n\sum_{i=1}^{n}\widehat h_{j,i}(x)
+}
+$$
+
+---
+
+## Modelo sem interação
+
+Considere:
+
+$$
+g(x_1,x_2)
+=
+f_1(x_1)+f_2(x_2)
+$$
+
+Para $X_1$:
+
+$$
+h_{1,i}(x)
+=
+f_1(x)+f_2(x_{i2})
+$$
+
+Todas as curvas possuem a mesma forma e diferem apenas por deslocamentos verticais
+
+---
+
+## Modelo com interação
+
+Agora considere:
+
+$$
+g(x_1,x_2)
+=
+\beta_1x_1+
+\beta_2x_2+
+\beta_{12}x_1x_2
+$$
+
+Para $X_1$:
+
+$$
+h_{1,i}(x)
+=
+\beta_1x+
+\beta_2x_{i2}+
+\beta_{12}xx_{i2}
+$$
+
+---
+
+## Inclinação individual
+
+Derivando em relação a $x$:
+
+$$
+\boxed{
+\frac{\partial h_{1,i}(x)}{\partial x}
+=
+\beta_1+
+\beta_{12}x_{i2}
+}
+$$
+
+Logo, a inclinação da curva ICE depende de $x_{i2}$ quando
+
+$$
+\beta_{12}\neq0
+$$
+
+Essa é a razão matemática pela qual curvas ICE não paralelas podem revelar interações
+
+# 4 — ICE centralizado
+
+## Problema visual
+
+Curvas ICE podem diferir muito em seus níveis iniciais
+
+Isso pode dificultar a comparação de suas formas
+
+Uma alternativa é centralizá-las em um valor de referência $x_0$
+
+---
+
+## Definição
+
+A curva ICE centralizada é
+
+$$
+\boxed{
+h_{j,i}^{\,c}(x)
+=
+h_{j,i}(x)-h_{j,i}(x_0)
+}
+$$
+
+Assim:
+
+$$
+h_{j,i}^{\,c}(x_0)=0
+$$
+
+para todas as observações
+
+---
+
+## Vantagem
+
+A centralização remove diferenças de nível e enfatiza:
+
+- inclinações
+- curvaturas
+- heterogeneidade
+- possíveis interações
+
+Ela altera a visualização, não o modelo ajustado
+
+# 5 — Covariáveis correlacionadas e PDP
+
+## O problema
+
+Suponha que
+
+$$
+X_1\approx X_2
+$$
+
+Ao construir o PDP de $X_1$, podemos substituir $X_1$ por valores incompatíveis com o $X_2$ observado
+
+Por exemplo, o procedimento pode avaliar
+
+$$
+g(X_1=\text{muito alto},X_2=\text{muito baixo})
+$$
+
+mesmo que essa combinação praticamente não exista nos dados
+
+---
+
+## Consequência
+
+O modelo pode ser consultado em regiões onde há pouco suporte amostral
+
+$$
+\boxed{
+\text{PDP pode envolver extrapolação implícita}
+}
+$$
+
+Isso exige cuidado especialmente quando as covariáveis apresentam forte dependência
+
+---
+
+## O que o PDP não estima automaticamente?
+
+Em geral,
+
+$$
+E[g(x,\mathbf X_{-j})]
+$$
+
+não é igual a
+
+$$
+E[g(\mathbf X)\mid X_j=x]
+$$
+
+A primeira expressão usa a distribuição **marginal** das demais covariáveis
+
+A segunda respeita sua distribuição **condicional** dado $X_j=x$
+
+# 6 — LIME como problema de otimização
+
+## Notação geral
+
+Seja:
+
+- $\widehat g$ o modelo complexo
+- $\mathbf x^*$ a observação a explicar
+- $q$ um modelo interpretável local
+- $\pi_{\mathbf x^*}$ uma medida de proximidade
+
+Podemos representar a ideia do LIME por
+
+$$
+\boxed{
+q^*
+=
+\arg\min_{q\in\mathcal G}
+\left\{
+\mathcal L(
+\widehat g,q,\pi_{\mathbf x^*}
+)
++
+\Omega(q)
+\right\}
+}
+$$
+
+---
+
+## Fidelidade local
+
+O termo
+
+$$
+\mathcal L(
+\widehat g,q,\pi_{\mathbf x^*}
+)
+$$
+
+mede o quanto $q$ reproduz as predições de $\widehat g$ perto de $\mathbf x^*$
+
+Para perturbações $\mathbf z_b$:
+
+$$
+\mathcal L
+=
+\sum_{b=1}^{B}
+\pi_{\mathbf x^*}(\mathbf z_b)
+\left[
+\widehat g(\mathbf z_b)-q(\mathbf z_b)
+\right]^2
+$$
+
+---
+
+## Interpretabilidade
+
+O termo
+
+$$
+\Omega(q)
+$$
+
+penaliza a complexidade da explicação
+
+Se $q$ é linear, podemos favorecer poucos coeficientes não nulos
+
+Assim, LIME equilibra:
+
+$$
+\boxed{
+\text{fidelidade local}
+\quad\leftrightarrow\quad
+\text{simplicidade}
+}
+$$
+
+# 7 — LIME com regressão linear penalizada
+
+## Modelo local
+
+Considere:
+
+$$
+q_{\boldsymbol\beta}(\mathbf z)
+=
+\beta_0+\sum_{j=1}^{p}\beta_jz_j
+$$
+
+Uma implementação pode resolver:
+
+$$
+\boxed{
+\min_{\boldsymbol\beta}
+\left\{
+\sum_{b=1}^{B}
+w_b
+\left[
+\widehat g(\mathbf z_b)
+-
+\beta_0-
+\sum_{j=1}^{p}\beta_jz_{bj}
+\right]^2
++
+\lambda\sum_{j=1}^{p}|\beta_j|
+\right\}
+}
+$$
+
+---
+
+## Dois controles diferentes
+
+A explicação depende de dois tipos de complexidade:
+
+### Localidade
+
+Controlada por
+
+$$
+w_b=K(\mathbf z_b,\mathbf x^*)
+$$
+
+### Esparsidade
+
+Controlada por
+
+$$
+\lambda
+$$
+
+Essas escolhas afetam a explicação produzida
+
+# 8 — Estabilidade do LIME
+
+## Perturbações aleatórias
+
+Como o LIME utiliza observações perturbadas,
+
+$$
+\mathbf z_1,\ldots,\mathbf z_B
+$$
+
+duas execuções podem gerar conjuntos diferentes
+
+Isso pode levar a:
+
+$$
+\widehat{\boldsymbol\beta}^{(1)}
+\neq
+\widehat{\boldsymbol\beta}^{(2)}
+$$
+
+---
+
+## O que verificar?
+
+Para explicações importantes, é útil investigar:
+
+- sensibilidade à semente aleatória
+- tamanho $B$ da amostra perturbada
+- largura da vizinhança
+- número de variáveis selecionadas
+- plausibilidade das perturbações
+
+---
+
+## Fidelidade local
+
+Uma explicação simples só é útil se reproduzir razoavelmente o comportamento de $\widehat g$ na vizinhança
+
+Podemos avaliar, por exemplo,
+
+$$
+\boxed{
+\sum_{b=1}^{B}
+w_b
+\left[
+\widehat g(\mathbf z_b)
+-
+q(\mathbf z_b)
+\right]^2
+}
+$$
+
+Uma explicação fácil de ler, mas com baixa fidelidade local, pode ser enganosa
+
+# 9 — Interpretação versus inferência
+
+## Três objetos diferentes
+
+### Processo gerador
+
+$$
+P(Y,\mathbf X)
+$$
+
+### Função alvo
+
+$$
+r(\mathbf x)=E[Y\mid\mathbf X=\mathbf x]
+$$
+
+### Modelo ajustado
+
+$$
+\widehat g(\mathbf x)
+$$
+
+Métodos de interpretabilidade pós-hoc investigam principalmente o terceiro objeto
+
+---
+
+## Consequência
+
+Quando LIME, PDP ou ICE indicam que uma variável é importante, a afirmação mais segura é:
+
+> **A variável é importante para o comportamento do modelo ajustado**
+
+Isso não implica automaticamente:
+
+> **A variável possui efeito causal sobre a resposta**
+
+# 10 — Quadro de síntese
+
+## Qual ferramenta usar?
+
+| Pergunta | Ferramenta |
+|---|---|
+| Como a predição média muda com $X_j$? | PDP |
+| O comportamento varia entre observações? | ICE |
+| Há indícios de interações? | ICE |
+| Por que esta observação recebeu esta predição? | LIME |
+| Quero uma interpretação causal | Nenhuma delas, isoladamente |
+
+---
+
+## Perguntas para revisão
+
+1. Qual é a diferença entre interpretabilidade global e local?
+
+2. Por que o PDP é uma média das curvas ICE?
+
+3. Como curvas ICE podem revelar interações?
+
+4. Por que covariáveis correlacionadas dificultam a interpretação do PDP?
+
+5. O que significa dizer que LIME é local?
+
+6. Por que o LIME utiliza as predições de $\widehat g$ como resposta?
+
+7. Qual é o papel da penalização no modelo local?
+
+8. Por que uma explicação do modelo não deve ser automaticamente interpretada como causal?
+
+---
+
+## Fechamento
+
+As três ferramentas respondem a perguntas diferentes sobre a função ajustada:
+
+$$
+\boxed{
+\text{PDP}
+\rightarrow
+\text{comportamento médio}
+}
+$$
+
+$$
+\boxed{
+\text{ICE}
+\rightarrow
+\text{heterogeneidade}
+}
+$$
+
+$$
+\boxed{
+\text{LIME}
+\rightarrow
+\text{explicação local}
+}
+$$
+
+O ponto central é sempre distinguir:
+
+$$
+\boxed{
+\text{compreender o modelo}
+\neq
+\text{compreender automaticamente o processo gerador}
+}
+$$

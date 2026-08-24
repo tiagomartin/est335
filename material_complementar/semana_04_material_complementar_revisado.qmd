@@ -1,0 +1,225 @@
+---
+title: "Parte I : Regressão"
+subtitle: "<span class='custom-subtitle'>Material complementar: Seleção e Regularização</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "Material complementar — EST335"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# Material complementar
+
+<!-- ## O que foi deslocado da aula principal? -->
+
+<!-- Para manter dois encontros de 1h40, estes aprofundamentos ficam fora do núcleo: -->
+
+<!-- - critérios $C_p$, AIC, BIC e $R^2$ ajustado; -->
+<!-- - complexidade computacional e limitações do Stepwise; -->
+<!-- - inferência após seleção; -->
+<!-- - solução matricial e interpretação espectral de Ridge; -->
+<!-- - geometria $L_1$ × $L_2$; -->
+<!-- - caso $p>n$; -->
+<!-- - Elastic Net. -->
+
+<!-- O núcleo explicitamente previsto no programa — **Best Subset, Stepwise, Lasso e Ridge** — permanece na aula principal. -->
+
+# 1. Critérios clássicos de seleção
+
+## Por que penalizar o tamanho?
+
+O RSS de treinamento diminui ao adicionar variáveis. Critérios de seleção introduzem uma penalização:
+
+$$\boxed{\text{ajuste}+\text{penalização pela complexidade}}$$
+
+## $C_p$ de Mallows
+
+$$C_p=\frac{RSS}{\widehat\sigma^2}-n+2d,$$
+
+onde $d$ é o número de parâmetros. Menores valores são preferíveis.
+
+## AIC
+
+Para modelos gaussianos, ignorando constantes:
+
+$$AIC\approx n\log\left(\frac{RSS}{n}\right)+2d$$
+
+## BIC
+
+$$BIC\approx n\log\left(\frac{RSS}{n}\right)+d\log n$$
+
+BIC tende a penalizar modelos grandes mais fortemente que AIC para amostras moderadas/grandes.
+
+## $R^2$ ajustado
+
+$$R^2_{aj}=1-\frac{RSS/(n-d)}{TSS/(n-1)}$$
+
+Ao contrário de $R^2$, pode diminuir quando uma variável pouco útil é adicionada.
+
+# 2. Complexidade da busca
+
+## Best Subset
+
+Com $p$ covariáveis existem
+
+$$2^p$$
+
+modelos possíveis. O crescimento exponencial explica por que buscas aproximadas e regularização se tornam atraentes em alta dimensão.
+
+# 3. Limitações do Stepwise
+
+## Dependência do caminho
+
+Forward e backward não precisam produzir o mesmo modelo.
+
+Além disso:
+
+- pequenas mudanças nos dados podem alterar a sequência;
+- variáveis correlacionadas competem entre si;
+- nem todas as combinações são avaliadas;
+- decisões iniciais condicionam etapas posteriores.
+
+# 4. Seleção e inferência
+
+## Um cuidado estatístico
+
+Selecionar variáveis usando os dados e depois aplicar testes clássicos como se o modelo tivesse sido definido previamente não preserva automaticamente a interpretação usual dos testes e intervalos.
+
+$$\boxed{\text{seleção de modelos altera o problema inferencial}}$$
+
+# 5. Ridge em forma matricial
+
+## Problema penalizado
+
+$$\widehat{\boldsymbol\beta}^{R}=\arg\min_{\boldsymbol\beta}\left\{\|\mathbf y-\mathbf X\boldsymbol\beta\|^2+\lambda\|\boldsymbol\beta\|_2^2\right\}.$$
+
+## Solução
+
+$$\boxed{\widehat{\boldsymbol\beta}^{R}=(\mathbf X^\top\mathbf X+\lambda\mathbf I)^{-1}\mathbf X^\top\mathbf y}$$
+
+# 6. Ridge e estabilidade
+
+## Visão pelos autovalores
+
+Se
+
+$$\mathbf X^\top\mathbf X=\mathbf V\mathbf D\mathbf V^\top,$$
+
+o MQO envolve fatores $1/d_j$, enquanto Ridge os substitui por
+
+$$\frac1{d_j+\lambda}.$$
+
+Direções associadas a autovalores pequenos são especialmente estabilizadas.
+
+# 7. Formulação com restrições
+
+## Ridge
+
+$$\min RSS\quad\text{sujeito a}\quad\sum_j\beta_j^2\le t.$$
+
+## Lasso
+
+$$\min RSS\quad\text{sujeito a}\quad\sum_j|\beta_j|\le t.$$
+
+# 8. Por que Lasso produz zeros?
+
+## Geometria $L_1$ × $L_2$
+
+Ridge:
+
+$$\beta_1^2+\beta_2^2\le t.$$
+
+Lasso:
+
+$$|\beta_1|+|\beta_2|\le t.$$
+
+A região $L_1$ possui vértices sobre os eixos. Curvas de nível do RSS podem tocar esses vértices, produzindo $\beta_j=0$.
+
+# 9. Caso $p>n$
+
+## Alta dimensão
+
+Quando
+
+$$p>n,$$
+
+$\mathbf X^\top\mathbf X$ não possui posto completo e a solução usual de MQO não é única.
+
+Ridge com $\lambda>0$ fornece uma solução regularizada bem definida sob condições usuais; Lasso pode ainda produzir uma solução esparsa.
+
+# 10. Elastic Net
+
+## Extensão, não núcleo obrigatório
+
+$$RSS+\lambda\left[(1-\alpha)\frac12\sum_j\beta_j^2+\alpha\sum_j|\beta_j|\right].$$
+
+$$\alpha=0\Rightarrow\text{Ridge},\qquad\alpha=1\Rightarrow\text{Lasso}.$$
+
+Como Elastic Net não é item explícito do conteúdo programático, fica como extensão complementar.
+
+# 11. Quando Elastic Net ajuda?
+
+Com grupos de covariáveis correlacionadas:
+
+- Ridge tende a manter o grupo;
+- Lasso pode escolher algumas;
+- Elastic Net combina efeito de agrupamento e esparsidade.
+
+Agora existem dois hiperparâmetros:
+
+$$(\alpha,\lambda).$$
+
+# 12. Padronização
+
+## Dentro do processo de aprendizagem
+
+$$X_j^*=\frac{X_j-\bar X_j}{s_j}.$$
+
+Média e desvio-padrão devem ser estimados somente no treinamento de cada fold e aplicados à validação.
+
+# 13. Regra de um erro-padrão
+
+## Parcimônia
+
+Além de $\lambda_{min}$, podemos escolher uma solução mais regularizada cujo erro de CV esteja dentro de aproximadamente um erro-padrão do mínimo.
+
+A regra favorece simplicidade quando não há evidência clara de ganho preditivo relevante.
+
+# 14. Uma visão unificada
+
+## Seleção e regularização
+
+Best Subset e Stepwise:
+
+$$\boxed{\text{controlam quais coeficientes existem}}$$
+
+Ridge e Lasso:
+
+$$\boxed{\text{controlam a magnitude dos coeficientes}}$$
+
+Lasso ocupa uma posição especial porque pode fazer as duas coisas simultaneamente.
+
+# Fechamento
+
+## Mensagem principal
+
+Em alta dimensão, o problema não é apenas estimar coeficientes.
+
+$$\boxed{\text{precisamos controlar a complexidade por seleção ou regularização}}$$
+
+E essas decisões devem ser avaliadas fora da amostra usada no ajuste.

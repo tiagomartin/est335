@@ -1,0 +1,507 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Seleção de Variáveis e Regularização</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 4"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+library(glmnet)
+
+tema <- theme_minimal(base_size = 15) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+set.seed(336)
+n <- 260
+z1 <- rnorm(n)
+z2 <- rnorm(n)
+dados_reg <- data.frame(
+  x1 = z1 + rnorm(n,0,.30),
+  x2 = z1 + rnorm(n,0,.35),
+  x3 = z2 + rnorm(n,0,.30),
+  x4 = z2 + rnorm(n,0,.40),
+  x5 = rnorm(n),
+  x6 = rnorm(n)
+)
+dados_reg$y <- 3 + 2*dados_reg$x1 - 1.5*dados_reg$x3 +
+  .5*dados_reg$x5 + rnorm(n,0,1.2)
+
+X <- model.matrix(y ~ . - 1, data = dados_reg)
+y <- dados_reg$y
+
+id_train <- sample(seq_len(n), floor(.75*n))
+x_train <- X[id_train,]
+y_train <- y[id_train]
+```
+
+## De onde partimos?
+
+Até agora, aumentamos a flexibilidade para representar relações mais complexas. Com muitas covariáveis surgem duas perguntas:
+
+$$\boxed{\text{Quais variáveis devem entrar no modelo?}}$$
+
+$$\boxed{\text{Devemos permitir coeficientes de qualquer magnitude?}}$$
+
+## Duas estratégias
+
+:::: {.columns}
+::: {.column width="47%"}
+### Seleção de variáveis
+Escolher um subconjunto de covariáveis.
+$$X_1,\ldots,X_p\longrightarrow X_{j_1},\ldots,X_{j_k}$$
+:::
+::: {.column width="47%"}
+### Regularização
+Restringir os coeficientes.
+$$RSS\longrightarrow RSS+\lambda P(\beta)$$
+:::
+::::
+
+
+# Seleção de variáveis
+
+## O modelo completo é sempre melhor?
+
+$$Y=\beta_0+\beta_1X_1+\cdots+\beta_pX_p+\varepsilon$$
+
+Adicionar uma covariável nunca aumenta o RSS de treinamento. Portanto, $RSS_{treino}$ sozinho não decide quantas variáveis manter.
+
+## Por que selecionar?
+
+Um modelo menor pode ter menor variância, maior interpretabilidade e melhor desempenho fora da amostra. Retirar variáveis demais, porém, aumenta o viés.
+
+$$\boxed{\text{Seleção também é um problema de viés × variância}}$$
+
+## Busca pelo melhor subconjunto
+
+Para cada tamanho $k$, avaliamos todos os modelos com exatamente $k$ covariáveis.
+
+$$\binom pk$$
+
+No total existem $2^p$ subconjuntos possíveis.
+
+## O crescimento é rápido
+
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| fig-align: center
+
+library(ggplot2)
+
+p <- 1:20
+modelos <- 2^p
+
+df <- data.frame(p, modelos)
+
+ggplot(df, aes(p, modelos)) +
+  geom_line(color = "#D7301F", linewidth = 1.2) +
+  geom_point(color = "#D7301F", size = 2.8) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "Crescimento do número de modelos",
+    x = "Número de covariáveis (p)",
+    y = "Número de modelos possíveis"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Best Subset: algoritmo conceitual
+
+Para $k=0,1,\ldots,p$:
+
+1. ajustar todos os modelos com $k$ covariáveis;
+2. identificar o melhor daquele tamanho;
+3. comparar os vencedores entre os diferentes $k$.
+
+A busca exaustiva produz um candidato ótimo para cada tamanho, mas pode ser computacionalmente cara.
+
+## Como escolher $k$?
+
+O menor RSS de treinamento favoreceria sempre o maior modelo.
+
+Podemos usar validação cruzada ou critérios penalizados como $C_p$, AIC, BIC e $R^2_{aj}$.
+
+Na aula principal, priorizaremos:
+
+$$\boxed{\text{validação cruzada}}$$
+
+## Seleção é diferente de estimação
+
+Há duas perguntas:
+
+$$\boxed{\text{Quais variáveis?}}\qquad\boxed{\text{Quais coeficientes?}}$$
+
+No Best Subset, primeiro escolhemos a estrutura e depois estimamos os coeficientes por MQO.
+
+# Regressão Stepwise
+
+## Por que Stepwise?
+
+Se $2^p$ modelos são muitos, pesquisamos apenas uma pequena parte do espaço.
+
+$$\boxed{\text{Stepwise = busca sequencial}}$$
+
+É mais econômico, mas não garante o melhor subconjunto global.
+
+## Forward Stepwise
+
+Começamos com o modelo sem covariáveis, $\mathcal M_0$.
+
+A cada etapa:
+
+1. testamos cada variável ainda ausente;
+2. escolhemos a melhor inclusão;
+3. repetimos.
+
+$$\mathcal M_0\subset\mathcal M_1\subset\cdots\subset\mathcal M_p$$
+
+## Backward Stepwise
+
+Começamos com o modelo completo, $\mathcal M_p$.
+
+A cada etapa removemos a variável cuja retirada produz o melhor modelo seguinte:
+
+$$\mathcal M_p\supset\mathcal M_{p-1}\supset\cdots$$
+
+## Best Subset × Stepwise
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| fig-align: center
+
+library(ggplot2)
+
+d <- 4:10
+
+melhor_subconjunto <- 2^d
+forward_stepwise <- 1 + d * (d + 1) / 2
+
+df_plot <- data.frame(
+  d = rep(d, 2),
+  modelos = c(forward_stepwise, melhor_subconjunto),
+  metodo = rep(c("Stepwise", "Best Subset"), each = length(d))
+)
+
+ggplot(df_plot, aes(x = d, y = modelos, color = metodo)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2.8) +
+  scale_color_manual(values = c(
+    "Stepwise" = "#2C7FB8",
+    "Best Subset" = "#D81B60"
+  )) +
+  theme_minimal(base_size = 13) +
+  labs(
+    x = "d",
+    y = "Número de modelos",
+    color = ""
+  ) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Uma ressalva importante
+
+Stepwise é uma heurística. Uma variável descartada ou não escolhida em uma etapa pode participar de uma combinação melhor posteriormente.
+
+$$\boxed{\text{Eficiência computacional vem ao custo de uma busca incompleta}}$$
+
+# Da seleção à regularização
+
+## Uma estratégia diferente
+
+Best Subset e Stepwise trabalham essencialmente com decisões discretas:
+
+$$\beta_j=0\quad\text{ou}\quad\beta_j\neq0$$
+
+Regularização controla continuamente a magnitude:
+
+$$|\beta_j|\downarrow$$
+
+## Por que regularizar?
+
+- muitas covariáveis;
+- forte correlação entre preditores;
+- $p$ grande relativamente a $n$;
+- coeficientes instáveis;
+- foco em predição.
+
+## Preditores correlacionados
+
+```{r}
+#| fig-width: 7.3
+#| fig-height: 4.5
+#| out-width: 70%
+#| fig-align: center
+cor_df <- cor(dados_reg |> select(-y)) |> as.data.frame(); cor_df$var1 <- rownames(cor_df)
+cor_long <- cor_df |> pivot_longer(-var1,names_to="var2",values_to="cor")
+ggplot(cor_long,aes(var1,var2,fill=cor))+geom_tile()+
+ scale_fill_gradient2(low="#2C7FB8",mid="white",high="#D7301F",midpoint=0,limits=c(-1,1))+
+ coord_equal()+tema+labs(title="Correlação entre as covariáveis",x=NULL,y=NULL,fill="Correlação")
+```
+
+## Princípio da regularização
+
+$$\boxed{\widehat{\boldsymbol\beta}=\arg\min_{\boldsymbol\beta}\{RSS(\boldsymbol\beta)+\lambda P(\boldsymbol\beta)\}}$$
+
+Equilibramos ajuste aos dados e complexidade.
+
+# Uma formulação geral
+
+## Perda + penalização
+$$
+\boxed{\widehat\beta=\arg\min_\beta\{\mathcal L(\beta)+\lambda P(\beta)\}}
+$$
+A função de perda muda entre regressão e classificação; a lógica de regularização permanece
+
+
+
+# Ridge e Lasso
+
+## Regressão Ridge
+
+$$\boxed{\widehat{\boldsymbol\beta}^{R}=\arg\min_{\boldsymbol\beta}\left[RSS+\lambda\sum_{j=1}^{p}\beta_j^2\right]}$$
+
+O intercepto normalmente não é penalizado.
+
+## O papel de $\lambda$
+
+$$\lambda=0\Rightarrow\text{MQO}$$
+$$\lambda\uparrow\Rightarrow\text{maior shrinkage}$$
+$$\lambda\to\infty\Rightarrow\beta_j\to0$$
+
+$$\boxed{\lambda=\text{hiperparâmetro de regularização}}$$
+
+## Trajetórias Ridge
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+fit_ridge <- glmnet(X,y,alpha=0,standardize=TRUE); beta_r <- as.matrix(fit_ridge$beta)
+ridge_long <- data.frame(log_lambda=rep(log(fit_ridge$lambda),each=nrow(beta_r)),variavel=rep(rownames(beta_r),times=ncol(beta_r)),coef=as.vector(beta_r))
+ggplot(ridge_long,aes(log_lambda,coef,color=variavel))+geom_line(linewidth=.9,alpha=.85)+
+ geom_hline(yintercept=0,linetype=2,color="gray55")+tema+theme(legend.position="none")+
+ labs(title="Ridge: trajetórias dos coeficientes",subtitle="À direita, maior penalização",x=expression(log(lambda)),y="Coeficiente")
+```
+
+## O que Ridge faz?
+
+$$|\widehat\beta_j^R|\downarrow$$
+
+mas, em geral,
+
+$$\widehat\beta_j^R\neq0$$
+
+Ridge encolhe coeficientes, mas não produz seleção esparsa.
+
+## Viés em troca de variância
+
+$$\boxed{Bias^2\uparrow\quad+\quad Var\downarrow\quad\Rightarrow\quad R_{teste}\text{ pode diminuir}}$$
+
+
+<br>
+
+
+::: {.callout-note appearance="simple"}
+**Ridge** também é conhecido como **Penalização $L_2$**
+:::
+
+## Regressão Lasso
+
+$$\boxed{\widehat{\boldsymbol\beta}^{L}=\arg\min_{\boldsymbol\beta}\left[RSS+\lambda\sum_{j=1}^{p}|\beta_j|\right]}$$
+
+## Lasso pode selecionar variáveis
+
+Para valores adequados de $\lambda$,
+
+$$\widehat\beta_j^L=0$$
+
+para algumas covariáveis.
+
+$$\boxed{\text{Lasso = shrinkage + seleção de variáveis}}$$
+
+
+<br>
+
+
+::: {.callout-note appearance="simple"}
+**Lasso** também é conhecido como **Penalização $L_1$**
+:::
+
+
+## Trajetórias Lasso
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+fit_lasso <- glmnet(X,y,alpha=1,standardize=TRUE); beta_l <- as.matrix(fit_lasso$beta)
+lasso_long <- data.frame(log_lambda=rep(log(fit_lasso$lambda),each=nrow(beta_l)),variavel=rep(rownames(beta_l),times=ncol(beta_l)),coef=as.vector(beta_l))
+ggplot(lasso_long,aes(log_lambda,coef,color=variavel))+geom_line(linewidth=.9,alpha=.85)+
+ geom_hline(yintercept=0,linetype=2,color="gray55")+tema+theme(legend.position="none")+
+ labs(title="Lasso: trajetórias dos coeficientes",subtitle="Alguns coeficientes tornam-se exatamente zero",x=expression(log(lambda)),y="Coeficiente")
+```
+
+## Quatro filosofias
+
+| Método | Estratégia |
+|---|---|
+| Best Subset | escolher diretamente um subconjunto |
+| Stepwise | procurar sequencialmente um subconjunto |
+| Ridge | encolher todos os coeficientes |
+| Lasso | encolher e potencialmente zerar coeficientes |
+
+## Por que padronizar?
+
+$$x_j^*=\frac{x_j-\bar x_j}{s_j}$$
+
+A penalização atua sobre os coeficientes; escalas muito diferentes tornam a comparação inadequada.<br><br>
+
+::: {.callout-warning appearance="simple"}
+A transformação deve ser estimada no treinamento, nunca usando o teste.
+:::
+
+# Escolhendo a complexidade
+
+## O mesmo problema em quatro métodos
+
+Best Subset / Stepwise:
+$$k=\text{tamanho do modelo}.$$
+
+Ridge / Lasso:
+$$\lambda=\text{intensidade da penalização}.$$
+
+$$\boxed{\text{A complexidade deve ser escolhida fora da amostra de ajuste}}$$
+
+## Validação cruzada
+
+Para cada candidato:
+
+1. ajustar no treinamento do fold;
+2. predizer no fold de validação;
+3. calcular o erro;
+4. repetir;
+5. calcular o erro médio;
+6. selecionar a complexidade.
+
+## Curva de CV: Ridge
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+set.seed(337); cv_ridge <- cv.glmnet(x_train,y_train,alpha=0,nfolds=10,standardize=TRUE)
+cv_df <- data.frame(log_lambda=log(cv_ridge$lambda),mse=cv_ridge$cvm,se=cv_ridge$cvsd)
+ggplot(cv_df,aes(log_lambda,mse))+geom_ribbon(aes(ymin=mse-se,ymax=mse+se),alpha=.15)+
+ geom_line(color="#2C7FB8",linewidth=1.2)+geom_vline(xintercept=log(cv_ridge$lambda.min),color="#D7301F",linetype=2,linewidth=1.1)+
+ tema+labs(title="Ridge: erro por validação cruzada",subtitle="Linha tracejada: lambda.min",x=expression(log(lambda)),y="MSE de validação")
+```
+
+## $\lambda_{min}$ e $\lambda_{1se}$
+
+$$\lambda_{min}=\arg\min_\lambda\widehat R_{CV}(\lambda)$$
+
+A regra de um erro-padrão favorece uma solução mais regularizada cujo desempenho ainda é compatível com o mínimo.
+
+## Lasso selecionado por CV
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+set.seed(338); cv_lasso <- cv.glmnet(x_train,y_train,alpha=1,nfolds=10,standardize=TRUE)
+coef_lasso <- as.matrix(coef(cv_lasso,s="lambda.min"))
+coef_df <- data.frame(variavel=rownames(coef_lasso)[-1],coeficiente=coef_lasso[-1,1]) |> arrange(coeficiente)
+ggplot(coef_df,aes(reorder(variavel,coeficiente),coeficiente))+geom_col(fill="#2C7FB8")+coord_flip()+
+ geom_hline(yintercept=0,color="gray45")+tema+
+ labs(title="Lasso após seleção de lambda por CV",subtitle="Alguns coeficientes são exatamente zero",x=NULL,y="Coeficiente")
+```
+
+# Comparação final
+
+## Selecionar ou encolher?
+
+:::: {.columns}
+::: {.column width="47%"}
+### Seleção discreta
+Best Subset / Stepwise
+$$\beta_j=0\quad\text{ou}\quad\beta_j\neq0$$
+Modelos mais fáceis de descrever, mas a seleção pode ser instável.
+:::
+::: {.column width="47%"}
+### Shrinkage
+Ridge / Lasso
+$$|\beta_j|\downarrow$$
+Controle contínuo da complexidade; especialmente útil em alta dimensão.
+:::
+::::
+
+## Preditores correlacionados
+
+- Ridge tende a distribuir o efeito entre variáveis correlacionadas;
+- Lasso pode selecionar algumas e zerar outras;
+- Stepwise também pode ser instável quando variáveis são muito semelhantes.
+
+$$\boxed{\text{Correlação torna a seleção de variáveis menos estável}}$$
+
+## O teste continua intocado
+
+$$\boxed{\mathcal D_{treino}}\rightarrow\boxed{\text{seleção/tuning por CV}}\rightarrow\boxed{\text{modelo final}}\rightarrow\boxed{\mathcal D_{teste}}$$
+
+## Síntese
+
+Best Subset: busca exaustiva.
+
+Stepwise: busca sequencial.
+
+Ridge: $P(\beta)=\sum_j\beta_j^2$
+
+Lasso: $P(\beta)=\sum_j|\beta_j|$
+
+## Quatro ideias para levar
+
+1. Mais variáveis não significam melhor generalização.
+2. Best Subset e Stepwise controlam complexidade por **seleção**.
+3. Ridge e Lasso controlam complexidade por **shrinkage**.
+4. Seleção/tuning deve usar **validação**, nunca o teste.
+

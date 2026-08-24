@@ -1,0 +1,1817 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Fundamentos do Aprendizado Estatístico</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 1"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+#bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+```
+
+
+```{r}
+#| fig-width: 7
+#| fig-height: 4.2
+#| out-width: 82%
+#| fig-align: center
+#| output-location: slide
+
+library(ggplot2)
+set.seed(1)
+x <- runif(200, 1000, 60000)
+y <- 40 + 15*log(x/1000) + rnorm(200, 0, 3)
+df_pib <- data.frame(pib=x, vida=y)
+# ggplot(df_pib, aes(pib, vida)) +
+#   geom_point(color="#2C7FB8", alpha=.55) +
+#   geom_smooth(method="loess", color="#D7301F", se=FALSE, linewidth=1.25) +
+#   theme_minimal(base_size=16) +
+#   labs(x="PIB per capita", y="Expectativa de vida")
+```
+
+
+
+# Aprendizado estatístico supervisionado
+
+## O problema fundamental
+
+Considere uma amostra observada
+
+$$
+\mathcal D_n=\{(X_1,Y_1),\ldots,(X_n,Y_n)\}
+$$
+
+A pergunta central é:
+
+> Como construir, a partir dos dados observados, uma função capaz de prever $Y$ para uma nova observação $X$?
+
+$$
+\boxed{\text{Dados}}\longrightarrow
+\boxed{\text{Algoritmo}}\longrightarrow
+\boxed{\hat g(x)}\longrightarrow
+\boxed{\text{Predição}}
+$$
+
+## Programação tradicional *vs.* aprendizado de máquina
+
+<br><br>
+
+:::: {.columns}
+::: {.column width="50%"}
+### Programação tradicional
+
+$$
+\text{Entrada}+\text{Regras}\longrightarrow\text{Saída}
+$$
+
+As regras são especificadas pelo programador.
+:::
+
+::: {.column width="50%" .fragment}
+### Aprendizado de máquina
+
+$$
+\text{Entrada}+\text{Saída}\longrightarrow\text{Algoritmo}\longrightarrow\text{Modelo}
+$$
+
+Parte das regras é aprendida a partir dos dados.
+:::
+::::
+
+## O que significa "aprender"?
+
+Segundo a formulação clássica de Mitchell, um sistema aprende a partir de uma experiência $E$, para uma tarefa $T$, segundo uma medida de desempenho $P$, quando seu desempenho melhora com a experiência.<br><br>
+
+:::: {.columns}
+::: {.column width="33%"}
+### Tarefa ($T$)
+Prever o preço de um imóvel.
+:::
+::: {.column width="33%"}
+### Experiência ($E$)
+Histórico de imóveis observados.
+:::
+::: {.column width="33%"}
+### Desempenho ($P$)
+RMSE em novas observações.
+:::
+::::
+
+## Diferentes tipos de aprendizado
+
+<br><br>
+
+| Tipo | Informação disponível | Exemplos |
+|---|---|---|
+| **Supervisionado** | $(X,Y)$ | regressão, classificação |
+| **Não supervisionado** | $X$ | clustering, PCA |
+| **Por reforço** | estado, ação e recompensa | decisões sequenciais<br><br> |
+
+::: {.callout-important appearance="simple"}
+Nesta Parte I, estudaremos **aprendizado supervisionado**, tratando regressão e classificação em paralelo.
+:::
+
+# Aprendizado supervisionado
+
+## Notação
+
+Dispomos de observações
+
+$$
+\mathcal D_n
+=
+\{(\mathbf X_1,Y_1),\ldots,(\mathbf X_n,Y_n)\}
+$$
+
+em que
+
+$$
+\mathbf X_i\in\mathcal X
+\qquad\text{e}\qquad
+Y_i\in\mathcal Y
+$$
+
+Queremos aprender uma função de decisão ou predição
+
+$$
+\boxed{
+g:\mathcal X\rightarrow\mathcal A
+}
+$$
+
+A forma de $\mathcal Y$, a ação $\mathcal A$ e a função de perda determinam o problema de aprendizado
+
+
+## Dois tipos de resposta
+
+:::: {.columns}
+::: {.column width="48%"}
+### Regressão
+$$
+Y\in\mathbb R
+$$
+Resposta quantitativa
+:::
+::: {.column width="48%"}
+### Classificação
+$$
+Y\in\{1,\ldots,K\}
+$$
+Resposta categórica
+:::
+::::
+
+---
+
+## Predição *vs.* inferência
+
+De modo geral, este problema pode ser dividido em **dois objetivos principais**.<br><br>
+
+
+:::: {.columns}
+::: {.column width="50%"}
+### Objetivo inferêncial
+
+- Quais variáveis estão associadas a $Y$?
+- Como $Y$ muda quando $X$ muda?
+- Qual estrutura explica os dados?
+:::
+::: {.column width="50%"}
+### Objetivo preditivo
+
+- Qual será o valor de $Y$ para uma nova observação?
+- O modelo generaliza para dados não vistos?
+- Qual modelo produz menor erro preditivo?
+:::
+::::
+
+## Duas culturas em modelagem estatística
+
+@breiman2001twocultures descreve duas tradições complementares:<br><br>
+
+:::: {.columns}
+::: {.column width="50%"}
+### *Data Modeling Culture*
+
+- ênfase em inferência;
+- interpretação dos parâmetros;
+- suposições probabilísticas explícitas.
+:::
+::: {.column width="50%"}
+### *Algorithmic Modeling Culture*
+
+- ênfase em predição;
+- desempenho em novos dados;
+- modelos potencialmente muito flexíveis.
+:::
+::::
+
+
+## Integração entre Estatística e Machine Learning
+
+> **Machine Learning e Estatística não são opostos: são complementares.**
+
+Historicamente, as duas áreas enfatizaram objetivos diferentes:
+
+- **Estatística:** foco em **inferência e interpretação** dos modelos.
+- **Machine Learning:** foco em **predição e desempenho em novos dados**.
+
+
+
+## Tendência atual
+
+Hoje muitos métodos modernos procuram **combinar as duas culturas**, buscando:
+
+- **alto desempenho preditivo**
+- **interpretação dos modelos**
+
+Exemplos:
+
+- **Random Forest interpretável**
+- **SHAP (Shapley Additive Explanations)**
+- **modelos semiparamétricos:** GAM (Modelos aditivos generalizados), Modelo de Cox (riscos proporcionais), etc.
+
+
+## Interpretabilidade *vs.* Flexibilidade
+
+Em modelagem estatística e aprendizado de máquina, frequentemente existe um **trade-off entre interpretabilidade e flexibilidade**.
+
+- **Interpretabilidade:** facilidade de compreender como o modelo toma decisões.
+- **Flexibilidade:** capacidade do modelo de capturar padrões complexos nos dados.
+
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 2.8
+#| fig-align: center
+
+library(ggplot2)
+
+spec_df <- data.frame(
+  x = c(1, 2, 3, 4, 5),
+  y = 1,
+  label = c("Regressão Linear", "GAM", "Árvores", "Random Forest", "Deep Learning"),
+  cor = c("#D7301F", "#2C7FB8", "#31A354", "#756BB1", "#252525")
+)
+
+ggplot() +
+  geom_segment(
+    aes(x = 0.7, y = 1, xend = 5.3, yend = 1),
+    linewidth = 1.2,
+    arrow = arrow(ends = "both", length = grid::unit(0.18, "cm")),
+    color = "gray35"
+  ) +
+  geom_point(
+    data = spec_df,
+    aes(x, y),
+    size = 4.5,
+    color = spec_df$cor
+  ) +
+  geom_text(
+    data = spec_df,
+    aes(x, y + 0.18, label = label),
+    size = 4.2,
+    fontface = "bold"
+  ) +
+  annotate(
+    "text",
+    x = 0.72, y = 0.72,
+    label = "Alta interpretabilidade",
+    hjust = 0,
+    size = 4.3,
+    fontface = "bold"
+  ) +
+  annotate(
+    "text",
+    x = 5.28, y = 0.72,
+    label = "Alta flexibilidade",
+    hjust = 1,
+    size = 4.3,
+    fontface = "bold"
+  ) +
+  coord_cartesian(
+    xlim = c(0.5, 5.5),
+    ylim = c(0.6, 1.35),
+    clip = "off"
+  ) +
+  theme_void() +
+  theme(
+    plot.margin = margin(10, 10, 10, 10)
+  )
+```
+
+
+
+
+## Interpretabilidade *vs.* Flexibilidade
+
+
+
+```{r}
+#| fig-width: 11
+#| fig-height: 5.7
+#| out-width: 95%
+#| fig-align: center
+#| output-location: slide
+
+library(ggplot2)
+library(mgcv)
+library(rpart)
+library(patchwork)
+
+set.seed(123)
+
+n <- 200
+x <- runif(n, 0, 10)
+y <- sin(x) + rnorm(n, 0, 0.30)
+
+df <- data.frame(x, y)
+grid <- data.frame(x = seq(0, 10, length.out = 300))
+
+lm_fit   <- lm(y ~ x, data = df)
+gam_fit  <- gam(y ~ s(x), data = df)
+tree_fit <- rpart(y ~ x, data = df)
+
+grid$pred_lm   <- predict(lm_fit, newdata = grid)
+grid$pred_gam  <- predict(gam_fit, newdata = grid)
+grid$pred_tree <- predict(tree_fit, newdata = grid)
+
+tema_modelos <- theme_minimal(base_size = 13) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(linewidth = 0.3, color = "gray85"),
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 14),
+    plot.subtitle = element_text(hjust = 0.5, size = 10.5, lineheight = 1.05),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 9),
+    plot.margin = margin(8, 8, 8, 8)
+  )
+
+p1 <- ggplot(df, aes(x, y)) +
+  geom_point(alpha = 0.45, size = 1.6, color = "gray35") +
+  geom_line(data = grid, aes(x, pred_lm), linewidth = 1.3, color = "#D7301F") +
+  labs(
+    title = "Regressão linear",
+    subtitle = "modelo paramétrico\nsimples e interpretável\nbaixa flexibilidade",
+    x = "x", y = "y"
+  ) +
+  tema_modelos
+
+p2 <- ggplot(df, aes(x, y)) +
+  geom_point(alpha = 0.45, size = 1.6, color = "gray35") +
+  geom_line(data = grid, aes(x, pred_gam), linewidth = 1.3, color = "#2C7FB8") +
+  labs(
+    title = "GAM",
+    subtitle = "modelo semiparamétrico\nmantém interpretabilidade\npermite relações não lineares",
+    x = "x", y = "y"
+  ) +
+  tema_modelos
+
+p3 <- ggplot(df, aes(x, y)) +
+  geom_point(alpha = 0.45, size = 1.6, color = "gray35") +
+  geom_line(data = grid, aes(x, pred_tree), linewidth = 1.3, color = "#31A354") +
+  labs(
+    title = "Árvore de decisão",
+    subtitle = "modelo algorítmico\nmuito flexível\nfoco em predição",
+    x = "x", y = "y"
+  ) +
+  tema_modelos
+
+# Barra espectro
+spec_df <- data.frame(
+  x = c(1, 2, 3),
+  y = 1,
+  label = c("Regressão linear", "GAM", "Árvores")
+)
+
+p_spec <- ggplot() +
+  geom_segment(
+    aes(x = 0.7, y = 1, xend = 3.3, yend = 1),
+    linewidth = 1.2,
+    arrow = arrow(ends = "both", length = unit(0.18, "cm")),
+    color = "gray35"
+  ) +
+  geom_point(data = spec_df, aes(x, y), size = 4.2,
+             color = c("#D7301F", "#2C7FB8", "#31A354")) +
+  geom_text(data = spec_df, aes(x, y + 0.14, label = label),
+            size = 4.3, fontface = "bold") +
+  annotate("text", x = 0.72, y = 0.75, label = "Maior interpretabilidade",
+           hjust = 0, size = 4.2) +
+  annotate("text", x = 3.28, y = 0.75, label = "Maior flexibilidade",
+           hjust = 1, size = 4.2) +
+  coord_cartesian(xlim = c(0.5, 3.5), ylim = c(0.6, 1.28), clip = "off") +
+  theme_void() +
+  theme(plot.margin = margin(0, 10, 0, 10))
+
+((p1 | p2 | p3) / p_spec) + plot_layout(heights = c(10, 2.1))
+```
+
+
+
+
+$$
+\text{Maior interpretabilidade}
+\quad\longleftrightarrow\quad
+\text{Maior flexibilidade}
+$$
+
+
+```{r}
+#| fig-width: 11
+#| fig-height: 5.7
+#| out-width: 95%
+#| fig-align: center
+#| output-location: slide
+
+library(ggplot2)
+library(mgcv)
+library(rpart)
+library(patchwork)
+
+set.seed(123)
+
+n <- 200
+x <- runif(n, 0, 10)
+y <- sin(x) + rnorm(n, 0, 0.30)
+
+df <- data.frame(x, y)
+grid <- data.frame(x = seq(0, 10, length.out = 300))
+
+lm_fit   <- lm(y ~ x, data = df)
+gam_fit  <- gam(y ~ s(x), data = df)
+tree_fit <- rpart(y ~ x, data = df)
+
+grid$pred_lm   <- predict(lm_fit, newdata = grid)
+grid$pred_gam  <- predict(gam_fit, newdata = grid)
+grid$pred_tree <- predict(tree_fit, newdata = grid)
+
+tema_modelos <- theme_minimal(base_size = 13) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(linewidth = 0.3, color = "gray85"),
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 14),
+    plot.subtitle = element_text(hjust = 0.5, size = 10.5, lineheight = 1.05),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 9),
+    plot.margin = margin(8, 8, 8, 8)
+  )
+
+p1 <- ggplot(df, aes(x, y)) +
+  geom_point(alpha = 0.45, size = 1.6, color = "gray35") +
+  geom_line(data = grid, aes(x, pred_lm), linewidth = 1.3, color = "#D7301F") +
+  labs(
+    title = "Regressão linear",
+    subtitle = "modelo paramétrico\nsimples e interpretável\nbaixa flexibilidade",
+    x = "x", y = "y"
+  ) +
+  tema_modelos
+
+p2 <- ggplot(df, aes(x, y)) +
+  geom_point(alpha = 0.45, size = 1.6, color = "gray35") +
+  geom_line(data = grid, aes(x, pred_gam), linewidth = 1.3, color = "#2C7FB8") +
+  labs(
+    title = "GAM",
+    subtitle = "modelo semiparamétrico\nmantém interpretabilidade\npermite relações não lineares",
+    x = "x", y = "y"
+  ) +
+  tema_modelos
+
+p3 <- ggplot(df, aes(x, y)) +
+  geom_point(alpha = 0.45, size = 1.6, color = "gray35") +
+  geom_line(data = grid, aes(x, pred_tree), linewidth = 1.3, color = "#31A354") +
+  labs(
+    title = "Árvore de decisão",
+    subtitle = "modelo algorítmico\nmuito flexível\nfoco em predição",
+    x = "x", y = "y"
+  ) +
+  tema_modelos
+```
+
+
+
+## Formulação do aprendizado estatístico
+
+Buscamos aproximar a **função de predição**, que descreve a relação entre uma variável resposta $Y \in \mathbb{R}$ e um vetor de covariáveis $x$.
+
+$$
+\boxed{\hat g(x)\approx r(x)=\mathbb E[Y\mid X=x]}
+$$
+
+
+
+Agora surge a pergunta:
+
+> **Como definir matematicamente o que significa uma boa previsão?**
+
+# Função de perda e função de risco
+
+## Quanto custa errar?
+
+Suponha que o valor observado seja
+
+$$
+Y=80
+$$
+
+Dois modelos produzem
+
+$$
+\hat Y_A=79,
+\qquad
+\hat Y_B=65
+$$
+
+Precisamos de uma regra que atribua um **custo ao erro de predição**.
+
+## Função de perda
+
+
+Uma função de perda é denotada por
+
+$$
+L(Y,g(X))
+$$
+
+Ela mede o **custo associado** à previsão $g(X)$ quando o valor observado é $Y$.
+
+## Perda quadrática
+
+
+Uma escolha comum em problemas de regressão é a **perda quadrática**
+
+
+
+$$
+\boxed{L(Y,g(X))=(Y-g(X))^2}
+$$
+
+Características:
+
+- penaliza erros grandes de forma acentuada;
+- está associada à média condicional;
+- conduz ao MSE/RMSE na avaliação empírica.
+
+## Perda absoluta
+
+Além da perda quadrática, outras funções de perda podem ser utilizadas.
+
+
+$$
+\boxed{L(Y,g(X))=|Y-g(X)|}
+$$
+
+| Perda | Preditor ótimo |
+|---|---|
+| quadrática | média condicional |
+| absoluta | mediana condicional <br><br>|
+
+::: {.callout-note appearance="simple"}
+A escolha da função de perda ajuda a determinar **o que o algoritmo aprende**.
+:::
+
+## Da perda ao risco
+
+A perda avalia **uma previsão**. O risco avalia o desempenho médio do modelo em novas observações:
+
+$$
+\boxed{R(g)=\mathbb E[L(Y,g(X))]}
+$$
+
+Ou seja, o risco corresponde ao **valor esperado da função de perda**.
+
+
+
+## A perda depende da tarefa
+
+### Regressão
+$$
+L(y,a)=(y-a)^2
+$$
+
+### Classificação
+$$
+\boxed{L(y,a)=I\{y\neq a\}}
+$$
+Em ambos os casos
+$$
+\boxed{R(g)=E[L(Y,g(X))]}
+$$
+
+## A perda depende da tarefa
+
+
+O objetivo é encontrar uma função $g$ que minimize o risco
+
+$$
+g^* = \arg\min_g \mathbb{E}[L(Y,g(\mathbf{x}))]
+$$
+
+Em outras palavras, queremos um modelo que produza **erros pequenos em média para novas observações**.
+
+## Risco quadrático
+
+Para regressão com perda quadrática,
+
+$$
+R(g)
+=
+E[(Y-g(X))^2]
+$$
+
+o minimizador populacional é
+
+$$
+\boxed{
+r(x)=E(Y\mid X=x)
+}
+$$
+
+Esse resultado explica por que a média condicional é o alvo natural da regressão
+
+
+
+
+## Decomposição do erro
+
+Uma forma comum de representar o problema é
+
+$$
+Y=r(X)+\varepsilon,
+\qquad E(\varepsilon\mid X)=0
+$$
+
+Podemos então medir o erro do modelo em relação à função verdadeira:
+
+$$
+\boxed{
+R_{pred}(g)  =
+E[(Y-\widehat g(X))^2]
+=
+E[(r(X)-\widehat g(X))^2]
++
+E(\varepsilon^2)
+}
+$$
+
+O primeiro termo depende do estimador
+
+O segundo é o **erro irredutível**
+
+
+
+## O melhor modelo também erra
+
+Mesmo que
+
+$$
+g^*(x)=r(x),
+$$
+
+ainda teremos
+
+$$
+R(g^*)= E(\varepsilon^2)
+$$<br><br>
+
+::: {.callout-important appearance="simple"}
+Nem todo erro de predição é consequência de um modelo ruim.
+:::
+
+
+
+
+## Exemplo: preço de um imóvel
+
+Suponha que o preço de um imóvel seja determinado por
+
+$$
+Y = r(X) + \varepsilon
+$$
+
+onde:
+
+- $X$ = área do imóvel
+- $r(X)$ = preço médio esperado para imóveis com essa área
+- $\varepsilon$ = fatores não observados: negociação, urgência da venda, estado de conservação etc.
+
+
+## Exemplo: preço de um imóvel
+
+
+
+Para um imóvel de **100 m²**, suponha que 
+
+$$
+r(100) = 500
+$$
+
+ou seja, o preço médio esperado é de **R\$ 500 mil**.
+
+
+::: {.fragment}
+Nosso modelo, porém, estima:
+
+$$
+\hat g(100) = 470
+$$
+
+Logo, o erro devido ao modelo é
+
+$$
+r(100)-\hat g(100)=500-470=30
+$$
+:::
+
+
+## Exemplo: preço de um imóvel
+
+
+Agora suponha que esse imóvel tenha sido vendido por **R\$ 520 mil**:
+
+$$
+Y = 520
+$$
+
+Então,
+
+$$
+\varepsilon = Y-r(100)=520-500=20
+$$
+
+
+::: {.fragment}
+Assim, o erro total de predição é
+
+$$
+Y-\hat g(100)
+=
+\underbrace{r(100)-\hat g(100)}_{\text{erro do modelo}}
++
+\underbrace{\varepsilon}_{\text{erro irredutível}}
+$$
+
+$$
+520-470 = 30+20 = 50
+$$
+:::
+
+
+## Exemplo: preço de um imóvel
+
+::: {.callout-tip}
+## Ideia principal
+
+Mesmo que tivéssemos um modelo perfeito,
+
+$$
+\hat g(100)=r(100)=500,
+$$
+
+ainda haveria erro:
+
+$$
+Y-\hat g(100)=520-500=20
+$$
+
+Esse componente corresponde ao **erro irredutível**.
+:::
+
+
+
+
+
+## O modelo estimado depende dos dados
+
+Um algoritmo de aprendizagem pode ser representado por
+
+$$
+\mathcal D_n
+\overset{\mathcal A}{\longrightarrow}
+\hat g_{\mathcal D_n}
+$$
+
+onde $\mathcal{D}_n$ representa a amostra de treinamento (já observada). 
+
+
+
+Nesse caso, tratamos $\hat{g}$ como fixa e avaliamos seu risco em uma nova observação $(X,Y)$:
+
+$$
+R(g) = E\left[(Y-\hat{g}(X))^2\right]
+$$
+
+Esse risco é chamado de **risco condicional**.
+
+
+## O modelo estimado depende dos dados
+
+Se mudarmos a amostra, podemos obter outro modelo:
+
+$$
+\mathcal D_1\to\hat g_1,
+\qquad
+\mathcal D_2\to\hat g_2,
+\qquad
+\mathcal D_3\to\hat g_3
+$$
+Como $\hat{g}$ depende da amostra, ele é uma **função aleatória dos dados**.
+
+Nesse caso, podemos considerar a esperança também em relação à amostra de treinamento.
+
+Assim, o **risco esperado** é a média do risco condicional sobre todas as possíveis amostras:
+
+$$
+E_{\mathcal{D}_n}\left[R\big(\hat{g}_{\mathcal{D}_n}\big)\right]
+$$
+
+
+## O modelo estimado depende dos dados
+
+Assim,
+
+$$
+\text{Risco esperado} = E[\text{risco condicional}]
+$$
+
+
+- O **risco condicional** avalia o desempenho de um modelo específico, já ajustado.
+- O **risco esperado** avalia o desempenho médio do procedimento de aprendizado.
+
+
+
+## O modelo estimado depende dos dados
+
+
+Ou seja:
+
+- risco condicional $\rightarrow$ garantia sobre uma função $g$ específica
+- risco esperado $\rightarrow$ garantia sobre o algoritmo que constrói $g$
+
+Essa ideia será fundamental para compreender **variância do estimador**.
+
+## Síntese
+
+$$
+\boxed{\text{Dados}}
+\rightarrow
+\boxed{\hat g}
+\rightarrow
+\boxed{L}
+\rightarrow
+\boxed{R(g)}
+$$
+
+Mas há um problema:
+
+$$
+\boxed{R(g)\text{ é desconhecido}}
+$$
+
+> **Como estimar o erro que o modelo terá em dados ainda não observados?**
+
+# Generalização e seleção de modelos
+
+
+## Exemplo: PIB e expectativa de vida
+
+Considere
+
+- $X$: PIB per capita;
+- $Y$: expectativa de vida.
+
+Queremos estimar
+
+$$
+r(x)= E[Y\mid X=x]
+$$
+
+> Qual é a expectativa de vida média esperada para um país com PIB per capita igual a $x$?
+
+
+
+## R: PIB e expectativa de vida
+
+
+```{r}
+#| fig-width: 7
+#| fig-height: 4.2
+#| out-width: 82%
+#| fig-align: center
+#| output-location: slide
+
+library(ggplot2)
+set.seed(1)
+x <- runif(200, 1000, 60000)
+y <- 40 + 15*log(x/1000) + rnorm(200, 0, 3)
+df_pib <- data.frame(pib=x, vida=y)
+ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color="#2C7FB8", alpha=.55) +
+  geom_smooth(method="loess", color="#D7301F", se=FALSE, linewidth=1.25) +
+  theme_minimal(base_size=16) +
+  labs(x="PIB per capita", y="Expectativa de vida")
+```
+
+
+
+
+## Um modelo simples
+
+<!-- Considere novamente o exemplo **PIB $\times$ expectativa de vida**. -->
+
+A função de predição considerada é
+
+$$
+g(x) = \beta_0 + \sum_{i=1}^{p} \beta_i x^i
+$$
+
+Pergunta:
+
+> O modelo é flexível o suficiente para representar a relação entre $X$ e $Y$?
+
+## Três candidatos
+
+Considere modelos polinomiais com
+
+$$
+p=1,
+\qquad
+p=4,
+\qquad
+p=50
+$$
+
+```{r}
+#| fig-width: 13
+#| fig-height: 5.5
+#| out-width: 100%
+#| fig-align: center
+#| warning: false
+#| message: false
+#| output-location: slide
+
+
+library(ggplot2)
+library(patchwork)
+
+
+grid <- data.frame(pib = seq(min(df_pib$pib), max(df_pib$pib), length.out = 500))
+
+fit1  <- lm(vida ~ poly(pib, 1,  raw = TRUE), data = df_pib)
+fit4  <- lm(vida ~ poly(pib, 4,  raw = TRUE), data = df_pib)
+fit50 <- lm(vida ~ poly(pib, 50, raw = TRUE), data = df_pib)
+
+grid$g1  <- predict(fit1,  grid)
+grid$g4  <- predict(fit4,  grid)
+grid$g50 <- predict(fit50, grid)
+
+tema_base <- theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 14),
+    plot.subtitle = element_text(hjust = 0.5, size = 10.5, face = "bold"),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 9),
+    plot.margin = margin(6, 6, 6, 6)
+  )
+
+p1 <- ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color = "#2C7FB8", alpha = 0.6, size = 1.6) +
+  geom_line(data = grid, aes(pib, g1), color = "#D7301F", linewidth = 1.2) +
+  labs(
+    title = "Polinômio grau 1",
+    subtitle = "Underfitting",
+    x = "PIB per capita",
+    y = "Expectativa de vida"
+  ) +
+  tema_base
+
+p2 <- ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color = "#2C7FB8", alpha = 0.6, size = 1.6) +
+  geom_line(data = grid, aes(pib, g4), color = "#D7301F", linewidth = 1.2) +
+  labs(
+    title = "Polinômio grau 4",
+    subtitle = "Bom ajuste",
+    x = "PIB per capita",
+    y = "Expectativa de vida"
+  ) +
+  tema_base
+
+p3 <- ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color = "#2C7FB8", alpha = 0.6, size = 1.6) +
+  geom_line(data = grid, aes(pib, g50), color = "#D7301F", linewidth = 1.2) +
+  labs(
+    title = "Polinômio grau 50",
+    subtitle = "Overfitting",
+    x = "PIB per capita",
+    y = "Expectativa de vida"
+  ) +
+  tema_base
+
+faixa <- ggplot() +
+  annotate(
+    "segment",
+    x = 0.12, xend = 0.88, y = 0.55, yend = 0.55,
+    linewidth = 1,
+    colour = "gray35",
+    arrow = arrow(ends = "both", length = grid::unit(0.18, "cm"))
+  ) +
+  annotate(
+    "text",
+    x = 0.50, y = 0.80,
+    label = "Complexidade do modelo",
+    size = 5, fontface = "bold"
+  ) +
+  annotate(
+    "text",
+    x = 0.12, y = 0.28,
+    label = "Modelo simples",
+    hjust = 0, size = 4.2
+  ) +
+  annotate(
+    "text",
+    x = 0.50, y = 0.28,
+    label = "Modelo adequado",
+    hjust = 0.5, size = 4.2
+  ) +
+  annotate(
+    "text",
+    x = 0.88, y = 0.28,
+    label = "Modelo complexo",
+    hjust = 1, size = 4.2
+  ) +
+  coord_cartesian(xlim = c(0, 1), ylim = c(0, 1), clip = "off") +
+  theme_void() +
+  theme(plot.margin = margin(0, 10, 0, 10))
+
+((p1 | p2 | p3) / faixa) + plot_layout(heights = c(10, 1.8))
+```
+
+## Sub-ajuste (*underfitting*)
+
+Um modelo muito simples pode apresentar
+
+$$
+\text{alto viés}
+\quad\Rightarrow\quad
+\text{estrutura relevante não capturada}
+$$
+
+Exemplo: polinômio de grau $1$ quando a relação é fortemente não linear.
+
+## Super-ajuste (*overfitting*)
+
+Um modelo excessivamente flexível pode ajustar características específicas da amostra:
+
+$$
+\text{erro de treino muito baixo}
+\quad\not\Rightarrow\quad
+\text{boa generalização}
+$$
+
+
+
+
+
+
+## O paradoxo do treinamento
+
+Em geral, quando aumentamos a complexidade,
+
+$$
+\text{complexidade}\uparrow
+\quad\Rightarrow\quad
+\widehat R_{\text{treino}}\downarrow
+$$
+
+Então por que não escolher sempre o modelo mais complexo?
+
+## Treino não é generalização
+
+$$
+\boxed{
+\text{Bom ajuste aos dados observados}
+\neq
+\text{Boa predição em novos dados}
+}
+$$
+
+Precisamos estimar o desempenho **fora da amostra usada no ajuste**.
+
+
+
+Para isso, utilizamos um critério que permita avaliar a qualidade preditiva da função.
+
+
+Neste contexto, usamos o **risco quadrático** para medir a qualidade do modelo $R(g).$
+
+Queremos então escolher uma função $g$ dentro de uma classe de candidatos $\mathcal{G}$ que apresente **baixo risco quadrático**.
+
+
+
+## Objetivo prático
+
+Ao selecionar um modelo, queremos evitar:
+
+- **sub-ajuste (underfitting)**  
+- **super-ajuste (overfitting)**
+
+Ou seja, buscamos um modelo com **bom poder preditivo** para novas observações.
+
+
+## Objetivo prático
+
+Na prática, o valor de $R(g)$ é **desconhecido**.
+
+Por isso, precisamos **estimar o risco** para avaliar e comparar as funções $g \in \mathcal{G}.$
+
+
+
+A questão central passa a ser:
+
+> Como estimar o risco de predição de um modelo?
+
+Na próxima etapa, estudamos métodos para **estimar esse risco** e, assim, escolher o modelo mais adequado.
+
+
+## Risco observado
+
+Uma forma natural de avaliar um modelo é medir seu erro **nos dados de treinamento**.
+
+Esse erro é chamado de **risco observado** ou **erro quadrático médio (EQM)** no conjunto de treinamento:
+
+$$
+EQM(g) = \frac{1}{n}\sum_{i=1}^{n} (Y_i - \hat g(X_i))^2
+$$
+
+
+::: {.callout-note appearance="simple"}
+
+O risco observado é um **estimador muito otimista** do verdadeiro risco de predição.
+
+:::
+
+
+
+## *Data splitting*
+
+Uma forma simples de estimar o risco de predição é **dividir o conjunto de dados em duas partes**: 
+
+
+$$
+\boxed{\text{Treino}}
+\qquad
+\boxed{\text{Validação}}
+$$
+
+- **Treino:** estima os parâmetros do modelo;
+- **Validação:** estima o desempenho em dados não usados no ajuste.
+
+## Erro de validação
+
+Para um conjunto de validação $V$,
+
+$$
+\widehat R_{\text{val}}(g)
+=
+\frac{1}{|V|}
+\sum_{i\in V}
+(Y_i- \hat g(X_i))^2
+$$
+
+
+Como os dados de validação **não foram usados para treinar o modelo**, essa estimativa é **mais próxima do verdadeiro erro de predição**.
+
+
+## Complexidade: treino *vs.* validação
+
+Com o aumento da complexidade:
+
+- erro de treinamento tende a diminuir;
+- erro de validação pode inicialmente diminuir e depois aumentar.
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4.8
+#| out-width: 78%
+#| fig-align: center
+#| output-location: slide
+
+
+complexidade <- seq(0,10,length.out=200)
+erro_treino <- exp(-.45*complexidade)+.08
+erro_valid <- .035*(complexidade-5)^2+.27
+df_err <- data.frame(complexidade,erro_treino,erro_valid)
+ggplot(df_err,aes(complexidade))+
+  geom_line(aes(y=erro_treino,color="Treino"),linewidth=1.3)+
+  geom_line(aes(y=erro_valid,color="Validação"),linewidth=1.3)+
+  geom_vline(xintercept=5,lty=2,color="gray40")+
+  scale_color_manual(values=c(Treino="#2C7FB8",Validação="#D7301F"))+
+  theme_minimal(base_size=15)+theme(legend.position="top")+
+  labs(x="Complexidade",y="Erro",color=NULL)
+```
+
+::: {.callout-note appearance="simple"}
+**Ideia central:** selecionar a complexidade pelo desempenho **fora da amostra**.
+:::
+
+
+## Problema: overfitting na validação
+
+Se avaliarmos **muitos modelos diferentes**, podemos acabar escolhendo um modelo que se ajusta **bem ao conjunto de validação por acaso**.
+
+Isso gera **super-ajuste ao conjunto de validação**.
+
+Consequência:
+
+- o modelo escolhido pode ter bom desempenho na validação, mas **não generalizar bem para novos dados**.
+
+
+
+## Treinamento *vs.* Validação *vs.* Teste
+
+Uma prática comum é dividir os dados em três partes:
+
+- **Treinamento** → ajustar os modelos
+- **Validação** → escolher o melhor modelo
+- **Teste** → avaliar o desempenho final
+
+
+O conjunto de teste fornece uma estimativa do risco
+
+$$
+R(g) = E[(Y - \hat g(X))^2]
+$$
+
+para **novas observações**. Assim podemos avaliar se o modelo escolhido realmente **generaliza bem**.
+
+
+## Treinamento *vs.* Validação *vs.* Teste
+
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.6
+#| fig-align: center
+
+library(ggplot2)
+
+df <- data.frame(
+  conjunto = factor(
+    c("Treinamento", "Validação", "Teste"),
+    levels = c("Treinamento", "Validação", "Teste")
+  ),
+  tamanho = c(70, 15, 15)
+)
+
+ggplot(df, aes(x = conjunto, y = tamanho, fill = conjunto)) +
+  geom_col(width = 0.58) +
+  geom_text(
+    aes(label = paste0(tamanho, "%")),
+    vjust = -0.6,
+    size = 5
+  ) +
+  scale_fill_manual(values = c(
+    "Treinamento" = "#2C7FB8",
+    "Validação"   = "#FDAE61",
+    "Teste"       = "#D7301F"
+  )) +
+  scale_y_continuous(
+    limits = c(0, 78),
+    breaks = seq(0, 70, 10),
+    expand = expansion(mult = c(0, 0.02))
+  ) +
+  labs(
+    title = "Divisão do conjunto de dados",
+    x = NULL,
+    y = "Percentual de dados"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    plot.margin = margin(12, 12, 12, 12)
+  ) +
+  coord_cartesian(clip = "off")
+```
+
+
+
+
+::: {.callout-important appearance="simple"}
+O conjunto de teste não deve participar das decisões de modelagem.
+:::
+
+## O problema de uma única divisão
+
+Uma única divisão treino/validação:
+
+- depende da divisão aleatória escolhida;
+- utiliza apenas parte da amostra para treinamento;
+- pode produzir estimativas instáveis do desempenho.
+
+Uma alternativa é a **validação cruzada**.
+
+## $k$-fold cross-validation
+
+Dividimos os dados em $k$ subconjuntos aproximadamente do mesmo tamanho:
+
+$$
+D=F_1\cup\cdots\cup F_k
+$$
+
+Cada fold funciona uma vez como validação; os demais são usados para treinamento.
+
+```{r}
+#| fig-width: 10
+#| fig-height: 4.5
+#| out-width: 88%
+#| fig-align: center
+#| output-location: slide
+k <- 5
+folds <- expand.grid(iteracao=1:k, fold=1:k)
+folds$status <- ifelse(folds$fold==folds$iteracao,"Validação","Treino")
+ggplot(folds,aes(fold,iteracao,fill=status))+
+  geom_tile(color="white",linewidth=1.2)+
+  scale_fill_manual(values=c(Treino="#2C7FB8",Validação="#D7301F"))+
+  scale_x_continuous(breaks=1:k,labels=paste0("F",1:k))+
+  scale_y_reverse(breaks=1:k)+theme_minimal(base_size=15)+
+  theme(panel.grid=element_blank(),legend.position="top")+
+  labs(x="Fold",y="Iteração",fill=NULL)
+```
+
+## Estimativa do risco por CV
+
+O estimador do risco via $k$-fold cross-validation é
+
+
+$$
+\widehat R_{CV}
+=
+\frac{1}{n}
+\sum_{j=1}^{k}
+\sum_{i\in F_j}
+\left(Y_i-\hat g_{-j}(X_i)\right)^2
+$$
+
+Aqui, $\hat g_{-j}$ é ajustado sem usar as observações do fold $F_j$.<br><br>
+
+::: {.callout-note appearance="simple"}
+
+Quando $k = n$ cada fold contém apenas **uma observação**.
+
+Nesse caso, temos o método **Leave-One-Out Cross Validation (LOOCV)**
+
+:::
+
+## *Data leakage*
+
+### Incorreto
+
+$$
+\text{Pré-processar todos os dados}
+\longrightarrow
+\text{CV}
+$$
+
+### Correto
+
+$$
+\text{Em cada fold:}
+\quad
+\text{estimar pré-processamento no treino}
+\longrightarrow
+\text{aplicar na validação}
+$$
+
+::: {.callout-warning appearance="simple"}
+Informação do conjunto de validação não deve influenciar o treinamento.
+:::
+
+
+## Intervalos de confiança para o risco
+
+Depois de escolher o modelo usando **treinamento** e **validação**, utilizamos o **conjunto de teste** para estimar o risco verdadeiro do modelo.
+
+O conjunto de teste não foi usado para ajustar o modelo.<br><br>
+
+
+#### Estimador do risco no conjunto de teste
+
+Denote por $(\tilde{X}_1,\tilde Y_1),\ldots,(\tilde{X}_m,\tilde Y_m)$ as observações do **conjunto de teste**.
+
+Um estimador do risco é
+
+$$
+\hat R(g)
+=
+\frac{1}{m}
+\sum_{k=1}^{m}
+(\tilde Y_k - g(\tilde{X}_k))^2
+$$
+
+## Intervalos de confiança para o risco
+
+
+Definimos
+
+$$
+W_k = (\tilde Y_k - g(\tilde{X}_k))^2, \qquad k = 1 \cdots m
+$$
+
+Assim,
+
+$$
+\hat R(g) = \frac{1}{m}\sum_{k=1}^{m} W_k
+$$
+
+
+Se as observações do conjunto de teste são i.i.d., então $W_1,\ldots,W_m$ são variáveis aleatórias **independentes e identicamente distribuídas**.
+
+Logo, $\hat R(g)$ é simplesmente **a média dessas variáveis**.
+
+
+## Intervalos de confiança para o risco
+
+
+Pelo **Teorema Central do Limite**,
+
+$$
+\hat R(g)
+\approx
+\mathcal{N}
+\left(
+R(g),
+\frac{1}{m}\,\mathrm{Var}(W)
+\right)
+$$
+
+quando $m$ é grande.
+
+
+Na prática, estimamos $\mathrm{Var}(W)$ pela variância amostral:
+
+$$
+\hat\sigma^2
+=
+\frac{1}{m-1}
+\sum_{k=1}^{m}
+(W_k - \bar W)^2
+$$
+
+
+## Intervalos de confiança para o risco
+
+
+onde
+
+$$
+\bar W = \hat R(g)
+$$
+
+Um intervalo de confiança aproximado de 95% é
+
+$$
+\hat R(g)
+\pm
+1.96
+\frac{\hat\sigma}{\sqrt{m}}
+$$
+
+O intervalo de confiança fornece uma **medida de incerteza** da estimativa do risco. Isso permite avaliar:
+
+- se o erro estimado é confiável
+- se dois modelos possuem desempenho estatisticamente diferente
+
+## Síntese
+
+$$
+\boxed{
+\text{Treinar}
+\neq
+\text{Selecionar}
+\neq
+\text{Avaliar}
+}
+$$
+
+> **Como a complexidade do modelo afeta seu erro de generalização?**
+
+# Complexidade, viés, variância e *tuning*
+
+## Por que modelos muito flexíveis são instáveis?
+
+Imagine várias amostras independentes provenientes da mesma população.
+
+Um modelo muito flexível pode produzir curvas bastante diferentes em cada amostra.
+
+Essa sensibilidade aos dados é chamada **variância**.
+
+---
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.7
+#| out-width: 78%
+#| fig-align: center
+#| output-location: slide
+
+set.seed(10)
+
+# Grade de valores de x
+grid_v <- data.frame(
+  x = seq(-1, 1, length.out = 300)
+)
+
+# Função de regressão verdadeira
+grid_v$verdadeiro <- 1 + 2*grid_v$x - 2*grid_v$x^2
+
+# Ajustes obtidos em 6 amostras diferentes
+curvas <- do.call(
+  rbind,
+  lapply(1:6, function(b) {
+    
+    xx <- sort(runif(70, -1, 1))
+    
+    yy <- 1 + 2*xx - 2*xx^2 +
+      rnorm(70, 0, .35)
+    
+    fit <- lm(
+      yy ~ poly(xx, 12, raw = TRUE)
+    )
+    
+    data.frame(
+      x = grid_v$x,
+      pred = predict(
+        fit,
+        newdata = data.frame(xx = grid_v$x)
+      ),
+      amostra = factor(b)
+    )
+  })
+)
+
+# Gráfico
+ggplot(
+  curvas,
+  aes(x, pred, group = amostra, color = amostra)
+) +
+  geom_line(
+    linewidth = .9,
+    alpha = .8
+  ) +
+  geom_line(
+    data = grid_v,
+    aes(x, verdadeiro),
+    inherit.aes = FALSE,
+    color = "#D7301F",
+    linetype = "dashed",
+    linewidth = 1.3
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    legend.position = "none"
+  ) +
+  labs(
+    x = "x",
+    y = "Predição",
+    title = "Modelo muito flexível em diferentes amostras"
+  )
+```
+
+## O outro extremo: modelos simples
+
+Modelos muito simples podem variar pouco entre amostras, mas errar sistematicamente a forma de $r(x)$.
+
+Esse erro sistemático é chamado **viés**.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.7
+#| out-width: 78%
+#| fig-align: center
+#| output-location: slide
+set.seed(11)
+grid_b <- data.frame(x=seq(-1,1,length.out=300))
+retas <- do.call(rbind,lapply(1:6,function(b){
+  xx <- runif(70,-1,1); yy <- 1+2*xx-2*xx^2+rnorm(70,0,.35)
+  fit <- lm(yy~xx)
+  data.frame(x=grid_b$x,pred=predict(fit,newdata=data.frame(xx=grid_b$x)),amostra=factor(b))
+}))
+ggplot(retas,aes(x,pred,group=amostra))+geom_line(color="#2C7FB8",linewidth=.8,alpha=.65)+
+  stat_function(fun=function(x) 1+2*x-2*x^2,color="#D7301F",linewidth=1.4,lty=2)+
+  theme_minimal(base_size=15)+labs(x="x",y="Predição",title="Modelo simples: baixa variância, mas viés sistemático")
+```
+
+## Viés
+
+Para um ponto $x$,
+
+$$
+\operatorname{Bias}[\hat g(x)]
+=
+E[\hat g(x)]-r(x)
+$$
+
+Interpretação:
+
+> quanto a previsão média do procedimento de aprendizagem se afasta sistematicamente da função verdadeira.
+
+## Variância
+
+$$
+\operatorname{Var}[\hat g(x)]
+$$
+
+Interpretação:
+
+> quanto o modelo estimado muda quando utilizamos uma nova amostra de treinamento.
+
+## Decomposição viés–variância
+
+Sob perda quadrática,
+
+$$
+\boxed{
+E\left[(Y-\hat{g}(x))^2 \mid X=x\right]
+=
+\operatorname{Bias}^2\left[\hat{g}(x)\right]
++
+\operatorname{Var}\left[\hat{g}(x)\right]
++
+\sigma^2(x)
+}
+$$<br><br>
+
+
+
+### Interpretação
+
+| Componente | Significado |
+|---|---|
+| $\operatorname{Bias}^2\left[\hat{g}(x)\right]$ | erro sistemático |
+| $\operatorname{Var}\left[\hat{g}(x)\right]$ | sensibilidade à amostra |
+| $\sigma^2(x)=\operatorname{Var}(Y\mid X=x)$ | ruído irredutível |
+
+## *Trade-off* viés–variância
+
+Em geral,
+
+$$
+\text{complexidade}\uparrow
+\Rightarrow
+\begin{cases}
+\text{viés}\downarrow\\
+\text{variância}\uparrow
+\end{cases}
+$$
+
+O objetivo é encontrar um compromisso que minimize o erro de generalização.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.8
+#| out-width: 78%
+#| fig-align: center
+#| output-location: slide
+complexidade <- seq(0,10,length.out=300)
+bias2 <- exp(-.65*complexidade)+.03
+variancia <- .02+.018*complexidade^2
+ruido <- .12
+erro <- bias2+variancia+ruido
+df_bv <- data.frame(complexidade,bias2,variancia,erro)
+x_otimo <- complexidade[which.min(erro)]
+ggplot(df_bv,aes(complexidade))+
+  geom_line(aes(y=bias2,color="Viés²"),linewidth=1.2)+
+  geom_line(aes(y=variancia,color="Variância"),linewidth=1.2)+
+  geom_line(aes(y=erro,color="Erro esperado"),linewidth=1.4)+
+  geom_vline(xintercept=x_otimo,lty=2,color="gray40")+
+  scale_color_manual(values=c("Viés²"="#2C7FB8","Variância"="#D7301F","Erro esperado"="#31A354"))+
+  theme_minimal(base_size=15)+theme(legend.position="top")+
+  labs(x="Complexidade / flexibilidade",y="Erro",color=NULL)
+```
+
+## Voltando aos polinômios
+
+| Modelo | Viés | Variância |
+|---|---|---|
+| grau $1$ | alto | baixa |
+| grau $4$ | moderado | moderada |
+| grau $50$ | baixo | alta |
+
+O melhor modelo não é necessariamente o mais simples nem o mais flexível.
+
+## Parâmetro *vs.* hiperparâmetro
+
+:::: {.columns}
+::: {.column width="50%"}
+### Parâmetros
+
+Exemplo:
+
+$$
+\beta_0,\beta_1,\ldots,\beta_p
+$$
+
+São **estimados no conjunto de treinamento**.
+:::
+::: {.column width="50%" .fragment}
+### Hiperparâmetro
+
+Exemplo:
+
+$$
+p=\text{grau do polinômio}
+$$
+
+Controla a estrutura/complexidade e é **escolhido por validação**.
+:::
+::::
+
+## A mesma ideia aparecerá em todo o curso
+
+| Método | Controle de complexidade |
+|---|---|
+| Regressão polinomial | grau $p$ |
+| Ridge/Lasso | $\lambda$ |
+| KNN | $k$ |
+| Kernel | bandwidth $h$ |
+| Árvore | profundidade / poda |
+| Random Forest | `mtry` |
+| Boosting | profundidade, learning rate, nº de árvores,<br><br> |
+
+::: {.callout-note appearance="simple"}
+Os algoritmos mudam; o problema estatístico de controlar a complexidade permanece.
+:::
+
+## *Tuning*
+
+Se $\theta$ representa um hiperparâmetro,
+
+$$
+\boxed{
+\hat\theta
+=
+\arg\min_{\theta}
+\widehat R_{CV}(\theta)
+}
+$$
+
+O ajuste de hiperparâmetros deve ser feito **sem usar o conjunto de teste**.
+
+---
+
+
+![](/images/regressao/pipeline_completo.png){width="1000"}
+
+
+## Cinco perguntas para o restante da disciplina
+
+1. **Qual função queremos aprender?**  
+   $$r(x)=\mathbb E[Y\mid X=x]$$
+
+2. **Como medimos um erro?**  
+   $$L(Y,g(X))$$
+
+3. **Como medimos a qualidade de um modelo?**  
+   $$R(g)=\mathbb E[L(Y,g(X))]$$
+   
+
+
+## Cinco perguntas para o restante da disciplina
+
+4. **Como estimamos o desempenho em novos dados?**  
+   $$\text{Validação / cross-validation}$$
+
+5. **Como controlamos a complexidade?**  
+   $$\text{Tuning / regularização}$$
+   
+
+

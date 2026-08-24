@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Parte II : Aprendizado Não Supervisionado – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+<meta property="og:title" content="Parte II : Aprendizado Não Supervisionado – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Análise de Agrupamento">
+<meta property="og:image" content="http://professortp.com.br/est335/aulas/semanais/semana_13_analise_agrupamento_files/figure-html/unnamed-chunk-2-1.png">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:image:height" content="921">
+<meta property="og:image:width" content="1382">
+</head>
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Parte II : Aprendizado Não Supervisionado</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#semana-13" id="toc-semana-13" class="nav-link active" data-scroll-target="#semana-13">Semana 13</a>
+  <ul class="collapse">
+<li><a href="#an%C3%A1lise-de-agrupamento" id="toc-análise-de-agrupamento" class="nav-link" data-scroll-target="#an%C3%A1lise-de-agrupamento">Análise de Agrupamento</a></li>
+  <li><a href="#conhecimento-pr%C3%A9vio" id="toc-conhecimento-prévio" class="nav-link" data-scroll-target="#conhecimento-pr%C3%A9vio">Conhecimento prévio</a></li>
+  <li><a href="#organiza%C3%A7%C3%A3o-da-semana" id="toc-organização-da-semana" class="nav-link" data-scroll-target="#organiza%C3%A7%C3%A3o-da-semana">Organização da semana</a></li>
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos">Objetivos</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#encontro-13.1-o-problema" id="toc-encontro-13.1-o-problema" class="nav-link" data-scroll-target="#encontro-13.1-o-problema">Encontro 13.1 — O problema</a>
+  <ul class="collapse">
+<li><a href="#o-que-%C3%A9-um-cluster" id="toc-o-que-é-um-cluster" class="nav-link" data-scroll-target="#o-que-%C3%A9-um-cluster">O que é um cluster?</a></li>
+  <li><a href="#n%C3%A3o-existe-uma-%C3%BAnica-defini%C3%A7%C3%A3o-de-grupo" id="toc-não-existe-uma-única-definição-de-grupo" class="nav-link" data-scroll-target="#n%C3%A3o-existe-uma-%C3%BAnica-defini%C3%A7%C3%A3o-de-grupo">Não existe uma única definição de grupo</a></li>
+  <li><a href="#exemplo-simples" id="toc-exemplo-simples" class="nav-link" data-scroll-target="#exemplo-simples">Exemplo simples</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#revis%C3%A3o-k-means" id="toc-revisão-k-means" class="nav-link" data-scroll-target="#revis%C3%A3o-k-means">Revisão — K-means</a>
+  <ul class="collapse">
+<li><a href="#a-ideia" id="toc-a-ideia" class="nav-link" data-scroll-target="#a-ideia">A ideia</a></li>
+  <li><a href="#fun%C3%A7%C3%A3o-objetivo" id="toc-função-objetivo" class="nav-link" data-scroll-target="#fun%C3%A7%C3%A3o-objetivo">Função objetivo</a></li>
+  <li>
+<a href="#duas-opera%C3%A7%C3%B5es" id="toc-duas-operações" class="nav-link" data-scroll-target="#duas-opera%C3%A7%C3%B5es">Duas operações</a>
+  <ul class="collapse">
+<li><a href="#atribui%C3%A7%C3%A3o" id="toc-atribuição" class="nav-link" data-scroll-target="#atribui%C3%A7%C3%A3o">Atribuição</a></li>
+  <li><a href="#atualiza%C3%A7%C3%A3o" id="toc-atualização" class="nav-link" data-scroll-target="#atualiza%C3%A7%C3%A3o">Atualização</a></li>
+  </ul>
+</li>
+  <li><a href="#geometria-impl%C3%ADcita" id="toc-geometria-implícita" class="nav-link" data-scroll-target="#geometria-impl%C3%ADcita">Geometria implícita</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#quando-k-means-encontra-dificuldades" id="toc-quando-k-means-encontra-dificuldades" class="nav-link" data-scroll-target="#quando-k-means-encontra-dificuldades">Quando K-means encontra dificuldades?</a>
+  <ul class="collapse">
+<li><a href="#estruturas-n%C3%A3o-convexas" id="toc-estruturas-não-convexas" class="nav-link" data-scroll-target="#estruturas-n%C3%A3o-convexas">Estruturas não convexas</a></li>
+  <li><a href="#o-problema-n%C3%A3o-%C3%A9-apenas-escolher-k" id="toc-o-problema-não-é-apenas-escolher-k" class="nav-link" data-scroll-target="#o-problema-n%C3%A3o-%C3%A9-apenas-escolher-k">O problema não é apenas escolher <span class="math inline">\(K\)</span></a></li>
+  </ul>
+</li>
+  <li>
+<a href="#revis%C3%A3o-agrupamento-hier%C3%A1rquico" id="toc-revisão-agrupamento-hierárquico" class="nav-link" data-scroll-target="#revis%C3%A3o-agrupamento-hier%C3%A1rquico">Revisão — Agrupamento Hierárquico</a>
+  <ul class="collapse">
+<li><a href="#outra-estrat%C3%A9gia" id="toc-outra-estratégia" class="nav-link" data-scroll-target="#outra-estrat%C3%A9gia">Outra estratégia</a></li>
+  <li>
+<a href="#duas-escolhas-fundamentais" id="toc-duas-escolhas-fundamentais" class="nav-link" data-scroll-target="#duas-escolhas-fundamentais">Duas escolhas fundamentais</a>
+  <ul class="collapse">
+<li><a href="#dist%C3%A2ncia-entre-observa%C3%A7%C3%B5es" id="toc-distância-entre-observações" class="nav-link" data-scroll-target="#dist%C3%A2ncia-entre-observa%C3%A7%C3%B5es">Distância entre observações</a></li>
+  <li><a href="#liga%C3%A7%C3%A3o-entre-grupos" id="toc-ligação-entre-grupos" class="nav-link" data-scroll-target="#liga%C3%A7%C3%A3o-entre-grupos">Ligação entre grupos</a></li>
+  </ul>
+</li>
+  <li><a href="#ward" id="toc-ward" class="nav-link" data-scroll-target="#ward">Ward</a></li>
+  <li><a href="#o-dendrograma" id="toc-o-dendrograma" class="nav-link" data-scroll-target="#o-dendrograma">O dendrograma</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#quantos-grupos" id="toc-quantos-grupos" class="nav-link" data-scroll-target="#quantos-grupos">Quantos grupos?</a>
+  <ul class="collapse">
+<li><a href="#n%C3%A3o-existe-resposta-puramente-algor%C3%ADtmica" id="toc-não-existe-resposta-puramente-algorítmica" class="nav-link" data-scroll-target="#n%C3%A3o-existe-resposta-puramente-algor%C3%ADtmica">Não existe resposta puramente algorítmica</a></li>
+  <li><a href="#o-limite-dos-centroides" id="toc-o-limite-dos-centroides" class="nav-link" data-scroll-target="#o-limite-dos-centroides">O limite dos centroides</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#encontro-13.2-agrupamento-espectral" id="toc-encontro-13.2-agrupamento-espectral" class="nav-link" data-scroll-target="#encontro-13.2-agrupamento-espectral">Encontro 13.2 — Agrupamento Espectral</a>
+  <ul class="collapse">
+<li><a href="#dos-dados-para-um-grafo" id="toc-dos-dados-para-um-grafo" class="nav-link" data-scroll-target="#dos-dados-para-um-grafo">Dos dados para um grafo</a></li>
+  <li><a href="#matriz-de-similaridades" id="toc-matriz-de-similaridades" class="nav-link" data-scroll-target="#matriz-de-similaridades">Matriz de similaridades</a></li>
+  <li><a href="#kernel-gaussiano" id="toc-kernel-gaussiano" class="nav-link" data-scroll-target="#kernel-gaussiano">Kernel Gaussiano</a></li>
+  <li>
+<a href="#o-papel-de-sigma" id="toc-o-papel-de-sigma" class="nav-link" data-scroll-target="#o-papel-de-sigma">O papel de <span class="math inline">\(\sigma\)</span></a>
+  <ul class="collapse">
+<li><a href="#sigma-pequeno" id="toc-sigma-pequeno" class="nav-link" data-scroll-target="#sigma-pequeno"><span class="math inline">\(\sigma\)</span> pequeno</a></li>
+  <li><a href="#sigma-grande" id="toc-sigma-grande" class="nav-link" data-scroll-target="#sigma-grande"><span class="math inline">\(\sigma\)</span> grande</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li>
+<a href="#como-construir-o-grafo" id="toc-como-construir-o-grafo" class="nav-link" data-scroll-target="#como-construir-o-grafo">Como construir o grafo?</a>
+  <ul class="collapse">
+<li><a href="#grafo-completo" id="toc-grafo-completo" class="nav-link" data-scroll-target="#grafo-completo">Grafo completo</a></li>
+  <li><a href="#k-vizinhos-mais-pr%C3%B3ximos" id="toc-k-vizinhos-mais-próximos" class="nav-link" data-scroll-target="#k-vizinhos-mais-pr%C3%B3ximos"><span class="math inline">\(k\)</span> vizinhos mais próximos</a></li>
+  <li><a href="#varepsilon-vizinhan%C3%A7a" id="toc-varepsilon-vizinhança" class="nav-link" data-scroll-target="#varepsilon-vizinhan%C3%A7a"><span class="math inline">\(\varepsilon\)</span>-vizinhança</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#matriz-de-graus" id="toc-matriz-de-graus" class="nav-link" data-scroll-target="#matriz-de-graus">Matriz de graus</a>
+  <ul class="collapse">
+<li><a href="#grau-de-um-v%C3%A9rtice" id="toc-grau-de-um-vértice" class="nav-link" data-scroll-target="#grau-de-um-v%C3%A9rtice">Grau de um vértice</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#laplaciano-do-grafo" id="toc-laplaciano-do-grafo" class="nav-link" data-scroll-target="#laplaciano-do-grafo">Laplaciano do grafo</a>
+  <ul class="collapse">
+<li><a href="#defini%C3%A7%C3%A3o" id="toc-definição" class="nav-link" data-scroll-target="#defini%C3%A7%C3%A3o">Definição</a></li>
+  <li><a href="#por-que-o-laplaciano-%C3%A9-especial" id="toc-por-que-o-laplaciano-é-especial" class="nav-link" data-scroll-target="#por-que-o-laplaciano-%C3%A9-especial">Por que o Laplaciano é especial?</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o" id="toc-interpretação" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o">Interpretação</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#componentes-conexas" id="toc-componentes-conexas" class="nav-link" data-scroll-target="#componentes-conexas">Componentes conexas</a>
+  <ul class="collapse">
+<li><a href="#um-resultado-importante" id="toc-um-resultado-importante" class="nav-link" data-scroll-target="#um-resultado-importante">Um resultado importante</a></li>
+  <li><a href="#dados-reais" id="toc-dados-reais" class="nav-link" data-scroll-target="#dados-reais">Dados reais</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#embedding-espectral" id="toc-embedding-espectral" class="nav-link" data-scroll-target="#embedding-espectral">Embedding espectral</a>
+  <ul class="collapse">
+<li><a href="#constru%C3%A7%C3%A3o" id="toc-construção" class="nav-link" data-scroll-target="#constru%C3%A7%C3%A3o">Construção</a></li>
+  <li><a href="#uma-nova-representa%C3%A7%C3%A3o" id="toc-uma-nova-representação" class="nav-link" data-scroll-target="#uma-nova-representa%C3%A7%C3%A3o">Uma nova representação</a></li>
+  <li><a href="#e-ent%C3%A3o-aparece-novamente-o-k-means" id="toc-e-então-aparece-novamente-o-k-means" class="nav-link" data-scroll-target="#e-ent%C3%A3o-aparece-novamente-o-k-means">E então aparece novamente o K-means</a></li>
+  <li><a href="#a-ideia-central" id="toc-a-ideia-central" class="nav-link" data-scroll-target="#a-ideia-central">A ideia central</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#por-que-isso-ajuda" id="toc-por-que-isso-ajuda" class="nav-link" data-scroll-target="#por-que-isso-ajuda">Por que isso ajuda?</a>
+  <ul class="collapse">
+<li><a href="#no-espa%C3%A7o-original" id="toc-no-espaço-original" class="nav-link" data-scroll-target="#no-espa%C3%A7o-original">No espaço original</a></li>
+  <li><a href="#no-espa%C3%A7o-espectral" id="toc-no-espaço-espectral" class="nav-link" data-scroll-target="#no-espa%C3%A7o-espectral">No espaço espectral</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#comparando-os-m%C3%A9todos" id="toc-comparando-os-métodos" class="nav-link" data-scroll-target="#comparando-os-m%C3%A9todos">Comparando os métodos</a>
+  <ul class="collapse">
+<li><a href="#k-means" id="toc-k-means" class="nav-link" data-scroll-target="#k-means">K-means</a></li>
+  <li><a href="#hier%C3%A1rquico" id="toc-hierárquico" class="nav-link" data-scroll-target="#hier%C3%A1rquico">Hierárquico</a></li>
+  <li><a href="#espectral" id="toc-espectral" class="nav-link" data-scroll-target="#espectral">Espectral</a></li>
+  <li><a href="#vis%C3%A3o-comparativa" id="toc-visão-comparativa" class="nav-link" data-scroll-target="#vis%C3%A3o-comparativa">Visão comparativa</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#avalia%C3%A7%C3%A3o-de-agrupamentos" id="toc-avaliação-de-agrupamentos" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-de-agrupamentos">Avaliação de agrupamentos</a>
+  <ul class="collapse">
+<li><a href="#sem-y-o-que-significa-melhor" id="toc-sem-y-o-que-significa-melhor" class="nav-link" data-scroll-target="#sem-y-o-que-significa-melhor">Sem <span class="math inline">\(Y\)</span>, o que significa “melhor”?</a></li>
+  <li><a href="#k-means-1" id="toc-k-means-1" class="nav-link" data-scroll-target="#k-means-1">K-means</a></li>
+  <li><a href="#hier%C3%A1rquico-1" id="toc-hierárquico-1" class="nav-link" data-scroll-target="#hier%C3%A1rquico-1">Hierárquico</a></li>
+  <li><a href="#agrupamento-espectral" id="toc-agrupamento-espectral" class="nav-link" data-scroll-target="#agrupamento-espectral">Agrupamento espectral</a></li>
+  <li><a href="#mensagem-central" id="toc-mensagem-central" class="nav-link" data-scroll-target="#mensagem-central">Mensagem central</a></li>
+  <li><a href="#pr%C3%B3xima-semana" id="toc-próxima-semana" class="nav-link" data-scroll-target="#pr%C3%B3xima-semana">Próxima semana</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_13_analise_agrupamento.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="semana_13_analise_agrupamento.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Parte II : Aprendizado Não Supervisionado</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Análise de Agrupamento</span></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="semana-13" class="level1"><h1>Semana 13</h1>
+<section id="análise-de-agrupamento" class="level2"><h2 class="anchored" data-anchor-id="análise-de-agrupamento">Análise de Agrupamento</h2>
+<p>Na Semana 12, construímos novas representações dos dados</p>
+<p>Agora queremos responder a outra pergunta:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Existem grupos naturais entre as observações?}
+}
+\]</span></p>
+<p>Sem uma variável resposta, a própria definição de grupo passa a fazer parte do problema</p>
+<hr></section><section id="conhecimento-prévio" class="level2"><h2 class="anchored" data-anchor-id="conhecimento-prévio">Conhecimento prévio</h2>
+<p>Em Estatística Multivariada, os alunos já estudaram métodos clássicos de agrupamento</p>
+<p>Nesta disciplina, não vamos reconstruir toda essa teoria</p>
+<p>Usaremos:</p>
+<p><span class="math display">\[
+\boxed{\text{K-means}}
+\qquad
+\boxed{\text{Hierárquico}}
+\]</span></p>
+<p>como revisão e referência para introduzir o conteúdo novo:</p>
+<p><span class="math display">\[
+\boxed{\text{Agrupamento espectral}}
+\]</span></p>
+<hr></section><section id="organização-da-semana" class="level2"><h2 class="anchored" data-anchor-id="organização-da-semana">Organização da semana</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<section id="encontro-13.1" class="level3"><h3 class="anchored" data-anchor-id="encontro-13.1">Encontro 13.1</h3>
+<p><strong>O problema de agrupamento</strong></p>
+<ul>
+<li>o que significa formar grupos?</li>
+<li>revisão de K-means</li>
+<li>função objetivo</li>
+<li>algoritmo</li>
+<li>limitações geométricas</li>
+<li>revisão de agrupamento hierárquico</li>
+<li>distância e ligação</li>
+<li>escolha do número de grupos</li>
+</ul></section>
+</div><div class="column" style="width:48%;">
+<section id="encontro-13.2" class="level3"><h3 class="anchored" data-anchor-id="encontro-13.2">Encontro 13.2</h3>
+<p><strong>Agrupamento espectral</strong></p>
+<ul>
+<li>dados como grafo</li>
+<li>matriz de similaridades</li>
+<li>matriz de graus</li>
+<li>Laplaciano</li>
+<li>autovetores</li>
+<li>embedding espectral</li>
+<li>K-means no novo espaço</li>
+<li>interpretação e limitações</li>
+</ul></section>
+</div>
+</div>
+<hr></section><section id="objetivos" class="level2"><h2 class="anchored" data-anchor-id="objetivos">Objetivos</h2>
+<p>Ao final da semana, devemos ser capazes de:</p>
+<ul>
+<li>formular agrupamento como problema não supervisionado</li>
+<li>revisar a função objetivo do K-means</li>
+<li>reconhecer limitações dos métodos clássicos</li>
+<li>representar dados por um grafo de similaridades</li>
+<li>construir o Laplaciano de um grafo</li>
+<li>compreender a lógica do agrupamento espectral</li>
+<li>distinguir agrupamento no espaço original de agrupamento em uma representação espectral</li>
+</ul></section></section><section id="encontro-13.1-o-problema" class="level1"><h1>Encontro 13.1 — O problema</h1>
+<section id="o-que-é-um-cluster" class="level2"><h2 class="anchored" data-anchor-id="o-que-é-um-cluster">O que é um cluster?</h2>
+<p>Intuitivamente, queremos que</p>
+<p><span class="math display">\[
+\boxed{
+\text{observações do mesmo grupo sejam semelhantes}
+}
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\boxed{
+\text{observações de grupos diferentes sejam distintas}
+}
+\]</span></p>
+<p>Mas isso depende de como definimos <strong>semelhança</strong></p>
+<hr></section><section id="não-existe-uma-única-definição-de-grupo" class="level2"><h2 class="anchored" data-anchor-id="não-existe-uma-única-definição-de-grupo">Não existe uma única definição de grupo</h2>
+<p>Um grupo pode significar:</p>
+<ul>
+<li>pequena distância Euclidiana</li>
+<li>alta densidade local</li>
+<li>conectividade</li>
+<li>separação por regiões de baixa densidade</li>
+<li>similaridade em uma representação transformada</li>
+</ul>
+<p>Diferentes algoritmos formalizam ideias diferentes de agrupamento</p>
+<hr></section><section id="exemplo-simples" class="level2"><h2 class="anchored" data-anchor-id="exemplo-simples">Exemplo simples</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="semana_13_analise_agrupamento_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:68.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section></section><section id="revisão-k-means" class="level1"><h1>Revisão — K-means</h1>
+<section id="a-ideia" class="level2"><h2 class="anchored" data-anchor-id="a-ideia">A ideia</h2>
+<p>Queremos particionar as observações em <span class="math inline">\(K\)</span> grupos</p>
+<p><span class="math display">\[
+C_1,\ldots,C_K
+\]</span></p>
+<p>e representar cada grupo por um centroide</p>
+<p><span class="math display">\[
+\boldsymbol\mu_1,\ldots,\boldsymbol\mu_K
+\]</span></p>
+<hr></section><section id="função-objetivo" class="level2"><h2 class="anchored" data-anchor-id="função-objetivo">Função objetivo</h2>
+<p>K-means procura minimizar a variabilidade dentro dos grupos</p>
+<p><span class="math display">\[
+\boxed{
+J(C_1,\ldots,C_K)
+=
+\sum_{k=1}^{K}
+\sum_{i\in C_k}
+\left\|
+\mathbf x_i-\boldsymbol\mu_k
+\right\|^2
+}
+\]</span></p>
+<p>onde</p>
+<p><span class="math display">\[
+\boldsymbol\mu_k
+=
+\frac{1}{|C_k|}
+\sum_{i\in C_k}
+\mathbf x_i
+\]</span></p>
+<hr></section><section id="duas-operações" class="level2"><h2 class="anchored" data-anchor-id="duas-operações">Duas operações</h2>
+<p>O algoritmo alterna entre:</p>
+<section id="atribuição" class="level3"><h3 class="anchored" data-anchor-id="atribuição">Atribuição</h3>
+<p><span class="math display">\[
+\boxed{
+c_i
+=
+\arg\min_k
+\left\|
+\mathbf x_i-\boldsymbol\mu_k
+\right\|^2
+}
+\]</span></p>
+</section><section id="atualização" class="level3"><h3 class="anchored" data-anchor-id="atualização">Atualização</h3>
+<p><span class="math display">\[
+\boxed{
+\boldsymbol\mu_k
+=
+\frac{1}{|C_k|}
+\sum_{i:c_i=k}
+\mathbf x_i
+}
+\]</span></p>
+<p>até estabilização</p>
+<hr></section></section><section id="geometria-implícita" class="level2"><h2 class="anchored" data-anchor-id="geometria-implícita">Geometria implícita</h2>
+<p>Cada observação é atribuída ao centroide mais próximo</p>
+<p>Assim, os centroides induzem uma partição do espaço em células de Voronoi</p>
+<p>Isso favorece grupos aproximadamente:</p>
+<ul>
+<li>compactos</li>
+<li>convexos</li>
+<li>relativamente isotrópicos</li>
+</ul>
+<hr></section></section><section id="quando-k-means-encontra-dificuldades" class="level1"><h1>Quando K-means encontra dificuldades?</h1>
+<section id="estruturas-não-convexas" class="level2"><h2 class="anchored" data-anchor-id="estruturas-não-convexas">Estruturas não convexas</h2>
+<p>Considere:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="semana_13_analise_agrupamento_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:68.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section><section id="o-problema-não-é-apenas-escolher-k" class="level2"><h2 class="anchored" data-anchor-id="o-problema-não-é-apenas-escolher-k">O problema não é apenas escolher <span class="math inline">\(K\)</span>
+</h2>
+<p>Mesmo sabendo que</p>
+<p><span class="math display">\[
+K=2
+\]</span></p>
+<p>a geometria Euclidiana em torno de centroides pode não representar a estrutura desejada</p>
+<p>Precisamos de uma noção diferente de proximidade:</p>
+<p><span class="math display">\[
+\boxed{\text{conectividade local}}
+\]</span></p>
+<hr></section></section><section id="revisão-agrupamento-hierárquico" class="level1"><h1>Revisão — Agrupamento Hierárquico</h1>
+<section id="outra-estratégia" class="level2"><h2 class="anchored" data-anchor-id="outra-estratégia">Outra estratégia</h2>
+<p>Métodos hierárquicos não exigem inicialmente uma partição fixa em <span class="math inline">\(K\)</span> grupos</p>
+<p>No procedimento aglomerativo:</p>
+<p><span class="math display">\[
+n
+\rightarrow
+n-1
+\rightarrow
+n-2
+\rightarrow
+\cdots
+\rightarrow
+1
+\]</span></p>
+<p>grupos são sucessivamente fundidos</p>
+<hr></section><section id="duas-escolhas-fundamentais" class="level2"><h2 class="anchored" data-anchor-id="duas-escolhas-fundamentais">Duas escolhas fundamentais</h2>
+<p>Precisamos definir:</p>
+<section id="distância-entre-observações" class="level3"><h3 class="anchored" data-anchor-id="distância-entre-observações">Distância entre observações</h3>
+<p><span class="math display">\[
+d(\mathbf x_i,\mathbf x_j)
+\]</span></p>
+</section><section id="ligação-entre-grupos" class="level3"><h3 class="anchored" data-anchor-id="ligação-entre-grupos">Ligação entre grupos</h3>
+<p><span class="math display">\[
+D(A,B)
+\]</span></p>
+<p>O resultado depende de ambas</p>
+<hr></section></section><section id="ward" class="level2"><h2 class="anchored" data-anchor-id="ward">Ward</h2>
+<p>O método de Ward procura fundir grupos de modo a produzir o menor aumento possível na variabilidade intragrupo</p>
+<p>Isso o aproxima conceitualmente do objetivo do K-means</p>
+<hr></section><section id="o-dendrograma" class="level2"><h2 class="anchored" data-anchor-id="o-dendrograma">O dendrograma</h2>
+<p>O método hierárquico produz uma árvore de fusões</p>
+<p>O corte do dendrograma em determinada altura gera uma partição</p>
+<p><span class="math display">\[
+\boxed{
+\text{dendrograma}
+\rightarrow
+\text{escolha do corte}
+\rightarrow
+K\text{ grupos}
+}
+\]</span></p>
+<hr></section></section><section id="quantos-grupos" class="level1"><h1>Quantos grupos?</h1>
+<section id="não-existe-resposta-puramente-algorítmica" class="level2"><h2 class="anchored" data-anchor-id="não-existe-resposta-puramente-algorítmica">Não existe resposta puramente algorítmica</h2>
+<p>Critérios como silhouette, estabilidade e conhecimento substantivo podem auxiliar a escolha</p>
+<p>Para a observação <span class="math inline">\(i\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+s(i)
+=
+\frac{b(i)-a(i)}
+{\max\{a(i),b(i)\}}
+}
+\]</span></p>
+<p>Valores altos indicam melhor compatibilidade com o grupo atribuído # Por que precisamos de outro método?</p>
+</section><section id="o-limite-dos-centroides" class="level2"><h2 class="anchored" data-anchor-id="o-limite-dos-centroides">O limite dos centroides</h2>
+<p>K-means pergunta:</p>
+<blockquote class="blockquote">
+<p>Qual centroide está mais próximo?</p>
+</blockquote>
+<p>Para estruturas como duas luas, seria mais natural perguntar:</p>
+<blockquote class="blockquote">
+<p>Quais observações estão conectadas por uma sequência de vizinhos semelhantes?</p>
+</blockquote>
+<p>Essa mudança de perspectiva leva aos <strong>grafos</strong></p>
+</section></section><section id="encontro-13.2-agrupamento-espectral" class="level1"><h1>Encontro 13.2 — Agrupamento Espectral</h1>
+<section id="dos-dados-para-um-grafo" class="level2"><h2 class="anchored" data-anchor-id="dos-dados-para-um-grafo">Dos dados para um grafo</h2>
+<p>Representamos cada observação por um vértice</p>
+<p><span class="math display">\[
+V=\{1,\ldots,n\}
+\]</span></p>
+<p>e conectamos observações consideradas semelhantes</p>
+<p>O conjunto de dados passa a ser representado por</p>
+<p><span class="math display">\[
+\boxed{
+G=(V,E)
+}
+\]</span></p>
+<hr></section><section id="matriz-de-similaridades" class="level2"><h2 class="anchored" data-anchor-id="matriz-de-similaridades">Matriz de similaridades</h2>
+<p>Definimos</p>
+<p><span class="math display">\[
+W=(w_{ij})
+\]</span></p>
+<p>onde</p>
+<p><span class="math display">\[
+w_{ij}\geq0
+\]</span></p>
+<p>mede a similaridade entre as observações <span class="math inline">\(i\)</span> e <span class="math inline">\(j\)</span></p>
+<p>Quanto maior <span class="math inline">\(w_{ij}\)</span>, mais forte é a conexão</p>
+<hr></section><section id="kernel-gaussiano" class="level2"><h2 class="anchored" data-anchor-id="kernel-gaussiano">Kernel Gaussiano</h2>
+<p>Uma escolha comum é</p>
+<p><span class="math display">\[
+\boxed{
+w_{ij}
+=
+\exp
+\left(
+-\frac{
+\|\mathbf x_i-\mathbf x_j\|^2
+}{
+2\sigma^2
+}
+\right)
+}
+\]</span></p>
+<p>para pares de observações que decidimos conectar</p>
+<hr></section><section id="o-papel-de-sigma" class="level2"><h2 class="anchored" data-anchor-id="o-papel-de-sigma">O papel de <span class="math inline">\(\sigma\)</span>
+</h2>
+<p>O parâmetro</p>
+<p><span class="math display">\[
+\sigma
+\]</span></p>
+<p>controla a escala da vizinhança</p>
+<section id="sigma-pequeno" class="level3"><h3 class="anchored" data-anchor-id="sigma-pequeno">
+<span class="math inline">\(\sigma\)</span> pequeno</h3>
+<p>apenas observações muito próximas apresentam forte similaridade</p>
+</section><section id="sigma-grande" class="level3"><h3 class="anchored" data-anchor-id="sigma-grande">
+<span class="math inline">\(\sigma\)</span> grande</h3>
+<p>conexões permanecem fortes mesmo para observações mais distantes</p>
+<hr></section></section></section><section id="como-construir-o-grafo" class="level1"><h1>Como construir o grafo?</h1>
+<section id="grafo-completo" class="level2"><h2 class="anchored" data-anchor-id="grafo-completo">Grafo completo</h2>
+<p>Todas as observações são conectadas</p>
+<p><span class="math display">\[
+w_{ij}&gt;0
+\]</span></p>
+<p>para praticamente todo par</p>
+<p>Pode ser computacionalmente caro e incluir relações pouco informativas</p>
+<hr></section><section id="k-vizinhos-mais-próximos" class="level2"><h2 class="anchored" data-anchor-id="k-vizinhos-mais-próximos">
+<span class="math inline">\(k\)</span> vizinhos mais próximos</h2>
+<p>Conectamos <span class="math inline">\(i\)</span> a <span class="math inline">\(j\)</span> apenas quando uma observação pertence à vizinhança da outra</p>
+<p><span class="math display">\[
+\boxed{
+j\in N_k(i)
+}
+\]</span></p>
+<p>Isso enfatiza a geometria local</p>
+<hr></section><section id="varepsilon-vizinhança" class="level2"><h2 class="anchored" data-anchor-id="varepsilon-vizinhança">
+<span class="math inline">\(\varepsilon\)</span>-vizinhança</h2>
+<p>Conectamos observações quando</p>
+<p><span class="math display">\[
+\boxed{
+\|\mathbf x_i-\mathbf x_j\|
+&lt;
+\varepsilon
+}
+\]</span></p>
+<p>O parâmetro <span class="math inline">\(\varepsilon\)</span> determina a escala de conectividade</p>
+<hr></section></section><section id="matriz-de-graus" class="level1"><h1>Matriz de graus</h1>
+<section id="grau-de-um-vértice" class="level2"><h2 class="anchored" data-anchor-id="grau-de-um-vértice">Grau de um vértice</h2>
+<p>Para cada observação,</p>
+<p><span class="math display">\[
+\boxed{
+d_i
+=
+\sum_{j=1}^{n}
+w_{ij}
+}
+\]</span></p>
+<p>Construímos a matriz diagonal</p>
+<p><span class="math display">\[
+\boxed{
+D
+=
+\operatorname{diag}(d_1,\ldots,d_n)
+}
+\]</span></p>
+<hr></section></section><section id="laplaciano-do-grafo" class="level1"><h1>Laplaciano do grafo</h1>
+<section id="definição" class="level2"><h2 class="anchored" data-anchor-id="definição">Definição</h2>
+<p>O Laplaciano não normalizado é</p>
+<p><span class="math display">\[
+\boxed{
+L=D-W
+}
+\]</span></p>
+<p>Essa matriz contém informação sobre a conectividade do grafo</p>
+<hr></section><section id="por-que-o-laplaciano-é-especial" class="level2"><h2 class="anchored" data-anchor-id="por-que-o-laplaciano-é-especial">Por que o Laplaciano é especial?</h2>
+<p>Para qualquer vetor</p>
+<p><span class="math display">\[
+\mathbf f\in\mathbb R^n
+\]</span></p>
+<p>temos</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf f^tL\mathbf f
+=
+\frac12
+\sum_{i=1}^{n}
+\sum_{j=1}^{n}
+w_{ij}
+(f_i-f_j)^2
+}
+\]</span></p>
+<hr></section><section id="interpretação" class="level2"><h2 class="anchored" data-anchor-id="interpretação">Interpretação</h2>
+<p>Se <span class="math inline">\(w_{ij}\)</span> é grande, minimizar</p>
+<p><span class="math display">\[
+\mathbf f^tL\mathbf f
+\]</span></p>
+<p>favorece</p>
+<p><span class="math display">\[
+f_i\approx f_j
+\]</span></p>
+<p>Portanto, os autovetores associados aos menores autovalores produzem coordenadas que variam suavemente ao longo de regiões fortemente conectadas</p>
+<hr></section></section><section id="componentes-conexas" class="level1"><h1>Componentes conexas</h1>
+<section id="um-resultado-importante" class="level2"><h2 class="anchored" data-anchor-id="um-resultado-importante">Um resultado importante</h2>
+<p>Se o grafo possui <span class="math inline">\(K\)</span> componentes conexas perfeitamente separadas, então o Laplaciano possui</p>
+<p><span class="math display">\[
+\boxed{
+K
+\text{ autovalores iguais a }0
+}
+\]</span></p>
+<p>Os autovetores correspondentes identificam essas componentes</p>
+<hr></section><section id="dados-reais" class="level2"><h2 class="anchored" data-anchor-id="dados-reais">Dados reais</h2>
+<p>Em geral, os grupos não estão perfeitamente desconectados</p>
+<p>Nesse caso, buscamos autovetores associados aos <strong>menores autovalores</strong></p>
+<p>Eles fornecem uma aproximação contínua da estrutura de componentes do grafo</p>
+<hr></section></section><section id="embedding-espectral" class="level1"><h1>Embedding espectral</h1>
+<section id="construção" class="level2"><h2 class="anchored" data-anchor-id="construção">Construção</h2>
+<p>Considere os autovetores</p>
+<p><span class="math display">\[
+\mathbf u_1,\ldots,\mathbf u_K
+\]</span></p>
+<p>associados aos menores autovalores relevantes de <span class="math inline">\(L\)</span></p>
+<p>Formamos</p>
+<p><span class="math display">\[
+\boxed{
+U
+=
+[
+\mathbf u_1,\ldots,\mathbf u_K
+]
+\in\mathbb R^{n\times K}
+}
+\]</span></p>
+<hr></section><section id="uma-nova-representação" class="level2"><h2 class="anchored" data-anchor-id="uma-nova-representação">Uma nova representação</h2>
+<p>A linha <span class="math inline">\(i\)</span> de <span class="math inline">\(U\)</span> fornece uma nova representação da observação <span class="math inline">\(i\)</span></p>
+<p><span class="math display">\[
+\boxed{
+\mathbf x_i
+\longrightarrow
+\mathbf z_i
+=
+U_{i\cdot}
+}
+\]</span></p>
+<p>Agora agrupamos os pontos</p>
+<p><span class="math display">\[
+\mathbf z_1,\ldots,\mathbf z_n
+\]</span></p>
+<hr></section><section id="e-então-aparece-novamente-o-k-means" class="level2"><h2 class="anchored" data-anchor-id="e-então-aparece-novamente-o-k-means">E então aparece novamente o K-means</h2>
+<p>No espaço original:</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf x_i
+\in\mathbb R^p
+}
+\]</span></p>
+<p>No espaço espectral:</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf z_i
+\in\mathbb R^K
+}
+\]</span></p>
+<p>Aplicamos K-means aos <span class="math inline">\(\mathbf z_i\)</span></p>
+<hr></section><section id="a-ideia-central" class="level2"><h2 class="anchored" data-anchor-id="a-ideia-central">A ideia central</h2>
+<p>O agrupamento espectral não elimina o K-means</p>
+<p>Ele muda a representação na qual o K-means é aplicado</p>
+<p><span class="math display">\[
+\boxed{
+X
+\rightarrow
+W
+\rightarrow
+L
+\rightarrow
+\text{autovetores}
+\rightarrow
+Z
+\rightarrow
+\text{K-means}
+}
+\]</span></p>
+<hr></section></section><section id="por-que-isso-ajuda" class="level1"><h1>Por que isso ajuda?</h1>
+<section id="no-espaço-original" class="level2"><h2 class="anchored" data-anchor-id="no-espaço-original">No espaço original</h2>
+<p>Duas observações podem estar relativamente distantes em distância Euclidiana</p>
+<p>Mas podem pertencer à mesma estrutura se houver uma sequência de fortes conexões locais entre elas</p>
+<hr></section><section id="no-espaço-espectral" class="level2"><h2 class="anchored" data-anchor-id="no-espaço-espectral">No espaço espectral</h2>
+<p>A representação é determinada pela conectividade do grafo</p>
+<p>Regiões fortemente conectadas tendem a ficar próximas</p>
+<p>Regiões fracamente conectadas tendem a se separar</p>
+<p><span class="math display">\[
+\boxed{
+\text{distância Euclidiana}
+\rightarrow
+\text{estrutura de conectividade}
+}
+\]</span></p>
+<hr></section></section><section id="comparando-os-métodos" class="level1"><h1>Comparando os métodos</h1>
+<section id="k-means" class="level2"><h2 class="anchored" data-anchor-id="k-means">K-means</h2>
+<p>Agrupa em torno de centroides</p>
+<p><span class="math display">\[
+\boxed{
+\text{proximidade ao centro}
+}
+\]</span></p>
+<hr></section><section id="hierárquico" class="level2"><h2 class="anchored" data-anchor-id="hierárquico">Hierárquico</h2>
+<p>Constrói uma sequência de fusões baseada em uma regra de ligação</p>
+<p><span class="math display">\[
+\boxed{
+\text{distância entre grupos}
+}
+\]</span></p>
+<hr></section><section id="espectral" class="level2"><h2 class="anchored" data-anchor-id="espectral">Espectral</h2>
+<p>Transforma a estrutura de similaridades antes de agrupar</p>
+<p><span class="math display">\[
+\boxed{
+\text{conectividade}
+\rightarrow
+\text{embedding}
+\rightarrow
+\text{partição}
+}
+\]</span></p>
+<hr></section><section id="visão-comparativa" class="level2"><h2 class="anchored" data-anchor-id="visão-comparativa">Visão comparativa</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead><tr class="header">
+<th>Aspecto</th>
+<th>K-means</th>
+<th>Hierárquico</th>
+<th>Espectral</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>objeto central</td>
+<td>centroides</td>
+<td>distâncias/ligações</td>
+<td>grafo</td>
+</tr>
+<tr class="even">
+<td>grupos não convexos</td>
+<td>dificuldade</td>
+<td>depende da ligação</td>
+<td>adequado</td>
+</tr>
+<tr class="odd">
+<td>requer <span class="math inline">\(K\)</span>
+</td>
+<td>sim</td>
+<td>não inicialmente</td>
+<td>geralmente sim</td>
+</tr>
+<tr class="even">
+<td>escala dos dados</td>
+<td>importante</td>
+<td>importante</td>
+<td>importante</td>
+</tr>
+<tr class="odd">
+<td>custo</td>
+<td>baixo</td>
+<td>moderado/alto</td>
+<td>pode ser alto</td>
+</tr>
+<tr class="even">
+<td>hiperparâmetros</td>
+<td><span class="math inline">\(K\)</span></td>
+<td>distância, ligação, corte</td>
+<td>grafo, escala, <span class="math inline">\(K\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section></section><section id="avaliação-de-agrupamentos" class="level1"><h1>Avaliação de agrupamentos</h1>
+<section id="sem-y-o-que-significa-melhor" class="level2"><h2 class="anchored" data-anchor-id="sem-y-o-que-significa-melhor">Sem <span class="math inline">\(Y\)</span>, o que significa “melhor”?</h2>
+<p>Podemos avaliar:</p>
+<ul>
+<li>compactação e separação</li>
+<li>silhouette</li>
+<li>estabilidade frente a reamostragem e hiperparâmetros</li>
+<li>interpretabilidade substantiva</li>
+</ul>
+<p>Se houver rótulos externos não usados no ajuste, medidas como ARI podem comparar partições</p>
+<p><span class="math display">\[
+\boxed{
+\text{estrutura matemática}
+\neq
+\text{necessariamente estrutura substantiva}
+}
+\]</span> # Síntese da Semana 13</p>
+</section><section id="k-means-1" class="level2"><h2 class="anchored" data-anchor-id="k-means-1">K-means</h2>
+<p><span class="math display">\[
+\boxed{
+\min
+\sum_{k=1}^{K}
+\sum_{i\in C_k}
+\|
+\mathbf x_i-\boldsymbol\mu_k
+\|^2
+}
+\]</span></p>
+<p>É eficiente, mas sua geometria favorece grupos compactos em torno de centroides</p>
+<hr></section><section id="hierárquico-1" class="level2"><h2 class="anchored" data-anchor-id="hierárquico-1">Hierárquico</h2>
+<p><span class="math display">\[
+\boxed{
+\text{distância}
++
+\text{ligação}
+\rightarrow
+\text{dendrograma}
+}
+\]</span></p>
+<p>Produz uma estrutura de agrupamentos em múltiplas escalas</p>
+<hr></section><section id="agrupamento-espectral" class="level2"><h2 class="anchored" data-anchor-id="agrupamento-espectral">Agrupamento espectral</h2>
+<p><span class="math display">\[
+\boxed{
+X
+\rightarrow
+W
+\rightarrow
+D
+\rightarrow
+L
+\rightarrow
+U
+\rightarrow
+K\text{-means}
+}
+\]</span></p>
+<p>Troca a geometria original por uma representação baseada em conectividade</p>
+<hr></section><section id="mensagem-central" class="level2"><h2 class="anchored" data-anchor-id="mensagem-central">Mensagem central</h2>
+<p>Métodos de agrupamento diferem principalmente pela noção de estrutura que procuram preservar</p>
+<p><span class="math display">\[
+\boxed{
+\text{centroides}
+\qquad
+\text{distâncias}
+\qquad
+\text{conectividade}
+}
+\]</span></p>
+<hr></section><section id="próxima-semana" class="level2"><h2 class="anchored" data-anchor-id="próxima-semana">Próxima semana</h2>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_13_analise_agrupamento.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

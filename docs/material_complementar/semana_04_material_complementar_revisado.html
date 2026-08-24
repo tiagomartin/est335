@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Material complementar: Seleção e Regularização">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Parte I : Regressão</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#material-complementar" id="toc-material-complementar" class="nav-link active" data-scroll-target="#material-complementar">Material complementar</a></li>
+  <li><a href="#critérios-clássicos-de-seleção" id="toc-critérios-clássicos-de-seleção" class="nav-link" data-scroll-target="#critérios-clássicos-de-seleção">1. Critérios clássicos de seleção</a>
+  <ul class="collapse">
+  <li><a href="#por-que-penalizar-o-tamanho" id="toc-por-que-penalizar-o-tamanho" class="nav-link" data-scroll-target="#por-que-penalizar-o-tamanho">Por que penalizar o tamanho?</a></li>
+  <li><a href="#c_p-de-mallows" id="toc-c_p-de-mallows" class="nav-link" data-scroll-target="#c_p-de-mallows"><span class="math inline">\(C_p\)</span> de Mallows</a></li>
+  <li><a href="#aic" id="toc-aic" class="nav-link" data-scroll-target="#aic">AIC</a></li>
+  <li><a href="#bic" id="toc-bic" class="nav-link" data-scroll-target="#bic">BIC</a></li>
+  <li><a href="#r2-ajustado" id="toc-r2-ajustado" class="nav-link" data-scroll-target="#r2-ajustado"><span class="math inline">\(R^2\)</span> ajustado</a></li>
+  </ul></li>
+  <li><a href="#complexidade-da-busca" id="toc-complexidade-da-busca" class="nav-link" data-scroll-target="#complexidade-da-busca">2. Complexidade da busca</a>
+  <ul class="collapse">
+  <li><a href="#best-subset" id="toc-best-subset" class="nav-link" data-scroll-target="#best-subset">Best Subset</a></li>
+  </ul></li>
+  <li><a href="#limitações-do-stepwise" id="toc-limitações-do-stepwise" class="nav-link" data-scroll-target="#limitações-do-stepwise">3. Limitações do Stepwise</a>
+  <ul class="collapse">
+  <li><a href="#dependência-do-caminho" id="toc-dependência-do-caminho" class="nav-link" data-scroll-target="#dependência-do-caminho">Dependência do caminho</a></li>
+  </ul></li>
+  <li><a href="#seleção-e-inferência" id="toc-seleção-e-inferência" class="nav-link" data-scroll-target="#seleção-e-inferência">4. Seleção e inferência</a>
+  <ul class="collapse">
+  <li><a href="#um-cuidado-estatístico" id="toc-um-cuidado-estatístico" class="nav-link" data-scroll-target="#um-cuidado-estatístico">Um cuidado estatístico</a></li>
+  </ul></li>
+  <li><a href="#ridge-em-forma-matricial" id="toc-ridge-em-forma-matricial" class="nav-link" data-scroll-target="#ridge-em-forma-matricial">5. Ridge em forma matricial</a>
+  <ul class="collapse">
+  <li><a href="#problema-penalizado" id="toc-problema-penalizado" class="nav-link" data-scroll-target="#problema-penalizado">Problema penalizado</a></li>
+  <li><a href="#solução" id="toc-solução" class="nav-link" data-scroll-target="#solução">Solução</a></li>
+  </ul></li>
+  <li><a href="#ridge-e-estabilidade" id="toc-ridge-e-estabilidade" class="nav-link" data-scroll-target="#ridge-e-estabilidade">6. Ridge e estabilidade</a>
+  <ul class="collapse">
+  <li><a href="#visão-pelos-autovalores" id="toc-visão-pelos-autovalores" class="nav-link" data-scroll-target="#visão-pelos-autovalores">Visão pelos autovalores</a></li>
+  </ul></li>
+  <li><a href="#formulação-com-restrições" id="toc-formulação-com-restrições" class="nav-link" data-scroll-target="#formulação-com-restrições">7. Formulação com restrições</a>
+  <ul class="collapse">
+  <li><a href="#ridge" id="toc-ridge" class="nav-link" data-scroll-target="#ridge">Ridge</a></li>
+  <li><a href="#lasso" id="toc-lasso" class="nav-link" data-scroll-target="#lasso">Lasso</a></li>
+  </ul></li>
+  <li><a href="#por-que-lasso-produz-zeros" id="toc-por-que-lasso-produz-zeros" class="nav-link" data-scroll-target="#por-que-lasso-produz-zeros">8. Por que Lasso produz zeros?</a>
+  <ul class="collapse">
+  <li><a href="#geometria-l_1-l_2" id="toc-geometria-l_1-l_2" class="nav-link" data-scroll-target="#geometria-l_1-l_2">Geometria <span class="math inline">\(L_1\)</span> × <span class="math inline">\(L_2\)</span></a></li>
+  </ul></li>
+  <li><a href="#caso-pn" id="toc-caso-pn" class="nav-link" data-scroll-target="#caso-pn">9. Caso <span class="math inline">\(p&gt;n\)</span></a>
+  <ul class="collapse">
+  <li><a href="#alta-dimensão" id="toc-alta-dimensão" class="nav-link" data-scroll-target="#alta-dimensão">Alta dimensão</a></li>
+  </ul></li>
+  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">10. Elastic Net</a>
+  <ul class="collapse">
+  <li><a href="#extensão-não-núcleo-obrigatório" id="toc-extensão-não-núcleo-obrigatório" class="nav-link" data-scroll-target="#extensão-não-núcleo-obrigatório">Extensão, não núcleo obrigatório</a></li>
+  </ul></li>
+  <li><a href="#quando-elastic-net-ajuda" id="toc-quando-elastic-net-ajuda" class="nav-link" data-scroll-target="#quando-elastic-net-ajuda">11. Quando Elastic Net ajuda?</a></li>
+  <li><a href="#padronização" id="toc-padronização" class="nav-link" data-scroll-target="#padronização">12. Padronização</a>
+  <ul class="collapse">
+  <li><a href="#dentro-do-processo-de-aprendizagem" id="toc-dentro-do-processo-de-aprendizagem" class="nav-link" data-scroll-target="#dentro-do-processo-de-aprendizagem">Dentro do processo de aprendizagem</a></li>
+  </ul></li>
+  <li><a href="#regra-de-um-erro-padrão" id="toc-regra-de-um-erro-padrão" class="nav-link" data-scroll-target="#regra-de-um-erro-padrão">13. Regra de um erro-padrão</a>
+  <ul class="collapse">
+  <li><a href="#parcimônia" id="toc-parcimônia" class="nav-link" data-scroll-target="#parcimônia">Parcimônia</a></li>
+  </ul></li>
+  <li><a href="#uma-visão-unificada" id="toc-uma-visão-unificada" class="nav-link" data-scroll-target="#uma-visão-unificada">14. Uma visão unificada</a>
+  <ul class="collapse">
+  <li><a href="#seleção-e-regularização" id="toc-seleção-e-regularização" class="nav-link" data-scroll-target="#seleção-e-regularização">Seleção e regularização</a></li>
+  </ul></li>
+  <li><a href="#fechamento" id="toc-fechamento" class="nav-link" data-scroll-target="#fechamento">Fechamento</a>
+  <ul class="collapse">
+  <li><a href="#mensagem-principal" id="toc-mensagem-principal" class="nav-link" data-scroll-target="#mensagem-principal">Mensagem principal</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/material_complementar/semana_04_material_complementar_revisado.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="semana_04_material_complementar_revisado.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Parte I : Regressão</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Material complementar: Seleção e Regularização</span></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="material-complementar" class="level1">
+<h1>Material complementar</h1>
+<!-- ## O que foi deslocado da aula principal? -->
+<!-- Para manter dois encontros de 1h40, estes aprofundamentos ficam fora do núcleo: -->
+<!-- - critérios $C_p$, AIC, BIC e $R^2$ ajustado; -->
+<!-- - complexidade computacional e limitações do Stepwise; -->
+<!-- - inferência após seleção; -->
+<!-- - solução matricial e interpretação espectral de Ridge; -->
+<!-- - geometria $L_1$ × $L_2$; -->
+<!-- - caso $p>n$; -->
+<!-- - Elastic Net. -->
+<!-- O núcleo explicitamente previsto no programa — **Best Subset, Stepwise, Lasso e Ridge** — permanece na aula principal. -->
+</section>
+<section id="critérios-clássicos-de-seleção" class="level1">
+<h1>1. Critérios clássicos de seleção</h1>
+<section id="por-que-penalizar-o-tamanho" class="level2">
+<h2 class="anchored" data-anchor-id="por-que-penalizar-o-tamanho">Por que penalizar o tamanho?</h2>
+<p>O RSS de treinamento diminui ao adicionar variáveis. Critérios de seleção introduzem uma penalização:</p>
+<p><span class="math display">\[\boxed{\text{ajuste}+\text{penalização pela complexidade}}\]</span></p>
+</section>
+<section id="c_p-de-mallows" class="level2">
+<h2 class="anchored" data-anchor-id="c_p-de-mallows"><span class="math inline">\(C_p\)</span> de Mallows</h2>
+<p><span class="math display">\[C_p=\frac{RSS}{\widehat\sigma^2}-n+2d,\]</span></p>
+<p>onde <span class="math inline">\(d\)</span> é o número de parâmetros. Menores valores são preferíveis.</p>
+</section>
+<section id="aic" class="level2">
+<h2 class="anchored" data-anchor-id="aic">AIC</h2>
+<p>Para modelos gaussianos, ignorando constantes:</p>
+<p><span class="math display">\[AIC\approx n\log\left(\frac{RSS}{n}\right)+2d\]</span></p>
+</section>
+<section id="bic" class="level2">
+<h2 class="anchored" data-anchor-id="bic">BIC</h2>
+<p><span class="math display">\[BIC\approx n\log\left(\frac{RSS}{n}\right)+d\log n\]</span></p>
+<p>BIC tende a penalizar modelos grandes mais fortemente que AIC para amostras moderadas/grandes.</p>
+</section>
+<section id="r2-ajustado" class="level2">
+<h2 class="anchored" data-anchor-id="r2-ajustado"><span class="math inline">\(R^2\)</span> ajustado</h2>
+<p><span class="math display">\[R^2_{aj}=1-\frac{RSS/(n-d)}{TSS/(n-1)}\]</span></p>
+<p>Ao contrário de <span class="math inline">\(R^2\)</span>, pode diminuir quando uma variável pouco útil é adicionada.</p>
+</section>
+</section>
+<section id="complexidade-da-busca" class="level1">
+<h1>2. Complexidade da busca</h1>
+<section id="best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="best-subset">Best Subset</h2>
+<p>Com <span class="math inline">\(p\)</span> covariáveis existem</p>
+<p><span class="math display">\[2^p\]</span></p>
+<p>modelos possíveis. O crescimento exponencial explica por que buscas aproximadas e regularização se tornam atraentes em alta dimensão.</p>
+</section>
+</section>
+<section id="limitações-do-stepwise" class="level1">
+<h1>3. Limitações do Stepwise</h1>
+<section id="dependência-do-caminho" class="level2">
+<h2 class="anchored" data-anchor-id="dependência-do-caminho">Dependência do caminho</h2>
+<p>Forward e backward não precisam produzir o mesmo modelo.</p>
+<p>Além disso:</p>
+<ul>
+<li>pequenas mudanças nos dados podem alterar a sequência;</li>
+<li>variáveis correlacionadas competem entre si;</li>
+<li>nem todas as combinações são avaliadas;</li>
+<li>decisões iniciais condicionam etapas posteriores.</li>
+</ul>
+</section>
+</section>
+<section id="seleção-e-inferência" class="level1">
+<h1>4. Seleção e inferência</h1>
+<section id="um-cuidado-estatístico" class="level2">
+<h2 class="anchored" data-anchor-id="um-cuidado-estatístico">Um cuidado estatístico</h2>
+<p>Selecionar variáveis usando os dados e depois aplicar testes clássicos como se o modelo tivesse sido definido previamente não preserva automaticamente a interpretação usual dos testes e intervalos.</p>
+<p><span class="math display">\[\boxed{\text{seleção de modelos altera o problema inferencial}}\]</span></p>
+</section>
+</section>
+<section id="ridge-em-forma-matricial" class="level1">
+<h1>5. Ridge em forma matricial</h1>
+<section id="problema-penalizado" class="level2">
+<h2 class="anchored" data-anchor-id="problema-penalizado">Problema penalizado</h2>
+<p><span class="math display">\[\widehat{\boldsymbol\beta}^{R}=\arg\min_{\boldsymbol\beta}\left\{\|\mathbf y-\mathbf X\boldsymbol\beta\|^2+\lambda\|\boldsymbol\beta\|_2^2\right\}.\]</span></p>
+</section>
+<section id="solução" class="level2">
+<h2 class="anchored" data-anchor-id="solução">Solução</h2>
+<p><span class="math display">\[\boxed{\widehat{\boldsymbol\beta}^{R}=(\mathbf X^\top\mathbf X+\lambda\mathbf I)^{-1}\mathbf X^\top\mathbf y}\]</span></p>
+</section>
+</section>
+<section id="ridge-e-estabilidade" class="level1">
+<h1>6. Ridge e estabilidade</h1>
+<section id="visão-pelos-autovalores" class="level2">
+<h2 class="anchored" data-anchor-id="visão-pelos-autovalores">Visão pelos autovalores</h2>
+<p>Se</p>
+<p><span class="math display">\[\mathbf X^\top\mathbf X=\mathbf V\mathbf D\mathbf V^\top,\]</span></p>
+<p>o MQO envolve fatores <span class="math inline">\(1/d_j\)</span>, enquanto Ridge os substitui por</p>
+<p><span class="math display">\[\frac1{d_j+\lambda}.\]</span></p>
+<p>Direções associadas a autovalores pequenos são especialmente estabilizadas.</p>
+</section>
+</section>
+<section id="formulação-com-restrições" class="level1">
+<h1>7. Formulação com restrições</h1>
+<section id="ridge" class="level2">
+<h2 class="anchored" data-anchor-id="ridge">Ridge</h2>
+<p><span class="math display">\[\min RSS\quad\text{sujeito a}\quad\sum_j\beta_j^2\le t.\]</span></p>
+</section>
+<section id="lasso" class="level2">
+<h2 class="anchored" data-anchor-id="lasso">Lasso</h2>
+<p><span class="math display">\[\min RSS\quad\text{sujeito a}\quad\sum_j|\beta_j|\le t.\]</span></p>
+</section>
+</section>
+<section id="por-que-lasso-produz-zeros" class="level1">
+<h1>8. Por que Lasso produz zeros?</h1>
+<section id="geometria-l_1-l_2" class="level2">
+<h2 class="anchored" data-anchor-id="geometria-l_1-l_2">Geometria <span class="math inline">\(L_1\)</span> × <span class="math inline">\(L_2\)</span></h2>
+<p>Ridge:</p>
+<p><span class="math display">\[\beta_1^2+\beta_2^2\le t.\]</span></p>
+<p>Lasso:</p>
+<p><span class="math display">\[|\beta_1|+|\beta_2|\le t.\]</span></p>
+<p>A região <span class="math inline">\(L_1\)</span> possui vértices sobre os eixos. Curvas de nível do RSS podem tocar esses vértices, produzindo <span class="math inline">\(\beta_j=0\)</span>.</p>
+</section>
+</section>
+<section id="caso-pn" class="level1">
+<h1>9. Caso <span class="math inline">\(p&gt;n\)</span></h1>
+<section id="alta-dimensão" class="level2">
+<h2 class="anchored" data-anchor-id="alta-dimensão">Alta dimensão</h2>
+<p>Quando</p>
+<p><span class="math display">\[p&gt;n,\]</span></p>
+<p><span class="math inline">\(\mathbf X^\top\mathbf X\)</span> não possui posto completo e a solução usual de MQO não é única.</p>
+<p>Ridge com <span class="math inline">\(\lambda&gt;0\)</span> fornece uma solução regularizada bem definida sob condições usuais; Lasso pode ainda produzir uma solução esparsa.</p>
+</section>
+</section>
+<section id="elastic-net" class="level1">
+<h1>10. Elastic Net</h1>
+<section id="extensão-não-núcleo-obrigatório" class="level2">
+<h2 class="anchored" data-anchor-id="extensão-não-núcleo-obrigatório">Extensão, não núcleo obrigatório</h2>
+<p><span class="math display">\[RSS+\lambda\left[(1-\alpha)\frac12\sum_j\beta_j^2+\alpha\sum_j|\beta_j|\right].\]</span></p>
+<p><span class="math display">\[\alpha=0\Rightarrow\text{Ridge},\qquad\alpha=1\Rightarrow\text{Lasso}.\]</span></p>
+<p>Como Elastic Net não é item explícito do conteúdo programático, fica como extensão complementar.</p>
+</section>
+</section>
+<section id="quando-elastic-net-ajuda" class="level1">
+<h1>11. Quando Elastic Net ajuda?</h1>
+<p>Com grupos de covariáveis correlacionadas:</p>
+<ul>
+<li>Ridge tende a manter o grupo;</li>
+<li>Lasso pode escolher algumas;</li>
+<li>Elastic Net combina efeito de agrupamento e esparsidade.</li>
+</ul>
+<p>Agora existem dois hiperparâmetros:</p>
+<p><span class="math display">\[(\alpha,\lambda).\]</span></p>
+</section>
+<section id="padronização" class="level1">
+<h1>12. Padronização</h1>
+<section id="dentro-do-processo-de-aprendizagem" class="level2">
+<h2 class="anchored" data-anchor-id="dentro-do-processo-de-aprendizagem">Dentro do processo de aprendizagem</h2>
+<p><span class="math display">\[X_j^*=\frac{X_j-\bar X_j}{s_j}.\]</span></p>
+<p>Média e desvio-padrão devem ser estimados somente no treinamento de cada fold e aplicados à validação.</p>
+</section>
+</section>
+<section id="regra-de-um-erro-padrão" class="level1">
+<h1>13. Regra de um erro-padrão</h1>
+<section id="parcimônia" class="level2">
+<h2 class="anchored" data-anchor-id="parcimônia">Parcimônia</h2>
+<p>Além de <span class="math inline">\(\lambda_{min}\)</span>, podemos escolher uma solução mais regularizada cujo erro de CV esteja dentro de aproximadamente um erro-padrão do mínimo.</p>
+<p>A regra favorece simplicidade quando não há evidência clara de ganho preditivo relevante.</p>
+</section>
+</section>
+<section id="uma-visão-unificada" class="level1">
+<h1>14. Uma visão unificada</h1>
+<section id="seleção-e-regularização" class="level2">
+<h2 class="anchored" data-anchor-id="seleção-e-regularização">Seleção e regularização</h2>
+<p>Best Subset e Stepwise:</p>
+<p><span class="math display">\[\boxed{\text{controlam quais coeficientes existem}}\]</span></p>
+<p>Ridge e Lasso:</p>
+<p><span class="math display">\[\boxed{\text{controlam a magnitude dos coeficientes}}\]</span></p>
+<p>Lasso ocupa uma posição especial porque pode fazer as duas coisas simultaneamente.</p>
+</section>
+</section>
+<section id="fechamento" class="level1">
+<h1>Fechamento</h1>
+<section id="mensagem-principal" class="level2">
+<h2 class="anchored" data-anchor-id="mensagem-principal">Mensagem principal</h2>
+<p>Em alta dimensão, o problema não é apenas estimar coeficientes.</p>
+<p><span class="math display">\[\boxed{\text{precisamos controlar a complexidade por seleção ou regularização}}\]</span></p>
+<p>E essas decisões devem ser avaliadas fora da amostra usada no ajuste.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/material_complementar/semana_04_material_complementar_revisado.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

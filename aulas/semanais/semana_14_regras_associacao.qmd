@@ -1,0 +1,749 @@
+---
+title: "Parte II : Aprendizado Não Supervisionado"
+subtitle: "<span class='custom-subtitle'>Regras de Associação</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 14"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+```
+
+# Regras de Associação
+
+## Dados transacionais
+
+Considere um conjunto de itens
+
+$$
+\mathcal I
+=
+\{i_1,\ldots,i_p\}
+$$
+
+Cada observação é uma transação
+
+$$
+\boxed{
+T_r\subseteq\mathcal I
+}
+$$
+
+que informa quais itens ocorreram conjuntamente
+
+---
+
+## Exemplo
+
+Considere as transações:
+
+| Transação | Itens |
+|---|---|
+| $T_1$ | pão, leite |
+| $T_2$ | pão, café |
+| $T_3$ | leite, café |
+| $T_4$ | pão, leite, café |
+| $T_5$ | pão, leite |
+
+Uma transação não é necessariamente um vetor quantitativo convencional
+
+Ela representa um **conjunto de itens**
+
+---
+
+## Representação binária
+
+Também podemos escrever
+
+$$
+x_{rj}
+=
+\begin{cases}
+1, & i_j\in T_r\\
+0, & i_j\notin T_r
+\end{cases}
+$$
+
+obtendo uma matriz transação–item
+
+| | pão | leite | café |
+|---|---:|---:|---:|
+| $T_1$ | 1 | 1 | 0 |
+| $T_2$ | 1 | 0 | 1 |
+| $T_3$ | 0 | 1 | 1 |
+| $T_4$ | 1 | 1 | 1 |
+| $T_5$ | 1 | 1 | 0 |
+
+---
+
+# Itemsets
+
+## Conjuntos de itens
+
+Um **itemset** é qualquer subconjunto
+
+$$
+\boxed{
+X\subseteq\mathcal I
+}
+$$
+
+Por exemplo,
+
+$$
+X=\{\text{pão},\text{leite}\}
+$$
+
+O primeiro problema é descobrir quais itemsets aparecem com frequência suficiente nos dados
+
+---
+
+# Regras de Associação
+
+## Definição
+
+Uma regra tem a forma
+
+$$
+\boxed{
+X\Rightarrow Y
+}
+$$
+
+com
+
+$$
+X\subseteq\mathcal I,
+\qquad
+Y\subseteq\mathcal I,
+\qquad
+X\cap Y=\varnothing
+$$
+
+$X$ é o **antecedente** e $Y$ o **consequente**
+
+---
+
+## Uma regra não é causal
+
+A regra
+
+$$
+\{\text{pão}\}
+\Rightarrow
+\{\text{leite}\}
+$$
+
+indica associação entre ocorrências
+
+Ela não significa que comprar pão **causa** a compra de leite
+
+$$
+\boxed{
+\text{associação}
+\neq
+\text{causalidade}
+}
+$$
+
+# Suporte
+
+## Frequência conjunta
+
+O suporte de um itemset $X$ é
+
+$$
+\boxed{
+support(X)
+=
+P(X)
+}
+$$
+
+estimado por
+
+$$
+\boxed{
+\widehat{support}(X)
+=
+\frac{
+\#\{T_r:X\subseteq T_r\}
+}{n}
+}
+$$
+
+---
+
+## Suporte de uma regra
+
+Para
+
+$$
+X\Rightarrow Y
+$$
+
+temos
+
+$$
+\boxed{
+support(X\Rightarrow Y)
+=
+P(X\cap Y)
+}
+$$
+
+Ele mede com que frequência antecedente e consequente aparecem conjuntamente
+
+---
+
+## Exemplo
+
+Na base anterior,
+
+$$
+X=\{\text{pão}\}
+$$
+
+e
+
+$$
+Y=\{\text{leite}\}
+$$
+
+ocorrem conjuntamente em
+
+$$
+T_1,\ T_4,\ T_5
+$$
+
+Logo,
+
+$$
+\boxed{
+support(X\Rightarrow Y)
+=
+\frac35
+=
+0.60
+}
+$$
+
+# Confiança
+
+## Uma probabilidade condicional
+
+A confiança é
+
+$$
+\boxed{
+confidence(X\Rightarrow Y)
+=
+P(Y\mid X)
+}
+$$
+
+portanto,
+
+$$
+\boxed{
+confidence(X\Rightarrow Y)
+=
+\frac{P(X\cap Y)}{P(X)}
+}
+$$
+
+---
+
+## Exemplo
+
+Pão aparece em quatro das cinco transações
+
+$$
+support(X)=\frac45
+$$
+
+e pão e leite aparecem juntos em três
+
+Assim,
+
+$$
+\boxed{
+confidence(
+\{\text{pão}\}
+\Rightarrow
+\{\text{leite}\}
+)
+=
+\frac{3/5}{4/5}
+=
+\frac34
+=
+0.75
+}
+$$
+
+---
+
+## Interpretação
+
+Entre as transações que contêm pão,
+
+$$
+75\%
+$$
+
+também contêm leite
+
+Mas isso ainda não nos diz se a associação é realmente surpreendente
+
+# O problema da confiança
+
+## Consequentes muito frequentes
+
+Suponha que
+
+$$
+P(Y)=0.90
+$$
+
+e que
+
+$$
+P(Y\mid X)=0.92
+$$
+
+A confiança da regra é alta:
+
+$$
+confidence(X\Rightarrow Y)=0.92
+$$
+
+Mas $Y$ já ocorre em $90\%$ das transações
+
+O ganho proporcionado por conhecer $X$ é pequeno
+
+# Lift
+
+## Comparando com a frequência marginal
+
+Definimos
+
+$$
+\boxed{
+lift(X\Rightarrow Y)
+=
+\frac{P(Y\mid X)}{P(Y)}
+}
+$$
+
+Equivalentemente,
+
+$$
+\boxed{
+lift(X\Rightarrow Y)
+=
+\frac{P(X\cap Y)}
+{P(X)P(Y)}
+}
+$$
+
+---
+
+## Interpretação
+
+### $lift>1$
+
+$X$ e $Y$ aparecem juntos **mais frequentemente** que o esperado sob independência
+
+### $lift=1$
+
+não há associação segundo essa medida
+
+### $lift<1$
+
+a ocorrência conjunta é **menos frequente** que o esperado sob independência
+
+---
+
+## Relação com independência
+
+Se $X$ e $Y$ são independentes,
+
+$$
+P(X\cap Y)
+=
+P(X)P(Y)
+$$
+
+logo,
+
+$$
+\boxed{
+lift(X\Rightarrow Y)=1
+}
+$$
+
+Essa relação fornece uma interpretação estatística direta para o lift
+
+---
+
+## Exemplo
+
+Na base,
+
+$$
+P(\text{leite})=\frac45
+$$
+
+e
+
+$$
+P(\text{leite}\mid\text{pão})=\frac34
+$$
+
+Portanto,
+
+$$
+\boxed{
+lift
+=
+\frac{3/4}{4/5}
+=
+0.9375
+}
+$$
+
+Apesar da confiança de $75\%$, a associação não é positiva segundo o lift
+
+---
+
+# Três perguntas diferentes
+
+## Suporte
+
+> A combinação ocorre com frequência?
+
+$$
+support(X\Rightarrow Y)
+$$
+
+## Confiança
+
+> Quando $X$ ocorre, com que frequência $Y$ também ocorre?
+
+$$
+confidence(X\Rightarrow Y)
+$$
+
+## Lift
+
+> A presença de $X$ aumenta a frequência relativa de $Y$?
+
+$$
+lift(X\Rightarrow Y)
+$$
+
+# O problema computacional
+
+## Quantos itemsets existem?
+
+Com $p$ itens, existem
+
+$$
+\boxed{
+2^p-1
+}
+$$
+
+itemsets não vazios possíveis
+
+Para $p$ grande, enumerar todas as combinações torna-se inviável
+
+Precisamos eliminar candidatos sem avaliá-los completamente
+
+# Itemsets frequentes
+
+## Definição
+
+Escolha um suporte mínimo
+
+$$
+s_{\min}
+$$
+
+Um itemset $X$ é frequente quando
+
+$$
+\boxed{
+support(X)\geq s_{\min}
+}
+$$
+
+A busca pelas regras começa pela identificação desses conjuntos
+
+# Princípio Apriori
+
+## Propriedade fundamental
+
+Se um itemset é frequente, todos os seus subconjuntos também são frequentes
+
+$$
+\boxed{
+X\text{ frequente}
+\Longrightarrow
+A\text{ frequente}
+\quad
+\forall A\subset X
+}
+$$
+
+---
+
+## Forma contrapositiva
+
+Mais útil computacionalmente:
+
+$$
+\boxed{
+A\text{ não frequente}
+\Longrightarrow
+X\text{ não frequente}
+\quad
+\forall X\supset A
+}
+$$
+
+Se um conjunto já é raro, não precisamos examinar seus supersets
+
+---
+
+# Algoritmo Apriori
+
+## Ideia geral
+
+### 1
+
+Encontrar itemsets frequentes de tamanho 1
+
+$$
+L_1
+$$
+
+### 2
+
+Usar $L_1$ para gerar candidatos de tamanho 2
+
+### 3
+
+Eliminar candidatos contendo subconjuntos infrequentes
+
+### 4
+
+Repetir para tamanhos maiores
+
+---
+
+## Fluxo
+
+$$
+\boxed{
+L_1
+\rightarrow
+C_2
+\rightarrow
+L_2
+\rightarrow
+C_3
+\rightarrow
+L_3
+\rightarrow
+\cdots
+}
+$$
+
+onde
+
+$$
+C_k
+=
+\text{candidatos de tamanho }k
+$$
+
+e
+
+$$
+L_k
+=
+\text{itemsets frequentes de tamanho }k
+$$
+
+---
+
+# Gerando regras
+
+## Depois dos itemsets frequentes
+
+Para um itemset frequente $Z$, podemos dividi-lo em
+
+$$
+Z=X\cup Y
+$$
+
+com
+
+$$
+X\cap Y=\varnothing
+$$
+
+e avaliar regras
+
+$$
+X\Rightarrow Y
+$$
+
+segundo suporte, confiança, lift e outros critérios de interesse
+
+---
+
+## Uma regra forte deve ser interpretável
+
+Valores elevados de métricas não bastam
+
+Uma regra pode ser:
+
+- redundante
+- óbvia
+- baseada em poucos casos
+- consequência de um item muito frequente
+- irrelevante para a decisão
+
+$$
+\boxed{
+\text{descoberta algorítmica}
++
+\text{interpretação substantiva}
+}
+$$
+
+---
+
+## Direção da regra
+
+Embora
+
+$$
+support(X\Rightarrow Y)
+=
+support(Y\Rightarrow X)
+$$
+
+e
+
+$$
+lift(X\Rightarrow Y)
+=
+lift(Y\Rightarrow X)
+$$
+
+em geral,
+
+$$
+\boxed{
+confidence(X\Rightarrow Y)
+\neq
+confidence(Y\Rightarrow X)
+}
+$$
+
+A direção importa para a interpretação da confiança
+
+---
+
+# Síntese do Encontro 14.1
+
+## Medidas fundamentais
+
+$$
+\boxed{
+support(X\Rightarrow Y)
+=
+P(X\cap Y)
+}
+$$
+
+$$
+\boxed{
+confidence(X\Rightarrow Y)
+=
+P(Y\mid X)
+}
+$$
+
+$$
+\boxed{
+lift(X\Rightarrow Y)
+=
+\frac{P(Y\mid X)}{P(Y)}
+}
+$$
+
+---
+
+## Ideia computacional
+
+$$
+\boxed{
+\text{Apriori}
+=
+\text{usar itemsets infrequentes para podar a busca}
+}
+$$
+
+O objetivo não é apenas gerar muitas regras, mas encontrar associações frequentes, relevantes e interpretáveis
+
+# Segundo encontro — interpretação e aplicação
+
+## Confiança alta não basta
+Uma regra pode apresentar alta confiança apenas porque o consequente é muito frequente
+
+$$
+\boxed{confidence(X\Rightarrow Y)}
+$$
+
+deve ser lida juntamente com
+
+$$
+\boxed{lift(X\Rightarrow Y)}
+$$
+
+## Síntese
+$$
+\boxed{\text{suporte}\rightarrow\text{confiança}\rightarrow\text{lift}\rightarrow\text{interpretação}}
+$$
+## Referências {visibility="uncounted"}
+
+::: {#refs}
+:::

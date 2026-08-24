@@ -1,0 +1,694 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Métodos Locais: KNN, Kernel e Regressão Local</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 5"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+
+tema <- theme_minimal(base_size = 15) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+set.seed(125)
+pib <- runif(220,1000,60000)
+df_pib <- data.frame(
+  x = log(pib/1000),
+  log_pib = log(pib/1000),
+  vida = 40 + 15*log(pib/1000) + rnorm(220,0,3)
+)
+
+grid_x <- seq(min(df_pib$x), max(df_pib$x), length.out = 350)
+
+pred_knn <- function(x0, x, y, k){
+  sapply(x0, function(z){
+    ids <- order(abs(x-z))[seq_len(min(k,length(x)))]
+    mean(y[ids])
+  })
+}
+
+kernel_fun <- function(u, tipo = "epanechnikov"){
+  if(tipo == "uniforme") return(0.5*(abs(u)<=1))
+  if(tipo == "triangular") return(pmax(1-abs(u),0))
+  0.75*pmax(1-u^2,0)*(abs(u)<=1)
+}
+
+pred_kernel <- function(x0, x, y, h, tipo = "epanechnikov"){
+  sapply(x0,function(z){
+    w <- kernel_fun((z-x)/h,tipo)
+    if(sum(w)==0) return(mean(y))
+    sum(w*y)/sum(w)
+  })
+}
+```
+
+## De onde partimos?
+
+Até agora especificamos uma forma para $g(x)$: reta, polinômio ou spline.
+
+Agora perguntaremos:
+
+$$
+\boxed{\text{É possível aprender }r(x)\text{ diretamente da vizinhança dos dados?}}
+$$
+
+## Ideia central
+
+Queremos estimar
+
+$$
+r(x)=E(Y\mid X=x)
+$$
+
+sem impor uma forma global rígida.
+
+$$
+\boxed{\text{Observações próximas em }X\text{ devem influenciar mais a predição}}
+$$
+
+# Regressão KNN
+
+## Uma pergunta local
+
+Para prever $Y$ em $x_0$:
+
+> Quais observações de treinamento são mais parecidas com $x_0$?
+
+Usamos então as respostas dessas observações para construir a predição.
+
+## O estimador KNN
+
+Se $N_K(x_0)$ são os $K$ vizinhos mais próximos,
+
+$$
+\boxed{
+\widehat r_K(x_0)=
+\frac1K\sum_{i\in N_K(x_0)}Y_i
+}
+$$
+
+$$
+\text{localizar}\rightarrow\text{selecionar vizinhos}\rightarrow\text{calcular a média}
+$$
+
+## Uma predição com $K=7$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.7
+#| out-width: 78%
+#| fig-align: center
+x0 <- median(df_pib$x); k0 <- 7
+ids <- order(abs(df_pib$x-x0))[1:k0]
+yhat0 <- mean(df_pib$vida[ids])
+ggplot(df_pib,aes(x,vida))+
+ geom_point(color="gray65",alpha=.55,size=2)+
+ geom_point(data=df_pib[ids,],color="#2C7FB8",size=3)+
+ geom_vline(xintercept=x0,linetype=2,color="gray35")+
+ geom_point(data=data.frame(x=x0,vida=yhat0),aes(x,vida),inherit.aes=FALSE,color="#D7301F",size=4)+
+ tema+labs(title="KNN: predição em um ponto",subtitle="Azul: 7 vizinhos | Vermelho: média das respostas",x="log(PIB/1000)",y="Expectativa de vida")
+```
+
+## De um ponto para uma curva
+
+Repetimos o procedimento para muitos $x_0$:
+
+1. encontramos os $K$ vizinhos;
+2. calculamos a média de $Y$;
+3. obtemos $\widehat r_K(x_0)$.
+
+## Comparando $K=1,3,30$
+
+```{r}
+#| fig-width: 11
+#| fig-height: 4
+#| out-width: 94%
+#| fig-align: center
+plot_knn <- function(k){
+ gd<-data.frame(x=grid_x,pred=pred_knn(grid_x,df_pib$x,df_pib$vida,k))
+ ggplot(df_pib,aes(x,vida))+geom_point(color="gray60",alpha=.35,size=1.4)+
+ geom_line(data=gd,aes(x,pred),color="#2C7FB8",linewidth=1.15)+
+ tema+theme(axis.title=element_blank())+ggtitle(paste0("K = ",k))
+}
+plot_knn(1)+plot_knn(3)+plot_knn(30)
+```
+
+## O papel de $K$
+
+$$
+K\downarrow\Rightarrow\text{vizinhança pequena}\Rightarrow\text{maior flexibilidade}
+$$
+
+$$
+K\uparrow\Rightarrow\text{vizinhança grande}\Rightarrow\text{maior suavização}
+$$
+
+$$
+\boxed{K=\text{hiperparâmetro de complexidade}}
+$$
+
+## Viés × variância
+
+:::: {.columns}
+::: {.column width="48%"}
+### $K$ pequeno
+- baixo viés;
+- alta variância;
+- maior adaptação local;
+- maior risco de sobreajuste.
+:::
+::: {.column width="48%"}
+### $K$ grande
+- maior viés;
+- menor variância;
+- curva mais suave;
+- risco de subajuste.
+:::
+::::
+
+## KNN é baseado em instâncias
+
+Ao contrário de um modelo paramétrico, o KNN precisa consultar os dados de treinamento para realizar novas predições.
+
+$$
+\boxed{\text{KNN é um método local / baseado em instâncias}}
+$$
+
+## A distância importa
+
+Em uma dimensão:
+
+$$
+d(x_i,x_0)=|x_i-x_0|
+$$
+
+Em $p$ dimensões:
+
+$$
+d(\mathbf x_i,\mathbf x_0)=
+\sqrt{\sum_{j=1}^p(x_{ij}-x_{0j})^2}
+$$
+
+## Por que padronizar?
+
+Se uma variável varia entre 0 e 1 e outra entre 0 e 100.000, a segunda pode dominar a distância.
+
+$$
+X_j^*=\frac{X_j-\bar X_j}{s_j}
+$$
+
+::: {.callout-warning appearance="simple"}
+Métodos baseados em distância são particularmente sensíveis à escala.
+:::
+
+## Escolha de $K$ por validação cruzada
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 76%
+#| fig-align: center
+set.seed(505)
+fold<-sample(rep(1:10,length.out=nrow(df_pib))); ks<-1:40
+rmse_cv<-sapply(ks,function(k){
+ mean(sapply(1:10,function(f){
+  tr<-df_pib[fold!=f,]; va<-df_pib[fold==f,]
+  pr<-pred_knn(va$x,tr$x,tr$vida,k)
+  sqrt(mean((va$vida-pr)^2))
+ }))
+})
+cv_knn<-data.frame(K=ks,RMSE=rmse_cv); kb<-ks[which.min(rmse_cv)]
+ggplot(cv_knn,aes(K,RMSE))+geom_line(color="#2C7FB8",linewidth=1.2)+geom_point(size=1.7)+
+ geom_vline(xintercept=kb,color="#D7301F",linetype=2,linewidth=1.1)+tema+
+ labs(title="Escolha de K por validação cruzada",subtitle=paste("Melhor K =",kb),x="K",y="RMSE médio de validação")
+```
+
+$$
+\widehat K=\arg\min_K\widehat R_{CV}(K)
+$$
+
+# KNN para classificação
+
+## Regressão versus classificação
+
+### Regressão
+
+$$
+\widehat r_K(\mathbf x)
+=
+\frac1K
+\sum_{i\in N_K(\mathbf x)}Y_i
+$$
+
+### Classificação binária
+
+Como $Y_i\in\{0,1\}$,
+
+$$
+\boxed{
+\widehat\eta_K(\mathbf x)
+=
+\frac1K
+\sum_{i\in N_K(\mathbf x)}I(Y_i=1)
+}
+$$
+
+---
+
+## A média virou probabilidade
+
+Se entre os $K=5$ vizinhos temos
+
+$$
+(1,1,0,1,0)
+$$
+
+então
+
+$$
+\widehat\eta_5(\mathbf x)
+=
+\frac35
+=
+0.6
+$$
+
+Com cutoff $0.5$,
+
+$$
+\widehat g_5(\mathbf x)=1
+$$
+
+---
+
+## Classificação multiclasse
+
+Para $Y\in\{1,\ldots,G\}$, estimamos
+
+$$
+\boxed{
+\widehat P(Y=k\mid\mathbf X=\mathbf x)
+=
+\frac1K
+\sum_{i\in N_K(\mathbf x)}
+I(Y_i=k)
+}
+$$
+
+e classificamos por
+
+$$
+\boxed{
+\widehat g_K(\mathbf x)
+=
+\arg\max_k
+\widehat P(Y=k\mid\mathbf X=\mathbf x)
+}
+$$
+
+---
+
+## O papel de $K$
+
+$$
+K\downarrow
+\quad\Longrightarrow\quad
+\text{fronteira mais flexível}
+$$
+
+$$
+K\uparrow
+\quad\Longrightarrow\quad
+\text{fronteira mais suave}
+$$
+
+Portanto, o mesmo balanço viés–variância estudado em regressão reaparece na classificação
+
+---
+
+## O que não mudou no KNN?
+
+- sensibilidade à escala das covariáveis
+- efeito da escolha da distância
+- custo de predição
+- necessidade de selecionar $K$
+- maldição da dimensionalidade
+
+::: {.callout-note appearance="simple"}
+
+A principal mudança é a quantidade estimada: uma média de respostas binárias pode ser interpretada como uma probabilidade de classe
+:::
+
+# Regressão por Kernel
+
+## Uma limitação do KNN
+
+No KNN, todos os vizinhos selecionados recebem o mesmo peso.
+
+Uma observação quase coincidente com $x_0$ pode receber o mesmo peso que o $K$-ésimo vizinho.
+
+> E se fizermos o peso diminuir com a distância?
+
+## A ideia do kernel
+
+$$
+w_i(x_0)=
+K\left(\frac{x_i-x_0}{h}\right)
+$$
+
+Observações próximas recebem maior influência.
+
+$h$ controla a escala da vizinhança.
+
+## Estimador de Nadaraya–Watson
+
+$$
+\boxed{
+\widehat r_h(x_0)=
+\frac{\sum_iK\left(\frac{x_i-x_0}{h}\right)Y_i}
+{\sum_iK\left(\frac{x_i-x_0}{h}\right)}
+}
+$$
+
+É uma **média local ponderada**.
+
+## Três funções kernel
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 76%
+#| fig-align: center
+u<-seq(-1.5,1.5,length.out=400)
+kernels<-bind_rows(
+ data.frame(u=u,peso=kernel_fun(u,"uniforme"),Kernel="Uniforme"),
+ data.frame(u=u,peso=kernel_fun(u,"triangular"),Kernel="Triangular"),
+ data.frame(u=u,peso=kernel_fun(u,"epanechnikov"),Kernel="Epanechnikov")
+)
+ggplot(kernels,aes(u,peso,color=Kernel))+geom_line(linewidth=1.3)+tema+
+ labs(title="Três funções kernel",x=expression((x-x[0])/h),y="Peso")
+```
+
+## Kernels usuais
+
+Uniforme:
+
+$$
+K(u)=\frac12I(|u|\le1)
+$$
+
+Triangular:
+
+$$
+K(u)=(1-|u|)I(|u|\le1)
+$$
+
+Epanechnikov:
+
+$$
+K(u)=\frac34(1-u^2)I(|u|\le1)
+$$
+
+## Mesmo $h$, kernels diferentes
+
+```{r}
+#| fig-width: 11
+#| fig-height: 4
+#| out-width: 94%
+#| fig-align: center
+h0<-.35
+plot_kernel<-function(tipo,titulo){
+ gd<-data.frame(x=grid_x,pred=pred_kernel(grid_x,df_pib$x,df_pib$vida,h0,tipo))
+ ggplot(df_pib,aes(x,vida))+geom_point(color="gray60",alpha=.35,size=1.4)+
+ geom_line(data=gd,aes(x,pred),color="#2C7FB8",linewidth=1.15)+
+ tema+theme(axis.title=element_blank())+ggtitle(titulo)
+}
+plot_kernel("uniforme","Uniforme")+plot_kernel("triangular","Triangular")+plot_kernel("epanechnikov","Epanechnikov")
+```
+
+A escolha de $h$ costuma ser mais importante que a forma exata do kernel.
+
+## O papel de $h$
+
+$$
+h\downarrow\Rightarrow\text{mais local}\Rightarrow\text{mais flexível}
+$$
+
+$$
+h\uparrow\Rightarrow\text{mais observações relevantes}\Rightarrow\text{mais suave}
+$$
+
+$$
+\boxed{h=\text{hiperparâmetro de suavização}}
+$$
+
+## Pequeno × grande $h$
+
+```{r}
+#| fig-width: 10
+#| fig-height: 4.2
+#| out-width: 88%
+#| fig-align: center
+g1<-data.frame(x=grid_x,pred=pred_kernel(grid_x,df_pib$x,df_pib$vida,.12,"epanechnikov"))
+g2<-data.frame(x=grid_x,pred=pred_kernel(grid_x,df_pib$x,df_pib$vida,.65,"epanechnikov"))
+p1<-ggplot(df_pib,aes(x,vida))+geom_point(color="gray60",alpha=.35)+geom_line(data=g1,aes(x,pred),color="#2C7FB8",linewidth=1.2)+tema+labs(title="h pequeno",subtitle="Maior flexibilidade",x="x",y="y")
+p2<-ggplot(df_pib,aes(x,vida))+geom_point(color="gray60",alpha=.35)+geom_line(data=g2,aes(x,pred),color="#D7301F",linewidth=1.2)+tema+labs(title="h grande",subtitle="Maior suavização",x="x",y="y")
+p1+p2
+```
+
+## KNN × Kernel
+
+| Aspecto | KNN | Kernel |
+|---|---|---|
+| Vizinhança | $K$ observações | controlada por $h$ |
+| Pesos | iguais | dependem da distância |
+| Hiperparâmetro | $K$ | $h$ |
+| Predição | média local | média local ponderada |
+
+$$
+\boxed{\text{mesma filosofia: aprender localmente}}
+$$
+
+## Escolha de $h$
+
+Tratamos diferentes valores de $h$ como candidatos:
+
+$$
+h_1,\ldots,h_M
+$$
+
+Selecionamos por validação:
+
+$$
+\boxed{\widehat h=\arg\min_h\widehat R_{CV}(h)}
+$$
+
+# Regressão polinomial local
+
+## Nadaraya–Watson revisitado
+
+Em $x_0$, Nadaraya–Watson pode ser obtido minimizando
+
+$$
+\min_{\beta_0}
+\sum_i
+K\left(\frac{x_i-x_0}{h}\right)
+(Y_i-\beta_0)^2
+$$
+
+Logo,
+
+$$
+\boxed{\text{Nadaraya–Watson = regressão constante local}}
+$$
+
+## Por que parar em uma constante?
+
+Na vizinhança de $x_0$, podemos usar
+
+$$
+r(x)\approx
+\beta_0(x_0)+\beta_1(x_0)(x-x_0)
+$$
+
+Assim, ajustamos uma reta diferente em cada região do espaço.
+
+## Regressão linear local
+
+$$
+\boxed{
+(\widehat\beta_0,\widehat\beta_1)
+=
+\arg\min_{\beta_0,\beta_1}
+\sum_i
+K\left(\frac{x_i-x_0}{h}\right)
+\left[
+Y_i-\beta_0-\beta_1(x_i-x_0)
+\right]^2
+}
+$$
+
+A estimativa no ponto é
+
+$$
+\boxed{\widehat r(x_0)=\widehat\beta_0(x_0)}
+$$
+
+## A reta é local
+
+Para cada novo $x_0$:
+
+$$
+x_0
+\rightarrow
+\text{novos pesos}
+\rightarrow
+\text{nova regressão}
+\rightarrow
+\widehat r(x_0)
+$$
+
+A curva final surge da união dessas predições locais.
+
+## Generalização polinomial
+
+Podemos usar
+
+$$
+r(x)\approx
+\beta_0+
+\beta_1(x-x_0)+\cdots+
+\beta_d(x-x_0)^d
+$$
+
+Casos principais:
+
+$$
+d=0:\text{ constante local}
+$$
+
+$$
+d=1:\text{ linear local}
+$$
+
+$$
+d=2:\text{ quadrática local}
+$$
+
+## Dois controles de complexidade
+
+Agora temos:
+
+- $d$: grau do polinômio local;
+- $h$: tamanho da vizinhança.
+
+Na prática, $d$ costuma ser pequeno e
+
+$$
+\boxed{h\text{ é o principal parâmetro de suavização}}
+$$
+
+## Efeito de fronteira
+
+Nas extremidades do domínio, a vizinhança é assimétrica.
+
+A constante local pode apresentar viés elevado.
+
+A regressão linear local consegue adaptar a inclinação e costuma apresentar melhor comportamento na fronteira.
+
+## Conexão com LOESS
+
+A lógica do LOESS é:
+
+$$
+\boxed{
+\text{vizinhança}
++
+\text{pesos pela distância}
++
+\text{regressão polinomial local}
+}
+$$
+
+Assim, o LOESS estudado anteriormente deixa de ser uma técnica isolada.
+
+## LOESS: ajuste local
+
+Outra abordagem é ajustar pequenos modelos em vizinhanças de cada ponto.
+
+Para prever em $x_0$:
+
+1. encontre observações próximas de $x_0$;
+2. atribua pesos maiores às mais próximas;
+3. ajuste uma regressão local;
+4. use o ajuste para obter $\widehat g(x_0)$.
+
+## O parâmetro span
+
+No LOESS, `span` controla o tamanho da vizinhança.
+
+$$
+\text{span pequeno}
+\Rightarrow
+\text{mais local e flexível}
+$$
+
+$$
+\text{span grande}
+\Rightarrow
+\text{mais suave}
+$$
+
+## LOESS: flexibilidade local
+
+```{r}
+#| fig-width: 10
+#| fig-height: 4.3
+#| out-width: 88%
+#| fig-align: center
+
+p1 <- ggplot(df_pib,aes(log_pib,vida)) +
+  geom_point(color="gray55",alpha=.4) +
+  geom_smooth(method="loess",span=.25,se=FALSE,
+              color="#2C7FB8",linewidth=1.2) +
+  tema + labs(title="Mais flexível",subtitle="span = 0.25",x="x",y="y")
+
+p2 <- ggplot(df_pib,aes(log_pib,vida)) +
+  geom_point(color="gray55",alpha=.4) +
+  geom_smooth(method="loess",span=.8,se=FALSE,
+              color="#D7301F",linewidth=1.2) +
+  tema + labs(title="Mais suave",subtitle="span = 0.80",x="x",y="y")
+
+p1+p2
+```
+
+## Síntese
+$$
+\boxed{\text{KNN}\quad\text{Kernel}\quad\text{Regressão local}\quad\text{LOESS}}
+$$
+

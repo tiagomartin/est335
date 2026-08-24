@@ -1,0 +1,639 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Bagging e Random Forest</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 8"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+```
+
+#  De uma árvore a muitas
+
+## O problema
+
+Uma árvore profunda pode ter:
+
+$$
+\text{baixo viés}+\text{alta variância}
+$$
+
+Como reduzir a variância sem voltar a um modelo rígido?
+
+$$
+\boxed{\text{ajustar várias árvores e calcular uma média}}
+$$
+
+
+## Por que combinar árvores?
+
+Considere dois estimadores $g_1(\mathbf{x})$ e $g_2(\mathbf{x})$.
+
+Definimos o estimador combinado:
+
+$$
+g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
+$$
+
+O erro esperado é:
+
+$$
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+=
+\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
++ \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
++ \text{bias}^2
+$$
+
+------------------------------------------------------------------------
+
+Se $g_1(\mathbf{x})$ e $g_2(\mathbf{x})$ são:
+
+-   não viesados\
+-   com mesma variância\
+-   não correlacionados
+
+então:
+
+$$
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+=
+\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
++ \frac{1}{2}\mathbb{V}(g_i(\mathbf{x}))
+$$
+
+#### Conclusão
+
+$$
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}x\big]
+\le
+\mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
+$$
+
+
+## Bootstrap
+
+A partir de
+
+$$
+\mathcal D_n=\{(\mathbf x_i,y_i)\}_{i=1}^{n},
+$$
+
+criamos $\mathcal D_n^{*(b)}$ sorteando $n$ observações **com reposição**.
+
+Repetimos para:
+
+$$b=1,\ldots,B$$
+
+## Bagging
+
+Ajustamos uma árvore $\widehat g_b$ em cada amostra bootstrap.
+
+A predição é:
+
+$$
+\boxed{
+\widehat g_{bag}(\mathbf x)=
+\frac1B\sum_{b=1}^{B}\widehat g_b(\mathbf x)
+}
+$$
+
+Bagging = **Bootstrap Aggregating**.
+
+## A intuição estatística
+
+Cada árvore é instável, mas seus erros não são idênticos.
+
+A média tende a cancelar parte da variabilidade específica de cada árvore.
+
+$$
+\boxed{\text{média de modelos instáveis}\Rightarrow\text{modelo mais estável}}
+$$
+
+
+---
+
+![](/images/regressao/bagging.png){fig-align="center"}
+
+
+## Propriedade fundamental
+
+Se os estimadores são aproximadamente não viesados:
+
+-   o viés permanece semelhante\
+-   a variância é reduzida
+
+Assim,
+
+$$
+\mathbb{E}[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}]
+\le
+\mathbb{E}[(\boldsymbol{y} - g_b(\mathbf{x}))^2 \mid \mathbf{x}]
+$$
+
+
+## Importância de Variáveis em Árvores
+
+Bagging permite medir a relevância de cada variável:
+
+-   baseada na redução do erro (RSS)\
+-   cada divisão reduz a variabilidade
+
+A qualidade de uma divisão é medida pela redução do erro quadrático (RSS).
+
+Considere um nó pai dividido em dois nós:
+
+-   esquerda ($\mathcal{R}_{esq}$)\
+-   direita ($\mathcal{R}_{dir}$)
+
+
+## Redução do erro
+
+A redução no RSS é dada por:
+
+$$
+\text{RSS}_{pai}
+-
+\text{RSS}_{esq}
+-
+\text{RSS}_{dir}
+$$
+
+Ou, explicitamente:
+
+$$
+\sum_{i \in \mathcal{R}_{pai}} (y_i - \bar{y}_{pai})^2
+-
+\sum_{i \in \mathcal{R}_{esq}} (y_i - \bar{y}_{esq})^2
+-
+\sum_{i \in \mathcal{R}_{dir}} (y_i - \bar{y}_{dir})^2
+$$
+
+
+## Interpretação
+
+-   quanto maior a redução → melhor a divisão\
+-   boas variáveis geram partições mais homogêneas
+
+> Variáveis importantes são aquelas que mais reduzem a variabilidade da resposta.
+
+---
+
+
+## Caso ideal: independência
+
+Se:
+
+$$
+Var[\widehat g_b(\mathbf x)]=\sigma_g^2
+$$
+
+e as árvores fossem independentes:
+
+$$
+Var\left[
+\frac1B\sum_{b=1}^{B}\widehat g_b(\mathbf x)
+\right]
+=
+\frac{\sigma_g^2}{B}
+$$
+
+## Mas árvores não são independentes
+
+As árvores nascem do mesmo conjunto original e frequentemente selecionam variáveis semelhantes.
+
+Suponha:
+
+$$
+Corr(\widehat g_b,\widehat g_{b'})=\rho
+$$
+
+A correlação limita a redução de variância.
+
+## Variância da média correlacionada
+
+Sob variância comum $\sigma_g^2$ e correlação comum $\rho$:
+
+$$
+\boxed{
+Var(\widehat g_{bag})
+=
+\rho\sigma_g^2+
+\frac{1-\rho}{B}\sigma_g^2
+}
+$$
+
+Note que,
+
+- $\rho\sigma^2$ é a parte da variância que **não desaparece** com o aumento de $B$
+- $\dfrac{1-\rho}{B}\sigma^2$ é a parte que **cai com o número de árvores**<br><br>
+
+
+Essa fórmula motiva diretamente a Random Forest.
+
+## Interpretando
+
+Quando:
+
+$$B\to\infty,$$
+
+$$
+Var(\widehat g_{bag})
+\to
+\rho\sigma_g^2
+$$
+
+Portanto, aumentar indefinidamente $B$ não remove a parcela associada à correlação.
+
+## O que precisamos fazer?
+
+A fórmula sugere duas estratégias:
+
+$$
+B\uparrow
+\qquad\text{e}\qquad
+\rho\downarrow
+$$
+
+Bagging aumenta $B$.
+
+Random Forest introduz aleatoriedade para reduzir $\rho$.
+
+# Random Forest
+
+## O problema do Bagging
+
+Se algumas covariáveis são muito fortes, muitas árvores bootstrap fazem splits semelhantes.
+
+Resultado:
+
+$$\rho\uparrow$$
+
+Random Forest tenta produzir árvores menos correlacionadas.
+
+## Aleatoriedade adicional
+
+Para cada árvore:
+
+1. gerar uma amostra bootstrap;
+2. em cada nó sortear apenas $m$ das $p$ covariáveis;
+3. buscar o melhor split somente entre essas $m$;
+4. continuar recursivamente.
+
+## Bagging é caso particular
+
+Se:
+
+$$m=p,$$
+
+todas as variáveis competem em cada split:
+
+$$
+\boxed{\text{Random Forest}\rightarrow\text{Bagging}}
+$$
+
+Se $m<p$, introduzimos decorrelação adicional.
+
+## O papel de $m$
+
+$$
+m\downarrow
+\Rightarrow
+\rho\downarrow
+$$
+
+em geral, pois as árvores tornam-se mais diferentes.
+
+Mas $m$ excessivamente pequeno pode enfraquecer cada árvore.
+
+$$
+\boxed{\text{força das árvores}\times\text{correlação}}
+$$
+
+## Comparação
+
+| Método | Bootstrap | Covariáveis candidatas/split | Predição |
+|---|---:|---:|---|
+| Árvore | não | $p$ | uma árvore |
+| Bagging | sim | $p$ | média |
+| Random Forest | sim | $m<p$ | média<br><br> |
+
+
+#### Parâmetro chave
+
+$m$ = número de variáveis candidatas por *split*. Geralmente,
+
+$$
+m \approx \frac{d}{3}
+$$
+
+
+---
+
+![](/images/regressao/rf.png){fig-align="center"}
+
+---
+
+```{r}
+library(ggplot2)
+library(rpart)
+library(patchwork)
+
+set.seed(123)
+
+# -----------------------------
+# Função de regressão real
+# -----------------------------
+f_real <- function(x, beta = c(12, 4, -6, 1)) {
+  beta[1] + beta[2] * x + beta[3] * x^2 + beta[4] * x^3 + sin(x)
+}
+
+# -----------------------------
+# Dados simulados
+# -----------------------------
+n <- 150
+x <- sort(runif(n, -1.5, 3))
+
+f_true <- f_real(x)
+y <- f_true + rnorm(n, sd = 4.0)
+
+df <- data.frame(x, y)
+
+# grade
+xg <- seq(min(x), max(x), length.out = 500)
+grid <- data.frame(x = xg)
+
+# função verdadeira na grade
+df_true <- data.frame(
+  x = xg,
+  f_true = f_real(xg)
+)
+
+# -----------------------------
+# (a) Árvore única
+# -----------------------------
+fit_tree <- rpart(
+  y ~ x,
+  data = df,
+  method = "anova",
+  control = rpart.control(maxdepth = 3, cp = 0.002, minsplit = 10)
+)
+
+pred_tree <- predict(fit_tree, newdata = grid)
+
+df_tree <- data.frame(
+  x = xg,
+  y_hat = pred_tree,
+  f_true = f_real(xg)
+)
+
+# -----------------------------
+# (b) Agregação de árvores bootstrap
+# -----------------------------
+B <- 50
+pred_mat <- matrix(NA_real_, nrow = length(xg), ncol = B)
+
+for (b in 1:B) {
+  idx <- sample(1:n, n, replace = TRUE)
+  df_boot <- df[idx, ]
+
+  fit_b <- rpart(
+    y ~ x,
+    data = df_boot,
+    method = "anova",
+    control = rpart.control(maxdepth = 3, cp = 0.002, minsplit = 10)
+  )
+
+  pred_mat[, b] <- predict(fit_b, newdata = grid)
+}
+
+# média das árvores
+pred_bag <- rowMeans(pred_mat)
+
+# dados longos para plot
+df_bag_lines <- data.frame(
+  x = rep(xg, B),
+  y = as.vector(pred_mat),
+  tree = factor(rep(1:B, each = length(xg)))
+)
+
+df_bag_mean <- data.frame(
+  x = xg,
+  y_hat = pred_bag,
+  f_true = f_real(xg)
+)
+
+# -----------------------------
+# Gráfico (a): árvore única
+# -----------------------------
+p1 <- ggplot(df, aes(x, y)) +
+  geom_point(color = "#2C7FB8", alpha = 0.5, size = 1.8) +
+  geom_step(
+    data = df_tree,
+    aes(x, y_hat),
+    color = "#00BA38",
+    linewidth = 1.2
+  ) +
+  geom_line(
+    data = df_tree,
+    aes(x, f_true),
+    color = "#D62728",
+    linewidth = 1.2
+  ) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "a) Árvore de regressão",
+    x = "X",
+    y = "Y"
+  ) +
+  theme(
+    panel.grid.minor = element_blank()
+  )
+
+# -----------------------------
+# Gráfico (b): bagging / floresta
+# -----------------------------
+p2 <- ggplot(df, aes(x, y)) +
+  geom_point(color = "#2C7FB8", alpha = 0.5, size = 1.8) +
+  geom_line(
+    data = df_bag_lines,
+    aes(x, y, group = tree),
+    color = "#619CFF",
+    alpha = 0.12,
+    linewidth = 0.7
+  ) +
+  geom_line(
+    data = df_bag_mean,
+    aes(x, y_hat),
+    color = "#00BA38",
+    linewidth = 1.3
+  ) +
+  geom_line(
+    data = df_bag_mean,
+    aes(x, f_true),
+    color = "#D62728",
+    linewidth = 1.2
+  ) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "b) Random Forest",
+    x = "X",
+    y = "Y"
+  ) +
+  theme(
+    panel.grid.minor = element_blank()
+  )
+
+# -----------------------------
+# Plot lado a lado
+# -----------------------------
+p1 + p2
+```
+
+
+---
+
+
+## O preço do ensemble
+
+Uma árvore pode ser visualizada como regras.
+
+Centenas de árvores não podem ser interpretadas diretamente da mesma forma.
+
+$$
+\text{estabilidade/desempenho}\uparrow
+\quad\Rightarrow\quad
+\text{interpretabilidade direta}\downarrow
+$$
+
+Esse problema será retomado no tópico de interpretabilidade.
+
+# Fechamento
+
+## A progressão da semana
+
+$$
+\boxed{\text{Árvore}}
+\overset{\text{alta variância}}{\longrightarrow}
+\boxed{\text{Bagging}}
+\overset{\text{correlação}}{\longrightarrow}
+\boxed{\text{Random Forest}}
+$$
+
+Cada método surge para resolver uma limitação do anterior.
+
+## Seis ideias para levar
+
+1. Árvores aproximam $r(\mathbf x)$ por regiões constantes.
+2. Splits são escolhidos para reduzir RSS.
+3. Árvores profundas são flexíveis, mas instáveis.
+4. Bagging reduz variância pela média de árvores bootstrap.
+5. Correlação entre árvores limita essa redução.
+6. Random Forest restringe aleatoriamente as covariáveis candidatas para decorrelacionar as árvores.
+
+# Classificação com ensembles de árvores
+
+## Bagging
+
+Em regressão:
+
+$$
+\widehat f_{\text{bag}}(\mathbf x)
+=
+\frac1B
+\sum_{b=1}^{B}
+\widehat f^{(b)}(\mathbf x)
+$$
+
+Em classificação, podemos agregar por votação
+
+$$
+\boxed{
+\widehat g_{\text{bag}}(\mathbf x)
+=
+\operatorname{moda}
+\left\{
+\widehat g^{(1)}(\mathbf x),\ldots,
+\widehat g^{(B)}(\mathbf x)
+\right\}
+}
+$$
+
+---
+
+## Probabilidades no ensemble
+
+Outra possibilidade é agregar probabilidades
+
+$$
+\boxed{
+\widehat p_k(\mathbf x)
+=
+\frac1B
+\sum_{b=1}^{B}
+\widehat p_k^{(b)}(\mathbf x)
+}
+$$
+
+e então usar
+
+$$
+\widehat g(\mathbf x)
+=
+\arg\max_k
+\widehat p_k(\mathbf x)
+$$
+
+---
+
+## Random Forest
+
+A mudança em relação ao Bagging permanece a mesma
+
+$$
+\boxed{
+\text{bootstrap}
++
+\text{subconjunto aleatório de covariáveis em cada split}
+}
+$$
+
+A randomização reduz a correlação entre as árvores
+
+---
+
+## O que muda da regressão?
+
+| Aspecto | Regressão | Classificação |
+|---|---|---|
+| split | redução do erro | redução da impureza |
+| folha | média | classe/probabilidade |
+| ensemble | média | votação/probabilidade |
+
+O princípio de redução de variância permanece
+
+

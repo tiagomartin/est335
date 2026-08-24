@@ -1,0 +1,928 @@
+---
+title: "Parte I : Regressão"
+subtitle: "<span class='custom-subtitle'>Material complementar: Regressão Linear</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "Material complementar — EST335"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    preview-links: auto
+    self-contained: false
+    embed-resources: false
+    code-link: true
+    highlight-style: a11y
+    chalkboard: true
+incremental: false
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+# Como usar este material
+
+## Material complementar: Regressão Linear
+
+Este conjunto aprofunda aspectos matemáticos e inferenciais da regressão linear que não precisam ocupar o núcleo das aulas regulares.<br><br>
+
+::: {.callout-note appearance="simple"}
+O foco da aula principal é **aprendizagem, predição e generalização**. Aqui ficam derivações e propriedades úteis para consulta.
+:::
+
+# 1. Mínimos quadrados na regressão simples
+
+## O problema
+
+Considere
+
+$$
+Y_i=\beta_0+\beta_1X_i+\varepsilon_i
+$$
+
+Queremos minimizar
+
+$$
+S(\beta_0,\beta_1)
+=
+\sum_{i=1}^n
+(y_i-\beta_0-\beta_1x_i)^2
+$$
+
+## Condições de primeira ordem
+
+Derivando em relação a $\beta_0$:
+
+$$
+\frac{\partial S}{\partial\beta_0}
+=
+-2\sum_{i=1}^n
+(y_i-\beta_0-\beta_1x_i)=0
+$$
+
+Derivando em relação a $\beta_1$:
+
+$$
+\frac{\partial S}{\partial\beta_1}
+=
+-2\sum_{i=1}^n
+x_i(y_i-\beta_0-\beta_1x_i)=0
+$$
+
+## Equações normais
+
+As condições anteriores produzem
+
+$$
+\sum_i y_i
+=
+n\widehat\beta_0+
+\widehat\beta_1\sum_i x_i
+$$
+
+e
+
+$$
+\sum_i x_i y_i
+=
+\widehat\beta_0\sum_i x_i+
+\widehat\beta_1\sum_i x_i^2
+$$
+
+## Solução
+
+$$
+\boxed{
+\widehat\beta_1
+=
+\frac{
+\sum_i(x_i-\bar x)(y_i-\bar y)
+}{
+\sum_i(x_i-\bar x)^2
+}
+}
+$$
+
+e
+
+$$
+\boxed{
+\widehat\beta_0
+=
+\bar y-\widehat\beta_1\bar x
+}
+$$
+
+A reta de mínimos quadrados passa por
+
+$$
+(\bar x,\bar y)
+$$
+
+# 2. Forma matricial
+
+## Modelo linear múltiplo
+
+$$
+\mathbf y
+=
+\mathbf X\boldsymbol\beta+
+\boldsymbol\varepsilon
+$$
+
+Com intercepto,
+
+$$
+\mathbf X=
+\begin{bmatrix}
+1 & x_{11} & \cdots & x_{1p}\\
+1 & x_{21} & \cdots & x_{2p}\\
+\vdots & \vdots & & \vdots\\
+1 & x_{n1} & \cdots & x_{np}
+\end{bmatrix}
+$$
+
+## Critério de mínimos quadrados
+
+$$
+S(\boldsymbol\beta)
+=
+(\mathbf y-\mathbf X\boldsymbol\beta)^\top
+(\mathbf y-\mathbf X\boldsymbol\beta)
+$$
+
+Expandindo:
+
+$$
+S(\boldsymbol\beta)
+=
+\mathbf y^\top\mathbf y
+-
+2\boldsymbol\beta^\top\mathbf X^\top\mathbf y
++
+\boldsymbol\beta^\top\mathbf X^\top\mathbf X\boldsymbol\beta
+$$
+
+## Gradiente
+
+$$
+\nabla_{\boldsymbol\beta}S
+=
+-2\mathbf X^\top\mathbf y
++
+2\mathbf X^\top\mathbf X\boldsymbol\beta
+$$
+
+Igualando a zero:
+
+$$
+\mathbf X^\top\mathbf X\widehat{\boldsymbol\beta}
+=
+\mathbf X^\top\mathbf y
+$$
+
+## Solução matricial
+
+Se $\mathbf X^\top\mathbf X$ for inversível:
+
+$$
+\boxed{
+\widehat{\boldsymbol\beta}
+=
+(\mathbf X^\top\mathbf X)^{-1}
+\mathbf X^\top\mathbf y
+}
+$$
+
+::: {.callout-warning appearance="simple"}
+Na prática computacional, softwares não precisam calcular explicitamente essa inversa; decomposições numéricas como QR são preferíveis.
+:::
+
+# 3. Interpretação geométrica
+
+## Projeção
+
+Os valores ajustados podem ser escritos como
+
+$$
+\widehat{\mathbf y}
+=
+\mathbf X\widehat{\boldsymbol\beta}
+$$
+
+Logo,
+
+$$
+\widehat{\mathbf y}
+=
+\underbrace{
+\mathbf X(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top
+}_{\mathbf H}
+\mathbf y
+$$
+
+$\mathbf H$ é a **matriz chapéu**.
+
+## Ortogonalidade dos resíduos
+
+$$
+\mathbf e
+=
+\mathbf y-\widehat{\mathbf y}
+$$
+
+Das equações normais,
+
+$$
+\boxed{
+\mathbf X^\top\mathbf e=0
+}
+$$
+
+Portanto, os resíduos são ortogonais ao espaço gerado pelas colunas de $\mathbf X$.
+
+# 4. Propriedades sob o modelo clássico
+
+## Hipóteses básicas
+
+Uma formulação clássica utiliza
+
+$$
+E(\boldsymbol\varepsilon\mid\mathbf X)=0
+$$
+
+e
+
+$$
+\operatorname{Var}(\boldsymbol\varepsilon\mid\mathbf X)
+=
+\sigma^2\mathbf I
+$$
+
+Sob essas condições,
+
+$$
+E(\widehat{\boldsymbol\beta}\mid\mathbf X)
+=
+\boldsymbol\beta
+$$
+
+## Variância do estimador
+
+$$
+\operatorname{Var}
+(\widehat{\boldsymbol\beta}\mid\mathbf X)
+=
+\sigma^2
+(\mathbf X^\top\mathbf X)^{-1}
+$$
+
+Isso conecta a geometria das covariáveis à incerteza dos coeficientes.
+
+## Gauss–Markov
+
+Sob as hipóteses usuais, o estimador de mínimos quadrados é BLUE:
+
+> **Best Linear Unbiased Estimator**
+
+Isto é, possui menor variância dentro da classe de estimadores lineares não viesados.<br><br>
+
+::: {.callout-note appearance="simple"}
+Essa propriedade é sobre estimação dos coeficientes — não garante automaticamente melhor desempenho preditivo fora da amostra.
+:::
+
+# 5. Inferência clássica
+
+## Estimando a variância do erro
+
+$$
+\widehat\sigma^2
+=
+\frac{
+\sum_i e_i^2
+}{
+n-p-1
+}
+$$
+
+Sob normalidade dos erros, podemos construir testes e intervalos de confiança para os coeficientes.
+
+## Erro-padrão de um coeficiente
+
+A matriz
+
+$$
+\widehat\sigma^2
+(\mathbf X^\top\mathbf X)^{-1}
+$$
+
+fornece as variâncias estimadas dos coeficientes.
+
+Para $\beta_j$:
+
+$$
+SE(\widehat\beta_j)
+=
+\sqrt{
+\widehat{\operatorname{Var}}(\widehat\beta_j)
+}
+$$
+
+## Teste t
+
+Para
+
+$$
+H_0:\beta_j=0,
+$$
+
+utilizamos
+
+$$
+t
+=
+\frac{
+\widehat\beta_j
+}{
+SE(\widehat\beta_j)
+}
+$$
+
+::: {.callout-warning appearance="simple"}
+“Estatisticamente significativo” e “útil para predição” são perguntas diferentes.
+:::
+
+# 6. Intervalo de confiança × intervalo de predição
+
+## Média condicional
+
+Para um ponto $x_0$, podemos estimar
+
+$$
+E(Y\mid X=x_0)
+$$
+
+O intervalo de confiança representa incerteza sobre a **média condicional**.
+
+## Nova observação
+
+Para prever um novo $Y_0$ em $x_0$, precisamos considerar também o ruído individual:
+
+$$
+Y_0=r(x_0)+\varepsilon_0
+$$
+
+Por isso,
+
+$$
+\boxed{
+\text{intervalo de predição}
+>
+\text{intervalo para a média}
+}
+$$
+
+em termos de largura.
+
+# 7. Diagnóstico clássico
+
+## O que os resíduos podem revelar?
+
+Gráficos de resíduos podem indicar:
+
+- não linearidade;
+- variância não constante;
+- observações atípicas;
+- pontos influentes;
+- dependência.
+
+Esses diagnósticos investigam se a estrutura escolhida é compatível com os dados.
+
+## Ponto de partida
+
+Continuaremos usando o exemplo
+
+$$
+\text{PIB per capita}\longrightarrow\text{Expectativa de vida}.
+$$
+
+Os dados foram simulados segundo
+
+$$
+Y=40+15\log(X/1000)+\varepsilon,
+\qquad \varepsilon\sim N(0,3^2).
+$$
+
+
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+
+if (!exists("df_pib")) {
+  set.seed(1)
+  x <- runif(200, 1000, 60000)
+  y <- 40 + 15*log(x/1000) + rnorm(200, 0, 3)
+  df_pib <- data.frame(pib=x, vida=y)
+}
+
+modelo_linear <- lm(vida ~ pib, data=df_pib)
+
+tema_diag <- theme_minimal(base_size=16) +
+  theme(panel.grid.minor=element_blank(),
+        plot.title=element_text(face="bold"),
+        legend.position="top")
+```
+
+
+## Não linearidade
+
+### O que esperamos dos resíduos?
+
+Se a estrutura média estiver adequadamente representada,
+
+$$
+E(e\mid X=x)\approx0
+$$
+Um padrão sistemático sugere que parte da relação entre $X$ e $Y$ ainda não foi aprendida.
+
+
+## Diagnóstico: não linearidade
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+dados_diag <- df_pib |>
+  mutate(ajustado=fitted(modelo_linear),
+         residuo=residuals(modelo_linear))
+
+ggplot(dados_diag, aes(ajustado,residuo)) +
+  geom_point(color="#2C7FB8",alpha=.55,size=2) +
+  geom_hline(yintercept=0,linetype=2,color="gray40") +
+  geom_smooth(se=FALSE,color="#D7301F",linewidth=1.3) +
+  tema_diag + theme(legend.position="none") +
+  labs(title="Diagnóstico: não linearidade",
+       subtitle="A curva vermelha revela estrutura sistemática nos resíduos",
+       x="Valor ajustado",y="Resíduo")
+```
+
+$$
+\boxed{E(e\mid X)\neq0\Rightarrow\text{a forma funcional pode ser inadequada}}
+$$
+
+
+
+## Modelo e resíduos lado a lado
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| fig-width: 6
+#| fig-height: 4.1
+#| out-width: 100%
+
+ggplot(df_pib,aes(pib,vida)) +
+  geom_point(color="#2C7FB8",alpha=.45) +
+  geom_smooth(method="lm",se=FALSE,color="#D7301F",linewidth=1.2) +
+  tema_diag + theme(legend.position="none") +
+  labs(title="Modelo linear",x="PIB",y="Expectativa de vida")
+```
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| fig-width: 6
+#| fig-height: 4.1
+#| out-width: 100%
+
+ggplot(dados_diag,aes(ajustado,residuo)) +
+  geom_point(color="#2C7FB8",alpha=.45) +
+  geom_hline(yintercept=0,linetype=2) +
+  geom_smooth(se=FALSE,color="#D7301F",linewidth=1.2) +
+  tema_diag + theme(legend.position="none") +
+  labs(title="Resíduos",x="Valor ajustado",y="Resíduo")
+```
+:::
+::::
+
+## Variância não constante
+
+### Homocedasticidade × heterocedasticidade
+
+No modelo clássico, frequentemente supomos
+
+$$
+\operatorname{Var}(\varepsilon\mid X=x)=\sigma^2
+$$
+
+Na **heterocedasticidade**, a dispersão dos erros depende de $x$.
+
+Para isolar o fenômeno, manteremos a mesma relação média e faremos apenas a variância aumentar com o PIB.
+
+## Diagnóstico: formato de funil
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+set.seed(20)
+
+df_hetero <- df_pib |>
+  mutate(
+    media_verdadeira=40+15*log(pib/1000),
+    sigma=1.5+7*(pib-min(pib))/(max(pib)-min(pib)),
+    vida_hetero=media_verdadeira+rnorm(n(),0,sigma)
+  )
+
+fit_hetero <- lm(vida_hetero ~ log(pib),data=df_hetero)
+
+df_hetero <- df_hetero |>
+  mutate(ajustado=fitted(fit_hetero),
+         residuo=residuals(fit_hetero))
+
+ggplot(df_hetero,aes(ajustado,residuo)) +
+  geom_point(color="#2C7FB8",alpha=.55,size=2) +
+  geom_hline(yintercept=0,linetype=2,color="gray40") +
+  tema_diag + theme(legend.position="none") +
+  labs(title="Diagnóstico: variância não constante",
+       subtitle="A dispersão dos resíduos aumenta com o valor ajustado",
+       x="Valor ajustado",y="Resíduo")
+```
+
+$$
+\boxed{\operatorname{Var}(\varepsilon\mid X=x)\neq\sigma^2}
+$$
+
+## Não linearidade e heterocedasticidade são diferentes
+
+:::: {.columns}
+::: {.column width="48%"}
+### Não linearidade
+
+O problema está em
+
+$$
+E(Y\mid X=x)
+$$
+
+A função média foi mal especificada.
+:::
+
+::: {.column width="48%"}
+### Heterocedasticidade
+
+O problema está em
+
+$$
+\operatorname{Var}(Y\mid X=x)
+$$
+
+
+
+A dispersão muda ao longo de $X$.
+:::
+::::
+
+
+
+## Observações atípicas
+
+### O que é um outlier em resposta?
+
+Uma observação pode apresentar um valor de $Y$ muito incomum para seu valor de $X$.
+
+No gráfico de resíduos isso aparece como
+
+$$
+|e_i|\ \text{muito grande}.
+$$
+
+Isso não significa, necessariamente, que a observação altere fortemente o modelo.
+
+## Diagnóstico: observação atípica
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+df_outlier <- df_pib
+id_outlier <- which.min(abs(df_outlier$pib-median(df_outlier$pib)))
+df_outlier$vida[id_outlier] <- df_outlier$vida[id_outlier]-25
+
+fit_outlier <- lm(vida ~ log(pib),data=df_outlier)
+
+df_outlier <- df_outlier |>
+  mutate(ajustado=fitted(fit_outlier),
+         residuo=residuals(fit_outlier),
+         tipo=if_else(row_number()==id_outlier,"Atípica","Demais"))
+
+ggplot(df_outlier,aes(ajustado,residuo)) +
+  geom_point(aes(color=tipo),size=2.4,alpha=.75) +
+  geom_hline(yintercept=0,linetype=2,color="gray40") +
+  scale_color_manual(values=c("Demais"="gray55","Atípica"="#D7301F")) +
+  tema_diag +
+  labs(title="Diagnóstico: observação atípica",
+       subtitle="Grande resíduo, embora o PIB esteja em uma região comum",
+       x="Valor ajustado",y="Resíduo",color=NULL)
+```
+
+$$
+\boxed{\text{outlier}\neq\text{ponto influente}}
+$$
+
+
+
+
+## Alavancagem e influência
+
+### Alta alavancagem
+
+Na regressão simples, uma observação tem alta alavancagem quando seu valor de $X$ está muito distante da região onde se concentram os demais valores.
+
+Mas:
+
+$$
+\boxed{\text{alta alavancagem}\not\Rightarrow\text{influência}}
+$$
+
+A pergunta sobre influência é: **quanto o ajuste muda por causa daquela observação?**
+
+## Diagnóstico: ponto influente
+
+```{r}
+#| fig-width: 8.5
+#| fig-height: 4.7
+#| out-width: 80%
+#| fig-align: center
+
+novo <- data.frame(pib=110000,vida=45)
+df_influente <- bind_rows(df_pib,novo)
+df_influente$tipo <- c(rep("Dados originais",nrow(df_pib)),"Ponto influente")
+
+fit_sem <- lm(vida ~ pib,data=df_pib)
+fit_com <- lm(vida ~ pib,data=df_influente)
+
+grid_inf <- data.frame(
+  pib=seq(min(df_influente$pib),max(df_influente$pib),length.out=400)
+)
+grid_inf$sem <- predict(fit_sem,newdata=grid_inf)
+grid_inf$com <- predict(fit_com,newdata=grid_inf)
+
+ggplot(df_influente,aes(pib,vida)) +
+  geom_point(aes(color=tipo),size=2.3,alpha=.7) +
+  geom_line(data=grid_inf,aes(pib,sem),inherit.aes=FALSE,
+            color="#2C7FB8",linewidth=1.2,linetype=2) +
+  geom_line(data=grid_inf,aes(pib,com),inherit.aes=FALSE,
+            color="#D7301F",linewidth=1.3) +
+  scale_color_manual(values=c("Dados originais"="gray55",
+                              "Ponto influente"="#D7301F")) +
+  tema_diag +
+  labs(title="Diagnóstico: ponto influente",
+       subtitle="Azul tracejado: sem o ponto | Vermelho: com o ponto",
+       x="PIB per capita",y="Expectativa de vida",color=NULL)
+```
+
+
+
+## Três conceitos diferentes
+
+| Conceito | Característica principal |
+|---|---|
+| **Outlier** | resposta incomum dado $X$ |
+| **Alta alavancagem** | valor de $X$ incomum |
+| **Influente** | altera sensivelmente o modelo ajustado |
+
+$$
+\boxed{\text{outlier}\neq\text{alta alavancagem}\neq\text{influência}}
+$$
+
+
+## Dependência
+
+### Independência dos erros
+
+Em muitas formulações supomos
+
+$$
+\operatorname{Cov}(\varepsilon_i,\varepsilon_j)=0,\qquad i\neq j.
+$$
+
+Isso pode falhar em séries temporais, dados espaciais, medidas repetidas ou dados agrupados.
+
+Para ilustrar, manteremos a mesma relação PIB–expectativa de vida e introduziremos autocorrelação nos erros.
+
+## Erros autocorrelacionados
+
+Geraremos
+
+$$
+\varepsilon_t=0.85\varepsilon_{t-1}+u_t
+$$
+
+Assim, erros próximos tendem a apresentar comportamento semelhante.
+
+O gráfico apropriado agora é o resíduo **na ordem das observações**.
+
+## Diagnóstico: dependência
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+set.seed(30)
+n <- nrow(df_pib)
+erro_dep <- numeric(n)
+erro_dep[1] <- rnorm(1,0,3)
+
+for(i in 2:n){
+  erro_dep[i] <- .85*erro_dep[i-1]+rnorm(1,0,1.5)
+}
+
+df_dep <- df_pib |>
+  mutate(ordem=1:n,
+         vida_dep=40+15*log(pib/1000)+erro_dep)
+
+fit_dep <- lm(vida_dep ~ log(pib),data=df_dep)
+df_dep$residuo <- residuals(fit_dep)
+
+ggplot(df_dep,aes(ordem,residuo)) +
+  geom_line(color="#2C7FB8",linewidth=.9) +
+  geom_point(color="#2C7FB8",size=1.5) +
+  geom_hline(yintercept=0,linetype=2,color="gray40") +
+  tema_diag + theme(legend.position="none") +
+  labs(title="Diagnóstico: dependência",
+       subtitle="Sequências de resíduos positivos e negativos não parecem aleatórias",
+       x="Ordem das observações",y="Resíduo")
+```
+
+$$
+\boxed{\operatorname{Cov}(\varepsilon_i,\varepsilon_j)\neq0}
+$$
+
+
+
+
+## Resumindo
+
+### Cinco padrões, cinco perguntas
+
+| Padrão observado | Pergunta diagnóstica |
+|---|---|
+| **Curvatura** | a média foi modelada adequadamente? |
+| **Funil** | a variância é aproximadamente constante? |
+| **Resíduo extremo** | há uma resposta atípica? |
+| **Mudança forte no ajuste** | alguma observação é influente? |
+| **Sequências nos resíduos** | os erros são independentes? |
+
+## Diagnóstico × generalização
+
+:::: {.columns}
+::: {.column width="48%"}
+### Diagnóstico
+
+> **Como** o modelo está errando?
+
+Procura estrutura nos resíduos e observações com comportamento incomum.
+:::
+
+::: {.column width="48%"}
+### Generalização
+
+> **Quanto** o modelo erra fora da amostra?
+
+Usa validação/teste para estimar o desempenho preditivo.
+:::
+::::
+
+## Diagnóstico × generalização
+
+O gráfico de resíduos compara o comportamento observado com o que esperaríamos se o modelo fosse adequado.
+
+$$
+\boxed{
+\text{padrão nos resíduos}
+\Rightarrow
+\text{estrutura ainda não explicada pelo modelo}
+}
+$$
+
+Mas ausência de padrão residual não substitui avaliação fora da amostra.
+
+$$
+\boxed{
+\text{diagnóstico adequado}
++
+\text{boa generalização}
+}
+$$
+
+
+
+
+
+# 8. Multicolinearidade
+
+## Covariáveis fortemente relacionadas
+
+Quando colunas de $\mathbf X$ são quase linearmente dependentes,
+
+$$
+\mathbf X^\top\mathbf X
+$$
+
+fica mal condicionada.
+
+Consequências possíveis:
+
+- coeficientes instáveis;
+- erros-padrão elevados;
+- grande sensibilidade a pequenas mudanças na amostra.
+
+## Por que isso será importante depois?
+
+A regularização modifica o problema de otimização.
+
+No Ridge:
+
+$$
+\min_{\boldsymbol\beta}
+\left\{
+RSS+
+\lambda\sum_{j=1}^p\beta_j^2
+\right\}
+$$
+
+Esse tema será retomado no momento apropriado da disciplina.
+
+# 9. Fechamento
+
+## Duas perspectivas complementares
+
+:::: {.columns}
+::: {.column width="48%"}
+### Regressão clássica
+
+Pergunta central:
+
+> O que podemos inferir sobre $\boldsymbol\beta$?
+
+Ênfase em:
+
+- estimadores;
+- erros-padrão;
+- testes;
+- intervalos.
+:::
+
+::: {.column width="48%"}
+### Aprendizado estatístico
+
+Pergunta central:
+
+> Quão bem $\widehat g$ generaliza?
+
+Ênfase em:
+
+- perda;
+- risco;
+- validação;
+- predição.
+:::
+::::
+
+## Ideia final
+
+As duas perspectivas não são concorrentes.
+
+$$
+\boxed{
+\text{inferência}
+\quad\text{e}\quad
+\text{predição}
+}
+$$
+
+respondem a perguntas diferentes sobre o mesmo modelo.

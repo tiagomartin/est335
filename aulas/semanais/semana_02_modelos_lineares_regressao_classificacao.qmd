@@ -1,0 +1,755 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Modelos Lineares: Regressão e Classificação</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 2"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+
+set.seed(123)
+pib <- runif(200, 1000, 60000)
+vida <- 40 + 15*log(pib/1000) + rnorm(200, 0, 3)
+df_pib <- data.frame(pib = pib, vida = vida)
+```
+
+
+
+## Onde estamos?
+
+Na Semana 1, formulamos o problema de aprendizado de forma geral. Para regressão,
+
+$$
+\mathcal D_n
+\longrightarrow
+\widehat g
+\approx
+r(x)=E(Y\mid X=x)
+$$
+
+Agora precisamos escolher uma **classe de funções** para aproximar $r(x)$.<br><br>
+
+::: {.callout-note appearance="simple"}
+Começaremos pela classe mais simples e interpretável: **modelos lineares**.
+:::
+
+
+# Modelo e treinamento
+
+## A pergunta central
+
+Temos uma função de regressão desconhecida:
+
+$$
+r(x)=E(Y\mid X=x)
+$$
+
+E se aproximarmos essa função por
+
+$$
+\boxed{g(x)=\beta_0+\beta_1x?}
+$$
+
+Essa escolha define uma **classe de modelos**.
+
+## A classe de modelos lineares
+
+No caso de uma única covariável:
+
+$$
+\mathcal G_{\text{linear}}
+=
+\left\{
+g(x)=\beta_0+\beta_1x:
+\beta_0,\beta_1\in\mathbb R
+\right\}
+$$
+
+Os dados não escolhem a classe.
+
+**Nós escolhemos a classe; o treinamento escolhe os parâmetros.**
+
+## Do pipeline ao modelo linear
+
+$$
+\boxed{\text{Dados}}
+\rightarrow
+\boxed{\text{Classe linear}}
+\rightarrow
+\boxed{\text{Treinamento}}
+\rightarrow
+\boxed{\widehat g(x)}
+$$
+
+Para a classe linear, treinar significa encontrar
+
+$$
+\widehat\beta_0,\widehat\beta_1
+$$
+
+## Exemplo condutor: PIB × expectativa de vida
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 78%
+#| fig-align: center
+
+ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color = "#2C7FB8", alpha = .55, size = 2) +
+  theme_minimal(base_size = 16) +
+  labs(
+    x = "PIB per capita",
+    y = "Expectativa de vida"
+  )
+```
+
+## Uma reta candidata
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 78%
+#| fig-align: center
+
+ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color = "#2C7FB8", alpha = .45, size = 2) +
+  geom_abline(intercept = 55, slope = .00035,
+              color = "#D7301F", linewidth = 1.4) +
+  theme_minimal(base_size = 16) +
+  labs(x = "PIB per capita", y = "Expectativa de vida")
+```
+
+Pergunta:
+
+$$
+\boxed{\text{Como escolher a melhor reta?}}
+$$
+
+## Erro de uma observação
+
+Para a observação $i$:
+
+$$
+\widehat y_i=g(x_i)
+$$
+
+e o erro observado é
+
+$$
+e_i=y_i-\widehat y_i
+$$
+
+O treinamento precisa transformar esses erros em um único critério.
+
+## Perda quadrática
+
+Sabemos que:
+
+$$
+L(y,\widehat y)=(y-\widehat y)^2
+$$
+
+Para toda a amostra:
+
+$$
+RSS(\beta_0,\beta_1)
+=
+\sum_{i=1}^n
+\left[
+y_i-(\beta_0+\beta_1x_i)
+\right]^2
+$$
+
+## Mínimos quadrados
+
+O treinamento resolve
+
+$$
+\boxed{
+(\widehat\beta_0,\widehat\beta_1)
+=
+\arg\min_{\beta_0,\beta_1}
+\sum_{i=1}^{n}
+\left[
+y_i-(\beta_0+\beta_1x_i)
+\right]^2
+}
+$$
+
+Não estamos apenas “traçando uma reta”.
+
+Estamos resolvendo um **problema de otimização**.
+
+## Várias retas, diferentes perdas
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4.7
+#| out-width: 82%
+#| fig-align: center
+
+amostra_plot <- df_pib |> slice_sample(n = 70)
+
+ggplot(amostra_plot, aes(pib, vida)) +
+  geom_point(color = "gray45", alpha = .6) +
+  geom_abline(intercept = 52, slope = .00030, linewidth = 1.1, color = "#FDAE61") +
+  geom_abline(intercept = 58, slope = .00028, linewidth = 1.1, color = "#2C7FB8") +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.4, color = "#D7301F") +
+  theme_minimal(base_size = 16) +
+  labs(x = "PIB per capita", y = "Expectativa de vida")
+```
+
+A reta de MQO é aquela que minimiza a soma dos erros quadráticos.
+
+## Ajustando o modelo em R
+
+```{r}
+#| echo: true
+modelo_linear <- lm(
+  vida ~ pib,
+  data = df_pib
+)
+
+coef(modelo_linear)
+```
+
+O algoritmo estima os parâmetros a partir da amostra.
+
+## Modelo estimado
+
+Escrevemos
+
+$$
+\widehat g(x)
+=
+\widehat\beta_0+\widehat\beta_1x
+$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 78%
+#| fig-align: center
+
+ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color = "#2C7FB8", alpha = .5, size = 2) +
+  geom_smooth(method = "lm", se = FALSE,
+              color = "#D7301F", linewidth = 1.4) +
+  theme_minimal(base_size = 16) +
+  labs(x = "PIB per capita", y = "Expectativa de vida")
+```
+
+## Interpretando os coeficientes
+
+Para
+
+$$
+\widehat g(x)=\widehat\beta_0+\widehat\beta_1x,
+$$
+
+- $\widehat\beta_0$: valor previsto quando $x=0$;
+- $\widehat\beta_1$: variação média prevista em $Y$ para uma unidade adicional de $X$.<br><br>
+
+::: {.callout-warning appearance="simple"}
+Uma interpretação algébrica pode não ter interpretação substantiva útil fora da região observada dos dados.
+:::
+
+## Predição
+
+Para uma nova observação $x_0$:
+
+$$
+\widehat y_0
+=
+\widehat g(x_0)
+=
+\widehat\beta_0+\widehat\beta_1x_0
+$$
+
+O modelo transforma **covariáveis** em **predições**.
+
+## Valores ajustados e resíduos
+
+$$
+\widehat y_i=\widehat g(x_i)
+$$
+
+$$
+e_i=y_i-\widehat y_i
+$$
+
+Logo,
+
+$$
+\boxed{y_i=\widehat y_i+e_i}
+$$
+
+## Visualizando os resíduos
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.7
+#| out-width: 78%
+#| fig-align: center
+
+df_res <- df_pib |>
+  mutate(
+    ajustado = fitted(modelo_linear),
+    residuo = residuals(modelo_linear)
+  )
+
+ggplot(df_res, aes(pib, vida)) +
+  geom_segment(aes(xend = pib, yend = ajustado),
+               color = "gray65", linewidth = .6) +
+  geom_point(color = "#2C7FB8", alpha = .55, size = 2) +
+  geom_line(aes(y = ajustado),
+            color = "#D7301F", linewidth = 1.3) +
+  theme_minimal(base_size = 16) +
+  labs(x = "PIB per capita", y = "Expectativa de vida")
+```
+
+As linhas verticais representam os resíduos.
+
+## Regressão linear múltipla
+
+Com $p$ covariáveis:
+
+$$
+g(\mathbf x)
+=
+\beta_0+
+\beta_1x_1+\cdots+\beta_px_p
+$$
+
+ou
+
+$$
+g(\mathbf x)
+=
+\beta_0+\sum_{j=1}^{p}\beta_jx_j
+$$
+
+A ideia não muda: escolhemos os coeficientes que minimizam a perda na amostra.
+
+## Forma matricial
+
+$$
+\mathbf y
+=
+\mathbf X\boldsymbol\beta+\boldsymbol\varepsilon
+$$
+
+A solução de mínimos quadrados, quando existe de forma única, é
+
+$$
+\widehat{\boldsymbol\beta}
+=
+(\mathbf X^\top\mathbf X)^{-1}
+\mathbf X^\top\mathbf y
+$$<br><br>
+
+::: {.callout-note appearance="simple"}
+A derivação completa fica no **material complementar da Semana 2**.
+:::
+
+## Síntese
+
+$$
+\boxed{
+\text{Classe linear}
++
+\text{perda quadrática}
++
+\text{otimização}
+=
+\text{MQO}
+}
+$$
+
+O resultado do treinamento é uma função
+
+$$
+\widehat g(x)
+$$
+
+que poderá ser utilizada para novas observações.
+
+# Predição e generalização
+
+## A pergunta muda
+
+No treinamento perguntamos:
+
+> Qual reta minimiza o erro nos dados observados?
+
+Agora perguntamos:
+
+> **Essa reta funcionará bem em dados que ainda não vimos?**
+
+Essa é uma pergunta sobre **generalização**.
+
+## Erro quadrático médio de treinamento
+
+$$
+MSE_{\text{treino}}
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+(y_i-\widehat y_i)^2
+$$
+
+E
+
+$$
+RMSE_{\text{treino}}
+=
+\sqrt{MSE_{\text{treino}}}
+$$
+
+Quanto menor, melhor o ajuste **à amostra utilizada no treinamento**.
+
+## RMSE: interpretação
+
+$$
+RMSE
+=
+\sqrt{
+\frac1n
+\sum_{i=1}^{n}
+(y_i-\widehat y_i)^2
+}
+$$
+
+- mesma unidade de $Y$;
+- penaliza mais fortemente erros grandes;
+- pode ser calculado em treino, validação ou teste.
+
+::: {.callout-warning appearance="simple"}
+Sempre pergunte: **RMSE calculado em qual conjunto de dados?**
+:::
+
+## O coeficiente de determinação
+
+$$
+R^2
+=
+1-
+\frac{
+\sum_i(y_i-\widehat y_i)^2
+}{
+\sum_i(y_i-\bar y)^2
+}
+$$
+
+Interpretação usual: fração da variabilidade de $Y$ explicada pelo modelo **na amostra avaliada**.
+
+## $R^2$ não é generalização
+
+Um modelo pode apresentar
+
+$$
+R^2_{\text{treino}}\uparrow
+$$
+
+simplesmente por se tornar mais flexível.
+
+Portanto,
+
+$$
+\boxed{
+R^2\text{ alto no treino}
+\not\Rightarrow
+\text{boa predição fora da amostra}
+}
+$$
+
+## O modelo linear parece adequado?
+
+Voltemos aos resíduos.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 78%
+#| fig-align: center
+
+ggplot(df_res, aes(ajustado, residuo)) +
+  geom_point(color = "#2C7FB8", alpha = .55, size = 2) +
+  geom_hline(yintercept = 0, linetype = 2, color = "gray40") +
+  geom_smooth(se = FALSE, color = "#D7301F", linewidth = 1.2) +
+  theme_minimal(base_size = 16) +
+  labs(
+    x = "Valor ajustado",
+    y = "Resíduo"
+  )
+```
+
+## Um padrão nos resíduos
+
+Se o modelo capturasse adequadamente a estrutura média,
+
+$$
+E(e\mid X=x)\approx 0
+$$
+
+Um padrão sistemático sugere que
+
+$$
+r(x)
+\not\approx
+\beta_0+\beta_1x
+$$
+
+O problema pode estar na **classe de modelos escolhida**.
+
+## Linearidade é uma hipótese sobre a função
+
+A regressão linear não afirma que os pontos precisam formar uma reta perfeita.
+
+Ela supõe que a média condicional pode ser representada por
+
+$$
+E(Y\mid X=x)
+=
+\beta_0+\beta_1x
+$$
+
+O ruído continua existindo ao redor dessa função.
+
+## Transformação simples
+
+Como os dados foram gerados com relação aproximadamente logarítmica, podemos considerar
+
+$$
+g(x)
+=
+\beta_0+\beta_1\log(x)
+$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 78%
+#| fig-align: center
+
+modelo_log <- lm(vida ~ log(pib), data = df_pib)
+
+grid_log <- data.frame(
+  pib = seq(min(df_pib$pib), max(df_pib$pib), length.out = 400)
+)
+grid_log$pred <- predict(modelo_log, newdata = grid_log)
+
+ggplot(df_pib, aes(pib, vida)) +
+  geom_point(color = "#2C7FB8", alpha = .5, size = 2) +
+  geom_line(
+    data = grid_log,
+    aes(pib, pred),
+    color = "#D7301F",
+    linewidth = 1.4
+  ) +
+  theme_minimal(base_size = 16) +
+  labs(x = "PIB per capita", y = "Expectativa de vida")
+```
+
+## Ainda é um modelo linear?
+
+Sim! Ele é linear **nos parâmetros**:
+
+$$
+g(x)
+=
+\beta_0+\beta_1\log(x)
+$$
+
+A covariável foi transformada, mas
+
+$$
+\beta_0,\beta_1
+$$
+
+continuam entrando linearmente no modelo.
+
+## Comparando duas classes
+
+:::: {.columns}
+::: {.column width="48%"}
+### Linear em $x$
+
+$$
+g_1(x)=\beta_0+\beta_1x
+$$
+
+Mais simples, porém incapaz de representar a curvatura observada.
+:::
+
+::: {.column width="48%"}
+### Linear em $\log(x)$
+
+$$
+g_2(x)=\beta_0+\beta_1\log(x)
+$$
+
+Introduz uma transformação escolhida pelo analista.
+:::
+::::
+
+## Mas e se não conhecermos a transformação?
+
+Podemos ampliar sistematicamente a classe:
+
+$$
+g(x)
+=
+\beta_0+
+\beta_1x+
+\beta_2x^2+
+\cdots+
+\beta_px^p
+$$
+
+Agora surge uma nova questão:
+
+$$
+\boxed{\text{Qual grau }p\text{ devemos escolher?}}
+$$
+
+# Classificação probabilística
+
+## Probabilidade posterior
+$$
+\boxed{\eta(\mathbf x)=P(Y=1\mid\mathbf X=\mathbf x)}
+$$
+
+# Regressão logística como plug-in
+
+## Modelando a probabilidade
+
+A regressão logística assume
+
+$$
+\boxed{
+\eta(\mathbf x)
+=
+\frac{
+\exp(\beta_0+\mathbf x^t\boldsymbol\beta)
+}{
+1+\exp(\beta_0+\mathbf x^t\boldsymbol\beta)
+}
+}
+$$
+
+ou
+
+$$
+\boxed{
+\operatorname{logit}\{\eta(\mathbf x)\}
+=
+\beta_0+\mathbf x^t\boldsymbol\beta
+}
+$$
+
+---
+
+## Depois do ajuste
+
+Estimamos
+
+$$
+\widehat{\boldsymbol\beta}
+$$
+
+e obtemos
+
+$$
+\widehat\eta(\mathbf x)
+=
+\frac{
+\exp(\widehat\beta_0+\mathbf x^t\widehat{\boldsymbol\beta})
+}{
+1+\exp(\widehat\beta_0+\mathbf x^t\widehat{\boldsymbol\beta})
+}
+$$
+
+A classificação é então produzida por um cutoff
+
+---
+
+## Fronteira de decisão logística
+
+Com cutoff $0.5$:
+
+$$
+\widehat\eta(\mathbf x)>0.5
+$$
+
+é equivalente a
+
+$$
+\boxed{
+\widehat\beta_0+
+\mathbf x^t\widehat{\boldsymbol\beta}
+>
+0
+}
+$$
+
+Portanto, a regressão logística produz uma fronteira linear no espaço original das covariáveis
+
+---
+
+## O ponto principal nesta disciplina
+
+Não precisamos reestudar toda a teoria de modelos lineares generalizados
+
+Aqui, regressão logística é importante porque ilustra claramente:
+
+$$
+\boxed{
+\text{estimar probabilidade}
+\rightarrow
+\text{aplicar regra de decisão}
+}
+$$
+
+## Regressão e classificação lado a lado
+
+| Regressão | Classificação |
+|---|---|
+| $E(Y\mid X)=\beta_0+X^t\beta$ | $\operatorname{logit}(\eta)=\beta_0+X^t\beta$ |
+| saída quantitativa | probabilidade |
+
+
+
+## Probabilidade e decisão
+
+
+$$
+\boxed{\widehat g_c(\mathbf x)=I\{\widehat\eta(\mathbf x)>c\}}
+$$
+
+

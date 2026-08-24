@@ -1,0 +1,358 @@
+---
+title: "Parte I : Regressão"
+subtitle: "<span class='custom-subtitle'>Material complementar: Funções de Base e Splines</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "Material complementar — EST335"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+# Material complementar
+
+## Objetivo
+
+Aprofundar a estrutura matemática que une:
+
+- regressão polinomial;
+- splines;
+- smoothing splines;
+- métodos baseados em funções de base.
+
+# 1. Regressão em funções de base
+
+## Formulação geral
+
+Escolha funções conhecidas
+
+$$
+b_1(x),\ldots,b_K(x)
+$$
+
+Defina
+
+$$
+g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
+$$
+
+## Formulação geral
+
+
+Para os dados, construímos a matriz
+
+$$
+\mathbf B=
+\begin{bmatrix}
+1 & b_1(x_1)&\cdots&b_K(x_1)\\
+\vdots&\vdots&&\vdots\\
+1 & b_1(x_n)&\cdots&b_K(x_n)
+\end{bmatrix}
+$$
+
+## O problema volta a ser MQO
+
+$$
+\widehat{\boldsymbol\beta}
+=
+\arg\min_{\boldsymbol\beta}
+\|\mathbf y-\mathbf B\boldsymbol\beta\|^2
+$$
+
+Se $\mathbf B^\top\mathbf B$ for inversível,
+
+$$
+\widehat{\boldsymbol\beta}
+=
+(\mathbf B^\top\mathbf B)^{-1}\mathbf B^\top\mathbf y
+$$
+
+A não linearidade em $x$ foi incorporada na construção de $\mathbf B$.
+
+# 2. Base polinomial
+
+## Potências brutas
+
+Uma escolha é
+
+$$
+b_j(x)=x^j
+$$
+
+Assim,
+
+$$
+g(x)=\beta_0+\beta_1x+\cdots+\beta_px^p
+$$
+
+Para graus elevados, as colunas
+
+$$
+x,x^2,\ldots,x^p
+$$
+
+podem ser fortemente correlacionadas e numericamente mal condicionadas.
+
+## Polinômios ortogonais
+
+Em R,
+
+```r
+poly(x, degree = p)
+```
+
+usa, por padrão, uma base polinomial ortogonal.
+
+Já
+
+```r
+poly(x, degree = p, raw = TRUE)
+```
+
+usa diretamente
+
+$$
+x,x^2,\ldots,x^d
+$$
+
+As duas bases geram o mesmo espaço de funções, mas os coeficientes têm representações diferentes.
+
+# 3. Splines truncados
+
+## Base linear por partes
+
+Com nó $\xi$:
+
+$$
+(x-\xi)_+=\max(x-\xi,0)
+$$
+
+Então
+
+$$
+g(x)=
+\beta_0+\beta_1x+\gamma(x-\xi)_+
+$$
+
+Antes de $\xi$:
+
+$$
+g(x)=\beta_0+\beta_1x
+$$
+
+Depois de $\xi$:
+
+$$
+g(x)=
+(\beta_0-\gamma\xi)+(\beta_1+\gamma)x
+$$
+
+## Continuidade
+
+Em $x=\xi$, as duas expressões coincidem.
+
+Logo, o modelo é contínuo, mas sua inclinação pode mudar no nó.
+
+Essa é a ideia mais simples de **flexibilidade local**.
+
+# 4. Splines cúbicos
+
+## Polinômios por partes
+
+Um spline cúbico usa polinômios de grau 3 em intervalos separados por nós.
+
+Nas junções impomos continuidade de
+
+$$
+g(x),\quad g'(x),\quad g''(x)
+$$
+
+Isso evita mudanças visuais abruptas.
+
+## Graus de liberdade
+
+A flexibilidade pode ser descrita por graus de liberdade.
+
+Em termos intuitivos:
+
+$$
+df\uparrow
+\quad\Rightarrow\quad
+\text{mais flexibilidade}
+$$
+
+Pacotes estatísticos frequentemente permitem especificar `df` em vez de escolher manualmente todos os nós.
+
+# 5. Natural splines
+
+## Problema nas extremidades
+
+Splines cúbicos comuns podem apresentar grande variabilidade fora da região central.
+
+Um **natural cubic spline** adiciona restrições nas extremidades, tornando a função linear além dos nós de fronteira.
+
+Isso reduz a instabilidade nas caudas.
+
+## Em R
+
+```r
+library(splines)
+
+lm(
+  y ~ ns(x, df = 5),
+  data = dados
+)
+```
+
+A função `ns()` constrói uma base de spline cúbico natural.
+
+# 6. Smoothing splines
+
+## Problema penalizado
+
+O smoothing spline minimiza
+
+$$
+\sum_{i=1}^n
+[y_i-g(x_i)]^2
++
+\lambda
+\int [g''(t)]^2dt
+$$
+
+O primeiro termo mede fidelidade aos dados.
+
+O segundo mede rugosidade.
+
+## Casos-limite
+
+Quando
+
+$$
+\lambda\to0,
+$$
+
+a prioridade é ajustar os dados.
+
+Quando
+
+$$
+\lambda\to\infty,
+$$
+
+curvatura é fortemente penalizada e a solução tende a uma reta.
+
+Assim, $\lambda$ funciona como um **controle contínuo de complexidade**.
+
+# 7. Graus de liberdade efetivos
+
+## Flexibilidade sem contar parâmetros literalmente
+
+Em suavizadores penalizados, a complexidade é frequentemente descrita por
+
+$$
+df_{\text{efetivos}}
+$$
+
+Em termos intuitivos,
+
+$$
+df_{\text{efetivos}}\uparrow
+\Rightarrow
+\text{curva mais adaptável aos dados}
+$$
+
+Isso será útil posteriormente ao comparar modelos penalizados.
+
+# 8. LOESS
+
+## Regressão local
+
+Para cada $x_0$, o LOESS resolve aproximadamente um problema ponderado:
+
+$$
+\min_{\boldsymbol\beta}
+\sum_{i=1}^{n}
+w_i(x_0)
+\left[
+y_i-g(x_i;\boldsymbol\beta)
+\right]^2
+$$
+
+Os pesos diminuem com a distância entre $x_i$ e $x_0$.
+
+## Span
+
+O `span` determina a fração aproximada dos dados usada em cada vizinhança.
+
+$$
+span\downarrow
+\Rightarrow
+\text{menor vizinhança}
+\Rightarrow
+\text{maior flexibilidade}
+$$
+
+$$
+span\uparrow
+\Rightarrow
+\text{maior vizinhança}
+\Rightarrow
+\text{maior suavização}
+$$
+
+# 9. Comparação conceitual
+
+## Global × local
+
+| Método | Natureza |
+|---|---|
+| Polinômio | global |
+| Spline de regressão | local por regiões |
+| Smoothing spline | local + penalização |
+| LOESS | regressões locais móveis |
+
+O objetivo comum é estimar
+
+$$
+r(x)=E(Y\mid X=x)
+$$
+
+sem impor necessariamente uma reta.
+
+# 10. Fechamento
+
+## A ideia unificadora
+
+Muitos modelos podem ser vistos como
+
+$$
+\boxed{
+\text{representação dos dados}
++
+\text{ajuste}
++
+\text{controle de complexidade}
+}
+$$
+
+Na Semana 3, mudamos principalmente a **representação de $X$**.
+
+Na próxima etapa, controlaremos a complexidade também por **penalização dos coeficientes**.

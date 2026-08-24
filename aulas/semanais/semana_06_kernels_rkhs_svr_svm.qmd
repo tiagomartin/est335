@@ -1,0 +1,587 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Kernels, RKHS, SVR e SVM</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 6"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+```
+
+# Métodos baseados em RKHS
+
+## Por que introduzir outra estrutura?
+
+Até agora controlamos flexibilidade por:
+
+- número de termos;
+- número de nós;
+- largura de banda;
+- tamanho da vizinhança.
+
+Outra possibilidade é penalizar diretamente a complexidade de uma função.
+
+## Já vimos regularização funcional
+
+No smoothing spline:
+
+$$
+\sum_{i=1}^{n}(Y_i-f(X_i))^2
++
+\lambda\int[f''(t)]^2dt
+$$
+
+O primeiro termo mede ajuste.
+
+O segundo penaliza rugosidade.
+
+## Do Ridge para funções
+
+Ridge:
+
+$$
+RSS+\lambda\|\boldsymbol\beta\|_2^2
+$$
+
+Em um espaço de funções $\mathcal H$:
+
+$$
+\boxed{
+\sum_i(Y_i-f(X_i))^2
++
+\lambda\|f\|_{\mathcal H}^2
+}
+$$
+
+A filosofia é a mesma: **ajuste + controle de complexidade**.
+
+## O que precisamos saber sobre RKHS?
+
+Para esta disciplina, basta interpretar $\mathcal H$ como um espaço estruturado de funções associado a um kernel
+
+$$
+K(x,x')
+$$
+
+A construção funcional completa não é necessária para utilizar a ideia estatística.
+
+## Atenção: dois usos da palavra kernel
+
+:::: {.columns}
+::: {.column width="47%"}
+### Kernel de suavização
+
+$$
+K\left(\frac{x-x_i}{h}\right)
+$$
+
+Define pesos para observações próximas.
+:::
+
+::: {.column width="47%"}
+### Kernel em RKHS
+
+$$
+K(x,x')
+$$
+
+Representa uma similaridade/produto interno associado a um espaço de funções.
+:::
+::::
+
+$$
+\boxed{\text{Os papéis matemáticos são diferentes}}
+$$
+
+## Exemplos
+
+Kernel linear:
+
+$$
+K(x,x')=x^\top x'
+$$
+
+Kernel polinomial:
+
+$$
+K(x,x')=(c+x^\top x')^d
+$$
+
+Kernel Gaussiano/RBF:
+
+$$
+K(x,x')=
+\exp[-\gamma\|x-x'\|^2]
+$$
+
+## Teorema do Representer
+
+Para uma ampla classe de problemas regularizados em RKHS, a solução possui a forma
+
+$$
+\boxed{
+\widehat f(x)
+=
+\sum_{i=1}^{n}\alpha_iK(x,X_i)
+}
+$$
+
+Não demonstraremos o resultado aqui.
+
+O ponto essencial é que uma busca em um espaço potencialmente infinito-dimensional admite uma representação finita baseada nos dados.
+
+## O papel de $\lambda$
+
+No problema
+
+$$
+\sum_i(Y_i-f(X_i))^2+\lambda\|f\|_{\mathcal H}^2,
+$$
+
+temos:
+
+$$
+\lambda\downarrow
+\Rightarrow
+\text{maior flexibilidade}
+$$
+
+$$
+\lambda\uparrow
+\Rightarrow
+\text{maior regularização}
+$$
+
+Novamente, $\lambda$ deve ser escolhido por validação.
+
+# Support Vector Regression
+
+## Regressão com margem
+$$
+\boxed{L_\varepsilon(y,f(\mathbf x))=\max\{0,|y-f(\mathbf x)|-\varepsilon\}}
+$$
+A regularização controla a complexidade da função
+
+
+
+# Support Vector Machines
+
+## Da SVR para a SVM
+
+Na regressão, a ideia de margem apareceu na **Support Vector Regression**
+
+Agora queremos separar classes
+
+Para simplificar, escreva
+
+$$
+Y\in\{-1,+1\}
+$$
+
+e considere um hiperplano
+
+$$
+\boxed{
+f(\mathbf x)
+=
+\beta_0+\boldsymbol\beta^t\mathbf x
+}
+$$
+
+---
+
+## Regra de classificação
+
+O sinal de $f(\mathbf x)$ determina a classe
+
+$$
+\boxed{
+g(\mathbf x)
+=
+\operatorname{sign}
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x
+\right)
+}
+$$
+
+A fronteira de decisão é
+
+$$
+\boxed{
+\beta_0+\boldsymbol\beta^t\mathbf x=0
+}
+$$
+
+---
+
+## Muitos hiperplanos podem separar os dados
+
+Quando as classes são linearmente separáveis, podem existir vários hiperplanos com erro de treinamento igual a zero
+
+Qual devemos escolher?
+
+$$
+\boxed{\text{o hiperplano com maior margem}}
+$$
+
+---
+
+## Margem
+
+Para a parametrização canônica, as fronteiras da margem são
+
+$$
+\beta_0+\boldsymbol\beta^t\mathbf x=1
+$$
+
+e
+
+$$
+\beta_0+\boldsymbol\beta^t\mathbf x=-1
+$$
+
+A largura total da margem é
+
+$$
+\boxed{
+\frac{2}{\|\boldsymbol\beta\|}
+}
+$$
+
+---
+
+## Margem máxima
+
+Maximizar a margem equivale a minimizar
+
+$$
+\frac12\|\boldsymbol\beta\|^2
+$$
+
+sujeito a
+
+$$
+\boxed{
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+\geq1,
+\qquad i=1,\ldots,n
+}
+$$
+
+---
+
+## Support vectors
+
+Os pontos mais próximos da fronteira satisfazem
+
+$$
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+=
+1
+$$
+
+Essas observações são os **support vectors**
+
+::: {.callout-note appearance="simple"}
+
+A posição da fronteira é determinada principalmente pelas observações próximas à margem
+:::
+
+---
+
+
+![](/images/classificacao/hiperplano_separador.png){fig-align="center"}
+
+
+## E quando não há separação perfeita?
+
+Dados reais frequentemente apresentam:
+
+- sobreposição entre classes
+- ruído
+- observações atípicas
+
+Exigir separação perfeita pode produzir uma fronteira instável
+
+Precisamos permitir violações da margem
+
+# Soft Margin
+
+## Variáveis de folga
+
+Introduzimos $\xi_i\geq0$:
+
+$$
+\boxed{
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+\geq
+1-\xi_i
+}
+$$
+
+---
+
+## Problema de otimização
+
+Uma formulação da SVM é
+
+$$
+\boxed{
+\min_{\beta_0,\boldsymbol\beta,\boldsymbol\xi}
+\left\{
+\frac12\|\boldsymbol\beta\|^2
++
+C\sum_{i=1}^{n}\xi_i
+\right\}
+}
+$$
+
+com
+
+$$
+\xi_i\geq0
+$$
+
+---
+
+## O papel de $C$
+
+### $C$ grande
+
+Violações da margem são fortemente penalizadas
+
+$$
+C\uparrow
+\Rightarrow
+\text{menor tolerância a violações}
+$$
+
+### $C$ pequeno
+
+Aceitamos mais violações em troca de uma margem maior
+
+$$
+C\downarrow
+\Rightarrow
+\text{maior regularização}
+$$
+
+---
+
+
+![](/images/classificacao/soft_margin.png){fig-align="center"}
+
+
+## Hinge loss
+
+A SVM também pode ser vista como minimização de
+
+$$
+\boxed{
+L_{\text{hinge}}(y,f(\mathbf x))
+=
+\max\{0,1-yf(\mathbf x)\}
+}
+$$
+
+com uma penalização sobre a complexidade do hiperplano
+
+---
+
+## Interpretando a hinge loss
+
+Se
+
+$$
+yf(\mathbf x)\geq1
+$$
+
+a observação está corretamente classificada e fora da margem
+
+$$
+L_{\text{hinge}}=0
+$$
+
+Se
+
+$$
+yf(\mathbf x)<1
+$$
+
+há penalização
+
+---
+
+## Comparação conceitual
+
+### Regressão logística
+
+Estima diretamente uma probabilidade
+
+$$
+\widehat P(Y=1\mid\mathbf X=\mathbf x)
+$$
+
+### SVM
+
+Constrói diretamente uma função discriminante
+
+$$
+f(\mathbf x)
+$$
+
+::: {.callout-note appearance="simple"}
+
+A saída bruta de uma SVM não deve ser interpretada automaticamente como probabilidade posterior
+:::
+
+# SVM não linear
+
+## Quando uma reta não basta
+
+Se a separação é não linear, podemos transformar as covariáveis
+
+$$
+\mathbf x
+\longrightarrow
+\phi(\mathbf x)
+$$
+
+e construir um hiperplano no novo espaço
+
+---
+
+
+![](/images/classificacao/kernel_trick.png){fig-align="center"}
+
+## Kernel trick
+
+Em vez de calcular explicitamente $\phi(\mathbf x)$, utilizamos
+
+$$
+\boxed{
+K(\mathbf x,\mathbf x')
+=
+\langle
+\phi(\mathbf x),
+\phi(\mathbf x')
+\rangle
+}
+$$
+
+Assim, podemos produzir fronteiras não lineares no espaço original
+
+---
+
+## Kernels comuns
+
+### Linear
+
+$$
+K(\mathbf x,\mathbf x')
+=
+\mathbf x^t\mathbf x'
+$$
+
+### Polinomial
+
+$$
+K(\mathbf x,\mathbf x')
+=
+(\gamma\mathbf x^t\mathbf x'+c_0)^d
+$$
+
+### RBF
+
+$$
+\boxed{
+K(\mathbf x,\mathbf x')
+=
+\exp\left(
+-\gamma\|\mathbf x-\mathbf x'\|^2
+\right)
+}
+$$
+
+---
+
+
+![](/images/classificacao/comp_kernel_trick.png){fig-align="center"}
+
+## Hiperparâmetros
+
+Na SVM com kernel RBF, dois parâmetros são especialmente importantes
+
+$$
+\boxed{
+C
+\qquad\text{e}\qquad
+\gamma
+}
+$$
+
+Eles controlam aspectos diferentes da flexibilidade e devem ser escolhidos por validação
+
+## SVM: multi-classe
+
+SVM é naturalmente binário. Para $C > 2$ classes, duas estratégias principais:
+
+**One-vs-One (OVO):**
+
+- Ajusta $\binom{C}{2}$ classificadores binários
+- Cada par de classes tem seu próprio SVM
+- Votação: cada classificador "vota" na classe vencedora
+
+
+**One-vs-Rest (OVR):**
+
+- Ajusta $C$ classificadores binários
+- Cada classe vs. todas as outras
+- Classe com maior pontuação é escolhida
+
+
+---
+
+![](/images/classificacao/ovo_ovr.png){fig-align="center"}
+
+## SVR × SVM
+
+| Aspecto | SVR | SVM |
+|---|---|---|
+| tarefa | regressão | classificação |
+| região | $\varepsilon$-tube | margem |
+| perda | $\varepsilon$-insensível | hinge |
+| kernels | sim | sim |
+

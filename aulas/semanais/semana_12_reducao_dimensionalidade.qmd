@@ -1,0 +1,873 @@
+---
+title: "Parte II : Aprendizado Não Supervisionado"
+subtitle: "<span class='custom-subtitle'>Redução de Dimensionalidade e Mudança de Representação</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 12"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+
+azul <- "#263568"
+azul2 <- "#2C7FB8"
+
+tema_slide <- theme_minimal(base_size = 15) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"),
+        legend.position = "top")
+
+set.seed(335)
+n <- 220
+z1 <- rnorm(n,sd=2.2)
+z2 <- rnorm(n,sd=.55)
+theta <- pi/5
+R <- matrix(c(cos(theta),-sin(theta),sin(theta),cos(theta)),2,2)
+X <- cbind(z1,z2) %*% t(R)
+dados_pca <- data.frame(x1=X[,1],x2=X[,2])
+pca_fit <- prcomp(dados_pca,center=TRUE,scale.=FALSE)
+centro <- colMeans(dados_pca)
+v1 <- pca_fit$rotation[,1]
+v2 <- pca_fit$rotation[,2]
+```
+
+# Semana 12
+
+## Parte II — Aprendizado não supervisionado
+
+Até agora, utilizamos uma resposta $Y$ para orientar o aprendizado
+
+Em aprendizado não supervisionado, observamos apenas
+
+$$
+\boxed{
+\mathbf X
+=
+(\mathbf X_1,\ldots,\mathbf X_p)
+}
+$$
+
+e procuramos descobrir estrutura nos próprios dados
+
+---
+
+## O primeiro problema
+
+Quando $p$ é grande:
+
+- visualizar os dados torna-se difícil
+- distâncias podem perder poder discriminatório
+- variáveis podem conter informação redundante
+- modelos podem se tornar computacionalmente caros
+- a estrutura relevante pode viver em dimensão muito menor que $p$
+
+Isso motiva a **redução de dimensionalidade**
+
+---
+
+## Redução ou nova representação?
+
+Queremos transformar
+
+$$
+\mathbf x\in\mathbb R^p
+$$
+
+em
+
+$$
+\boxed{
+\mathbf z
+=
+T(\mathbf x)
+\in\mathbb R^q,
+\qquad q<p
+}
+$$
+
+preservando, tanto quanto possível, a estrutura relevante dos dados
+
+---
+
+## Conteúdo programático
+
+Nesta semana:
+
+$$
+\boxed{\text{PCA}}
+\rightarrow
+\boxed{\text{Kernel PCA}}
+\rightarrow
+\boxed{\text{Projeções Aleatórias}}
+\rightarrow
+\boxed{\text{Autoencoders}}
+$$
+
+PCA será tratada como **revisão breve**, pois sua fundamentação já foi estudada em Estatística Multivariada
+
+---
+
+## Organização da semana
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Encontro 12.1
+
+**Representações lineares e kernels**
+
+- revisão de PCA
+- projeção e reconstrução
+- limitações da PCA
+- Kernel PCA
+- kernel trick
+- projeções aleatórias
+- preservação aproximada de distâncias
+
+:::
+
+::: {.column width="48%"}
+
+### Encontro 12.2
+
+**Autoencoders**
+
+- representação latente
+- encoder e decoder
+- função de reconstrução
+- treinamento
+- gargalo
+- relação com PCA
+- representações não lineares
+- limitações
+
+:::
+
+::::
+
+---
+
+## Objetivos
+
+Ao final da semana, devemos ser capazes de:
+
+- distinguir redução de dimensionalidade de seleção de variáveis
+- interpretar PCA como projeção linear
+- compreender por que PCA pode falhar em estruturas não lineares
+- entender a construção da Kernel PCA
+- explicar a lógica das projeções aleatórias
+- formular matematicamente um autoencoder
+- comparar representações lineares e não lineares
+
+# Encontro 12.1 — PCA
+
+## PCA: conhecimento prévio
+
+Na EST014, já estudamos:
+
+- matriz de covariâncias e correlações
+- autovalores e autovetores
+- componentes principais
+- variância explicada
+- escores
+- escolha do número de componentes
+
+Aqui, o objetivo é reinterpretar PCA como um método de **representação para Machine Learning**
+
+---
+
+## PCA como transformação
+
+Considere dados centrados
+
+$$
+\mathbf x_i\in\mathbb R^p
+$$
+
+e uma matriz
+
+$$
+W_q
+=
+[\mathbf w_1,\ldots,\mathbf w_q]
+$$
+
+formada pelos $q$ primeiros autovetores da matriz de covariâncias
+
+A nova representação é
+
+$$
+\boxed{
+\mathbf z_i
+=
+W_q^t\mathbf x_i
+}
+$$
+
+---
+
+## Critério da primeira componente
+
+A primeira direção resolve
+
+$$
+\boxed{
+\mathbf w_1
+=
+\arg\max_{\|\mathbf w\|=1}
+\operatorname{Var}
+(\mathbf w^t\mathbf X)
+}
+$$
+
+As demais componentes maximizam variância sob restrições de ortogonalidade
+
+---
+
+## Visualização geométrica
+
+```{r}
+#| fig-width: 7.3
+#| fig-height: 5.0
+#| out-width: 70%
+#| fig-align: center
+
+escala <- 4.2
+
+ggplot(dados_pca, aes(x1, x2)) +
+  geom_point(alpha = .55, color = azul2, size = 2) +
+  geom_segment(
+    x = centro[1] - escala * v1[1],
+    y = centro[2] - escala * v1[2],
+    xend = centro[1] + escala * v1[1],
+    yend = centro[2] + escala * v1[2],
+    linewidth = 1.15,
+    color = azul
+  ) +
+  geom_segment(
+    x = centro[1] - 2 * v2[1],
+    y = centro[2] - 2 * v2[2],
+    xend = centro[1] + 2 * v2[1],
+    yend = centro[2] + 2 * v2[2],
+    linewidth = .9,
+    linetype = "dashed",
+    color = azul
+  ) +
+  coord_equal() +
+  tema_slide +
+  labs(
+    title = "PCA procura direções de maior variabilidade",
+    x = expression(X[1]),
+    y = expression(X[2])
+  )
+```
+
+---
+
+## Reconstrução
+
+Se mantivermos apenas $q$ componentes, podemos reconstruir aproximadamente
+
+$$
+\boxed{
+\widehat{\mathbf x}_i
+=
+W_q\mathbf z_i
+=
+W_qW_q^t\mathbf x_i
+}
+$$
+
+para dados centrados
+
+A informação descartada aparece como erro de reconstrução
+
+---
+
+# Limitações da PCA
+
+## A hipótese geométrica implícita
+
+PCA procura um subespaço **linear**
+
+$$
+\boxed{
+\mathbf z=W^t\mathbf x
+}
+$$
+
+Isso funciona muito bem quando a estrutura relevante pode ser representada aproximadamente por uma combinação linear das variáveis
+
+---
+
+## E se a estrutura for curva?
+
+Imagine observações próximas de uma variedade não linear
+
+Uma projeção linear pode:
+
+- sobrepor regiões distantes da estrutura original
+- distorcer vizinhanças
+- exigir várias componentes
+- não revelar a geometria intrínseca
+
+Precisamos de representações mais flexíveis
+
+# Kernel PCA
+
+## A ideia
+
+Primeiro transformamos implicitamente os dados
+
+$$
+\mathbf x
+\longrightarrow
+\phi(\mathbf x)
+$$
+
+para um espaço de características $\mathcal H$
+
+Depois realizamos PCA nesse novo espaço
+
+$$
+\boxed{
+\text{Kernel PCA}
+=
+\text{PCA em }\mathcal H
+}
+$$
+
+---
+
+## Kernel trick
+
+Usamos apenas produtos internos
+
+$$
+\boxed{
+K(\mathbf x_i,\mathbf x_j)
+=
+\left\langle
+\phi(\mathbf x_i),
+\phi(\mathbf x_j)
+\right\rangle
+}
+$$
+
+Assim, a transformação $\phi$ não precisa ser construída explicitamente
+
+---
+
+## Matriz de kernel
+
+Construímos
+
+$$
+\boxed{
+K_{ij}
+=
+K(\mathbf x_i,\mathbf x_j)
+}
+$$
+
+resultando em
+
+$$
+K\in\mathbb R^{n\times n}
+$$
+
+Antes da decomposição espectral, a matriz deve ser centrada no espaço de características
+
+---
+
+## Centralização
+
+Defina
+
+$$
+H
+=
+I_n-\frac1n\mathbf 1\mathbf 1^t
+$$
+
+A matriz de kernel centrada é
+
+$$
+\boxed{
+K_c
+=
+HKH
+}
+$$
+
+---
+
+## Componentes na Kernel PCA
+
+Resolvemos
+
+$$
+\boxed{
+K_c\boldsymbol\alpha_j
+=
+\lambda_j\boldsymbol\alpha_j
+}
+$$
+
+Os autovetores da matriz de kernel determinam as direções principais no espaço de características
+
+---
+
+## PCA versus Kernel PCA
+
+| Aspecto | PCA | Kernel PCA |
+|---|---|---|
+| representação | linear | não linear |
+| objeto espectral | covariância | matriz de kernel |
+| dimensão da matriz principal | $p\times p$ | $n\times n$ |
+| hiperparâmetros | principalmente $q$ | kernel, parâmetros e $q$ |
+| interpretação | mais direta | mais difícil |
+
+---
+
+# Projeções Aleatórias
+
+## Outra filosofia
+
+PCA **aprende** uma projeção a partir dos dados
+
+Projeções aleatórias escolhem uma transformação aleatória
+
+$$
+\boxed{
+\mathbf z
+=
+A^t\mathbf x
+}
+$$
+
+com
+
+$$
+A\in\mathbb R^{p\times q}
+$$
+
+e
+
+$$
+q\ll p
+$$
+
+---
+
+## Preservação aproximada
+
+Para $0<\varepsilon<1$, queremos aproximadamente
+
+$$
+\boxed{
+(1-\varepsilon)
+\|\mathbf x_i-\mathbf x_j\|^2
+\leq
+\|\mathbf z_i-\mathbf z_j\|^2
+\leq
+(1+\varepsilon)
+\|\mathbf x_i-\mathbf x_j\|^2
+}
+$$
+
+para os pares de observações de interesse
+
+---
+
+## Dimensão necessária
+
+O resultado de Johnson–Lindenstrauss mostra, em essência, que podemos usar uma dimensão da ordem de
+
+$$
+\boxed{
+q
+=
+O\left(
+\frac{\log n}{\varepsilon^2}
+\right)
+}
+$$
+
+sem depender diretamente da dimensão original $p$
+
+---
+
+## A projeção não é ajustada
+
+Essa é a diferença conceitual fundamental
+
+### PCA
+
+$$
+\boxed{
+\text{dados}
+\rightarrow
+\text{otimização}
+\rightarrow
+W
+}
+$$
+
+### Projeção aleatória
+
+$$
+\boxed{
+A\sim\text{distribuição apropriada}
+}
+$$
+
+Não há decomposição espectral dos dados para aprender $A$
+
+---
+
+## PCA × Projeção Aleatória
+
+| | PCA | Projeção aleatória |
+|---|---|---|
+| usa os dados para escolher a projeção | sim | não |
+| otimiza variância/reconstrução | sim | não |
+| custo de ajuste | maior | muito baixo |
+| eixos interpretáveis | relativamente | pouco |
+| preservação | variância | distâncias aproximadamente |
+
+---
+
+## Síntese do Encontro 12.1
+
+Temos três ideias distintas
+
+$$
+\boxed{
+\text{PCA: aprender uma projeção linear}
+}
+$$
+
+$$
+\boxed{
+\text{Kernel PCA: aprender uma representação não linear via kernel}
+}
+$$
+
+$$
+\boxed{
+\text{RP: projetar aleatoriamente preservando geometria aproximadamente}
+}
+$$
+
+# Encontro 12.2 — Autoencoders
+
+## A ideia do autoencoder
+
+Usamos a própria entrada como alvo
+
+$$
+\boxed{
+\mathbf x
+\longrightarrow
+\mathbf z
+\longrightarrow
+\widehat{\mathbf x}
+}
+$$
+
+A rede deve reconstruir sua entrada passando por uma representação intermediária
+
+$$
+\mathbf z
+$$
+
+---
+
+## Duas partes
+
+### Encoder
+
+$$
+\boxed{
+\mathbf z
+=
+f_{\beta}(\mathbf x)
+}
+$$
+
+### Decoder
+
+$$
+\boxed{
+\widehat{\mathbf x}
+=
+g_{\theta}(\mathbf z)
+}
+$$
+
+Logo,
+
+$$
+\widehat{\mathbf x}
+=
+g_{\theta}
+\left(
+f_{\beta}(\mathbf x)
+\right)
+$$
+
+---
+
+## O gargalo
+
+Se
+
+$$
+\mathbf x\in\mathbb R^p
+$$
+
+e impomos
+
+$$
+\boxed{
+\mathbf z\in\mathbb R^q,
+\qquad q<p
+}
+$$
+
+a rede precisa comprimir a informação relevante para reconstruir a entrada
+
+Essa camada é chamada de **bottleneck**
+
+---
+
+## Arquitetura conceitual
+
+$$
+\boxed{
+\underbrace{\mathbf x}_{p}
+\longrightarrow
+\underbrace{\text{encoder}}_{\text{compressão}}
+\longrightarrow
+\underbrace{\mathbf z}_{q}
+\longrightarrow
+\underbrace{\text{decoder}}_{\text{reconstrução}}
+\longrightarrow
+\underbrace{\widehat{\mathbf x}}_{p}
+}
+$$
+
+com
+
+$$
+q<p
+$$
+
+---
+
+# Função de perda
+
+## Erro de reconstrução
+
+Para covariáveis quantitativas, podemos usar
+
+$$
+\boxed{
+J(\beta,\theta)
+=
+\frac1n
+\sum_{i=1}^{n}
+\left\|
+\mathbf x_i
+-
+g_{\theta}
+\left(
+f_{\beta}(\mathbf x_i)
+\right)
+\right\|^2
+}
+$$
+
+O alvo da rede é a própria observação $\mathbf x_i$
+
+---
+
+## Treinamento
+
+O processo continua sendo
+
+$$
+\boxed{
+\text{forward}
+\rightarrow
+\text{erro de reconstrução}
+\rightarrow
+\text{backpropagation}
+\rightarrow
+\text{atualização dos pesos}
+}
+$$
+
+Não precisamos de um novo algoritmo de treinamento
+
+---
+
+# Autoencoder e PCA
+
+## Uma conexão importante
+
+Considere um autoencoder com:
+
+- uma única camada de bottleneck
+- ativações lineares
+- perda quadrática
+- dimensão latente $q<p$
+
+Nesse caso, o subespaço ótimo recuperado está relacionado ao subespaço principal da PCA
+
+---
+
+## PCA pode ser vista como referência linear
+
+### PCA
+
+$$
+\mathbf z
+=
+W^t\mathbf x
+$$
+
+### Autoencoder
+
+$$
+\mathbf z
+=
+f_{\beta}(\mathbf x)
+$$
+
+Se $f_\beta$ é não linear, a representação pode ser muito mais flexível
+
+---
+
+## Onde surge a não linearidade?
+
+Nas funções de ativação
+
+$$
+x_j^{l+1}
+=
+f(z_j^{l+1})
+$$
+
+Com ativações não lineares e múltiplas camadas,
+
+$$
+\boxed{
+\mathbf x
+\longrightarrow
+\mathbf z
+}
+$$
+
+não precisa ser uma projeção linear
+
+---
+
+# Comparação dos quatro métodos
+
+## Visão geral
+
+| Método | Transformação | Aprende com os dados? | Pode ser não linear? |
+|---|---|---:|---:|
+| PCA | projeção | sim | não |
+| Kernel PCA | kernel + projeção | sim | sim |
+| Random Projection | projeção aleatória | não | não |
+| Autoencoder | rede encoder | sim | sim |
+
+---
+
+# Como avaliar sem uma resposta $Y$?
+
+## Critérios dependem do objetivo
+
+Podemos avaliar uma representação por:
+
+- variância explicada
+- erro de reconstrução
+- preservação de distâncias
+- estabilidade
+- utilidade em uma tarefa posterior
+
+$$
+\boxed{
+\text{não existe uma única métrica universal para representação}
+}
+$$
+# Síntese da Semana 12
+
+## Uma visão unificadora
+
+Todos procuram construir
+
+$$
+\boxed{
+T:\mathbb R^p\rightarrow\mathbb R^q
+}
+$$
+
+mas fazem escolhas diferentes sobre:
+
+$$
+\boxed{
+\text{o que preservar}
+\quad+\quad
+\text{como construir }T
+}
+$$
+
+---
+
+## Próxima semana
+
+# Análise de Agrupamento
+
+Como K-means e métodos hierárquicos já foram estudados em Estatística Multivariada, eles serão retomados de forma crítica e breve
+
+O conteúdo novo receberá maior atenção:
+
+$$
+\boxed{
+\text{Agrupamento espectral}
+}
+$$
+
+e sua relação com similaridades, grafos e decomposição espectral
+
+## Referências {visibility="uncounted"}
+
+::: {#refs}
+:::

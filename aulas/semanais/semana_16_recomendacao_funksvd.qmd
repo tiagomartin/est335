@@ -1,0 +1,685 @@
+---
+title: "Parte II : Aprendizado Não Supervisionado"
+subtitle: "<span class='custom-subtitle'>Sistemas de Recomendação: Fatores Latentes e FunkSVD</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 16"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+```
+
+# Fatores Latentes
+
+## Uma nova ideia
+
+Em vez de comparar diretamente usuários e itens no espaço original, representamos ambos em um espaço de baixa dimensão
+
+$$
+\boxed{
+\mathbf p_u\in\mathbb R^d
+}
+$$
+
+para usuários e
+
+$$
+\boxed{
+\mathbf q_i\in\mathbb R^d
+}
+$$
+
+para itens
+
+---
+
+## Interpretação
+
+As coordenadas podem representar fatores latentes de preferência
+
+Não precisamos atribuir significado explícito a cada dimensão
+
+O importante é que
+
+$$
+\boxed{
+\mathbf p_u^t\mathbf q_i
+}
+$$
+
+mede a compatibilidade entre usuário e item no espaço latente
+
+---
+
+# FunkSVD
+
+## Modelo básico
+
+A predição pode ser escrita como
+
+$$
+\boxed{
+\widehat r_{ui}
+=
+\mu
++
+b_u
++
+b_i
++
+\mathbf p_u^t\mathbf q_i
+}
+$$
+
+onde:
+
+- $\mu$ é a média global
+- $b_u$ é o efeito médio do usuário
+- $b_i$ é o efeito médio do item
+- $\mathbf p_u^t\mathbf q_i$ representa a interação latente
+
+---
+
+## Por que incluir vieses?
+
+Alguns usuários tendem a dar notas maiores
+
+Alguns itens tendem a receber notas maiores
+
+Os termos
+
+$$
+b_u
+\qquad\text{e}\qquad
+b_i
+$$
+
+capturam esses efeitos sistemáticos antes da interação latente
+
+---
+
+# Função objetivo
+
+## Apenas avaliações observadas
+
+Defina
+
+$$
+\Omega
+=
+\{(u,i):r_{ui}\text{ foi observado}\}
+$$
+
+O erro é calculado somente para
+
+$$
+(u,i)\in\Omega
+$$
+
+---
+
+## Mínimos quadrados regularizados
+
+Podemos estimar os parâmetros minimizando
+
+$$
+\boxed{
+J
+=
+\sum_{(u,i)\in\Omega}
+\left[
+r_{ui}
+-
+\mu-b_u-b_i-\mathbf p_u^t\mathbf q_i
+\right]^2
++
+\lambda\mathcal P
+}
+$$
+
+onde $\mathcal P$ penaliza a complexidade dos parâmetros
+
+---
+
+## Uma penalização típica
+
+Por exemplo,
+
+$$
+\boxed{
+\mathcal P
+=
+\sum_u
+\left(
+b_u^2+\|\mathbf p_u\|^2
+\right)
++
+\sum_i
+\left(
+b_i^2+\|\mathbf q_i\|^2
+\right)
+}
+$$
+
+A regularização reduz o risco de ajustar excessivamente as avaliações observadas
+
+---
+
+# Treinamento
+
+## Erro para uma interação
+
+Defina
+
+$$
+\boxed{
+e_{ui}
+=
+r_{ui}
+-
+\widehat r_{ui}
+}
+$$
+
+Os parâmetros podem ser atualizados por gradiente descendente estocástico
+
+---
+
+## Atualização dos vieses
+
+Usando $\gamma$ como passo do otimizador nesta apresentação,
+
+$$
+\boxed{
+b_u
+\leftarrow
+b_u
++
+\gamma
+\left(
+e_{ui}
+-
+\lambda b_u
+\right)
+}
+$$
+
+$$
+\boxed{
+b_i
+\leftarrow
+b_i
++
+\gamma
+\left(
+e_{ui}
+-
+\lambda b_i
+\right)
+}
+$$
+
+---
+
+## Atualização dos fatores
+
+$$
+\boxed{
+\mathbf p_u
+\leftarrow
+\mathbf p_u
++
+\gamma
+\left(
+e_{ui}\mathbf q_i
+-
+\lambda\mathbf p_u
+\right)
+}
+$$
+
+$$
+\boxed{
+\mathbf q_i
+\leftarrow
+\mathbf q_i
++
+\gamma
+\left(
+e_{ui}\mathbf p_u
+-
+\lambda\mathbf q_i
+\right)
+}
+$$
+
+A lógica é a mesma já vista em otimização: erro, gradiente e atualização iterativa
+
+---
+
+## O que significa SVD em FunkSVD?
+
+Apesar do nome, o procedimento não exige preencher toda a matriz e aplicar diretamente a decomposição SVD clássica
+
+Ele aprende fatores latentes usando apenas as entradas observadas
+
+$$
+\boxed{
+R
+\approx
+PQ^t
+}
+$$
+
+com otimização sobre
+
+$$
+\Omega
+$$
+
+---
+
+# Conexão com redução de dimensionalidade
+
+## Representação latente
+
+Na redução de dimensionalidade, construímos
+
+$$
+\mathbf x
+\rightarrow
+\mathbf z
+$$
+
+Aqui, construímos simultaneamente representações de usuários e itens:
+
+$$
+u
+\rightarrow
+\mathbf p_u
+$$
+
+$$
+i
+\rightarrow
+\mathbf q_i
+$$
+
+FunkSVD também é um problema de **representação de baixa dimensão**
+
+---
+
+# Seleção de modelos
+
+## O conjunto de teste continua intocado
+
+Precisamos separar interações para avaliação
+
+As decisões sobre:
+
+- número de vizinhos $k$
+- dimensão latente $d$
+- regularização $\lambda$
+- passo de otimização
+- número de épocas
+
+devem ocorrer usando apenas treinamento e validação
+
+---
+
+## Uma diferença importante
+
+Não basta ignorar a estrutura das interações
+
+O esquema de validação deve reproduzir o problema de recomendação que teremos na prática
+
+Por exemplo:
+
+$$
+\boxed{
+\text{interações passadas}
+\rightarrow
+\text{predizer interações futuras}
+}
+$$
+
+pode exigir divisão temporal
+
+---
+
+# Predição de rating
+
+## Se o objetivo é prever notas
+
+Podemos avaliar
+
+$$
+\boxed{
+RMSE
+=
+\sqrt{
+\frac1{|\Omega_{test}|}
+\sum_{(u,i)\in\Omega_{test}}
+(r_{ui}-\widehat r_{ui})^2
+}
+}
+$$
+
+ou
+
+$$
+MAE
+$$
+
+Essas métricas avaliam a qualidade numérica das predições
+
+---
+
+# Recomendação Top-K
+
+## Muitas aplicações querem um ranking
+
+Em vez de perguntar
+
+> Qual nota o usuário dará?
+
+queremos responder
+
+> Quais $K$ itens devemos recomendar?
+
+Nesse caso, métricas de ranking são mais apropriadas
+
+---
+
+## Precision@K
+
+Se $R_u$ é o conjunto de itens relevantes para o usuário $u$ e $L_u(K)$ os $K$ itens recomendados,
+
+$$
+\boxed{
+Precision@K
+=
+\frac{
+|R_u\cap L_u(K)|
+}{K}
+}
+$$
+
+---
+
+## Recall@K
+
+$$
+\boxed{
+Recall@K
+=
+\frac{
+|R_u\cap L_u(K)|
+}{
+|R_u|
+}
+}
+$$
+
+As duas métricas respondem a perguntas diferentes sobre a lista recomendada
+
+---
+
+# Comparando abordagens
+
+| Método | Informação central | Representação |
+|---|---|---|
+| User-based | usuários semelhantes | ratings observados |
+| Item-based | itens semelhantes | ratings observados |
+| FunkSVD | fatores latentes | espaço de dimensão $d$ |
+
+---
+
+## Quando usar cada ideia?
+
+### Métodos de vizinhança
+
+- simples
+- intuitivos
+- facilmente explicáveis
+
+### Fatores latentes
+
+- maior capacidade de generalização
+- representação compacta
+- boa escalabilidade com implementações apropriadas
+
+Mas nenhum método elimina problemas como cold start por si só
+
+---
+
+# Síntese da Semana 16
+
+## Filtragem colaborativa
+
+$$
+\boxed{
+\text{similaridade}
+\rightarrow
+\text{vizinhança}
+\rightarrow
+\text{predição}
+}
+$$
+
+---
+
+## FunkSVD
+
+$$
+\boxed{
+\widehat r_{ui}
+=
+\mu+b_u+b_i+\mathbf p_u^t\mathbf q_i
+}
+$$
+
+A preferência é explicada por efeitos médios e pela interação entre fatores latentes
+
+---
+
+## Avaliação
+
+$$
+\boxed{
+\text{rating}
+\rightarrow
+RMSE/MAE
+}
+$$
+
+$$
+\boxed{
+\text{ranking}
+\rightarrow
+Precision@K/Recall@K
+}
+$$
+
+A métrica deve corresponder ao objetivo real do sistema
+
+# Fechamento da disciplina
+
+## Uma visão integrada
+
+Ao longo da disciplina, estudamos três grandes problemas
+
+$$
+\boxed{
+\text{Regressão}
+\qquad
+\text{Classificação}
+\qquad
+\text{Aprendizado não supervisionado}
+}
+$$
+
+---
+
+## Regressão
+
+Queremos aprender
+
+$$
+\boxed{
+r(\mathbf x)
+=
+E(Y\mid\mathbf X=\mathbf x)
+}
+$$
+
+para uma resposta quantitativa
+
+---
+
+## Classificação
+
+Queremos aprender probabilidades ou escores e transformá-los em decisões
+
+$$
+\boxed{
+\eta_k(\mathbf x)
+=
+P(Y=k\mid\mathbf X=\mathbf x)
+}
+$$
+
+---
+
+## Aprendizado não supervisionado
+
+Não temos uma resposta $Y$ orientando diretamente o aprendizado
+
+Buscamos:
+
+$$
+\boxed{
+\text{representações}
+}
+$$
+
+$$
+\boxed{
+\text{grupos}
+}
+$$
+
+$$
+\boxed{
+\text{associações}
+}
+$$
+
+$$
+\boxed{
+\text{padrões de interação}
+}
+$$
+
+---
+
+# Uma estrutura comum
+
+## Apesar das diferenças
+
+Em praticamente todos os tópicos reapareceram as mesmas ideias:
+
+- representação dos dados
+- função objetivo
+- flexibilidade
+- otimização
+- regularização
+- hiperparâmetros
+- validação
+- avaliação fora da amostra
+
+---
+
+## A mensagem central
+
+Aprendizado estatístico não consiste apenas em escolher um algoritmo
+
+$$
+\boxed{
+\text{problema}
+\rightarrow
+\text{representação}
+\rightarrow
+\text{modelo}
+\rightarrow
+\text{ajuste}
+\rightarrow
+\text{validação}
+\rightarrow
+\text{avaliação}
+}
+$$
+
+Cada etapa envolve escolhas que precisam ser justificadas
+
+---
+
+# Encerramento
+
+## EST335 — Aprendizado Estatístico
+
+Ao final da disciplina, o objetivo não é memorizar uma coleção de algoritmos
+
+É compreender:
+
+$$
+\boxed{
+\text{qual estrutura cada método assume}
+}
+$$
+
+$$
+\boxed{
+\text{o que ele otimiza}
+}
+$$
+
+$$
+\boxed{
+\text{como controlar sua complexidade}
+}
+$$
+
+$$
+\boxed{
+\text{como avaliar se ele generaliza}
+}
+$$
+
+## Referências {visibility="uncounted"}
+
+::: {#refs}
+:::

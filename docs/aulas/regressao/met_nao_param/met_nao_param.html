@@ -1,162 +1,495 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning</title>
 <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-      vertical-align: middle;
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
     }
-    /* CSS for citations */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-      margin-bottom: 0em;
-    }
-    .hanging-indent div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }  </style>
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 <meta property="og:title" content="Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
 <meta property="og:description" content="Métodos Não Paramétricos">
+<meta property="og:image" content="http://professortp.com.br/est335/aulas/regressao/met_nao_param/met_nao_param_files/figure-revealjs/unnamed-chunk-1-1.png">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:image:height" content="480">
+<meta property="og:image:width" content="960">
 </head>
-<body class="quarto-light">
-  <div class="reveal">
-    <div class="slides">
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
-<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Regressão</h1>
-  <p class="subtitle"><span class="custom-subtitle">Métodos Não Paramétricos</span></p>
-
-<div class="quarto-title-authors">
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Parte I : Regressão</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../../index.html" class="sidebar-logo-link">
+      <img src="../../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#introdu%C3%A7%C3%A3o" id="toc-introdução" class="nav-link active" data-scroll-target="#introdu%C3%A7%C3%A3o">Introdução</a></li>
+  <li><a href="#introdu%C3%A7%C3%A3o-1" id="toc-introdução-1" class="nav-link" data-scroll-target="#introdu%C3%A7%C3%A3o-1">Introdução</a></li>
+  <li><a href="#introdu%C3%A7%C3%A3o-2" id="toc-introdução-2" class="nav-link" data-scroll-target="#introdu%C3%A7%C3%A3o-2">Introdução</a></li>
+  <li>
+<a href="#problema-de-regress%C3%A3o" id="toc-problema-de-regressão" class="nav-link" data-scroll-target="#problema-de-regress%C3%A3o">Problema de regressão</a>
+  <ul class="collapse">
+<li><a href="#redu%C3%A7%C3%A3o-do-problema" id="toc-redução-do-problema" class="nav-link" data-scroll-target="#redu%C3%A7%C3%A3o-do-problema">Redução do problema</a></li>
+  <li><a href="#motiva%C3%A7%C3%A3o-para-constru%C3%A7%C3%B5es-locais" id="toc-motivação-para-construções-locais" class="nav-link" data-scroll-target="#motiva%C3%A7%C3%A3o-para-constru%C3%A7%C3%B5es-locais">Motivação para construções locais</a></li>
+  <li><a href="#aproxima%C3%A7%C3%A3o-por-partes" id="toc-aproximação-por-partes" class="nav-link" data-scroll-target="#aproxima%C3%A7%C3%A3o-por-partes">Aproximação por partes</a></li>
+  <li><a href="#continuidade" id="toc-continuidade" class="nav-link" data-scroll-target="#continuidade">Continuidade</a></li>
+  <li><a href="#forma-anal%C3%ADtica" id="toc-forma-analítica" class="nav-link" data-scroll-target="#forma-anal%C3%ADtica">Forma analítica</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o-geom%C3%A9trica" id="toc-interpretação-geométrica" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-geom%C3%A9trica">Interpretação geométrica</a></li>
+  <li><a href="#forma-por-partes" id="toc-forma-por-partes" class="nav-link" data-scroll-target="#forma-por-partes">Forma por partes</a></li>
+  <li><a href="#estima%C3%A7%C3%A3o-dos-coeficientes" id="toc-estimação-dos-coeficientes" class="nav-link" data-scroll-target="#estima%C3%A7%C3%A3o-dos-coeficientes">Estimação dos coeficientes</a></li>
+  <li><a href="#papel-dos-n%C3%B3s" id="toc-papel-dos-nós" class="nav-link" data-scroll-target="#papel-dos-n%C3%B3s">Papel dos nós</a></li>
+  <li><a href="#exemplo" id="toc-exemplo" class="nav-link" data-scroll-target="#exemplo">Exemplo</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o" id="toc-interpretação" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o">Interpretação</a></li>
+  <li><a href="#limita%C3%A7%C3%A3o-do-spline-linear" id="toc-limitação-do-spline-linear" class="nav-link" data-scroll-target="#limita%C3%A7%C3%A3o-do-spline-linear">Limitação do spline linear</a></li>
+  <li><a href="#necessidade-de-maior-suavidade" id="toc-necessidade-de-maior-suavidade" class="nav-link" data-scroll-target="#necessidade-de-maior-suavidade">Necessidade de maior suavidade</a></li>
+  <li><a href="#defini%C3%A7%C3%A3o-de-spline-c%C3%BAbico" id="toc-definição-de-spline-cúbico" class="nav-link" data-scroll-target="#defini%C3%A7%C3%A3o-de-spline-c%C3%BAbico">Definição de spline cúbico</a></li>
+  <li><a href="#consequ%C3%AAncia-geom%C3%A9trica" id="toc-consequência-geométrica" class="nav-link" data-scroll-target="#consequ%C3%AAncia-geom%C3%A9trica">Consequência geométrica</a></li>
+  <li><a href="#forma-anal%C3%ADtica-1" id="toc-forma-analítica-1" class="nav-link" data-scroll-target="#forma-anal%C3%ADtica-1">Forma analítica</a></li>
+  <li><a href="#estima%C3%A7%C3%A3o" id="toc-estimação" class="nav-link" data-scroll-target="#estima%C3%A7%C3%A3o">Estimação</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#k-vizinhos-mais-pr%C3%B3ximos-knn" id="toc-k-vizinhos-mais-próximos-knn" class="nav-link" data-scroll-target="#k-vizinhos-mais-pr%C3%B3ximos-knn">k Vizinhos Mais Próximos (KNN)</a>
+  <ul class="collapse">
+<li><a href="#ideia-central" id="toc-ideia-central" class="nav-link" data-scroll-target="#ideia-central">Ideia central</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o-1" id="toc-interpretação-1" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-1">Interpretação</a></li>
+  <li><a href="#defini%C3%A7%C3%A3o-da-vizinhan%C3%A7a-em-knn" id="toc-definição-da-vizinhança-em-knn" class="nav-link" data-scroll-target="#defini%C3%A7%C3%A3o-da-vizinhan%C3%A7a-em-knn">Definição da vizinhança em KNN</a></li>
+  <li><a href="#estimador-de-regress%C3%A3o-knn" id="toc-estimador-de-regressão-knn" class="nav-link" data-scroll-target="#estimador-de-regress%C3%A3o-knn">Estimador de regressão KNN</a></li>
+  <li><a href="#caracter%C3%ADstica-fundamental" id="toc-característica-fundamental" class="nav-link" data-scroll-target="#caracter%C3%ADstica-fundamental">Característica fundamental</a></li>
+  </ul>
+</li>
+  <li><a href="#o-papel-do-par%C3%A2metro-k" id="toc-o-papel-do-parâmetro-k" class="nav-link" data-scroll-target="#o-papel-do-par%C3%A2metro-k">O papel do parâmetro <span class="math inline">\(k\)</span></a></li>
+  <li>
+<a href="#nadarayawatson" id="toc-nadarayawatson" class="nav-link" data-scroll-target="#nadarayawatson">Nadaraya–Watson</a>
+  <ul class="collapse">
+<li><a href="#limita%C3%A7%C3%A3o-do-knn" id="toc-limitação-do-knn" class="nav-link" data-scroll-target="#limita%C3%A7%C3%A3o-do-knn">Limitação do KNN</a></li>
+  <li><a href="#estimador-de-nadarayawatson" id="toc-estimador-de-nadarayawatson" class="nav-link" data-scroll-target="#estimador-de-nadarayawatson">Estimador de Nadaraya–Watson</a></li>
+  <li><a href="#propriedade-importante" id="toc-propriedade-importante" class="nav-link" data-scroll-target="#propriedade-importante">Propriedade importante</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o-2" id="toc-interpretação-2" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-2">Interpretação</a></li>
+  <li><a href="#defini%C3%A7%C3%A3o-dos-pesos" id="toc-definição-dos-pesos" class="nav-link" data-scroll-target="#defini%C3%A7%C3%A3o-dos-pesos">Definição dos pesos</a></li>
+  <li><a href="#exemplos-de-kernels" id="toc-exemplos-de-kernels" class="nav-link" data-scroll-target="#exemplos-de-kernels">Exemplos de kernels</a></li>
+  <li><a href="#kernel-uniforme" id="toc-kernel-uniforme" class="nav-link" data-scroll-target="#kernel-uniforme">Kernel uniforme</a></li>
+  <li><a href="#kernel-gaussiano" id="toc-kernel-gaussiano" class="nav-link" data-scroll-target="#kernel-gaussiano">Kernel gaussiano</a></li>
+  <li><a href="#kernel-triangular" id="toc-kernel-triangular" class="nav-link" data-scroll-target="#kernel-triangular">Kernel triangular</a></li>
+  <li><a href="#kernel-de-epanechnikov" id="toc-kernel-de-epanechnikov" class="nav-link" data-scroll-target="#kernel-de-epanechnikov">Kernel de Epanechnikov</a></li>
+  <li><a href="#o-papel-do-par%C3%A2metro-h" id="toc-o-papel-do-parâmetro-h" class="nav-link" data-scroll-target="#o-papel-do-par%C3%A2metro-h">O papel do parâmetro <span class="math inline">\(h\)</span></a></li>
+  <li><a href="#observa%C3%A7%C3%A3o-pr%C3%A1tica" id="toc-observação-prática" class="nav-link" data-scroll-target="#observa%C3%A7%C3%A3o-pr%C3%A1tica">Observação prática</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#regress%C3%A3o-polinomial-local" id="toc-regressão-polinomial-local" class="nav-link" data-scroll-target="#regress%C3%A3o-polinomial-local">Regressão Polinomial Local</a>
+  <ul class="collapse">
+<li><a href="#interpreta%C3%A7%C3%A3o-3" id="toc-interpretação-3" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-3">Interpretação</a></li>
+  <li><a href="#casos-importantes" id="toc-casos-importantes" class="nav-link" data-scroll-target="#casos-importantes">Casos importantes</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%C3%A1rvores-de-regress%C3%A3o" id="toc-árvores-de-regressão" class="nav-link" data-scroll-target="#%C3%A1rvores-de-regress%C3%A3o">Árvores de Regressão</a>
+  <ul class="collapse">
+<li><a href="#ideia-central-1" id="toc-ideia-central-1" class="nav-link" data-scroll-target="#ideia-central-1">Ideia central</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#interpreta%C3%A7%C3%A3o-4" id="toc-interpretação-4" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-4">Interpretação</a>
+  <ul class="collapse">
+<li><a href="#problema-de-estima%C3%A7%C3%A3o" id="toc-problema-de-estimação" class="nav-link" data-scroll-target="#problema-de-estima%C3%A7%C3%A3o">Problema de estimação</a></li>
+  <li><a href="#crit%C3%A9rio-de-qualidade" id="toc-critério-de-qualidade" class="nav-link" data-scroll-target="#crit%C3%A9rio-de-qualidade">Critério de qualidade</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o-do-crit%C3%A9rio" id="toc-interpretação-do-critério" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-do-crit%C3%A9rio">Interpretação do critério</a></li>
+  <li><a href="#dificuldade-do-problema" id="toc-dificuldade-do-problema" class="nav-link" data-scroll-target="#dificuldade-do-problema">Dificuldade do problema</a></li>
+  <li><a href="#solu%C3%A7%C3%A3o-pr%C3%A1tica" id="toc-solução-prática" class="nav-link" data-scroll-target="#solu%C3%A7%C3%A3o-pr%C3%A1tica">Solução prática</a></li>
+  <li><a href="#divis%C3%A3o-em-um-n%C3%B3" id="toc-divisão-em-um-nó" class="nav-link" data-scroll-target="#divis%C3%A3o-em-um-n%C3%B3">Divisão em um nó</a></li>
+  <li><a href="#melhor-divis%C3%A3o" id="toc-melhor-divisão" class="nav-link" data-scroll-target="#melhor-divis%C3%A3o">Melhor divisão</a></li>
+  <li><a href="#constru%C3%A7%C3%A3o-completa" id="toc-construção-completa" class="nav-link" data-scroll-target="#constru%C3%A7%C3%A3o-completa">Construção completa</a></li>
+  <li><a href="#overfitting" id="toc-overfitting" class="nav-link" data-scroll-target="#overfitting">Overfitting</a></li>
+  <li><a href="#poda-pruning" id="toc-poda-pruning" class="nav-link" data-scroll-target="#poda-pruning">Poda (pruning)</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o-da-%C3%A1rvore-de-regress%C3%A3o" id="toc-interpretação-da-árvore-de-regressão" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-da-%C3%A1rvore-de-regress%C3%A3o">Interpretação da árvore de regressão</a></li>
+  <li><a href="#vantagens-das-%C3%A1rvores-de-regress%C3%A3o" id="toc-vantagens-das-árvores-de-regressão" class="nav-link" data-scroll-target="#vantagens-das-%C3%A1rvores-de-regress%C3%A3o">Vantagens das Árvores de Regressão</a></li>
+  <li><a href="#limita%C3%A7%C3%A3o-importante" id="toc-limitação-importante" class="nav-link" data-scroll-target="#limita%C3%A7%C3%A3o-importante">Limitação importante</a></li>
+  </ul>
+</li>
+  <li><a href="#por-que-combinar-%C3%A1rvores" id="toc-por-que-combinar-árvores" class="nav-link" data-scroll-target="#por-que-combinar-%C3%A1rvores">Por que combinar árvores?</a></li>
+  <li>
+<a href="#bagging-bootstrap-aggregating" id="toc-bagging-bootstrap-aggregating" class="nav-link" data-scroll-target="#bagging-bootstrap-aggregating">Bagging (Bootstrap Aggregating)</a>
+  <ul class="collapse">
+<li><a href="#propriedade-fundamental" id="toc-propriedade-fundamental" class="nav-link" data-scroll-target="#propriedade-fundamental">Propriedade fundamental</a></li>
+  <li><a href="#import%C3%A2ncia-de-vari%C3%A1veis-em-%C3%A1rvores" id="toc-importância-de-variáveis-em-árvores" class="nav-link" data-scroll-target="#import%C3%A2ncia-de-vari%C3%A1veis-em-%C3%A1rvores">Importância de Variáveis em Árvores</a></li>
+  <li><a href="#redu%C3%A7%C3%A3o-do-erro" id="toc-redução-do-erro" class="nav-link" data-scroll-target="#redu%C3%A7%C3%A3o-do-erro">Redução do erro</a></li>
+  <li><a href="#interpreta%C3%A7%C3%A3o-5" id="toc-interpretação-5" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o-5">Interpretação</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#florestas-aleat%C3%B3rias-random-forest" id="toc-florestas-aleatórias-random-forest" class="nav-link" data-scroll-target="#florestas-aleat%C3%B3rias-random-forest">Florestas Aleatórias (Random Forest)</a>
+  <ul class="collapse">
+<li><a href="#consequ%C3%AAncia-importante" id="toc-consequência-importante" class="nav-link" data-scroll-target="#consequ%C3%AAncia-importante">Consequência importante</a></li>
+  <li><a href="#problema" id="toc-problema" class="nav-link" data-scroll-target="#problema">Problema</a></li>
+  <li><a href="#ideia-do-random-forest" id="toc-ideia-do-random-forest" class="nav-link" data-scroll-target="#ideia-do-random-forest">Ideia do Random Forest</a></li>
+  <li><a href="#constru%C3%A7%C3%A3o" id="toc-construção" class="nav-link" data-scroll-target="#constru%C3%A7%C3%A3o">Construção</a></li>
+  <li><a href="#par%C3%A2metro-chave" id="toc-parâmetro-chave" class="nav-link" data-scroll-target="#par%C3%A2metro-chave">Parâmetro chave</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#boosting" id="toc-boosting" class="nav-link" data-scroll-target="#boosting">Boosting</a>
+  <ul class="collapse">
+<li><a href="#ideia-central-2" id="toc-ideia-central-2" class="nav-link" data-scroll-target="#ideia-central-2">Ideia central</a></li>
+  <li><a href="#algoritmo" id="toc-algoritmo" class="nav-link" data-scroll-target="#algoritmo">Algoritmo</a></li>
+  <li><a href="#par%C3%A2metros-importantes" id="toc-parâmetros-importantes" class="nav-link" data-scroll-target="#par%C3%A2metros-importantes">Parâmetros importantes</a></li>
+  <li><a href="#observa%C3%A7%C3%A3o" id="toc-observação" class="nav-link" data-scroll-target="#observa%C3%A7%C3%A3o">Observação</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a>
+  <ul class="collapse">
+<li><a href="#boosting-e-estimadores-fracos" id="toc-boosting-e-estimadores-fracos" class="nav-link" data-scroll-target="#boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</a></li>
+  <li><a href="#por-que-usar-modelos-fracos" id="toc-por-que-usar-modelos-fracos" class="nav-link" data-scroll-target="#por-que-usar-modelos-fracos">Por que usar modelos fracos?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#redes-neurais-artificiais" id="toc-redes-neurais-artificiais" class="nav-link" data-scroll-target="#redes-neurais-artificiais">Redes Neurais Artificiais</a>
+  <ul class="collapse">
+<li><a href="#rna-sem-camada-oculta" id="toc-rna-sem-camada-oculta" class="nav-link" data-scroll-target="#rna-sem-camada-oculta">RNA sem camada oculta</a></li>
+  <li><a href="#rna-com-camada-oculta" id="toc-rna-com-camada-oculta" class="nav-link" data-scroll-target="#rna-com-camada-oculta">RNA com camada oculta</a></li>
+  <li><a href="#representa%C3%A7%C3%A3o-de-cada-neur%C3%B4nio-da-rede" id="toc-representação-de-cada-neurônio-da-rede" class="nav-link" data-scroll-target="#representa%C3%A7%C3%A3o-de-cada-neur%C3%B4nio-da-rede">Representação de cada neurônio da rede</a></li>
+  <li><a href="#fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o" id="toc-funções-de-ativação" class="nav-link" data-scroll-target="#fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o">Funções de Ativação</a></li>
+  <li><a href="#por-que-precisamos-de-fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o" id="toc-por-que-precisamos-de-funções-de-ativação" class="nav-link" data-scroll-target="#por-que-precisamos-de-fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o">Por que precisamos de funções de ativação?</a></li>
+  <li><a href="#estima%C3%A7%C3%A3o-backpropagation" id="toc-estimação-backpropagation" class="nav-link" data-scroll-target="#estima%C3%A7%C3%A3o-backpropagation">Estimação: Backpropagation</a></li>
+  <li><a href="#atualiza%C3%A7%C3%A3o-dos-pesos" id="toc-atualização-dos-pesos" class="nav-link" data-scroll-target="#atualiza%C3%A7%C3%A3o-dos-pesos">Atualização dos pesos</a></li>
+  </ul>
+</li>
+  <li><a href="#por-que-o-nome-backpropagation" id="toc-por-que-o-nome-backpropagation" class="nav-link" data-scroll-target="#por-que-o-nome-backpropagation">Por que o nome Backpropagation?</a></li>
+  <li>
+<a href="#rede-neural-aprendendo-uma-fun%C3%A7%C3%A3o-n%C3%A3o-linear" id="toc-rede-neural-aprendendo-uma-função-não-linear" class="nav-link" data-scroll-target="#rede-neural-aprendendo-uma-fun%C3%A7%C3%A3o-n%C3%A3o-linear">Rede neural aprendendo uma função não linear</a>
+  <ul class="collapse">
+<li><a href="#s%C3%ADntese" id="toc-síntese" class="nav-link" data-scroll-target="#s%C3%ADntese">Síntese</a></li>
+  </ul>
+</li>
+  <li><a href="#flexibilidade-vs-efici%C3%AAncia" id="toc-flexibilidade-vs-eficiência" class="nav-link" data-scroll-target="#flexibilidade-vs-efici%C3%AAncia">Flexibilidade vs Eficiência</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/regressao/met_nao_param/met_nao_param.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="met_nao_param.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Parte I : Regressão</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Métodos Não Paramétricos</span></p>
 </div>
 
-</section><section id="introdução" class="slide level2"><h2>Introdução</h2>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="introdução" class="level2"><h2 class="anchored" data-anchor-id="introdução">Introdução</h2>
 <p>Considere o problema de estimar <span class="math inline">\(f(x) = E(Y \mid X = x)\)</span> a partir de uma amostra de tamanho <span class="math inline">\(n\)</span>.</p>
 <p>Quando <span class="math inline">\(n\)</span> é pequeno, é comum impor uma estrutura paramétrica para <span class="math inline">\(f\)</span>, por exemplo,</p>
 <p><span class="math display">\[
@@ -164,15 +497,15 @@ f(x) = x^t \beta,
 \]</span></p>
 <p>o que reduz o número de parâmetros a serem estimados.</p>
 <p>Essa restrição tende a produzir estimadores com <strong>baixa variância</strong>, ainda que à custa de um possível viés.</p>
-</section><section id="introdução-1" class="slide level2"><h2>Introdução</h2>
+</section><section id="introdução-1" class="level2"><h2 class="anchored" data-anchor-id="introdução-1">Introdução</h2>
 <p>À medida que o tamanho amostral aumenta, torna-se possível considerar classes de funções mais ricas.</p>
 <p>Nesse caso, admite-se um modelo mais flexível para <span class="math inline">\(f\)</span>, reduzindo o viés da estimativa, ainda que isso implique um aumento na variância.</p>
 <p>Esse comportamento reflete o compromisso fundamental entre viés e variância na estimação.</p>
-</section><section id="introdução-2" class="slide level2"><h2>Introdução</h2>
+</section><section id="introdução-2" class="level2"><h2 class="anchored" data-anchor-id="introdução-2">Introdução</h2>
 <p>Motivados por essa observação, consideramos modelos não paramétricos.</p>
 <p>Informalmente, um modelo não paramétrico é aquele em que a complexidade cresce com o tamanho da amostra, podendo ser interpretado como um modelo com um número efetivamente infinito de parâmetros.</p>
 <p>O objetivo é permitir que os dados determinem a forma da função <span class="math inline">\(f\)</span>, evitando restrições estruturais rígidas.</p>
-</section><section id="problema-de-regressão" class="slide level2"><h2>Problema de regressão</h2>
+</section><section id="problema-de-regressão" class="level2"><h2 class="anchored" data-anchor-id="problema-de-regressão">Problema de regressão</h2>
 <p>Considere o modelo</p>
 <p><span class="math display">\[
 Y = f(X) + \varepsilon,
@@ -186,7 +519,8 @@ E(\varepsilon \mid X) = 0, \qquad Var(\varepsilon \mid X) = \sigma^2
 f(x) = E(Y \mid X = x)
 \]</span></p>
 <p>Esse problema é intrinsecamente infinito-dimensional, pois <span class="math inline">\(f\)</span> pode ser uma função arbitrária.</p>
-</section><section class="slide level2"><h3 id="redução-do-problema">Redução do problema</h3>
+<hr>
+<section id="redução-do-problema" class="level3"><h3 class="anchored" data-anchor-id="redução-do-problema">Redução do problema</h3>
 <p>Para tornar o problema tratável, restringimos <span class="math inline">\(f\)</span> a uma classe de funções.</p>
 <p>Assim, buscamos uma aproximação</p>
 <p><span class="math display">\[
@@ -194,10 +528,10 @@ f(x) \approx g(x),
 \]</span></p>
 <p>onde <span class="math inline">\(g\)</span> pertence a um espaço funcional de dimensão finita, ou seja, a uma classe de funções mais simples.</p>
 <p>A escolha dessa classe determina a flexibilidade do modelo.</p>
-</section><section class="slide level2"><h3 id="motivação-para-construções-locais">Motivação para construções locais</h3>
+<hr></section><section id="motivação-para-construções-locais" class="level3"><h3 class="anchored" data-anchor-id="motivação-para-construções-locais">Motivação para construções locais</h3>
 <p>Se a função <span class="math inline">\(f\)</span> apresenta comportamentos distintos em diferentes regiões do domínio, uma única expressão global pode ser inadequada.</p>
 <p>Isso sugere construir <span class="math inline">\(g\)</span> de forma que diferentes regiões do domínio possam ser modeladas de maneira distinta.</p>
-</section><section class="slide level2"><h3 id="aproximação-por-partes">Aproximação por partes</h3>
+<hr></section><section id="aproximação-por-partes" class="level3"><h3 class="anchored" data-anchor-id="aproximação-por-partes">Aproximação por partes</h3>
 <p>Para isso, fixamos pontos, chamados de nós (knots)</p>
 <p><span class="math display">\[
 t_1 &lt; t_2 &lt; \cdots &lt; t_p,
@@ -213,13 +547,13 @@ g_p(x), &amp; x \in (t_p,t_{p+1})
 \end{cases}
 \]</span></p>
 <p>Essa construção permite adaptação local.</p>
-</section><section class="slide level2"><h3 id="continuidade">Continuidade</h3>
+<hr></section><section id="continuidade" class="level3"><h3 class="anchored" data-anchor-id="continuidade">Continuidade</h3>
 <p>Para evitar descontinuidades, impomos</p>
 <p><span class="math display">\[
 g(t_j^-) = g(t_j^+)
 \]</span></p>
 <p>Assim, a função permanece contínua em todo o domínio.</p>
-</section><section class="slide level2"><h3 id="forma-analítica">Forma analítica</h3>
+<hr></section><section id="forma-analítica" class="level3"><h3 class="anchored" data-anchor-id="forma-analítica">Forma analítica</h3>
 <p>Essa construção pode ser escrita como</p>
 <p><span class="math display">\[
 g(x) = \beta_0 + \beta_1 x + \sum_{j=1}^{p} \gamma_j (x - t_j)_+,
@@ -228,7 +562,8 @@ g(x) = \beta_0 + \beta_1 x + \sum_{j=1}^{p} \gamma_j (x - t_j)_+,
 <p><span class="math display">\[
 (x - t)_+ = \max(x - t, 0)
 \]</span></p>
-</section><section class="slide level2"><p>Para <span class="math inline">\(x &lt; t_j\)</span>,</p>
+<hr>
+<p>Para <span class="math inline">\(x &lt; t_j\)</span>,</p>
 <p><span class="math display">\[
 (x - t_j)_+ = 0
 \]</span></p>
@@ -237,11 +572,11 @@ g(x) = \beta_0 + \beta_1 x + \sum_{j=1}^{p} \gamma_j (x - t_j)_+,
 (x - t_j)_+ = x - t_j
 \]</span></p>
 <p>Cada termo é ativado apenas após o nó.</p>
-</section><section class="slide level2"><h3 id="interpretação-geométrica">Interpretação geométrica</h3>
+<hr></section><section id="interpretação-geométrica" class="level3"><h3 class="anchored" data-anchor-id="interpretação-geométrica">Interpretação geométrica</h3>
 <p>Antes do primeiro nó, a função é linear.</p>
 <p>Após cada nó, um novo termo entra no modelo, alterando a inclinação da função.</p>
 <p>A função permanece contínua, mas sua inclinação muda nos nós.</p>
-</section><section class="slide level2"><h3 id="forma-por-partes">Forma por partes</h3>
+<hr></section><section id="forma-por-partes" class="level3"><h3 class="anchored" data-anchor-id="forma-por-partes">Forma por partes</h3>
 <p>Assim, para nós <span class="math inline">\(t_1, t_2, t_3\)</span>, a função pode ser escrita como</p>
 <p><span class="math display">\[
 g(x) =
@@ -252,17 +587,17 @@ g(x) =
 \beta_0 + \beta_1 x + \sum_{j=1}^3 \gamma_j(x - t_j), &amp; x &gt; t_3
 \end{cases}
 \]</span></p>
-</section><section class="slide level2"><h3 id="estimação-dos-coeficientes">Estimação dos coeficientes</h3>
+<hr></section><section id="estimação-dos-coeficientes" class="level3"><h3 class="anchored" data-anchor-id="estimação-dos-coeficientes">Estimação dos coeficientes</h3>
 <p>Dado <span class="math inline">\((x_i,y_i)\)</span>, estimamos</p>
 <p><span class="math display">\[
 \hat{\beta} = \arg\min \sum_{i=1}^n (y_i - g(x_i))^2
 \]</span></p>
 <p>O problema reduz-se a mínimos quadrados.</p>
-</section><section class="slide level2"><h3 id="papel-dos-nós">Papel dos nós</h3>
+<hr></section><section id="papel-dos-nós" class="level3"><h3 class="anchored" data-anchor-id="papel-dos-nós">Papel dos nós</h3>
 <p>O número de nós <span class="math inline">\(p\)</span> controla a complexidade do modelo.</p>
 <p>Mais nós permitem maior adaptação local.</p>
 <p>Menos nós produzem funções mais rígidas.</p>
-</section><section class="slide level2"><h3 id="exemplo">Exemplo</h3>
+<hr></section><section id="exemplo" class="level3"><h3 class="anchored" data-anchor-id="exemplo">Exemplo</h3>
 <p>Considere splines lineares com:</p>
 <ul>
 <li>dois nós<br>
@@ -270,12 +605,20 @@ g(x) =
 <li>três nós</li>
 </ul>
 <p>O aumento do número de nós introduz novas mudanças de inclinação na função estimada.</p>
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-1-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação">Interpretação</h3>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-1-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section><section id="interpretação" class="level3"><h3 class="anchored" data-anchor-id="interpretação">Interpretação</h3>
 <p>Cada linha vertical representa um nó.</p>
 <p>Cada nó ativa um termo <span class="math inline">\((x - t_j)_+\)</span>.</p>
 <p>A função é contínua, mas sua inclinação muda nesses pontos.</p>
-</section><section class="slide level2"><h3 id="limitação-do-spline-linear">Limitação do spline linear</h3>
+<hr></section><section id="limitação-do-spline-linear" class="level3"><h3 class="anchored" data-anchor-id="limitação-do-spline-linear">Limitação do spline linear</h3>
 <p>No spline linear, temos</p>
 <p><span class="math display">\[
 g(t_j^-) = g(t_j^+),
@@ -286,12 +629,12 @@ g(t_j^-) = g(t_j^+),
 g'(t_j^-) \neq g'(t_j^+),
 \]</span></p>
 <p>o que implica mudanças abruptas na inclinação.</p>
-</section><section class="slide level2"><h3 id="necessidade-de-maior-suavidade">Necessidade de maior suavidade</h3>
+<hr></section><section id="necessidade-de-maior-suavidade" class="level3"><h3 class="anchored" data-anchor-id="necessidade-de-maior-suavidade">Necessidade de maior suavidade</h3>
 <p>Em muitas aplicações, deseja-se que a função estimada varie de forma mais suave.</p>
 <p>Isso sugere impor continuidade também nas derivadas da função.</p>
 <p>Para obter maior suavidade, consideramos funções polinomiais de grau mais alto em cada subintervalo.</p>
 <p>Em particular, utilizamos polinômios de grau 3.</p>
-</section><section class="slide level2"><h3 id="definição-de-spline-cúbico">Definição de spline cúbico</h3>
+<hr></section><section id="definição-de-spline-cúbico" class="level3"><h3 class="anchored" data-anchor-id="definição-de-spline-cúbico">Definição de spline cúbico</h3>
 <p>Um spline cúbico é uma função <span class="math inline">\(g\)</span> tal que:</p>
 <ul>
 <li>em cada subintervalo, <span class="math inline">\(g\)</span> é um polinômio de grau 3,</li>
@@ -309,11 +652,11 @@ g'(t_j^-) = g'(t_j^+),
 g''(t_j^-) = g''(t_j^+)
 \]</span></p>
 <p>Essas condições garantem suavidade global da função.</p>
-</section><section class="slide level2"><h3 id="consequência-geométrica">Consequência geométrica</h3>
+<hr></section><section id="consequência-geométrica" class="level3"><h3 class="anchored" data-anchor-id="consequência-geométrica">Consequência geométrica</h3>
 <p>A função é contínua.</p>
 <p>A inclinação também é contínua.</p>
 <p>A curvatura varia suavemente ao longo do domínio.</p>
-</section><section class="slide level2"><h3 id="forma-analítica-1">Forma analítica</h3>
+<hr></section><section id="forma-analítica-1" class="level3"><h3 class="anchored" data-anchor-id="forma-analítica-1">Forma analítica</h3>
 <p>Uma forma conveniente de escrever o spline cúbico é</p>
 <p><span class="math display">\[
 g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{j=1}^{p} \gamma_j (x - t_j)_+^3
@@ -327,21 +670,30 @@ g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{j=1}^{p} \gamma_j
 (x - t_j)_+^3 = (x - t_j)^3
 \]</span></p>
 <p>Cada nó introduz uma modificação local na curvatura da função.</p>
-</section><section class="slide level2"><h3 id="estimação">Estimação</h3>
+<hr></section><section id="estimação" class="level3"><h3 class="anchored" data-anchor-id="estimação">Estimação</h3>
 <p>Dado <span class="math inline">\((x_i,y_i)\)</span>, estimamos</p>
 <p><span class="math display">\[
 \hat{\beta} = \arg\min \sum_{i=1}^n (y_i - g(x_i))^2
 \]</span></p>
 <p>O problema permanece linear nos parâmetros.</p>
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-2-1.png" class="r-stretch"></section><section id="k-vizinhos-mais-próximos-knn" class="slide level2"><h2>k Vizinhos Mais Próximos (KNN)</h2>
-<p>O método dos <em>k vizinhos mais próximos</em> (<em>k-nearest neighbors</em>, KNN) <span class="citation" data-cites="benedetti1977">Benedetti (<a href="#/references" role="doc-biblioref" onclick="">1977</a>)</span> e <span class="citation" data-cites="stone1977">Stone (<a href="#/references" role="doc-biblioref" onclick="">1977</a>)</span> é um dos métodos não paramétricos mais utilizados em aprendizado de máquina.</p>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-2-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="k-vizinhos-mais-próximos-knn" class="level2"><h2 class="anchored" data-anchor-id="k-vizinhos-mais-próximos-knn">k Vizinhos Mais Próximos (KNN)</h2>
+<p>O método dos <em>k vizinhos mais próximos</em> (<em>k-nearest neighbors</em>, KNN) <span class="citation" data-cites="benedetti1977">Benedetti (<a href="#ref-benedetti1977" role="doc-biblioref">1977</a>)</span> e <span class="citation" data-cites="stone1977">Stone (<a href="#ref-stone1977" role="doc-biblioref">1977</a>)</span> é um dos métodos não paramétricos mais utilizados em aprendizado de máquina.</p>
 <p>Seu objetivo é estimar a função de regressão:</p>
 <p><span class="math display">\[
 r(\mathbf{x}) = \mathbb{E}(\boldsymbol{y} \mid \boldsymbol{X} = \mathbf{x})
 \]</span></p>
 <p>com base na informação observada na vizinhança de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section><section class="slide level2"><h3 id="ideia-central">Ideia central</h3>
+<hr>
+<section id="ideia-central" class="level3"><h3 class="anchored" data-anchor-id="ideia-central">Ideia central</h3>
 <p>Dado um ponto <span class="math inline">\(\mathbf{x}\)</span>, identificamos o conjunto:</p>
 <p><span class="math display">\[
 \mathcal{N}_k(\mathbf{x}) = \{ \text{índices dos } k \text{ vizinhos mais próximos de } \mathbf{x} \}
@@ -350,14 +702,15 @@ r(\mathbf{x}) = \mathbb{E}(\boldsymbol{y} \mid \boldsymbol{X} = \mathbf{x})
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 \]</span></p>
-</section><section class="slide level2"><h3 id="interpretação-1">Interpretação</h3>
+<hr></section><section id="interpretação-1" class="level3"><h3 class="anchored" data-anchor-id="interpretação-1">Interpretação</h3>
 <p>A função <span class="math inline">\(g(\mathbf{x})\)</span> é uma média local das respostas <span class="math inline">\(\boldsymbol{y}\)</span>, calculada sobre uma vizinhança definida pela proximidade em <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
 <p>Isso caracteriza o KNN como um método de:</p>
 <ul>
 <li>baixa suposição estrutural sobre <span class="math inline">\(r(\mathbf{x})\)</span>
 </li>
 <li>forte dependência da estrutura local dos dados</li>
-</ul></section><section class="slide level2"><h3 id="definição-da-vizinhança-em-knn">Definição da vizinhança em KNN</h3>
+</ul>
+<hr></section><section id="definição-da-vizinhança-em-knn" class="level3"><h3 class="anchored" data-anchor-id="definição-da-vizinhança-em-knn">Definição da vizinhança em KNN</h3>
 <p>Seja <span class="math inline">\(\mathbf{x} \in \mathbb{R}^p\)</span>. Definimos o conjunto dos <span class="math inline">\(k\)</span> vizinhos mais próximos de <span class="math inline">\(\mathbf{x}\)</span> como:</p>
 <p><span class="math display">\[
 \mathcal{N}_k(\mathbf{x}) = \left\{ i \in \{1,\dots,n\} : d(\mathbf{x}_i, \mathbf{x}) \le d_{\mathbf{x}}^{(k)} \right\}
@@ -370,13 +723,13 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 <span class="math inline">\(d_{\mathbf{x}}^{(k)}\)</span> é a distância do <span class="math inline">\(k\)</span>-ésimo vizinho mais próximo de <span class="math inline">\(\mathbf{x}\)</span>.</li>
 </ul>
 <p>O conjunto <span class="math inline">\(\mathcal{N}_k(\mathbf{x})\)</span> contém exatamente os <span class="math inline">\(k\)</span> pontos mais próximos de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section><section class="slide level2"><h3 id="estimador-de-regressão-knn">Estimador de regressão KNN</h3>
+<hr></section><section id="estimador-de-regressão-knn" class="level3"><h3 class="anchored" data-anchor-id="estimador-de-regressão-knn">Estimador de regressão KNN</h3>
 <p>A função de regressão é estimada por uma média local:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 \]</span></p>
 <p>A estimativa em <span class="math inline">\(\mathbf{x}\)</span> depende exclusivamente dos valores de <span class="math inline">\(\boldsymbol{y}\)</span> observados nos pontos mais próximos de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section><section class="slide level2"><h3 id="característica-fundamental">Característica fundamental</h3>
+<hr></section><section id="característica-fundamental" class="level3"><h3 class="anchored" data-anchor-id="característica-fundamental">Característica fundamental</h3>
 <p>O estimador é:</p>
 <ul>
 <li>local<br>
@@ -384,13 +737,14 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 <li>não paramétrico<br>
 </li>
 <li>dependente da geometria dos dados</li>
-</ul></section><section id="o-papel-do-parâmetro-k" class="slide level2"><h2>O papel do parâmetro <span class="math inline">\(k\)</span>
+</ul>
+<hr></section></section><section id="o-papel-do-parâmetro-k" class="level2"><h2 class="anchored" data-anchor-id="o-papel-do-parâmetro-k">O papel do parâmetro <span class="math inline">\(k\)</span>
 </h2>
 <p>O parâmetro <span class="math inline">\(k\)</span> controla o grau de suavização do estimador. Define o equilíbrio viés e variância</p>
 <p><br></p>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="k-pequeno">
+<section id="k-pequeno" class="level3"><h3 class="anchored" data-anchor-id="k-pequeno">
 <span class="math inline">\(k\)</span> pequeno</h3>
 <ul>
 <li>ajuste mais local<br>
@@ -401,9 +755,9 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 </li>
 <li>alta variância<br>
 </li>
-</ul>
+</ul></section>
 </div><div class="column" style="width:48%;">
-<h3 id="k-grande">
+<section id="k-grande" class="level3"><h3 class="anchored" data-anchor-id="k-grande">
 <span class="math inline">\(k\)</span> grande</h3>
 <ul>
 <li>ajuste mais global<br>
@@ -414,38 +768,48 @@ g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 </li>
 <li>baixa variância<br>
 </li>
-</ul>
-</div></div>
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-3-1.png" class="r-stretch"></section><section id="nadarayawatson" class="slide level2"><h2>Nadaraya–Watson</h2>
+</ul></section>
+</div>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-3-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="nadarayawatson" class="level2"><h2 class="anchored" data-anchor-id="nadarayawatson">Nadaraya–Watson</h2>
 <p>No KNN, estimamos a função de regressão por:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} y_i
 \]</span></p>
 <p><br></p>
-<h3 id="limitação-do-knn">Limitação do KNN</h3>
+<section id="limitação-do-knn" class="level3"><h3 class="anchored" data-anchor-id="limitação-do-knn">Limitação do KNN</h3>
 <p>Todos os pontos na vizinhança recebem o <strong>mesmo peso</strong>.</p>
 <p>Podemos melhorar essa abordagem atribuindo <strong>pesos diferentes</strong> às observações, de acordo com a sua proximidade de <span class="math inline">\(\mathbf{x}\)</span>.</p>
-</section><section class="slide level2"><h3 id="estimador-de-nadarayawatson">Estimador de Nadaraya–Watson</h3>
+<hr></section><section id="estimador-de-nadarayawatson" class="level3"><h3 class="anchored" data-anchor-id="estimador-de-nadarayawatson">Estimador de Nadaraya–Watson</h3>
 <p>O estimador de regressão é dado por:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \sum_{i=1}^{n} w_i(\mathbf{x})\,y_i
 \]</span></p>
 <p>onde <span class="math inline">\(w_i(\mathbf{x})\)</span> representa o peso atribuído à observação <span class="math inline">\(i\)</span>.</p>
 <p><br></p>
-<h3 id="propriedade-importante">Propriedade importante</h3>
+</section><section id="propriedade-importante" class="level3"><h3 class="anchored" data-anchor-id="propriedade-importante">Propriedade importante</h3>
 <p><span class="math display">\[
 \sum_{i=1}^{n} w_i(\mathbf{x}) = 1
 \]</span></p>
-</section><section class="slide level2"><h3 id="interpretação-2">Interpretação</h3>
+<hr></section><section id="interpretação-2" class="level3"><h3 class="anchored" data-anchor-id="interpretação-2">Interpretação</h3>
 <p>A estimativa é uma <strong>média ponderada</strong>, onde os pesos dependem da distância entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span>.</p>
 <p><br></p>
-<h3 id="definição-dos-pesos">Definição dos pesos</h3>
+</section><section id="definição-dos-pesos" class="level3"><h3 class="anchored" data-anchor-id="definição-dos-pesos">Definição dos pesos</h3>
 <p>Os pesos são definidos por:</p>
 <p><span class="math display">\[
 w_i(\mathbf{x}) = \frac{K(\mathbf{x}, \mathbf{x}_i)}{\sum_{j=1}^{n} K(\mathbf{x}, \mathbf{x}_j)}
 \]</span></p>
-</section><section class="slide level2"><p>Em que,</p>
+<hr>
+<p>Em que,</p>
 <ul>
 <li>
 <span class="math inline">\(K(\mathbf{x}, \mathbf{x}_i)\)</span> é um <em>kernel de suavização</em>, usado para medir a similaridade entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span>
@@ -459,8 +823,8 @@ w_i(\mathbf{x}) = \frac{K(\mathbf{x}, \mathbf{x}_i)}{\sum_{j=1}^{n} K(\mathbf{x}
 <li>o grau de suavização do estimador</li>
 </ul>
 <p>Observações próximas recebem maior influência na estimativa de <span class="math inline">\(g(x)\)</span>.</p>
-</section><section class="slide level2"><h3 id="exemplos-de-kernels">Exemplos de kernels</h3>
-<h3 id="kernel-uniforme">Kernel uniforme</h3>
+<hr></section><section id="exemplos-de-kernels" class="level3"><h3 class="anchored" data-anchor-id="exemplos-de-kernels">Exemplos de kernels</h3>
+</section><section id="kernel-uniforme" class="level3"><h3 class="anchored" data-anchor-id="kernel-uniforme">Kernel uniforme</h3>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
 \]</span></p>
@@ -468,7 +832,7 @@ K(\mathbf{x}, \mathbf{x}_i) = \mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
 <li>todos os pontos dentro de <span class="math inline">\(h\)</span> têm o mesmo peso</li>
 </ul>
 <p><br></p>
-<h3 id="kernel-gaussiano">Kernel gaussiano</h3>
+</section><section id="kernel-gaussiano" class="level3"><h3 class="anchored" data-anchor-id="kernel-gaussiano">Kernel gaussiano</h3>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \frac{1}{\sqrt{2\pi}h}
 \exp\left(-\frac{d(\mathbf{x}, \mathbf{x}_i)^2}{2h^2}\right)
@@ -477,7 +841,8 @@ K(\mathbf{x}, \mathbf{x}_i) = \frac{1}{\sqrt{2\pi}h}
 <li>todos os pontos recebem peso<br>
 </li>
 <li>pontos mais próximos têm maior influência</li>
-</ul></section><section class="slide level2"><h3 id="kernel-triangular">Kernel triangular</h3>
+</ul>
+<hr></section><section id="kernel-triangular" class="level3"><h3 class="anchored" data-anchor-id="kernel-triangular">Kernel triangular</h3>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)}{h}\right)\mathbf{1}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
 \]</span></p>
@@ -485,19 +850,20 @@ K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)}{h}\ri
 <li>peso decresce com a distância</li>
 </ul>
 <p><br></p>
-<h3 id="kernel-de-epanechnikov">Kernel de Epanechnikov</h3>
+</section><section id="kernel-de-epanechnikov" class="level3"><h3 class="anchored" data-anchor-id="kernel-de-epanechnikov">Kernel de Epanechnikov</h3>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2}\right)\mathbf{1}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
 \]</span></p>
 <ul>
 <li>peso decresce com a distância</li>
-</ul></section><section class="slide level2"><h3 id="o-papel-do-parâmetro-h">O papel do parâmetro <span class="math inline">\(h\)</span>
+</ul>
+<hr></section><section id="o-papel-do-parâmetro-h" class="level3"><h3 class="anchored" data-anchor-id="o-papel-do-parâmetro-h">O papel do parâmetro <span class="math inline">\(h\)</span>
 </h3>
 <p>O parâmetro <span class="math inline">\(h\)</span> controla a largura da vizinhança.</p>
 <p><br></p>
-<div class="columns">
+</section><div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="caso-h-pequeno">Caso <span class="math inline">\(h\)</span> pequeno</h3>
+<section id="caso-h-pequeno" class="level3"><h3 class="anchored" data-anchor-id="caso-h-pequeno">Caso <span class="math inline">\(h\)</span> pequeno</h3>
 <ul>
 <li>menor suavização<br>
 </li>
@@ -505,9 +871,9 @@ K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2
 </li>
 <li>menor viés<br>
 </li>
-</ul>
+</ul></section>
 </div><div class="column" style="width:48%;">
-<h3 id="caso-h-grande">Caso <span class="math inline">\(h\)</span> grande</h3>
+<section id="caso-h-grande" class="level3"><h3 class="anchored" data-anchor-id="caso-h-grande">Caso <span class="math inline">\(h\)</span> grande</h3>
 <ul>
 <li>maior suavização<br>
 </li>
@@ -515,11 +881,29 @@ K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2
 </li>
 <li>maior viés<br>
 </li>
-</ul>
-</div></div>
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-4-1.png" class="r-stretch"></section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-5-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="observação-prática">Observação prática</h3>
+</ul></section>
+</div>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-4-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-5-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<section id="observação-prática" class="level3"><h3 class="anchored" data-anchor-id="observação-prática">Observação prática</h3>
 <p>Na prática, observa-se que:</p>
 <ul>
 <li>a escolha do <strong>kernel</strong> tem pouca influência no resultado<br>
@@ -527,18 +911,20 @@ K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2
 <li>a escolha do parâmetro de suavização (<span class="math inline">\(h\)</span>) é decisiva</li>
 </ul>
 <p>O comportamento do estimador é controlado principalmente por: <span class="math inline">\(h\)</span> (largura da vizinhança)</p>
-</section><section id="regressão-polinomial-local" class="slide level2"><h2>Regressão Polinomial Local</h2>
+</section></section><section id="regressão-polinomial-local" class="level2"><h2 class="anchored" data-anchor-id="regressão-polinomial-local">Regressão Polinomial Local</h2>
 <p>A regressão de Nadaraya–Watson estima <span class="math inline">\(g(x)\)</span> como uma <strong>média ponderada local</strong>, ou seja, resolve</p>
 <p><span class="math display">\[
 \hat{g}(\mathbf{x}) = \arg\min_{\beta_0} \sum_{i=1}^n w_i(\mathbf{x})\,(Y_i - \beta_0)^2
 \]</span></p>
 <p>Isso equivale a ajustar <strong>localmente uma constante</strong> (polinômio de grau 0).</p>
-</section><section class="slide level2"><p>A regressão polinomial local generaliza essa ideia, permitindo que o ajuste local seja mais flexível.</p>
+<hr>
+<p>A regressão polinomial local generaliza essa ideia, permitindo que o ajuste local seja mais flexível.</p>
 <p>Em vez de ajustar apenas um intercepto, consideramos um polinômio de grau <span class="math inline">\(p\)</span>:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \]</span></p>
-</section><section class="slide level2"><p>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, estimamos os coeficientes resolvendo:</p>
+<hr>
+<p>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, estimamos os coeficientes resolvendo:</p>
 <p><span class="math display">\[
 (\hat{\beta}_0, \ldots, \hat{\beta}_p)
 =
@@ -546,7 +932,8 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \sum_{i=1}^n w_i(\mathbf{x})\left(Y_i - \beta_0 - \sum_{j=1}^p \beta_j x_i^j \right)^2
 \]</span></p>
 <p>Ou seja, realizamos um <strong>ajuste de mínimos quadrados ponderados localmente</strong>.</p>
-</section><section class="slide level2"><p>A solução matricial é dada por:</p>
+<hr>
+<p>A solução matricial é dada por:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} =
 (B^t D B)^{-1} B^t D \boldsymbol{y}
@@ -561,7 +948,9 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 </li>
 <li>
 <span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
-</ul></section><section class="slide level2"><h3 id="interpretação-3">Interpretação</h3>
+</ul>
+<hr>
+<section id="interpretação-3" class="level3"><h3 class="anchored" data-anchor-id="interpretação-3">Interpretação</h3>
 <ul>
 <li>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, ajustamos <strong>um modelo diferente</strong>
 </li>
@@ -570,7 +959,7 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 </li>
 </ul>
 <p><br></p>
-<h3 id="casos-importantes">Casos importantes</h3>
+</section><section id="casos-importantes" class="level3"><h3 class="anchored" data-anchor-id="casos-importantes">Casos importantes</h3>
 <ul>
 <li>
 <span class="math inline">\(p = 0\)</span> → regressão de Nadaraya–Watson<br>
@@ -580,11 +969,21 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 </li>
 <li>
 <span class="math inline">\(p = 2\)</span> → regressão quadrática local</li>
-</ul></section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-6-1.png" class="r-stretch"></section><section class="slide level2"><p>Note que</p>
+</ul>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-6-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p>Note que</p>
 <p>A figura compara estimadores obtidos com o mesmo kernel e a mesma largura de banda <span class="math inline">\(h\)</span>, variando apenas o grau <span class="math inline">\(p\)</span> do polinômio ajustado localmente.</p>
 <p>Quando <span class="math inline">\(p=0\)</span>, obtemos o estimador de Nadaraya-Watson. À medida que o grau aumenta, o modelo local torna-se mais flexível, podendo capturar melhor a curvatura da função de regressão.</p>
-</section><section id="árvores-de-regressão" class="slide level2"><h2>Árvores de Regressão</h2>
+</section></section><section id="árvores-de-regressão" class="level2"><h2 class="anchored" data-anchor-id="árvores-de-regressão">Árvores de Regressão</h2>
 <p>Até agora, modelamos <span class="math inline">\(g(\mathbf{x})\)</span> como uma função suave:</p>
 <ul>
 <li>splines<br>
@@ -594,10 +993,11 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 <li>regressão local</li>
 </ul>
 <p>Agora adotamos uma abordagem diferente:</p>
-<blockquote>
+<blockquote class="blockquote">
 <p>modelar <span class="math inline">\(g(\mathbf{x})\)</span> por partições do espaço das covariáveis.</p>
 </blockquote>
-</section><section class="slide level2"><h3 id="ideia-central-1">Ideia central</h3>
+<hr>
+<section id="ideia-central-1" class="level3"><h3 class="anchored" data-anchor-id="ideia-central-1">Ideia central</h3>
 <p>Uma árvore de regressão divide o espaço de entrada em regiões:</p>
 <p><span class="math display">\[
 \mathcal{R}_1, \mathcal{R}_2, \ldots, \mathcal{R}_M
@@ -610,7 +1010,7 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 <p><span class="math display">\[
 c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 \]</span></p>
-</section><section id="interpretação-4" class="slide level2"><h2>Interpretação</h2>
+<hr></section></section><section id="interpretação-4" class="level2"><h2 class="anchored" data-anchor-id="interpretação-4">Interpretação</h2>
 <ul>
 <li>o espaço é dividido em “caixas”</li>
 <li>dentro de cada região, a previsão é constante → média dos dados</li>
@@ -618,26 +1018,27 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 </li>
 </ul>
 <p><br></p>
-<h3 id="problema-de-estimação">Problema de estimação</h3>
+<section id="problema-de-estimação" class="level3"><h3 class="anchored" data-anchor-id="problema-de-estimação">Problema de estimação</h3>
 <p>Queremos encontrar a melhor partição:</p>
 <p><span class="math display">\[
 \{\mathcal{R}_1, \ldots, \mathcal{R}_M\}
 \]</span></p>
-</section><section class="slide level2"><h3 id="critério-de-qualidade">Critério de qualidade</h3>
+<hr></section><section id="critério-de-qualidade" class="level3"><h3 class="anchored" data-anchor-id="critério-de-qualidade">Critério de qualidade</h3>
 <p>A qualidade da árvore é medida por:</p>
 <p><span class="math display">\[
 \mathcal{P}(T) =
 \sum_{m=1}^M \sum_{i:x_i \in \mathcal{R}_m}
 (y_i - c_m)^2
 \]</span> <br></p>
-<h3 id="interpretação-do-critério">Interpretação do critério</h3>
+</section><section id="interpretação-do-critério" class="level3"><h3 class="anchored" data-anchor-id="interpretação-do-critério">Interpretação do critério</h3>
 <ul>
 <li>mede a variabilidade dentro das regiões<br>
 </li>
 <li>regiões boas → valores de <span class="math inline">\(y\)</span> homogêneos<br>
 </li>
 <li>objetivo → minimizar a variância intra-região</li>
-</ul></section><section class="slide level2"><h3 id="dificuldade-do-problema">Dificuldade do problema</h3>
+</ul>
+<hr></section><section id="dificuldade-do-problema" class="level3"><h3 class="anchored" data-anchor-id="dificuldade-do-problema">Dificuldade do problema</h3>
 <p>Minimizar <span class="math inline">\(\mathcal{P}(T)\)</span> globalmente é:</p>
 <ul>
 <li>computacionalmente inviável<br>
@@ -645,26 +1046,27 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 <li>envolve todas as possíveis partições</li>
 </ul>
 <p><br></p>
-<h3 id="solução-prática">Solução prática</h3>
+</section><section id="solução-prática" class="level3"><h3 class="anchored" data-anchor-id="solução-prática">Solução prática</h3>
 <p>Utilizamos uma abordagem gulosa:</p>
 <ul>
 <li>escolhemos a melhor divisão local<br>
 </li>
 <li>repetimos recursivamente</li>
-</ul></section><section class="slide level2"><h3 id="divisão-em-um-nó">Divisão em um nó</h3>
+</ul>
+<hr></section><section id="divisão-em-um-nó" class="level3"><h3 class="anchored" data-anchor-id="divisão-em-um-nó">Divisão em um nó</h3>
 <p>Para cada variável <span class="math inline">\(X_j\)</span> e ponto <span class="math inline">\(s\)</span>:</p>
 <p><span class="math display">\[
 \mathcal{R}_1 = \{x: x_j \leq s\}, \quad
 \mathcal{R}_2 = \{x: x_j &gt; s\}
 \]</span></p>
 <p><br></p>
-<h3 id="melhor-divisão">Melhor divisão</h3>
+</section><section id="melhor-divisão" class="level3"><h3 class="anchored" data-anchor-id="melhor-divisão">Melhor divisão</h3>
 <p>Escolhemos <span class="math inline">\((j,s)\)</span> que minimiza:</p>
 <p><span class="math display">\[
 \sum_{i \in \mathcal{R}_1} (y_i - c_{m_1})^2 +
 \sum_{i \in \mathcal{R}_2} (y_i - c_{m_2})^2
 \]</span></p>
-</section><section class="slide level2"><h3 id="construção-completa">Construção completa</h3>
+<hr></section><section id="construção-completa" class="level3"><h3 class="anchored" data-anchor-id="construção-completa">Construção completa</h3>
 <ol type="1">
 <li>Começa com todos os dados<br>
 </li>
@@ -675,13 +1077,14 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 <li>Repete</li>
 </ol>
 <p><br></p>
-<h3 id="overfitting">Overfitting</h3>
+</section><section id="overfitting" class="level3"><h3 class="anchored" data-anchor-id="overfitting">Overfitting</h3>
 <p>A árvore completa tende a:</p>
 <ul>
 <li>ajustar demais os dados<br>
 </li>
 <li>ter alta variância</li>
-</ul></section><section class="slide level2"><h3 id="poda-pruning">Poda (pruning)</h3>
+</ul>
+<hr></section><section id="poda-pruning" class="level3"><h3 class="anchored" data-anchor-id="poda-pruning">Poda (pruning)</h3>
 <p>Árvores completas tendem a sobreajustar os dados.</p>
 <p>A poda consiste em escolher uma subárvore que minimize:</p>
 <p><span class="math display">\[
@@ -695,15 +1098,23 @@ c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 <span class="math inline">\(\alpha\)</span> controla o trade-off entre ajuste e simplicidade</li>
 </ul>
 <p>Valores grandes de <span class="math inline">\(\alpha\)</span> produzem árvores menores e mais estáveis.</p>
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-7-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-da-árvore-de-regressão">Interpretação da árvore de regressão</h3>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-7-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section><section id="interpretação-da-árvore-de-regressão" class="level3"><h3 class="anchored" data-anchor-id="interpretação-da-árvore-de-regressão">Interpretação da árvore de regressão</h3>
 <p>A linha tracejada representa a função verdadeira que gerou os dados.</p>
 <p>A curva em degraus representa a árvore ajustada, que aproxima a função de regressão por regiões nas quais a predição é constante.</p>
 <p>Isso evidencia que árvores de regressão constroem estimadores do tipo <strong>piecewise</strong> constante.</p>
-</section><section class="slide level2"><h3 id="vantagens-das-árvores-de-regressão">Vantagens das Árvores de Regressão</h3>
+<hr></section><section id="vantagens-das-árvores-de-regressão" class="level3"><h3 class="anchored" data-anchor-id="vantagens-das-árvores-de-regressão">Vantagens das Árvores de Regressão</h3>
 <p>Além de serem facilmente interpretáveis, árvores apresentam propriedades importantes:</p>
 <p><br></p>
-<h4 id="variáveis-categóricas">Variáveis categóricas</h4>
+<section id="variáveis-categóricas" class="level4"><h4 class="anchored" data-anchor-id="variáveis-categóricas">Variáveis categóricas</h4>
 <p>Árvores lidam naturalmente com variáveis discretas:</p>
 <p><span class="math display">\[
 X_1 \in \{\text{verde}, \text{vermelho}\}
@@ -711,19 +1122,21 @@ X_1 \in \{\text{verde}, \text{vermelho}\}
 <ul>
 <li>não é necessário criar variáveis dummy</li>
 <li>as divisões são feitas diretamente nas categorias</li>
-</ul></section><section class="slide level2"><h4 id="seleção-automática-de-variáveis">Seleção automática de variáveis</h4>
+</ul>
+<hr></section><section id="seleção-automática-de-variáveis" class="level4"><h4 class="anchored" data-anchor-id="seleção-automática-de-variáveis">Seleção automática de variáveis</h4>
 <ul>
 <li>variáveis irrelevantes tendem a não ser utilizadas<br>
 </li>
 <li>o modelo realiza seleção de variáveis de forma implícita</li>
 </ul>
 <p><br></p>
-<h4 id="interações-entre-variáveis">Interações entre variáveis</h4>
+</section><section id="interações-entre-variáveis" class="level4"><h4 class="anchored" data-anchor-id="interações-entre-variáveis">Interações entre variáveis</h4>
 <ul>
 <li>árvores capturam interações automaticamente<br>
 </li>
 <li>não é necessário especificar termos de interação</li>
-</ul></section><section class="slide level2"><h3 id="limitação-importante">Limitação importante</h3>
+</ul>
+<hr></section></section><section id="limitação-importante" class="level3"><h3 class="anchored" data-anchor-id="limitação-importante">Limitação importante</h3>
 <p>Apesar dessas vantagens:</p>
 <ul>
 <li>árvores individuais têm alta variância<br>
@@ -731,10 +1144,10 @@ X_1 \in \{\text{verde}, \text{vermelho}\}
 <li>pequenas mudanças nos dados podem gerar árvores muito diferentes</li>
 </ul>
 <p>Para melhorar o desempenho preditivo:</p>
-<blockquote>
+<blockquote class="blockquote">
 <p>combinamos várias árvores em um único modelo</p>
 </blockquote>
-</section><section id="por-que-combinar-árvores" class="slide level2"><h2>Por que combinar árvores?</h2>
+</section></section><section id="por-que-combinar-árvores" class="level2"><h2 class="anchored" data-anchor-id="por-que-combinar-árvores">Por que combinar árvores?</h2>
 <p>Considere dois estimadores <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span>.</p>
 <p>Definimos o estimador combinado:</p>
 <p><span class="math display">\[
@@ -748,7 +1161,8 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 + \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
 + \text{bias}^2
 \]</span></p>
-</section><section class="slide level2"><p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
+<hr>
+<p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
 <ul>
 <li>não viesados<br>
 </li>
@@ -763,24 +1177,25 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
 + \frac{1}{2}\mathbb{V}(g_i(\mathbf{x}))
 \]</span></p>
-<h4 id="conclusão">Conclusão</h4>
+<section id="conclusão" class="level4"><h4 class="anchored" data-anchor-id="conclusão">Conclusão</h4>
 <p><span class="math display">\[
 \mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}x\big]
 \le
 \mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
 \]</span></p>
-</section><section class="slide level2"><p>Assim, combinar modelos:</p>
+<hr>
+<p>Assim, combinar modelos:</p>
 <ul>
 <li>mantém o viés<br>
 </li>
 <li>reduz a variância</li>
 </ul>
 <p><br></p>
-<h4 id="ideia-central-do-bagging">Ideia central do Bagging</h4>
-<blockquote>
+</section><section id="ideia-central-do-bagging" class="level4"><h4 class="anchored" data-anchor-id="ideia-central-do-bagging">Ideia central do Bagging</h4>
+<blockquote class="blockquote">
 <p>Média de vários modelos instáveis → modelo mais estável</p>
 </blockquote>
-</section><section id="bagging-bootstrap-aggregating" class="slide level2"><h2>Bagging (Bootstrap Aggregating)</h2>
+</section></section><section id="bagging-bootstrap-aggregating" class="level2"><h2 class="anchored" data-anchor-id="bagging-bootstrap-aggregating">Bagging (Bootstrap Aggregating)</h2>
 <p>A ideia central é combinar vários estimadores:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
@@ -791,8 +1206,14 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 <li>amostramos com reposição (bootstrap)<br>
 </li>
 <li>ajustamos uma árvore aos dados</li>
-</ul></section><section class="slide level2">
-<img data-src="../../..\images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="propriedade-fundamental">Propriedade fundamental</h3>
+</ul>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../../..\images/regressao/bagging.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<hr>
+<section id="propriedade-fundamental" class="level3"><h3 class="anchored" data-anchor-id="propriedade-fundamental">Propriedade fundamental</h3>
 <p>Se os estimadores são aproximadamente não viesados:</p>
 <ul>
 <li>o viés permanece semelhante<br>
@@ -805,7 +1226,7 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 \le
 \mathbb{E}[(\boldsymbol{y} - g_b(\mathbf{x}))^2 \mid \mathbf{x}]
 \]</span></p>
-</section><section class="slide level2"><h3 id="importância-de-variáveis-em-árvores">Importância de Variáveis em Árvores</h3>
+<hr></section><section id="importância-de-variáveis-em-árvores" class="level3"><h3 class="anchored" data-anchor-id="importância-de-variáveis-em-árvores">Importância de Variáveis em Árvores</h3>
 <p>Bagging permite medir a relevância de cada variável:</p>
 <ul>
 <li>baseada na redução do erro (RSS)<br>
@@ -818,7 +1239,8 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 <li>esquerda (<span class="math inline">\(\mathcal{R}_{esq}\)</span>)<br>
 </li>
 <li>direita (<span class="math inline">\(\mathcal{R}_{dir}\)</span>)</li>
-</ul></section><section class="slide level2"><h3 id="redução-do-erro">Redução do erro</h3>
+</ul>
+<hr></section><section id="redução-do-erro" class="level3"><h3 class="anchored" data-anchor-id="redução-do-erro">Redução do erro</h3>
 <p>A redução no RSS é dada por:</p>
 <p><span class="math display">\[
 \text{RSS}_{pai}
@@ -835,17 +1257,23 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 -
 \sum_{i \in \mathcal{R}_{dir}} (y_i - \bar{y}_{dir})^2
 \]</span></p>
-</section><section class="slide level2"><h3 id="interpretação-5">Interpretação</h3>
+<hr></section><section id="interpretação-5" class="level3"><h3 class="anchored" data-anchor-id="interpretação-5">Interpretação</h3>
 <ul>
 <li>quanto maior a redução → melhor a divisão<br>
 </li>
 <li>boas variáveis geram partições mais homogêneas</li>
 </ul>
-<blockquote>
+<blockquote class="blockquote">
 <p>Variáveis importantes são aquelas que mais reduzem a variabilidade da resposta.</p>
 </blockquote>
-</section><section class="slide level2">
-<img data-src="bagging_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section id="florestas-aleatórias-random-forest" class="slide level2"><h2>Florestas Aleatórias (Random Forest)</h2>
+<hr>
+<div class="cell" data-layout-align="center">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="bagging_animado.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</section></section><section id="florestas-aleatórias-random-forest" class="level2"><h2 class="anchored" data-anchor-id="florestas-aleatórias-random-forest">Florestas Aleatórias (Random Forest)</h2>
 <p>No Bagging, combinamos várias árvores:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
@@ -858,7 +1286,8 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 \mathrm{Var}(g_b(\mathbf{x})) = \sigma^2
 \quad \text{para todo } b
 \]</span></p>
-</section><section class="slide level2"><ul>
+<hr>
+<ul>
 <li>As árvores não são independentes, mas podemos resumir essa dependência por uma correlação média. Assim, a correlação entre quaisquer duas árvores é</li>
 </ul>
 <p><span class="math display">\[
@@ -877,7 +1306,8 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 =
 \frac{1}{B^2}\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
 \]</span></p>
-</section><section class="slide level2"><p>Expandindo a variância da soma:</p>
+<hr>
+<p>Expandindo a variância da soma:</p>
 <p><span class="math display">\[
 \mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
 =
@@ -895,7 +1325,8 @@ g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
 =
 B(B-1)\rho\sigma^2
 \]</span></p>
-</section><section class="slide level2"><p>Portanto,</p>
+<hr>
+<p>Portanto,</p>
 <p><span class="math display">\[
 \mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
 =
@@ -910,7 +1341,8 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 B\sigma^2 + B(B-1)\rho\sigma^2
 \right]
 \]</span></p>
-</section><section class="slide level2"><p>Simplificando,</p>
+<hr>
+<p>Simplificando,</p>
 <p><span class="math display">\[
 \mathrm{Var}\!\big(g(\mathbf{x})\big)
 =
@@ -934,7 +1366,9 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 <li>
 <span class="math inline">\(\dfrac{1-\rho}{B}\sigma^2\)</span> é a parte que <strong>cai com o número de árvores</strong>
 </li>
-</ul></section><section class="slide level2"><h3 id="consequência-importante">Consequência importante</h3>
+</ul>
+<hr>
+<section id="consequência-importante" class="level3"><h3 class="anchored" data-anchor-id="consequência-importante">Consequência importante</h3>
 <ul>
 <li>se <span class="math inline">\(\rho\)</span> é pequeno, o bagging reduz bastante a variância</li>
 <li>se <span class="math inline">\(\rho\)</span> é grande, o ganho é limitado</li>
@@ -946,18 +1380,19 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 <li>divisões semelhantes<br>
 </li>
 <li>predições parecidas</li>
-</ul></section><section class="slide level2"><h3 id="problema">Problema</h3>
+</ul>
+<hr></section><section id="problema" class="level3"><h3 class="anchored" data-anchor-id="problema">Problema</h3>
 <p>A redução de variância depende da correlação:</p>
-<blockquote>
+<blockquote class="blockquote">
 <p>árvores muito parecidas → pouco ganho ao combinar</p>
 </blockquote>
 <p><br></p>
-<h3 id="ideia-do-random-forest">Ideia do Random Forest</h3>
+</section><section id="ideia-do-random-forest" class="level3"><h3 class="anchored" data-anchor-id="ideia-do-random-forest">Ideia do Random Forest</h3>
 <p>Introduzir aleatoriedade adicional:</p>
-<blockquote>
+<blockquote class="blockquote">
 <p>em cada nó, escolhemos um subconjunto aleatório de variáveis</p>
 </blockquote>
-</section><section class="slide level2"><h3 id="construção">Construção</h3>
+<hr></section><section id="construção" class="level3"><h3 class="anchored" data-anchor-id="construção">Construção</h3>
 <p>Para cada árvore:</p>
 <ul>
 <li>amostra bootstrap dos dados</li>
@@ -967,8 +1402,7 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 <li>escolhe-se o melhor <em>split</em> entre elas</li>
 </ul>
 </li>
-</ul>
-<h3 id="parâmetro-chave">Parâmetro chave</h3>
+</ul></section><section id="parâmetro-chave" class="level3"><h3 class="anchored" data-anchor-id="parâmetro-chave">Parâmetro chave</h3>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><span class="math inline">\(m\)</span> = número de variáveis candidatas por <em>split</em></p>
@@ -982,19 +1416,38 @@ B\sigma^2 + B(B-1)\rho\sigma^2
 <p><span class="math display">\[
 m \approx \frac{d}{3}
 \]</span></p>
-</div></div>
-</section><section class="slide level2">
-<img data-src="../../..\images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-10-1.png" class="r-stretch"></section><section class="slide level2">
-<img data-src="rf_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section id="boosting" class="slide level2"><h2>Boosting</h2>
+</div>
+</div>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../../..\images/regressao/rf.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-10-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<div class="cell" data-layout-align="center">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="rf_animado.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<hr></section></section><section id="boosting" class="level2"><h2 class="anchored" data-anchor-id="boosting">Boosting</h2>
 <p>O <em>boosting</em> constrói o estimador de forma <strong>sequencial</strong>, corrigindo erros do modelo anterior.</p>
 <p><br></p>
-<h3 id="ideia-central-2">Ideia central</h3>
+<section id="ideia-central-2" class="level3"><h3 class="anchored" data-anchor-id="ideia-central-2">Ideia central</h3>
 <p>Começamos com um modelo simples e vamos <strong>ajustando os resíduos</strong>:</p>
 <p><span class="math display">\[
 r_i = y_i - g(x_i)
 \]</span></p>
-</section><section class="slide level2"><h3 id="algoritmo">Algoritmo</h3>
+<hr></section><section id="algoritmo" class="level3"><h3 class="anchored" data-anchor-id="algoritmo">Algoritmo</h3>
 <ol type="1">
 <li>Inicialize:</li>
 </ol>
@@ -1016,7 +1469,7 @@ r_i = y_i - g(x_i)
 <p><span class="math display">\[
 g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
 \]</span></p>
-</section><section class="slide level2"><h3 id="parâmetros-importantes">Parâmetros importantes</h3>
+<hr></section><section id="parâmetros-importantes" class="level3"><h3 class="anchored" data-anchor-id="parâmetros-importantes">Parâmetros importantes</h3>
 <ul>
 <li>
 <span class="math inline">\(B\)</span> → número de iterações (<span class="math inline">\(B \approx 1000\)</span>)</li>
@@ -1033,27 +1486,42 @@ g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
 <span class="math inline">\(p\)</span> → complexidade da árvore (<span class="math inline">\(p = 2\)</span> ou <span class="math inline">\(p = 4\)</span>)</li>
 </ul>
 <p><br></p>
-<h3 id="observação">Observação</h3>
+</section><section id="observação" class="level3"><h3 class="anchored" data-anchor-id="observação">Observação</h3>
 <ul>
 <li>cada modelo aprende <strong>o que o anterior errou</strong>
 </li>
 <li>reduz <strong>viés</strong> (diferente do bagging)</li>
-</ul></section><section id="section" class="slide level2" data-background-image="../../../images/regressao/boosting.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat"><h2></h2>
+</ul></section></section><section id="section" class="level2" data-background-image="../../../images/regressao/boosting.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat"><h2 data-background-image="/images/regressao/boosting.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat" class="anchored" data-anchor-id="section"></h2>
 <!-- ![](/images/regressao/boosting.png){fig-align="center"} -->
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-13-1.png" class="r-stretch"></section><section class="slide level2">
-<img data-src="boosting_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section class="slide level2"><h3 id="boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</h3>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-13-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<div class="cell" data-layout-align="center">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="boosting_animado.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<hr>
+<section id="boosting-e-estimadores-fracos" class="level3"><h3 class="anchored" data-anchor-id="boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</h3>
 <p>O <em>boosting</em> não é restrito ao uso de árvores.</p>
 <p>Podemos usar qualquer modelo como base, desde que seja um <strong>estimador fraco</strong>.</p>
 <p><br></p>
-<h4 id="o-que-é-um-estimador-fraco">O que é um estimador fraco?</h4>
+<section id="o-que-é-um-estimador-fraco" class="level4"><h4 class="anchored" data-anchor-id="o-que-é-um-estimador-fraco">O que é um estimador fraco?</h4>
 <ul>
 <li>modelo simples</li>
 <li>baixo poder preditivo individual</li>
 <li>pequeno viés de ajuste</li>
 </ul>
 <p><strong>Exemplos:</strong> árvores rasas (<em>stumps</em>), regressão linear simples, modelos com poucos parâmetros</p>
-</section><section class="slide level2"><h3 id="por-que-usar-modelos-fracos">Por que usar modelos fracos?</h3>
+<hr></section></section><section id="por-que-usar-modelos-fracos" class="level3"><h3 class="anchored" data-anchor-id="por-que-usar-modelos-fracos">Por que usar modelos fracos?</h3>
 <ul>
 <li>evitam overfitting em cada etapa</li>
 <li>permitem correções graduais</li>
@@ -1061,46 +1529,73 @@ g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
 </ul>
 <p>Se você usar modelos muito complexos (ex: árvores profundas):</p>
 <p>👉 boosting pode superajustar rapidamente</p>
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-16-1.png" class="r-stretch"></section><section id="redes-neurais-artificiais" class="slide level2"><h2>Redes Neurais Artificiais</h2>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-16-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="redes-neurais-artificiais" class="level2"><h2 class="anchored" data-anchor-id="redes-neurais-artificiais">Redes Neurais Artificiais</h2>
 <p>Redes neurais são modelos que aproximam funções não lineares complexas.</p>
 <p>No contexto de regressão, trata-se de um estimador não linear de <span class="math inline">\(r(\mathbf{x})\)</span> que pode ser representado graficamente por uma estrutura do tipo</p>
-
-<img data-src="../../..\images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="rna-sem-camada-oculta">RNA sem camada oculta</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../../..\images/regressao/rna.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<hr>
+<section id="rna-sem-camada-oculta" class="level3"><h3 class="anchored" data-anchor-id="rna-sem-camada-oculta">RNA sem camada oculta</h3>
 <!-- ![](/images/regressao/RNAsC.png){fig-align="center"} -->
-
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-17-1.png" class="r-stretch"></section><section class="slide level2"><h4 id="entrada">🔹 Entrada</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-17-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<section id="entrada" class="level4"><h4 class="anchored" data-anchor-id="entrada">🔹 Entrada</h4>
 <p><span class="math display">\[
 \mathbf{x} = (x_1, x_2, x_3, \cdots, x_p)^t
 \]</span></p>
-<h4 id="camada-de-saída">🔹 Camada de saída</h4>
+</section><section id="camada-de-saída" class="level4"><h4 class="anchored" data-anchor-id="camada-de-saída">🔹 Camada de saída</h4>
 <p><span class="math display">\[
 g(x) = f\left(\beta_0+\sum_{j=1}^{p} \beta_{j} x_j \right)
 \]</span></p>
-</section><section class="slide level2"><h3 id="rna-com-camada-oculta">RNA com camada oculta</h3>
-
-<img data-src="../../..\images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><p>Para a rede apresentada,</p>
-<h4 id="entrada-1">🔹 Entrada</h4>
+<hr></section></section><section id="rna-com-camada-oculta" class="level3"><h3 class="anchored" data-anchor-id="rna-com-camada-oculta">RNA com camada oculta</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../../..\images/regressao/rna.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<hr>
+<p>Para a rede apresentada,</p>
+<section id="entrada-1" class="level4"><h4 class="anchored" data-anchor-id="entrada-1">🔹 Entrada</h4>
 <p><span class="math display">\[
 \mathbf{x} = (x_1, x_2, x_3)^t
 \]</span></p>
-<h4 id="camada-oculta">🔹 Camada oculta</h4>
+</section><section id="camada-oculta" class="level4"><h4 class="anchored" data-anchor-id="camada-oculta">🔹 Camada oculta</h4>
 <p>Um dado neurônio <span class="math inline">\(j\)</span> da camada oculta é calculado como</p>
 <p><span class="math display">\[
 x_j^{1} = f\left( \beta_{0,j}^{(0)} + \sum_{i=1}^{3} \beta_{i,j}^{(0)} x_i^{0} \right),
 \quad \text{com } x_i^{0} = x_i,\; i=1,2,3.
 \]</span></p>
 <p>e <span class="math inline">\(f\)</span> é uma função definida pelo usuário, chamada de <strong>função de ativação.</strong></p>
-</section><section class="slide level2"><h4 id="saída">🔹 Saída</h4>
+<hr></section><section id="saída" class="level4"><h4 class="anchored" data-anchor-id="saída">🔹 Saída</h4>
 <p><span class="math display">\[
 g(x) = x^{2}_1 = f\left( \beta_{0,1}^{1} + \sum_{i=1}^{5} \beta_{i,1}^{1} x_i^{1} \right)
 \]</span></p>
-</section><section class="slide level2"><h3 id="representação-de-cada-neurônio-da-rede">Representação de cada neurônio da rede</h3>
-
-<img data-src="../../..\images/regressao/neuronioMP2.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="funções-de-ativação">Funções de Ativação</h3>
+<hr></section></section><section id="representação-de-cada-neurônio-da-rede" class="level3"><h3 class="anchored" data-anchor-id="representação-de-cada-neurônio-da-rede">Representação de cada neurônio da rede</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../../..\images/regressao/neuronioMP2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<hr></section><section id="funções-de-ativação" class="level3"><h3 class="anchored" data-anchor-id="funções-de-ativação">Funções de Ativação</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h4 id="clássicas">Clássicas</h4>
+<section id="clássicas" class="level4"><h4 class="anchored" data-anchor-id="clássicas">Clássicas</h4>
 <ul>
 <li><p>Identidade <span class="math display">\[
 f(z)=z
@@ -1111,9 +1606,9 @@ f(z)=\frac{1}{1+e^{-z}}
 <li><p>Tanh <span class="math display">\[
 f(z)=\frac{e^z-e^{-z}}{e^z+e^{-z}}
 \]</span></p></li>
-</ul>
+</ul></section>
 </div><div class="column" style="width:50%;">
-<h4 id="modernas">Modernas</h4>
+<section id="modernas" class="level4"><h4 class="anchored" data-anchor-id="modernas">Modernas</h4>
 <ul>
 <li><p>ReLU <span class="math display">\[
 f(z)=\max(0,z)
@@ -1125,11 +1620,28 @@ f(z)=
 z, &amp; z\geq0
 \end{cases}
 \]</span></p></li>
-</ul>
-</div></div>
-</section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-18-1.png" class="r-stretch"></section><section class="slide level2">
-<img data-src="met_nao_param_files/figure-revealjs/unnamed-chunk-19-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="por-que-precisamos-de-funções-de-ativação">Por que precisamos de funções de ativação?</h3>
+</ul></section>
+</div>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-18-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="met_nao_param_files/figure-revealjs/unnamed-chunk-19-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section><section id="por-que-precisamos-de-funções-de-ativação" class="level3"><h3 class="anchored" data-anchor-id="por-que-precisamos-de-funções-de-ativação">Por que precisamos de funções de ativação?</h3>
 <p>Sem <span class="math inline">\(f(\cdot)\)</span>:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \text{combinação linear}
@@ -1139,19 +1651,19 @@ g(\mathbf{x}) = \text{combinação linear}
 g(\mathbf{x}) = \text{função não linear}
 \]</span></p>
 <p>A função de ativação é o que dá poder às redes neurais.</p>
-</section><section class="slide level2"><h3 id="estimação-backpropagation">Estimação: Backpropagation</h3>
+<hr></section><section id="estimação-backpropagation" class="level3"><h3 class="anchored" data-anchor-id="estimação-backpropagation">Estimação: Backpropagation</h3>
 <p>Queremos estimar os parâmetros da rede neural, <span class="math inline">\(\beta\)</span>, minimizando o erro:</p>
 <p><span class="math display">\[
 EQM(g_{\beta}) = \frac{1}{n} \sum_{k=1}^{n} (g_{\beta}(x_k) - y_k)^2
 \]</span></p>
-<h4 id="problema-1">Problema</h4>
+<section id="problema-1" class="level4"><h4 class="anchored" data-anchor-id="problema-1">Problema</h4>
 <p>Não existe solução analítica.</p>
-<h4 id="solução">Solução</h4>
+</section><section id="solução" class="level4"><h4 class="anchored" data-anchor-id="solução">Solução</h4>
 <p>Usamos <strong>gradiente descendente</strong>:</p>
 <p><span class="math display">\[
 \beta \leftarrow \beta - \eta \nabla EQM(g_\beta)
 \]</span></p>
-</section><section class="slide level2"><h3 id="atualização-dos-pesos">Atualização dos pesos</h3>
+<hr></section></section><section id="atualização-dos-pesos" class="level3"><h3 class="anchored" data-anchor-id="atualização-dos-pesos">Atualização dos pesos</h3>
 <p>Para cada parâmetro:</p>
 <p><span class="math display">\[
 \beta_{i,j}^{(l)} \leftarrow
@@ -1170,12 +1682,27 @@ EQM(g_{\beta}) = \frac{1}{n} \sum_{k=1}^{n} (g_{\beta}(x_k) - y_k)^2
 <span class="math inline">\((i,j)\)</span> → conexão entre neurônios</li>
 </ul>
 <p>Movemos os parâmetros na direção que <strong>reduz o erro</strong></p>
-</section><section id="por-que-o-nome-backpropagation" class="slide level2"><h2>Por que o nome Backpropagation?</h2>
+</section></section><section id="por-que-o-nome-backpropagation" class="level2"><h2 class="anchored" data-anchor-id="por-que-o-nome-backpropagation">Por que o nome Backpropagation?</h2>
 <p>Os gradientes são calculados da saída para a entrada</p>
-
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="backpropagation.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 <!-- ![](/images/regressao/backpropagation.gif){fig-align="center"} -->
-<img data-src="backpropagation.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"><p>O erro “volta” pela rede ajustando os pesos</p>
-</section><section class="slide level2"><!-- ```{r} --><!-- library(ggplot2) --><!-- library(nnet) --><!-- library(dplyr) --><!-- library(tidyr) --><!-- library(gganimate) --><!-- library(gifski) --><!-- set.seed(123) --><!-- # ----------------------------- --><!-- # Função real --><!-- # ----------------------------- --><!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { --><!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) --><!-- } --><!-- # ----------------------------- --><!-- # Dados --><!-- # ----------------------------- --><!-- n <- 150 --><!-- x <- sort(runif(n, -1.2, 2.8)) --><!-- y_true <- f_real(x) --><!-- y <- y_true + rnorm(n, sd = 2.5) --><!-- df <- data.frame(x = x, y = y) --><!-- # padronização --><!-- x_mean <- mean(df$x) --><!-- x_sd   <- sd(df$x) --><!-- y_mean <- mean(df$y) --><!-- y_sd   <- sd(df$y) --><!-- df$x_std <- (df$x - x_mean) / x_sd --><!-- df$y_std <- (df$y - y_mean) / y_sd --><!-- # grade --><!-- xg <- seq(min(df$x), max(df$x), length.out = 400) --><!-- grid <- data.frame(x = xg) --><!-- grid$x_std <- (grid$x - x_mean) / x_sd --><!-- df_true <- data.frame( --><!--   x = xg, --><!--   y_true = f_real(xg) --><!-- ) --><!-- # ----------------------------- --><!-- # Ajustes com diferentes iterações --><!-- # ----------------------------- --><!-- iter_grid <- seq(5, 300, by = 5) --><!-- pred_list <- lapply(iter_grid, function(it) { --><!--   fit <- nnet( --><!--     y_std ~ x_std, --><!--     data = df, --><!--     size = 8, --><!--     linout = TRUE, --><!--     skip = FALSE, --><!--     decay = 0.001, --><!--     maxit = it, --><!--     trace = FALSE --><!--   ) --><!--   pred_std <- as.numeric(predict(fit, newdata = grid)) --><!--   pred <- pred_std * y_sd + y_mean --><!--   data.frame( --><!--     x = xg, --><!--     y_hat = pred, --><!--     frame_id = it --><!--   ) --><!-- }) --><!-- pred_anim <- do.call(rbind, pred_list) --><!-- points_anim <- do.call(rbind, lapply(iter_grid, function(it) { --><!--   data.frame( --><!--     x = df$x, --><!--     y = df$y, --><!--     frame_id = it --><!--   ) --><!-- })) --><!-- true_anim <- do.call(rbind, lapply(iter_grid, function(it) { --><!--   data.frame( --><!--     x = df_true$x, --><!--     y_true = df_true$y_true, --><!--     frame_id = it --><!--   ) --><!-- })) --><!-- # ----------------------------- --><!-- # Animação --><!-- # ----------------------------- --><!-- anim_nn <- ggplot() + --><!--   geom_point( --><!--     data = points_anim, --><!--     aes(x, y), --><!--     color = "#2C7FB8", --><!--     alpha = 0.45, --><!--     size = 1.8 --><!--   ) + --><!--   geom_line( --><!--     data = pred_anim, --><!--     aes(x, y_hat), --><!--     color = "#00BA38", --><!--     linewidth = 1.3 --><!--   ) + --><!--   geom_line( --><!--     data = true_anim, --><!--     aes(x, y_true), --><!--     color = "#D62728", --><!--     linewidth = 1.3 --><!--   ) + --><!--   labs( --><!--     title = "RNA aprendendo a função: iteração {current_frame}", --><!--     subtitle = "Verde: rede neural | Vermelho: função real", --><!--     x = "X", --><!--     y = "Y" --><!--   ) + --><!--   theme_minimal(base_size = 16) + --><!--   theme( --><!--     panel.grid.minor = element_blank(), --><!--     plot.title = element_text(face = "bold") --><!--   ) + --><!--   transition_manual(frame_id) --><!-- animate( --><!--   anim_nn, --><!--   nframes = length(iter_grid), --><!--   fps = 3, --><!--   width = 8, --><!--   height = 4.8, --><!--   units = "in", --><!--   res = 120, --><!--   renderer = gifski_renderer("rna_aprendendo.gif") --><!-- ) --><!-- ``` --><!-- --- --><!-- ```{r} --><!-- library(ggplot2) --><!-- library(nnet) --><!-- set.seed(123) --><!-- # ----------------------------- --><!-- # Função real --><!-- # ----------------------------- --><!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { --><!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) --><!-- } --><!-- # ----------------------------- --><!-- # Dados --><!-- # ----------------------------- --><!-- n <- 150 --><!-- x <- sort(runif(n, -1.2, 2.8)) --><!-- y_true <- f_real(x) --><!-- y <- y_true + rnorm(n, sd = 2.5) --><!-- df <- data.frame(x = x, y = y) --><!-- # ----------------------------- --><!-- # Padronização --><!-- # ----------------------------- --><!-- x_mean <- mean(df$x) --><!-- x_sd   <- sd(df$x) --><!-- y_mean <- mean(df$y) --><!-- y_sd   <- sd(df$y) --><!-- df$x_std <- (df$x - x_mean) / x_sd --><!-- df$y_std <- (df$y - y_mean) / y_sd --><!-- # ----------------------------- --><!-- # Ajuste da rede --><!-- # ----------------------------- --><!-- fit_nn <- nnet( --><!--   y_std ~ x_std, --><!--   data = df, --><!--   size = 8, --><!--   linout = TRUE, --><!--   skip = FALSE, --><!--   decay = 0.001, --><!--   maxit = 500, --><!--   trace = FALSE --><!-- ) --><!-- # ----------------------------- --><!-- # Predição na grade --><!-- # ----------------------------- --><!-- xg <- seq(min(df$x), max(df$x), length.out = 500) --><!-- grid <- data.frame(x = xg) --><!-- grid$x_std <- (grid$x - x_mean) / x_sd --><!-- pred_std <- as.numeric(predict(fit_nn, newdata = grid)) --><!-- pred <- pred_std * y_sd + y_mean --><!-- plot_df <- data.frame( --><!--   x = xg, --><!--   y_hat = pred, --><!--   y_true = f_real(xg) --><!-- ) --><!-- # ----------------------------- --><!-- # Gráfico final --><!-- # ----------------------------- --><!-- ggplot(df, aes(x, y)) + --><!--   geom_point(color = "#2C7FB8", alpha = 0.5, size = 2) + --><!--   geom_line( --><!--     data = plot_df, --><!--     aes(x, y_true), --><!--     color = "#D62728", --><!--     linewidth = 1.3 --><!--   ) + --><!--   geom_line( --><!--     data = plot_df, --><!--     aes(x, y_hat), --><!--     color = "#00BA38", --><!--     linewidth = 1.3 --><!--   ) + --><!--   theme_minimal(base_size = 16) + --><!--   labs( --><!--     title = "Rede neural aprendendo a função", --><!--     subtitle = "Verde: RNA | Vermelho: função real", --><!--     x = "X", --><!--     y = "Y" --><!--   ) + --><!--   theme( --><!--     panel.grid.minor = element_blank(), --><!--     plot.title = element_text(face = "bold") --><!--   ) --><!-- ``` --><!-- --- -->
+<p>O erro “volta” pela rede ajustando os pesos</p>
+<hr>
+<!-- ```{r} --><!-- library(ggplot2) --><!-- library(nnet) --><!-- library(dplyr) --><!-- library(tidyr) --><!-- library(gganimate) --><!-- library(gifski) --><!-- set.seed(123) --><!-- # ----------------------------- --><!-- # Função real --><!-- # ----------------------------- --><!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { --><!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) --><!-- } --><!-- # ----------------------------- --><!-- # Dados --><!-- # ----------------------------- --><!-- n <- 150 --><!-- x <- sort(runif(n, -1.2, 2.8)) --><!-- y_true <- f_real(x) --><!-- y <- y_true + rnorm(n, sd = 2.5) --><!-- df <- data.frame(x = x, y = y) --><!-- # padronização --><!-- x_mean <- mean(df$x) --><!-- x_sd   <- sd(df$x) --><!-- y_mean <- mean(df$y) --><!-- y_sd   <- sd(df$y) --><!-- df$x_std <- (df$x - x_mean) / x_sd --><!-- df$y_std <- (df$y - y_mean) / y_sd --><!-- # grade --><!-- xg <- seq(min(df$x), max(df$x), length.out = 400) --><!-- grid <- data.frame(x = xg) --><!-- grid$x_std <- (grid$x - x_mean) / x_sd --><!-- df_true <- data.frame( --><!--   x = xg, --><!--   y_true = f_real(xg) --><!-- ) --><!-- # ----------------------------- --><!-- # Ajustes com diferentes iterações --><!-- # ----------------------------- --><!-- iter_grid <- seq(5, 300, by = 5) --><!-- pred_list <- lapply(iter_grid, function(it) { --><!--   fit <- nnet( --><!--     y_std ~ x_std, --><!--     data = df, --><!--     size = 8, --><!--     linout = TRUE, --><!--     skip = FALSE, --><!--     decay = 0.001, --><!--     maxit = it, --><!--     trace = FALSE --><!--   ) --><!--   pred_std <- as.numeric(predict(fit, newdata = grid)) --><!--   pred <- pred_std * y_sd + y_mean --><!--   data.frame( --><!--     x = xg, --><!--     y_hat = pred, --><!--     frame_id = it --><!--   ) --><!-- }) --><!-- pred_anim <- do.call(rbind, pred_list) --><!-- points_anim <- do.call(rbind, lapply(iter_grid, function(it) { --><!--   data.frame( --><!--     x = df$x, --><!--     y = df$y, --><!--     frame_id = it --><!--   ) --><!-- })) --><!-- true_anim <- do.call(rbind, lapply(iter_grid, function(it) { --><!--   data.frame( --><!--     x = df_true$x, --><!--     y_true = df_true$y_true, --><!--     frame_id = it --><!--   ) --><!-- })) --><!-- # ----------------------------- --><!-- # Animação --><!-- # ----------------------------- --><!-- anim_nn <- ggplot() + --><!--   geom_point( --><!--     data = points_anim, --><!--     aes(x, y), --><!--     color = "#2C7FB8", --><!--     alpha = 0.45, --><!--     size = 1.8 --><!--   ) + --><!--   geom_line( --><!--     data = pred_anim, --><!--     aes(x, y_hat), --><!--     color = "#00BA38", --><!--     linewidth = 1.3 --><!--   ) + --><!--   geom_line( --><!--     data = true_anim, --><!--     aes(x, y_true), --><!--     color = "#D62728", --><!--     linewidth = 1.3 --><!--   ) + --><!--   labs( --><!--     title = "RNA aprendendo a função: iteração {current_frame}", --><!--     subtitle = "Verde: rede neural | Vermelho: função real", --><!--     x = "X", --><!--     y = "Y" --><!--   ) + --><!--   theme_minimal(base_size = 16) + --><!--   theme( --><!--     panel.grid.minor = element_blank(), --><!--     plot.title = element_text(face = "bold") --><!--   ) + --><!--   transition_manual(frame_id) --><!-- animate( --><!--   anim_nn, --><!--   nframes = length(iter_grid), --><!--   fps = 3, --><!--   width = 8, --><!--   height = 4.8, --><!--   units = "in", --><!--   res = 120, --><!--   renderer = gifski_renderer("rna_aprendendo.gif") --><!-- ) --><!-- ``` --><!-- --- --><!-- ```{r} --><!-- library(ggplot2) --><!-- library(nnet) --><!-- set.seed(123) --><!-- # ----------------------------- --><!-- # Função real --><!-- # ----------------------------- --><!-- f_real <- function(x, beta = c(12, 4, -6, 1)) { --><!--   beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + sin(x) --><!-- } --><!-- # ----------------------------- --><!-- # Dados --><!-- # ----------------------------- --><!-- n <- 150 --><!-- x <- sort(runif(n, -1.2, 2.8)) --><!-- y_true <- f_real(x) --><!-- y <- y_true + rnorm(n, sd = 2.5) --><!-- df <- data.frame(x = x, y = y) --><!-- # ----------------------------- --><!-- # Padronização --><!-- # ----------------------------- --><!-- x_mean <- mean(df$x) --><!-- x_sd   <- sd(df$x) --><!-- y_mean <- mean(df$y) --><!-- y_sd   <- sd(df$y) --><!-- df$x_std <- (df$x - x_mean) / x_sd --><!-- df$y_std <- (df$y - y_mean) / y_sd --><!-- # ----------------------------- --><!-- # Ajuste da rede --><!-- # ----------------------------- --><!-- fit_nn <- nnet( --><!--   y_std ~ x_std, --><!--   data = df, --><!--   size = 8, --><!--   linout = TRUE, --><!--   skip = FALSE, --><!--   decay = 0.001, --><!--   maxit = 500, --><!--   trace = FALSE --><!-- ) --><!-- # ----------------------------- --><!-- # Predição na grade --><!-- # ----------------------------- --><!-- xg <- seq(min(df$x), max(df$x), length.out = 500) --><!-- grid <- data.frame(x = xg) --><!-- grid$x_std <- (grid$x - x_mean) / x_sd --><!-- pred_std <- as.numeric(predict(fit_nn, newdata = grid)) --><!-- pred <- pred_std * y_sd + y_mean --><!-- plot_df <- data.frame( --><!--   x = xg, --><!--   y_hat = pred, --><!--   y_true = f_real(xg) --><!-- ) --><!-- # ----------------------------- --><!-- # Gráfico final --><!-- # ----------------------------- --><!-- ggplot(df, aes(x, y)) + --><!--   geom_point(color = "#2C7FB8", alpha = 0.5, size = 2) + --><!--   geom_line( --><!--     data = plot_df, --><!--     aes(x, y_true), --><!--     color = "#D62728", --><!--     linewidth = 1.3 --><!--   ) + --><!--   geom_line( --><!--     data = plot_df, --><!--     aes(x, y_hat), --><!--     color = "#00BA38", --><!--     linewidth = 1.3 --><!--   ) + --><!--   theme_minimal(base_size = 16) + --><!--   labs( --><!--     title = "Rede neural aprendendo a função", --><!--     subtitle = "Verde: RNA | Vermelho: função real", --><!--     x = "X", --><!--     y = "Y" --><!--   ) + --><!--   theme( --><!--     panel.grid.minor = element_blank(), --><!--     plot.title = element_text(face = "bold") --><!--   ) --><!-- ``` --><!-- --- --><div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="rna_eqm_lado_a_lado.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 <!-- --- -->
 <!-- ```{r} -->
 <!-- library(ggplot2) -->
@@ -1245,24 +1772,25 @@ EQM(g_{\beta}) = \frac{1}{n} \sum_{k=1}^{n} (g_{\beta}(x_k) - y_k)^2
 <!--     plot.title = element_text(face = "bold") -->
 <!--   ) -->
 <!-- ``` -->
-<img data-src="rna_eqm_lado_a_lado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section><section id="rede-neural-aprendendo-uma-função-não-linear" class="slide level2"><h2>Rede neural aprendendo uma função não linear</h2>
+<hr></section><section id="rede-neural-aprendendo-uma-função-não-linear" class="level2"><h2 class="anchored" data-anchor-id="rede-neural-aprendendo-uma-função-não-linear">Rede neural aprendendo uma função não linear</h2>
 <p>Neste exemplo, a RNA foi ajustada para aproximar a função</p>
 <p><span class="math display">\[
 f(x)=12+4x-6x^2+x^3+\sin(x)
 \]</span></p>
 <p>a partir de observações ruidosas.</p>
 <p>A curva verde mostra a predição da rede, enquanto a curva vermelha representa a função real.</p>
-</section><section class="slide level2"><h3 id="síntese">Síntese</h3>
+<hr>
+<section id="síntese" class="level3"><h3 class="anchored" data-anchor-id="síntese">Síntese</h3>
 <ul>
 <li>a função de ativação introduz não linearidade;</li>
 <li>a camada oculta cria novas representações dos dados;</li>
 <li>o backpropagation ajusta os pesos para reduzir o erro;</li>
 <li>com isso, a rede consegue aproximar funções complexas.</li>
-</ul></section><section id="flexibilidade-vs-eficiência" class="slide level2"><h2>Flexibilidade vs Eficiência</h2>
+</ul></section></section><section id="flexibilidade-vs-eficiência" class="level2"><h2 class="anchored" data-anchor-id="flexibilidade-vs-eficiência">Flexibilidade vs Eficiência</h2>
 <p><br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="métodos-paramétricos">🔵 Métodos paramétricos</h3>
+<section id="métodos-paramétricos" class="level3"><h3 class="anchored" data-anchor-id="métodos-paramétricos">🔵 Métodos paramétricos</h3>
 <ul>
 <li>estrutura forte<br>
 </li>
@@ -1273,8 +1801,9 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
 <p><span class="math display">\[
 \text{Erro} \sim n^{-1}
 \]</span></p>
+</section>
 </div><div class="column" style="width:50%;">
-<h3 id="métodos-não-paramétricos">🔴 Métodos não paramétricos</h3>
+<section id="métodos-não-paramétricos" class="level3"><h3 class="anchored" data-anchor-id="métodos-não-paramétricos">🔴 Métodos não paramétricos</h3>
 <ul>
 <li>alta flexibilidade<br>
 </li>
@@ -1285,18 +1814,22 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
 <p><span class="math display">\[
 \text{Erro} \sim n^{-\frac{\alpha}{\alpha + p}}
 \]</span></p>
-</div></div>
+</section>
+</div>
+</div>
 <p>👉 <strong>Taxa de convergência</strong> = velocidade com que o <strong>erro diminui</strong> à medida que <strong>aumentamos o tamanho da amostra</strong>.</p>
-</section><section class="slide level2"><p><strong>Observação:</strong> o parâmetro <span class="math inline">\(\alpha\)</span> é a <strong>taxa de suavidade</strong> de <span class="math inline">\(r(x)\)</span>, ou seja, quão “regular” ou “sem variações bruscas” é a função de regressão.<br><br></p>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<hr>
+<p><strong>Observação:</strong> o parâmetro <span class="math inline">\(\alpha\)</span> é a <strong>taxa de suavidade</strong> de <span class="math inline">\(r(x)\)</span>, ou seja, quão “regular” ou “sem variações bruscas” é a função de regressão.<br><br></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Definição (um pouco) mais formal</strong></p>
+<div class="callout-title-container flex-fill">
+Definição (um pouco) mais formal
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p>Dizemos que <span class="math inline">\(r(x)\)</span> tem suavidade <span class="math inline">\(\alpha\)</span> se:</p>
 <ul>
 <li>ela possui derivadas até ordem <span class="math inline">\(\alpha\)</span>
@@ -1306,14 +1839,13 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
 </ul>
 </div>
 </div>
-</div>
 <ul>
 <li>
 <strong>Mais suavidade</strong> = menos dados necessários<br>
 </li>
 <li>
 <strong>Menos suavidade</strong> = mais dados necessários</li>
-</ul></section><section id="references" class="slide level2 smaller scrollable" data-visibility="uncounted"><h2>References</h2>
+</ul></section><section id="references" class="level2" data-visibility="uncounted"><h2 data-visibility="uncounted" class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-benedetti1977" class="csl-entry" role="listitem">
 Benedetti, J. K. 1977. <span>“On the Nonparametric Estimation of Regression Functions.”</span> <em>Journal of the American Statistical Association</em>.
@@ -1324,408 +1856,466 @@ Stone, Charles J. 1977. <span>“Consistent Nonparametric Regression.”</span> 
 </div>
 
 
-</section>
-</div>
-  <div class="quarto-auto-generated-content" style="display: none;">
-<div class="footer footer-default">
+</section></main><!-- /main --><script>
+  // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+  // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+  // slide changes (different for each slide format).
+  (function () {
+    // dispatch for htmlwidgets
+    function fireSlideEnter() {
+      const event = window.document.createEvent("Event");
+      event.initEvent("slideenter", true, true);
+      window.document.dispatchEvent(event);
+    }
 
-</div>
-</div></div>
+    function fireSlideChanged(previousSlide, currentSlide) {
+      fireSlideEnter();
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+      // dispatch for shiny
+      if (window.jQuery) {
+        if (previousSlide) {
+          window.jQuery(previousSlide).trigger("hidden");
+        }
+        if (currentSlide) {
+          window.jQuery(currentSlide).trigger("shown");
+        }
+      }
+    }
 
-      // Full list of configuration options available at:
-      // https://revealjs.com/config/
-      Reveal.initialize({
-'controlsAuto': true,
-'previewLinksAuto': true,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
-'smaller': false,
- 
-        // Display controls in the bottom right corner
-        controls: false,
-
-        // Help the user learn the controls by providing hints, for example by
-        // bouncing the down arrow when they first encounter a vertical slide
-        controlsTutorial: false,
-
-        // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
-
-        // Visibility rule for backwards navigation arrows; "faded", "hidden"
-        // or "visible"
-        controlsBackArrows: 'faded',
-
-        // Display a presentation progress bar
-        progress: true,
-
-        // Display the page number of the current slide
-        slideNumber: 'c/t',
-
-        // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
-
-        // Add the current slide number to the URL hash so that reloading the
-        // page/copying the URL will return you to the same slide
-        hash: true,
-
-        // Start with 1 for the hash rather than 0
-        hashOneBasedIndex: false,
-
-        // Flags if we should monitor the hash and change slides accordingly
-        respondToHashChanges: true,
-
-        // Push each slide change to the browser history
-        history: true,
-
-        // Enable keyboard shortcuts for navigation
-        keyboard: true,
-
-        // Enable the slide overview mode
-        overview: true,
-
-        // Disables the default reveal.js slide layout (scaling and centering)
-        // so that you can use custom CSS layout
-        disableLayout: false,
-
-        // Vertical centering of slides
-        center: false,
-
-        // Enables touch navigation on devices with touch input
-        touch: true,
-
-        // Loop the presentation
-        loop: false,
-
-        // Change the presentation direction to be RTL
-        rtl: false,
-
-        // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
-
-        // Randomizes the order of slides each time the presentation loads
-        shuffle: false,
-
-        // Turns fragments on and off globally
-        fragments: true,
-
-        // Flags whether to include the current fragment in the URL,
-        // so that reloading brings you to the same fragment position
-        fragmentInURL: false,
-
-        // Flags if the presentation is running in an embedded mode,
-        // i.e. contained within a limited portion of the screen
-        embedded: false,
-
-        // Flags if we should show a help overlay when the questionmark
-        // key is pressed
-        help: true,
-
-        // Flags if it should be possible to pause the presentation (blackout)
-        pause: true,
-
-        // Flags if speaker notes should be visible to all viewers
-        showNotes: false,
-
-        // Global override for autoplaying embedded media (null/true/false)
-        autoPlayMedia: null,
-
-        // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: null,
-
-        // Specify the average time in seconds that you think you will spend
-        // presenting each slide. This is used to show a pacing timer in the
-        // speaker view
-        defaultTiming: null,
-
-        // Enable slide navigation via mouse wheel
-        mouseWheel: false,
-
-        // The display mode that will be used to show slides
-        display: 'block',
-
-        // Hide cursor if inactive
-        hideInactiveCursor: true,
-
-        // Time before the cursor is hidden (in ms)
-        hideCursorTime: 5000,
-
-        // Opens links in an iframe preview overlay
-        previewLinks: false,
-
-        // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
-
-        // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
-
-        // Transition style for full page slide backgrounds
-        // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
-
-        // Number of slides away from the current that are visible
-        viewDistance: 3,
-
-        // Number of slides away from the current that are visible on mobile
-        // devices. It is advisable to set this to a lower number than
-        // viewDistance in order to save resources.
-        mobileViewDistance: 2,
-
-        // The "normal" size of the presentation, aspect ratio will be preserved
-        // when the presentation is scaled to fit different resolutions. Can be
-        // specified using percentage units.
-        width: 1600,
-
-        height: 900,
-
-        // Factor of the display size that should remain empty around the content
-        margin: 0.1,
-
-        math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
-        // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
-
-          RevealMath,
-          RevealNotes,
-          RevealSearch,
-          RevealZoom
-        ]
+    // hookup for slidy
+    if (window.w3c_slidy) {
+      window.w3c_slidy.add_observer(function (slide_num) {
+        // slide_num starts at position 1
+        fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
       });
-    </script><script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
+    }
+
+  })();
+</script><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
-    
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-    
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
         }
-    
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
         }
-    
-      })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
-      window.document.addEventListener("DOMContentLoaded", function (event) {
-        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-        tabsets.forEach(function(tabset) {
-          const tabby = new Tabby('#' + tabset.id);
-        });
-        const isCodeAnnotation = (el) => {
-          for (const clz of el.classList) {
-            if (clz.startsWith('code-annotation-')) {                     
-              return true;
-            }
-          }
-          return false;
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        const onCopySuccess = function(e) {
-          // button target
-          const button = e.trigger;
-          // don't keep focus
-          button.blur();
-          // flash "checked"
-          button.classList.add('code-copy-button-checked');
-          var currentTitle = button.getAttribute("title");
-          button.setAttribute("title", "Copied!");
-          let tooltip;
-          if (window.bootstrap) {
-            button.setAttribute("data-bs-toggle", "tooltip");
-            button.setAttribute("data-bs-placement", "left");
-            button.setAttribute("data-bs-title", "Copied!");
-            tooltip = new bootstrap.Tooltip(button, 
-              { trigger: "manual", 
-                customClass: "code-copy-button-tooltip",
-                offset: [0, -8]});
-            tooltip.show();    
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
-          setTimeout(function() {
-            if (tooltip) {
-              tooltip.hide();
-              button.removeAttribute("data-bs-title");
-              button.removeAttribute("data-bs-toggle");
-              button.removeAttribute("data-bs-placement");
-            }
-            button.setAttribute("title", currentTitle);
-            button.classList.remove('code-copy-button-checked');
-          }, 1000);
-          // clear code selection
-          e.clearSelection();
         }
-        const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
-            }
-            return codeEl.innerText;
-        }
-        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-          text: getTextToCopy
-        });
-        clipboard.on('success', onCopySuccess);
-        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-            text: getTextToCopy,
-            container: window.document.getElementById('quarto-embedded-source-code-modal')
-          });
-          clipboardModal.on('success', onCopySuccess);
-        }
-          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-          var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
-          var isInternal = (href) => {
-              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-          }
-          // Inspect non-navigation links and adorn them if external
-         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-          for (var i=0; i<links.length; i++) {
-            const link = links[i];
-            if (!isInternal(link.href)) {
-              // undo the damage that might have been done by quarto-nav.js in the case of
-              // links that we want to consider external
-              if (link.dataset.originalHref !== undefined) {
-                link.href = link.dataset.originalHref;
-              }
-            }
-          }
-        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-          const config = {
-            allowHTML: true,
-            maxWidth: 500,
-            delay: 100,
-            arrow: false,
-            appendTo: function(el) {
-                return el.closest('section.slide') || el.parentElement;
-            },
-            interactive: true,
-            interactiveBorder: 10,
-            theme: 'light-border',
-            placement: 'bottom-start',
-          };
-          if (contentFn) {
-            config.content = contentFn;
-          }
-          if (onTriggerFn) {
-            config.onTrigger = onTriggerFn;
-          }
-          if (onUntriggerFn) {
-            config.onUntrigger = onUntriggerFn;
-          }
-            config['offset'] = [0,0];
-            config['maxWidth'] = 700;
-          window.tippy(el, config); 
-        }
-        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-        for (var i=0; i<noterefs.length; i++) {
-          const ref = noterefs[i];
-          tippyHover(ref, function() {
-            // use id or data attribute instead here
-            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-            try { href = new URL(href).hash; } catch {}
-            const id = href.replace(/^#\/?/, "");
-            const note = window.document.getElementById(id);
-            if (note) {
-              return note.innerHTML;
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
             } else {
-              return "";
+              container.appendChild(child.cloneNode(true));
+              break;
             }
-          });
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        const findCites = (el) => {
-          const parentEl = el.parentElement;
-          if (parentEl) {
-            const cites = parentEl.dataset.cites;
-            if (cites) {
-              return {
-                el,
-                cites: cites.split(' ')
-              };
-            } else {
-              return findCites(el.parentElement)
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
             }
           } else {
-            return undefined;
-          }
-        };
-        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-        for (var i=0; i<bibliorefs.length; i++) {
-          const ref = bibliorefs[i];
-          const citeInfo = findCites(ref);
-          if (citeInfo) {
-            tippyHover(citeInfo.el, function() {
-              var popup = window.document.createElement('div');
-              citeInfo.cites.forEach(function(cite) {
-                var citeDiv = window.document.createElement('div');
-                citeDiv.classList.add('hanging-indent');
-                citeDiv.classList.add('csl-entry');
-                var biblioDiv = window.document.getElementById('ref-' + cite);
-                if (biblioDiv) {
-                  citeDiv.innerHTML = biblioDiv.innerHTML;
-                }
-                popup.appendChild(citeDiv);
-              });
-              return popup.innerHTML;
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
             });
           }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
         }
+      }, function(instance) {
       });
-      </script>
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/regressao/met_nao_param/met_nao_param.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
 
 
 </body></html>

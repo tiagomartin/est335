@@ -1,0 +1,466 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Aprendizado em Alta Dimensão</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 10"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+```
+
+## Onde estamos?
+
+Nas semanas anteriores, construímos estimadores flexíveis para
+
+$$
+r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
+$$
+
+utilizando:
+
+- funções de base
+- vizinhanças
+- partições
+- ensembles
+- composições não lineares
+
+
+## Métodos Não Paramétricos em Altas Dimensões
+
+- Métodos não paramétricos são mais flexíveis
+- Porém:
+  - exigem mais dados
+  - sofrem em altas dimensões
+
+Agora surge uma nova pergunta:
+
+> Como a dimensão afeta o desempenho dos modelos?
+
+
+## O Problema da Dimensão
+
+Suponha:
+
+- $X = (X_1, X_2, ..., X_p)$
+
+À medida que $p$ cresce:
+
+- o espaço de entrada cresce exponencialmente
+- os dados ficam "espalhados"
+
+➡️ Dificuldade de aprendizado aumenta
+
+
+## Maldição da Dimensionalidade
+
+(Bellman, 1966)
+
+Problema:
+
+- Volume do espaço cresce exponencialmente
+- Dados se tornam escassos
+
+Consequência:
+
+➡️ Precisamos de MUITO mais dados
+
+
+<!-- ## {background-image="/images/regressao/slide2.png" background-size="contain" background-position="center" background-repeat="no-repeat"} -->
+
+---
+
+![](/images/regressao/slide2.png){fig-align="center"}
+
+---
+
+Note que,<br><br>
+
+::: {.columns}
+
+:::: {.column width="33%"}
+### 🔵 1D  
+**Alta densidade**
+
+- muitos pontos locais  
+- vizinhos próximos  
+::::
+
+:::: {.column width="33%"}
+### 🟣 2D  
+**Densidade reduz**
+
+- menos pontos por região  
+- distância começa a importar  
+::::
+
+:::: {.column width="33%"}
+### 🔴 Alta dimensão  
+**Espaço explode**
+
+- dados esparsos  
+- vizinhos distantes  
+- KNN perde eficiência  
+::::
+
+:::
+
+
+::: {.callout-important}
+## Mensagem central
+
+Em altas dimensões, a proximidade deixa de ser informativa e métodos baseados em vizinhança perdem desempenho.
+:::
+
+
+## Consequência da alta dimensionalidade
+
+
+### ⚠️ Problema
+
+- Estimar uma função de regressão em alta dimensão é **muito difícil**
+- O erro não diminui facilmente, mesmo com mais dados
+
+
+> Sem hipóteses adicionais, **não é possível obter boas estimativas**
+> com tamanhos de amostra realistas.
+
+
+$$
+\text{Erro} \sim n^{-\frac{\alpha}{\alpha + p}}  \Rightarrow n \sim \left(\frac{1}{\delta}\right)^{\frac{\alpha + p}{\alpha}}
+$$
+$$\delta: \text{erro máximo desejável}$$
+
+---
+
+
+### Crescimento do tamanho da amostra com a dimensão
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 12
+#| fig-height: 5
+
+library(ggplot2)
+library(patchwork)
+
+# parâmetros
+alpha <- 2
+delta <- 0.2
+K <- 1
+
+# dimensão
+p <- 1:16
+
+df <- data.frame(
+  p = p,
+  n = (K/delta)^((alpha + p)/alpha)
+)
+
+#-----------------------------
+# gráfico SEM log (impacto)
+#-----------------------------
+g1 <- ggplot(df, aes(p, n)) +
+  geom_line(linewidth = 1.4, color = "#1F5FD1") +
+  geom_point(size = 3, color = "#1F5FD1") +
+  labs(
+    title = "Escala original",
+    subtitle = "Crescimento explosivo",
+    x = "Dimensão (p)",
+    y = "n"
+  ) +
+  theme_minimal(base_size = 16)
+
+#-----------------------------
+# gráfico COM log
+#-----------------------------
+g2 <- ggplot(df, aes(p, n)) +
+  geom_line(linewidth = 1.4, color = "#1F5FD1") +
+  geom_point(size = 3, color = "#1F5FD1") +
+  scale_y_log10() +
+  labs(
+    title = "Escala logarítmica",
+    subtitle = "Crescimento quase linear",
+    x = "Dimensão (p)",
+    y = "log10(n)"
+  ) +
+  theme_minimal(base_size = 16)
+
+#-----------------------------
+# lado a lado
+#-----------------------------
+g1 + g2
+```
+
+---
+
+### Impacto da dimensionalidade
+
+Por exemplo, qual o impacto de se dobrar a dimensionalidade dos dados de $p=4$ para $p=8$?
+
+
+Temos que
+
+$$\small n(p) \sim \left(\frac{1}{\delta}\right)^{\frac{\alpha + p}{\alpha}}$$
+Se $\delta = 0,2$ e $\alpha = 2$:
+
+
+$$\small
+\frac{n(8)}{n(4)} = \left(\frac{1}{0,2}\right)^{2} = 25
+$$
+
+> Dobrar a dimensão (de 4 para 8) pode exigir 25 vezes mais dados.
+
+
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: 5
+
+library(ggplot2)
+library(dplyr)
+
+n <- seq(50, 5000, length.out = 100)
+
+df <- expand.grid(
+  n = n,
+  d = c(1, 2, 5, 10)
+)
+
+df <- df |>
+  mutate(
+    erro = n^(-1/(2 + d)),
+    d = factor(d)
+  )
+
+ggplot(df, aes(n, erro, color = d)) +
+  geom_line(linewidth = 1.3) +
+  labs(
+    title = "Dimensões maiores → convergência mais lenta",
+    x = "Tamanho da amostra (n)",
+    y = "Erro",
+    color = "Dimensão"
+  ) +
+  theme_minimal(base_size = 16)
+```
+
+---
+
+
+### 🔑 Como resolver?
+
+Precisamos assumir duas suposições nos dados:
+
+- **Esparsidade** → poucas variáveis realmente importam  
+- **Redundância** → variáveis carregam informação semelhante<br><br>
+
+
+O problema não é só o modelo…  
+➡️ é a **dimensionalidade efetiva dos dados**
+
+
+## Esparsidade
+
+### 📐 Modelo depende de apenas alguns $x_i's$
+
+$$
+r(x) = r\big((x_i)_{i \in S}\big)
+$$
+
+em que $S \subset \{1, \cdots, p\}$. <br><br>
+
+
+::: {.columns}
+
+:::: {.column width="50%"}
+
+### 🔴 Alta dimensão aparente
+- $p = 1000$ variáveis  
+- difícil de estimar  
+
+::::
+
+:::: {.column width="50%"}
+
+### 🟢 Dimensão efetiva
+- $|S| = 5$ variáveis relevantes  
+- problema tratável  
+
+::::
+
+:::
+
+
+> Quando existe esparsidade, o número de variáveis relevantes pode ser muito menor que $p$.
+
+
+---
+
+
+### Como aplicar a suposição de esparsidade?
+
+#### 🎯 Ideia central
+
+
+Poucas variáveis realmente importam<br><br>
+
+#### 🔧 Estratégias
+
+- **seleção de variáveis:** testes estatísticos, stepwise selection, importância de variáveis (Random Forest)
+    
+- **regularização (Lasso):** força vários coeficientes a zero, seleciona automaticamente variáveis
+    
+- entre outras...
+
+
+[Alta dimensão aparente → baixa dimensão efetiva]{.body-text-m .teal-text .center}
+
+
+## Redundância
+
+### 📊 Intuição
+
+- $X_1 = \cdots = X_p$ → informação totalmente redundante  
+- variáveis altamente correlacionadas → informação parcialmente redundante<br><br>
+
+
+::: {.columns}
+
+:::: {.column width="50%"}
+
+### 🔴 Alta dimensão aparente
+- $p = 100$ variáveis  
+- parecem independentes  
+
+::::
+
+:::: {.column width="50%"}
+
+### 🟢 Dimensão intrínseca
+- dados vivem em espaço de baixa dimensão  
+- estrutura escondida  
+
+::::
+
+:::
+
+
+$$
+\mathbf{x} \in \mathbb{R}^p \quad \text{mas vive em um espaço de dimensão menor}
+$$
+
+---
+
+### Como aplicar a suposição de redundância?
+
+#### 🎯 Ideia central
+
+Variáveis carregam informação repetida<br><br>
+
+
+#### 🔧 Estratégias
+
+- análise de correlação  
+- **PCA:**  captura redundância **linear** 
+- **UMAP / t-SNE:** capturam redundância **não linear**: preservam estrutura local, revelam padrões escondidos  
+- **Autoencoders:** aprendem uma representação de baixa dimensão dos dados, através de redes neurais<br>
+
+
+[Alta dimensão observada → baixa dimensão intrínseca]{.body-text-m .teal-text .center}
+
+
+---
+
+## KNN e Regressão Linear Local em Alta Dimensão
+
+### 💡 Ideia chave
+
+- Dados podem viver em uma **dimensão intrínseca baixa**
+- Mesmo que o espaço seja de alta dimensão $p$<br><br>
+
+
+### 🔍 O que isso implica?
+
+👉 Métodos baseados em vizinhança:
+
+- **KNN**
+- **Regressão linear local**
+
+✔ se adaptam automaticamente à estrutura dos dados  
+
+---
+
+### ⚡ Resultado importante
+
+A taxa de convergência de ambos é igual a 
+
+
+$$
+\text{Erro} \sim n^{-\frac{4}{4+u}}
+$$
+
+
+e depende de:
+
+- $u$ = dimensão intrínseca  
+- não de $p$ = dimensão observada  
+
+
+> Se $u \ll d$, podemos escapar da maldição da dimensionalidade
+
+
+[**A estrutura dos dados é mais importante que o número de variáveis**]{.body-text-m .teal-text .center}
+
+# Métodos já estudados em alta dimensão
+
+## KNN e métodos locais
+$$
+p\uparrow\Rightarrow\text{dados localmente mais esparsos}
+$$
+
+## Regularização e esparsidade
+Lasso pode explorar estrutura esparsa quando poucas covariáveis são relevantes
+
+## Random Forest
+Pode ser relativamente robusta quando variáveis informativas são identificáveis, mas muitas variáveis irrelevantes ainda podem degradar o desempenho
+
+## Três quantidades diferentes
+$$
+\boxed{p=\text{dimensão observada}}
+$$
+$$
+\boxed{s=\text{número de variáveis relevantes}}
+$$
+$$
+\boxed{u=\text{dimensão intrínseca}}
+$$
+

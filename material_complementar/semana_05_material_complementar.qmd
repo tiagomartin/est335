@@ -1,0 +1,247 @@
+---
+title: "Parte I : Regressão"
+subtitle: "<span class='custom-subtitle'>Material complementar: Métodos Locais</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "Material complementar — EST335"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# Material complementar
+
+## Objetivo
+
+Aprofundar a interpretação estatística de KNN e kernel, largura de banda, regressão local, efeitos de fronteira, dimensionalidade e pré-processamento sem vazamento.
+
+# KNN como estimador ponderado
+
+## Pesos
+
+$$
+\widehat r_K(x_0)=\sum_{i=1}^nw_i(x_0)Y_i,
+$$
+
+onde
+
+$$
+w_i(x_0)=
+\begin{cases}
+1/K,&i\in N_K(x_0),\\
+0,&\text{caso contrário}.
+\end{cases}
+$$
+
+e
+
+$$
+\sum_iw_i(x_0)=1.
+$$
+
+# Kernel como média ponderada
+
+## Nadaraya–Watson
+
+$$
+w_i(x_0)=
+\frac{K((x_i-x_0)/h)}
+{\sum_jK((x_j-x_0)/h)}
+$$
+
+e
+
+$$
+\widehat r_h(x_0)=\sum_iw_i(x_0)Y_i
+$$
+
+Isso evidencia a conexão direta com KNN.
+
+# Kernel Gaussiano
+
+## Suporte infinito
+
+$$
+K_G(u)=\frac1{\sqrt{2\pi}}e^{-u^2/2}
+$$
+
+Todas as observações recebem peso positivo, mas pontos distantes recebem pesos rapidamente decrescentes.
+
+# Largura de banda
+
+## Escala da vizinhança
+
+O kernel recebe
+
+$$
+u_i=\frac{x_i-x_0}{h}
+$$
+
+$h$ pequeno faz os pesos caírem rapidamente; $h$ grande amplia a vizinhança efetiva.
+
+$$
+\boxed{h=\text{escala da vizinhança}}
+$$
+
+# Viés e variância
+
+## $h$ pequeno × $h$ grande
+
+$h$ pequeno:
+
+- menor viés;
+- maior variância;
+- maior adaptação local.
+
+$h$ grande:
+
+- maior viés;
+- menor variância;
+- maior suavização.
+
+# Kernel × largura de banda
+
+## O que mais importa?
+
+Em muitos problemas, mudar substancialmente $h$ altera mais a estimativa do que trocar entre kernels usuais.
+
+$$
+\boxed{\text{a largura de banda costuma ser mais importante que a forma exata do kernel}}
+$$
+
+# Efeitos de fronteira
+
+## Assimetria local
+
+Perto dos limites do domínio, não há observações dos dois lados de $x_0$.
+
+Isso pode aumentar o viés de médias locais, especialmente para Nadaraya–Watson.
+
+# Regressão linear local
+
+## Uma extensão
+
+Em vez de uma constante local, podemos ajustar
+
+$$
+Y_i\approx
+\beta_0(x_0)+\beta_1(x_0)(X_i-x_0)
+$$
+
+com pesos definidos pela distância.
+
+Isso reduz alguns problemas de viés e conecta diretamente os kernels ao LOESS.
+
+# Conexão com LOESS
+
+## Uma família
+
+Nadaraya–Watson:
+
+$$
+\text{média local ponderada}.
+$$
+
+Regressão local:
+
+$$
+\text{reta local ponderada}.
+$$
+
+LOESS:
+
+$$
+\text{polinômio local ponderado}.
+$$
+
+# Dimensionalidade
+
+## Distância em $p$ dimensões
+
+$$
+d(\mathbf x,\mathbf x_0)=
+\sqrt{\sum_{j=1}^p(x_j-x_{0j})^2}
+$$
+
+Quando $p$ cresce, pontos próximos tornam-se raros e a localidade perde força.
+
+# Volume de uma vizinhança
+
+## Hipercubo
+
+Uma região com extensão relativa $\ell$ em cada coordenada possui volume
+
+$$
+V=\ell^p
+$$
+
+Para capturar fração $q$:
+
+$$
+\ell=q^{1/p}
+$$
+
+Essa relação ilustra a maldição da dimensionalidade.
+
+# Dimensão efetiva
+
+## Uma nuance
+
+Alta dimensão nominal não implica necessariamente alta dimensão efetiva.
+
+Se os dados se concentram próximos a uma estrutura de dimensão menor, métodos locais podem funcionar melhor do que a dimensão bruta sugere.
+
+# Padronização
+
+## Distâncias comparáveis
+
+$$
+X_j^*=\frac{X_j-\bar X_j}{s_j}
+$$
+
+Média e desvio-padrão devem ser estimados **somente no treinamento**.
+
+# Validação sem vazamento
+
+## Pipeline por fold
+
+$$
+\boxed{\text{treino do fold}}
+\rightarrow
+\boxed{\text{estimar pré-processamento}}
+\rightarrow
+\boxed{\text{aplicar ao treino/validação}}
+\rightarrow
+\boxed{\text{ajustar}}
+\rightarrow
+\boxed{\text{avaliar}}
+$$
+
+Pré-processamento também faz parte do processo de aprendizagem.
+
+# Fechamento
+
+## Princípio unificador
+
+$$
+\boxed{
+\text{a predição em }x_0
+\text{ deve depender principalmente dos dados próximos a }x_0
+}
+$$
+
+A dificuldade fundamental é definir **proximidade** e escolher o tamanho adequado da vizinhança.

@@ -1,0 +1,830 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Flexibilidade: Funções de Base, Polinômios, Splines e Séries</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 3"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+library(splines)
+
+tema <- theme_minimal(base_size = 15) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+set.seed(123)
+pib <- runif(200, 1000, 60000)
+df_pib <- data.frame(
+  pib = pib,
+  log_pib = log(pib/1000),
+  vida = 40 + 15*log(pib/1000) + rnorm(200,0,3)
+)
+```
+
+## De onde partimos?
+
+Nas últimas aulas, escolhemos
+
+$$
+\mathcal G_{\text{linear}}
+=
+\{g(x)=\beta_0+\beta_1x\}
+$$
+
+e aprendemos os parâmetros por mínimos quadrados.
+
+Mas os resíduos mostraram algo importante:
+
+$$
+\boxed{\text{uma reta pode ser simples demais para representar }r(x)}
+$$
+
+## A pergunta desta semana
+
+> Como aumentar a flexibilidade do modelo usando representações mais ricas das covariáveis?
+
+Vamos construir a sequência
+
+$$
+\boxed{\text{reta}}
+\rightarrow
+\boxed{\text{polinômios}}
+\rightarrow
+\boxed{\text{splines}}
+\rightarrow
+\boxed{\text{suavização}}
+$$
+
+
+# Polinômios e funções de base
+
+## Além da reta
+
+Uma primeira extensão é
+
+$$
+g(x)
+=
+\beta_0+\beta_1x+\beta_2x^2+\cdots+\beta_px^p
+$$
+
+Para $p=1$, recuperamos a reta.
+
+Para $p>1$, permitimos curvatura.
+
+## Isso ainda é regressão linear?
+
+Sim.
+
+O modelo é não linear em $x$, mas continua **linear nos parâmetros**:
+
+$$
+g(x)
+=
+\beta_0+
+\beta_1b_1(x)+\cdots+\beta_dp_p(x),
+$$
+
+com
+
+$$
+b_j(x)=x^j
+$$
+
+## Funções de base
+
+A ideia geral é substituir $x$ por novas representações:
+
+$$
+x
+\longrightarrow
+\big(
+b_1(x),b_2(x),\ldots,b_K(x)
+\big)
+$$
+
+Depois ajustamos
+
+$$
+g(x)=
+\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
+$$
+
+::: {.callout-note appearance="simple"}
+Muitos modelos aparentemente diferentes podem ser entendidos como regressão linear sobre diferentes **funções de base**.
+:::
+
+## PIB × expectativa de vida
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+ggplot(df_pib,aes(log_pib,vida)) +
+  geom_point(color="#2C7FB8",alpha=.55,size=2) +
+  tema +
+  labs(x="log(PIB/1000)",y="Expectativa de vida")
+```
+
+Vamos usar $x=\log(PIB/1000)$ para visualizar claramente o efeito da complexidade.
+
+## Grau 1
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: 76%
+#| fig-align: center
+
+fit1 <- lm(vida ~ poly(log_pib,1,raw=TRUE),data=df_pib)
+g1 <- data.frame(log_pib=seq(min(df_pib$log_pib),max(df_pib$log_pib),length.out=500))
+g1$pred <- predict(fit1,newdata=g1)
+
+ggplot(df_pib,aes(log_pib,vida)) +
+  geom_point(color="gray45",alpha=.5) +
+  geom_line(data=g1,aes(log_pib,pred),color="#D7301F",linewidth=1.4) +
+  tema +
+  labs(title="Polinômio de grau 1",x="x",y="y")
+```
+
+## Graus 1, 4 e 12
+
+```{r}
+#| fig-width: 11
+#| fig-height: 4
+#| out-width: 94%
+#| fig-align: center
+
+make_poly <- function(d,titulo){
+  fit <- lm(vida ~ poly(log_pib,d,raw=TRUE),data=df_pib)
+  gd <- data.frame(log_pib=seq(min(df_pib$log_pib),max(df_pib$log_pib),length.out=500))
+  gd$pred <- predict(fit,newdata=gd)
+  ggplot(df_pib,aes(log_pib,vida)) +
+    geom_point(color="gray50",alpha=.45,size=1.5) +
+    geom_line(data=gd,aes(log_pib,pred),color="#2C7FB8",linewidth=1.2) +
+    tema + theme(axis.title=element_blank()) +
+    ggtitle(titulo)
+}
+
+make_poly(1,"Grau 1") + make_poly(4,"Grau 4") + make_poly(12,"Grau 12")
+```
+
+Aumentar o grau aumenta a **flexibilidade da classe**.
+
+## O grau é um hiperparâmetro
+
+Em
+
+$$
+g_p(x)=\beta_0+\sum_{j=1}^{p}\beta_jx^j,
+$$
+
+os coeficientes
+
+$$
+\beta_0,\ldots,\beta_p
+$$
+
+são estimados durante o treinamento.
+
+O grau $p$ define a complexidade da classe antes do ajuste.
+
+## Treinamento × seleção de complexidade
+
+Para um grau fixado:
+
+$$
+\widehat{\boldsymbol\beta}_p
+=
+\arg\min_{\boldsymbol\beta}
+RSS_p(\boldsymbol\beta)
+$$
+
+Mas ainda precisamos escolher $p.$
+
+Portanto existem **dois problemas diferentes**:
+
+$$
+\boxed{\text{estimar parâmetros}}
+\qquad\text{e}\qquad
+\boxed{\text{selecionar complexidade}}
+$$
+
+## Erro de treinamento
+
+À medida que ampliamos a classe de modelos,
+
+$$
+\mathcal G_1
+\subset
+\mathcal G_2
+\subset
+\cdots,
+$$
+
+o erro mínimo de treinamento não pode aumentar:
+
+$$
+RSS_{p+1}\le RSS_p
+$$
+
+Isso parece ótimo...
+
+## ...mas o teste pode piorar
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+set.seed(335)
+id <- sample(seq_len(nrow(df_pib)),floor(.7*nrow(df_pib)))
+tr <- df_pib[id,]
+te <- df_pib[-id,]
+
+graus <- 1:12
+erros <- lapply(graus,function(d){
+  fit <- lm(vida ~ poly(log_pib,d,raw=TRUE),data=tr)
+  c(
+    treino=sqrt(mean((tr$vida-predict(fit,newdata=tr))^2)),
+    teste=sqrt(mean((te$vida-predict(fit,newdata=te))^2))
+  )
+}) |> do.call(rbind, args=_) |> as.data.frame()
+
+erros$grau <- graus
+erros_long <- bind_rows(
+  data.frame(grau=graus,RMSE=erros$treino,Conjunto="Treino"),
+  data.frame(grau=graus,RMSE=erros$teste,Conjunto="Teste")
+)
+
+ggplot(erros_long,aes(grau,RMSE,color=Conjunto)) +
+  geom_line(linewidth=1.2) +
+  geom_point(size=2) +
+  scale_x_continuous(breaks=graus) +
+  tema +
+  labs(title="Complexidade: treino × teste",
+       x="Grau do polinômio",y="RMSE",color=NULL)
+```
+
+## A mensagem central
+
+$$
+\boxed{
+\text{mais flexível}
+\not\Rightarrow
+\text{melhor generalização}
+}
+$$
+
+A complexidade precisa ser escolhida com dados que não estejam sendo usados para estimar os coeficientes.
+
+## Por que graus muito altos são problemáticos?
+
+Polinômios são funções **globais**.
+
+Alterar um coeficiente pode modificar a curva em praticamente todo o domínio.
+
+Além disso, nas extremidades:
+
+- pequenas mudanças nos dados podem produzir grandes mudanças na curva;
+- extrapolação pode se tornar extremamente instável;
+- graus altos podem produzir oscilações artificiais.
+
+## Um modelo muito flexível em diferentes amostras
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.7
+#| out-width: 78%
+#| fig-align: center
+
+set.seed(10)
+grid_v <- data.frame(x=seq(-1,1,length.out=300))
+
+curvas <- do.call(rbind,lapply(1:6,function(b){
+  xx <- sort(runif(70,-1,1))
+  yy <- 1+2*xx-2*xx^2+rnorm(70,0,.35)
+  fit <- lm(yy ~ poly(xx,12,raw=TRUE))
+  data.frame(
+    x=grid_v$x,
+    pred=predict(fit,newdata=data.frame(xx=grid_v$x)),
+    amostra=factor(b)
+  )
+}))
+
+verdadeira <- data.frame(
+  x=grid_v$x,
+  y=1+2*grid_v$x-2*grid_v$x^2
+)
+
+ggplot(curvas,aes(x,pred,group=amostra,color=amostra)) +
+  geom_line(linewidth=.9,alpha=.75) +
+  geom_line(data=verdadeira,aes(x,y),inherit.aes=FALSE,
+            color="#D7301F",linetype=2,linewidth=1.4) +
+  tema +
+  theme(legend.position="none") +
+  labs(x="x",y="Predição",
+       title="",
+       subtitle="Linha vermelha tracejada: função verdadeira")
+```
+
+A flexibilidade excessiva pode aumentar a **variabilidade do estimador**.
+
+# Splines e suavização
+
+## Uma alternativa aos polinômios globais
+
+Em vez de usar uma única função complexa em todo o domínio, podemos construir funções **por partes**.
+
+Ideia:
+
+$$
+\boxed{
+\text{ajustes locais}
++
+\text{restrições de continuidade}
+}
+$$
+
+Isso nos leva aos **splines**.
+
+## Primeiro: uma função linear por partes
+
+Escolha nós
+
+$$
+\xi_1,\xi_2,\ldots,\xi_K
+$$
+
+Uma base simples usa
+
+$$
+(x-\xi_k)_+
+=
+\begin{cases}
+x-\xi_k, & x>\xi_k,\\
+0, & x\le\xi_k
+\end{cases}
+$$
+
+e
+
+$$
+g(x)=
+\beta_0+\beta_1x+
+\sum_{k=1}^K\gamma_k(x-\xi_k)_+
+$$
+
+## O que um nó faz?
+
+Um nó permite que a inclinação mude a partir de determinada região.
+
+Antes do nó:
+
+$$
+\text{inclinação}=\beta_1
+$$
+
+Depois:
+
+$$
+\text{inclinação}=\beta_1+\gamma_k
+$$
+
+Assim, ganhamos **flexibilidade local**.
+
+## Spline linear com nós
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+df_s <- df_pib |> mutate(x=log_pib)
+kn <- quantile(df_s$x,c(.25,.5,.75))
+
+fit_lin_spline <- lm(
+  vida ~ x + I(pmax(x-kn[1],0)) +
+    I(pmax(x-kn[2],0)) +
+    I(pmax(x-kn[3],0)),
+  data=df_s
+)
+
+gs <- data.frame(x=seq(min(df_s$x),max(df_s$x),length.out=500))
+gs$pred <- predict(fit_lin_spline,newdata=gs)
+
+ggplot(df_s,aes(x,vida)) +
+  geom_point(color="gray50",alpha=.45) +
+  geom_line(data=gs,aes(x,pred),color="#2C7FB8",linewidth=1.3) +
+  geom_vline(xintercept=kn,linetype=2,color="#D7301F") +
+  tema +
+  labs(title="Spline linear",
+       subtitle="Linhas tracejadas: nós",
+       x="x",y="y")
+```
+
+## Por que usar splines cúbicos?
+
+Funções lineares por partes apresentam mudanças abruptas de inclinação.
+
+Splines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.
+
+Tipicamente exigimos continuidade de:
+
+$$
+g(x),\qquad g'(x),\qquad g''(x)
+$$
+
+## Spline cúbico
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+
+fit_bs <- lm(
+  vida ~ bs(log_pib,knots=kn,degree=3),
+  data=df_pib
+)
+
+gb <- data.frame(
+  log_pib=seq(min(df_pib$log_pib),max(df_pib$log_pib),length.out=500)
+)
+gb$pred <- predict(fit_bs,newdata=gb)
+
+ggplot(df_pib,aes(log_pib,vida)) +
+  geom_point(color="gray50",alpha=.45) +
+  geom_line(data=gb,aes(log_pib,pred),color="#2C7FB8",linewidth=1.4) +
+  geom_vline(xintercept=kn,linetype=2,color="#D7301F") +
+  tema +
+  labs(title="Spline cúbico",
+       subtitle="Flexibilidade local com transições suaves",
+       x="x",y="y")
+```
+
+## Polinômio × spline
+
+:::: {.columns}
+::: {.column width="48%"}
+### Polinômio
+
+$$
+g(x)=\sum_{j=0}^p\beta_jx^j
+$$
+
+- comportamento global;
+- grau controla flexibilidade;
+- pode oscilar nas extremidades.
+:::
+
+::: {.column width="48%"}
+### Spline
+
+$$
+g(x)=\sum_{k=1}^K\beta_kb_k(x)
+$$
+
+- flexibilidade local;
+- nós controlam onde a curva pode mudar;
+- geralmente mais estável.
+:::
+::::
+
+## Quantos nós?
+
+Mais nós:
+
+$$
+\Rightarrow
+\text{maior flexibilidade}.
+$$
+
+Menos nós:
+
+$$
+\Rightarrow
+\text{curva mais rígida}.
+$$
+
+Surge novamente o mesmo problema:
+
+$$
+\boxed{\text{como controlar a complexidade?}}
+$$
+
+## Outra estratégia: penalizar a rugosidade
+
+Em vez de escolher poucos nós, podemos permitir uma função bastante flexível e penalizar curvas excessivamente irregulares:
+
+$$
+\boxed{
+\sum_{i=1}^{n}
+(y_i-g(x_i))^2
++
+\lambda
+\int
+[g''(t)]^2dt
+}
+$$
+
+Esse é o princípio do **smoothing spline**.
+
+## Duas forças em competição
+
+$$
+\underbrace{
+\sum_i(y_i-g(x_i))^2
+}_{\text{ajuste aos dados}}
++
+\lambda
+\underbrace{
+\int[g''(t)]^2dt
+}_{\text{rugosidade}}
+$$
+
+O parâmetro $\lambda$ controla o compromisso entre ajuste e suavidade.
+
+## O papel de $\lambda$
+
+Se
+
+$$
+\lambda\rightarrow0,
+$$
+
+a penalização enfraquece e a curva pode se tornar muito flexível.
+
+Se
+
+$$
+\lambda\rightarrow\infty,
+$$
+
+a penalização domina e a solução se aproxima de uma reta.
+
+## Smoothing spline: duas suavizações
+
+```{r}
+#| fig-width: 10
+#| fig-height: 4.3
+#| out-width: 88%
+#| fig-align: center
+
+ss_flex <- smooth.spline(df_pib$log_pib,df_pib$vida,spar=.3)
+ss_suave <- smooth.spline(df_pib$log_pib,df_pib$vida,spar=.8)
+
+pred_flex <- predict(ss_flex,seq(min(df_pib$log_pib),max(df_pib$log_pib),length.out=500))
+pred_suave <- predict(ss_suave,seq(min(df_pib$log_pib),max(df_pib$log_pib),length.out=500))
+
+pflex <- ggplot(df_pib,aes(log_pib,vida)) +
+  geom_point(color="gray55",alpha=.4) +
+  geom_line(data=data.frame(x=pred_flex$x,y=pred_flex$y),
+            aes(x,y),inherit.aes=FALSE,color="#2C7FB8",linewidth=1.2) +
+  tema + labs(title="Mais flexível",subtitle="spar = 0.3",x="x",y="y")
+
+psuave <- ggplot(df_pib,aes(log_pib,vida)) +
+  geom_point(color="gray55",alpha=.4) +
+  geom_line(data=data.frame(x=pred_suave$x,y=pred_suave$y),
+            aes(x,y),inherit.aes=FALSE,color="#D7301F",linewidth=1.2) +
+  tema + labs(title="Mais suave",subtitle="spar = 0.8",x="x",y="y")
+
+pflex + psuave
+```
+
+## O parâmetro de suavização é um hiperparâmetro
+
+Novamente:
+
+**Treinamento**
+
+estima os coeficientes que definem a curva.
+
+**Seleção de modelo**
+
+escolhe o nível de suavização.
+
+$$
+\boxed{
+\lambda\ \text{ou spar}
+\quad\longleftrightarrow\quad
+\text{complexidade}
+}
+$$
+
+# Representações flexíveis em problemas supervisionados
+
+## A mesma base pode alimentar tarefas diferentes
+$$
+\boldsymbol\phi(x)=(\phi_1(x),\ldots,\phi_K(x))^t
+$$
+A representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico
+
+
+
+# Séries ortogonais
+
+## Séries ortogonais
+
+Outra estratégia para estimar uma função desconhecida é representá-la em uma base:
+
+$$
+f(x)=\sum_{j=1}^{\infty}\theta_j\phi_j(x)
+$$
+
+Na prática, truncamos a expansão:
+
+$$
+\boxed{
+f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
+}
+$$
+
+e estimamos apenas os primeiros $m$ coeficientes.
+
+## O que significa ortogonalidade?
+
+As funções da base satisfazem, para um produto interno apropriado,
+
+$$
+\langle\phi_j,\phi_k\rangle=0,
+\qquad j\neq k
+$$
+
+Isso reduz a interferência entre os componentes da representação.
+
+Exemplos incluem bases trigonométricas e famílias de polinômios ortogonais.
+
+## Estimação dos coeficientes
+
+Em uma formulação simples,
+
+$$
+\widehat\theta_j
+=
+\frac1n\sum_{i=1}^{n}Y_i\phi_j(X_i)
+$$
+
+Assim,
+
+$$
+\widehat f_m(x)
+=
+\sum_{j=1}^{m}\widehat\theta_j\phi_j(x)
+$$
+
+O número de termos $m$ controla a complexidade.
+
+## Viés × variância reaparece
+
+$$
+m\text{ pequeno}
+\Rightarrow
+\text{representação rígida}
+\Rightarrow
+Bias\uparrow
+$$
+
+$$
+m\text{ grande}
+\Rightarrow
+\text{representação flexível}
+\Rightarrow
+Var\uparrow
+$$
+
+Portanto, $m$ é um **hiperparâmetro**.
+
+## Séries × splines
+
+:::: {.columns}
+::: {.column width="47%"}
+### Séries
+
+Aproximação global:
+
+$$
+f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
+$$
+
+Cada função de base pode atuar sobre todo o domínio.
+:::
+
+::: {.column width="47%"}
+### Splines
+
+Aproximação por partes, com comportamento controlado por nós.
+
+Mudanças locais podem ter efeito mais localizado.
+:::
+::::
+
+As duas estratégias são exemplos de **expansões em funções de base**.
+
+## Uma estrutura comum
+
+Polinômios, splines, smoothing splines e LOESS parecem métodos diferentes.
+
+Mas todos respondem à mesma pergunta:
+
+$$
+\boxed{
+\text{quanta flexibilidade devemos permitir a }\widehat g?
+}
+$$
+
+## Escala de flexibilidade
+
+$$
+\text{Reta}
+\longrightarrow
+\text{Polinômio}
+\longrightarrow
+\text{Spline}
+\longrightarrow
+\text{Suavizador muito local}
+$$
+
+À medida que a flexibilidade aumenta:
+
+- o viés tende a diminuir;
+- a variabilidade tende a aumentar;
+- o erro de treino tende a cair;
+- o erro de generalização não necessariamente cai.
+
+## Como escolher a complexidade?
+
+Não devemos escolher grau, número de nós ou suavização observando apenas o erro de treinamento.
+
+A lógica correta é
+
+$$
+\boxed{
+\text{candidatos}
+\rightarrow
+\text{validação}
+\rightarrow
+\text{seleção}
+\rightarrow
+\text{teste final}
+}
+$$
+
+Essa lógica será usada repetidamente ao longo da disciplina.
+
+## Comparação dos métodos
+
+| Método | Controle principal de flexibilidade |
+|---|---|
+| Regressão linear | número/forma das covariáveis |
+| Polinomial | grau $d$ |
+| Spline de regressão | número/posição dos nós |
+| Smoothing spline | penalização $\lambda$ |
+| LOESS | `span` |
+
+## Síntese
+
+$$
+\boxed{
+g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
+}
+$$
+
+é uma ideia extremamente poderosa.
+
+Mudando as funções de base e o controle de complexidade, obtemos diferentes famílias de modelos.
+
+## Três ideias para levar
+
+1. **Não linear em $x$ não significa não linear nos parâmetros.**
+2. Flexibilidade resolve viés, mas pode aumentar variância.
+3. Hiperparâmetros de complexidade devem ser escolhidos por desempenho fora da amostra.
+

@@ -1,0 +1,381 @@
+---
+title: "Parte I : Regressão"
+subtitle: "<span class='custom-subtitle'>Material complementar: Regularização</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "Material complementar — EST335"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-format: png
+  freeze: auto
+  cache: true
+---
+
+# Material complementar
+
+## O que aprofundaremos?
+
+- solução matricial de Ridge;
+- efeito sobre autovalores;
+- formulação com restrições;
+- geometria $L_1$ × $L_2$;
+- padronização;
+- relação com viés–variância;
+- caso $p>n$;
+- Elastic Net;
+- inferência após seleção.
+
+# 1. Ridge em forma matricial
+
+## Problema penalizado
+
+$$
+\widehat{\boldsymbol\beta}^{R}
+=
+\arg\min_{\boldsymbol\beta}
+\left\{
+\|\mathbf y-\mathbf X\boldsymbol\beta\|^2
++
+\lambda\|\boldsymbol\beta\|_2^2
+\right\}
+$$
+
+Aqui omitimos o intercepto da penalização para simplificar a notação.
+
+## Derivação
+
+$$
+Q(\boldsymbol\beta)
+=
+(\mathbf y-\mathbf X\boldsymbol\beta)^\top
+(\mathbf y-\mathbf X\boldsymbol\beta)
++
+\lambda\boldsymbol\beta^\top\boldsymbol\beta
+$$
+
+Logo,
+
+$$
+\nabla Q
+=
+-2\mathbf X^\top\mathbf y
++
+2\mathbf X^\top\mathbf X\boldsymbol\beta
++
+2\lambda\boldsymbol\beta
+$$
+
+## Solução Ridge
+
+Igualando a zero,
+
+$$
+(\mathbf X^\top\mathbf X+\lambda\mathbf I)
+\widehat{\boldsymbol\beta}^{R}
+=
+\mathbf X^\top\mathbf y
+$$
+
+Portanto,
+
+$$
+\boxed{
+\widehat{\boldsymbol\beta}^{R}
+=
+(\mathbf X^\top\mathbf X+\lambda\mathbf I)^{-1}
+\mathbf X^\top\mathbf y
+}
+$$
+
+# 2. Ridge e estabilidade
+
+## O que muda?
+
+MQO depende de
+
+$$
+(\mathbf X^\top\mathbf X)^{-1}
+$$
+
+Ridge utiliza
+
+$$
+(\mathbf X^\top\mathbf X+\lambda\mathbf I)^{-1}
+$$
+
+Adicionar $\lambda$ à diagonal estabiliza direções problemáticas.
+
+## Visão pelos autovalores
+
+Se
+
+$$
+\mathbf X^\top\mathbf X
+=
+\mathbf V\mathbf D\mathbf V^\top,
+$$
+
+Ridge substitui fatores $\dfrac1{d_j}$ por
+
+$$
+\frac1{d_j+\lambda}
+$$
+
+Direções associadas a autovalores pequenos são especialmente regularizadas.
+
+# 3. Formulação com restrição
+
+## Ridge
+
+Para um $t$ apropriado,
+
+$$
+\min_{\boldsymbol\beta}RSS
+$$
+
+sujeito a
+
+$$
+\sum_j\beta_j^2\le t
+$$
+
+A região admissível é uma bola $L_2$.
+
+## Lasso
+
+$$
+\min_{\boldsymbol\beta}RSS
+$$
+
+sujeito a
+
+$$
+\sum_j|\beta_j|\le t
+$$
+
+A região admissível é uma bola $L_1$.
+
+# 4. Por que Lasso produz zeros?
+
+## Geometria
+
+Em duas dimensões:
+
+Ridge:
+
+$$
+\beta_1^2+\beta_2^2\le t
+$$
+
+Lasso:
+
+$$
+|\beta_1|+|\beta_2|\le t
+$$
+
+## Geometria
+
+
+A região $L_1$ possui vértices sobre os eixos.
+
+As curvas de nível do RSS frequentemente tocam esses vértices.
+
+Então,
+
+$$
+\boxed{\beta_j=0}
+$$
+
+surge naturalmente na solução Lasso.
+
+# 5. Padronização
+
+## Por que a escala importa?
+
+A penalização atua sobre os coeficientes.
+
+Se $X_1$ e $X_2$ usam escalas muito diferentes, o mesmo tamanho de coeficiente não representa a mesma variação no preditor.
+
+A solução usual é
+
+$$
+X_j^*=\frac{X_j-\bar X_j}{s_j}
+$$
+
+Assim, os preditores entram na penalização em escalas comparáveis.
+
+# 6. Ridge é viesado
+
+## E isso pode ser bom
+
+Para $\lambda>0$,
+
+$$
+E(\widehat{\boldsymbol\beta}^{R})
+\neq
+\boldsymbol\beta
+$$
+
+Mas, para predição, interessa o erro total:
+
+$$
+E[(Y-\widehat g(x))^2]
+=
+\sigma^2+
+Bias^2[\widehat g(x)]
++
+Var[\widehat g(x)]
+$$
+
+Regularização busca reduzir a variância o suficiente para compensar o viés introduzido.
+
+# 7. Quando $p>n$
+
+## Mais preditores que observações
+
+Se
+
+$$
+p>n,
+$$
+
+$\mathbf X^\top\mathbf X$ não tem posto completo e a solução usual de MQO não é única.
+
+Ridge com $\lambda>0$ produz uma solução regularizada bem definida sob condições usuais.
+
+Lasso também é útil em alta dimensão por produzir soluções esparsas.
+
+# 8. Elastic Net
+
+## Penalização combinada
+
+$$
+P_\alpha(\boldsymbol\beta)
+=
+(1-\alpha)\frac12\|\boldsymbol\beta\|_2^2
++
+\alpha\|\boldsymbol\beta\|_1
+$$
+
+Então,
+
+$$
+RSS+\lambda P_\alpha(\boldsymbol\beta)
+$$
+
+$\lambda$ controla a intensidade da penalização.
+
+$\alpha$ controla a mistura entre Ridge e Lasso.
+
+# 9. Conexão com funções de base
+
+## 
+
+Considere uma expansão rica:
+
+$$
+g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
+$$
+
+Podemos permitir muitas funções de base e controlar os coeficientes:
+
+$$
+RSS+\lambda\sum_k\beta_k^2
+$$
+
+Logo,
+
+$$
+\boxed{\text{expansão de base}+\text{regularização}}
+$$
+
+são estratégias complementares.
+
+# 10. Um princípio muito mais geral
+
+##
+
+A estrutura
+
+$$
+\boxed{
+\text{perda empírica}
++
+\lambda\times\text{complexidade}
+}
+$$
+
+aparece em muitos métodos.
+
+Ela explicita o compromisso entre
+
+$$
+\text{ajustar os dados}
+$$
+
+e
+
+$$
+\text{controlar a complexidade}.
+$$
+
+# 11. Regra de um erro-padrão
+
+## Parcimônia
+
+Se $\widehat R_{\min}$ é o menor erro de CV e $SE_{\min}$ seu erro-padrão, podemos escolher um modelo mais regularizado satisfazendo aproximadamente
+
+$$
+\widehat R_{CV}(\lambda)
+\le
+\widehat R_{\min}+SE_{\min}
+$$
+
+É uma regra prática para favorecer simplicidade quando os desempenhos são estatisticamente difíceis de distinguir.
+
+# 12. Inferência após seleção
+
+## Uma ressalva
+
+Se usamos Lasso para escolher variáveis e depois aplicamos testes clássicos como se essa seleção nunca tivesse ocorrido, a interpretação usual dos testes e intervalos não é automaticamente válida.<br><br>
+
+::: {.callout-warning appearance="simple"}
+**Seleção de variáveis e inferência pós-seleção são problemas distintos.**
+:::
+
+# Fechamento
+
+## A mensagem matemática
+
+Regularização substitui
+
+$$
+\min RSS
+$$
+
+por
+
+$$
+\boxed{
+\min\left\{
+RSS+\lambda P(\boldsymbol\beta)
+\right\}
+}
+$$
+
+e transforma o controle de complexidade em parte explícita do processo de aprendizagem.

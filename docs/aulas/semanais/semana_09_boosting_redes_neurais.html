@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+<meta property="og:title" content="Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Boosting e Redes Neurais">
+<meta property="og:image" content="http://professortp.com.br/est335/images/regressao/boosting2.png">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:image:height" content="941">
+<meta property="og:image:width" content="1672">
+</head>
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Parte I : Aprendizado Supervisionado</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#boosting" id="toc-boosting" class="nav-link active" data-scroll-target="#boosting">Boosting</a>
+  <ul class="collapse">
+<li><a href="#de-bagging-para-boosting" id="toc-de-bagging-para-boosting" class="nav-link" data-scroll-target="#de-bagging-para-boosting">De Bagging para Boosting</a></li>
+  <li><a href="#modelo-aditivo" id="toc-modelo-aditivo" class="nav-link" data-scroll-target="#modelo-aditivo">Modelo aditivo</a></li>
+  <li><a href="#come%C3%A7ando-pela-perda-quadr%C3%A1tica" id="toc-começando-pela-perda-quadrática" class="nav-link" data-scroll-target="#come%C3%A7ando-pela-perda-quadr%C3%A1tica">Começando pela perda quadrática</a></li>
+  <li><a href="#corrigindo-o-modelo-atual" id="toc-corrigindo-o-modelo-atual" class="nav-link" data-scroll-target="#corrigindo-o-modelo-atual">Corrigindo o modelo atual</a></li>
+  <li><a href="#por-que-res%C3%ADduos" id="toc-por-que-resíduos" class="nav-link" data-scroll-target="#por-que-res%C3%ADduos">Por que resíduos?</a></li>
+  <li><a href="#gradient-boosting" id="toc-gradient-boosting" class="nav-link" data-scroll-target="#gradient-boosting">Gradient Boosting</a></li>
+  <li><a href="#learning-rate" id="toc-learning-rate" class="nav-link" data-scroll-target="#learning-rate">Learning rate</a></li>
+  <li><a href="#controles-de-complexidade" id="toc-controles-de-complexidade" class="nav-link" data-scroll-target="#controles-de-complexidade">Controles de complexidade</a></li>
+  <li><a href="#boosting-e-estimadores-fracos" id="toc-boosting-e-estimadores-fracos" class="nav-link" data-scroll-target="#boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</a></li>
+  <li><a href="#por-que-usar-modelos-fracos" id="toc-por-que-usar-modelos-fracos" class="nav-link" data-scroll-target="#por-que-usar-modelos-fracos">Por que usar modelos fracos?</a></li>
+  <li><a href="#bagging-rf-boosting" id="toc-bagging-rf-boosting" class="nav-link" data-scroll-target="#bagging-rf-boosting">Bagging × RF × Boosting</a></li>
+  <li><a href="#boosting-em-classifica%C3%A7%C3%A3o" id="toc-boosting-em-classificação" class="nav-link" data-scroll-target="#boosting-em-classifica%C3%A7%C3%A3o">Boosting em classificação</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#redes-neurais" id="toc-redes-neurais" class="nav-link" data-scroll-target="#redes-neurais">Redes Neurais</a>
+  <ul class="collapse">
+<li><a href="#redes-neurais-artificiais" id="toc-redes-neurais-artificiais" class="nav-link" data-scroll-target="#redes-neurais-artificiais">Redes Neurais Artificiais</a></li>
+  <li><a href="#redes-neurais-artificiais-1" id="toc-redes-neurais-artificiais-1" class="nav-link" data-scroll-target="#redes-neurais-artificiais-1">Redes Neurais Artificiais</a></li>
+  <li><a href="#redes-neurais-artificiais-2" id="toc-redes-neurais-artificiais-2" class="nav-link" data-scroll-target="#redes-neurais-artificiais-2">Redes Neurais Artificiais</a></li>
+  <li><a href="#representa%C3%A7%C3%A3o-de-cada-neur%C3%B4nio-da-rede" id="toc-representação-de-cada-neurônio-da-rede" class="nav-link" data-scroll-target="#representa%C3%A7%C3%A3o-de-cada-neur%C3%B4nio-da-rede">Representação de cada neurônio da rede</a></li>
+  <li><a href="#fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o" id="toc-funções-de-ativação" class="nav-link" data-scroll-target="#fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o">Funções de Ativação</a></li>
+  <li><a href="#por-que-precisamos-de-fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o" id="toc-por-que-precisamos-de-funções-de-ativação" class="nav-link" data-scroll-target="#por-que-precisamos-de-fun%C3%A7%C3%B5es-de-ativa%C3%A7%C3%A3o">Por que precisamos de funções de ativação?</a></li>
+  <li><a href="#treinamento" id="toc-treinamento" class="nav-link" data-scroll-target="#treinamento">Treinamento</a></li>
+  <li><a href="#gradiente-descendente" id="toc-gradiente-descendente" class="nav-link" data-scroll-target="#gradiente-descendente">Gradiente descendente</a></li>
+  <li><a href="#o-que-precisamos-calcular" id="toc-o-que-precisamos-calcular" class="nav-link" data-scroll-target="#o-que-precisamos-calcular">O que precisamos calcular?</a></li>
+  <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a></li>
+  <li><a href="#gradiente-na-camada-de-sa%C3%ADda" id="toc-gradiente-na-camada-de-saída" class="nav-link" data-scroll-target="#gradiente-na-camada-de-sa%C3%ADda">Gradiente na camada de saída</a></li>
+  <li><a href="#atualizando-os-pesos" id="toc-atualizando-os-pesos" class="nav-link" data-scroll-target="#atualizando-os-pesos">Atualizando os pesos</a></li>
+  <li><a href="#por-que-o-nome-backpropagation" id="toc-por-que-o-nome-backpropagation" class="nav-link" data-scroll-target="#por-que-o-nome-backpropagation">Por que o nome Backpropagation?</a></li>
+  <li><a href="#regulariza%C3%A7%C3%A3o" id="toc-regularização" class="nav-link" data-scroll-target="#regulariza%C3%A7%C3%A3o">Regularização</a></li>
+  <li><a href="#par%C3%A2metros-times-hiperpar%C3%A2metros" id="toc-parâmetros-times-hiperparâmetros" class="nav-link" data-scroll-target="#par%C3%A2metros-times-hiperpar%C3%A2metros">Parâmetros <span class="math inline">\(\times\)</span> Hiperparâmetros</a></li>
+  <li><a href="#rede-neural-aprendendo-uma-fun%C3%A7%C3%A3o-n%C3%A3o-linear" id="toc-rede-neural-aprendendo-uma-função-não-linear" class="nav-link" data-scroll-target="#rede-neural-aprendendo-uma-fun%C3%A7%C3%A3o-n%C3%A3o-linear">Rede neural aprendendo uma função não linear</a></li>
+  <li><a href="#s%C3%ADntese" id="toc-síntese" class="nav-link" data-scroll-target="#s%C3%ADntese">Síntese</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#integra%C3%A7%C3%A3o" id="toc-integração" class="nav-link" data-scroll-target="#integra%C3%A7%C3%A3o">Integração</a>
+  <ul class="collapse">
+<li><a href="#diferentes-fontes-de-flexibilidade" id="toc-diferentes-fontes-de-flexibilidade" class="nav-link" data-scroll-target="#diferentes-fontes-de-flexibilidade">Diferentes fontes de flexibilidade</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#redes-neurais-para-classifica%C3%A7%C3%A3o" id="toc-redes-neurais-para-classificação" class="nav-link" data-scroll-target="#redes-neurais-para-classifica%C3%A7%C3%A3o">Redes neurais para classificação</a>
+  <ul class="collapse">
+<li><a href="#sa%C3%ADda-bin%C3%A1ria" id="toc-saída-binária" class="nav-link" data-scroll-target="#sa%C3%ADda-bin%C3%A1ria">Saída binária</a></li>
+  <li><a href="#cross-entropy" id="toc-cross-entropy" class="nav-link" data-scroll-target="#cross-entropy">Cross-entropy</a></li>
+  <li><a href="#multiclasse-softmax" id="toc-multiclasse-softmax" class="nav-link" data-scroll-target="#multiclasse-softmax">Multiclasse: Softmax</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_09_boosting_redes_neurais.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="semana_09_boosting_redes_neurais.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Boosting e Redes Neurais</span></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="boosting" class="level1"><h1>Boosting</h1>
+<section id="de-bagging-para-boosting" class="level2"><h2 class="anchored" data-anchor-id="de-bagging-para-boosting">De Bagging para Boosting</h2>
+<p>Bagging: <span class="math display">\[
+\widehat g_{bag}(x)=\frac1B\sum_{b=1}^B\widehat g_b(x)
+\]</span></p>
+<p>Os modelos são construídos essencialmente em paralelo.</p>
+<p>Boosting: <span class="math display">\[
+F_0\rightarrow F_1\rightarrow\cdots\rightarrow F_M
+\]</span></p>
+<p>Cada novo modelo procura corrigir o modelo atual.</p>
+</section><section id="modelo-aditivo" class="level2"><h2 class="anchored" data-anchor-id="modelo-aditivo">Modelo aditivo</h2>
+<p><span class="math display">\[
+\boxed{
+F_M(x)=F_0(x)+\sum_{m=1}^{M}\lambda h_m(x)
+}
+\]</span></p>
+<ul>
+<li>
+<span class="math inline">\(h_m\)</span>: aprendiz fraco;</li>
+<li>
+<span class="math inline">\(\lambda\)</span>: learning rate;</li>
+<li>
+<span class="math inline">\(M\)</span>: número de iterações.</li>
+</ul></section><section id="começando-pela-perda-quadrática" class="level2"><h2 class="anchored" data-anchor-id="começando-pela-perda-quadrática">Começando pela perda quadrática</h2>
+<p><span class="math display">\[
+L(y,F(x))=\frac12[y-F(x)]^2
+\]</span></p>
+<p>O modelo inicial constante resolve: <span class="math display">\[
+F_0=\arg\min_c\sum_i\frac12(y_i-c)^2,
+\]</span> portanto: <span class="math display">\[
+\boxed{F_0(x)=\bar y}
+\]</span></p>
+</section><section id="corrigindo-o-modelo-atual" class="level2"><h2 class="anchored" data-anchor-id="corrigindo-o-modelo-atual">Corrigindo o modelo atual</h2>
+<p>No passo <span class="math inline">\(m\)</span>: <span class="math display">\[
+r_{im}=y_i-F_{m-1}(x_i)
+\]</span></p>
+<p>Ajustamos uma árvore <span class="math inline">\(h_m\)</span> aos resíduos e atualizamos: <span class="math display">\[
+\boxed{
+F_m(x)=F_{m-1}(x)+\lambda h_m(x)
+}
+\]</span></p>
+</section><section id="por-que-resíduos" class="level2"><h2 class="anchored" data-anchor-id="por-que-resíduos">Por que resíduos?</h2>
+<p>Para: <span class="math display">\[
+L_i(F)=\frac12[y_i-F(x_i)]^2,
+\]</span></p>
+<p>temos: <span class="math display">\[
+\frac{\partial L_i}{\partial F(x_i)}=F(x_i)-y_i
+\]</span></p>
+</section><section id="gradient-boosting" class="level2"><h2 class="anchored" data-anchor-id="gradient-boosting">Gradient Boosting</h2>
+<p>Para uma perda diferenciável: <span class="math display">\[
+r_{im}
+=
+-
+\left[
+\frac{\partial L(y_i,F(x_i))}
+{\partial F(x_i)}
+\right]_{F=F_{m-1}}
+\]</span></p>
+<p>Ajustamos <span class="math inline">\(h_m\)</span> aos pseudo-resíduos.</p>
+<p><span class="math display">\[
+\boxed{\text{Boosting = descida do gradiente no espaço de funções}}
+\]</span></p>
+</section><section id="learning-rate" class="level2"><h2 class="anchored" data-anchor-id="learning-rate">Learning rate</h2>
+<p><span class="math display">\[
+F_m=F_{m-1}+\lambda h_m
+\]</span></p>
+<p><span class="math display">\[
+\lambda\downarrow
+\Rightarrow
+\text{passos menores e aprendizado mais gradual}
+\]</span></p>
+<p>Valores menores de <span class="math inline">\(\lambda\)</span> normalmente exigem mais árvores.</p>
+</section><section id="controles-de-complexidade" class="level2"><h2 class="anchored" data-anchor-id="controles-de-complexidade">Controles de complexidade</h2>
+<p>Os principais são: <span class="math display">\[
+\boxed{M,\quad \lambda,\quad \text{profundidade das árvores}}
+\]</span></p>
+<p>Eles devem ser selecionados por validação.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/regressao/boosting2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="semana_09_boosting_redes_neurais_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="boosting-e-estimadores-fracos" class="level2"><h2 class="anchored" data-anchor-id="boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</h2>
+<p>O <em>boosting</em> não é restrito ao uso de árvores.</p>
+<p>Podemos usar qualquer modelo como base, desde que seja um <strong>estimador fraco</strong>.</p>
+<p><br></p>
+<section id="o-que-é-um-estimador-fraco" class="level4"><h4 class="anchored" data-anchor-id="o-que-é-um-estimador-fraco">O que é um estimador fraco?</h4>
+<ul>
+<li>modelo simples</li>
+<li>baixo poder preditivo individual</li>
+<li>pequeno viés de ajuste</li>
+</ul>
+<p><strong>Exemplos:</strong> árvores rasas (<em>stumps</em>), regressão linear simples, modelos com poucos parâmetros</p>
+</section></section><section id="por-que-usar-modelos-fracos" class="level2"><h2 class="anchored" data-anchor-id="por-que-usar-modelos-fracos">Por que usar modelos fracos?</h2>
+<ul>
+<li>evitam overfitting em cada etapa</li>
+<li>permitem correções graduais</li>
+<li>tornam o aprendizado mais estável</li>
+</ul>
+<p>Se você usar modelos muito complexos (ex: árvores profundas):</p>
+<p>👉 boosting pode superajustar rapidamente</p>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="semana_09_boosting_redes_neurais_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="bagging-rf-boosting" class="level2"><h2 class="anchored" data-anchor-id="bagging-rf-boosting">Bagging × RF × Boosting</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Método</th>
+<th>Construção</th>
+<th>Ideia central</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Bagging</td>
+<td>paralela + bootstrap</td>
+<td>reduzir variância</td>
+</tr>
+<tr class="even">
+<td>Random Forest</td>
+<td>paralela + bootstrap + aleatorização de variáveis</td>
+<td>reduzir correlação</td>
+</tr>
+<tr class="odd">
+<td>Boosting</td>
+<td>sequencial</td>
+<td>corrigir erros sucessivamente</td>
+</tr>
+</tbody>
+</table></section><section id="boosting-em-classificação" class="level2"><h2 class="anchored" data-anchor-id="boosting-em-classificação">Boosting em classificação</h2>
+<p>O procedimento sequencial permanece; muda a função de perda adequada à classificação</p>
+</section></section><section id="redes-neurais" class="level1"><h1>Redes Neurais</h1>
+<section id="redes-neurais-artificiais" class="level2"><h2 class="anchored" data-anchor-id="redes-neurais-artificiais">Redes Neurais Artificiais</h2>
+<p>Redes neurais são modelos que aproximam funções não lineares complexas.</p>
+<p>No contexto de regressão, trata-se de um estimador não linear de <span class="math inline">\(r(\mathbf{x})\)</span> que pode ser representado graficamente por uma estrutura do tipo</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/regressao/rna.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="redes-neurais-artificiais-1" class="level2"><h2 class="anchored" data-anchor-id="redes-neurais-artificiais-1">Redes Neurais Artificiais</h2>
+<p>Para a rede apresentada,</p>
+<section id="entrada" class="level4"><h4 class="anchored" data-anchor-id="entrada">Entrada</h4>
+<p><span class="math display">\[
+\mathbf{x} = (x_1, x_2, x_3)^t
+\]</span></p>
+</section><section id="camada-oculta" class="level4"><h4 class="anchored" data-anchor-id="camada-oculta">Camada oculta</h4>
+<p>Um dado neurônio <span class="math inline">\(j\)</span> da camada oculta é calculado como</p>
+<p><span class="math display">\[
+x_j^{1} = f\left( \beta_{0,j}^{(0)} + \sum_{i=1}^{3} \beta_{i,j}^{(0)} x_i^{0} \right),
+\quad \text{com } x_i^{0} = x_i,\; i=1,2,3.
+\]</span></p>
+<p>e <span class="math inline">\(f\)</span> é uma função definida pelo usuário, chamada de <strong>função de ativação.</strong></p>
+</section></section><section id="redes-neurais-artificiais-2" class="level2"><h2 class="anchored" data-anchor-id="redes-neurais-artificiais-2">Redes Neurais Artificiais</h2>
+<section id="saída" class="level4"><h4 class="anchored" data-anchor-id="saída">Saída</h4>
+<p>Para regressão, utilizamos uma <strong>ativação linear</strong> na camada de saída:</p>
+<p><span class="math display">\[
+\boxed{
+g_\beta(\mathbf{x})
+=
+x_1^2
+=
+\beta_{0,1}^{(1)}
++
+\sum_{j=1}^{5}
+\beta_{j,1}^{(1)}x_j^1
+}
+\]</span></p>
+<p>Assim,</p>
+<p><span class="math display">\[
+\widehat y = g_\beta(\mathbf{x}) = x_1^2
+\]</span></p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Nas camadas ocultas, a função de ativação introduz <strong>não linearidade</strong>.<br>
+Na saída de uma rede para regressão, usamos tipicamente <strong>ativação linear</strong>.</p>
+</div>
+</div>
+</div>
+</section></section><section id="representação-de-cada-neurônio-da-rede" class="level2"><h2 class="anchored" data-anchor-id="representação-de-cada-neurônio-da-rede">Representação de cada neurônio da rede</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/regressao/neuronioMP2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="funções-de-ativação" class="level2"><h2 class="anchored" data-anchor-id="funções-de-ativação">Funções de Ativação</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="clássicas" class="level4"><h4 class="anchored" data-anchor-id="clássicas">Clássicas</h4>
+<ul>
+<li><p>Identidade <span class="math display">\[
+f(z)=z
+\]</span></p></li>
+<li><p>Sigmoid <span class="math display">\[
+f(z)=\frac{1}{1+e^{-z}}
+\]</span></p></li>
+<li><p>Tanh <span class="math display">\[
+f(z)=\frac{e^z-e^{-z}}{e^z+e^{-z}}
+\]</span></p></li>
+</ul></section>
+</div><div class="column" style="width:50%;">
+<section id="modernas" class="level4"><h4 class="anchored" data-anchor-id="modernas">Modernas</h4>
+<ul>
+<li><p>ReLU <span class="math display">\[
+f(z)=\max(0,z)
+\]</span></p></li>
+<li><p>Leaky ReLU <span class="math display">\[
+f(z)=
+\begin{cases}
+0.01z, &amp; z&lt;0\\
+z, &amp; z\geq0
+\end{cases}
+\]</span></p></li>
+</ul></section>
+</div>
+</div>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="semana_09_boosting_redes_neurais_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr></section><section id="por-que-precisamos-de-funções-de-ativação" class="level2"><h2 class="anchored" data-anchor-id="por-que-precisamos-de-funções-de-ativação">Por que precisamos de funções de ativação?</h2>
+<p>Sem <span class="math inline">\(f(\cdot)\)</span>:</p>
+<p><span class="math display">\[
+g(\mathbf{x}) = \text{combinação linear}
+\]</span></p>
+<p>Com <span class="math inline">\(f(\cdot)\)</span>:</p>
+<p><span class="math display">\[
+g(\mathbf{x}) = \text{função não linear}
+\]</span></p>
+<p>A função de ativação é o que dá poder às redes neurais.</p>
+</section><section id="treinamento" class="level2"><h2 class="anchored" data-anchor-id="treinamento">Treinamento</h2>
+<p>Todos os pesos e vieses da rede são reunidos em <span class="math inline">\(\beta\)</span>:</p>
+<p><span class="math display">\[
+\beta
+=
+\left\{
+\beta_{i,j}^{(0)},
+\beta_{j,1}^{(1)}
+\right\}
+\]</span></p>
+<p>incluindo os termos de intercepto <span class="math inline">\(\beta_{0,j}^{(0)}\)</span> e <span class="math inline">\(\beta_{0,1}^{(1)}\)</span>.</p>
+<p>O objetivo do treinamento é encontrar:</p>
+<p><span class="math display">\[
+\widehat\beta
+=
+\arg\min_\beta
+\frac{1}{n}
+\sum_{r=1}^{n}
+L\left(y_r,g_\beta(\mathbf{x}_r)\right)
+\]</span></p>
+</section><section id="gradiente-descendente" class="level2"><h2 class="anchored" data-anchor-id="gradiente-descendente">Gradiente descendente</h2>
+<p>Como não temos uma solução analítica, os parâmetros são atualizados iterativamente.</p>
+<p><span class="math display">\[
+\boxed{
+\beta^{(t+1)}
+=
+\beta^{(t)}
+-
+\eta
+\nabla_\beta J\left(\beta^{(t)}\right)
+}
+\]</span></p>
+<p>onde</p>
+<p><span class="math display">\[
+\nabla_\beta J(\beta)
+\]</span></p>
+<p>contém as derivadas de <span class="math inline">\(J\)</span> em relação a <strong>todos os pesos e vieses da rede</strong>.</p>
+<p><span class="math inline">\(\eta&gt;0\)</span> é a <strong>taxa de aprendizado</strong>.</p>
+</section><section id="o-que-precisamos-calcular" class="level2"><h2 class="anchored" data-anchor-id="o-que-precisamos-calcular">O que precisamos calcular?</h2>
+<p>Para atualizar os parâmetros, precisamos de derivadas como</p>
+<p><span class="math display">\[
+\frac{\partial J}{\partial \beta_{i,j}^{(0)}}
+\qquad\text{e}\qquad
+\frac{\partial J}{\partial \beta_{j,1}^{(1)}}
+\]</span></p>
+<p>Mas a saída da rede é uma <strong>composição de funções</strong>:</p>
+<p><span class="math display">\[
+\beta_{i,j}^{(0)}
+\longrightarrow
+x_j^1
+\longrightarrow
+x_1^2
+\longrightarrow
+L
+\]</span></p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>É aqui que entra o <strong>backpropagation</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="backpropagation" class="level2"><h2 class="anchored" data-anchor-id="backpropagation">Backpropagation</h2>
+<p>Backpropagation calcula eficientemente os gradientes usando repetidamente a <strong>regra da cadeia</strong>.</p>
+<p>Considere o peso <span class="math inline">\(\beta_{i,j}^{(0)}\)</span>, que conecta a entrada <span class="math inline">\(x_i^0\)</span> ao neurônio <span class="math inline">\(x_j^1\)</span> da camada oculta.</p>
+</section><section id="gradiente-na-camada-de-saída" class="level2"><h2 class="anchored" data-anchor-id="gradiente-na-camada-de-saída">Gradiente na camada de saída</h2>
+<p>Como</p>
+<p><span class="math display">\[
+x_1^2
+=
+\beta_{0,1}^{(1)}
++
+\sum_{j=1}^{5}
+\beta_{j,1}^{(1)}x_j^1,
+\]</span></p>
+<p>temos</p>
+<p><span class="math display">\[
+\frac{\partial x_1^2}
+{\partial\beta_{j,1}^{(1)}}
+=
+x_j^1
+\]</span></p>
+</section><section id="atualizando-os-pesos" class="level2"><h2 class="anchored" data-anchor-id="atualizando-os-pesos">Atualizando os pesos</h2>
+<p>Depois que o backpropagation calcula os gradientes, o otimizador atualiza os parâmetros.</p>
+<p>Para a primeira camada:</p>
+<p><span class="math display">\[
+\boxed{
+\beta_{i,j}^{(0)}
+\leftarrow
+\beta_{i,j}^{(0)}
+-
+\eta
+\frac{\partial J}
+{\partial\beta_{i,j}^{(0)}}
+}
+\]</span></p>
+<p>Para a camada de saída:</p>
+<p><span class="math display">\[
+\boxed{
+\beta_{j,1}^{(1)}
+\leftarrow
+\beta_{j,1}^{(1)}
+-
+\eta
+\frac{\partial J}
+{\partial\beta_{j,1}^{(1)}}
+}
+\]</span></p>
+</section><section id="por-que-o-nome-backpropagation" class="level2"><h2 class="anchored" data-anchor-id="por-que-o-nome-backpropagation">Por que o nome Backpropagation?</h2>
+<p>Os gradientes são calculados da saída para a entrada</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/regressao/backpropagation.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>O erro “volta” pela rede ajustando os pesos</p>
+</section><section id="regularização" class="level2"><h2 class="anchored" data-anchor-id="regularização">Regularização</h2>
+<p>Redes flexíveis também podem sobreajustar.</p>
+<p>Uma possibilidade é penalizar os pesos:</p>
+<p><span class="math display">\[
+\boxed{
+J_\lambda(\beta)
+=
+J(\beta)
++
+\lambda
+\sum_{\ell}
+\sum_{i,j}
+\left(\beta_{i,j}^{(\ell)}\right)^2
+}
+\]</span></p>
+<p>Outros mecanismos comuns:</p>
+<ul>
+<li>early stopping;</li>
+<li>dropout;</li>
+<li>controle do número de camadas;</li>
+<li>controle do número de neurônios.</li>
+</ul></section><section id="parâmetros-times-hiperparâmetros" class="level2"><h2 class="anchored" data-anchor-id="parâmetros-times-hiperparâmetros">Parâmetros <span class="math inline">\(\times\)</span> Hiperparâmetros</h2>
+<section id="parâmetros-aprendidos-no-treinamento" class="level4"><h4 class="anchored" data-anchor-id="parâmetros-aprendidos-no-treinamento">Parâmetros: aprendidos no treinamento</h4>
+<p><span class="math display">\[
+\boxed{
+\beta_{i,j}^{(\ell)}
+}
+\]</span></p>
+<p>Pesos e vieses são estimados minimizando <span class="math inline">\(J(\beta)\)</span>.<br><br></p>
+</section><section id="hiperparâmetros-definidos-externamente" class="level4"><h4 class="anchored" data-anchor-id="hiperparâmetros-definidos-externamente">Hiperparâmetros: definidos externamente</h4>
+<p><span class="math display">\[
+H,\quad L,\quad \eta,\quad \lambda,
+\quad \text{batch size},\quad \text{épocas}.
+\]</span></p>
+<p>Sua escolha deve ser baseada em <strong>validação</strong>, e não no erro de treinamento.</p>
+</section></section><section id="rede-neural-aprendendo-uma-função-não-linear" class="level2"><h2 class="anchored" data-anchor-id="rede-neural-aprendendo-uma-função-não-linear">Rede neural aprendendo uma função não linear</h2>
+<p>Neste exemplo, a RNA foi ajustada para aproximar a função</p>
+<p><span class="math display">\[
+f(x)=12+4x-6x^2+x^3+\sin(x)
+\]</span></p>
+<p>a partir de observações ruidosas.</p>
+<p>A curva verde mostra a predição da rede, enquanto a curva vermelha representa a função real.</p>
+</section><section id="síntese" class="level2"><h2 class="anchored" data-anchor-id="síntese">Síntese</h2>
+<ul>
+<li>a função de ativação introduz não linearidade;</li>
+<li>a camada oculta cria novas representações dos dados;</li>
+<li>o backpropagation ajusta os pesos para reduzir o erro;</li>
+<li>com isso, a rede consegue aproximar funções complexas.</li>
+</ul></section></section><section id="integração" class="level1"><h1>Integração</h1>
+<section id="diferentes-fontes-de-flexibilidade" class="level2"><h2 class="anchored" data-anchor-id="diferentes-fontes-de-flexibilidade">Diferentes fontes de flexibilidade</h2>
+<p><strong>Splines:</strong> funções de base.</p>
+<p><strong>KNN/kernel/local:</strong> vizinhanças.</p>
+<p><strong>Árvores:</strong> partições.</p>
+<p><strong>Random Forest:</strong> média de árvores decorrelacionadas.</p>
+<p><strong>Boosting:</strong> correções sequenciais.</p>
+<p><strong>Redes neurais:</strong> composição de transformações não lineares.</p>
+</section></section><section id="redes-neurais-para-classificação" class="level1"><h1>Redes neurais para classificação</h1>
+<section id="saída-binária" class="level2"><h2 class="anchored" data-anchor-id="saída-binária">Saída binária</h2>
+<p><span class="math display">\[
+\boxed{x_1^L=\sigma(z_1^L)}
+\]</span> com <span class="math inline">\(x_1^L=\widehat P(Y=1\mid X=x)\)</span></p>
+</section><section id="cross-entropy" class="level2"><h2 class="anchored" data-anchor-id="cross-entropy">Cross-entropy</h2>
+<p><span class="math display">\[
+\boxed{L(y,\widehat p)=-[y\log(\widehat p)+(1-y)\log(1-\widehat p)]}
+\]</span></p>
+</section><section id="multiclasse-softmax" class="level2"><h2 class="anchored" data-anchor-id="multiclasse-softmax">Multiclasse: Softmax</h2>
+<p><span class="math display">\[
+\boxed{\widehat p_k(\mathbf x)=\frac{\exp(z_k^L)}{\sum_r\exp(z_r^L)}}
+\]</span></p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_09_boosting_redes_neurais.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

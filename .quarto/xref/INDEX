@@ -76,5 +76,248 @@
   },
   "aulas/aprendizado_nao_supervisionado/sistemas_recom/sistemas_recom.qmd": {
     "sistemas_recom.html": "3966340f"
+  },
+  "aulas/regressao/intro/intro_reorganizado.qmd": {
+    "intro_reorganizado.html": "4bc6312f"
+  },
+  "aulas/regressao/intro/intro_consolidado_corrigido.qmd": {
+    "intro_consolidado_corrigido.html": "01e16cc3"
+  },
+  "material_complementar/intro_material_complementar.qmd": {
+    "intro_material_complementar.html": "c2cdb499"
+  },
+  "aulas/regressao/met_param/met_param_reorganizado.qmd": {
+    "met_param_reorganizado.html": "f2ba02d3"
+  },
+  "material_complementar/met_param_material_complementar.qmd": {
+    "met_param_material_complementar.html": "1a75e904"
+  },
+  "aulas/regressao/met_param_altas_dim/regressao_nao_linear_suavizacao.qmd": {
+    "regressao_nao_linear_suavizacao.html": "34d3cae1"
+  },
+  "material_complementar/semana_03_material_complementar.qmd": {
+    "semana_03_material_complementar.html": "bf01a533"
+  },
+  "aulas/regressao/met_param_altas_dim/semana_04_regularizacao_ridge_lasso.qmd": {
+    "semana_04_regularizacao_ridge_lasso.html": "84b1caad"
+  },
+  "material_complementar/semana_04_material_complementar.qmd": {
+    "semana_04_material_complementar.html": "1341ac8f"
+  },
+  "aulas/regressao/met_nao_param/semana_05_knn_kernel.qmd": {
+    "semana_05_knn_kernel.html": "8138af0a"
+  },
+  "material_complementar/semana_05_material_complementar.qmd": {
+    "semana_05_material_complementar.html": "3aa489a4"
+  },
+  "aulas/regressao/met_param_altas_dim/semana_04_revisada_selecao_regularizacao.qmd": {
+    "semana_04_revisada_selecao_regularizacao.html": "e934938f"
+  },
+  "material_complementar/semana_04_material_complementar_revisado.qmd": {
+    "semana_04_material_complementar_revisado.html": "a5f1b669"
+  },
+  "aulas/regressao/met_param_altas_dim/semana_06_regressao_local_rkhs.qmd": {
+    "semana_06_regressao_local_rkhs.html": "13117001"
+  },
+  "aulas/semana_07_arvores_bagging_random_forest_auditada.qmd": {
+    "semana_07_arvores_bagging_random_forest_auditada.html": "6ab9c36f"
+  },
+  "aulas/semana_08_boosting_redes_neurais.qmd": {
+    "semana_08_boosting_redes_neurais.html": "d890c933"
+  },
+  "material_complementar/material_complementar_metodos_nao_parametricos_deducoes_atualizado.qmd": {
+    "material_complementar_metodos_nao_parametricos_deducoes_atualizado.html": "b506301a"
+  },
+  "aulas/semana_09_altas_dimensoes_maldicao_esparsidade_redundancia.qmd": {
+    "semana_09_altas_dimensoes_maldicao_esparsidade_redundancia.html": "aceadf4b"
+  },
+  "aulas/semana_10_outros_aspectos_regressao.qmd": {
+    "semana_10_outros_aspectos_regressao.html": "a24b351a"
+  },
+  "material_complementar/material_complementar_outros_aspectos_regressao.qmd": {
+    "material_complementar_outros_aspectos_regressao.html": "2154f090"
+  },
+  "aulas/semana_11_introducao_classificacao.qmd": {
+    "semana_11_introducao_classificacao.html": "480709f9"
+  },
+  "aulas/semana_12_metodos_classificacao.qmd": {
+    "semana_12_metodos_classificacao.html": "4902c7f3"
+  },
+  "aulas/semana_13_outros_aspectos_classificacao.qmd": {
+    "semana_13_outros_aspectos_classificacao.html": "9f8439a2"
+  },
+  "aulas/aprofundamento_opcional_diagnostico_residuos.qmd": {
+    "aprofundamento_opcional_diagnostico_residuos.html": "a9a29173"
+  },
+  "aulas/semana_01_introducao_auditada.qmd": {
+    "semana_01_introducao_auditada.html": "239d80f5"
+  },
+  "aulas/semana_02_regressao_linear_pronta.qmd": {
+    "semana_02_regressao_linear_pronta.html": "ffb55b76"
+  },
+  "aulas/semana_03_splines_suavizacao_pronta.qmd": {
+    "semana_03_splines_suavizacao_pronta.html": "27cbb911"
+  },
+  "aulas/semana_04_selecao_regularizacao_pronta.qmd": {
+    "semana_04_selecao_regularizacao_pronta.html": "9bc7259d"
+  },
+  "aulas/semana_05_knn_kernel_auditada.qmd": {
+    "semana_05_knn_kernel_auditada.html": "1e52a41f"
+  },
+  "aulas/semana_06_series_regressao_local_rkhs_auditada.qmd": {
+    "semana_06_series_regressao_local_rkhs_auditada.html": "2f79b702"
+  },
+  "aulas/semana_14_reducao_dimensionalidade.qmd": {
+    "semana_14_reducao_dimensionalidade.html": "65d97665"
+  },
+  "aulas/semana_15_analise_agrupamento.qmd": {
+    "semana_15_analise_agrupamento.html": "eb172d07"
+  },
+  "aulas/semana_16_regras_associacao_recomendacao.qmd": {
+    "semana_16_regras_associacao_recomendacao.html": "31a6e6f4"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_01_fundamentos_aprendizado_supervisionado.qmd": {
+    "semana_01_fundamentos_aprendizado_supervisionado.html": "151b5cb6"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_02_modelos_lineares_regressao_classificacao.qmd": {
+    "semana_02_modelos_lineares_regressao_classificacao.html": "1b83137f"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_03_funcoes_base_splines_series.qmd": {
+    "semana_03_funcoes_base_splines_series.html": "8f9dff05"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_04_selecao_regularizacao.qmd": {
+    "semana_04_selecao_regularizacao.html": "0abbd60a"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_05_metodos_locais_knn_kernel.qmd": {
+    "semana_05_metodos_locais_knn_kernel.html": "96241bc8"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_06_kernels_rkhs_svr_svm.qmd": {
+    "semana_06_kernels_rkhs_svr_svm.html": "ef5c0c65"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_07_arvores_regressao_classificacao.qmd": {
+    "semana_07_arvores_regressao_classificacao.html": "82b0c92a"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_08_bagging_random_forest.qmd": {
+    "semana_08_bagging_random_forest.html": "1666dada"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_09_boosting_redes_neurais.qmd": {
+    "semana_09_boosting_redes_neurais.html": "5b07ff89"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_10_alta_dimensionalidade.qmd": {
+    "semana_10_alta_dimensionalidade.html": "33c92f99"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_11_decisao_avaliacao_interpretabilidade.qmd": {
+    "semana_11_decisao_avaliacao_interpretabilidade.html": "fb00aa77"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_12_reducao_dimensionalidade.qmd": {
+    "semana_12_reducao_dimensionalidade.html": "1c91a8be"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_13_analise_agrupamento.qmd": {
+    "semana_13_analise_agrupamento.html": "71079d24"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_14_regras_associacao.qmd": {
+    "semana_14_regras_associacao.html": "100a86ab"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_15_recomendacao_filtragem_colaborativa.qmd": {
+    "semana_15_recomendacao_filtragem_colaborativa.html": "b81f38bc"
+  },
+  "aulas/EST335_16_semanas_revisao_final/semana_16_recomendacao_funksvd.qmd": {
+    "semana_16_recomendacao_funksvd.html": "df73e379"
+  },
+  "aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.qmd": {
+    "semana_01_fundamentos_aprendizado_supervisionado.html": "17e96c71"
+  },
+  "aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.qmd": {
+    "semana_02_modelos_lineares_regressao_classificacao.html": "bce791ec"
+  },
+  "aulas/semanais/semana_03_funcoes_base_splines_series.qmd": {
+    "semana_03_funcoes_base_splines_series.html": "f2a28224"
+  },
+  "aulas/semanais/semana_04_selecao_regularizacao.qmd": {
+    "semana_04_selecao_regularizacao.html": "920ede8c"
+  },
+  "aulas/semanais/semana_05_metodos_locais_knn_kernel.qmd": {
+    "semana_05_metodos_locais_knn_kernel.html": "79e13dd8"
+  },
+  "aulas/semanais/semana_06_kernels_rkhs_svr_svm.qmd": {
+    "semana_06_kernels_rkhs_svr_svm.html": "3cd1779d"
+  },
+  "aulas/semanais/semana_07_arvores_regressao_classificacao.qmd": {
+    "semana_07_arvores_regressao_classificacao.html": "5720e6b2"
+  },
+  "aulas/semanais/semana_08_bagging_random_forest.qmd": {
+    "semana_08_bagging_random_forest.html": "ff930c5a"
+  },
+  "aulas/semanais/semana_09_boosting_redes_neurais.qmd": {
+    "semana_09_boosting_redes_neurais.html": "06b59e7e"
+  },
+  "aulas/semanais/semana_10_alta_dimensionalidade.qmd": {
+    "semana_10_alta_dimensionalidade.html": "fc8f97db"
+  },
+  "aulas/semanais/semana_11_decisao_avaliacao_interpretabilidade.qmd": {
+    "semana_11_decisao_avaliacao_interpretabilidade.html": "e5b0bf94"
+  },
+  "aulas/semanais/semana_12_reducao_dimensionalidade.qmd": {
+    "semana_12_reducao_dimensionalidade.html": "14cd642d"
+  },
+  "aulas/semanais/semana_13_analise_agrupamento.qmd": {
+    "semana_13_analise_agrupamento.html": "9d5ae93e"
+  },
+  "aulas/semanais/semana_14_regras_associacao.qmd": {
+    "semana_14_regras_associacao.html": "f04a6d81"
+  },
+  "aulas/semanais/semana_15_recomendacao_filtragem_colaborativa.qmd": {
+    "semana_15_recomendacao_filtragem_colaborativa.html": "59bbbb03"
+  },
+  "aulas/semanais/semana_16_recomendacao_funksvd.qmd": {
+    "semana_16_recomendacao_funksvd.html": "67658a76"
+  },
+  "programacao/semana-1.qmd": {
+    "semana-1.html": "f82931be"
+  },
+  "programacao/semana-10.qmd": {
+    "semana-10.html": "3bd96e0a"
+  },
+  "programacao/semana-11.qmd": {
+    "semana-11.html": "8ef9153a"
+  },
+  "programacao/semana-12.qmd": {
+    "semana-12.html": "dbe28ced"
+  },
+  "programacao/semana-13.qmd": {
+    "semana-13.html": "c207cc82"
+  },
+  "programacao/semana-14.qmd": {
+    "semana-14.html": "0ad26b84"
+  },
+  "programacao/semana-15.qmd": {
+    "semana-15.html": "76816a94"
+  },
+  "programacao/semana-16.qmd": {
+    "semana-16.html": "580d8f91"
+  },
+  "programacao/semana-2.qmd": {
+    "semana-2.html": "207793e5"
+  },
+  "programacao/semana-3.qmd": {
+    "semana-3.html": "1d00ef12"
+  },
+  "programacao/semana-4.qmd": {
+    "semana-4.html": "71d00065"
+  },
+  "programacao/semana-5.qmd": {
+    "semana-5.html": "15305da3"
+  },
+  "programacao/semana-6.qmd": {
+    "semana-6.html": "d0956e59"
+  },
+  "programacao/semana-7.qmd": {
+    "semana-7.html": "1fba737e"
+  },
+  "programacao/semana-8.qmd": {
+    "semana-8.html": "728b7e4b"
+  },
+  "programacao/semana-9.qmd": {
+    "semana-9.html": "95804a92"
   }
 }

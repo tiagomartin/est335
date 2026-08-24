@@ -1,0 +1,992 @@
+---
+title: "Parte I : Regressão"
+subtitle: "<span class='custom-subtitle'>Métodos Não Paramétricos: Deduções Matemáticas</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Material Complementar"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+# Material Complementar
+
+
+
+# 1. Splines
+
+## Expansão em funções de base
+
+$$
+f(x)=\sum_{j=1}^{M}\beta_jb_j(x)
+$$
+
+Definindo $B_{ij}=b_j(x_i)$:
+$$
+\mathbf f=\mathbf B\boldsymbol\beta
+$$
+
+Minimizamos:
+$$
+Q(\beta)=
+\|\mathbf y-\mathbf B\beta\|^2
+$$
+
+## Dedução de mínimos quadrados
+
+$$
+Q(\beta)=
+(\mathbf y-\mathbf B\beta)^\top
+(\mathbf y-\mathbf B\beta)
+$$
+
+Então:
+$$
+\nabla Q=-2\mathbf B^\top(\mathbf y-\mathbf B\beta)
+$$
+
+Igualando a zero:
+$$
+\mathbf B^\top\mathbf B\widehat\beta
+=
+\mathbf B^\top\mathbf y
+$$
+
+Logo:
+$$
+\boxed{
+\widehat\beta=
+(\mathbf B^\top\mathbf B)^{-1}\mathbf B^\top\mathbf y
+}
+$$
+
+quando a inversa existe.
+
+## Smoothing spline
+
+O problema é:
+$$
+\boxed{
+\min_f
+\left\{
+\sum_i[y_i-f(x_i)]^2+
+\lambda\int[f''(t)]^2dt
+\right\}
+}
+$$
+
+O primeiro termo mede ajuste e o segundo penaliza curvatura.
+
+Sob condições usuais, a solução é um natural cubic spline com nós nos valores observados de $x$.
+
+# 2. KNN
+
+## Estimador
+
+$$
+\widehat r_K(x)
+=
+\frac1K\sum_{i\in N_K(x)}Y_i
+$$
+
+Condicionalmente aos $X_i$:
+$$
+E[\widehat r_K(x)\mid X]
+=
+\frac1K\sum_{i\in N_K(x)}r(X_i)
+$$
+
+## Variância
+
+Se $Var(Y_i\mid X_i)=\sigma^2$ e os erros são condicionalmente independentes:
+$$
+Var[\widehat r_K(x)\mid X]
+=
+\frac1{K^2}\sum_{i\in N_K(x)}\sigma^2
+$$
+
+Portanto:
+$$
+\boxed{
+Var[\widehat r_K(x)\mid X]=\frac{\sigma^2}{K}
+}
+$$
+
+no caso homocedástico.
+
+# 3. Nadaraya–Watson
+
+## Problema de mínimos quadrados local
+
+Use:
+$$
+w_i(x)=K\left(\frac{x_i-x}{h}\right)
+$$
+
+Procure:
+$$
+\widehat\beta_0
+=
+\arg\min_{\beta_0}
+\sum_iw_i(x)(y_i-\beta_0)^2
+$$
+
+## Dedução
+
+$$
+\frac{\partial Q}{\partial\beta_0}
+=
+-2\sum_iw_i(y_i-\beta_0)=0
+$$
+
+Assim:
+$$
+\sum_iw_iy_i
+=
+\beta_0\sum_iw_i
+$$
+
+Logo:
+$$
+\boxed{
+\widehat r_h(x)
+=
+\frac{\sum_iw_i(x)y_i}
+{\sum_iw_i(x)}
+}
+$$
+
+# 4. Séries ortogonais
+
+## Representação
+
+$$
+f(x)=\sum_{j=1}^{\infty}\theta_j\phi_j(x),
+$$
+
+com:
+$$
+\langle\phi_j,\phi_k\rangle=\delta_{jk}
+$$
+
+## Coeficientes
+
+$$
+\langle f,\phi_k\rangle
+=
+\sum_j\theta_j
+\langle\phi_j,\phi_k\rangle
+=
+\theta_k
+$$
+
+Portanto:
+$$
+\boxed{\theta_k=\langle f,\phi_k\rangle}
+$$
+
+
+## Coeficientes
+
+
+Na formulação de regressão apropriada:
+$$
+\theta_j=E[Y\phi_j(X)]
+$$
+
+Estimamos:
+$$
+\boxed{
+\widehat\theta_j=
+\frac1n\sum_iY_i\phi_j(X_i)
+}
+$$
+
+e truncamos:
+$$
+\widehat f_m(x)=
+\sum_{j=1}^{m}\widehat\theta_j\phi_j(x)
+$$
+
+# 5. Regressão polinomial local
+
+## Forma matricial
+
+Em torno de $x_0$:
+$$
+r(x_i)\approx
+\sum_{j=0}^{d}\beta_j(x_i-x_0)^j
+$$
+
+Defina $\mathbf X_{x_0}$ com colunas
+$$
+1,(x_i-x_0),\ldots,(x_i-x_0)^d
+$$
+e:
+$$
+\mathbf W_{x_0}
+=
+diag\{K_h(x_i-x_0)\}
+$$
+
+## Dedução
+
+$$
+Q(\beta)=
+(\mathbf y-\mathbf X\beta)^\top
+\mathbf W
+(\mathbf y-\mathbf X\beta)
+$$
+
+$$
+\nabla Q=
+-2\mathbf X^\top\mathbf W
+(\mathbf y-\mathbf X\beta)=0
+$$
+
+Logo:
+$$
+\boxed{
+\widehat\beta(x_0)
+=
+(\mathbf X^\top\mathbf W\mathbf X)^{-1}
+\mathbf X^\top\mathbf W\mathbf y
+}
+$$
+
+e:
+$$
+\boxed{\widehat r(x_0)=\widehat\beta_0(x_0)}
+$$
+
+# 6. RKHS
+
+## Propriedade reprodutora
+
+Em um RKHS $\mathcal H$:
+$$
+K_x(\cdot)=K(\cdot,x)
+$$
+e:
+$$
+\boxed{
+f(x)=\langle f,K_x\rangle_{\mathcal H}
+}
+$$
+
+## Matriz de Gram
+
+Para kernel positivo semidefinido:
+$$
+\sum_{i,j}c_ic_jK(x_i,x_j)\ge0
+$$
+
+Logo:
+$$
+\mathbf K_{ij}=K(x_i,x_j)
+$$
+é positiva semidefinida.
+
+## Representer: dedução essencial
+
+Considere:
+$$
+\min_{f\in\mathcal H}
+\left[
+\sum_iL(y_i,f(x_i))
++
+\lambda\|f\|_{\mathcal H}^2
+\right]
+$$
+
+Decomponha:
+$$
+f=f_\parallel+f_\perp,
+$$
+onde $f_\parallel$ pertence ao span de
+$$
+K(\cdot,x_1),\ldots,K(\cdot,x_n)
+$$
+
+## Representer: dedução essencial
+
+
+
+Como:
+$$
+f_\perp(x_i)
+=
+\langle f_\perp,K(\cdot,x_i)\rangle=0,
+$$
+a perda depende apenas de $f_\parallel$.
+
+Além disso:
+$$
+\|f\|^2=
+\|f_\parallel\|^2+
+\|f_\perp\|^2
+$$
+
+
+
+## Representer: dedução essencial
+
+
+Logo qualquer $f_\perp\neq0$ aumenta a penalização sem melhorar a perda.
+
+Portanto:
+$$
+\boxed{
+\widehat f(\cdot)
+=
+\sum_{i=1}^{n}\alpha_iK(\cdot,x_i)
+}
+$$
+
+## Solução para perda quadrática
+
+O critério torna-se:
+$$
+\|\mathbf y-\mathbf K\alpha\|^2+
+\lambda\alpha^\top\mathbf K\alpha
+$$
+
+Derivando:
+$$
+-2\mathbf K(\mathbf y-\mathbf K\alpha)
++
+2\lambda\mathbf K\alpha=0
+$$
+
+Sob condições apropriadas:
+$$
+\boxed{
+\widehat\alpha=
+(\mathbf K+\lambda\mathbf I)^{-1}\mathbf y
+}
+$$
+
+# 7. Árvores
+
+## Melhor constante numa folha
+
+$$
+c_m^*
+=
+\arg\min_c
+\sum_{i:x_i\in R_m}(y_i-c)^2
+$$
+
+Derivando:
+$$
+-2\sum_{i:x_i\in R_m}(y_i-c)=0
+$$
+
+Logo:
+$$
+\boxed{c_m^*=\bar y_{R_m}}
+$$
+
+## Melhor split
+
+Para:
+$$
+R_1(j,s)=\{x:x_j\le s\},
+\qquad
+R_2(j,s)=\{x:x_j>s\},
+$$
+
+escolhemos:
+$$
+\boxed{
+(j^*,s^*)=
+\arg\min_{j,s}
+\left[
+\sum_{i\in R_1}(y_i-\bar y_{R_1})^2+
+\sum_{i\in R_2}(y_i-\bar y_{R_2})^2
+\right]
+}
+$$
+
+## Poda
+
+$$
+\boxed{
+R_\alpha(T)=RSS(T)+\alpha|T|
+}
+$$
+
+é novamente a estrutura:
+$$
+\text{ajuste}+\text{penalização}
+$$
+
+# 8. Bagging e Random Forest
+
+## Variância da média correlacionada
+
+Se:
+$$
+\bar G_B=\frac1B\sum_bG_b,
+$$
+$$
+Var(G_b)=\sigma_G^2,
+$$
+e:
+$$
+Corr(G_b,G_{b'})=\rho,
+$$
+
+
+## Variância da média correlacionada
+
+
+
+
+então:
+$$
+Var(\bar G_B)
+=
+\frac1{B^2}
+\left[
+B\sigma_G^2+
+B(B-1)\rho\sigma_G^2
+\right]
+$$
+
+Logo:
+$$
+\boxed{
+Var(\bar G_B)
+=
+\rho\sigma_G^2+
+\frac{1-\rho}{B}\sigma_G^2
+}
+$$
+
+## Limite
+
+$$
+B\to\infty
+\quad\Rightarrow\quad
+\boxed{
+Var(\bar G_B)\to\rho\sigma_G^2
+}
+$$
+
+Isso justifica a Random Forest: além de aumentar $B$, queremos reduzir $\rho$ por aleatorização das covariáveis candidatas em cada split.
+
+# 9. Boosting
+
+## Modelo inicial
+
+Para:
+$$
+L(y,F)=\frac12(y-F)^2,
+$$
+
+$$
+F_0=
+\arg\min_c\sum_i\frac12(y_i-c)^2
+$$
+
+Derivando:
+$$
+-\sum_i(y_i-c)=0,
+$$
+
+
+## Modelo inicial
+
+
+portanto:
+$$
+\boxed{F_0=\bar y}
+$$
+
+## Resíduo como gradiente negativo
+
+$$
+\frac{\partial L}{\partial F}
+=
+F-y
+$$
+
+Logo:
+$$
+\boxed{
+-\frac{\partial L}{\partial F}=y-F
+}
+$$
+
+## Atualização funcional
+
+Para perda geral:
+$$
+r_{im}
+=
+-
+\left[
+\frac{\partial L(y_i,F(x_i))}
+{\partial F(x_i)}
+\right]_{F=F_{m-1}}
+$$
+
+Ajustamos:
+$$
+h_m(x)\approx r_{im}
+$$
+e atualizamos:
+$$
+\boxed{
+F_m(x)=F_{m-1}(x)+\lambda h_m(x)
+}
+$$
+
+# 10. Redes Neurais
+
+## Notação da rede
+
+Considere uma rede com camada de entrada $j=0$, uma camada oculta $j=1$ e uma camada de saída $j=2$
+
+A saída do neurônio $i$ da camada $j$ será denotada por
+
+$$
+x_i^j
+$$
+
+Na camada de entrada,
+
+$$
+x_i^0=x_i
+$$
+
+
+## Notação da rede
+
+Para o neurônio $j$ da camada oculta, definimos primeiro a combinação linear
+
+$$
+z_j^1
+=
+\beta_{0,j}^{(0)}
++
+\sum_{i=1}^{p}\beta_{i,j}^{(0)}x_i^0
+$$
+
+A saída desse neurônio é
+
+$$
+\boxed{x_j^1=f(z_j^1)}
+$$
+
+em que $f$ é a função de ativação
+
+## Camada de saída para regressão
+
+Suponha que a camada oculta possua $H$ neurônios. Para regressão, usamos ativação linear na saída
+
+$$
+\boxed{
+g_\beta(\mathbf x)
+=
+x_1^2
+=
+\beta_{0,1}^{(1)}
++
+\sum_{j=1}^{H}\beta_{j,1}^{(1)}x_j^1
+}
+$$
+
+Portanto,
+
+$$
+\widehat y=g_\beta(\mathbf x)=x_1^2
+$$
+
+## Camada de saída para regressão
+
+
+Substituindo a expressão da camada oculta,
+
+$$
+\boxed{
+g_\beta(\mathbf x)
+=
+\beta_{0,1}^{(1)}
++
+\sum_{j=1}^{H}
+\beta_{j,1}^{(1)}
+f\left(
+\beta_{0,j}^{(0)}
++
+\sum_{i=1}^{p}\beta_{i,j}^{(0)}x_i^0
+\right)
+}
+$$
+
+A não linearidade do modelo é introduzida pelas funções de ativação das camadas ocultas
+
+## Treinamento
+
+Reunimos todos os pesos e vieses da rede em $\beta$
+
+$$
+\beta
+=
+\left\{
+\beta_{i,j}^{(0)},
+\beta_{j,1}^{(1)}
+\right\}
+$$
+
+incluindo os interceptos $\beta_{0,j}^{(0)}$ e $\beta_{0,1}^{(1)}$
+
+Para uma observação $(\mathbf x_r,y_r)$, considere a perda quadrática
+
+$$
+L_r(\beta)
+=
+\frac12
+\left[y_r-g_\beta(\mathbf x_r)\right]^2
+=
+\frac12(y_r-x_{1,r}^2)^2
+$$
+
+## Treinamento
+
+
+A função objetivo é
+
+$$
+\boxed{
+J(\beta)
+=
+\frac{1}{n}\sum_{r=1}^{n}L_r(\beta)
+=
+\frac{1}{2n}
+\sum_{r=1}^{n}
+\left[y_r-g_\beta(\mathbf x_r)\right]^2
+}
+$$
+
+O treinamento procura
+
+$$
+\boxed{
+\widehat\beta
+=
+\arg\min_\beta J(\beta)
+}
+$$
+
+Em geral, essa minimização não possui solução analítica fechada, sendo realizada numericamente
+
+## Gradiente descendente
+
+Uma atualização por gradiente descendente tem a forma
+
+$$
+\boxed{
+\beta^{(t+1)}
+=
+\beta^{(t)}
+-
+\eta\nabla_\beta J\left(\beta^{(t)}\right)
+}
+$$
+
+em que $\eta>0$ é a taxa de aprendizado
+
+Para realizar essa atualização, precisamos calcular derivadas de $J$ em relação a todos os pesos e vieses da rede
+
+## Backpropagation: camada de saída
+
+Para uma observação, temos
+
+$$
+L
+=
+\frac12(y-x_1^2)^2
+$$
+
+Como a ativação da saída é linear,
+
+$$
+\frac{\partial L}{\partial x_1^2}
+=
+x_1^2-y
+$$
+
+Além disso,
+
+$$
+\frac{\partial x_1^2}{\partial \beta_{j,1}^{(1)}}
+=
+x_j^1
+$$
+
+
+## Backpropagation: camada de saída
+
+
+
+Logo,
+
+$$
+\boxed{
+\frac{\partial L}{\partial \beta_{j,1}^{(1)}}
+=
+(x_1^2-y)x_j^1
+}
+$$
+
+Para o intercepto da camada de saída,
+
+$$
+\boxed{
+\frac{\partial L}{\partial \beta_{0,1}^{(1)}}
+=
+x_1^2-y
+}
+$$
+
+## Backpropagation: camada oculta
+
+Considere agora o peso $\beta_{i,j}^{(0)}$, que conecta a entrada $x_i^0$ ao neurônio $x_j^1$ da camada oculta
+
+O caminho desse parâmetro até a perda é
+
+$$
+\beta_{i,j}^{(0)}
+\longrightarrow
+z_j^1
+\longrightarrow
+x_j^1
+\longrightarrow
+x_1^2
+\longrightarrow
+L
+$$
+
+Pela regra da cadeia,
+
+$$
+\boxed{
+\frac{\partial L}{\partial \beta_{i,j}^{(0)}}
+=
+\frac{\partial L}{\partial x_1^2}
+\frac{\partial x_1^2}{\partial x_j^1}
+\frac{\partial x_j^1}{\partial z_j^1}
+\frac{\partial z_j^1}{\partial \beta_{i,j}^{(0)}}
+}
+$$
+
+
+## Backpropagation: camada oculta
+
+
+
+Os quatro fatores são
+
+$$
+\frac{\partial L}{\partial x_1^2} = x_1^2-y
+\qquad
+\frac{\partial x_1^2}{\partial x_j^1}
+=
+\beta_{j,1}^{(1)}
+\qquad
+\frac{\partial x_j^1}{\partial z_j^1}
+=
+f'(z_j^1)
+\qquad
+\frac{\partial z_j^1}{\partial \beta_{i,j}^{(0)}}
+=
+x_i^0
+$$
+
+Portanto,
+
+$$
+\boxed{
+\frac{\partial L}{\partial \beta_{i,j}^{(0)}}
+=
+\underbrace{(x_1^2-y)}_{\text{erro}}
+\underbrace{\beta_{j,1}^{(1)}}_{\text{peso seguinte}}
+\underbrace{f'(z_j^1)}_{\text{derivada da ativação}}
+\underbrace{x_i^0}_{\text{entrada}}
+}
+$$
+
+Essa expressão mostra como a influência do erro na saída é propagada para um peso da camada anterior
+
+## Notação com $\delta$
+
+Definimos, para a camada de saída,
+
+$$
+\boxed{
+\delta_1^2
+=
+\frac{\partial L}{\partial z_1^2}
+=
+x_1^2-y
+}
+$$
+
+Para o neurônio $j$ da camada oculta,
+
+$$
+\boxed{
+\delta_j^1
+=
+f'(z_j^1)\beta_{j,1}^{(1)}\delta_1^2
+}
+$$
+
+## Notação com $\delta$
+
+
+
+Assim, os gradientes podem ser escritos de forma compacta como
+
+$$
+\boxed{
+\frac{\partial L}{\partial \beta_{i,j}^{(0)}}
+=
+\delta_j^1x_i^0
+}
+$$
+
+$$
+\boxed{
+\frac{\partial L}{\partial \beta_{j,1}^{(1)}}
+=
+\delta_1^2x_j^1
+}
+$$
+
+O backpropagation calcula os gradientes; o otimizador utiliza esses gradientes para atualizar os parâmetros
+
+## Atualização dos parâmetros
+
+Para os pesos da primeira camada,
+
+$$
+\boxed{
+\beta_{i,j}^{(0)}
+\leftarrow
+\beta_{i,j}^{(0)}
+-
+\eta
+\frac{\partial J}{\partial \beta_{i,j}^{(0)}}
+}
+$$
+
+Para os pesos da camada de saída,
+
+$$
+\boxed{
+\beta_{j,1}^{(1)}
+\leftarrow
+\beta_{j,1}^{(1)}
+-
+\eta
+\frac{\partial J}{\partial \beta_{j,1}^{(1)}}
+}
+$$
+
+
+
+## Atualização dos parâmetros
+
+
+O treinamento pode ser resumido por
+
+
+$$
+\boxed{
+\text{Forward}
+\longrightarrow
+\text{Perda}
+\longrightarrow
+\text{Backpropagation}
+\longrightarrow
+\text{Atualização}
+}
+$$
+
+## Regularização e hiperparâmetros
+
+Uma penalização quadrática dos pesos pode ser escrita como
+
+$$
+\boxed{
+J_\lambda(\beta)
+=
+J(\beta)
++
+\lambda
+\sum_{\ell}\sum_{i,j}
+\left(\beta_{i,j}^{(\ell)}\right)^2
+}
+$$
+
+Além da penalização, a complexidade da rede pode ser controlada pelo número de camadas, número de neurônios, *early stopping* e *dropout*
+
+
+## Regularização e hiperparâmetros
+
+
+
+É importante distinguir parâmetros e hiperparâmetros
+
+$$
+\boxed{
+\beta_{i,j}^{(\ell)}
+\quad\text{são parâmetros aprendidos no treinamento}
+}
+$$
+
+enquanto
+
+$$
+\boxed{
+H,\quad L,\quad \eta,\quad \lambda,
+\quad \text{batch size},\quad \text{épocas}
+}
+$$
+
+são hiperparâmetros definidos externamente e selecionados com base em validação
+
+# Síntese
+
+## Estrutura comum
+
+$$
+\boxed{
+\text{representação flexível}
++
+\text{perda}
++
+\text{controle de complexidade}
++
+\text{validação}
+}
+$$
+
+Este material permite reconstruir matematicamente os resultados usados nas aulas principais sem transformar o tempo presencial em uma sequência de demonstrações.

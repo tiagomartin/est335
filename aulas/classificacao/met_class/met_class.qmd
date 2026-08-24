@@ -1144,7 +1144,6 @@ Permite fronteiras de decisão não lineares com forma polinomial.
 ## R: SVM com Kernel Polinomial
 
 ```{r}
-```{r}
 #| eval: true
 #| echo: true
 library(e1071)

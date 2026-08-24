@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Material Complementar – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Material Complementar – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Outros Aspectos de Regressão">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Material Complementar</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sobre-este-material" id="toc-sobre-este-material" class="nav-link active" data-scroll-target="#sobre-este-material">Sobre este material</a></li>
+  <li><a href="#pdp-como-esperança" id="toc-pdp-como-esperança" class="nav-link" data-scroll-target="#pdp-como-esperança">1 — PDP como esperança</a>
+  <ul class="collapse">
+  <li><a href="#definição-populacional" id="toc-definição-populacional" class="nav-link" data-scroll-target="#definição-populacional">Definição populacional</a></li>
+  <li><a href="#estimador-empírico" id="toc-estimador-empírico" class="nav-link" data-scroll-target="#estimador-empírico">Estimador empírico</a></li>
+  <li><a href="#o-que-estamos-fazendo" id="toc-o-que-estamos-fazendo" class="nav-link" data-scroll-target="#o-que-estamos-fazendo">O que estamos fazendo?</a></li>
+  </ul></li>
+  <li><a href="#pdp-em-modelos-lineares" id="toc-pdp-em-modelos-lineares" class="nav-link" data-scroll-target="#pdp-em-modelos-lineares">2 — PDP em modelos lineares</a>
+  <ul class="collapse">
+  <li><a href="#derivação-completa" id="toc-derivação-completa" class="nav-link" data-scroll-target="#derivação-completa">Derivação completa</a></li>
+  <li><a href="#aplicando-linearidade-da-esperança" id="toc-aplicando-linearidade-da-esperança" class="nav-link" data-scroll-target="#aplicando-linearidade-da-esperança">Aplicando linearidade da esperança</a></li>
+  <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação">Interpretação</a></li>
+  </ul></li>
+  <li><a href="#ice-e-interações" id="toc-ice-e-interações" class="nav-link" data-scroll-target="#ice-e-interações">3 — ICE e interações</a>
+  <ul class="collapse">
+  <li><a href="#curva-individual" id="toc-curva-individual" class="nav-link" data-scroll-target="#curva-individual">Curva individual</a></li>
+  <li><a href="#modelo-sem-interação" id="toc-modelo-sem-interação" class="nav-link" data-scroll-target="#modelo-sem-interação">Modelo sem interação</a></li>
+  <li><a href="#modelo-com-interação" id="toc-modelo-com-interação" class="nav-link" data-scroll-target="#modelo-com-interação">Modelo com interação</a></li>
+  <li><a href="#inclinação-individual" id="toc-inclinação-individual" class="nav-link" data-scroll-target="#inclinação-individual">Inclinação individual</a></li>
+  </ul></li>
+  <li><a href="#ice-centralizado" id="toc-ice-centralizado" class="nav-link" data-scroll-target="#ice-centralizado">4 — ICE centralizado</a>
+  <ul class="collapse">
+  <li><a href="#problema-visual" id="toc-problema-visual" class="nav-link" data-scroll-target="#problema-visual">Problema visual</a></li>
+  <li><a href="#definição" id="toc-definição" class="nav-link" data-scroll-target="#definição">Definição</a></li>
+  <li><a href="#vantagem" id="toc-vantagem" class="nav-link" data-scroll-target="#vantagem">Vantagem</a></li>
+  </ul></li>
+  <li><a href="#covariáveis-correlacionadas-e-pdp" id="toc-covariáveis-correlacionadas-e-pdp" class="nav-link" data-scroll-target="#covariáveis-correlacionadas-e-pdp">5 — Covariáveis correlacionadas e PDP</a>
+  <ul class="collapse">
+  <li><a href="#o-problema" id="toc-o-problema" class="nav-link" data-scroll-target="#o-problema">O problema</a></li>
+  <li><a href="#consequência" id="toc-consequência" class="nav-link" data-scroll-target="#consequência">Consequência</a></li>
+  <li><a href="#o-que-o-pdp-não-estima-automaticamente" id="toc-o-que-o-pdp-não-estima-automaticamente" class="nav-link" data-scroll-target="#o-que-o-pdp-não-estima-automaticamente">O que o PDP não estima automaticamente?</a></li>
+  </ul></li>
+  <li><a href="#lime-como-problema-de-otimização" id="toc-lime-como-problema-de-otimização" class="nav-link" data-scroll-target="#lime-como-problema-de-otimização">6 — LIME como problema de otimização</a>
+  <ul class="collapse">
+  <li><a href="#notação-geral" id="toc-notação-geral" class="nav-link" data-scroll-target="#notação-geral">Notação geral</a></li>
+  <li><a href="#fidelidade-local" id="toc-fidelidade-local" class="nav-link" data-scroll-target="#fidelidade-local">Fidelidade local</a></li>
+  <li><a href="#interpretabilidade" id="toc-interpretabilidade" class="nav-link" data-scroll-target="#interpretabilidade">Interpretabilidade</a></li>
+  </ul></li>
+  <li><a href="#lime-com-regressão-linear-penalizada" id="toc-lime-com-regressão-linear-penalizada" class="nav-link" data-scroll-target="#lime-com-regressão-linear-penalizada">7 — LIME com regressão linear penalizada</a>
+  <ul class="collapse">
+  <li><a href="#modelo-local" id="toc-modelo-local" class="nav-link" data-scroll-target="#modelo-local">Modelo local</a></li>
+  <li><a href="#dois-controles-diferentes" id="toc-dois-controles-diferentes" class="nav-link" data-scroll-target="#dois-controles-diferentes">Dois controles diferentes</a>
+  <ul class="collapse">
+  <li><a href="#localidade" id="toc-localidade" class="nav-link" data-scroll-target="#localidade">Localidade</a></li>
+  <li><a href="#esparsidade" id="toc-esparsidade" class="nav-link" data-scroll-target="#esparsidade">Esparsidade</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#estabilidade-do-lime" id="toc-estabilidade-do-lime" class="nav-link" data-scroll-target="#estabilidade-do-lime">8 — Estabilidade do LIME</a>
+  <ul class="collapse">
+  <li><a href="#perturbações-aleatórias" id="toc-perturbações-aleatórias" class="nav-link" data-scroll-target="#perturbações-aleatórias">Perturbações aleatórias</a></li>
+  <li><a href="#o-que-verificar" id="toc-o-que-verificar" class="nav-link" data-scroll-target="#o-que-verificar">O que verificar?</a></li>
+  <li><a href="#fidelidade-local-1" id="toc-fidelidade-local-1" class="nav-link" data-scroll-target="#fidelidade-local-1">Fidelidade local</a></li>
+  </ul></li>
+  <li><a href="#interpretação-versus-inferência" id="toc-interpretação-versus-inferência" class="nav-link" data-scroll-target="#interpretação-versus-inferência">9 — Interpretação versus inferência</a>
+  <ul class="collapse">
+  <li><a href="#três-objetos-diferentes" id="toc-três-objetos-diferentes" class="nav-link" data-scroll-target="#três-objetos-diferentes">Três objetos diferentes</a>
+  <ul class="collapse">
+  <li><a href="#processo-gerador" id="toc-processo-gerador" class="nav-link" data-scroll-target="#processo-gerador">Processo gerador</a></li>
+  <li><a href="#função-alvo" id="toc-função-alvo" class="nav-link" data-scroll-target="#função-alvo">Função alvo</a></li>
+  <li><a href="#modelo-ajustado" id="toc-modelo-ajustado" class="nav-link" data-scroll-target="#modelo-ajustado">Modelo ajustado</a></li>
+  </ul></li>
+  <li><a href="#consequência-1" id="toc-consequência-1" class="nav-link" data-scroll-target="#consequência-1">Consequência</a></li>
+  </ul></li>
+  <li><a href="#quadro-de-síntese" id="toc-quadro-de-síntese" class="nav-link" data-scroll-target="#quadro-de-síntese">10 — Quadro de síntese</a>
+  <ul class="collapse">
+  <li><a href="#qual-ferramenta-usar" id="toc-qual-ferramenta-usar" class="nav-link" data-scroll-target="#qual-ferramenta-usar">Qual ferramenta usar?</a></li>
+  <li><a href="#perguntas-para-revisão" id="toc-perguntas-para-revisão" class="nav-link" data-scroll-target="#perguntas-para-revisão">Perguntas para revisão</a></li>
+  <li><a href="#fechamento" id="toc-fechamento" class="nav-link" data-scroll-target="#fechamento">Fechamento</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/material_complementar/material_complementar_outros_aspectos_regressao.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="material_complementar_outros_aspectos_regressao.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Material Complementar</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Outros Aspectos de Regressão</span></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sobre-este-material" class="level2">
+<h2 class="anchored" data-anchor-id="sobre-este-material">Sobre este material</h2>
+<p>O núcleo explicitamente previsto no conteúdo programático para <strong>Outros aspectos de regressão</strong> é:</p>
+<ul>
+<li>Interpretabilidade</li>
+<li>LIME</li>
+<li>PDP</li>
+<li>ICE</li>
+</ul>
+<p>Esses conteúdos foram tratados na aula principal</p>
+<p>Este arquivo reúne detalhes, limitações e desenvolvimentos matemáticos adicionais que ajudam a compreender melhor as ferramentas</p>
+</section>
+<section id="pdp-como-esperança" class="level1">
+<h1>1 — PDP como esperança</h1>
+<section id="definição-populacional" class="level2">
+<h2 class="anchored" data-anchor-id="definição-populacional">Definição populacional</h2>
+<p>Particione as covariáveis em</p>
+<p><span class="math display">\[
+\mathbf X=(X_j,\mathbf X_{-j})
+\]</span></p>
+<p>Para um modelo preditivo fixo <span class="math inline">\(g\)</span>, a dependência parcial populacional pode ser escrita como</p>
+<p><span class="math display">\[
+\boxed{
+h_j(x)
+=
+E_{\mathbf X_{-j}}
+\left[
+g(x,\mathbf X_{-j})
+\right]
+}
+\]</span></p>
+<p>A esperança é tomada em relação à distribuição marginal das demais covariáveis</p>
+<hr>
+</section>
+<section id="estimador-empírico" class="level2">
+<h2 class="anchored" data-anchor-id="estimador-empírico">Estimador empírico</h2>
+<p>Substituímos a distribuição de <span class="math inline">\(\mathbf X_{-j}\)</span> por sua distribuição empírica:</p>
+<p><span class="math display">\[
+\boxed{
+\widehat h_j(x)
+=
+\frac1n
+\sum_{i=1}^{n}
+\widehat g(x,\mathbf x_{i,-j})
+}
+\]</span></p>
+<p>Essa é exatamente a expressão utilizada para construir o PDP</p>
+<hr>
+</section>
+<section id="o-que-estamos-fazendo" class="level2">
+<h2 class="anchored" data-anchor-id="o-que-estamos-fazendo">O que estamos fazendo?</h2>
+<p>Para cada <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[
+\mathbf x_{i,-j}
+\longrightarrow
+(x,\mathbf x_{i,-j})
+\longrightarrow
+\widehat g(x,\mathbf x_{i,-j})
+\]</span></p>
+<p>e então calculamos a média</p>
+<p><span class="math display">\[
+\boxed{
+\text{PDP}
+=
+\text{integração empírica sobre as demais covariáveis}
+}
+\]</span></p>
+</section>
+</section>
+<section id="pdp-em-modelos-lineares" class="level1">
+<h1>2 — PDP em modelos lineares</h1>
+<section id="derivação-completa" class="level2">
+<h2 class="anchored" data-anchor-id="derivação-completa">Derivação completa</h2>
+<p>Considere</p>
+<p><span class="math display">\[
+g(\mathbf x)
+=
+\beta_0+
+\sum_{k=1}^{p}\beta_kx_k
+\]</span></p>
+<p>Então:</p>
+<p><span class="math display">\[
+h_j(x)
+=
+E_{\mathbf X_{-j}}
+\left[
+\beta_0+\beta_jx+\sum_{k\neq j}\beta_kX_k
+\right]
+\]</span></p>
+<hr>
+</section>
+<section id="aplicando-linearidade-da-esperança" class="level2">
+<h2 class="anchored" data-anchor-id="aplicando-linearidade-da-esperança">Aplicando linearidade da esperança</h2>
+<p>Temos:</p>
+<p><span class="math display">\[
+h_j(x)
+=
+\beta_0+
+\beta_jx+
+\sum_{k\neq j}
+\beta_kE[X_k]
+\]</span></p>
+<p>Definindo</p>
+<p><span class="math display">\[
+C_j
+=
+\beta_0+
+\sum_{k\neq j}
+\beta_kE[X_k]
+\]</span></p>
+<p>obtemos:</p>
+<p><span class="math display">\[
+\boxed{
+h_j(x)=C_j+\beta_jx
+}
+\]</span></p>
+<hr>
+</section>
+<section id="interpretação" class="level2">
+<h2 class="anchored" data-anchor-id="interpretação">Interpretação</h2>
+<p>Em um modelo linear sem interações, o PDP não revela uma nova estrutura</p>
+<p>Ele simplesmente recupera o efeito linear já presente no modelo</p>
+<p>Isso ajuda a entender por que PDP é particularmente útil para modelos cuja forma funcional não é imediatamente visível</p>
+</section>
+</section>
+<section id="ice-e-interações" class="level1">
+<h1>3 — ICE e interações</h1>
+<section id="curva-individual" class="level2">
+<h2 class="anchored" data-anchor-id="curva-individual">Curva individual</h2>
+<p>Para a observação <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[
+h_{j,i}(x)
+=
+g(x,\mathbf x_{i,-j})
+\]</span></p>
+<p>O PDP é</p>
+<p><span class="math display">\[
+h_j(x)
+=
+E[h_{j,i}(x)]
+\]</span></p>
+<p>ou, empiricamente,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat h_j(x)
+=
+\frac1n\sum_{i=1}^{n}\widehat h_{j,i}(x)
+}
+\]</span></p>
+<hr>
+</section>
+<section id="modelo-sem-interação" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-sem-interação">Modelo sem interação</h2>
+<p>Considere:</p>
+<p><span class="math display">\[
+g(x_1,x_2)
+=
+f_1(x_1)+f_2(x_2)
+\]</span></p>
+<p>Para <span class="math inline">\(X_1\)</span>:</p>
+<p><span class="math display">\[
+h_{1,i}(x)
+=
+f_1(x)+f_2(x_{i2})
+\]</span></p>
+<p>Todas as curvas possuem a mesma forma e diferem apenas por deslocamentos verticais</p>
+<hr>
+</section>
+<section id="modelo-com-interação" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-com-interação">Modelo com interação</h2>
+<p>Agora considere:</p>
+<p><span class="math display">\[
+g(x_1,x_2)
+=
+\beta_1x_1+
+\beta_2x_2+
+\beta_{12}x_1x_2
+\]</span></p>
+<p>Para <span class="math inline">\(X_1\)</span>:</p>
+<p><span class="math display">\[
+h_{1,i}(x)
+=
+\beta_1x+
+\beta_2x_{i2}+
+\beta_{12}xx_{i2}
+\]</span></p>
+<hr>
+</section>
+<section id="inclinação-individual" class="level2">
+<h2 class="anchored" data-anchor-id="inclinação-individual">Inclinação individual</h2>
+<p>Derivando em relação a <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial h_{1,i}(x)}{\partial x}
+=
+\beta_1+
+\beta_{12}x_{i2}
+}
+\]</span></p>
+<p>Logo, a inclinação da curva ICE depende de <span class="math inline">\(x_{i2}\)</span> quando</p>
+<p><span class="math display">\[
+\beta_{12}\neq0
+\]</span></p>
+<p>Essa é a razão matemática pela qual curvas ICE não paralelas podem revelar interações</p>
+</section>
+</section>
+<section id="ice-centralizado" class="level1">
+<h1>4 — ICE centralizado</h1>
+<section id="problema-visual" class="level2">
+<h2 class="anchored" data-anchor-id="problema-visual">Problema visual</h2>
+<p>Curvas ICE podem diferir muito em seus níveis iniciais</p>
+<p>Isso pode dificultar a comparação de suas formas</p>
+<p>Uma alternativa é centralizá-las em um valor de referência <span class="math inline">\(x_0\)</span></p>
+<hr>
+</section>
+<section id="definição" class="level2">
+<h2 class="anchored" data-anchor-id="definição">Definição</h2>
+<p>A curva ICE centralizada é</p>
+<p><span class="math display">\[
+\boxed{
+h_{j,i}^{\,c}(x)
+=
+h_{j,i}(x)-h_{j,i}(x_0)
+}
+\]</span></p>
+<p>Assim:</p>
+<p><span class="math display">\[
+h_{j,i}^{\,c}(x_0)=0
+\]</span></p>
+<p>para todas as observações</p>
+<hr>
+</section>
+<section id="vantagem" class="level2">
+<h2 class="anchored" data-anchor-id="vantagem">Vantagem</h2>
+<p>A centralização remove diferenças de nível e enfatiza:</p>
+<ul>
+<li>inclinações</li>
+<li>curvaturas</li>
+<li>heterogeneidade</li>
+<li>possíveis interações</li>
+</ul>
+<p>Ela altera a visualização, não o modelo ajustado</p>
+</section>
+</section>
+<section id="covariáveis-correlacionadas-e-pdp" class="level1">
+<h1>5 — Covariáveis correlacionadas e PDP</h1>
+<section id="o-problema" class="level2">
+<h2 class="anchored" data-anchor-id="o-problema">O problema</h2>
+<p>Suponha que</p>
+<p><span class="math display">\[
+X_1\approx X_2
+\]</span></p>
+<p>Ao construir o PDP de <span class="math inline">\(X_1\)</span>, podemos substituir <span class="math inline">\(X_1\)</span> por valores incompatíveis com o <span class="math inline">\(X_2\)</span> observado</p>
+<p>Por exemplo, o procedimento pode avaliar</p>
+<p><span class="math display">\[
+g(X_1=\text{muito alto},X_2=\text{muito baixo})
+\]</span></p>
+<p>mesmo que essa combinação praticamente não exista nos dados</p>
+<hr>
+</section>
+<section id="consequência" class="level2">
+<h2 class="anchored" data-anchor-id="consequência">Consequência</h2>
+<p>O modelo pode ser consultado em regiões onde há pouco suporte amostral</p>
+<p><span class="math display">\[
+\boxed{
+\text{PDP pode envolver extrapolação implícita}
+}
+\]</span></p>
+<p>Isso exige cuidado especialmente quando as covariáveis apresentam forte dependência</p>
+<hr>
+</section>
+<section id="o-que-o-pdp-não-estima-automaticamente" class="level2">
+<h2 class="anchored" data-anchor-id="o-que-o-pdp-não-estima-automaticamente">O que o PDP não estima automaticamente?</h2>
+<p>Em geral,</p>
+<p><span class="math display">\[
+E[g(x,\mathbf X_{-j})]
+\]</span></p>
+<p>não é igual a</p>
+<p><span class="math display">\[
+E[g(\mathbf X)\mid X_j=x]
+\]</span></p>
+<p>A primeira expressão usa a distribuição <strong>marginal</strong> das demais covariáveis</p>
+<p>A segunda respeita sua distribuição <strong>condicional</strong> dado <span class="math inline">\(X_j=x\)</span></p>
+</section>
+</section>
+<section id="lime-como-problema-de-otimização" class="level1">
+<h1>6 — LIME como problema de otimização</h1>
+<section id="notação-geral" class="level2">
+<h2 class="anchored" data-anchor-id="notação-geral">Notação geral</h2>
+<p>Seja:</p>
+<ul>
+<li><span class="math inline">\(\widehat g\)</span> o modelo complexo</li>
+<li><span class="math inline">\(\mathbf x^*\)</span> a observação a explicar</li>
+<li><span class="math inline">\(q\)</span> um modelo interpretável local</li>
+<li><span class="math inline">\(\pi_{\mathbf x^*}\)</span> uma medida de proximidade</li>
+</ul>
+<p>Podemos representar a ideia do LIME por</p>
+<p><span class="math display">\[
+\boxed{
+q^*
+=
+\arg\min_{q\in\mathcal G}
+\left\{
+\mathcal L(
+\widehat g,q,\pi_{\mathbf x^*}
+)
++
+\Omega(q)
+\right\}
+}
+\]</span></p>
+<hr>
+</section>
+<section id="fidelidade-local" class="level2">
+<h2 class="anchored" data-anchor-id="fidelidade-local">Fidelidade local</h2>
+<p>O termo</p>
+<p><span class="math display">\[
+\mathcal L(
+\widehat g,q,\pi_{\mathbf x^*}
+)
+\]</span></p>
+<p>mede o quanto <span class="math inline">\(q\)</span> reproduz as predições de <span class="math inline">\(\widehat g\)</span> perto de <span class="math inline">\(\mathbf x^*\)</span></p>
+<p>Para perturbações <span class="math inline">\(\mathbf z_b\)</span>:</p>
+<p><span class="math display">\[
+\mathcal L
+=
+\sum_{b=1}^{B}
+\pi_{\mathbf x^*}(\mathbf z_b)
+\left[
+\widehat g(\mathbf z_b)-q(\mathbf z_b)
+\right]^2
+\]</span></p>
+<hr>
+</section>
+<section id="interpretabilidade" class="level2">
+<h2 class="anchored" data-anchor-id="interpretabilidade">Interpretabilidade</h2>
+<p>O termo</p>
+<p><span class="math display">\[
+\Omega(q)
+\]</span></p>
+<p>penaliza a complexidade da explicação</p>
+<p>Se <span class="math inline">\(q\)</span> é linear, podemos favorecer poucos coeficientes não nulos</p>
+<p>Assim, LIME equilibra:</p>
+<p><span class="math display">\[
+\boxed{
+\text{fidelidade local}
+\quad\leftrightarrow\quad
+\text{simplicidade}
+}
+\]</span></p>
+</section>
+</section>
+<section id="lime-com-regressão-linear-penalizada" class="level1">
+<h1>7 — LIME com regressão linear penalizada</h1>
+<section id="modelo-local" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-local">Modelo local</h2>
+<p>Considere:</p>
+<p><span class="math display">\[
+q_{\boldsymbol\beta}(\mathbf z)
+=
+\beta_0+\sum_{j=1}^{p}\beta_jz_j
+\]</span></p>
+<p>Uma implementação pode resolver:</p>
+<p><span class="math display">\[
+\boxed{
+\min_{\boldsymbol\beta}
+\left\{
+\sum_{b=1}^{B}
+w_b
+\left[
+\widehat g(\mathbf z_b)
+-
+\beta_0-
+\sum_{j=1}^{p}\beta_jz_{bj}
+\right]^2
++
+\lambda\sum_{j=1}^{p}|\beta_j|
+\right\}
+}
+\]</span></p>
+<hr>
+</section>
+<section id="dois-controles-diferentes" class="level2">
+<h2 class="anchored" data-anchor-id="dois-controles-diferentes">Dois controles diferentes</h2>
+<p>A explicação depende de dois tipos de complexidade:</p>
+<section id="localidade" class="level3">
+<h3 class="anchored" data-anchor-id="localidade">Localidade</h3>
+<p>Controlada por</p>
+<p><span class="math display">\[
+w_b=K(\mathbf z_b,\mathbf x^*)
+\]</span></p>
+</section>
+<section id="esparsidade" class="level3">
+<h3 class="anchored" data-anchor-id="esparsidade">Esparsidade</h3>
+<p>Controlada por</p>
+<p><span class="math display">\[
+\lambda
+\]</span></p>
+<p>Essas escolhas afetam a explicação produzida</p>
+</section>
+</section>
+</section>
+<section id="estabilidade-do-lime" class="level1">
+<h1>8 — Estabilidade do LIME</h1>
+<section id="perturbações-aleatórias" class="level2">
+<h2 class="anchored" data-anchor-id="perturbações-aleatórias">Perturbações aleatórias</h2>
+<p>Como o LIME utiliza observações perturbadas,</p>
+<p><span class="math display">\[
+\mathbf z_1,\ldots,\mathbf z_B
+\]</span></p>
+<p>duas execuções podem gerar conjuntos diferentes</p>
+<p>Isso pode levar a:</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol\beta}^{(1)}
+\neq
+\widehat{\boldsymbol\beta}^{(2)}
+\]</span></p>
+<hr>
+</section>
+<section id="o-que-verificar" class="level2">
+<h2 class="anchored" data-anchor-id="o-que-verificar">O que verificar?</h2>
+<p>Para explicações importantes, é útil investigar:</p>
+<ul>
+<li>sensibilidade à semente aleatória</li>
+<li>tamanho <span class="math inline">\(B\)</span> da amostra perturbada</li>
+<li>largura da vizinhança</li>
+<li>número de variáveis selecionadas</li>
+<li>plausibilidade das perturbações</li>
+</ul>
+<hr>
+</section>
+<section id="fidelidade-local-1" class="level2">
+<h2 class="anchored" data-anchor-id="fidelidade-local-1">Fidelidade local</h2>
+<p>Uma explicação simples só é útil se reproduzir razoavelmente o comportamento de <span class="math inline">\(\widehat g\)</span> na vizinhança</p>
+<p>Podemos avaliar, por exemplo,</p>
+<p><span class="math display">\[
+\boxed{
+\sum_{b=1}^{B}
+w_b
+\left[
+\widehat g(\mathbf z_b)
+-
+q(\mathbf z_b)
+\right]^2
+}
+\]</span></p>
+<p>Uma explicação fácil de ler, mas com baixa fidelidade local, pode ser enganosa</p>
+</section>
+</section>
+<section id="interpretação-versus-inferência" class="level1">
+<h1>9 — Interpretação versus inferência</h1>
+<section id="três-objetos-diferentes" class="level2">
+<h2 class="anchored" data-anchor-id="três-objetos-diferentes">Três objetos diferentes</h2>
+<section id="processo-gerador" class="level3">
+<h3 class="anchored" data-anchor-id="processo-gerador">Processo gerador</h3>
+<p><span class="math display">\[
+P(Y,\mathbf X)
+\]</span></p>
+</section>
+<section id="função-alvo" class="level3">
+<h3 class="anchored" data-anchor-id="função-alvo">Função alvo</h3>
+<p><span class="math display">\[
+r(\mathbf x)=E[Y\mid\mathbf X=\mathbf x]
+\]</span></p>
+</section>
+<section id="modelo-ajustado" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-ajustado">Modelo ajustado</h3>
+<p><span class="math display">\[
+\widehat g(\mathbf x)
+\]</span></p>
+<p>Métodos de interpretabilidade pós-hoc investigam principalmente o terceiro objeto</p>
+<hr>
+</section>
+</section>
+<section id="consequência-1" class="level2">
+<h2 class="anchored" data-anchor-id="consequência-1">Consequência</h2>
+<p>Quando LIME, PDP ou ICE indicam que uma variável é importante, a afirmação mais segura é:</p>
+<blockquote class="blockquote">
+<p><strong>A variável é importante para o comportamento do modelo ajustado</strong></p>
+</blockquote>
+<p>Isso não implica automaticamente:</p>
+<blockquote class="blockquote">
+<p><strong>A variável possui efeito causal sobre a resposta</strong></p>
+</blockquote>
+</section>
+</section>
+<section id="quadro-de-síntese" class="level1">
+<h1>10 — Quadro de síntese</h1>
+<section id="qual-ferramenta-usar" class="level2">
+<h2 class="anchored" data-anchor-id="qual-ferramenta-usar">Qual ferramenta usar?</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Pergunta</th>
+<th>Ferramenta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Como a predição média muda com <span class="math inline">\(X_j\)</span>?</td>
+<td>PDP</td>
+</tr>
+<tr class="even">
+<td>O comportamento varia entre observações?</td>
+<td>ICE</td>
+</tr>
+<tr class="odd">
+<td>Há indícios de interações?</td>
+<td>ICE</td>
+</tr>
+<tr class="even">
+<td>Por que esta observação recebeu esta predição?</td>
+<td>LIME</td>
+</tr>
+<tr class="odd">
+<td>Quero uma interpretação causal</td>
+<td>Nenhuma delas, isoladamente</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="perguntas-para-revisão" class="level2">
+<h2 class="anchored" data-anchor-id="perguntas-para-revisão">Perguntas para revisão</h2>
+<ol type="1">
+<li><p>Qual é a diferença entre interpretabilidade global e local?</p></li>
+<li><p>Por que o PDP é uma média das curvas ICE?</p></li>
+<li><p>Como curvas ICE podem revelar interações?</p></li>
+<li><p>Por que covariáveis correlacionadas dificultam a interpretação do PDP?</p></li>
+<li><p>O que significa dizer que LIME é local?</p></li>
+<li><p>Por que o LIME utiliza as predições de <span class="math inline">\(\widehat g\)</span> como resposta?</p></li>
+<li><p>Qual é o papel da penalização no modelo local?</p></li>
+<li><p>Por que uma explicação do modelo não deve ser automaticamente interpretada como causal?</p></li>
+</ol>
+<hr>
+</section>
+<section id="fechamento" class="level2">
+<h2 class="anchored" data-anchor-id="fechamento">Fechamento</h2>
+<p>As três ferramentas respondem a perguntas diferentes sobre a função ajustada:</p>
+<p><span class="math display">\[
+\boxed{
+\text{PDP}
+\rightarrow
+\text{comportamento médio}
+}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{
+\text{ICE}
+\rightarrow
+\text{heterogeneidade}
+}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{
+\text{LIME}
+\rightarrow
+\text{explicação local}
+}
+\]</span></p>
+<p>O ponto central é sempre distinguir:</p>
+<p><span class="math display">\[
+\boxed{
+\text{compreender o modelo}
+\neq
+\text{compreender automaticamente o processo gerador}
+}
+\]</span></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/material_complementar/material_complementar_outros_aspectos_regressao.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
