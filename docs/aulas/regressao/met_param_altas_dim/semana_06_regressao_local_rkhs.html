@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.29">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning</title>
 <style>
 code{white-space: pre-wrap;}
@@ -18,6 +21,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 </style>
+
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
@@ -38,7 +42,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -64,7 +69,12 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -90,13 +100,12 @@ window.Quarto = {
   typesetMath
 };
 </script>
+
 <meta property="og:title" content="Parte I : Regressão – EST335 - Métodos Estatísticos para Machine Learning">
-<meta property="og:description" content="Outros Aspectos de Regressão">
-<meta property="og:image" content="http://professortp.com.br/est335/aulas/regressao/outros_aspec_regressao/outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-1-1.png">
+<meta property="og:description" content="Regressão Local e Introdução a RKHS">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
-<meta property="og:image:height" content="384">
-<meta property="og:image:width" content="672">
 </head>
+
 <body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -261,7 +270,9 @@ window.Quarto = {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -272,11 +283,16 @@ window.Quarto = {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="../../../index.html" class="sidebar-logo-link">
-      <img src="../../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <img src="../../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
       <div class="sidebar-tools-main">
     <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -289,7 +305,7 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../aulas.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Aulas</span></a>
@@ -302,60 +318,76 @@ window.Quarto = {
   </div>
 </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li>
-<a href="#interpretabilidade-em-machine-learning" id="toc-interpretabilidade-em-machine-learning" class="nav-link active" data-scroll-target="#interpretabilidade-em-machine-learning">Interpretabilidade em Machine Learning</a>
+  <li><a href="#de-onde-partimos" id="toc-de-onde-partimos" class="nav-link active" data-scroll-target="#de-onde-partimos">De onde partimos?</a></li>
+  <li><a href="#a-pergunta-desta-semana" id="toc-a-pergunta-desta-semana" class="nav-link" data-scroll-target="#a-pergunta-desta-semana">A pergunta desta semana</a></li>
+  <li><a href="#regressão-polinomial-local" id="toc-regressão-polinomial-local" class="nav-link" data-scroll-target="#regressão-polinomial-local">Regressão Polinomial Local</a>
   <ul class="collapse">
-<li><a href="#por-que-isso-importa" id="toc-por-que-isso-importa" class="nav-link" data-scroll-target="#por-que-isso-importa">💡 Por que isso importa?</a></li>
-  <li><a href="#o-que-ganhamos" id="toc-o-que-ganhamos" class="nav-link" data-scroll-target="#o-que-ganhamos">🔍 O que ganhamos?</a></li>
-  <li><a href="#trade-off-importante" id="toc-trade-off-importante" class="nav-link" data-scroll-target="#trade-off-importante">⚖️ Trade-off importante</a></li>
-  <li><a href="#objetivo" id="toc-objetivo" class="nav-link" data-scroll-target="#objetivo">🚀 Objetivo</a></li>
-  </ul>
-</li>
-  <li><a href="#modelos-quem-%C3%A9-f%C3%A1cil-de-interpretar" id="toc-modelos-quem-é-fácil-de-interpretar" class="nav-link" data-scroll-target="#modelos-quem-%C3%A9-f%C3%A1cil-de-interpretar">Modelos: quem é fácil de interpretar?</a></li>
-  <li><a href="#explainableml-lime" id="toc-explainableml-lime" class="nav-link" data-scroll-target="#explainableml-lime">ExplainableML — LIME</a></li>
-  <li>
-<a href="#exemplo-previs%C3%A3o-de-gastos-de-clientes" id="toc-exemplo-previsão-de-gastos-de-clientes" class="nav-link" data-scroll-target="#exemplo-previs%C3%A3o-de-gastos-de-clientes">Exemplo: previsão de gastos de clientes</a>
+  <li><a href="#nadarayawatson-revisitado" id="toc-nadarayawatson-revisitado" class="nav-link" data-scroll-target="#nadarayawatson-revisitado">Nadaraya–Watson revisitado</a></li>
+  <li><a href="#em-vez-de-uma-constante" id="toc-em-vez-de-uma-constante" class="nav-link" data-scroll-target="#em-vez-de-uma-constante">Em vez de uma constante…</a></li>
+  <li><a href="#regressão-linear-local" id="toc-regressão-linear-local" class="nav-link" data-scroll-target="#regressão-linear-local">Regressão linear local</a></li>
+  <li><a href="#por-que-centralizar-em-x_0" id="toc-por-que-centralizar-em-x_0" class="nav-link" data-scroll-target="#por-que-centralizar-em-x_0">Por que centralizar em <span class="math inline">\(x_0\)</span>?</a></li>
+  <li><a href="#a-reta-muda-com-x_0" id="toc-a-reta-muda-com-x_0" class="nav-link" data-scroll-target="#a-reta-muda-com-x_0">A reta muda com <span class="math inline">\(x_0\)</span></a></li>
+  <li><a href="#regressão-polinomial-local-1" id="toc-regressão-polinomial-local-1" class="nav-link" data-scroll-target="#regressão-polinomial-local-1">Regressão polinomial local</a></li>
+  <li><a href="#casos-importantes" id="toc-casos-importantes" class="nav-link" data-scroll-target="#casos-importantes">Casos importantes</a></li>
+  <li><a href="#local-não-significa-grau-elevado" id="toc-local-não-significa-grau-elevado" class="nav-link" data-scroll-target="#local-não-significa-grau-elevado">Local não significa grau elevado</a></li>
+  <li><a href="#o-hiperparâmetro-continua-sendo-h" id="toc-o-hiperparâmetro-continua-sendo-h" class="nav-link" data-scroll-target="#o-hiperparâmetro-continua-sendo-h">O hiperparâmetro continua sendo <span class="math inline">\(h\)</span></a></li>
+  <li><a href="#viés-variância-novamente" id="toc-viés-variância-novamente" class="nav-link" data-scroll-target="#viés-variância-novamente">Viés × variância novamente</a></li>
+  <li><a href="#efeito-de-fronteira" id="toc-efeito-de-fronteira" class="nav-link" data-scroll-target="#efeito-de-fronteira">Efeito de fronteira</a></li>
+  <li><a href="#voltando-ao-loess" id="toc-voltando-ao-loess" class="nav-link" data-scroll-target="#voltando-ao-loess">Voltando ao LOESS</a></li>
+  <li><a href="#em-várias-dimensões" id="toc-em-várias-dimensões" class="nav-link" data-scroll-target="#em-várias-dimensões">Em várias dimensões</a></li>
+  </ul></li>
+  <li><a href="#regularização-em-espaços-de-funções" id="toc-regularização-em-espaços-de-funções" class="nav-link" data-scroll-target="#regularização-em-espaços-de-funções">Regularização em Espaços de Funções</a>
   <ul class="collapse">
-<li><a href="#cen%C3%A1rio" id="toc-cenário" class="nav-link" data-scroll-target="#cen%C3%A1rio">🏢 Cenário</a></li>
-  <li><a href="#por-que-o-modelo-previu-esse-valor-para-este-cliente" id="toc-por-que-o-modelo-previu-esse-valor-para-este-cliente" class="nav-link" data-scroll-target="#por-que-o-modelo-previu-esse-valor-para-este-cliente">Por que o modelo previu esse valor para este cliente?</a></li>
-  </ul>
-</li>
-  <li><a href="#de-explica%C3%A7%C3%B5es-locais-para-explica%C3%A7%C3%B5es-globais" id="toc-de-explicações-locais-para-explicações-globais" class="nav-link" data-scroll-target="#de-explica%C3%A7%C3%B5es-locais-para-explica%C3%A7%C3%B5es-globais">De explicações locais para explicações globais</a></li>
-  <li><a href="#intui%C3%A7%C3%A3o-matem%C3%A1tica" id="toc-intuição-matemática" class="nav-link" data-scroll-target="#intui%C3%A7%C3%A3o-matem%C3%A1tica">Intuição matemática</a></li>
-  <li><a href="#exemplo-previs%C3%A3o-de-gastos-de-clientes-1" id="toc-exemplo-previsão-de-gastos-de-clientes-1" class="nav-link" data-scroll-target="#exemplo-previs%C3%A3o-de-gastos-de-clientes-1">Exemplo: previsão de gastos de clientes</a></li>
-  <li><a href="#exemplo-previs%C3%A3o-de-gastos-de-clientes-2" id="toc-exemplo-previsão-de-gastos-de-clientes-2" class="nav-link" data-scroll-target="#exemplo-previs%C3%A3o-de-gastos-de-clientes-2">Exemplo: previsão de gastos de clientes</a></li>
-  <li><a href="#shap-values" id="toc-shap-values" class="nav-link" data-scroll-target="#shap-values">SHAP Values</a></li>
-  <li>
-<a href="#como-o-shap-funciona" id="toc-como-o-shap-funciona" class="nav-link" data-scroll-target="#como-o-shap-funciona">Como o SHAP funciona?</a>
+  <li><a href="#uma-mudança-de-perspectiva" id="toc-uma-mudança-de-perspectiva" class="nav-link" data-scroll-target="#uma-mudança-de-perspectiva">Uma mudança de perspectiva</a></li>
+  <li><a href="#podemos-regularizar-uma-função" id="toc-podemos-regularizar-uma-função" class="nav-link" data-scroll-target="#podemos-regularizar-uma-função">Podemos regularizar uma função?</a></li>
+  <li><a href="#já-vimos-isso" id="toc-já-vimos-isso" class="nav-link" data-scroll-target="#já-vimos-isso">Já vimos isso!</a></li>
+  <li><a href="#do-ridge-para-funções" id="toc-do-ridge-para-funções" class="nav-link" data-scroll-target="#do-ridge-para-funções">Do Ridge para funções</a></li>
+  <li><a href="#o-que-é-mathcal-h" id="toc-o-que-é-mathcal-h" class="nav-link" data-scroll-target="#o-que-é-mathcal-h">O que é <span class="math inline">\(\mathcal H\)</span>?</a></li>
+  <li><a href="#rkhs" id="toc-rkhs" class="nav-link" data-scroll-target="#rkhs">RKHS</a></li>
+  <li><a href="#atenção-dois-significados-de-kernel" id="toc-atenção-dois-significados-de-kernel" class="nav-link" data-scroll-target="#atenção-dois-significados-de-kernel">Atenção: dois significados de kernel</a>
   <ul class="collapse">
-<li><a href="#interpreta%C3%A7%C3%A3o" id="toc-interpretação" class="nav-link" data-scroll-target="#interpreta%C3%A7%C3%A3o">Interpretação</a></li>
-  </ul>
-</li>
-  <li>
-<a href="#teoria-dos-jogos-cooperativos" id="toc-teoria-dos-jogos-cooperativos" class="nav-link" data-scroll-target="#teoria-dos-jogos-cooperativos">Teoria dos jogos cooperativos</a>
+  <li><a href="#kernel-de-suavização" id="toc-kernel-de-suavização" class="nav-link" data-scroll-target="#kernel-de-suavização">Kernel de suavização</a></li>
+  </ul></li>
+  <li><a href="#atenção-dois-significados-de-kernel-1" id="toc-atenção-dois-significados-de-kernel-1" class="nav-link" data-scroll-target="#atenção-dois-significados-de-kernel-1">Atenção: dois significados de kernel</a>
   <ul class="collapse">
-<li><a href="#ideia" id="toc-ideia" class="nav-link" data-scroll-target="#ideia">🎲 Ideia</a></li>
-  </ul>
-</li>
-  <li>
-<a href="#exemplo-previs%C3%A3o-de-gastos-de-clientes-3" id="toc-exemplo-previsão-de-gastos-de-clientes-3" class="nav-link" data-scroll-target="#exemplo-previs%C3%A3o-de-gastos-de-clientes-3">Exemplo: previsão de gastos de clientes</a>
+  <li><a href="#kernel-em-rkhs" id="toc-kernel-em-rkhs" class="nav-link" data-scroll-target="#kernel-em-rkhs">Kernel em RKHS</a></li>
+  </ul></li>
+  <li><a href="#kernel-linear" id="toc-kernel-linear" class="nav-link" data-scroll-target="#kernel-linear">Kernel linear</a></li>
+  <li><a href="#kernel-polinomial" id="toc-kernel-polinomial" class="nav-link" data-scroll-target="#kernel-polinomial">Kernel polinomial</a></li>
+  <li><a href="#kernel-gaussiano-rbf" id="toc-kernel-gaussiano-rbf" class="nav-link" data-scroll-target="#kernel-gaussiano-rbf">Kernel Gaussiano / RBF</a></li>
+  <li><a href="#o-resultado-central" id="toc-o-resultado-central" class="nav-link" data-scroll-target="#o-resultado-central">O resultado central</a></li>
+  <li><a href="#por-que-isso-importa" id="toc-por-que-isso-importa" class="nav-link" data-scroll-target="#por-que-isso-importa">Por que isso importa?</a></li>
+  <li><a href="#o-papel-de-lambda" id="toc-o-papel-de-lambda" class="nav-link" data-scroll-target="#o-papel-de-lambda">O papel de <span class="math inline">\(\lambda\)</span></a></li>
+  </ul></li>
+  <li><a href="#conexões" id="toc-conexões" class="nav-link" data-scroll-target="#conexões">Conexões</a>
   <ul class="collapse">
-<li><a href="#principais-insights" id="toc-principais-insights" class="nav-link" data-scroll-target="#principais-insights">💡 Principais insights</a></li>
+  <li><a href="#semanas-36" id="toc-semanas-36" class="nav-link" data-scroll-target="#semanas-36">Semanas 3–6</a></li>
+  <li><a href="#uma-visão-unificada" id="toc-uma-visão-unificada" class="nav-link" data-scroll-target="#uma-visão-unificada">Uma visão unificada</a></li>
+  <li><a href="#um-princípio-recorrente" id="toc-um-princípio-recorrente" class="nav-link" data-scroll-target="#um-princípio-recorrente">Um princípio recorrente</a></li>
+  <li><a href="#quatro-ideias-para-levar" id="toc-quatro-ideias-para-levar" class="nav-link" data-scroll-target="#quatro-ideias-para-levar">Quatro ideias para levar</a></li>
+  <li><a href="#próxima-semana" id="toc-próxima-semana" class="nav-link" data-scroll-target="#próxima-semana">Próxima semana</a></li>
+  </ul></li>
+  <li><a href="#árvores-e-ensembles-baseados-em-árvores" id="toc-árvores-e-ensembles-baseados-em-árvores" class="nav-link" data-scroll-target="#árvores-e-ensembles-baseados-em-árvores">Árvores e ensembles baseados em árvores</a></li>
   </ul>
-</li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="outros_aspec_regressao.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/regressao/met_param_altas_dim/semana_06_regressao_local_rkhs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="semana_06_regressao_local_rkhs.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
 <h1 class="title">Parte I : Regressão</h1>
-<p class="subtitle lead"><span class="custom-subtitle">Outros Aspectos de Regressão</span></p>
+<p class="subtitle lead"><span class="custom-subtitle">Regressão Local e Introdução a RKHS</span></p>
 </div>
 
 
@@ -369,304 +401,367 @@ window.Quarto = {
   
 
 
-</header><section id="interpretabilidade-em-machine-learning" class="level2"><h2 class="anchored" data-anchor-id="interpretabilidade-em-machine-learning">Interpretabilidade em Machine Learning</h2>
-<section id="por-que-isso-importa" class="level3"><h3 class="anchored" data-anchor-id="por-que-isso-importa">💡 Por que isso importa?</h3>
-<ul>
-<li>Bons modelos preditivos nem sempre são fáceis de entender<br>
-</li>
-<li>Modelos interpretáveis geram <strong>mais confiança</strong><br><br>
-</li>
-</ul></section><section id="o-que-ganhamos" class="level3"><h3 class="anchored" data-anchor-id="o-que-ganhamos">🔍 O que ganhamos?</h3>
-<ul>
-<li>entender quais variáveis são importantes<br>
-</li>
-<li>obter <strong>insights sobre o problema</strong><br>
-</li>
-<li>avaliar desempenho em novos dados<br>
-</li>
-<li>detectar possíveis vieses</li>
-</ul>
-<hr></section><section id="trade-off-importante" class="level3"><h3 class="anchored" data-anchor-id="trade-off-importante">⚖️ Trade-off importante</h3>
-<ul>
-<li>modelos simples → mais interpretáveis<br>
-</li>
-<li>modelos complexos → mais difíceis de explicar<br><br>
-</li>
-</ul></section><section id="objetivo" class="level3"><h3 class="anchored" data-anchor-id="objetivo">🚀 Objetivo</h3>
-<p><strong>Tornar modelos complexos compreensíveis</strong></p>
-</section></section><section id="modelos-quem-é-fácil-de-interpretar" class="level2"><h2 class="anchored" data-anchor-id="modelos-quem-é-fácil-de-interpretar">Modelos: quem é fácil de interpretar?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<section id="mais-interpretáveis" class="level3"><h3 class="anchored" data-anchor-id="mais-interpretáveis">🟢 Mais interpretáveis</h3>
-<ul>
-<li>modelos lineares<br>
-</li>
-<li>árvores de decisão<br>
-</li>
-<li>modelos esparsos</li>
-</ul></section>
-</div><div class="column" style="width:50%;">
-<section id="menos-interpretáveis" class="level3"><h3 class="anchored" data-anchor-id="menos-interpretáveis">🔴 Menos interpretáveis</h3>
-<ul>
-<li>SVR<br>
-</li>
-<li>modelos com kernel<br>
-</li>
-<li>modelos complexos</li>
-</ul></section>
-</div>
-</div>
-<p>👉 Técnicas para interpretar modelos complexos:</p>
-<ul>
-<li>LIME (<em>Local Interpretable Model-agnostic Explanations</em>)<br>
-</li>
-<li>PDP (<em>Partial Dependence Plot</em>)</li>
-<li>ICE (<em>Individual Conditional Expectation</em>)</li>
-</ul></section><section id="explainableml-lime" class="level2"><h2 class="anchored" data-anchor-id="explainableml-lime">ExplainableML — LIME</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<section id="pergunta-do-lime" class="level3"><h3 class="anchored" data-anchor-id="pergunta-do-lime">🎯 Pergunta do LIME</h3>
-<blockquote class="blockquote">
-<p><strong>Por que o modelo previu isso para esta observação?</strong></p>
-</blockquote>
-<hr></section><section id="ideia-central" class="level3"><h3 class="anchored" data-anchor-id="ideia-central">Ideia central</h3>
-<p>LIME não tenta explicar o modelo inteiro.</p>
-<p>👉 Explica <strong>uma observação por vez</strong></p>
+</header>
+
+
+<section id="de-onde-partimos" class="level2">
+<h2 class="anchored" data-anchor-id="de-onde-partimos">De onde partimos?</h2>
+<p>Até aqui, estimamos <span class="math inline">\(r(x)=E[Y\mid X=x]\)</span> usando vizinhanças.</p>
+<p>KNN: <span class="math display">\[\widehat r_K(x_0)=\frac1K\sum_{i\in N_K(x_0)}Y_i\]</span></p>
+<p>Nadaraya–Watson: <span class="math display">\[
+\widehat r_h(x_0)=
+\frac{\sum_i K((x_i-x_0)/h)Y_i}
+{\sum_i K((x_i-x_0)/h)}
+\]</span></p>
 </section>
-</div><div class="column" style="width:50%;">
-<section id="estratégia" class="level3"><h3 class="anchored" data-anchor-id="estratégia">Estratégia</h3>
+<section id="a-pergunta-desta-semana" class="level2">
+<h2 class="anchored" data-anchor-id="a-pergunta-desta-semana">A pergunta desta semana</h2>
+<p>Nadaraya–Watson produz essencialmente uma constante local.</p>
+<blockquote class="blockquote">
+<p>Por que não ajustar uma pequena regressão na vizinhança de <span class="math inline">\(x_0\)</span>?</p>
+</blockquote>
+<p>Depois, iremos além: como regularizar diretamente uma função flexível?</p>
+</section>
+<section id="regressão-polinomial-local" class="level1">
+<h1>Regressão Polinomial Local</h1>
+<section id="nadarayawatson-revisitado" class="level2">
+<h2 class="anchored" data-anchor-id="nadarayawatson-revisitado">Nadaraya–Watson revisitado</h2>
+<p>Em torno de <span class="math inline">\(x_0\)</span>, suponha: <span class="math display">\[Y_i\approx\beta_0(x_0)\]</span></p>
+<p>Estimamos: <span class="math display">\[
+\min_{\beta_0}
+\sum_i K\left(\frac{x_i-x_0}{h}\right)(Y_i-\beta_0)^2
+\]</span></p>
+<p>A solução é a média ponderada de Nadaraya–Watson.</p>
+<p><span class="math display">\[\boxed{\text{Nadaraya–Watson = regressão constante local}}\]</span></p>
+</section>
+<section id="em-vez-de-uma-constante" class="level2">
+<h2 class="anchored" data-anchor-id="em-vez-de-uma-constante">Em vez de uma constante…</h2>
+<p>Na vizinhança de <span class="math inline">\(x_0\)</span>: <span class="math display">\[
+r(x)\approx\beta_0(x_0)+\beta_1(x_0)(x-x_0)
+\]</span></p>
+<p>Assim combinamos: <span class="math display">\[
+\boxed{\text{Mínimos Quadrados}}
++
+\boxed{\text{Vizinhança}}
++
+\boxed{\text{Pesos Kernel}}
+\]</span></p>
+</section>
+<section id="regressão-linear-local" class="level2">
+<h2 class="anchored" data-anchor-id="regressão-linear-local">Regressão linear local</h2>
+<p><span class="math display">\[
+\boxed{
+(\widehat\beta_0,\widehat\beta_1)
+=
+\arg\min_{\beta_0,\beta_1}
+\sum_i
+K\left(\frac{x_i-x_0}{h}\right)
+[y_i-\beta_0-\beta_1(x_i-x_0)]^2
+}
+\]</span></p>
+<p>e <span class="math display">\[\boxed{\widehat r(x_0)=\widehat\beta_0(x_0)}\]</span></p>
+</section>
+<section id="por-que-centralizar-em-x_0" class="level2">
+<h2 class="anchored" data-anchor-id="por-que-centralizar-em-x_0">Por que centralizar em <span class="math inline">\(x_0\)</span>?</h2>
+<p>Como <span class="math inline">\(x-x_0=0\)</span> exatamente no ponto de interesse, <span class="math display">\[
+\widehat r(x_0)=\widehat\beta_0
+\]</span></p>
+<p>A interpretação da predição fica imediata.</p>
+</section>
+<section id="a-reta-muda-com-x_0" class="level2">
+<h2 class="anchored" data-anchor-id="a-reta-muda-com-x_0">A reta muda com <span class="math inline">\(x_0\)</span></h2>
+<p>Para cada ponto: <span class="math display">\[
+x_0
+\rightarrow
+\text{novos pesos}
+\rightarrow
+\text{nova regressão}
+\rightarrow
+\widehat r(x_0)
+\]</span></p>
+<p>Repetindo esse processo, obtemos uma curva suave.</p>
+</section>
+<section id="regressão-polinomial-local-1" class="level2">
+<h2 class="anchored" data-anchor-id="regressão-polinomial-local-1">Regressão polinomial local</h2>
+<p>Generalizamos: <span class="math display">\[
+r(x)\approx
+\beta_0+
+\beta_1(x-x_0)+\cdots+
+\beta_d(x-x_0)^d
+\]</span></p>
+<p>Os coeficientes são estimados por mínimos quadrados ponderados localmente.</p>
+</section>
+<section id="casos-importantes" class="level2">
+<h2 class="anchored" data-anchor-id="casos-importantes">Casos importantes</h2>
+<p><span class="math display">\[d=0\Rightarrow\text{constante local / Nadaraya–Watson}\]</span></p>
+<p><span class="math display">\[d=1\Rightarrow\boxed{\text{regressão linear local}}\]</span></p>
+<p><span class="math display">\[d=2\Rightarrow\text{regressão quadrática local}\]</span></p>
+<p>Em geral, graus baixos são suficientes.</p>
+</section>
+<section id="local-não-significa-grau-elevado" class="level2">
+<h2 class="anchored" data-anchor-id="local-não-significa-grau-elevado">Local não significa grau elevado</h2>
+<p>A flexibilidade vem de ajustar um modelo diferente em cada vizinhança.</p>
+<p>Logo, normalmente não precisamos de polinômios globais de grau elevado.</p>
+<p><span class="math display">\[\boxed{d=1\text{ ou }d=2\text{ costuma ser suficiente}}\]</span></p>
+</section>
+<section id="o-hiperparâmetro-continua-sendo-h" class="level2">
+<h2 class="anchored" data-anchor-id="o-hiperparâmetro-continua-sendo-h">O hiperparâmetro continua sendo <span class="math inline">\(h\)</span></h2>
+<p><span class="math display">\[
+h\downarrow
+\Rightarrow
+\text{vizinhança menor}
+\Rightarrow
+\text{maior flexibilidade}
+\]</span></p>
+<p><span class="math display">\[
+h\uparrow
+\Rightarrow
+\text{vizinhança maior}
+\Rightarrow
+\text{maior suavização}
+\]</span></p>
+</section>
+<section id="viés-variância-novamente" class="level2">
+<h2 class="anchored" data-anchor-id="viés-variância-novamente">Viés × variância novamente</h2>
+<p><span class="math inline">\(h\)</span> pequeno:</p>
+<ul>
+<li>menor viés;</li>
+<li>maior variância.</li>
+</ul>
+<p><span class="math inline">\(h\)</span> grande:</p>
+<ul>
+<li>maior viés;</li>
+<li>menor variância.</li>
+</ul>
+<p>O mesmo princípio de controle de complexidade reaparece.</p>
+</section>
+<section id="efeito-de-fronteira" class="level2">
+<h2 class="anchored" data-anchor-id="efeito-de-fronteira">Efeito de fronteira</h2>
+<p>Nas extremidades do domínio, a vizinhança é assimétrica.</p>
+<p>Uma constante local pode apresentar viés importante.</p>
+<p>A regressão linear local consegue adaptar a inclinação da função.</p>
+<p><span class="math display">\[\boxed{\text{vantagem importante da regressão linear local}}\]</span></p>
+</section>
+<section id="voltando-ao-loess" class="level2">
+<h2 class="anchored" data-anchor-id="voltando-ao-loess">Voltando ao LOESS</h2>
+<p>Agora podemos entender LOESS como: <span class="math display">\[
+\boxed{
+\text{vizinhança}
++
+\text{pesos pela distância}
++
+\text{regressão polinomial local}
+}
+\]</span></p>
+<p>Portanto, LOESS pertence à mesma família dos métodos locais.</p>
+</section>
+<section id="em-várias-dimensões" class="level2">
+<h2 class="anchored" data-anchor-id="em-várias-dimensões">Em várias dimensões</h2>
+<p>Podemos ajustar localmente: <span class="math display">\[
+Y_i\approx\beta_0+
+\sum_{j=1}^p\beta_j(X_{ij}-x_{0j})
+\]</span></p>
+<p>Mas: <span class="math display">\[
+\boxed{p\uparrow\Rightarrow\text{vizinhanças tornam-se esparsas}}
+\]</span></p>
+<p>A maldição da dimensionalidade permanece.</p>
+</section>
+</section>
+<section id="regularização-em-espaços-de-funções" class="level1">
+<h1>Regularização em Espaços de Funções</h1>
+<section id="uma-mudança-de-perspectiva" class="level2">
+<h2 class="anchored" data-anchor-id="uma-mudança-de-perspectiva">Uma mudança de perspectiva</h2>
+<p>Semana 4: <span class="math display">\[\text{regularizar coeficientes}\]</span></p>
+<p>Semanas 5–6: <span class="math display">\[\text{estimar funções flexíveis}\]</span></p>
+<p>Agora combinaremos as duas ideias.</p>
+</section>
+<section id="podemos-regularizar-uma-função" class="level2">
+<h2 class="anchored" data-anchor-id="podemos-regularizar-uma-função">Podemos regularizar uma função?</h2>
+<p>Em vez de penalizar somente <span class="math inline">\(\beta_1,\ldots,\beta_p\)</span>: <span class="math display">\[
+\boxed{
+\text{ajuste aos dados}
++
+\lambda\times\text{complexidade de }f
+}
+\]</span></p>
+</section>
+<section id="já-vimos-isso" class="level2">
+<h2 class="anchored" data-anchor-id="já-vimos-isso">Já vimos isso!</h2>
+<p>No smoothing spline: <span class="math display">\[
+\boxed{
+\sum_i(y_i-f(x_i))^2
++
+\lambda\int[f''(t)]^2dt
+}
+\]</span></p>
+<p>O primeiro termo mede ajuste.</p>
+<p>O segundo penaliza a curvatura da função.</p>
+</section>
+<section id="do-ridge-para-funções" class="level2">
+<h2 class="anchored" data-anchor-id="do-ridge-para-funções">Do Ridge para funções</h2>
+<p>Ridge: <span class="math display">\[RSS+\lambda\|\boldsymbol\beta\|_2^2.\]</span></p>
+<p>Agora: <span class="math display">\[
+\boxed{
+\sum_i(y_i-f(x_i))^2+
+\lambda\|f\|_{\mathcal H}^2
+}
+\]</span></p>
+<p><span class="math inline">\(\mathcal H\)</span> representa um espaço de funções admissíveis.</p>
+</section>
+<section id="o-que-é-mathcal-h" class="level2">
+<h2 class="anchored" data-anchor-id="o-que-é-mathcal-h">O que é <span class="math inline">\(\mathcal H\)</span>?</h2>
+<p>Nesta disciplina, pense em <span class="math inline">\(\mathcal H\)</span> como:</p>
+<blockquote class="blockquote">
+<p>um conjunto estruturado de funções no qual conseguimos medir tamanho ou complexidade.</p>
+</blockquote>
+<p>A norma <span class="math inline">\(\|f\|_{\mathcal H}\)</span> desempenha papel análogo a <span class="math inline">\(\|\boldsymbol\beta\|_2\)</span> no Ridge.</p>
+</section>
+<section id="rkhs" class="level2">
+<h2 class="anchored" data-anchor-id="rkhs">RKHS</h2>
+<p>Um Reproducing Kernel Hilbert Space é um espaço de funções com uma estrutura especial associada a um kernel.<br><br></p>
+<p><span class="math display">\[
+\boxed{\text{kernel}\longleftrightarrow\text{espaço de funções}}
+\]</span></p>
+<p>A construção matemática completa fica no material complementar.</p>
+</section>
+<section id="atenção-dois-significados-de-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="atenção-dois-significados-de-kernel">Atenção: dois significados de kernel</h2>
+<section id="kernel-de-suavização" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-de-suavização">Kernel de suavização</h3>
+<p>Semana 5: <span class="math display">\[K((x-x_i)/h)\]</span></p>
+<p>Serve para definir pesos locais.</p>
+</section>
+</section>
+<section id="atenção-dois-significados-de-kernel-1" class="level2">
+<h2 class="anchored" data-anchor-id="atenção-dois-significados-de-kernel-1">Atenção: dois significados de kernel</h2>
+<section id="kernel-em-rkhs" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-em-rkhs">Kernel em RKHS</h3>
+<p><span class="math display">\[K(x,x')\]</span></p>
+<p>Representa uma relação de similaridade compatível com um espaço de funções.</p>
+<p><span class="math display">\[\boxed{\text{mesma palavra, papéis matemáticos diferentes}}\]</span></p>
+</section>
+</section>
+<section id="kernel-linear" class="level2">
+<h2 class="anchored" data-anchor-id="kernel-linear">Kernel linear</h2>
+<p><span class="math display">\[
+K(x,x')=x^\top x'
+\]</span></p>
+<p>Esse caso se conecta diretamente à geometria dos modelos lineares.</p>
+</section>
+<section id="kernel-polinomial" class="level2">
+<h2 class="anchored" data-anchor-id="kernel-polinomial">Kernel polinomial</h2>
+<p><span class="math display">\[
+K(x,x')=(c+x^\top x')^d
+\]</span></p>
+<p>As funções de base da Semana 3 reaparecem de forma implícita.</p>
+</section>
+<section id="kernel-gaussiano-rbf" class="level2">
+<h2 class="anchored" data-anchor-id="kernel-gaussiano-rbf">Kernel Gaussiano / RBF</h2>
+<p><span class="math display">\[
+\boxed{
+K(x,x')=
+\exp[-\gamma\|x-x'\|^2]
+}
+\]</span></p>
+<p>Pontos próximos apresentam maior similaridade.</p>
+<p>Mas esse kernel não está simplesmente calculando uma média local.</p>
+</section>
+<section id="o-resultado-central" class="level2">
+<h2 class="anchored" data-anchor-id="o-resultado-central">O resultado central</h2>
+<p>Mesmo procurando <span class="math inline">\(f\)</span> em um espaço extremamente rico, sob condições apropriadas a solução regularizada possui forma: <span class="math display">\[
+\boxed{
+\widehat f(x)=
+\sum_{i=1}^n\alpha_iK(x,x_i)
+}
+\]</span></p>
+<p>Esse é o conteúdo essencial do Teorema do Representer.</p>
+</section>
+<section id="por-que-isso-importa" class="level2">
+<h2 class="anchored" data-anchor-id="por-que-isso-importa">Por que isso importa?</h2>
+<p>O problema original envolve: <span class="math display">\[f\in\mathcal H,\]</span></p>
+<p>possivelmente infinito-dimensional.</p>
+<p>O Teorema do Representer reduz a busca aos coeficientes: <span class="math display">\[\alpha_1,\ldots,\alpha_n\]</span></p>
+<p><span class="math display">\[
+\boxed{
+\text{problema funcional}
+\rightarrow
+\text{representação finita}
+}
+\]</span></p>
+</section>
+<section id="o-papel-de-lambda" class="level2">
+<h2 class="anchored" data-anchor-id="o-papel-de-lambda">O papel de <span class="math inline">\(\lambda\)</span></h2>
+<p><span class="math display">\[
+\sum_i(y_i-f(x_i))^2+
+\lambda\|f\|_{\mathcal H}^2
+\]</span></p>
+<p><span class="math display">\[\lambda\downarrow\Rightarrow\text{mais flexibilidade}\]</span></p>
+<p><span class="math display">\[\lambda\uparrow\Rightarrow\text{mais regularização}\]</span></p>
+<p>O compromisso viés–variância continua presente.</p>
+</section>
+</section>
+<section id="conexões" class="level1">
+<h1>Conexões</h1>
+<section id="semanas-36" class="level2">
+<h2 class="anchored" data-anchor-id="semanas-36">Semanas 3–6</h2>
+<p><strong>Semana 3:</strong> funções de base e splines.</p>
+<p><strong>Semana 4:</strong> seleção e regularização.</p>
+<p><strong>Semana 5:</strong> KNN e Nadaraya–Watson.</p>
+<p><strong>Semana 6:</strong> regressão local e RKHS.</p>
+</section>
+<section id="uma-visão-unificada" class="level2">
+<h2 class="anchored" data-anchor-id="uma-visão-unificada">Uma visão unificada</h2>
+<p>Podemos controlar a complexidade de <span class="math inline">\(r(x)\)</span> por:</p>
+<ul>
+<li>representação;</li>
+<li>seleção de variáveis;</li>
+<li>magnitude dos coeficientes;</li>
+<li>tamanho da vizinhança;</li>
+<li>complexidade da própria função.</li>
+</ul>
+</section>
+<section id="um-princípio-recorrente" class="level2">
+<h2 class="anchored" data-anchor-id="um-princípio-recorrente">Um princípio recorrente</h2>
+<p><span class="math display">\[
+\boxed{
+\text{perda empírica}
++
+\lambda\times\text{complexidade}
+}
+\]</span></p>
+<p>Essa estrutura apareceu em Ridge, smoothing splines e agora em RKHS.</p>
+</section>
+<section id="quatro-ideias-para-levar" class="level2">
+<h2 class="anchored" data-anchor-id="quatro-ideias-para-levar">Quatro ideias para levar</h2>
 <ol type="1">
-<li>escolhe uma observação <span class="math inline">\(x^*\)</span>
-</li>
-<li>cria perturbações próximas de <span class="math inline">\(x^*\)</span>
-</li>
-<li>consulta o modelo original</li>
-<li>ajusta um modelo simples local</li>
+<li>Nadaraya–Watson é uma regressão constante local.</li>
+<li>Regressão linear local ajusta uma reta diferente em cada vizinhança.</li>
+<li>RKHS permite pensar em regularização diretamente sobre funções.</li>
+<li>O Teorema do Representer produz uma representação finita baseada nos dados.</li>
 </ol>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-1-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
-</div>
-</div>
-</section><section id="exemplo-previsão-de-gastos-de-clientes" class="level2"><h2 class="anchored" data-anchor-id="exemplo-previsão-de-gastos-de-clientes">Exemplo: previsão de gastos de clientes</h2>
-<section id="cenário" class="level3"><h3 class="anchored" data-anchor-id="cenário">🏢 Cenário</h3>
-<p>Uma empresa de <strong>serviços digitais</strong> deseja prever o gasto futuro do cliente, antes de lançar campanhas promocionais.<br><br></p>
-</section><div class="columns">
-<div class="column" style="width:58%;">
-<section id="variáveis-disponíveis" class="level3"><h3 class="anchored" data-anchor-id="variáveis-disponíveis">📦 Variáveis disponíveis</h3>
-<ul>
-<li>💰 <strong>Renda mensal</strong>
-</li>
-<li>👤 <strong>Idade</strong>
-</li>
-<li>📱 <strong>Tempo de uso do aplicativo</strong>
-</li>
-<li>🛒 <strong>Histórico de compras</strong>
-</li>
-<li>🏷️ <strong>Categoria do cliente</strong>
-</li>
-</ul></section>
-</div><div class="column" style="width:42%;">
-<section id="objetivo-1" class="level3"><h3 class="anchored" data-anchor-id="objetivo-1">🎯 Objetivo</h3>
-<p>Construir um modelo capaz de responder:</p>
-<blockquote class="blockquote">
-<p><strong>Quanto este cliente provavelmente gastará nos próximos meses?</strong></p>
-</blockquote>
+<section id="próxima-semana" class="level2">
+<h2 class="anchored" data-anchor-id="próxima-semana">Próxima semana</h2>
 </section>
-</div>
-</div>
-<hr>
-<section id="por-que-o-modelo-previu-esse-valor-para-este-cliente" class="level3"><h3 class="anchored" data-anchor-id="por-que-o-modelo-previu-esse-valor-para-este-cliente">Por que o modelo previu esse valor para este cliente?</h3>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-2-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p align="center">
-💡 LIME transforma uma “caixa-preta” em decisões explicáveis cliente a cliente.
-</p>
-</section></section><section id="de-explicações-locais-para-explicações-globais" class="level2"><h2 class="anchored" data-anchor-id="de-explicações-locais-para-explicações-globais">De explicações locais para explicações globais</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<section id="lime" class="level3"><h3 class="anchored" data-anchor-id="lime">👤 LIME</h3>
-<p>Explica:</p>
-<blockquote class="blockquote">
-<p><strong>Por que este cliente recebeu esta predição?</strong></p>
-</blockquote>
-<p>✔ individual<br>
-✔ local<br>
-✔ observação específica</p>
 </section>
-</div><div class="column" style="width:55%;">
-<section id="pdp-e-ice" class="level3"><h3 class="anchored" data-anchor-id="pdp-e-ice">🌎 PDP e ICE</h3>
-<p>Explicam:</p>
-<blockquote class="blockquote">
-<p><strong>Como o modelo reage quando uma variável muda?</strong></p>
-</blockquote>
-<p>✔ comportamento global<br>
-✔ relações não lineares<br>
-✔ efeitos médios e individuais</p>
-</section>
-</div>
-</div>
-</section><section id="intuição-matemática" class="level2"><h2 class="anchored" data-anchor-id="intuição-matemática">Intuição matemática</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<section id="pdp" class="level3"><h3 class="anchored" data-anchor-id="pdp">🌎 PDP</h3>
-<p><span class="math display">\[
-h_i(x)=
-\frac{1}{n}
-\sum_{j=1}^{n}
-g(x_{j,1},...,x_i,...,x_{j,d})
+<section id="árvores-e-ensembles-baseados-em-árvores" class="level1">
+<h1>Árvores e ensembles baseados em árvores</h1>
+<p>Mudaremos a estratégia: <span class="math display">\[
+\boxed{\text{em vez de suavizar o espaço, vamos particioná-lo}}
 \]</span></p>
-<p>👉 mostra o <strong>efeito médio</strong></p>
-</section>
-</div><div class="column" style="width:50%;">
-<section id="ice" class="level3"><h3 class="anchored" data-anchor-id="ice">👤 ICE</h3>
 <p><span class="math display">\[
-h_{i,j}(x)=
-g(x_{j,1},...,x_i,...,x_{j,d})
+\text{Árvore}
+\rightarrow
+\text{Bagging}
+\rightarrow
+\text{Random Forest}.
 \]</span></p>
-<p>👉 mostra o <strong>efeito individual</strong></p>
+
+
 </section>
-</div>
-</div>
-<p><br></p>
-<p><span class="body-text-m teal-text center">PDP = média das curvas ICE</span></p>
-</section><section id="exemplo-previsão-de-gastos-de-clientes-1" class="level2"><h2 class="anchored" data-anchor-id="exemplo-previsão-de-gastos-de-clientes-1">Exemplo: previsão de gastos de clientes</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-3-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p><span class="teal-text center">Clientes com maior renda tendem a apresentar maior potencial de consumo</span></p>
-</section><section id="exemplo-previsão-de-gastos-de-clientes-2" class="level2"><h2 class="anchored" data-anchor-id="exemplo-previsão-de-gastos-de-clientes-2">Exemplo: previsão de gastos de clientes</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-4-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p><span class="teal-text center">Em média, a idade isoladamente não altera drasticamente o gasto previsto</span></p>
-</section><section id="shap-values" class="level2"><h2 class="anchored" data-anchor-id="shap-values">SHAP Values</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>LIME responde:</p>
-<blockquote class="blockquote">
-<p><em>“Por que esta observação recebeu esta predição?”</em></p>
-</blockquote>
-<p>PDP/ICE respondem:</p>
-<blockquote class="blockquote">
-<p><em>“Como uma variável afeta o modelo?”</em></p>
-</blockquote>
-</div><div class="column" style="width:50%;">
-<p>💡 SHAP responde:</p>
-<blockquote class="blockquote">
-<p><em>“Quem puxou a predição para cima ou para baixo?”</em> <em>“Quanto cada variável contribuiu para a predição”?</em></p>
-</blockquote>
-<p>✔ local</p>
-<p>✔ global</p>
-<p>✔ consistente matematicamente</p>
-<p>✔ baseado em teoria dos jogos</p>
-</div>
-</div>
-</section><section id="como-o-shap-funciona" class="level2"><h2 class="anchored" data-anchor-id="como-o-shap-funciona">Como o SHAP funciona?</h2>
-<p><span class="math display">\[
-g(x)=
-\phi_0+\phi_1+\phi_2+\cdots+\phi_p
-\]</span></p>
-<p>onde:</p>
-<ul>
-<li>
-<span class="math inline">\(\phi_0\)</span> → predição média do modelo</li>
-<li>
-<span class="math inline">\(\phi_i\)</span> → contribuição da variável <span class="math inline">\(i\)</span>
-</li>
-</ul>
-<section id="interpretação" class="level3"><h3 class="anchored" data-anchor-id="interpretação">Interpretação</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>🟢 <span class="math inline">\(\phi_i&gt;0\)</span></p>
-<p>→ aumenta a predição</p>
-</div><div class="column" style="width:50%;">
-<p>🔴 <span class="math inline">\(\phi_i&lt;0\)</span></p>
-<p>→ reduz a predição</p>
-</div>
-</div>
-<p><span class="teal-text center">A soma das contribuições recupera exatamente a predição</span></p>
-</section></section><section id="teoria-dos-jogos-cooperativos" class="level2"><h2 class="anchored" data-anchor-id="teoria-dos-jogos-cooperativos">Teoria dos jogos cooperativos</h2>
-<section id="ideia" class="level3"><h3 class="anchored" data-anchor-id="ideia">🎲 Ideia</h3>
-<p>Cada variável é um “jogador”. O modelo final é o “prêmio”.</p>
-<p><span class="teal-text center">Quanto cada jogador contribuiu para o resultado?</span></p>
-<p>👉 SHAP calcula a contribuição média de cada variável em todas as coalizões possíveis.</p>
-</section></section><section id="exemplo-previsão-de-gastos-de-clientes-3" class="level2"><h2 class="anchored" data-anchor-id="exemplo-previsão-de-gastos-de-clientes-3">Exemplo: previsão de gastos de clientes</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-5-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<section id="principais-insights" class="level3"><h3 class="anchored" data-anchor-id="principais-insights">💡 Principais insights</h3>
-<p>✔ histórico de compras é o fator dominante</p>
-<p>✔ renda exerce efeito positivo e não linear</p>
-<p>✔ clientes de maior renda aumentam a predição</p>
-<p>✔ há interação entre renda e gasto anterior</p>
-<p>🚀 SHAP revela importância, direção e interações.</p>
 
-
-</section></section></main><!-- /main --><script>
-  // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-  // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-  // slide changes (different for each slide format).
-  (function () {
-    // dispatch for htmlwidgets
-    function fireSlideEnter() {
-      const event = window.document.createEvent("Event");
-      event.initEvent("slideenter", true, true);
-      window.document.dispatchEvent(event);
-    }
-
-    function fireSlideChanged(previousSlide, currentSlide) {
-      fireSlideEnter();
-
-      // dispatch for shiny
-      if (window.jQuery) {
-        if (previousSlide) {
-          window.jQuery(previousSlide).trigger("hidden");
-        }
-        if (currentSlide) {
-          window.jQuery(currentSlide).trigger("shown");
-        }
-      }
-    }
-
-    // hookup for slidy
-    if (window.w3c_slidy) {
-      window.w3c_slidy.add_observer(function (slide_num) {
-        // slide_num starts at position 1
-        fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-      });
-    }
-
-  })();
-</script><script id="quarto-html-after-body" type="application/javascript">
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1079,18 +1174,21 @@ g(x)=
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">
 <p>© Copyright 2026, Tiago Pereira</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/regressao/outros_aspec_regressao/outros_aspec_regressao.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/regressao/met_param_altas_dim/semana_06_regressao_local_rkhs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
   </div>
 </footer>
+
+
 
 
 </body></html>
