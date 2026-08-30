@@ -31,7 +31,9 @@ Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semest
 | Semana | Data | Tópico | Artigo | Slides | EC | LE | Script | MC | Projeto |
 |:------:|--------|--------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
 | [1](programacao/semana-1.html) | Seg, 24/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
-|  | Qui, 26/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
+|  | Qua, 26/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
+| [2](programacao/semana-2.html) | Seg, 31/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/o-modelo-estimado-depende-dos-dados-1 "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
+|  | Qua, 02/09| Modelos Lineares: Regressão e Classificação |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#/title-slide "Modelos Lineares: Regressão e Classificação"){aria-label="Modelos Lineares: Regressão e Classificação"} |  |  |  |  |  |
 :::
 
 ```{r echo = FALSE}

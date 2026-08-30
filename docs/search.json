@@ -973,7 +973,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nProjeto\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQui, 26/08\nFundamentos do Aprendizado Estatístico",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nProjeto\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -2551,7 +2551,7 @@
     "href": "aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#forma-matricial",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Forma matricial",
-    "text": "Forma matricial\n\\[\n\\mathbf y\n=\n\\mathbf X\\boldsymbol\\beta+\\boldsymbol\\varepsilon\n\\]\nA solução de mínimos quadrados, quando existe de forma única, é\n\\[\n\\widehat{\\boldsymbol\\beta}\n=\n(\\mathbf X^\\top\\mathbf X)^{-1}\n\\mathbf X^\\top\\mathbf y\n\\]\n\n\n\n\n\n\nA derivação completa fica no material complementar da Semana 2."
+    "text": "Forma matricial\n\\[\n\\mathbf y\n=\n\\mathbf X\\boldsymbol\\beta+\\boldsymbol\\varepsilon\n\\]\nA solução de mínimos quadrados, quando existe de forma única, é\n\\[\n\\widehat{\\boldsymbol\\beta}\n=\n(\\mathbf X^\\top\\mathbf X)^{-1}\n\\mathbf X^\\top\\mathbf y\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#síntese",
@@ -9621,7 +9621,7 @@
     "href": "aulas.html",
     "title": "Aulas",
     "section": "",
-    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides",
+    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides",
     "crumbs": [
       "Aulas"
     ]
@@ -10569,14 +10569,14 @@
     "href": "programacao/semana-2.html",
     "title": "Semana 02",
     "section": "",
-    "text": "Revisão de Álgebra Matricial"
+    "text": "Fundamentos do Aprendizado Estatístico\n Modelos Lineares: Regressão e Classificação"
   },
   {
     "objectID": "programacao/semana-2.html#slides",
     "href": "programacao/semana-2.html#slides",
     "title": "Semana 02",
     "section": "",
-    "text": "Revisão de Álgebra Matricial"
+    "text": "Fundamentos do Aprendizado Estatístico\n Modelos Lineares: Regressão e Classificação"
   },
   {
     "objectID": "programacao/semana-2.html#entrega-lista-de-exercícios-01",
