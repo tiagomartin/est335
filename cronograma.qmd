@@ -34,6 +34,8 @@ Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semest
 |  | Qua, 26/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
 | [2](programacao/semana-2.html) | Seg, 31/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/o-modelo-estimado-depende-dos-dados-1 "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
 |  | Qua, 02/09| Modelos Lineares: Regressão e Classificação |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#/title-slide "Modelos Lineares: Regressão e Classificação"){aria-label="Modelos Lineares: Regressão e Classificação"} |  |  |  |  |  |
+| [3](programacao/semana-3.html) | Seg, 07/09 | **Feriado: Independência do Brasil** |  |  |  |  |  |
+|  | Qua, 09/09| Funções de Base, Polinômios, Splines e Séries |  | [{{< fa file-powerpoint size=2xl >}}](aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide "Funções de Base, Polinômios, Splines e Séries"){aria-label="Funções de Base, Polinômios, Splines e Séries"} |  |  |  |  |  |
 :::
 
 ```{r echo = FALSE}

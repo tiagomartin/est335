@@ -973,7 +973,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nProjeto\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nProjeto\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -7997,7 +7997,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#isso-ainda-é-regressão-linear",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Isso ainda é regressão linear?",
-    "text": "Isso ainda é regressão linear?\nSim.\nO modelo é não linear em \\(x\\), mas continua linear nos parâmetros:\n\\[\ng(x)\n=\n\\beta_0+\n\\beta_1b_1(x)+\\cdots+\\beta_dp_p(x),\n\\]\ncom\n\\[\nb_j(x)=x^j\n\\]"
+    "text": "Isso ainda é regressão linear?\nSim.\nO modelo é não linear em \\(x\\), mas continua linear nos parâmetros:\n\\[\ng(x)\n=\n\\beta_0+\n\\beta_1b_1(x)+\\cdots+\\beta_db_p(x),\n\\]\ncom\n\\[\nb_j(x)=x^j\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#funções-de-base",
