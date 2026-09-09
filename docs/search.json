@@ -7997,7 +7997,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#isso-ainda-é-regressão-linear",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Isso ainda é regressão linear?",
-    "text": "Isso ainda é regressão linear?\nSim.\nO modelo é não linear em \\(x\\), mas continua linear nos parâmetros:\n\\[\ng(x)\n=\n\\beta_0+\n\\beta_1b_1(x)+\\cdots+\\beta_db_p(x),\n\\]\ncom\n\\[\nb_j(x)=x^j\n\\]"
+    "text": "Isso ainda é regressão linear?\nSim. O modelo é não linear em \\(x\\), mas continua linear nos parâmetros:\n\\[g(x) = \\beta_0 + \\beta_1 b_1(x) + \\cdots + \\beta_d b_p(x), \\qquad b_j(x) = x^j\\]\n\nExemplo: ajustar \\(g(x) = \\beta_0 + \\beta_1 x + \\beta_2 x^2\\) é exatamente uma regressão linear com duas variáveis: as potências de \\(x\\) são só colunas novas na sua tabela.\n\n\n\\(x\\)\n\\(x^2\\)\n\\(y\\)\n\n\n\n1\n1\n3.2\n\n\n2\n4\n5.1\n\n\n3\n9\n8.9\n\n\n4\n16\n12.4"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#funções-de-base",
@@ -8011,7 +8011,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#pib-expectativa-de-vida",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "PIB × expectativa de vida",
-    "text": "PIB × expectativa de vida\n\nVamos usar \\(x=\\log(PIB/1000)\\) para visualizar claramente o efeito da complexidade."
+    "text": "PIB × expectativa de vida\nO mesmo problema ajustado por modelos de complexidade crescente"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#grau-1",
@@ -8109,7 +8109,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#por-que-usar-splines-cúbicos",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que usar splines cúbicos?",
-    "text": "Por que usar splines cúbicos?\nFunções lineares por partes apresentam mudanças abruptas de inclinação.\nSplines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.\nTipicamente exigimos continuidade de:\n\\[\ng(x),\\qquad g'(x),\\qquad g''(x)\n\\]"
+    "text": "Por que usar splines cúbicos?\nEm muitas aplicações, deseja-se que a função estimada varie de forma mais suave.\nSplines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.\nTipicamente exigimos continuidade de:\n\\[\ng(x),\\qquad g'(x),\\qquad g''(x)\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#spline-cúbico",
@@ -8144,14 +8144,14 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#duas-forças-em-competição",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Duas forças em competição",
-    "text": "Duas forças em competição\n\\[\n\\underbrace{\n\\sum_i(y_i-g(x_i))^2\n}_{\\text{ajuste aos dados}}\n+\n\\lambda\n\\underbrace{\n\\int[g''(t)]^2dt\n}_{\\text{rugosidade}}\n\\]\nO parâmetro \\(\\lambda\\) controla o compromisso entre ajuste e suavidade."
+    "text": "Duas forças em competição\n\\[\n\\underbrace{\n\\sum_i(y_i-g(x_i))^2\n}_{\\text{ajuste aos dados}}\n+\n\\lambda\n\\underbrace{\n\\int[g''(t)]^2dt\n}_{\\text{rugosidade}}\n\\]\nO parâmetro \\(\\lambda\\) controla o compromisso entre ajuste e suavidade.\n\n\nSe \\(\\lambda \\to 0\\), a penalização enfraquece e a curva pode se tornar muito flexível.\nSe \\(\\lambda \\to \\infty\\), a penalização domina e a solução se aproxima de uma reta."
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#o-papel-de-lambda",
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#o-papel-de-lambda",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O papel de \\(\\lambda\\)\n",
-    "text": "O papel de \\(\\lambda\\)\n\nSe\n\\[\n\\lambda\\rightarrow0,\n\\]\na penalização enfraquece e a curva pode se tornar muito flexível.\nSe\n\\[\n\\lambda\\rightarrow\\infty,\n\\]\na penalização domina e a solução se aproxima de uma reta."
+    "text": "O papel de \\(\\lambda\\)"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#smoothing-spline-duas-suavizações",
@@ -8172,7 +8172,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#a-mesma-base-pode-alimentar-tarefas-diferentes",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "A mesma base pode alimentar tarefas diferentes",
-    "text": "A mesma base pode alimentar tarefas diferentes\n\\[\n\\boldsymbol\\phi(x)=(\\phi_1(x),\\ldots,\\phi_K(x))^t\n\\] A representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico"
+    "text": "A mesma base pode alimentar tarefas diferentes\nObserve que, o que fizemos, foi trocar o dado original por um vetor de representações:\n\\[\\boldsymbol\\phi(x) = (\\phi_1(x), \\ldots, \\phi_K(x))^t\\]\nA representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico.\n\n\\[x \\longrightarrow \\boldsymbol\\phi(x) \\longrightarrow \\begin{cases} \\text{regressão (resposta contínua)} \\\\ \\text{classificador (resposta categórica)} \\end{cases}\\]"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#séries-ortogonais-1",
@@ -8200,7 +8200,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#viés-variância-reaparece",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Viés × variância reaparece",
-    "text": "Viés × variância reaparece\n\\[\nm\\text{ pequeno}\n\\Rightarrow\n\\text{representação rígida}\n\\Rightarrow\nBias\\uparrow\n\\]\n\\[\nm\\text{ grande}\n\\Rightarrow\n\\text{representação flexível}\n\\Rightarrow\nVar\\uparrow\n\\]\nPortanto, \\(m\\) é um hiperparâmetro."
+    "text": "Viés × variância reaparece\n\\[\nm\\text{ pequeno}\n\\Rightarrow\n\\text{representação rígida}\n\\Rightarrow\nBias\\uparrow\n\\]\n\\[\nm\\text{ grande}\n\\Rightarrow\n\\text{representação flexível}\n\\Rightarrow\nVar\\uparrow\n\\]\nPortanto, \\(m\\) é um hiperparâmetro.\nEle não é aprendido dos dados como \\(\\widehat\\theta_j\\), é escolhido antes, por validação."
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#séries-splines",
@@ -8214,7 +8214,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#uma-estrutura-comum",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Uma estrutura comum",
-    "text": "Uma estrutura comum\nPolinômios, splines, smoothing splines e LOESS parecem métodos diferentes.\nMas todos respondem à mesma pergunta:\n\\[\n\\boxed{\n\\text{quanta flexibilidade devemos permitir a }\\widehat g?\n}\n\\]"
+    "text": "Uma estrutura comum\nPolinômios, splines, smoothing splines e LOESS (veremos adiante) parecem métodos diferentes.\nMas todos respondem à mesma pergunta:\n\\[\n\\boxed{\n\\text{quanta flexibilidade devemos permitir a }\\widehat g?\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#escala-de-flexibilidade",
@@ -8235,14 +8235,14 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#comparação-dos-métodos",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Comparação dos métodos",
-    "text": "Comparação dos métodos\n\n\nMétodo\nControle principal de flexibilidade\n\n\n\nRegressão linear\nnúmero/forma das covariáveis\n\n\nPolinomial\ngrau \\(d\\)\n\n\n\nSpline de regressão\nnúmero/posição dos nós\n\n\nSmoothing spline\npenalização \\(\\lambda\\)\n\n\n\nLOESS\nspan"
+    "text": "Comparação dos métodos\n\n\nMétodo\nControle principal de flexibilidade\n\n\n\nRegressão linear\nnúmero/forma das covariáveis\n\n\nPolinomial\ngrau \\(p\\)\n\n\n\nSpline de regressão\nnúmero/posição dos nós\n\n\nSmoothing spline\npenalização \\(\\lambda\\)\n\n\n\nLOESS\n\nspan (veremos adiante)"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#síntese",
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#síntese",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Síntese",
-    "text": "Síntese\n\\[\n\\boxed{\ng(x)=\\beta_0+\\sum_{k=1}^{K}\\beta_kb_k(x)\n}\n\\]\né uma ideia extremamente poderosa.\nMudando as funções de base e o controle de complexidade, obtemos diferentes famílias de modelos."
+    "text": "Síntese\nPause e responda antes de seguir:\n\nSe eu aumentar o grau \\(p\\) de um polinômio, o erro de treino tende a subir ou descer?\n\ndescer\n\n\nE o erro de generalização?\n\nnão necessariamente: pode até piorar\n\n\nO grau \\(p\\) é estimado no treino ou escolhido antes?\n\nescolhido antes: é um hiperparâmetro\n\n\nPor que polinômios de grau alto são instáveis nas extremidades?\n\nsão globais: mudanças locais afetam a curva inteira"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#três-ideias-para-levar",
@@ -10654,5 +10654,124 @@
     "title": "Semana 08",
     "section": "",
     "text": "Mapas Perceptuais com PCA: estudo de marcas \n Ver análise PDF"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#a-pergunta-desta-semana-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#a-pergunta-desta-semana-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A pergunta desta semana",
+    "text": "A pergunta desta semana\n\nComo aumentar a flexibilidade do modelo usando representações mais ricas das covariáveis?\n\nVamos construir a sequência\n\\[\n\\boxed{\\text{reta}}\n\\rightarrow\n\\boxed{\\text{polinômios}}\n\\rightarrow\n\\boxed{\\text{splines}}\n\\rightarrow\n\\boxed{\\text{suavização}}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#para-onde-vamos",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#para-onde-vamos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Para onde vamos?",
+    "text": "Para onde vamos?\nHoje vamos aumentar a flexibilidade dos modelos.\n\n\n\n\n\n\n\n\nModelo\nIdeia em uma frase\nControle de complexidade\n\n\n\nReta\numa linha reta para tudo\nquais variáveis usar\n\n\nPolinômio\ncurva usando potências de \\(x\\)\n\ngrau \\(p\\)\n\n\n\nSpline\npedaços de curva emendados com suavidade\nnúmero de nós\n\n\nSmoothing spline\ncurva livre, com multa por zigue-zague\n\\(\\lambda\\)\n\n\nSéries ortogonais\nsoma de peças básicas independentes\nnúmero de termos \\(m\\)"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#o-mesmo-problema-ajustado-por-modelos-de-complexidade-crescente",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#o-mesmo-problema-ajustado-por-modelos-de-complexidade-crescente",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O mesmo problema ajustado por modelos de complexidade crescente",
+    "text": "O mesmo problema ajustado por modelos de complexidade crescente"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#pib-expectativa-de-vida-ajustado-por-modelos-de-complexidade-crescente",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#pib-expectativa-de-vida-ajustado-por-modelos-de-complexidade-crescente",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "PIB × expectativa de vida ajustado por modelos de complexidade crescente",
+    "text": "PIB × expectativa de vida ajustado por modelos de complexidade crescente"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#pib-expectativa-de-vida-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#pib-expectativa-de-vida-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "PIB × expectativa de vida",
+    "text": "PIB × expectativa de vida\n\nVamos usar \\(x=\\log(PIB/1000)\\) para visualizar claramente o efeito da complexidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#checkpoint-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#checkpoint-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "✅ Checkpoint 1",
+    "text": "✅ Checkpoint 1\nPause e responda antes de seguir:\n\nSe eu aumentar o grau \\(p\\) de um polinômio, o erro de treino tende a subir ou descer?\nE o erro de generalização?\nO grau \\(p\\) é estimado no treino ou escolhido antes?\nPor que polinômios de grau alto são instáveis nas extremidades?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#síntese-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#síntese-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Síntese",
+    "text": "Síntese\nPause e responda antes de seguir:\n\nO que um nó faz com a inclinação da curva?\n\npermite que ela mude a partir daquele ponto\n\n\nPor que spline cúbico e não linear por partes?\n\nevita quinas: exige continuidade da função, inclinação e curvatura\n\n\nSe \\(\\lambda\\) é enorme, o smoothing spline vira o quê?\n\npraticamente uma reta\n\n\nQual é a diferença entre spline e smoothing spline?\n\nspline: escolhe-se o número/posição dos nós; smoothing spline: curva livre + multa λ)"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#por-que-usar-splines-cúbicos-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#por-que-usar-splines-cúbicos-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que usar splines cúbicos?",
+    "text": "Por que usar splines cúbicos?\nSplines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.\nTipicamente exigimos continuidade de:\n\\[\ng(x),\\qquad g'(x),\\qquad g''(x)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#limitação-do-spline-linear",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#limitação-do-spline-linear",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Limitação do spline linear",
+    "text": "Limitação do spline linear\nFunções lineares por partes apresentam mudanças abruptas de inclinação.\n\nCada linha vertical representa um nó.\nCada nó ativa um termo \\((x - \\xi_k)_+\\).\nA função é contínua, mas sua inclinação muda nesses pontos.\n\nNo spline linear, temos\n\\[\ng(\\xi_k^-) = g(\\xi_k^+),\n\\]\nou seja, a função é contínua."
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#limitação-do-spline-linear-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#limitação-do-spline-linear-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Limitação do spline linear",
+    "text": "Limitação do spline linear\nNo entanto,\n\\[\ng'(\\xi_k^-) \\neq g'(\\xi_k^+),\n\\]\no que implica mudanças abruptas na inclinação."
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#splines-cúbicos",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#splines-cúbicos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Splines cúbicos",
+    "text": "Splines cúbicos\nUma forma conveniente de escrever o spline cúbico é\n\\[\ng(x) = \\beta_0 + \\beta_1 x + \\beta_2 x^2 + \\beta_3 x^3 + \\sum_{k=1}^{K} \\gamma_k (x - \\xi_k)_+^3\n\\]\n\\[\n(x-\\xi_k)_+^3\n=\n\\begin{cases}\n(x-\\xi_k)^3\n, & x&gt;\\xi_k,\\\\\n0, & x\\le\\xi_k\n\\end{cases}\n\\]\nCada nó introduz uma modificação local na curvatura da função."
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#splines-cúbicos-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#splines-cúbicos-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Splines cúbicos",
+    "text": "Splines cúbicos\nDado \\((x_i,y_i)\\), estimamos\n\\[\n\\hat{\\beta} = \\arg\\min \\sum_{i=1}^n (y_i - g(x_i))^2\n\\]\nO problema permanece linear nos parâmetros."
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#síntese-2",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#síntese-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Síntese",
+    "text": "Síntese\nAjustar\n\\[\n\\boxed{\ng(x)=\\beta_0+\\sum_{k=1}^{K}\\beta_kb_k(x)\n}\n\\]\né uma ideia extremamente poderosa.\nMudando as funções de base e o controle de complexidade, obtemos diferentes famílias de modelos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#a-mesma-base-pode-alimentar-tarefas-diferentes-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#a-mesma-base-pode-alimentar-tarefas-diferentes-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A mesma base pode alimentar tarefas diferentes",
+    "text": "A mesma base pode alimentar tarefas diferentes\n\nA transformação não sabe nem se importa com o que vem depois: ela é agnóstica ao modelo final.\n\n A representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#estimação-dos-coeficientes-exemplo-numérico",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#estimação-dos-coeficientes-exemplo-numérico",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estimação dos coeficientes: exemplo numérico",
+    "text": "Estimação dos coeficientes: exemplo numérico\nA fórmula do slide anterior, passo a passo:\n\\[\\widehat\\theta_j = \\frac{1}{n} \\sum_{i=1}^{n} Y_i \\phi_j(X_i)\\]\nEm palavras: para descobrir quanto da peça \\(\\phi_j\\) existe nos dados, multiplique cada \\(Y_i\\) pelo valor da peça naquele ponto, some tudo e divida pelo número de pontos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#estimação-dos-coeficientes-exemplo-numérico-1",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#estimação-dos-coeficientes-exemplo-numérico-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estimação dos coeficientes: exemplo numérico",
+    "text": "Estimação dos coeficientes: exemplo numérico\nOs dados (n = 5)\n\n\n\\(i\\)\n\\(X_i\\)\n\\(Y_i\\)\n\n\n\n1\n0\n2\n\n\n2\n1\n3\n\n\n3\n2\n5\n\n\n4\n3\n7\n\n\n5\n4\n11"
+  },
+  {
+    "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#estimação-dos-coeficientes-exemplo-numérico-2",
+    "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#estimação-dos-coeficientes-exemplo-numérico-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estimação dos coeficientes: exemplo numérico",
+    "text": "Estimação dos coeficientes: exemplo numérico\nPasso 0 — aquecimento: a peça constante\nCom \\(\\phi_0(x) = 1\\), a fórmula vira uma média simples:\n\\[\\widehat\\theta_0 = \\frac{1}{5}(2 + 3 + 5 + 7 + 11) = \\frac{28}{5} = 5.6\\]\n\nO coeficiente da peça constante é a média dos \\(Y\\). A fórmula nova é uma generalização disso — nada assustador."
   }
 ]

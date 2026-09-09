@@ -63,6 +63,28 @@ $$
 \boxed{\text{uma reta pode ser simples demais para representar }r(x)}
 $$
 
+## Para onde vamos?
+
+
+Hoje vamos aumentar a **flexibilidade** dos modelos.<br><br> 
+
+
+::: {style="font-size: 80%;" .fragment}
+
+| Modelo | Ideia em uma frase | Controle de complexidade |
+|:---|:---|:---|
+| Reta | uma linha reta para tudo | quais variáveis usar |
+| Polinômio | curva usando potências de $x$ | grau $p$ |
+| Spline | pedaços de curva emendados com suavidade | número de nós |
+| Smoothing spline | curva livre, com multa por zigue-zague | $\lambda$ |
+| Séries ortogonais | soma de peças básicas independentes | número de termos $m$ |
+
+:::
+
+
+
+
+
 ## A pergunta desta semana
 
 > Como aumentar a flexibilidade do modelo usando representações mais ricas das covariáveis?
@@ -78,6 +100,60 @@ $$
 \rightarrow
 \boxed{\text{suavização}}
 $$
+
+
+## PIB × expectativa de vida 
+
+
+O mesmo problema ajustado por modelos de complexidade crescente
+
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+#| echo: false
+library(gapminder)
+library(ggplot2)
+library(splines)
+
+ggplot(df_pib, aes(x = log_pib, y = vida)) +
+  geom_point(color = "#2C7FB8", alpha = .55, size = 2) +
+  stat_smooth(method = "lm", formula = y ~ x, se = FALSE,
+              aes(color = "Reta", linetype = "Reta")) +
+  stat_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE,
+              aes(color = "Polinômio grau 2", linetype = "Polinômio grau 2")) +
+  stat_smooth(method = "lm", formula = y ~ poly(x, 5), se = FALSE,
+              aes(color = "Polinômio grau 5", linetype = "Polinômio grau 5")) +
+  stat_smooth(method = "lm", formula = y ~ poly(x, 10), se = FALSE,
+              aes(color = "Polinômio grau 10", linetype = "Polinômio grau 10")) +
+  stat_smooth(method = "lm", formula = y ~ ns(x, df = 5), se = FALSE,
+              aes(color = "Spline (df = 5)", linetype = "Spline (df = 5)")) +
+  scale_color_manual(
+    name = NULL,
+    values = c("Reta" = "gray40",
+               "Polinômio grau 2" = "steelblue",
+               "Polinômio grau 5" = "orange",
+               "Polinômio grau 10" = "firebrick",
+               "Spline (df = 5)" = "darkgreen")
+  ) +
+  scale_linetype_manual(
+    name = NULL,
+    values = c("Reta" = "dashed",
+               "Polinômio grau 2" = "solid",
+               "Polinômio grau 5" = "solid",
+               "Polinômio grau 10" = "solid",
+               "Spline (df = 5)" = "solid")
+  ) +
+  labs(x = "log(PIB per capita / 1000)", y = "Expectativa de vida") +
+  tema +
+  theme(legend.position = "bottom")
+```
+
+
+
+
 
 
 # Polinômios e funções de base
@@ -98,22 +174,25 @@ Para $p>1$, permitimos curvatura.
 
 ## Isso ainda é regressão linear?
 
-Sim.
+**Sim.** O modelo é não linear em $x$, mas continua **linear nos parâmetros**:
 
-O modelo é não linear em $x$, mas continua **linear nos parâmetros**:
+$$g(x) = \beta_0 + \beta_1 b_1(x) + \cdots + \beta_d b_p(x), \qquad b_j(x) = x^j$$
 
-$$
-g(x)
-=
-\beta_0+
-\beta_1b_1(x)+\cdots+\beta_db_p(x),
-$$
+. . .
 
-com
+**Exemplo:** ajustar $g(x) = \beta_0 + \beta_1 x + \beta_2 x^2$ é exatamente uma regressão linear com duas variáveis: as potências de $x$ são só **colunas novas** na sua tabela.
 
-$$
-b_j(x)=x^j
-$$
+| $x$ | $x^2$ | $y$ |
+|-----|-------|-----|
+| 1 | 1 | 3.2 |
+| 2 | 4 | 5.1 |
+| 3 | 9 | 8.9 |
+| 4 | 16 | 12.4 |
+
+
+
+
+
 
 ## Funções de base
 
@@ -315,7 +394,10 @@ Além disso, nas extremidades:
 
 - pequenas mudanças nos dados podem produzir grandes mudanças na curva;
 - extrapolação pode se tornar extremamente instável;
-- graus altos podem produzir oscilações artificiais.
+- graus altos podem produzir **oscilações artificiais**.
+
+
+
 
 ## Um modelo muito flexível em diferentes amostras
 
@@ -356,6 +438,39 @@ ggplot(curvas,aes(x,pred,group=amostra,color=amostra)) +
 ```
 
 A flexibilidade excessiva pode aumentar a **variabilidade do estimador**.
+
+
+
+
+## Síntese 
+
+
+Pause e responda antes de seguir:<br><br>
+
+<details>
+  <summary>Se eu aumentar o grau $p$ de um polinômio, o **erro de treino** tende a subir ou descer?</summary>
+  <p> *descer* </p>
+</details>
+
+
+<details>
+  <summary>E o **erro de generalização**? </summary>
+  <p> *não necessariamente: pode até piorar* </p>
+</details>
+
+<details>
+  <summary>O grau $p$ é estimado no treino ou escolhido antes?</summary>
+  <p> *escolhido antes: é um hiperparâmetro* </p>
+</details>
+
+
+<details>
+  <summary>Por que polinômios de grau alto são instáveis nas extremidades? </summary>
+  <p> *são globais: mudanças locais afetam a curva inteira* </p>
+</details>
+
+
+
 
 # Splines e suavização
 
@@ -428,32 +543,144 @@ Assim, ganhamos **flexibilidade local**.
 #| out-width: 76%
 #| fig-align: center
 
-df_s <- df_pib |> mutate(x=log_pib)
-kn <- quantile(df_s$x,c(.25,.5,.75))
+library(ggplot2)
 
-fit_lin_spline <- lm(
-  vida ~ x + I(pmax(x-kn[1],0)) +
-    I(pmax(x-kn[2],0)) +
-    I(pmax(x-kn[3],0)),
-  data=df_s
+set.seed(123)
+
+# -----------------------------
+# Dados: função linear por partes
+# -----------------------------
+x <- sort(runif(120, 0, 10))
+
+f_true <- ifelse(
+  x <= 3,
+  0.5 + 0.4 * x,
+  ifelse(
+    x <= 6,
+    1.7 - 0.5 * (x - 3),
+    ifelse(
+      x <= 8,
+      0.2 + 0.6 * (x - 6),
+      1.4 - 0.7 * (x - 8)
+    )
+  )
 )
 
-gs <- data.frame(x=seq(min(df_s$x),max(df_s$x),length.out=500))
-gs$pred <- predict(fit_lin_spline,newdata=gs)
+y <- f_true + rnorm(120, 0, 0.15)
 
-ggplot(df_s,aes(x,vida)) +
-  geom_point(color="gray50",alpha=.45) +
-  geom_line(data=gs,aes(x,pred),color="#2C7FB8",linewidth=1.3) +
-  geom_vline(xintercept=kn,linetype=2,color="#D7301F") +
-  tema +
-  labs(title="Spline linear",
-       subtitle="Linhas tracejadas: nós",
-       x="x",y="y")
+df <- data.frame(x, y)
+
+# -----------------------------
+# Spline com 2 nós
+# -----------------------------
+knots_2 <- c(3, 7)
+
+df2 <- data.frame(
+  x = x,
+  y = y,
+  h1 = pmax(x - knots_2[1], 0),
+  h2 = pmax(x - knots_2[2], 0)
+)
+
+fit2 <- lm(y ~ x + h1 + h2, data = df2)
+
+# -----------------------------
+# Spline com 3 nós
+# -----------------------------
+knots_3 <- c(3, 6, 8)
+
+df3 <- data.frame(
+  x = x,
+  y = y,
+  h1 = pmax(x - knots_3[1], 0),
+  h2 = pmax(x - knots_3[2], 0),
+  h3 = pmax(x - knots_3[3], 0)
+)
+
+fit3 <- lm(y ~ x + h1 + h2 + h3, data = df3)
+
+# -----------------------------
+# Predição
+# -----------------------------
+xg <- seq(0, 10, length = 400)
+
+pred2 <- data.frame(
+  x = xg,
+  h1 = pmax(xg - knots_2[1], 0),
+  h2 = pmax(xg - knots_2[2], 0)
+)
+pred2$y_hat <- predict(fit2, newdata = pred2)
+
+pred3 <- data.frame(
+  x = xg,
+  h1 = pmax(xg - knots_3[1], 0),
+  h2 = pmax(xg - knots_3[2], 0),
+  h3 = pmax(xg - knots_3[3], 0)
+)
+pred3$y_hat <- predict(fit3, newdata = pred3)
+
+# -----------------------------
+# Gráfico
+# -----------------------------
+ggplot(df, aes(x, y)) +
+  geom_point(alpha = 0.55, color = "black") +
+  
+  # spline 2 nós
+  geom_line(data = pred2, aes(x, y_hat), color = "#2C7FB8", linewidth = 1.2) +
+  
+  # spline 3 nós
+  geom_line(data = pred3, aes(x, y_hat), color = "#FA8072", linewidth = 1.2) +
+  
+  # nós
+  geom_vline(xintercept = knots_2, linetype = "dashed", color = "#2C7FB8") +
+  geom_vline(xintercept = knots_3, linetype = "dashed", color = "#FA8072") +
+  
+  theme_minimal() +
+  labs(
+    title = "Splines lineares com diferentes números de nós",
+    subtitle = "Azul: 2 nós | Vermelho: 3 nós",
+    x = "x",
+    y = "y"
+  )
 ```
+
+
+## Limitação do spline linear
+
+Funções lineares por partes apresentam mudanças abruptas de inclinação.
+
+- Cada linha vertical representa um nó.
+
+- Cada nó ativa um termo $(x - \xi_k)_+$.
+
+- A função é contínua, mas sua inclinação muda nesses pontos.
+
+
+No spline linear, temos
+
+$$
+g(\xi_k^-) = g(\xi_k^+),
+$$
+
+ou seja, a função é contínua.
+
+
+## Limitação do spline linear
+
+No entanto,
+
+$$
+g'(\xi_k^-) \neq g'(\xi_k^+),
+$$
+
+o que implica mudanças abruptas na inclinação.
+
 
 ## Por que usar splines cúbicos?
 
-Funções lineares por partes apresentam mudanças abruptas de inclinação.
+
+Em muitas aplicações, deseja-se que a função estimada varie de forma mais suave.
+
 
 Splines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.
 
@@ -463,6 +690,39 @@ $$
 g(x),\qquad g'(x),\qquad g''(x)
 $$
 
+## Splines cúbicos
+
+Uma forma conveniente de escrever o spline cúbico é
+
+$$
+g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{k=1}^{K} \gamma_k (x - \xi_k)_+^3
+$$
+
+$$
+(x-\xi_k)_+^3
+=
+\begin{cases}
+(x-\xi_k)^3
+, & x>\xi_k,\\
+0, & x\le\xi_k
+\end{cases}
+$$
+
+Cada nó introduz uma modificação local na curvatura da função.
+
+
+## Splines cúbicos
+
+Dado $(x_i,y_i)$, estimamos
+
+$$
+\hat{\beta} = \arg\min \sum_{i=1}^n (y_i - g(x_i))^2
+$$
+
+O problema permanece linear nos parâmetros.
+
+
+
 ## Spline cúbico
 
 ```{r}
@@ -471,24 +731,141 @@ $$
 #| out-width: 76%
 #| fig-align: center
 
-fit_bs <- lm(
-  vida ~ bs(log_pib,knots=kn,degree=3),
-  data=df_pib
+
+library(ggplot2)
+library(splines)
+
+set.seed(123)
+
+# -----------------------------
+# Dados
+# -----------------------------
+x <- sort(runif(120, 0, 10))
+y <- sin(x) + rnorm(120, 0, 0.2)
+
+df <- data.frame(x, y)
+
+# nós fixos
+knots <- c(3, 6, 8)
+
+# -----------------------------
+# Função auxiliar para classificar regiões
+# -----------------------------
+get_region <- function(x, knots) {
+  cut(
+    x,
+    breaks = c(-Inf, knots, Inf),
+    labels = c("Região 1", "Região 2", "Região 3", "Região 4"),
+    right = TRUE
+  )
+}
+
+# -----------------------------
+# SPLINE LINEAR
+# -----------------------------
+df_lin <- data.frame(
+  x = x,
+  y = y,
+  h1 = pmax(x - knots[1], 0),
+  h2 = pmax(x - knots[2], 0),
+  h3 = pmax(x - knots[3], 0)
 )
 
-gb <- data.frame(
-  log_pib=seq(min(df_pib$log_pib),max(df_pib$log_pib),length.out=500)
-)
-gb$pred <- predict(fit_bs,newdata=gb)
+fit_lin <- lm(y ~ x + h1 + h2 + h3, data = df_lin)
 
-ggplot(df_pib,aes(log_pib,vida)) +
-  geom_point(color="gray50",alpha=.45) +
-  geom_line(data=gb,aes(log_pib,pred),color="#2C7FB8",linewidth=1.4) +
-  geom_vline(xintercept=kn,linetype=2,color="#D7301F") +
-  tema +
-  labs(title="Spline cúbico",
-       subtitle="Flexibilidade local com transições suaves",
-       x="x",y="y")
+# -----------------------------
+# SPLINE CÚBICO
+# -----------------------------
+fit_cub <- lm(y ~ bs(x, knots = knots, degree = 3), data = df)
+
+# -----------------------------
+# Predição
+# -----------------------------
+xg <- seq(0, 10, length = 500)
+
+# spline linear
+pred_lin <- data.frame(
+  x = xg,
+  h1 = pmax(xg - knots[1], 0),
+  h2 = pmax(xg - knots[2], 0),
+  h3 = pmax(xg - knots[3], 0)
+)
+pred_lin$y_hat <- predict(fit_lin, newdata = pred_lin)
+pred_lin$region <- get_region(pred_lin$x, knots)
+pred_lin$modelo <- "Spline linear"
+
+# spline cúbico
+pred_cub <- data.frame(x = xg)
+pred_cub$y_hat <- predict(fit_cub, newdata = pred_cub)
+pred_cub$region <- get_region(pred_cub$x, knots)
+pred_cub$modelo <- "Spline cúbico"
+
+# -----------------------------
+# Juntar dados para facet_wrap
+# -----------------------------
+pred_all <- rbind(
+  pred_lin[, c("x", "y_hat", "region", "modelo")],
+  pred_cub[, c("x", "y_hat", "region", "modelo")]
+)
+
+df_points <- rbind(
+  transform(df, modelo = "Spline linear"),
+  transform(df, modelo = "Spline cúbico")
+)
+
+# garantir ordem dos painéis
+pred_all$modelo <- factor(
+  pred_all$modelo,
+  levels = c("Spline linear", "Spline cúbico")
+)
+
+df_points$modelo <- factor(
+  df_points$modelo,
+  levels = c("Spline linear", "Spline cúbico")
+)
+
+# -----------------------------
+# Gráfico final
+# -----------------------------
+ggplot() +
+  geom_point(
+    data = df_points,
+    aes(x, y),
+    alpha = 0.45,
+    color = "gray20"
+  ) +
+  geom_line(
+    data = pred_all,
+    aes(x, y_hat, color = region),
+    linewidth = 1.25
+  ) +
+  geom_vline(
+    xintercept = knots,
+    linetype = "dashed",
+    color = "black",
+    linewidth = 0.7
+  ) +
+  facet_wrap(~modelo, ncol = 2) +
+  scale_color_manual(
+    values = c(
+      "Região 1" = "#D55E00",
+      "Região 2" = "#0072B2",
+      "Região 3" = "#009E73",
+      "Região 4" = "#CC79A7"
+    )
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Comparação entre spline linear e spline cúbico",
+    subtitle = "Spline linear (esquerda) e spline cúbico (direita)",
+    x = "x",
+    y = "y",
+    color = "Região"
+  ) +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(face = "bold")
+  )
 ```
 
 ## Polinômio × spline
@@ -571,25 +948,59 @@ $$
 }_{\text{rugosidade}}
 $$
 
-O parâmetro $\lambda$ controla o compromisso entre ajuste e suavidade.
+O parâmetro $\lambda$ controla o compromisso entre ajuste e suavidade.<br><br>
+
+
+. . . 
+
+
+- Se $\lambda \to 0$, a penalização enfraquece e a curva pode se tornar muito flexível.
+- Se $\lambda \to \infty$, a penalização domina e a solução se aproxima de uma reta.
 
 ## O papel de $\lambda$
 
-Se
+```{r}
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: 76%
+#| fig-align: center
+#| echo: false
+library(ggplot2)
 
-$$
-\lambda\rightarrow0,
-$$
+set.seed(1)
+x <- seq(0, 1, length.out = 60)
+y <- sin(2 * pi * x) + rnorm(60, sd = 0.2)
 
-a penalização enfraquece e a curva pode se tornar muito flexível.
+df_dados <- data.frame(x = x, y = y)
 
-Se
+# ajusta os dois smoothing splines e guarda as curvas ajustadas
+fit_pouca <- smooth.spline(x, y, spar = 0.1)
+fit_muita <- smooth.spline(x, y, spar = 0.9)
 
-$$
-\lambda\rightarrow\infty,
-$$
+df_curvas <- rbind(
+  data.frame(x = fit_pouca$x, y = fit_pouca$y, modelo = "pouca penalização"),
+  data.frame(x = fit_muita$x, y = fit_muita$y, modelo = "muita penalização")
+)
 
-a penalização domina e a solução se aproxima de uma reta.
+ggplot(df_dados, aes(x = x, y = y)) +
+  geom_point(color = "gray60", alpha = 0.6, size = 2) +
+  geom_line(data = df_curvas,
+            aes(x = x, y = y, color = modelo, linetype = modelo),
+            linewidth = 1.2) +
+  scale_color_manual(
+    name = "Penalização",
+    values = c("pouca penalização" = "firebrick",
+               "muita penalização" = "steelblue")
+  ) +
+  scale_linetype_manual(
+    name = "Penalização",
+    values = c("pouca penalização" = "solid",
+               "muita penalização" = "dashed")
+  ) +
+  labs(x = "x", y = "y", title = "Efeito da penalização") +
+  tema +
+  theme(legend.position = "bottom")
+```
 
 ## Smoothing spline: duas suavizações
 
@@ -608,13 +1019,13 @@ pred_suave <- predict(ss_suave,seq(min(df_pib$log_pib),max(df_pib$log_pib),lengt
 pflex <- ggplot(df_pib,aes(log_pib,vida)) +
   geom_point(color="gray55",alpha=.4) +
   geom_line(data=data.frame(x=pred_flex$x,y=pred_flex$y),
-            aes(x,y),inherit.aes=FALSE,color="#2C7FB8",linewidth=1.2) +
+            aes(x,y),inherit.aes=FALSE,color="firebrick",linewidth=1.2) +
   tema + labs(title="Mais flexível",subtitle="spar = 0.3",x="x",y="y")
 
 psuave <- ggplot(df_pib,aes(log_pib,vida)) +
   geom_point(color="gray55",alpha=.4) +
   geom_line(data=data.frame(x=pred_suave$x,y=pred_suave$y),
-            aes(x,y),inherit.aes=FALSE,color="#D7301F",linewidth=1.2) +
+            aes(x,y),inherit.aes=FALSE,color="steelblue",linewidth=1.2) +
   tema + labs(title="Mais suave",subtitle="spar = 0.8",x="x",y="y")
 
 pflex + psuave
@@ -640,12 +1051,58 @@ $$
 }
 $$
 
-# Representações flexíveis em problemas supervisionados
+
+
+
+## Síntese 
+
+
+Pause e responda antes de seguir:<br><br>
+
+<details>
+  <summary>O que um nó faz com a inclinação da curva?</summary>
+  <p> *permite que ela mude a partir daquele ponto* </p>
+</details>
+
+
+<details>
+  <summary>Por que spline cúbico e não linear por partes?</summary>
+  <p> *evita quinas: exige continuidade da função, inclinação e curvatura* </p>
+</details>
+
+<details>
+  <summary>Se $\lambda$ é enorme, o smoothing spline vira o quê?</summary>
+  <p> *praticamente uma reta* </p>
+</details>
+
+
+<details>
+  <summary>Qual é a diferença entre spline e smoothing spline?</summary>
+  <p> *spline: escolhe-se o número/posição dos nós; smoothing spline: curva livre + multa λ)*</p>
+</details>
+
+
+
+
 
 ## A mesma base pode alimentar tarefas diferentes
-$$
-\boldsymbol\phi(x)=(\phi_1(x),\ldots,\phi_K(x))^t
-$$
+
+Observe que, o que fizemos, foi trocar o dado original por um vetor de representações:
+
+$$\boldsymbol\phi(x) = (\phi_1(x), \ldots, \phi_K(x))^t$$
+
+A representação pode ser utilizada tanto por um modelo de **regressão** quanto por um **classificador probabilístico**.
+
+<span style="color:red">
+
+$$x \longrightarrow \boldsymbol\phi(x) \longrightarrow \begin{cases} \text{regressão (resposta contínua)} \\ \text{classificador (resposta categórica)} \end{cases}$$
+
+## A mesma base pode alimentar tarefas diferentes
+
+
+> **A transformação não sabe nem se importa com o que vem depois: ela é agnóstica ao modelo final.**
+
+</span>
 A representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico
 
 
@@ -703,6 +1160,18 @@ $$
 
 O número de termos $m$ controla a complexidade.
 
+
+
+
+
+
+
+
+
+
+
+
+
 ## Viés × variância reaparece
 
 $$
@@ -722,6 +1191,9 @@ Var\uparrow
 $$
 
 Portanto, $m$ é um **hiperparâmetro**.
+
+
+Ele não é aprendido dos dados como $\widehat\theta_j$, é escolhido antes, por validação.
 
 ## Séries × splines
 
@@ -751,7 +1223,7 @@ As duas estratégias são exemplos de **expansões em funções de base**.
 
 ## Uma estrutura comum
 
-Polinômios, splines, smoothing splines e LOESS parecem métodos diferentes.
+Polinômios, splines, smoothing splines e LOESS (veremos adiante) parecem métodos diferentes.
 
 Mas todos respondem à mesma pergunta:
 
@@ -778,7 +1250,7 @@ $$
 - o viés tende a diminuir;
 - a variabilidade tende a aumentar;
 - o erro de treino tende a cair;
-- o erro de generalização não necessariamente cai.
+- o erro de generalização **não necessariamente** cai.
 
 ## Como escolher a complexidade?
 
@@ -805,12 +1277,14 @@ Essa lógica será usada repetidamente ao longo da disciplina.
 | Método | Controle principal de flexibilidade |
 |---|---|
 | Regressão linear | número/forma das covariáveis |
-| Polinomial | grau $d$ |
+| Polinomial | grau $p$ |
 | Spline de regressão | número/posição dos nós |
 | Smoothing spline | penalização $\lambda$ |
-| LOESS | `span` |
+| LOESS | `span` *(veremos adiante)*|
 
 ## Síntese
+
+Ajustar
 
 $$
 \boxed{
@@ -818,7 +1292,7 @@ g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
 }
 $$
 
-é uma ideia extremamente poderosa.
+é uma ideia **extremamente poderosa**.
 
 Mudando as funções de base e o controle de complexidade, obtemos diferentes famílias de modelos.
 
