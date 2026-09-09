@@ -438,6 +438,8 @@ g'(\xi_k^-) \neq g'(\xi_k^+),
 \]</span></p>
 <p>o que implica mudanças abruptas na inclinação.</p>
 </section><section id="por-que-usar-splines-cúbicos" class="slide level2"><h2>Por que usar splines cúbicos?</h2>
+
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section><section id="por-que-usar-splines-cúbicos-1" class="slide level2"><h2>Por que usar splines cúbicos?</h2>
 <p>Em muitas aplicações, deseja-se que a função estimada varie de forma mais suave.</p>
 <p>Splines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.</p>
 <p>Tipicamente exigimos continuidade de:</p>
@@ -467,7 +469,7 @@ g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{k=1}^{K} \gamma_k
 <p>O problema permanece linear nos parâmetros.</p>
 </section><section id="spline-cúbico" class="slide level2"><h2>Spline cúbico</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="polinômio-spline" class="slide level2"><h2>Polinômio × spline</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="polinômio-spline" class="slide level2"><h2>Polinômio × spline</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="polinômio">Polinômio</h3>
@@ -539,9 +541,9 @@ g(x)=\sum_{k=1}^K\beta_kb_k(x)
 </section><section id="o-papel-de-lambda" class="slide level2"><h2>O papel de <span class="math inline">\(\lambda\)</span>
 </h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="smoothing-spline-duas-suavizações" class="slide level2"><h2>Smoothing spline: duas suavizações</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="smoothing-spline-duas-suavizações" class="slide level2"><h2>Smoothing spline: duas suavizações</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="o-parâmetro-de-suavização-é-um-hiperparâmetro" class="slide level2"><h2>O parâmetro de suavização é um hiperparâmetro</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="o-parâmetro-de-suavização-é-um-hiperparâmetro" class="slide level2"><h2>O parâmetro de suavização é um hiperparâmetro</h2>
 <p>Novamente:</p>
 <p><strong>Treinamento</strong></p>
 <p>estima os coeficientes que definem a curva.</p>

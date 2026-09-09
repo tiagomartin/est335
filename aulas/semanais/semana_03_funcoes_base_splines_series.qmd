@@ -678,6 +678,81 @@ o que implica mudanças abruptas na inclinação.
 
 ## Por que usar splines cúbicos?
 
+```{r}
+#| fig-width: 8
+#| fig-height: 5.2
+#| out-width: 80%
+#| fig-align: center
+#| echo: false
+library(ggplot2)
+library(splines)
+
+set.seed(42)
+n <- 40
+x <- runif(n, 0, 1)
+y <- sin(2 * pi * x) + rnorm(n, 0, 0.25)
+dados <- data.frame(x = x, y = y)
+
+# spline quadrático e cúbico, ambos com um nó em 0.5
+fit_q <- lm(y ~ bs(x, knots = 0.5, degree = 2), data = dados)
+fit_c <- lm(y ~ bs(x, knots = 0.5, degree = 3), data = dados)
+
+# predição numa grade fina
+grid  <- data.frame(x = seq(0, 1, length.out = 2000))
+grid$quad <- predict(fit_q, newdata = grid)
+grid$cub  <- predict(fit_c, newdata = grid)
+
+# curvatura aproximada: g''(x) ~ [f(x-h) - 2f(x) + f(x+h)] / h^2
+h   <- grid$x[2] - grid$x[1]
+m   <- nrow(grid)
+fq  <- grid$quad
+fc  <- grid$cub
+curv <- data.frame(
+  x    = grid$x[2:(m - 1)],
+  quad = (fq[3:m] - 2 * fq[2:(m - 1)] + fq[1:(m - 2)]) / h^2,
+  cub  = (fc[3:m] - 2 * fc[2:(m - 1)] + fc[1:(m - 2)]) / h^2
+)
+
+# monta os dados para os dois painéis
+df_plot <- rbind(
+  data.frame(x = grid$x, valor = grid$quad,
+             modelo = "quadrático (grau 2)", painel = "Curva ajustada g(x)"),
+  data.frame(x = grid$x, valor = grid$cub,
+             modelo = "cúbico (grau 3)",     painel = "Curva ajustada g(x)"),
+  data.frame(x = curv$x, valor = curv$quad,
+             modelo = "quadrático (grau 2)", painel = "Curvatura g''(x)"),
+  data.frame(x = curv$x, valor = curv$cub,
+             modelo = "cúbico (grau 3)",     painel = "Curvatura g''(x)")
+)
+df_plot$painel <- factor(df_plot$painel,
+                         levels = c("Curva ajustada g(x)", "Curvatura g''(x)"))
+
+pontos <- data.frame(x = dados$x, y = dados$y,
+                     painel = "Curva ajustada g(x)")
+
+ggplot() +
+  geom_hline(data = data.frame(painel = "Curvatura g''(x)", yint = 0),
+             aes(yintercept = yint), color = "gray85", linewidth = 0.4) +
+  geom_vline(xintercept = 0.5, linetype = "dotted", color = "gray50") +
+  geom_point(data = pontos, aes(x = x, y = y),
+             color = "gray60", alpha = 0.5, size = 1.6) +
+  geom_line(data = df_plot, aes(x = x, y = valor, color = modelo),
+            linewidth = 1) +
+  facet_grid(painel ~ ., scales = "free_y") +
+  scale_color_manual(
+    name = "Modelo",
+    values = c("quadrático (grau 2)" = "firebrick",
+               "cúbico (grau 3)" = "steelblue")
+  ) +
+  labs(x = "x", y = NULL,
+       caption = "linha pontilhada vertical: nó em x = 0.5") +
+  tema +
+  theme(legend.position = "bottom")
+```
+
+
+## Por que usar splines cúbicos?
+
 
 Em muitas aplicações, deseja-se que a função estimada varie de forma mais suave.
 

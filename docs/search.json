@@ -8109,7 +8109,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#por-que-usar-splines-cúbicos",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que usar splines cúbicos?",
-    "text": "Por que usar splines cúbicos?\nEm muitas aplicações, deseja-se que a função estimada varie de forma mais suave.\nSplines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.\nTipicamente exigimos continuidade de:\n\\[\ng(x),\\qquad g'(x),\\qquad g''(x)\n\\]"
+    "text": "Por que usar splines cúbicos?"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#spline-cúbico",
@@ -10709,7 +10709,7 @@
     "href": "aulas/semanais/semana_03_funcoes_base_splines_series.html#por-que-usar-splines-cúbicos-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que usar splines cúbicos?",
-    "text": "Por que usar splines cúbicos?\nSplines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.\nTipicamente exigimos continuidade de:\n\\[\ng(x),\\qquad g'(x),\\qquad g''(x)\n\\]"
+    "text": "Por que usar splines cúbicos?\nEm muitas aplicações, deseja-se que a função estimada varie de forma mais suave.\nSplines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.\nTipicamente exigimos continuidade de:\n\\[\ng(x),\\qquad g'(x),\\qquad g''(x)\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_03_funcoes_base_splines_series.html#limitação-do-spline-linear",
