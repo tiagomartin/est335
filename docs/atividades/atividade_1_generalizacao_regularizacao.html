@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Semana 07 – EST335 - Métodos Estatísticos para Machine Learning</title>
+<title>A1 — Generalização e Regularização – EST335 - Métodos Estatísticos para Machine Learning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -43,8 +43,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -73,9 +71,38 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Semana 07 – EST335 - Métodos Estatísticos para Machine Learning">
-<meta property="og:description" content="Homepage da disciplina EST335 - Métodos Estatísticos para Machine Learning, 2026/2">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="A1 — Generalização e Regularização – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Atividade Avaliativa 1">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
 </head>
 
@@ -249,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Semana 07</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">A1 — Generalização e Regularização</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -318,9 +345,34 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#entrega-lista-de-exercícios-03" id="toc-entrega-lista-de-exercícios-03" class="nav-link active" data-scroll-target="#entrega-lista-de-exercícios-03">Entrega lista de exercícios 03</a></li>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo"><span class="header-section-number">1</span> Objetivo</a></li>
+  <li><a href="#dados" id="toc-dados" class="nav-link" data-scroll-target="#dados"><span class="header-section-number">2</span> Dados</a></li>
+  <li><a href="#regras-gerais" id="toc-regras-gerais" class="nav-link" data-scroll-target="#regras-gerais"><span class="header-section-number">3</span> Regras gerais</a></li>
+  <li><a href="#parte-i-estratégia-de-avaliação-20-pontos" id="toc-parte-i-estratégia-de-avaliação-20-pontos" class="nav-link" data-scroll-target="#parte-i-estratégia-de-avaliação-20-pontos"><span class="header-section-number">4</span> Parte I — Estratégia de avaliação [2,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-1" id="toc-questão-1" class="nav-link" data-scroll-target="#questão-1"><span class="header-section-number">4.1</span> Questão 1</a></li>
+  </ul></li>
+  <li><a href="#parte-ii-modelo-de-referência-mínimos-quadrados-30-pontos" id="toc-parte-ii-modelo-de-referência-mínimos-quadrados-30-pontos" class="nav-link" data-scroll-target="#parte-ii-modelo-de-referência-mínimos-quadrados-30-pontos"><span class="header-section-number">5</span> Parte II — Modelo de referência: mínimos quadrados [3,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-2" id="toc-questão-2" class="nav-link" data-scroll-target="#questão-2"><span class="header-section-number">5.1</span> Questão 2</a></li>
+  </ul></li>
+  <li><a href="#parte-iii-regressão-ridge-50-pontos" id="toc-parte-iii-regressão-ridge-50-pontos" class="nav-link" data-scroll-target="#parte-iii-regressão-ridge-50-pontos"><span class="header-section-number">6</span> Parte III — Regressão Ridge [5,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-3" id="toc-questão-3" class="nav-link" data-scroll-target="#questão-3"><span class="header-section-number">6.1</span> Questão 3</a></li>
+  </ul></li>
+  <li><a href="#parte-iv-regressão-lasso-50-pontos" id="toc-parte-iv-regressão-lasso-50-pontos" class="nav-link" data-scroll-target="#parte-iv-regressão-lasso-50-pontos"><span class="header-section-number">7</span> Parte IV — Regressão Lasso [5,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-4" id="toc-questão-4" class="nav-link" data-scroll-target="#questão-4"><span class="header-section-number">7.1</span> Questão 4</a></li>
+  </ul></li>
+  <li><a href="#parte-v-avaliação-final-da-generalização-50-pontos" id="toc-parte-v-avaliação-final-da-generalização-50-pontos" class="nav-link" data-scroll-target="#parte-v-avaliação-final-da-generalização-50-pontos"><span class="header-section-number">8</span> Parte V — Avaliação final da generalização [5,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-5" id="toc-questão-5" class="nav-link" data-scroll-target="#questão-5"><span class="header-section-number">8.1</span> Questão 5</a></li>
+  </ul></li>
+  <li><a href="#o-que-deverá-ser-entregue" id="toc-o-que-deverá-ser-entregue" class="nav-link" data-scroll-target="#o-que-deverá-ser-entregue"><span class="header-section-number">9</span> O que deverá ser entregue</a></li>
+  <li><a href="#critérios-de-avaliação" id="toc-critérios-de-avaliação" class="nav-link" data-scroll-target="#critérios-de-avaliação"><span class="header-section-number">10</span> Critérios de avaliação</a></li>
+  <li><a href="#pergunta-central" id="toc-pergunta-central" class="nav-link" data-scroll-target="#pergunta-central"><span class="header-section-number">11</span> Pergunta central</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/programacao/semana-7.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/atividades/atividade_1_generalizacao_regularizacao.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -328,7 +380,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Semana 07</h1>
+<h1 class="title">A1 — Generalização e Regularização</h1>
+<p class="subtitle lead">Atividade Avaliativa 1</p>
 </div>
 
 
@@ -345,29 +398,361 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Não haverá aula!</p>
-<section id="entrega-lista-de-exercícios-03" class="level2">
-<h2 class="anchored" data-anchor-id="entrega-lista-de-exercícios-03">Entrega lista de exercícios 03</h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Fique Atento!
+Informações da atividade
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><i class="fa-solid fa-file-lines fa-lg" aria-label="file-lines"></i> <a href="..\exercicios/lista03.html" aria-label="Lista de exercícios 03" title="Lista de exercícios 03">Lista de exercícios 03</a></p>
-<p>Entrega via <a href="https://moodlepresencial.ufop.br/login/index.php">Moodle</a></p>
+<p><strong>Valor:</strong> 20 pontos<br>
+<strong>Liberação:</strong> 16/09/2026<br>
+<strong>Entrega:</strong> 27/09/2026</p>
+<p>A atividade deverá ser entregue na forma de um <strong>relatório computacional reprodutível</strong>, contendo código, resultados, gráficos, tabelas e, principalmente, <strong>interpretação estatística</strong>.</p>
+</div>
+</div>
+<section id="objetivo" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Objetivo</h1>
+<p>Um dos principais objetivos de <em>Machine Learning</em> é construir modelos que apresentem bom desempenho em observações que <strong>não foram utilizadas durante seu ajuste</strong>.</p>
+<p>Nesta atividade, você investigará empiricamente a relação entre</p>
+<p><span class="math display">\[
+\text{complexidade do modelo}
+\longrightarrow
+\text{erro de treinamento}
+\longrightarrow
+\text{erro de validação}
+\longrightarrow
+\text{generalização}
+\]</span></p>
+<p>e estudará como os métodos <strong>Ridge</strong> e <strong>Lasso</strong> podem controlar a complexidade de modelos de regressão por meio da regularização.</p>
+<p>Ao final, você deverá responder à seguinte questão:</p>
+<blockquote class="blockquote">
+<p><strong>Qual dos modelos analisados você escolheria para predizer novas observações e por quê?</strong></p>
+</blockquote>
+</section>
+<section id="dados" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Dados</h1>
+<p><a href="../dados/dados_a1.csv" class="btn btn-primary" download="dados_a1.csv">Baixar base de dados da A1</a></p>
+<p>Utilize o arquivo <a href="../dados/dados_a1.csv"><code>dados_a1.csv</code></a>, disponibilizado juntamente com esta atividade.</p>
+<p>A base contém uma variável resposta quantitativa <code>y</code> e 20 variáveis preditoras, <code>x1</code>, …, <code>x20</code>.</p>
+<p>Algumas variáveis possuem informação relevante para explicar <code>y</code>, outras possuem efeitos mais fracos e outras podem não acrescentar informação preditiva útil. Além disso, algumas variáveis preditoras apresentam associação entre si.</p>
+<!-- ::: {.callout-note} -->
+<!-- Você **não conhece** o mecanismo utilizado para gerar os dados. Portanto, suas conclusões devem ser baseadas exclusivamente nos dados e nos procedimentos estatísticos utilizados. -->
+<!-- ::: -->
+</section>
+<section id="regras-gerais" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Regras gerais</h1>
+<ol type="1">
+<li>Fixe uma semente aleatória utilizando <code>set.seed()</code> para garantir a reprodutibilidade</li>
+<li>Separe inicialmente os dados em <strong>treinamento (80%)</strong> e <strong>teste (20%)</strong></li>
+<li>O conjunto de teste deverá permanecer isolado até a última parte da atividade</li>
+<li>Todas as decisões de modelagem deverão ser realizadas utilizando apenas o conjunto de treinamento</li>
+<li>Para seleção de hiperparâmetros, utilize <strong>validação cruzada com 10 folds</strong></li>
+<li>Utilize o <strong>RMSE</strong> como medida principal de erro preditivo</li>
+<li>Quando necessário para os modelos regularizados, padronize as variáveis preditoras utilizando <strong>apenas informações do conjunto de treinamento</strong></li>
+<li>Justifique as decisões tomadas. A simples apresentação do código ou de resultados numéricos não será suficiente</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Regra fundamental
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>O conjunto de teste <strong>não poderá ser utilizado</strong> para escolher <span class="math inline">\(\lambda\)</span>, selecionar variáveis ou decidir qual configuração de um modelo será utilizada.</p>
+<p>O teste será aberto <strong>uma única vez</strong>, ao final da análise, para avaliar a capacidade de generalização dos modelos já definidos.</p>
+</div>
+</div>
+</section>
+<section id="parte-i-estratégia-de-avaliação-20-pontos" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Parte I — Estratégia de avaliação [2,0 pontos]</h1>
+<section id="questão-1" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="questão-1"><span class="header-section-number">4.1</span> Questão 1</h2>
+<p>Realize a separação dos dados em treinamento e teste.</p>
+<ol type="a">
+<li><p>Informe o número de observações em cada conjunto e descreva o procedimento utilizado.</p></li>
+<li><p>Explique por que o conjunto de teste deve permanecer isolado durante o processo de construção dos modelos.</p></li>
+<li><p>Explique por que o valor de um hiperparâmetro, como <span class="math inline">\(\lambda\)</span>, deve ser escolhido utilizando os dados de treinamento e um procedimento de validação, e não o conjunto de teste.</p></li>
+<li><p>Explique a diferença entre:</p></li>
+</ol>
 <ul>
-<li>Data de entrega:
-<ul>
-<li>02 de dezembro de 2025</li>
-</ul></li>
+<li>erro de treinamento</li>
+<li>erro estimado por validação cruzada</li>
+<li>erro de teste</li>
 </ul>
+</section>
+</section>
+<section id="parte-ii-modelo-de-referência-mínimos-quadrados-30-pontos" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Parte II — Modelo de referência: mínimos quadrados [3,0 pontos]</h1>
+<section id="questão-2" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="questão-2"><span class="header-section-number">5.1</span> Questão 2</h2>
+<p>Ajuste um modelo de regressão linear por mínimos quadrados utilizando <strong>todas as 20 variáveis preditoras</strong>:</p>
+<p><span class="math display">\[
+Y=\beta_0+\sum_{j=1}^{20}\beta_jX_j+\varepsilon
+\]</span></p>
+<ol type="a">
+<li><p>Calcule o RMSE de treinamento.</p></li>
+<li><p>Utilizando os mesmos 10 folds definidos para a comparação dos modelos, estime o RMSE por validação cruzada.</p></li>
+<li><p>Compare o erro de treinamento com o erro de validação cruzada. O que essa diferença informa sobre a capacidade de generalização do modelo?</p></li>
+<li><p>Explique por que minimizar o erro de treinamento, isoladamente, não constitui uma estratégia adequada para selecionar um modelo de <em>Machine Learning</em>.</p></li>
+</ol>
+</section>
+</section>
+<section id="parte-iii-regressão-ridge-50-pontos" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Parte III — Regressão Ridge [5,0 pontos]</h1>
+<p>Considere o estimador Ridge:</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}^{Ridge}
+=
+\arg\min_{\beta_0,\boldsymbol{\beta}}
+\left\{
+\sum_{i=1}^{n}
+\left(
+y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}
+\right)^2
++
+\lambda\sum_{j=1}^{p}\beta_j^2
+\right\}
+\]</span></p>
+<p>em que <span class="math inline">\(\lambda\geq 0\)</span> controla a intensidade da regularização.</p>
+<section id="questão-3" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="questão-3"><span class="header-section-number">6.1</span> Questão 3</h2>
+<ol type="a">
+<li><p>Ajuste modelos Ridge considerando uma grade suficientemente ampla de valores de <span class="math inline">\(\lambda\)</span>. Apresente a grade utilizada e explique por que é importante avaliar diferentes ordens de grandeza de <span class="math inline">\(\lambda\)</span>.</p></li>
+<li><p>Para cada valor de <span class="math inline">\(\lambda\)</span>, obtenha:</p></li>
+</ol>
+<ul>
+<li>RMSE de treinamento</li>
+<li>RMSE médio de validação cruzada</li>
+</ul>
+<p>Construa um gráfico contendo as duas curvas <strong>em função de <span class="math inline">\(\lambda\)</span></strong>, utilizando cores distintas.</p>
+<p>Identifique visualmente o valor</p>
+<p><span class="math display">\[
+\lambda^\ast_{Ridge}
+\]</span></p>
+<p>que minimiza o erro de validação cruzada.</p>
+<!-- ::: {.callout-note} -->
+<!-- A utilização de $\log(\lambda)$ no eixo horizontal é permitida caso melhore a visualização. Entretanto, o eixo e a interpretação devem deixar claro que o hiperparâmetro selecionado é $\lambda$. -->
+<!-- ::: -->
+<ol start="3" type="a">
+<li><p>Descreva e explique o comportamento do erro de treinamento à medida que <span class="math inline">\(\lambda\)</span> aumenta.</p></li>
+<li><p>Descreva o comportamento do erro de validação. Por que sua trajetória pode ser diferente daquela observada para o erro de treinamento?</p></li>
+<li><p>Analise o comportamento dos coeficientes estimados à medida que <span class="math inline">\(\lambda\)</span> aumenta.</p></li>
+<li><p>Explique como a regularização Ridge pode melhorar a generalização mesmo que provoque aumento do erro de treinamento.</p></li>
+</ol>
+</section>
+</section>
+<section id="parte-iv-regressão-lasso-50-pontos" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Parte IV — Regressão Lasso [5,0 pontos]</h1>
+<p>Considere agora</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}^{Lasso}
+=
+\arg\min_{\beta_0,\boldsymbol{\beta}}
+\left\{
+\sum_{i=1}^{n}
+\left(
+y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}
+\right)^2
++
+\lambda\sum_{j=1}^{p}|\beta_j|
+\right\}
+\]</span></p>
+<section id="questão-4" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="questão-4"><span class="header-section-number">7.1</span> Questão 4</h2>
+<ol type="a">
+<li>Utilize validação cruzada para selecionar</li>
+</ol>
+<p><span class="math display">\[
+\lambda^\ast_{Lasso}
+\]</span></p>
+<p>Apresente o valor selecionado e o respectivo RMSE médio de validação.</p>
+<ol start="2" type="a">
+<li><p>Construa um gráfico mostrando a trajetória dos coeficientes do Lasso para diferentes valores de <span class="math inline">\(\lambda\)</span>.</p></li>
+<li><p>Identifique as variáveis com coeficientes diferentes de zero no modelo correspondente a <span class="math inline">\(\lambda^\ast_{Lasso}\)</span>.</p></li>
+<li><p>Explique por que o Lasso pode produzir coeficientes exatamente iguais a zero.</p></li>
+<li><p>Compare o comportamento dos coeficientes no Ridge e no Lasso.</p></li>
+<li><p>Explique a diferença entre:</p></li>
+</ol>
+<blockquote class="blockquote">
+<p><strong>encolhimento de coeficientes</strong></p>
+</blockquote>
+<p>e</p>
+<blockquote class="blockquote">
+<p><strong>seleção de variáveis</strong></p>
+</blockquote>
+</section>
+</section>
+<section id="parte-v-avaliação-final-da-generalização-50-pontos" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Parte V — Avaliação final da generalização [5,0 pontos]</h1>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Agora o conjunto de teste pode ser utilizado
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>A partir deste ponto, os modelos e seus hiperparâmetros já devem estar completamente definidos.</p>
+<p>Não altere <span class="math inline">\(\lambda\)</span> ou qualquer outra decisão de modelagem com base nos resultados obtidos no teste.</p>
+</div>
+</div>
+<section id="questão-5" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="questão-5"><span class="header-section-number">8.1</span> Questão 5</h2>
+<p>Avalie no conjunto de teste:</p>
+<ol type="1">
+<li>mínimos quadrados</li>
+<li>Ridge com <span class="math inline">\(\lambda=\lambda^\ast_{Ridge}\)</span></li>
+<li>Lasso com <span class="math inline">\(\lambda=\lambda^\ast_{Lasso}\)</span></li>
+</ol>
+<ol type="a">
+<li>Construa uma tabela final no formato:</li>
+</ol>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modelo</th>
+<th style="text-align: right;">RMSE treino</th>
+<th style="text-align: right;">RMSE validação</th>
+<th style="text-align: right;">RMSE teste</th>
+<th style="text-align: right;">Coeficientes ativos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Mínimos Quadrados</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ridge</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lasso</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>Considere como <strong>coeficiente ativo</strong> um coeficiente associado a uma variável preditora cujo valor estimado seja diferente de zero. Não inclua o intercepto nessa contagem.</p>
+<ol start="2" type="a">
+<li><p>O modelo com menor erro de treinamento foi também aquele com menor erro de validação e de teste? Explique.</p></li>
+<li><p>Existe evidência de sobreajuste em algum dos modelos? Fundamente sua resposta utilizando os resultados obtidos.</p></li>
+<li><p>Compare Ridge e Lasso quanto a:</p></li>
+</ol>
+<ul>
+<li>desempenho preditivo</li>
+<li>complexidade</li>
+<li>seleção de variáveis</li>
+<li>interpretabilidade</li>
+</ul>
+<ol start="5" type="a">
+<li>Imagine que o modelo será utilizado para predizer <code>y</code> para novas observações.</li>
+</ol>
+<p><strong>Escolha um único modelo para utilização futura e defenda sua decisão.</strong></p>
+<p>Sua justificativa não deverá se limitar a identificar o menor RMSE. Considere conjuntamente:</p>
+<ul>
+<li>capacidade de generalização</li>
+<li>diferença entre desempenho de treinamento, validação e teste</li>
+<li>estabilidade</li>
+<li>complexidade</li>
+<li>número de variáveis</li>
+<li>interpretabilidade</li>
+</ul>
+</section>
+</section>
+<section id="o-que-deverá-ser-entregue" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> O que deverá ser entregue</h1>
+<p>Entregue <strong>um único relatório reprodutível</strong>, contendo:</p>
+<ul>
+<li>nome e número de matrícula</li>
+<li>código utilizado</li>
+<li>resultados numéricos</li>
+<li>gráficos solicitados</li>
+<li>tabela comparativa final</li>
+<li>interpretação estatística de cada resultado</li>
+<li>resposta à questão final de decisão</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cuidado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Relatórios contendo apenas código, <em>outputs</em> ou gráficos sem interpretação estatística terão pontuação reduzida.</p>
+</div>
+</div>
+</section>
+<section id="critérios-de-avaliação" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Critérios de avaliação</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Componente</th>
+<th style="text-align: right;">Pontuação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Estratégia de treinamento, validação e teste</td>
+<td style="text-align: right;">2,0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mínimos quadrados e generalização</td>
+<td style="text-align: right;">3,0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ridge e seleção de <span class="math inline">\(\lambda\)</span></td>
+<td style="text-align: right;">5,0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lasso e seleção de variáveis</td>
+<td style="text-align: right;">5,0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Avaliação final e argumentação estatística</td>
+<td style="text-align: right;">5,0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: right;"><strong>20,0</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pergunta-central" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Pergunta central</h1>
+<p>Ao concluir a atividade, você deverá ser capaz de responder:</p>
+<blockquote class="blockquote">
+<p><strong>Por que o modelo que melhor se ajusta aos dados de treinamento não é necessariamente o modelo que devemos escolher para fazer predições futuras?</strong></p>
+</blockquote>
 
 
 </section>
@@ -793,7 +1178,7 @@ Fique Atento!
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/programacao/semana-7.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/atividades/atividade_1_generalizacao_regularizacao.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

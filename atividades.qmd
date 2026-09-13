@@ -1,0 +1,111 @@
+---
+title: "Atividades"
+format:
+  html:
+    fontsize: 1.2em
+    include-in-header:
+      text: |
+        <style>
+        .est335-list .list-group-item {
+          border-left: 4px solid #003287;
+          padding-top: 0.9rem;
+          padding-bottom: 0.9rem;
+        }
+        .est335-list .list-group-item:hover {
+          background-color: #F2F2F2;
+        }
+        .btn-est335-main {
+          background-color: #003287;
+          border-color: #003287;
+          color: #fff;
+        }
+        .btn-est335-main:hover {
+          background-color: #789CEB;
+          border-color: #789CEB;
+          color: #fff;
+        }
+        .btn-est335-outline {
+          color: #003287;
+          border-color: #003287;
+        }
+        .btn-est335-outline:hover {
+          background-color: #003287;
+          color: #fff;
+        }
+        </style>
+---
+
+Nesta página serão disponibilizadas as atividades avaliativas da disciplina.
+
+::: {.list-group .est335-list}
+
+::: {.list-group-item}
+
+<div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+
+<div>
+
+### A1 — Generalização e Regularização
+
+**Valor:** 20 pontos  
+**Liberação:** 16/09/2026 · **Entrega:** 27/09/2026
+
+Treinamento, validação e teste; mínimos quadrados; regularização Ridge e Lasso; seleção de $\lambda$ por validação cruzada e avaliação da capacidade de generalização.
+
+</div>
+
+<div class="d-flex gap-2 flex-wrap">
+
+[Ver atividade](atividades/atividade_1_generalizacao_regularizacao.qmd){.btn .btn-est335-main .btn-sm}
+
+[Material de apoio](material_complementar/regularizacao_pratica.qmd){.btn .btn-est335-outline .btn-sm}
+
+[Dados](dados/dados_a1.csv){.btn .btn-est335-outline .btn-sm download="dados_a1.csv"}
+
+</div>
+
+</div>
+
+:::
+
+::: {.list-group-item}
+
+### A2 — Métodos Locais e Kernels
+
+**Liberação:** 30/09/2026 · **Entrega:** 11/10/2026
+
+*Em breve.*
+
+:::
+
+::: {.list-group-item}
+
+### A3 — Desafio Supervisionado
+
+**Liberação:** 21/10/2026 · **Entrega:** 22/11/2026
+
+*Em breve.*
+
+:::
+
+::: {.list-group-item}
+
+### A4 — Estruturas e Padrões
+
+**Liberação:** 23/11/2026 · **Entrega:** 06/12/2026
+
+*Em breve.*
+
+:::
+
+::: {.list-group-item}
+
+### A5 — Sistemas de Recomendação
+
+**Liberação:** 07/12/2026 · **Entrega:** 16/12/2026
+
+*Em breve.*
+
+:::
+
+:::

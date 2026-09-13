@@ -28,7 +28,7 @@ Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semest
 <!-- {{< fa list-check size=2xl >}}  -  projeto -->
 
 ::: column-screen-inset-right
-| Semana | Data | Tópico | Artigo | Slides | EC | LE | Script | MC | Projeto |
+| Semana | Data | Tópico | Artigo | Slides | EC | LE | Script | MC | Atividade |
 |:------:|--------|--------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
 | [1](programacao/semana-1.html) | Seg, 24/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
 |  | Qua, 26/08 | Fundamentos do Aprendizado Estatístico |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide "Fundamentos do Aprendizado Estatístico"){aria-label="Fundamentos do Aprendizado Estatístico"} |  |  |  |  |  |
@@ -36,6 +36,8 @@ Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semest
 |  | Qua, 02/09| Modelos Lineares: Regressão e Classificação |  | [{{< fa file-powerpoint size=2xl >}}](/aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#/title-slide "Modelos Lineares: Regressão e Classificação"){aria-label="Modelos Lineares: Regressão e Classificação"} |  |  |  |  |  |
 | [3](programacao/semana-3.html) | Seg, 07/09 | **Feriado: Independência do Brasil** |  |  |  |  |  |
 |  | Qua, 09/09| Funções de Base, Polinômios, Splines e Séries |  | [{{< fa file-powerpoint size=2xl >}}](aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide "Funções de Base, Polinômios, Splines e Séries"){aria-label="Funções de Base, Polinômios, Splines e Séries"} |  |  |  |  |  |
+| [4](programacao/semana-4.html) | Seg, 14/09 | Funções de Base, Polinômios, Splines e Séries |  | [{{< fa file-powerpoint size=2xl >}}](aulas/semanais/semana_03_funcoes_base_splines_series.html#/outra-estratégia-penalizar-a-rugosidade "Funções de Base, Polinômios, Splines e Séries"){aria-label="Funções de Base, Polinômios, Splines e Séries"} |  |  |  |  |  |
+|  | Qua, 16/09| Seleção de Variáveis e Regularização |  | [{{< fa file-powerpoint size=2xl >}}](aulas/semanais/semana_04_selecao_regularizacao.html#/title-slide "Seleção de Variáveis e Regularização"){aria-label="Seleção de Variáveis e Regularização"} |  |  |  |[{{< fa folder size=2xl >}}](/material_complementar/regularizacao_pratica.html "Material Complementar A1"){aria-label="Material Complementar A1"}  | [{{< fa list-check size=2xl >}}](/atividades/atividade_1_generalizacao_regularizacao.html "Atividade Avaliativa - A1"){aria-label="Atividade Avaliativa - A1"} |
 :::
 
 ```{r echo = FALSE}

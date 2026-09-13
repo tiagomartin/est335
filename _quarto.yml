@@ -10,19 +10,17 @@ website:
 
   repo-url: "https://github.com/tiagomartin/est335"
   repo-actions: [edit, issue]
-
   open-graph: true
-  
+
   page-footer:
     right: "Página construída usando [Quarto](https://quarto.org/)."
     left: "&copy; Copyright 2026, Tiago Pereira"
 
-
   sidebar:
-    tools: 
-    - icon: github
-      text: github
-      href: https://github.com/tiagomartin/est335
+    tools:
+      - icon: github
+        text: github
+        href: https://github.com/tiagomartin/est335
     background: "#F2F2F2"
     logo: "images/logo.png"
     pinned: true
@@ -32,16 +30,11 @@ website:
     collapse-level: 1
     contents:
       - aulas.qmd
-      #- estudos.qmd
-      #- exercicios.qmd
-      #- resolucao.qmd
-      #- formulario.qmd
-      #- analises.qmd
+      - atividades.qmd
+      - material.qmd
       - plano.qmd
       - cronograma.qmd
-      #- material.qmd
-      #- revisao.qmd
-      #- notas.qmd
+
 format:
   html:
     theme:
@@ -53,5 +46,3 @@ format:
     toc: true
 
 freeze: false
-
-

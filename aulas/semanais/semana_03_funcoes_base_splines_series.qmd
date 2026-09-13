@@ -995,7 +995,11 @@ $$
 
 ## Outra estratégia: penalizar a rugosidade
 
-Em vez de escolher poucos nós, podemos permitir uma função bastante flexível e penalizar curvas excessivamente irregulares:
+
+
+Em vez de escolher poucos nós, podemos permitir uma função bastante flexível e penalizar curvas excessivamente irregulares.
+
+A ideia é buscar pela função $g$ que minimiza
 
 $$
 \boxed{
@@ -1129,56 +1133,37 @@ $$
 
 
 
-## Síntese 
+<!-- ## Síntese  -->
 
 
-Pause e responda antes de seguir:<br><br>
+<!-- Pause e responda antes de seguir:<br><br> -->
 
-<details>
-  <summary>O que um nó faz com a inclinação da curva?</summary>
-  <p> *permite que ela mude a partir daquele ponto* </p>
-</details>
-
-
-<details>
-  <summary>Por que spline cúbico e não linear por partes?</summary>
-  <p> *evita quinas: exige continuidade da função, inclinação e curvatura* </p>
-</details>
-
-<details>
-  <summary>Se $\lambda$ é enorme, o smoothing spline vira o quê?</summary>
-  <p> *praticamente uma reta* </p>
-</details>
+<!-- <details> -->
+<!--   <summary>O que um nó faz com a inclinação da curva?</summary> -->
+<!--   <p> *permite que ela mude a partir daquele ponto* </p> -->
+<!-- </details> -->
 
 
-<details>
-  <summary>Qual é a diferença entre spline e smoothing spline?</summary>
-  <p> *spline: escolhe-se o número/posição dos nós; smoothing spline: curva livre + multa λ)*</p>
-</details>
+<!-- <details> -->
+<!--   <summary>Por que spline cúbico e não linear por partes?</summary> -->
+<!--   <p> *evita quinas: exige continuidade da função, inclinação e curvatura* </p> -->
+<!-- </details> -->
+
+<!-- <details> -->
+<!--   <summary>Se $\lambda$ é enorme, o smoothing spline vira o quê?</summary> -->
+<!--   <p> *praticamente uma reta* </p> -->
+<!-- </details> -->
 
 
+<!-- <details> -->
+<!--   <summary>Qual é a diferença entre spline e smoothing spline?</summary> -->
+<!--   <p> *spline: escolhe-se o número/posição dos nós; smoothing spline: curva livre + multa λ)*</p> -->
+<!-- </details> -->
 
 
 
-## A mesma base pode alimentar tarefas diferentes
-
-Observe que, o que fizemos, foi trocar o dado original por um vetor de representações:
-
-$$\boldsymbol\phi(x) = (\phi_1(x), \ldots, \phi_K(x))^t$$
-
-A representação pode ser utilizada tanto por um modelo de **regressão** quanto por um **classificador probabilístico**.
-
-<span style="color:red">
-
-$$x \longrightarrow \boldsymbol\phi(x) \longrightarrow \begin{cases} \text{regressão (resposta contínua)} \\ \text{classificador (resposta categórica)} \end{cases}$$
-
-## A mesma base pode alimentar tarefas diferentes
 
 
-> **A transformação não sabe nem se importa com o que vem depois: ela é agnóstica ao modelo final.**
-
-</span>
-A representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico
 
 
 
@@ -1370,6 +1355,34 @@ $$
 é uma ideia **extremamente poderosa**.
 
 Mudando as funções de base e o controle de complexidade, obtemos diferentes famílias de modelos.
+
+
+
+
+## A mesma base pode alimentar tarefas diferentes
+
+Observe que, o que fizemos, foi trocar o dado original por um vetor de representações:
+
+$$\boldsymbol\phi(x) = (\phi_1(x), \ldots, \phi_K(x))^t$$
+
+A representação pode ser utilizada tanto por um modelo de **regressão** quanto por um **classificador probabilístico**.
+
+<span style="color:red">
+
+$$x \longrightarrow \boldsymbol\phi(x) \longrightarrow \begin{cases} \text{regressão (resposta contínua)} \\ \text{classificador (resposta categórica)} \end{cases}$$
+
+## A mesma base pode alimentar tarefas diferentes
+
+
+> **A transformação não sabe nem se importa com o que vem depois: ela é agnóstica ao modelo final.**
+
+</span>
+A representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico
+
+
+
+
+
 
 ## Três ideias para levar
 

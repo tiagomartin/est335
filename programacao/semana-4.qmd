@@ -5,26 +5,27 @@ title: "Semana 04"
 
 ## Slides
 
-{{< fa file-powerpoint size=lg >}} [Introdução à Estatística Multivariada](/aulas/intro_est_multi/intro_est_multi.html#/title-slide "Introdução à Estatística Multivariada"){aria-label="Introdução à Estatística Multivariada"}
+{{< fa file-powerpoint size=lg >}} [Flexibilidade: Funções de Base, Polinômios, Splines e Séries](aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide "Funções de Base, Polinômios, Splines e Séries"){aria-label="Funções de Base, Polinômios, Splines e Séries"}
+
+{{< fa file-powerpoint size=lg >}} [Seleção de Variáveis e Regularização](aulas/semanais/semana_04_selecao_regularizacao.html#/title-slide "Seleção de Variáveis e Regularização"){aria-label="Seleção de Variáveis e Regularização"}
 
 
+## Material Complementar
 
-## Script R
-
-{{< fa brands r-project size=lg >}}[Descrição e visualização de dados multivariados utilizando a base Iris](/analise_dados/descr_vis_iris.html "Análise de dados"){aria-label="Análise de dados"}
+{{< fa folder size=lg >}} [Generalização e Regularização](/material_complementar/regularizacao_pratica.html "Material Complementar A1"){aria-label="Material Complementar A1"}
 
 
-## Entrega lista de exercícios 02
+## Atividade Avaliativa - A1
 
-::: callout-important
+{{< fa list-check size=lg >}} [ A1 — Generalização e Regularização](/atividades/atividade_1_generalizacao_regularizacao.html "Atividade Avaliativa - A1"){aria-label="Atividade Avaliativa - A1"}
 
-## Fique Atento!
+::: {.callout-important}
+## Informações da atividade
 
-{{< fa file-lines size=lg >}} [Lista de exercícios 02](/exercicios/lista02.html "Lista de exercícios 02"){aria-label="Lista de exercícios 02"} 
+**Valor:** 20 pontos  
+**Liberação:** 16/09/2026  
+**Entrega:** 27/09/2026  
 
 Entrega via [Moodle](https://moodlepresencial.ufop.br/login/index.php)
-
--   Data de entrega:
-    -   17 de novembro de 2025
 :::
 

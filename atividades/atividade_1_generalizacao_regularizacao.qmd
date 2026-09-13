@@ -1,0 +1,301 @@
+---
+title: "A1 — Generalização e Regularização"
+subtitle: "Atividade Avaliativa 1"
+page-layout: article
+toc: true
+toc-depth: 3
+number-sections: true
+comments: false
+---
+
+::: {.callout-important}
+## Informações da atividade
+
+**Valor:** 20 pontos  
+**Liberação:** 16/09/2026  
+**Entrega:** 27/09/2026  
+
+A atividade deverá ser entregue na forma de um **relatório computacional reprodutível**, contendo código, resultados, gráficos, tabelas e, principalmente, **interpretação estatística**.
+:::
+
+# Objetivo
+
+Um dos principais objetivos de *Machine Learning* é construir modelos que apresentem bom desempenho em observações que **não foram utilizadas durante seu ajuste**.
+
+Nesta atividade, você investigará empiricamente a relação entre
+
+$$
+\text{complexidade do modelo}
+\longrightarrow
+\text{erro de treinamento}
+\longrightarrow
+\text{erro de validação}
+\longrightarrow
+\text{generalização}
+$$
+
+e estudará como os métodos **Ridge** e **Lasso** podem controlar a complexidade de modelos de regressão por meio da regularização.
+
+Ao final, você deverá responder à seguinte questão:
+
+> **Qual dos modelos analisados você escolheria para predizer novas observações e por quê?**
+
+# Dados
+
+[Baixar base de dados da A1](../dados/dados_a1.csv){.btn .btn-primary download="dados_a1.csv"}
+
+Utilize o arquivo [`dados_a1.csv`](../dados/dados_a1.csv), disponibilizado juntamente com esta atividade.
+
+A base contém uma variável resposta quantitativa `y` e 20 variáveis preditoras, `x1`, ..., `x20`.
+
+Algumas variáveis possuem informação relevante para explicar `y`, outras possuem efeitos mais fracos e outras podem não acrescentar informação preditiva útil. Além disso, algumas variáveis preditoras apresentam associação entre si.
+
+<!-- ::: {.callout-note} -->
+<!-- Você **não conhece** o mecanismo utilizado para gerar os dados. Portanto, suas conclusões devem ser baseadas exclusivamente nos dados e nos procedimentos estatísticos utilizados. -->
+<!-- ::: -->
+
+# Regras gerais
+
+1. Fixe uma semente aleatória utilizando `set.seed()` para garantir a reprodutibilidade
+2. Separe inicialmente os dados em **treinamento (80%)** e **teste (20%)**
+3. O conjunto de teste deverá permanecer isolado até a última parte da atividade
+4. Todas as decisões de modelagem deverão ser realizadas utilizando apenas o conjunto de treinamento
+5. Para seleção de hiperparâmetros, utilize **validação cruzada com 10 folds**
+6. Utilize o **RMSE** como medida principal de erro preditivo
+7. Quando necessário para os modelos regularizados, padronize as variáveis preditoras utilizando **apenas informações do conjunto de treinamento**
+8. Justifique as decisões tomadas. A simples apresentação do código ou de resultados numéricos não será suficiente
+
+::: {.callout-warning}
+## Regra fundamental
+
+O conjunto de teste **não poderá ser utilizado** para escolher $\lambda$, selecionar variáveis ou decidir qual configuração de um modelo será utilizada.
+
+O teste será aberto **uma única vez**, ao final da análise, para avaliar a capacidade de generalização dos modelos já definidos.
+:::
+
+# Parte I — Estratégia de avaliação [2,0 pontos]
+
+## Questão 1
+
+Realize a separação dos dados em treinamento e teste.
+
+a) Informe o número de observações em cada conjunto e descreva o procedimento utilizado.
+
+b) Explique por que o conjunto de teste deve permanecer isolado durante o processo de construção dos modelos.
+
+c) Explique por que o valor de um hiperparâmetro, como $\lambda$, deve ser escolhido utilizando os dados de treinamento e um procedimento de validação, e não o conjunto de teste.
+
+d) Explique a diferença entre:
+
+- erro de treinamento
+- erro estimado por validação cruzada
+- erro de teste
+
+
+# Parte II — Modelo de referência: mínimos quadrados [3,0 pontos]
+
+## Questão 2
+
+Ajuste um modelo de regressão linear por mínimos quadrados utilizando **todas as 20 variáveis preditoras**:
+
+$$
+Y=\beta_0+\sum_{j=1}^{20}\beta_jX_j+\varepsilon
+$$
+
+a) Calcule o RMSE de treinamento.
+
+b) Utilizando os mesmos 10 folds definidos para a comparação dos modelos, estime o RMSE por validação cruzada.
+
+c) Compare o erro de treinamento com o erro de validação cruzada. O que essa diferença informa sobre a capacidade de generalização do modelo?
+
+d) Explique por que minimizar o erro de treinamento, isoladamente, não constitui uma estratégia adequada para selecionar um modelo de *Machine Learning*.
+
+
+
+# Parte III — Regressão Ridge [5,0 pontos]
+
+Considere o estimador Ridge:
+
+$$
+\widehat{\boldsymbol{\beta}}^{Ridge}
+=
+\arg\min_{\beta_0,\boldsymbol{\beta}}
+\left\{
+\sum_{i=1}^{n}
+\left(
+y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}
+\right)^2
++
+\lambda\sum_{j=1}^{p}\beta_j^2
+\right\}
+$$
+
+em que $\lambda\geq 0$ controla a intensidade da regularização.
+
+## Questão 3
+
+a) Ajuste modelos Ridge considerando uma grade suficientemente ampla de valores de $\lambda$. Apresente a grade utilizada e explique por que é importante avaliar diferentes ordens de grandeza de $\lambda$.
+
+b) Para cada valor de $\lambda$, obtenha:
+
+- RMSE de treinamento
+- RMSE médio de validação cruzada
+
+Construa um gráfico contendo as duas curvas **em função de $\lambda$**, utilizando cores distintas.
+
+Identifique visualmente o valor
+
+$$
+\lambda^\ast_{Ridge}
+$$
+
+que minimiza o erro de validação cruzada.
+
+<!-- ::: {.callout-note} -->
+<!-- A utilização de $\log(\lambda)$ no eixo horizontal é permitida caso melhore a visualização. Entretanto, o eixo e a interpretação devem deixar claro que o hiperparâmetro selecionado é $\lambda$. -->
+<!-- ::: -->
+
+c) Descreva e explique o comportamento do erro de treinamento à medida que $\lambda$ aumenta.
+
+d) Descreva o comportamento do erro de validação. Por que sua trajetória pode ser diferente daquela observada para o erro de treinamento?
+
+e) Analise o comportamento dos coeficientes estimados à medida que $\lambda$ aumenta.
+
+f) Explique como a regularização Ridge pode melhorar a generalização mesmo que provoque aumento do erro de treinamento.
+
+
+
+
+# Parte IV — Regressão Lasso [5,0 pontos]
+
+Considere agora
+
+$$
+\widehat{\boldsymbol{\beta}}^{Lasso}
+=
+\arg\min_{\beta_0,\boldsymbol{\beta}}
+\left\{
+\sum_{i=1}^{n}
+\left(
+y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}
+\right)^2
++
+\lambda\sum_{j=1}^{p}|\beta_j|
+\right\}
+$$
+
+## Questão 4
+
+a) Utilize validação cruzada para selecionar
+
+$$
+\lambda^\ast_{Lasso}
+$$
+
+Apresente o valor selecionado e o respectivo RMSE médio de validação.
+
+b) Construa um gráfico mostrando a trajetória dos coeficientes do Lasso para diferentes valores de $\lambda$.
+
+c) Identifique as variáveis com coeficientes diferentes de zero no modelo correspondente a $\lambda^\ast_{Lasso}$.
+
+d) Explique por que o Lasso pode produzir coeficientes exatamente iguais a zero.
+
+e) Compare o comportamento dos coeficientes no Ridge e no Lasso.
+
+f) Explique a diferença entre:
+
+> **encolhimento de coeficientes**
+
+e
+
+> **seleção de variáveis**
+
+
+
+# Parte V — Avaliação final da generalização [5,0 pontos]
+
+::: {.callout-important}
+## Agora o conjunto de teste pode ser utilizado
+
+A partir deste ponto, os modelos e seus hiperparâmetros já devem estar completamente definidos.
+
+Não altere $\lambda$ ou qualquer outra decisão de modelagem com base nos resultados obtidos no teste.
+:::
+
+## Questão 5
+
+Avalie no conjunto de teste:
+
+1. mínimos quadrados
+2. Ridge com $\lambda=\lambda^\ast_{Ridge}$
+3. Lasso com $\lambda=\lambda^\ast_{Lasso}$
+
+a) Construa uma tabela final no formato:
+
+| Modelo | RMSE treino | RMSE validação | RMSE teste | Coeficientes ativos |
+|:--|--:|--:|--:|--:|
+| Mínimos Quadrados |  |  |  |  |
+| Ridge |  |  |  |  |
+| Lasso |  |  |  |  |
+
+Considere como **coeficiente ativo** um coeficiente associado a uma variável preditora cujo valor estimado seja diferente de zero. Não inclua o intercepto nessa contagem.
+
+b) O modelo com menor erro de treinamento foi também aquele com menor erro de validação e de teste? Explique.
+
+c) Existe evidência de sobreajuste em algum dos modelos? Fundamente sua resposta utilizando os resultados obtidos.
+
+d) Compare Ridge e Lasso quanto a:
+
+- desempenho preditivo
+- complexidade
+- seleção de variáveis
+- interpretabilidade
+
+e) Imagine que o modelo será utilizado para predizer `y` para novas observações.
+
+**Escolha um único modelo para utilização futura e defenda sua decisão.**
+
+Sua justificativa não deverá se limitar a identificar o menor RMSE. Considere conjuntamente:
+
+- capacidade de generalização
+- diferença entre desempenho de treinamento, validação e teste
+- estabilidade
+- complexidade
+- número de variáveis
+- interpretabilidade
+
+
+
+# O que deverá ser entregue
+
+Entregue **um único relatório reprodutível**, contendo:
+
+- nome e número de matrícula
+- código utilizado
+- resultados numéricos
+- gráficos solicitados
+- tabela comparativa final
+- interpretação estatística de cada resultado
+- resposta à questão final de decisão
+
+::: {.callout-warning}
+## Cuidado
+Relatórios contendo apenas código, *outputs* ou gráficos sem interpretação estatística terão pontuação reduzida.
+:::
+
+# Critérios de avaliação
+
+| Componente | Pontuação |
+|:--|--:|
+| Estratégia de treinamento, validação e teste | 2,0 |
+| Mínimos quadrados e generalização | 3,0 |
+| Ridge e seleção de $\lambda$ | 5,0 |
+| Lasso e seleção de variáveis | 5,0 |
+| Avaliação final e argumentação estatística | 5,0 |
+| **Total** | **20,0** |
+
+# Pergunta central
+
+Ao concluir a atividade, você deverá ser capaz de responder:
+
+> **Por que o modelo que melhor se ajusta aos dados de treinamento não é necessariamente o modelo que devemos escolher para fazer predições futuras?**
