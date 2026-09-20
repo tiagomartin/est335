@@ -160,74 +160,82 @@ r(x)=E(Y\mid X=x)
 </blockquote>
 <p>Usamos então as respostas dessas observações para construir a predição.</p>
 </section><section id="o-estimador-knn" class="slide level2"><h2>O estimador KNN</h2>
-<p>Se <span class="math inline">\(N_K(x_0)\)</span> são os <span class="math inline">\(K\)</span> vizinhos mais próximos,</p>
+<p>Se <span class="math inline">\(\mathcal{N}_k(x)\)</span> são os <span class="math inline">\(k\)</span> vizinhos mais próximos de <span class="math inline">\(x\)</span>, a estimativa de <span class="math inline">\(r(x)\)</span> é dada por:</p>
 <p><span class="math display">\[
 \boxed{
-\widehat r_K(x_0)=
-\frac1K\sum_{i\in N_K(x_0)}Y_i
+g(x)=
+\frac1k\sum_{i\in \mathcal{N}_k(x)}Y_i
 }
 \]</span></p>
 <p><span class="math display">\[
 \text{localizar}\rightarrow\text{selecionar vizinhos}\rightarrow\text{calcular a média}
 \]</span></p>
-</section><section id="uma-predição-com-k7" class="slide level2"><h2>Uma predição com <span class="math inline">\(K=7\)</span>
+<p>O estimador é:</p>
+<ul>
+<li>local<br>
+</li>
+<li>não paramétrico<br>
+</li>
+<li>dependente da geometria dos dados</li>
+</ul></section><section id="uma-predição-com-k7" class="slide level2"><h2>Uma predição com <span class="math inline">\(k=7\)</span>
 </h2>
 
 <img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="de-um-ponto-para-uma-curva" class="slide level2"><h2>De um ponto para uma curva</h2>
-<p>Repetimos o procedimento para muitos <span class="math inline">\(x_0\)</span>:</p>
+<p>Repetimos o procedimento para muitos <span class="math inline">\(x\)</span>:</p>
 <ol type="1">
-<li>encontramos os <span class="math inline">\(K\)</span> vizinhos;</li>
+<li>encontramos os <span class="math inline">\(k\)</span> vizinhos;</li>
 <li>calculamos a média de <span class="math inline">\(Y\)</span>;</li>
-<li>obtemos <span class="math inline">\(\widehat r_K(x_0)\)</span>.</li>
-</ol></section><section id="comparando-k1330" class="slide level2"><h2>Comparando <span class="math inline">\(K=1,3,30\)</span>
+<li>obtemos <span class="math inline">\(g(x)\)</span>.</li>
+</ol></section><section id="comparando-k1330" class="slide level2"><h2>Comparando <span class="math inline">\(k=1,3,30\)</span>
 </h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"></section><section id="o-papel-de-k" class="slide level2"><h2>O papel de <span class="math inline">\(K\)</span>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"></section><section id="o-papel-de-k" class="slide level2"><h2>O papel de <span class="math inline">\(k\)</span>
 </h2>
 <p><span class="math display">\[
-K\downarrow\Rightarrow\text{vizinhança pequena}\Rightarrow\text{maior flexibilidade}
+k\downarrow\Rightarrow\text{vizinhança pequena}\Rightarrow\text{maior flexibilidade}
 \]</span></p>
 <p><span class="math display">\[
-K\uparrow\Rightarrow\text{vizinhança grande}\Rightarrow\text{maior suavização}
+k\uparrow\Rightarrow\text{vizinhança grande}\Rightarrow\text{maior suavização}
 \]</span></p>
 <p><span class="math display">\[
-\boxed{K=\text{hiperparâmetro de complexidade}}
+\boxed{k=\text{hiperparâmetro de complexidade}}
 \]</span></p>
 </section><section id="viés-variância" class="slide level2"><h2>Viés × variância</h2>
+<p>O parâmetro <span class="math inline">\(k\)</span> controla o grau de suavização do estimador. Define o equilíbrio viés e variância<br><br></p>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="k-pequeno">
-<span class="math inline">\(K\)</span> pequeno</h3>
+<span class="math inline">\(k\)</span> pequeno</h3>
 <ul>
-<li>baixo viés;</li>
-<li>alta variância;</li>
-<li>maior adaptação local;</li>
-<li>maior risco de sobreajuste.</li>
+<li>baixo viés</li>
+<li>alta variância</li>
+<li>maior adaptação local</li>
+<li>maior risco de sobreajuste</li>
 </ul>
 </div><div class="column" style="width:48%;">
 <h3 id="k-grande">
-<span class="math inline">\(K\)</span> grande</h3>
+<span class="math inline">\(k\)</span> grande</h3>
 <ul>
-<li>maior viés;</li>
-<li>menor variância;</li>
-<li>curva mais suave;</li>
-<li>risco de subajuste.</li>
+<li>maior viés</li>
+<li>menor variância</li>
+<li>curva mais suave</li>
+<li>risco de subajuste</li>
 </ul>
 </div></div>
 </section><section id="knn-é-baseado-em-instâncias" class="slide level2"><h2>KNN é baseado em instâncias</h2>
 <p>Ao contrário de um modelo paramétrico, o KNN precisa consultar os dados de treinamento para realizar novas predições.</p>
 <p><span class="math display">\[
-\boxed{\text{KNN é um método local / baseado em instâncias}}
+\boxed{\text{KNN é um método local, baseado em instâncias}}
 \]</span></p>
 </section><section id="a-distância-importa" class="slide level2"><h2>A distância importa</h2>
 <p>Em uma dimensão:</p>
 <p><span class="math display">\[
-d(x_i,x_0)=|x_i-x_0|
+d(x_i,x_k)=|x_i-x_k|
 \]</span></p>
 <p>Em <span class="math inline">\(p\)</span> dimensões:</p>
 <p><span class="math display">\[
-d(\mathbf x_i,\mathbf x_0)=
-\sqrt{\sum_{j=1}^p(x_{ij}-x_{0j})^2}
+d(\mathbf x_i,\mathbf x_k)=
+\sqrt{\sum_{j=1}^p(x_{ij}-x_{kj})^2}
 \]</span></p>
 </section><section id="por-que-padronizar" class="slide level2"><h2>Por que padronizar?</h2>
 <p>Se uma variável varia entre 0 e 1 e outra entre 0 e 100.000, a segunda pode dominar a distância.</p>
@@ -240,43 +248,43 @@ X_j^*=\frac{X_j-\bar X_j}{s_j}
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>Métodos baseados em distância são particularmente sensíveis à escala.</p>
+<p>Métodos baseados em distância são particularmente sensíveis à escala</p>
 </div>
 </div>
 </div>
-</section><section id="escolha-de-k-por-validação-cruzada" class="slide level2"><h2>Escolha de <span class="math inline">\(K\)</span> por validação cruzada</h2>
+</section><section id="escolha-de-k-por-validação-cruzada" class="slide level2"><h2>Escolha de <span class="math inline">\(k\)</span> por validação cruzada</h2>
 
 <img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><p><span class="math display">\[
-\widehat K=\arg\min_K\widehat R_{CV}(K)
+\widehat k=\arg\min_k\widehat R_{CV}(k)
 \]</span></p>
 </section></section><section><section id="knn-para-classificação" class="title-slide slide level1 center"><h1>KNN para classificação</h1>
 
 </section><section id="regressão-versus-classificação" class="slide level2"><h2>Regressão versus classificação</h2>
 <h3 id="regressão">Regressão</h3>
 <p><span class="math display">\[
-\widehat r_K(\mathbf x)
+g(\mathbf x)
 =
-\frac1K
-\sum_{i\in N_K(\mathbf x)}Y_i
+\frac1k
+\sum_{i\in \mathcal N_k(\mathbf x)}Y_i
 \]</span></p>
 <h3 id="classificação-binária">Classificação binária</h3>
 <p>Como <span class="math inline">\(Y_i\in\{0,1\}\)</span>,</p>
 <p><span class="math display">\[
 \boxed{
-\widehat\eta_K(\mathbf x)
+g_k(\mathbf x)
 =
-\frac1K
-\sum_{i\in N_K(\mathbf x)}I(Y_i=1)
+\frac1k
+\sum_{i\in \mathcal N_k(\mathbf x)}I(Y_i=1)
 }
 \]</span></p>
 </section><section id="a-média-virou-probabilidade" class="slide level2"><h2>A média virou probabilidade</h2>
-<p>Se entre os <span class="math inline">\(K=5\)</span> vizinhos temos</p>
+<p>Se entre os <span class="math inline">\(k=5\)</span> vizinhos temos</p>
 <p><span class="math display">\[
 (1,1,0,1,0)
 \]</span></p>
 <p>então</p>
 <p><span class="math display">\[
-\widehat\eta_5(\mathbf x)
+g_5(\mathbf x)
 =
 \frac35
 =
@@ -290,31 +298,31 @@ X_j^*=\frac{X_j-\bar X_j}{s_j}
 <p>Para <span class="math inline">\(Y\in\{1,\ldots,G\}\)</span>, estimamos</p>
 <p><span class="math display">\[
 \boxed{
-\widehat P(Y=k\mid\mathbf X=\mathbf x)
+\widehat P(Y=j\mid\mathbf X=\mathbf x)
 =
-\frac1K
-\sum_{i\in N_K(\mathbf x)}
-I(Y_i=k)
+\frac1k
+\sum_{i\in \mathcal N_k(\mathbf x)}
+I(Y_i=j)
 }
 \]</span></p>
 <p>e classificamos por</p>
 <p><span class="math display">\[
 \boxed{
-\widehat g_K(\mathbf x)
+\widehat g_k(\mathbf x)
 =
-\arg\max_k
-\widehat P(Y=k\mid\mathbf X=\mathbf x)
+\arg\max_j
+\widehat P(Y=j\mid\mathbf X=\mathbf x)
 }
 \]</span></p>
-</section><section id="o-papel-de-k-1" class="slide level2"><h2>O papel de <span class="math inline">\(K\)</span>
+</section><section id="o-papel-de-k-1" class="slide level2"><h2>O papel de <span class="math inline">\(k\)</span>
 </h2>
 <p><span class="math display">\[
-K\downarrow
+k \downarrow
 \quad\Longrightarrow\quad
 \text{fronteira mais flexível}
 \]</span></p>
 <p><span class="math display">\[
-K\uparrow
+k \uparrow
 \quad\Longrightarrow\quad
 \text{fronteira mais suave}
 \]</span></p>
@@ -324,7 +332,7 @@ K\uparrow
 <li>sensibilidade à escala das covariáveis</li>
 <li>efeito da escolha da distância</li>
 <li>custo de predição</li>
-<li>necessidade de selecionar <span class="math inline">\(K\)</span>
+<li>necessidade de selecionar <span class="math inline">\(k\)</span>
 </li>
 <li>maldição da dimensionalidade</li>
 </ul>
@@ -338,48 +346,86 @@ K\uparrow
 </div>
 </div>
 </div>
-</section></section><section><section id="regressão-por-kernel" class="title-slide slide level1 center"><h1>Regressão por Kernel</h1>
+</section></section><section><section id="regressão-por-kernel-nadarayawatson" class="title-slide slide level1 center"><h1>Regressão por Kernel (Nadaraya–Watson)</h1>
 
 </section><section id="uma-limitação-do-knn" class="slide level2"><h2>Uma limitação do KNN</h2>
 <p>No KNN, todos os vizinhos selecionados recebem o mesmo peso.</p>
-<p>Uma observação quase coincidente com <span class="math inline">\(x_0\)</span> pode receber o mesmo peso que o <span class="math inline">\(K\)</span>-ésimo vizinho.</p>
+<p>Uma observação quase coincidente com <span class="math inline">\(x\)</span> pode receber o mesmo peso que o <span class="math inline">\(k\)</span>-ésimo vizinho.</p>
 <blockquote>
 <p>E se fizermos o peso diminuir com a distância?</p>
 </blockquote>
-</section><section id="a-ideia-do-kernel" class="slide level2"><h2>A ideia do kernel</h2>
+<div class="fragment">
+<p>No KNN, estimamos a função de regressão por:</p>
 <p><span class="math display">\[
-w_i(x_0)=
-K\left(\frac{x_i-x_0}{h}\right)
+g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} Y_i
 \]</span></p>
-<p>Observações próximas recebem maior influência.</p>
-<p><span class="math inline">\(h\)</span> controla a escala da vizinhança.</p>
+</div>
+</section><section id="nadarayawatson" class="slide level2"><h2>Nadaraya–Watson</h2>
+<p>No <strong>método de Nadaraya–Watson</strong>, o estimador de regressão é dado por:</p>
+<p><span class="math display">\[
+g(\mathbf{x}) = \sum_{i=1}^{n} w_i(\mathbf{x})\,Y_i
+\]</span></p>
+<p>onde <span class="math inline">\(w_i(\mathbf{x})\)</span> representa o peso atribuído à observação <span class="math inline">\(i\)</span>.<br><br></p>
+<h3 id="propriedade-importante">Propriedade importante</h3>
+<p><span class="math display">\[
+\sum_{i=1}^{n} w_i(\mathbf{x}) = 1
+\]</span></p>
 </section><section id="estimador-de-nadarayawatson" class="slide level2"><h2>Estimador de Nadaraya–Watson</h2>
+<p>Os pesos são definidos por:</p>
 <p><span class="math display">\[
-\boxed{
-\widehat r_h(x_0)=
-\frac{\sum_iK\left(\frac{x_i-x_0}{h}\right)Y_i}
-{\sum_iK\left(\frac{x_i-x_0}{h}\right)}
-}
+w_i(\mathbf{x}) = \frac{K(\mathbf{x}, \mathbf{x}_i)}{\sum_{j=1}^{n} K(\mathbf{x}, \mathbf{x}_j)}
 \]</span></p>
-<p>É uma <strong>média local ponderada</strong>.</p>
-</section><section id="três-funções-kernel" class="slide level2"><h2>Três funções kernel</h2>
+<p>Em que,</p>
+<ul>
+<li>
+<span class="math inline">\(K(\mathbf{x}, \mathbf{x}_i)\)</span> é um <strong>kernel de suavização</strong>, usado para medir a similaridade entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span>
+</li>
+<li>quanto mais próximo <span class="math inline">\(\mathbf{x}_i\)</span> está de <span class="math inline">\(\mathbf{x}\)</span>, maior será o peso</li>
+</ul></section><section id="estimador-de-nadarayawatson-1" class="slide level2"><h2>Estimador de Nadaraya–Watson</h2>
+<p>Ele controla:</p>
+<ul>
+<li>como a influência dos pontos decai com a distância<br>
+</li>
+<li>o grau de suavização do estimador</li>
+</ul>
+<p>Observações próximas recebem maior influência na estimativa de <span class="math inline">\(g(x)\)</span>.</p>
+</section><section id="kernels-usuais" class="slide level2"><h2>Kernels usuais</h2>
+<p><strong>Uniforme:</strong> todos os pontos dentro de <span class="math inline">\(h\)</span> têm o mesmo peso</p>
+<p><span class="math display">\[
+K(\mathbf{x}, \mathbf{x}_i) = \mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
+\]</span></p>
+<p><strong>Triangular:</strong> peso decresce com a distância</p>
+<p><span class="math display">\[
+K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)}{h}\right)\mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
+\]</span></p>
+</section><section id="kernels-usuais-1" class="slide level2"><h2>Kernels usuais</h2>
+<p><strong>Epanechnikov:</strong> peso decresce com a distância</p>
+<p><span class="math display">\[
+K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2}\right)\mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
+\]</span></p>
+<p><strong>Gaussiano:</strong> todos os pontos recebem peso. Pontos mais próximos têm maior influência</p>
+<p><span class="math display">\[
+K(\mathbf{x}, \mathbf{x}_i) = \frac{1}{\sqrt{2\pi}h}
+\exp\left(-\frac{d(\mathbf{x}, \mathbf{x}_i)^2}{2h^2}\right)
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>O parâmetro <span class="math inline">\(h\)</span> controla a largura da vizinhança</strong></p>
+</div>
+</div>
+</div>
+</section><section id="quatro-funções-kernel" class="slide level2"><h2>Quatro funções kernel</h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="kernels-usuais" class="slide level2"><h2>Kernels usuais</h2>
-<p>Uniforme:</p>
-<p><span class="math display">\[
-K(u)=\frac12I(|u|\le1)
-\]</span></p>
-<p>Triangular:</p>
-<p><span class="math display">\[
-K(u)=(1-|u|)I(|u|\le1)
-\]</span></p>
-<p>Epanechnikov:</p>
-<p><span class="math display">\[
-K(u)=\frac34(1-u^2)I(|u|\le1)
-\]</span></p>
-</section><section id="mesmo-h-kernels-diferentes" class="slide level2"><h2>Mesmo <span class="math inline">\(h\)</span>, kernels diferentes</h2>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1056"></section><section id="mesmo-h-kernels-diferentes" class="slide level2"><h2>Mesmo <span class="math inline">\(h\)</span>, kernels diferentes</h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"><p>A escolha de <span class="math inline">\(h\)</span> costuma ser mais importante que a forma exata do kernel.</p>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>A escolha de <span class="math inline">\(h\)</span> costuma ser mais importante que a forma exata do kernel.</p>
 </section><section id="o-papel-de-h" class="slide level2"><h2>O papel de <span class="math inline">\(h\)</span>
 </h2>
 <p><span class="math display">\[
@@ -391,10 +437,18 @@ h\uparrow\Rightarrow\text{mais observações relevantes}\Rightarrow\text{mais su
 <p><span class="math display">\[
 \boxed{h=\text{hiperparâmetro de suavização}}
 \]</span></p>
-</section><section id="pequeno-grande-h" class="slide level2"><h2>Pequeno × grande <span class="math inline">\(h\)</span>
+</section><section id="magnitude-de-h" class="slide level2"><h2>Magnitude de <span class="math inline">\(h\)</span>
 </h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="knn-kernel" class="slide level2"><h2>KNN × Kernel</h2>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="observação-prática" class="slide level2"><h2>Observação prática</h2>
+<p>Na prática, observa-se que:</p>
+<ul>
+<li>a escolha do <strong>kernel</strong> tem pouca influência no resultado<br>
+</li>
+<li>a escolha do parâmetro de suavização (<span class="math inline">\(h\)</span>) é decisiva</li>
+</ul>
+<p>O comportamento do estimador é controlado principalmente por: <span class="math inline">\(h\)</span> (largura da vizinhança)</p>
+</section><section id="knn-kernel" class="slide level2"><h2>KNN × Kernel</h2>
 <table class="caption-top">
 <thead><tr class="header">
 <th>Aspecto</th>
@@ -405,7 +459,7 @@ h\uparrow\Rightarrow\text{mais observações relevantes}\Rightarrow\text{mais su
 <tr class="odd">
 <td>Vizinhança</td>
 <td>
-<span class="math inline">\(K\)</span> observações</td>
+<span class="math inline">\(k\)</span> observações</td>
 <td>controlada por <span class="math inline">\(h\)</span>
 </td>
 </tr>
@@ -416,7 +470,7 @@ h\uparrow\Rightarrow\text{mais observações relevantes}\Rightarrow\text{mais su
 </tr>
 <tr class="odd">
 <td>Hiperparâmetro</td>
-<td><span class="math inline">\(K\)</span></td>
+<td><span class="math inline">\(k\)</span></td>
 <td><span class="math inline">\(h\)</span></td>
 </tr>
 <tr class="even">
@@ -441,126 +495,70 @@ h_1,\ldots,h_M
 \]</span></p>
 </section></section><section><section id="regressão-polinomial-local" class="title-slide slide level1 center"><h1>Regressão polinomial local</h1>
 
-</section><section id="nadarayawatson-revisitado" class="slide level2"><h2>Nadaraya–Watson revisitado</h2>
-<p>Em <span class="math inline">\(x_0\)</span>, Nadaraya–Watson pode ser obtido minimizando</p>
+</section><section id="regressão-polinomial-local-1" class="slide level2"><h2>Regressão Polinomial Local</h2>
+<p>A regressão de Nadaraya–Watson estima <span class="math inline">\(g(x)\)</span> como uma <strong>média ponderada local</strong>, ou seja, resolve</p>
 <p><span class="math display">\[
-\min_{\beta_0}
-\sum_i
-K\left(\frac{x_i-x_0}{h}\right)
-(Y_i-\beta_0)^2
+\hat{g}(\mathbf{x}) = \arg\min_{\beta_0} \sum_{i=1}^n w_i(\mathbf{x})\,(Y_i - \beta_0)^2
 \]</span></p>
-<p>Logo,</p>
+<p>Isso equivale a ajustar <strong>localmente uma constante</strong> (polinômio de grau 0).</p>
+</section><section id="regressão-polinomial-local-2" class="slide level2"><h2>Regressão Polinomial Local</h2>
+<p>A regressão polinomial local generaliza essa ideia, permitindo que o ajuste local seja mais flexível.</p>
+<p>Em vez de ajustar apenas um intercepto, consideramos um polinômio de grau <span class="math inline">\(p\)</span>:</p>
 <p><span class="math display">\[
-\boxed{\text{Nadaraya–Watson = regressão constante local}}
+g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \]</span></p>
-</section><section id="por-que-parar-em-uma-constante" class="slide level2"><h2>Por que parar em uma constante?</h2>
-<p>Na vizinhança de <span class="math inline">\(x_0\)</span>, podemos usar</p>
+</section><section id="regressão-polinomial-local-3" class="slide level2"><h2>Regressão Polinomial Local</h2>
+<p>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, estimamos os coeficientes resolvendo:</p>
 <p><span class="math display">\[
-r(x)\approx
-\beta_0(x_0)+\beta_1(x_0)(x-x_0)
-\]</span></p>
-<p>Assim, ajustamos uma reta diferente em cada região do espaço.</p>
-</section><section id="regressão-linear-local" class="slide level2"><h2>Regressão linear local</h2>
-<p><span class="math display">\[
-\boxed{
-(\widehat\beta_0,\widehat\beta_1)
+(\hat{\beta}_0, \ldots, \hat{\beta}_p)
 =
-\arg\min_{\beta_0,\beta_1}
-\sum_i
-K\left(\frac{x_i-x_0}{h}\right)
-\left[
-Y_i-\beta_0-\beta_1(x_i-x_0)
-\right]^2
-}
+\arg\min_{\beta_0,\ldots,\beta_p}
+\sum_{i=1}^n w_i(\mathbf{x})\left(Y_i - \beta_0 - \sum_{j=1}^p \beta_j x_i^j \right)^2
 \]</span></p>
-<p>A estimativa no ponto é</p>
+<p>Ou seja, realizamos um <strong>ajuste de mínimos quadrados ponderados localmente</strong>.</p>
+</section><section id="regressão-polinomial-local-4" class="slide level2"><h2>Regressão Polinomial Local</h2>
+<p>A solução matricial é dada por:</p>
 <p><span class="math display">\[
-\boxed{\widehat r(x_0)=\widehat\beta_0(x_0)}
+\hat{\boldsymbol{\beta}} =
+(B^t D B)^{-1} B^t D \boldsymbol{y}
 \]</span></p>
-</section><section id="a-reta-é-local" class="slide level2"><h2>A reta é local</h2>
-<p>Para cada novo <span class="math inline">\(x_0\)</span>:</p>
-<p><span class="math display">\[
-x_0
-\rightarrow
-\text{novos pesos}
-\rightarrow
-\text{nova regressão}
-\rightarrow
-\widehat r(x_0)
-\]</span></p>
-<p>A curva final surge da união dessas predições locais.</p>
-</section><section id="generalização-polinomial" class="slide level2"><h2>Generalização polinomial</h2>
-<p>Podemos usar</p>
-<p><span class="math display">\[
-r(x)\approx
-\beta_0+
-\beta_1(x-x_0)+\cdots+
-\beta_d(x-x_0)^d
-\]</span></p>
-<p>Casos principais:</p>
-<p><span class="math display">\[
-d=0:\text{ constante local}
-\]</span></p>
-<p><span class="math display">\[
-d=1:\text{ linear local}
-\]</span></p>
-<p><span class="math display">\[
-d=2:\text{ quadrática local}
-\]</span></p>
-</section><section id="dois-controles-de-complexidade" class="slide level2"><h2>Dois controles de complexidade</h2>
-<p>Agora temos:</p>
+<p>onde:</p>
 <ul>
 <li>
-<span class="math inline">\(d\)</span>: grau do polinômio local;</li>
+<span class="math inline">\(B\)</span> é a matriz de regressão com linhas <span class="math inline">\((1, x_i, x_i^2, \ldots, x_i^p)\)</span><br>
+</li>
 <li>
-<span class="math inline">\(h\)</span>: tamanho da vizinhança.</li>
+<span class="math inline">\(D\)</span> é uma matriz diagonal com pesos <span class="math inline">\(w_i(\mathbf{x})\)</span><br>
+</li>
+<li>
+<span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
+</ul></section><section id="interpretação" class="slide level2"><h2>Interpretação</h2>
+<ul>
+<li>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, ajustamos <strong>um modelo diferente</strong>
+</li>
+<li>Os pesos <span class="math inline">\(w_i(\mathbf{x})\)</span> garantem que apenas observações próximas influenciem o ajuste</li>
+<li>O grau <span class="math inline">\(p\)</span> controla a <strong>flexibilidade local do modelo</strong><br><br>
+</li>
 </ul>
-<p>Na prática, <span class="math inline">\(d\)</span> costuma ser pequeno e</p>
-<p><span class="math display">\[
-\boxed{h\text{ é o principal parâmetro de suavização}}
-\]</span></p>
-</section><section id="efeito-de-fronteira" class="slide level2"><h2>Efeito de fronteira</h2>
-<p>Nas extremidades do domínio, a vizinhança é assimétrica.</p>
-<p>A constante local pode apresentar viés elevado.</p>
-<p>A regressão linear local consegue adaptar a inclinação e costuma apresentar melhor comportamento na fronteira.</p>
-</section><section id="conexão-com-loess" class="slide level2"><h2>Conexão com LOESS</h2>
-<p>A lógica do LOESS é:</p>
-<p><span class="math display">\[
-\boxed{
-\text{vizinhança}
-+
-\text{pesos pela distância}
-+
-\text{regressão polinomial local}
-}
-\]</span></p>
-<p>Assim, o LOESS estudado anteriormente deixa de ser uma técnica isolada.</p>
-</section><section id="loess-ajuste-local" class="slide level2"><h2>LOESS: ajuste local</h2>
-<p>Outra abordagem é ajustar pequenos modelos em vizinhanças de cada ponto.</p>
-<p>Para prever em <span class="math inline">\(x_0\)</span>:</p>
-<ol type="1">
-<li>encontre observações próximas de <span class="math inline">\(x_0\)</span>;</li>
-<li>atribua pesos maiores às mais próximas;</li>
-<li>ajuste uma regressão local;</li>
-<li>use o ajuste para obter <span class="math inline">\(\widehat g(x_0)\)</span>.</li>
-</ol></section><section id="o-parâmetro-span" class="slide level2"><h2>O parâmetro span</h2>
-<p>No LOESS, <code>span</code> controla o tamanho da vizinhança.</p>
-<p><span class="math display">\[
-\text{span pequeno}
-\Rightarrow
-\text{mais local e flexível}
-\]</span></p>
-<p><span class="math display">\[
-\text{span grande}
-\Rightarrow
-\text{mais suave}
-\]</span></p>
-</section><section id="loess-flexibilidade-local" class="slide level2"><h2>LOESS: flexibilidade local</h2>
+<h3 id="casos-importantes">Casos importantes</h3>
+<ul>
+<li>
+<span class="math inline">\(p = 0\)</span> → regressão de Nadaraya–Watson<br>
+</li>
+<li>
+<span class="math inline">\(p = 1\)</span> → regressão linear local (reduz viés nas bordas)<br>
+</li>
+<li>
+<span class="math inline">\(p = 2\)</span> → regressão quadrática local</li>
+</ul></section><section id="regressão-polinomial-local-5" class="slide level2"><h2>Regressão Polinomial Local</h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="síntese" class="slide level2"><h2>Síntese</h2>
-<p><span class="math display">\[
-\boxed{\text{KNN}\quad\text{Kernel}\quad\text{Regressão local}\quad\text{LOESS}}
-\]</span></p>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section><section id="regressão-polinomial-local-6" class="slide level2"><h2>Regressão Polinomial Local</h2>
+<p>Note que:</p>
+<p><code>nn</code> é a fração de observações utilizada para definir adaptativamente a vizinhança em torno de cada ponto onde a regressão local é ajustada.</p>
+<p><span class="math display">\[nn\downarrow\Rightarrow\text{vizinhança menor}\Rightarrow\text{maior flexibilidade}\]</span></p>
+<p><span class="math display">\[nn\uparrow\Rightarrow\text{vizinhança maior}\Rightarrow\text{maior suavização}\]</span></p>
+<p>A figura compara estimadores obtidos com o mesmo kernel e a mesma fração de observações <code>nn</code>, variando apenas o grau <span class="math inline">\(p\)</span> do polinômio ajustado localmente.</p>
+<p>Quando <span class="math inline">\(p=0\)</span>, obtemos o estimador de Nadaraya-Watson. À medida que o grau aumenta, o modelo local torna-se mais flexível, podendo capturar melhor a curvatura da função de regressão.</p>
 
 
 </section></section>

@@ -39,14 +39,14 @@
     "href": "programacao/semana-5.html",
     "title": "Semana 05",
     "section": "",
-    "text": "Distribuição Normal Multivariada"
+    "text": "Métodos Locais: KNN, Kernel e Regressão Local"
   },
   {
     "objectID": "programacao/semana-5.html#slides",
     "href": "programacao/semana-5.html#slides",
     "title": "Semana 05",
     "section": "",
-    "text": "Distribuição Normal Multivariada"
+    "text": "Métodos Locais: KNN, Kernel e Regressão Local"
   },
   {
     "objectID": "programacao/semana-3.html",
@@ -1067,7 +1067,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -8535,112 +8535,112 @@
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-estimador-knn",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O estimador KNN",
-    "text": "O estimador KNN\nSe \\(N_K(x_0)\\) são os \\(K\\) vizinhos mais próximos,\n\\[\n\\boxed{\n\\widehat r_K(x_0)=\n\\frac1K\\sum_{i\\in N_K(x_0)}Y_i\n}\n\\]\n\\[\n\\text{localizar}\\rightarrow\\text{selecionar vizinhos}\\rightarrow\\text{calcular a média}\n\\]"
+    "text": "O estimador KNN\nSe \\(\\mathcal{N}_k(x)\\) são os \\(k\\) vizinhos mais próximos de \\(x\\), a estimativa de \\(r(x)\\) é dada por:\n\\[\n\\boxed{\ng(x)=\n\\frac1k\\sum_{i\\in \\mathcal{N}_k(x)}Y_i\n}\n\\]\n\\[\n\\text{localizar}\\rightarrow\\text{selecionar vizinhos}\\rightarrow\\text{calcular a média}\n\\]\nO estimador é:\n\nlocal\n\nnão paramétrico\n\ndependente da geometria dos dados"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#uma-predição-com-k7",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#uma-predição-com-k7",
     "title": "Parte I : Aprendizado Supervisionado",
-    "section": "Uma predição com \\(K=7\\)\n",
-    "text": "Uma predição com \\(K=7\\)"
+    "section": "Uma predição com \\(k=7\\)\n",
+    "text": "Uma predição com \\(k=7\\)"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#de-um-ponto-para-uma-curva",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#de-um-ponto-para-uma-curva",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "De um ponto para uma curva",
-    "text": "De um ponto para uma curva\nRepetimos o procedimento para muitos \\(x_0\\):\n\nencontramos os \\(K\\) vizinhos;\ncalculamos a média de \\(Y\\);\nobtemos \\(\\widehat r_K(x_0)\\)."
+    "text": "De um ponto para uma curva\nRepetimos o procedimento para muitos \\(x\\):\n\nencontramos os \\(k\\) vizinhos;\ncalculamos a média de \\(Y\\);\nobtemos \\(g(x)\\)."
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#comparando-k1330",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#comparando-k1330",
     "title": "Parte I : Aprendizado Supervisionado",
-    "section": "Comparando \\(K=1,3,30\\)\n",
-    "text": "Comparando \\(K=1,3,30\\)"
+    "section": "Comparando \\(k=1,3,30\\)\n",
+    "text": "Comparando \\(k=1,3,30\\)"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-papel-de-k",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-papel-de-k",
     "title": "Parte I : Aprendizado Supervisionado",
-    "section": "O papel de \\(K\\)\n",
-    "text": "O papel de \\(K\\)\n\n\\[\nK\\downarrow\\Rightarrow\\text{vizinhança pequena}\\Rightarrow\\text{maior flexibilidade}\n\\]\n\\[\nK\\uparrow\\Rightarrow\\text{vizinhança grande}\\Rightarrow\\text{maior suavização}\n\\]\n\\[\n\\boxed{K=\\text{hiperparâmetro de complexidade}}\n\\]"
+    "section": "O papel de \\(k\\)\n",
+    "text": "O papel de \\(k\\)\n\n\\[\nk\\downarrow\\Rightarrow\\text{vizinhança pequena}\\Rightarrow\\text{maior flexibilidade}\n\\]\n\\[\nk\\uparrow\\Rightarrow\\text{vizinhança grande}\\Rightarrow\\text{maior suavização}\n\\]\n\\[\n\\boxed{k=\\text{hiperparâmetro de complexidade}}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#viés-variância",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#viés-variância",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Viés × variância",
-    "text": "Viés × variância\n\n\n\n\\(K\\) pequeno\n\nbaixo viés;\nalta variância;\nmaior adaptação local;\nmaior risco de sobreajuste.\n\n\n\n\\(K\\) grande\n\nmaior viés;\nmenor variância;\ncurva mais suave;\nrisco de subajuste."
+    "text": "Viés × variância\nO parâmetro \\(k\\) controla o grau de suavização do estimador. Define o equilíbrio viés e variância\n\n\n\n\\(k\\) pequeno\n\nbaixo viés\nalta variância\nmaior adaptação local\nmaior risco de sobreajuste\n\n\n\n\\(k\\) grande\n\nmaior viés\nmenor variância\ncurva mais suave\nrisco de subajuste"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#knn-é-baseado-em-instâncias",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#knn-é-baseado-em-instâncias",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "KNN é baseado em instâncias",
-    "text": "KNN é baseado em instâncias\nAo contrário de um modelo paramétrico, o KNN precisa consultar os dados de treinamento para realizar novas predições.\n\\[\n\\boxed{\\text{KNN é um método local / baseado em instâncias}}\n\\]"
+    "text": "KNN é baseado em instâncias\nAo contrário de um modelo paramétrico, o KNN precisa consultar os dados de treinamento para realizar novas predições.\n\\[\n\\boxed{\\text{KNN é um método local, baseado em instâncias}}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#a-distância-importa",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#a-distância-importa",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "A distância importa",
-    "text": "A distância importa\nEm uma dimensão:\n\\[\nd(x_i,x_0)=|x_i-x_0|\n\\]\nEm \\(p\\) dimensões:\n\\[\nd(\\mathbf x_i,\\mathbf x_0)=\n\\sqrt{\\sum_{j=1}^p(x_{ij}-x_{0j})^2}\n\\]"
+    "text": "A distância importa\nEm uma dimensão:\n\\[\nd(x_i,x_k)=|x_i-x_k|\n\\]\nEm \\(p\\) dimensões:\n\\[\nd(\\mathbf x_i,\\mathbf x_k)=\n\\sqrt{\\sum_{j=1}^p(x_{ij}-x_{kj})^2}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#por-que-padronizar",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#por-que-padronizar",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que padronizar?",
-    "text": "Por que padronizar?\nSe uma variável varia entre 0 e 1 e outra entre 0 e 100.000, a segunda pode dominar a distância.\n\\[\nX_j^*=\\frac{X_j-\\bar X_j}{s_j}\n\\]\n\n\n\n\n\n\nMétodos baseados em distância são particularmente sensíveis à escala."
+    "text": "Por que padronizar?\nSe uma variável varia entre 0 e 1 e outra entre 0 e 100.000, a segunda pode dominar a distância.\n\\[\nX_j^*=\\frac{X_j-\\bar X_j}{s_j}\n\\]\n\n\n\n\n\n\nMétodos baseados em distância são particularmente sensíveis à escala"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#escolha-de-k-por-validação-cruzada",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#escolha-de-k-por-validação-cruzada",
     "title": "Parte I : Aprendizado Supervisionado",
-    "section": "Escolha de \\(K\\) por validação cruzada",
-    "text": "Escolha de \\(K\\) por validação cruzada\n\n\\[\n\\widehat K=\\arg\\min_K\\widehat R_{CV}(K)\n\\]"
+    "section": "Escolha de \\(k\\) por validação cruzada",
+    "text": "Escolha de \\(k\\) por validação cruzada\n\n\\[\n\\widehat k=\\arg\\min_k\\widehat R_{CV}(k)\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-versus-classificação",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-versus-classificação",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Regressão versus classificação",
-    "text": "Regressão versus classificação\nRegressão\n\\[\n\\widehat r_K(\\mathbf x)\n=\n\\frac1K\n\\sum_{i\\in N_K(\\mathbf x)}Y_i\n\\]\nClassificação binária\nComo \\(Y_i\\in\\{0,1\\}\\),\n\\[\n\\boxed{\n\\widehat\\eta_K(\\mathbf x)\n=\n\\frac1K\n\\sum_{i\\in N_K(\\mathbf x)}I(Y_i=1)\n}\n\\]"
+    "text": "Regressão versus classificação\nRegressão\n\\[\ng(\\mathbf x)\n=\n\\frac1k\n\\sum_{i\\in \\mathcal N_k(\\mathbf x)}Y_i\n\\]\nClassificação binária\nComo \\(Y_i\\in\\{0,1\\}\\),\n\\[\n\\boxed{\ng_k(\\mathbf x)\n=\n\\frac1k\n\\sum_{i\\in \\mathcal N_k(\\mathbf x)}I(Y_i=1)\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#a-média-virou-probabilidade",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#a-média-virou-probabilidade",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "A média virou probabilidade",
-    "text": "A média virou probabilidade\nSe entre os \\(K=5\\) vizinhos temos\n\\[\n(1,1,0,1,0)\n\\]\nentão\n\\[\n\\widehat\\eta_5(\\mathbf x)\n=\n\\frac35\n=\n0.6\n\\]\nCom cutoff \\(0.5\\),\n\\[\n\\widehat g_5(\\mathbf x)=1\n\\]"
+    "text": "A média virou probabilidade\nSe entre os \\(k=5\\) vizinhos temos\n\\[\n(1,1,0,1,0)\n\\]\nentão\n\\[\ng_5(\\mathbf x)\n=\n\\frac35\n=\n0.6\n\\]\nCom cutoff \\(0.5\\),\n\\[\n\\widehat g_5(\\mathbf x)=1\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#classificação-multiclasse",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#classificação-multiclasse",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Classificação multiclasse",
-    "text": "Classificação multiclasse\nPara \\(Y\\in\\{1,\\ldots,G\\}\\), estimamos\n\\[\n\\boxed{\n\\widehat P(Y=k\\mid\\mathbf X=\\mathbf x)\n=\n\\frac1K\n\\sum_{i\\in N_K(\\mathbf x)}\nI(Y_i=k)\n}\n\\]\ne classificamos por\n\\[\n\\boxed{\n\\widehat g_K(\\mathbf x)\n=\n\\arg\\max_k\n\\widehat P(Y=k\\mid\\mathbf X=\\mathbf x)\n}\n\\]"
+    "text": "Classificação multiclasse\nPara \\(Y\\in\\{1,\\ldots,G\\}\\), estimamos\n\\[\n\\boxed{\n\\widehat P(Y=j\\mid\\mathbf X=\\mathbf x)\n=\n\\frac1k\n\\sum_{i\\in \\mathcal N_k(\\mathbf x)}\nI(Y_i=j)\n}\n\\]\ne classificamos por\n\\[\n\\boxed{\n\\widehat g_k(\\mathbf x)\n=\n\\arg\\max_j\n\\widehat P(Y=j\\mid\\mathbf X=\\mathbf x)\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-papel-de-k-1",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-papel-de-k-1",
     "title": "Parte I : Aprendizado Supervisionado",
-    "section": "O papel de \\(K\\)\n",
-    "text": "O papel de \\(K\\)\n\n\\[\nK\\downarrow\n\\quad\\Longrightarrow\\quad\n\\text{fronteira mais flexível}\n\\]\n\\[\nK\\uparrow\n\\quad\\Longrightarrow\\quad\n\\text{fronteira mais suave}\n\\]\nPortanto, o mesmo balanço viés–variância estudado em regressão reaparece na classificação"
+    "section": "O papel de \\(k\\)\n",
+    "text": "O papel de \\(k\\)\n\n\\[\nk \\downarrow\n\\quad\\Longrightarrow\\quad\n\\text{fronteira mais flexível}\n\\]\n\\[\nk \\uparrow\n\\quad\\Longrightarrow\\quad\n\\text{fronteira mais suave}\n\\]\nPortanto, o mesmo balanço viés–variância estudado em regressão reaparece na classificação"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-que-não-mudou-no-knn",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-que-não-mudou-no-knn",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O que não mudou no KNN?",
-    "text": "O que não mudou no KNN?\n\nsensibilidade à escala das covariáveis\nefeito da escolha da distância\ncusto de predição\nnecessidade de selecionar \\(K\\)\n\nmaldição da dimensionalidade\n\n\n\n\n\n\n\nA principal mudança é a quantidade estimada: uma média de respostas binárias pode ser interpretada como uma probabilidade de classe"
+    "text": "O que não mudou no KNN?\n\nsensibilidade à escala das covariáveis\nefeito da escolha da distância\ncusto de predição\nnecessidade de selecionar \\(k\\)\n\nmaldição da dimensionalidade\n\n\n\n\n\n\n\nA principal mudança é a quantidade estimada: uma média de respostas binárias pode ser interpretada como uma probabilidade de classe"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#uma-limitação-do-knn",
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#uma-limitação-do-knn",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Uma limitação do KNN",
-    "text": "Uma limitação do KNN\nNo KNN, todos os vizinhos selecionados recebem o mesmo peso.\nUma observação quase coincidente com \\(x_0\\) pode receber o mesmo peso que o \\(K\\)-ésimo vizinho.\n\nE se fizermos o peso diminuir com a distância?"
+    "text": "Uma limitação do KNN\nNo KNN, todos os vizinhos selecionados recebem o mesmo peso.\nUma observação quase coincidente com \\(x\\) pode receber o mesmo peso que o \\(k\\)-ésimo vizinho.\n\nE se fizermos o peso diminuir com a distância?\n\n\nNo KNN, estimamos a função de regressão por:\n\\[\ng(\\mathbf{x}) = \\frac{1}{k} \\sum_{i \\in \\mathcal{N}_k(\\mathbf{x})} Y_i\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#a-ideia-do-kernel",
@@ -8654,7 +8654,7 @@
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#estimador-de-nadarayawatson",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Estimador de Nadaraya–Watson",
-    "text": "Estimador de Nadaraya–Watson\n\\[\n\\boxed{\n\\widehat r_h(x_0)=\n\\frac{\\sum_iK\\left(\\frac{x_i-x_0}{h}\\right)Y_i}\n{\\sum_iK\\left(\\frac{x_i-x_0}{h}\\right)}\n}\n\\]\nÉ uma média local ponderada."
+    "text": "Estimador de Nadaraya–Watson\nOs pesos são definidos por:\n\\[\nw_i(\\mathbf{x}) = \\frac{K(\\mathbf{x}, \\mathbf{x}_i)}{\\sum_{j=1}^{n} K(\\mathbf{x}, \\mathbf{x}_j)}\n\\]\nEm que,\n\n\n\\(K(\\mathbf{x}, \\mathbf{x}_i)\\) é um kernel de suavização, usado para medir a similaridade entre \\(\\mathbf{x}\\) e \\(\\mathbf{x}_i\\)\n\nquanto mais próximo \\(\\mathbf{x}_i\\) está de \\(\\mathbf{x}\\), maior será o peso"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#três-funções-kernel",
@@ -8668,7 +8668,7 @@
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#kernels-usuais",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Kernels usuais",
-    "text": "Kernels usuais\nUniforme:\n\\[\nK(u)=\\frac12I(|u|\\le1)\n\\]\nTriangular:\n\\[\nK(u)=(1-|u|)I(|u|\\le1)\n\\]\nEpanechnikov:\n\\[\nK(u)=\\frac34(1-u^2)I(|u|\\le1)\n\\]"
+    "text": "Kernels usuais\nUniforme: todos os pontos dentro de \\(h\\) têm o mesmo peso\n\\[\nK(\\mathbf{x}, \\mathbf{x}_i) = \\mathbf{I}\\{d(\\mathbf{x}, \\mathbf{x}_i) \\le h\\}\n\\]\nTriangular: peso decresce com a distância\n\\[\nK(\\mathbf{x}, \\mathbf{x}_i) = \\left(1 - \\frac{d(\\mathbf{x}, \\mathbf{x}_i)}{h}\\right)\\mathbf{I}\\{d(\\mathbf{x}, \\mathbf{x}_i) \\le h\\}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#mesmo-h-kernels-diferentes",
@@ -8696,7 +8696,7 @@
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#knn-kernel",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "KNN × Kernel",
-    "text": "KNN × Kernel\n\n\nAspecto\nKNN\nKernel\n\n\n\nVizinhança\n\n\\(K\\) observações\ncontrolada por \\(h\\)\n\n\n\nPesos\niguais\ndependem da distância\n\n\nHiperparâmetro\n\\(K\\)\n\\(h\\)\n\n\nPredição\nmédia local\nmédia local ponderada\n\n\n\n\\[\n\\boxed{\\text{mesma filosofia: aprender localmente}}\n\\]"
+    "text": "KNN × Kernel\n\n\nAspecto\nKNN\nKernel\n\n\n\nVizinhança\n\n\\(k\\) observações\ncontrolada por \\(h\\)\n\n\n\nPesos\niguais\ndependem da distância\n\n\nHiperparâmetro\n\\(k\\)\n\\(h\\)\n\n\nPredição\nmédia local\nmédia local ponderada\n\n\n\n\\[\n\\boxed{\\text{mesma filosofia: aprender localmente}}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#escolha-de-h",
@@ -8710,7 +8710,7 @@
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#nadarayawatson-revisitado",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Nadaraya–Watson revisitado",
-    "text": "Nadaraya–Watson revisitado\nEm \\(x_0\\), Nadaraya–Watson pode ser obtido minimizando\n\\[\n\\min_{\\beta_0}\n\\sum_i\nK\\left(\\frac{x_i-x_0}{h}\\right)\n(Y_i-\\beta_0)^2\n\\]\nLogo,\n\\[\n\\boxed{\\text{Nadaraya–Watson = regressão constante local}}\n\\]"
+    "text": "Nadaraya–Watson revisitado\nPode-se verificar que o estimador de Nadaraya-Watson em um dado \\(\\mathbf{x}\\) fixo é justamente o ponto \\(\\beta_0\\) que minimiza\n\\[\\sum_i\nw_i(\\mathbf{x})\n(Y_i-\\beta_0)^2\\]\nisto é,\n\\[\ng(\\mathbf{x}) = \\hat{\\beta}_0 = \\arg\\min_{\\beta_0}\\sum_i\nw_i(\\mathbf{x})\n(Y_i-\\beta_0)^2\n\\]\nLogo,\n\\[\n\\boxed{\\text{Nadaraya–Watson = regressão constante local}}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#por-que-parar-em-uma-constante",
@@ -9879,7 +9879,7 @@
     "href": "aulas.html",
     "title": "Aulas",
     "section": "",
-    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides",
+    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides  \n\n\n Métodos Locais: KNN, Kernel e Regressão Local \n Ver slides",
     "crumbs": [
       "Aulas"
     ]
@@ -10891,5 +10891,96 @@
     "title": "Semana 08",
     "section": "",
     "text": "Mapas Perceptuais com PCA: estudo de marcas \n Ver análise PDF"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#nadarayawatson",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#nadarayawatson",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nadaraya–Watson",
+    "text": "Nadaraya–Watson\nNo método de Nadaraya–Watson, o estimador de regressão é dado por:\n\\[\ng(\\mathbf{x}) = \\sum_{i=1}^{n} w_i(\\mathbf{x})\\,Y_i\n\\]\nonde \\(w_i(\\mathbf{x})\\) representa o peso atribuído à observação \\(i\\).\nPropriedade importante\n\\[\n\\sum_{i=1}^{n} w_i(\\mathbf{x}) = 1\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#estimador-de-nadarayawatson-1",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#estimador-de-nadarayawatson-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estimador de Nadaraya–Watson",
+    "text": "Estimador de Nadaraya–Watson\nEle controla:\n\ncomo a influência dos pontos decai com a distância\n\no grau de suavização do estimador\n\nObservações próximas recebem maior influência na estimativa de \\(g(x)\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#kernels-usuais-1",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#kernels-usuais-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Kernels usuais",
+    "text": "Kernels usuais\nEpanechnikov: peso decresce com a distância\n\\[\nK(\\mathbf{x}, \\mathbf{x}_i) = \\left(1 - \\frac{d(\\mathbf{x}, \\mathbf{x}_i)^2}{h^2}\\right)\\mathbf{I}\\{d(\\mathbf{x}, \\mathbf{x}_i) \\le h\\}\n\\]\nGaussiano: todos os pontos recebem peso. Pontos mais próximos têm maior influência\n\\[\nK(\\mathbf{x}, \\mathbf{x}_i) = \\frac{1}{\\sqrt{2\\pi}h}\n\\exp\\left(-\\frac{d(\\mathbf{x}, \\mathbf{x}_i)^2}{2h^2}\\right)\n\\]\n\n\n\n\n\n\nNota\n\n\nO parâmetro \\(h\\) controla a largura da vizinhança"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#quatro-funções-kernel",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#quatro-funções-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Quatro funções kernel",
+    "text": "Quatro funções kernel"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#magnitude-de-h",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#magnitude-de-h",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Magnitude de \\(h\\)\n",
+    "text": "Magnitude de \\(h\\)"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#observação-prática",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#observação-prática",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Observação prática",
+    "text": "Observação prática\nNa prática, observa-se que:\n\na escolha do kernel tem pouca influência no resultado\n\na escolha do parâmetro de suavização (\\(h\\)) é decisiva\n\nO comportamento do estimador é controlado principalmente por: \\(h\\) (largura da vizinhança)"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-1",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão Polinomial Local",
+    "text": "Regressão Polinomial Local\nA regressão de Nadaraya–Watson estima \\(g(x)\\) como uma média ponderada local, ou seja, resolve\n\\[\n\\hat{g}(\\mathbf{x}) = \\arg\\min_{\\beta_0} \\sum_{i=1}^n w_i(\\mathbf{x})\\,(Y_i - \\beta_0)^2\n\\]\nIsso equivale a ajustar localmente uma constante (polinômio de grau 0)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-2",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão Polinomial Local",
+    "text": "Regressão Polinomial Local\nA regressão polinomial local generaliza essa ideia, permitindo que o ajuste local seja mais flexível.\nEm vez de ajustar apenas um intercepto, consideramos um polinômio de grau \\(p\\):\n\\[\ng(\\mathbf{x}) \\approx \\beta_0 + \\beta_1 x + \\beta_2 x^2 + \\cdots + \\beta_p x^p\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-3",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-3",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão Polinomial Local",
+    "text": "Regressão Polinomial Local\nPara cada ponto \\(\\mathbf{x}\\), estimamos os coeficientes resolvendo:\n\\[\n(\\hat{\\beta}_0, \\ldots, \\hat{\\beta}_p)\n=\n\\arg\\min_{\\beta_0,\\ldots,\\beta_p}\n\\sum_{i=1}^n w_i(\\mathbf{x})\\left(Y_i - \\beta_0 - \\sum_{j=1}^p \\beta_j x_i^j \\right)^2\n\\]\nOu seja, realizamos um ajuste de mínimos quadrados ponderados localmente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-4",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-4",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão Polinomial Local",
+    "text": "Regressão Polinomial Local\nA solução matricial é dada por:\n\\[\n\\hat{\\boldsymbol{\\beta}} =\n(B^t D B)^{-1} B^t D \\boldsymbol{y}\n\\]\nonde:\n\n\n\\(B\\) é a matriz de regressão com linhas \\((1, x_i, x_i^2, \\ldots, x_i^p)\\)\n\n\n\\(D\\) é uma matriz diagonal com pesos \\(w_i(\\mathbf{x})\\)\n\n\n\\(\\boldsymbol{y}\\) é o vetor de respostas"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#interpretação",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#interpretação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Interpretação",
+    "text": "Interpretação\n\nPara cada ponto \\(\\mathbf{x}\\), ajustamos um modelo diferente\n\nOs pesos \\(w_i(\\mathbf{x})\\) garantem que apenas observações próximas influenciem o ajuste\nO grau \\(p\\) controla a flexibilidade local do modelo\n\n\nCasos importantes\n\n\n\\(p = 0\\) → regressão de Nadaraya–Watson\n\n\n\\(p = 1\\) → regressão linear local (reduz viés nas bordas)\n\n\n\\(p = 2\\) → regressão quadrática local"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-5",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-5",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão Polinomial Local",
+    "text": "Regressão Polinomial Local"
+  },
+  {
+    "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-6",
+    "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#regressão-polinomial-local-6",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão Polinomial Local",
+    "text": "Regressão Polinomial Local\nNote que:\nnn é a fração de observações utilizada para definir adaptativamente a vizinhança em torno de cada ponto onde a regressão local é ajustada.\n\\[nn\\downarrow\\Rightarrow\\text{vizinhança menor}\\Rightarrow\\text{maior flexibilidade}\\]\n\\[nn\\uparrow\\Rightarrow\\text{vizinhança maior}\\Rightarrow\\text{maior suavização}\\]\nA figura compara estimadores obtidos com o mesmo kernel e a mesma fração de observações nn, variando apenas o grau \\(p\\) do polinômio ajustado localmente.\nQuando \\(p=0\\), obtemos o estimador de Nadaraya-Watson. À medida que o grau aumenta, o modelo local torna-se mais flexível, podendo capturar melhor a curvatura da função de regressão."
   }
 ]
