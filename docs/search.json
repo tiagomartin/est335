@@ -8528,7 +8528,7 @@
     "href": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#uma-pergunta-local",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Uma pergunta local",
-    "text": "Uma pergunta local\nPara prever \\(Y\\) em \\(x_0\\):\n\nQuais observações de treinamento são mais parecidas com \\(x_0\\)?\n\nUsamos então as respostas dessas observações para construir a predição."
+    "text": "Uma pergunta local\nPara prever \\(Y\\) em \\(x\\):\n\nQuais observações de treinamento são mais parecidas com \\(x\\)?\n\nUsamos então as respostas dessas observações para construir a predição."
   },
   {
     "objectID": "aulas/semanais/semana_05_metodos_locais_knn_kernel.html#o-estimador-knn",

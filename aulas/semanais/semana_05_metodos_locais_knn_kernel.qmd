@@ -95,9 +95,9 @@ $$
 
 ## Uma pergunta local
 
-Para prever $Y$ em $x_0$:
+Para prever $Y$ em $x$:
 
-> Quais observações de treinamento são mais parecidas com $x_0$?
+> Quais observações de treinamento são mais parecidas com $x$?
 
 Usamos então as respostas dessas observações para construir a predição.
 
