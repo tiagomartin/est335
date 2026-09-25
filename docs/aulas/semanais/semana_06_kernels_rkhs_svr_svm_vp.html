@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+<meta property="og:title" content="Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Kernels, RKHS, SVR e SVM">
+<meta property="og:image" content="http://professortp.com.br/est335/aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp_files/figure-html/unnamed-chunk-2-1.png">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:image:height" content="902">
+<meta property="og:image:width" content="1536">
+</head>
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Parte I : Aprendizado Supervisionado</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../atividades.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Atividades</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Material Complementar</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../plano.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plano de Ensino</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#m%C3%A9todos-baseados-em-rkhs" id="toc-métodos-baseados-em-rkhs" class="nav-link active" data-scroll-target="#m%C3%A9todos-baseados-em-rkhs">Métodos baseados em RKHS</a>
+  <ul class="collapse">
+<li><a href="#por-que-introduzir-outra-estrutura" id="toc-por-que-introduzir-outra-estrutura" class="nav-link" data-scroll-target="#por-que-introduzir-outra-estrutura">Por que introduzir outra estrutura?</a></li>
+  <li><a href="#de-onde-vem-a-ideia" id="toc-de-onde-vem-a-ideia" class="nav-link" data-scroll-target="#de-onde-vem-a-ideia">De onde vem a ideia?</a></li>
+  <li><a href="#da-estima%C3%A7%C3%A3o-de-par%C3%A2metros-%C3%A0-estima%C3%A7%C3%A3o-de-fun%C3%A7%C3%B5es" id="toc-da-estimação-de-parâmetros-à-estimação-de-funções" class="nav-link" data-scroll-target="#da-estima%C3%A7%C3%A3o-de-par%C3%A2metros-%C3%A0-estima%C3%A7%C3%A3o-de-fun%C3%A7%C3%B5es">Da estimação de parâmetros à estimação de funções</a></li>
+  <li><a href="#o-que-significa-rkhs" id="toc-o-que-significa-rkhs" class="nav-link" data-scroll-target="#o-que-significa-rkhs">O que significa RKHS?</a></li>
+  <li><a href="#o-que-significa-rkhs-1" id="toc-o-que-significa-rkhs-1" class="nav-link" data-scroll-target="#o-que-significa-rkhs-1">O que significa RKHS?</a></li>
+  <li><a href="#onde-entra-o-kernel" id="toc-onde-entra-o-kernel" class="nav-link" data-scroll-target="#onde-entra-o-kernel">Onde entra o kernel?</a></li>
+  <li><a href="#onde-entra-o-kernel-1" id="toc-onde-entra-o-kernel-1" class="nav-link" data-scroll-target="#onde-entra-o-kernel-1">Onde entra o kernel?</a></li>
+  <li><a href="#kernel-gaussiano-uma-vis%C3%A3o-gr%C3%A1fica" id="toc-kernel-gaussiano-uma-visão-gráfica" class="nav-link" data-scroll-target="#kernel-gaussiano-uma-vis%C3%A3o-gr%C3%A1fica">Kernel Gaussiano: uma visão gráfica</a></li>
+  <li><a href="#construindo-uma-fun%C3%A7%C3%A3o-com-kernels" id="toc-construindo-uma-função-com-kernels" class="nav-link" data-scroll-target="#construindo-uma-fun%C3%A7%C3%A3o-com-kernels">Construindo uma função com kernels</a></li>
+  <li><a href="#construindo-uma-fun%C3%A7%C3%A3o-com-kernels-1" id="toc-construindo-uma-função-com-kernels-1" class="nav-link" data-scroll-target="#construindo-uma-fun%C3%A7%C3%A3o-com-kernels-1">Construindo uma função com kernels</a></li>
+  <li><a href="#visualizando-a-constru%C3%A7%C3%A3o" id="toc-visualizando-a-construção" class="nav-link" data-scroll-target="#visualizando-a-constru%C3%A7%C3%A3o">Visualizando a construção</a></li>
+  <li><a href="#mas-isso-n%C3%A3o-pode-ficar-complexo-demais" id="toc-mas-isso-não-pode-ficar-complexo-demais" class="nav-link" data-scroll-target="#mas-isso-n%C3%A3o-pode-ficar-complexo-demais">Mas isso não pode ficar complexo demais?</a></li>
+  <li><a href="#mas-isso-n%C3%A3o-pode-ficar-complexo-demais-1" id="toc-mas-isso-não-pode-ficar-complexo-demais-1" class="nav-link" data-scroll-target="#mas-isso-n%C3%A3o-pode-ficar-complexo-demais-1">Mas isso não pode ficar complexo demais?</a></li>
+  <li><a href="#regulariza%C3%A7%C3%A3o-em-uma-rkhs" id="toc-regularização-em-uma-rkhs" class="nav-link" data-scroll-target="#regulariza%C3%A7%C3%A3o-em-uma-rkhs">Regularização em uma RKHS</a></li>
+  <li>
+<a href="#o-papel-de-lambda" id="toc-o-papel-de-lambda" class="nav-link" data-scroll-target="#o-papel-de-lambda">O papel de <span class="math inline">\(\lambda\)</span></a>
+  <ul class="collapse">
+<li><a href="#lambda-pequeno" id="toc-lambda-pequeno" class="nav-link" data-scroll-target="#lambda-pequeno"><span class="math inline">\(\lambda\)</span> pequeno</a></li>
+  <li><a href="#lambda-grande" id="toc-lambda-grande" class="nav-link" data-scroll-target="#lambda-grande"><span class="math inline">\(\lambda\)</span> grande</a></li>
+  </ul>
+</li>
+  <li><a href="#a-conex%C3%A3o-com-ridge" id="toc-a-conexão-com-ridge" class="nav-link" data-scroll-target="#a-conex%C3%A3o-com-ridge">A conexão com Ridge</a></li>
+  <li><a href="#a-conex%C3%A3o-com-ridge-1" id="toc-a-conexão-com-ridge-1" class="nav-link" data-scroll-target="#a-conex%C3%A3o-com-ridge-1">A conexão com Ridge</a></li>
+  <li><a href="#uma-dificuldade-aparente" id="toc-uma-dificuldade-aparente" class="nav-link" data-scroll-target="#uma-dificuldade-aparente">Uma dificuldade aparente</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#teorema-do-representante" id="toc-teorema-do-representante" class="nav-link" data-scroll-target="#teorema-do-representante">Teorema do Representante</a>
+  <ul class="collapse">
+<li><a href="#a-ideia-central" id="toc-a-ideia-central" class="nav-link" data-scroll-target="#a-ideia-central">A ideia central</a></li>
+  <li><a href="#a-ideia-central-1" id="toc-a-ideia-central-1" class="nav-link" data-scroll-target="#a-ideia-central-1">A ideia central</a></li>
+  <li><a href="#a-matriz-kernel" id="toc-a-matriz-kernel" class="nav-link" data-scroll-target="#a-matriz-kernel">A matriz kernel</a></li>
+  <li><a href="#o-kernel-trick" id="toc-o-kernel-trick" class="nav-link" data-scroll-target="#o-kernel-trick">O kernel trick</a></li>
+  <li><a href="#por-que-isso-ajuda-com-rela%C3%A7%C3%B5es-n%C3%A3o-lineares" id="toc-por-que-isso-ajuda-com-relações-não-lineares" class="nav-link" data-scroll-target="#por-que-isso-ajuda-com-rela%C3%A7%C3%B5es-n%C3%A3o-lineares">Por que isso ajuda com relações não lineares?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#kernel-ridge-regression" id="toc-kernel-ridge-regression" class="nav-link" data-scroll-target="#kernel-ridge-regression">Kernel Ridge Regression</a>
+  <ul class="collapse">
+<li><a href="#ridge-kernel" id="toc-ridge-kernel" class="nav-link" data-scroll-target="#ridge-kernel">Ridge + kernel</a></li>
+  <li><a href="#ridge-kernel-1" id="toc-ridge-kernel-1" class="nav-link" data-scroll-target="#ridge-kernel-1">Ridge + kernel</a></li>
+  <li>
+<a href="#compara%C3%A7%C3%A3o-com-regress%C3%A3o-kernel" id="toc-comparação-com-regressão-kernel" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-com-regress%C3%A3o-kernel">Comparação com regressão kernel</a>
+  <ul class="collapse">
+<li><a href="#nadarayawatson" id="toc-nadarayawatson" class="nav-link" data-scroll-target="#nadarayawatson">Nadaraya–Watson</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#compara%C3%A7%C3%A3o-com-regress%C3%A3o-kernel-1" id="toc-comparação-com-regressão-kernel-1" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-com-regress%C3%A3o-kernel-1">Comparação com regressão kernel</a>
+  <ul class="collapse">
+<li><a href="#rkhs-kernel-ridge" id="toc-rkhs-kernel-ridge" class="nav-link" data-scroll-target="#rkhs-kernel-ridge">RKHS / Kernel Ridge</a></li>
+  </ul>
+</li>
+  <li><a href="#dois-usos-da-palavra-kernel" id="toc-dois-usos-da-palavra-kernel" class="nav-link" data-scroll-target="#dois-usos-da-palavra-kernel">Dois usos da palavra “kernel”</a></li>
+  <li><a href="#e-os-smoothing-splines" id="toc-e-os-smoothing-splines" class="nav-link" data-scroll-target="#e-os-smoothing-splines">E os smoothing splines?</a></li>
+  <li><a href="#e-os-smoothing-splines-1" id="toc-e-os-smoothing-splines-1" class="nav-link" data-scroll-target="#e-os-smoothing-splines-1">E os smoothing splines?</a></li>
+  <li><a href="#onde-rkhs-aparece-em-machine-learning" id="toc-onde-rkhs-aparece-em-machine-learning" class="nav-link" data-scroll-target="#onde-rkhs-aparece-em-machine-learning">Onde RKHS aparece em Machine Learning?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#support-vector-regression" id="toc-support-vector-regression" class="nav-link" data-scroll-target="#support-vector-regression">Support Vector Regression</a>
+  <ul class="collapse">
+<li><a href="#regress%C3%A3o-com-margem" id="toc-regressão-com-margem" class="nav-link" data-scroll-target="#regress%C3%A3o-com-margem">Regressão com margem</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#support-vector-machines" id="toc-support-vector-machines" class="nav-link" data-scroll-target="#support-vector-machines">Support Vector Machines</a>
+  <ul class="collapse">
+<li><a href="#da-svr-para-a-svm" id="toc-da-svr-para-a-svm" class="nav-link" data-scroll-target="#da-svr-para-a-svm">Da SVR para a SVM</a></li>
+  <li><a href="#regra-de-classifica%C3%A7%C3%A3o" id="toc-regra-de-classificação" class="nav-link" data-scroll-target="#regra-de-classifica%C3%A7%C3%A3o">Regra de classificação</a></li>
+  <li><a href="#muitos-hiperplanos-podem-separar-os-dados" id="toc-muitos-hiperplanos-podem-separar-os-dados" class="nav-link" data-scroll-target="#muitos-hiperplanos-podem-separar-os-dados">Muitos hiperplanos podem separar os dados</a></li>
+  <li><a href="#margem" id="toc-margem" class="nav-link" data-scroll-target="#margem">Margem</a></li>
+  <li><a href="#margem-m%C3%A1xima" id="toc-margem-máxima" class="nav-link" data-scroll-target="#margem-m%C3%A1xima">Margem máxima</a></li>
+  <li><a href="#support-vectors" id="toc-support-vectors" class="nav-link" data-scroll-target="#support-vectors">Support vectors</a></li>
+  <li><a href="#e-quando-n%C3%A3o-h%C3%A1-separa%C3%A7%C3%A3o-perfeita" id="toc-e-quando-não-há-separação-perfeita" class="nav-link" data-scroll-target="#e-quando-n%C3%A3o-h%C3%A1-separa%C3%A7%C3%A3o-perfeita">E quando não há separação perfeita?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#soft-margin" id="toc-soft-margin" class="nav-link" data-scroll-target="#soft-margin">Soft Margin</a>
+  <ul class="collapse">
+<li><a href="#vari%C3%A1veis-de-folga" id="toc-variáveis-de-folga" class="nav-link" data-scroll-target="#vari%C3%A1veis-de-folga">Variáveis de folga</a></li>
+  <li><a href="#problema-de-otimiza%C3%A7%C3%A3o" id="toc-problema-de-otimização" class="nav-link" data-scroll-target="#problema-de-otimiza%C3%A7%C3%A3o">Problema de otimização</a></li>
+  <li>
+<a href="#o-papel-de-c" id="toc-o-papel-de-c" class="nav-link" data-scroll-target="#o-papel-de-c">O papel de <span class="math inline">\(C\)</span></a>
+  <ul class="collapse">
+<li><a href="#c-grande" id="toc-c-grande" class="nav-link" data-scroll-target="#c-grande"><span class="math inline">\(C\)</span> grande</a></li>
+  <li><a href="#c-pequeno" id="toc-c-pequeno" class="nav-link" data-scroll-target="#c-pequeno"><span class="math inline">\(C\)</span> pequeno</a></li>
+  </ul>
+</li>
+  <li><a href="#hinge-loss" id="toc-hinge-loss" class="nav-link" data-scroll-target="#hinge-loss">Hinge loss</a></li>
+  <li><a href="#interpretando-a-hinge-loss" id="toc-interpretando-a-hinge-loss" class="nav-link" data-scroll-target="#interpretando-a-hinge-loss">Interpretando a hinge loss</a></li>
+  <li>
+<a href="#compara%C3%A7%C3%A3o-conceitual" id="toc-comparação-conceitual" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-conceitual">Comparação conceitual</a>
+  <ul class="collapse">
+<li><a href="#regress%C3%A3o-log%C3%ADstica" id="toc-regressão-logística" class="nav-link" data-scroll-target="#regress%C3%A3o-log%C3%ADstica">Regressão logística</a></li>
+  <li><a href="#svm" id="toc-svm" class="nav-link" data-scroll-target="#svm">SVM</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li>
+<a href="#svm-n%C3%A3o-linear" id="toc-svm-não-linear" class="nav-link" data-scroll-target="#svm-n%C3%A3o-linear">SVM não linear</a>
+  <ul class="collapse">
+<li><a href="#quando-uma-reta-n%C3%A3o-basta" id="toc-quando-uma-reta-não-basta" class="nav-link" data-scroll-target="#quando-uma-reta-n%C3%A3o-basta">Quando uma reta não basta</a></li>
+  <li><a href="#kernel-trick" id="toc-kernel-trick" class="nav-link" data-scroll-target="#kernel-trick">Kernel trick</a></li>
+  <li>
+<a href="#kernels-comuns" id="toc-kernels-comuns" class="nav-link" data-scroll-target="#kernels-comuns">Kernels comuns</a>
+  <ul class="collapse">
+<li><a href="#linear" id="toc-linear" class="nav-link" data-scroll-target="#linear">Linear</a></li>
+  <li><a href="#polinomial" id="toc-polinomial" class="nav-link" data-scroll-target="#polinomial">Polinomial</a></li>
+  <li><a href="#rbf" id="toc-rbf" class="nav-link" data-scroll-target="#rbf">RBF</a></li>
+  </ul>
+</li>
+  <li><a href="#hiperpar%C3%A2metros" id="toc-hiperparâmetros" class="nav-link" data-scroll-target="#hiperpar%C3%A2metros">Hiperparâmetros</a></li>
+  <li><a href="#svm-multi-classe" id="toc-svm-multi-classe" class="nav-link" data-scroll-target="#svm-multi-classe">SVM: multi-classe</a></li>
+  <li><a href="#svr-svm" id="toc-svr-svm" class="nav-link" data-scroll-target="#svr-svm">SVR × SVM</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="semana_06_kernels_rkhs_svr_svm_vp.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<p class="subtitle lead"><span class="custom-subtitle">Kernels, RKHS, SVR e SVM</span></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="métodos-baseados-em-rkhs" class="level1"><h1>Métodos baseados em RKHS</h1>
+<section id="por-que-introduzir-outra-estrutura" class="level2"><h2 class="anchored" data-anchor-id="por-que-introduzir-outra-estrutura">Por que introduzir outra estrutura?</h2>
+<p>Até agora controlamos flexibilidade por:</p>
+<ul>
+<li>número de termos;</li>
+<li>número de nós;</li>
+<li>largura de banda;</li>
+<li>tamanho da vizinhança.</li>
+</ul>
+<p>Outra possibilidade é penalizar diretamente a complexidade de uma função.</p>
+</section><section id="de-onde-vem-a-ideia" class="level2"><h2 class="anchored" data-anchor-id="de-onde-vem-a-ideia">De onde vem a ideia?</h2>
+<p>Considere o problema de regressão</p>
+<p><span class="math display">\[
+Y=g(X)+\varepsilon
+\]</span></p>
+<p>Na regressão linear, restringimos a função a uma forma específica:</p>
+<p><span class="math display">\[
+g(x)=\beta_0+\beta_1x
+\]</span></p>
+<p>Mas e se a relação entre <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> for <strong>não linear</strong> e não quisermos especificar antecipadamente a forma de <span class="math inline">\(g\)</span>?<br><br></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Precisamos definir <strong>em qual conjunto de funções</strong> procuraremos <span class="math inline">\(g\)</span> e como controlar sua complexidade.</p>
+</div>
+</div>
+</section><section id="da-estimação-de-parâmetros-à-estimação-de-funções" class="level2"><h2 class="anchored" data-anchor-id="da-estimação-de-parâmetros-à-estimação-de-funções">Da estimação de parâmetros à estimação de funções</h2>
+<p>Na regressão linear, procuramos um vetor de parâmetros:</p>
+<p><span class="math display">\[
+\boldsymbol\beta=(\beta_0,\beta_1,\ldots,\beta_p)^\top
+\]</span></p>
+<p>Nos métodos baseados em RKHS, procuramos diretamente uma função:</p>
+<p><span class="math display">\[
+\boxed{g\in\mathcal H}
+\]</span></p>
+<p>onde <span class="math inline">\(\mathcal H\)</span> representa um <strong>espaço de funções</strong>.</p>
+<p><span class="math display">\[
+\text{Regressão linear: procurar }\boldsymbol\beta
+\qquad\Longrightarrow\qquad
+\text{RKHS: procurar }g
+\]</span></p>
+</section><section id="o-que-significa-rkhs" class="level2"><h2 class="anchored" data-anchor-id="o-que-significa-rkhs">O que significa RKHS?</h2>
+<p><strong>RKHS</strong> = <em>Reproducing Kernel Hilbert Space</em></p>
+<p>Em português:</p>
+<blockquote class="blockquote">
+<p><strong>Espaço de Hilbert com Núcleo Reprodutor</strong></p>
+</blockquote>
+<p>Para uma primeira abordagem, podemos pensar em uma RKHS como</p>
+<p><span class="math display">\[
+\boxed{\text{um espaço estruturado de funções candidatas para }g}
+\]</span></p>
+</section><section id="o-que-significa-rkhs-1" class="level2"><h2 class="anchored" data-anchor-id="o-que-significa-rkhs-1">O que significa RKHS?</h2>
+<p>Não precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.<br><br></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A ideia principal é que a RKHS fornece uma estrutura matemática para <strong>comparar, estimar e regularizar funções</strong>.</p>
+</div>
+</div>
+</section><section id="onde-entra-o-kernel" class="level2"><h2 class="anchored" data-anchor-id="onde-entra-o-kernel">Onde entra o kernel?</h2>
+<p>Uma RKHS está associada a uma função kernel</p>
+<p><span class="math display">\[
+K(x,x')
+\]</span></p>
+<p>que relaciona dois pontos <span class="math inline">\(x\)</span> e <span class="math inline">\(x'\)</span>.</p>
+<p>Um exemplo importante é o kernel Gaussiano (RBF):</p>
+<p><span class="math display">\[
+K(x,x')=
+\exp\left\{-\frac{(x-x')^2}{2\sigma^2}\right\}
+\]</span></p>
+</section><section id="onde-entra-o-kernel-1" class="level2"><h2 class="anchored" data-anchor-id="onde-entra-o-kernel-1">Onde entra o kernel?</h2>
+<p>Intuitivamente:</p>
+<p><span class="math display">\[
+x\approx x' \Rightarrow K(x,x')\text{ grande}
+\]</span></p>
+<p><span class="math display">\[
+|x-x'|\text{ grande} \Rightarrow K(x,x')\text{ pequeno}
+\]</span></p>
+</section><section id="kernel-gaussiano-uma-visão-gráfica" class="level2"><h2 class="anchored" data-anchor-id="kernel-gaussiano-uma-visão-gráfica">Kernel Gaussiano: uma visão gráfica</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="semana_06_kernels_rkhs_svr_svm_vp_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Quanto mais distante <span class="math inline">\(x\)</span> está de <span class="math inline">\(x_0\)</span>, menor é a similaridade determinada pelo kernel.</p>
+</section><section id="construindo-uma-função-com-kernels" class="level2"><h2 class="anchored" data-anchor-id="construindo-uma-função-com-kernels">Construindo uma função com kernels</h2>
+<p>Uma função em muitos métodos baseados em RKHS pode ser representada na forma</p>
+<p><span class="math display">\[
+\boxed{
+g(x)=\sum_{i=1}^{n}\alpha_iK(x,x_i)
+}
+\]</span></p>
+<p>ou seja,</p>
+<p><span class="math display">\[
+g(x)=
+\alpha_1K(x,x_1)+\cdots+\alpha_nK(x,x_n)
+\]</span></p>
+</section><section id="construindo-uma-função-com-kernels-1" class="level2"><h2 class="anchored" data-anchor-id="construindo-uma-função-com-kernels-1">Construindo uma função com kernels</h2>
+<p>Cada observação de treinamento contribui para a construção da função.<br><br></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Os coeficientes <span class="math inline">\(\alpha_i\)</span> determinam <strong>quanto cada função kernel contribui</strong> para a função estimada.</p>
+</div>
+</div>
+</section><section id="visualizando-a-construção" class="level2"><h2 class="anchored" data-anchor-id="visualizando-a-construção">Visualizando a construção</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="semana_06_kernels_rkhs_svr_svm_vp_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A curva final é uma combinação das funções kernel.</p>
+</section><section id="mas-isso-não-pode-ficar-complexo-demais" class="level2"><h2 class="anchored" data-anchor-id="mas-isso-não-pode-ficar-complexo-demais">Mas isso não pode ficar complexo demais?</h2>
+<p>Se procurarmos apenas a função que minimiza</p>
+<p><span class="math display">\[
+\sum_{i=1}^{n}\left[y_i-g(x_i)\right]^2
+\]</span></p>
+<p>podemos obter uma função excessivamente flexível.</p>
+<p><span class="math display">\[
+\text{flexibilidade excessiva}
+\quad\Longrightarrow\quad
+\text{overfitting}
+\]</span></p>
+</section><section id="mas-isso-não-pode-ficar-complexo-demais-1" class="level2"><h2 class="anchored" data-anchor-id="mas-isso-não-pode-ficar-complexo-demais-1">Mas isso não pode ficar complexo demais?</h2>
+<p>Precisamos equilibrar</p>
+<p><span class="math display">\[
+\boxed{\text{qualidade do ajuste} \quad\times\quad \text{complexidade}}
+\]</span></p>
+<p>Essa ideia já apareceu em Ridge, Lasso e smoothing splines.</p>
+</section><section id="regularização-em-uma-rkhs" class="level2"><h2 class="anchored" data-anchor-id="regularização-em-uma-rkhs">Regularização em uma RKHS</h2>
+<p>Um problema típico é</p>
+<p><span class="math display">\[
+\boxed{
+\min_{g\in\mathcal H}
+\left\{
+\frac{1}{n}\sum_{i=1}^{n}[y_i-g(x_i)]^2
++\lambda\|g\|_{\mathcal H}^{2}
+\right\}
+}
+\]</span></p>
+<p>Temos dois componentes:</p>
+<p><span class="math display">\[
+\underbrace{
+\frac{1}{n}\sum_{i=1}^{n}[y_i-g(x_i)]^2
+}_{\text{erro de ajuste}}
++
+\underbrace{
+\lambda\|g\|_{\mathcal H}^{2}
+}_{\text{penalização da complexidade}}
+\]</span></p>
+</section><section id="o-papel-de-lambda" class="level2"><h2 class="anchored" data-anchor-id="o-papel-de-lambda">O papel de <span class="math inline">\(\lambda\)</span>
+</h2>
+<p>O parâmetro <span class="math inline">\(\lambda\)</span> controla o compromisso entre ajuste e complexidade.<br><br></p>
+<section id="lambda-pequeno" class="level3"><h3 class="anchored" data-anchor-id="lambda-pequeno">
+<span class="math inline">\(\lambda\)</span> pequeno</h3>
+<p><span class="math display">\[
+\lambda\downarrow
+\Rightarrow
+\text{penalização menor}
+\Rightarrow
+\text{maior flexibilidade}
+\]</span></p>
+<p>Maior risco de <strong>overfitting</strong>.<br><br></p>
+</section><section id="lambda-grande" class="level3"><h3 class="anchored" data-anchor-id="lambda-grande">
+<span class="math inline">\(\lambda\)</span> grande</h3>
+<p><span class="math display">\[
+\lambda\uparrow
+\Rightarrow
+\text{penalização maior}
+\Rightarrow
+\text{menor complexidade}
+\]</span></p>
+<p>Maior risco de <strong>underfitting</strong>.</p>
+</section></section><section id="a-conexão-com-ridge" class="level2"><h2 class="anchored" data-anchor-id="a-conexão-com-ridge">A conexão com Ridge</h2>
+<p>Na regressão Ridge:</p>
+<p><span class="math display">\[
+\min_{\boldsymbol\beta}
+\left\{
+\frac{1}{n}\|\mathbf y-\mathbf X\boldsymbol\beta\|^2
++\lambda\|\boldsymbol\beta\|^2
+\right\}
+\]</span></p>
+<p>Na RKHS:</p>
+<p><span class="math display">\[
+\min_{g\in\mathcal H}
+\left\{
+\frac{1}{n}\sum_i[y_i-g(x_i)]^2
++\lambda\|g\|_{\mathcal H}^2
+\right\}
+\]</span></p>
+</section><section id="a-conexão-com-ridge-1" class="level2"><h2 class="anchored" data-anchor-id="a-conexão-com-ridge-1">A conexão com Ridge</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th style="text-align: center;">Ridge</th>
+<th style="text-align: center;">RKHS</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">estima <span class="math inline">\(\boldsymbol\beta\)</span>
+</td>
+<td style="text-align: center;">estima <span class="math inline">\(g\)</span>
+</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">penaliza <span class="math inline">\(\|\boldsymbol\beta\|^2\)</span>
+</td>
+<td style="text-align: center;">penaliza <span class="math inline">\(\|g\|_{\mathcal H}^2\)</span>
+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">controla coeficientes</td>
+<td style="text-align: center;">controla a complexidade da função</td>
+</tr>
+</tbody>
+</table></section><section id="uma-dificuldade-aparente" class="level2"><h2 class="anchored" data-anchor-id="uma-dificuldade-aparente">Uma dificuldade aparente</h2>
+<p>Se <span class="math inline">\(\mathcal H\)</span> pode conter um número enorme (até infinito) de funções, como resolver</p>
+<p><span class="math display">\[
+\min_{g\in\mathcal H} \{\text{erro}+\text{penalização}\}?
+\]</span></p>
+<p>Parece que precisaríamos procurar em um espaço de dimensão infinita.</p>
+<p>Mas um resultado fundamental simplifica o problema.</p>
+</section></section><section id="teorema-do-representante" class="level1"><h1>Teorema do Representante</h1>
+<section id="a-ideia-central" class="level2"><h2 class="anchored" data-anchor-id="a-ideia-central">A ideia central</h2>
+<p>Para uma ampla classe de problemas regularizados, a solução pode ser escrita como</p>
+<p><span class="math display">\[
+\boxed{
+\hat g(x)=\sum_{i=1}^{n}\hat\alpha_iK(x,x_i)
+}
+\]</span></p>
+<p>Assim, em vez de procurar diretamente uma função em <span class="math inline">\(\mathcal H\)</span>, precisamos estimar apenas</p>
+<p><span class="math display">\[
+\hat\alpha_1,\hat\alpha_2,\ldots,\hat\alpha_n
+\]</span></p>
+</section><section id="a-ideia-central-1" class="level2"><h2 class="anchored" data-anchor-id="a-ideia-central-1">A ideia central</h2>
+<p>Portanto,<br><br></p>
+<p><span class="math display">\[
+\boxed{
+\text{problema em espaço de funções}
+\longrightarrow
+\text{problema finito de estimação}
+}
+\]</span></p>
+</section><section id="a-matriz-kernel" class="level2"><h2 class="anchored" data-anchor-id="a-matriz-kernel">A matriz kernel</h2>
+<p>Calculamos o kernel para cada par de observações:</p>
+<p><span class="math display">\[
+K_{ij}=K(x_i,x_j)
+\]</span></p>
+<p>Isso produz a matriz kernel, ou matriz de Gram:</p>
+<p><span class="math display">\[
+\mathbf K=
+\begin{pmatrix}
+K(x_1,x_1)&amp;\cdots&amp;K(x_1,x_n)\\
+\vdots&amp;\ddots&amp;\vdots\\
+K(x_n,x_1)&amp;\cdots&amp;K(x_n,x_n)
+\end{pmatrix}
+\]</span></p>
+<p>Nos pontos de treinamento,</p>
+<p><span class="math display">\[
+\hat{\mathbf g}=\mathbf K\boldsymbol\alpha
+\]</span></p>
+</section><section id="o-kernel-trick" class="level2"><h2 class="anchored" data-anchor-id="o-kernel-trick">O kernel trick</h2>
+<p>Podemos imaginar uma transformação</p>
+<p><span class="math display">\[
+x\longmapsto\phi(x)
+\]</span></p>
+<p>para um espaço de características potencialmente muito grande.</p>
+<p>O kernel permite calcular</p>
+<p><span class="math display">\[
+\boxed{
+K(x,x')=
+\langle\phi(x),\phi(x')\rangle
+}
+\]</span></p>
+<p>sem precisar construir explicitamente <span class="math inline">\(\phi(x)\)</span>.</p>
+<p>Isso é conhecido como <strong>kernel trick</strong>.</p>
+</section><section id="por-que-isso-ajuda-com-relações-não-lineares" class="level2"><h2 class="anchored" data-anchor-id="por-que-isso-ajuda-com-relações-não-lineares">Por que isso ajuda com relações não lineares?</h2>
+<p>No espaço original, um modelo pode ser simples demais para representar os dados.</p>
+<p>O kernel permite trabalhar implicitamente em um espaço de características mais rico:</p>
+<p><span class="math display">\[
+x
+\longrightarrow
+\phi(x)
+\longrightarrow
+\text{modelo flexível}
+\]</span></p>
+<p>Com isso, podemos representar relações e fronteiras <strong>não lineares</strong> sem criar explicitamente todas as novas variáveis.</p>
+</section></section><section id="kernel-ridge-regression" class="level1"><h1>Kernel Ridge Regression</h1>
+<section id="ridge-kernel" class="level2"><h2 class="anchored" data-anchor-id="ridge-kernel">Ridge + kernel</h2>
+<p>A combinação da perda quadrática com regularização em RKHS leva ao <strong>Kernel Ridge Regression</strong>.</p>
+<p>Com a convenção</p>
+<p><span class="math display">\[
+\frac{1}{n}\|\mathbf y-\mathbf K\boldsymbol\alpha\|^2
++\lambda\boldsymbol\alpha^T\mathbf K\boldsymbol\alpha,
+\]</span></p>
+<p>a solução satisfaz</p>
+<p><span class="math display">\[
+\boxed{
+\hat{\boldsymbol\alpha}
+=(\mathbf K+n\lambda\mathbf I)^{-1}\mathbf y
+}
+\]</span></p>
+</section><section id="ridge-kernel-1" class="level2"><h2 class="anchored" data-anchor-id="ridge-kernel-1">Ridge + kernel</h2>
+<p>A predição em um novo ponto <span class="math inline">\(x\)</span> é<br><br></p>
+<p><span class="math display">\[
+\boxed{
+\hat g(x)=\sum_{i=1}^{n}\hat\alpha_iK(x,x_i)
+}
+\]</span></p>
+</section><section id="comparação-com-regressão-kernel" class="level2"><h2 class="anchored" data-anchor-id="comparação-com-regressão-kernel">Comparação com regressão kernel</h2>
+<p>Não confunda <strong>regressão kernel</strong> com <strong>métodos kernel em RKHS</strong>.<br><br></p>
+<section id="nadarayawatson" class="level3"><h3 class="anchored" data-anchor-id="nadarayawatson">Nadaraya–Watson</h3>
+<p><span class="math display">\[
+\hat f(x)=
+\frac{\sum_iK_h(x-x_i)y_i}
+{\sum_iK_h(x-x_i)}
+\]</span></p>
+<p>Os pesos são determinados diretamente pela proximidade.</p>
+</section></section><section id="comparação-com-regressão-kernel-1" class="level2"><h2 class="anchored" data-anchor-id="comparação-com-regressão-kernel-1">Comparação com regressão kernel</h2>
+<section id="rkhs-kernel-ridge" class="level3"><h3 class="anchored" data-anchor-id="rkhs-kernel-ridge">RKHS / Kernel Ridge</h3>
+<p><span class="math display">\[
+\hat g(x)=\sum_i\hat\alpha_iK(x,x_i)
+\]</span></p>
+<p>Os coeficientes <span class="math inline">\(\alpha_i\)</span> são <strong>estimados globalmente a partir dos dados</strong>, com regularização.</p>
+</section></section><section id="dois-usos-da-palavra-kernel" class="level2"><h2 class="anchored" data-anchor-id="dois-usos-da-palavra-kernel">Dois usos da palavra “kernel”</h2>
+<p>A palavra <em>kernel</em> aparece nos dois contextos, mas os papéis não são idênticos.<br><br></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Suavização kernel</th>
+<th>RKHS</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>pesos locais</td>
+<td>estrutura de um espaço de funções</td>
+</tr>
+<tr class="even">
+<td>largura de banda <span class="math inline">\(h\)</span>
+</td>
+<td>parâmetros do kernel + <span class="math inline">\(\lambda\)</span>
+</td>
+</tr>
+<tr class="odd">
+<td>Nadaraya–Watson</td>
+<td>Kernel Ridge, SVM etc.</td>
+</tr>
+<tr class="even">
+<td>foco em vizinhança</td>
+<td>foco em similaridade/produto interno e regularização</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cuidado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Há conexões matemáticas entre essas ideias, mas não devemos tratá-las como sinônimos.</p>
+</div>
+</div>
+</section><section id="e-os-smoothing-splines" class="level2"><h2 class="anchored" data-anchor-id="e-os-smoothing-splines">E os smoothing splines?</h2>
+<p>Os smoothing splines também resolvem um problema penalizado:</p>
+<p><span class="math display">\[
+\min_g
+\left\{
+\sum_{i=1}^{n}[y_i-g(x_i)]^2
++\lambda\int[g''(x)]^2dx
+\right\}.
+\]</span></p>
+<p>A penalização controla a rugosidade da função.</p>
+<p>Essa formulação também pode ser interpretada no contexto de uma RKHS.</p>
+</section><section id="e-os-smoothing-splines-1" class="level2"><h2 class="anchored" data-anchor-id="e-os-smoothing-splines-1">E os smoothing splines?</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+\boxed{
+\text{smoothing splines}
+\quad\text{e}\quad
+\text{Kernel Ridge}
+}
+\]</span></p>
+<p>podem ser vistos dentro de uma estrutura mais geral de <strong>estimação regularizada de funções</strong>.</p>
+</section><section id="onde-rkhs-aparece-em-machine-learning" class="level2"><h2 class="anchored" data-anchor-id="onde-rkhs-aparece-em-machine-learning">Onde RKHS aparece em Machine Learning?</h2>
+<p>A mesma estrutura aparece em diferentes métodos:</p>
+<p><span class="math display">\[
+\boxed{\text{Kernel Ridge Regression}}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{\text{SVM com kernel}}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{\text{Smoothing splines}}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{\text{outros métodos kernel regularizados}}
+\]</span></p>
+<p>O que muda entre eles é, entre outras coisas, a <strong>função de perda</strong>, o kernel e a forma de regularização.</p>
+</section></section><section id="support-vector-regression" class="level1"><h1>Support Vector Regression</h1>
+<section id="regressão-com-margem" class="level2"><h2 class="anchored" data-anchor-id="regressão-com-margem">Regressão com margem</h2>
+<p><span class="math display">\[
+\boxed{L_\varepsilon(y,f(\mathbf x))=\max\{0,|y-f(\mathbf x)|-\varepsilon\}}
+\]</span> A regularização controla a complexidade da função</p>
+</section></section><section id="support-vector-machines" class="level1"><h1>Support Vector Machines</h1>
+<section id="da-svr-para-a-svm" class="level2"><h2 class="anchored" data-anchor-id="da-svr-para-a-svm">Da SVR para a SVM</h2>
+<p>Na regressão, a ideia de margem apareceu na <strong>Support Vector Regression</strong></p>
+<p>Agora queremos separar classes</p>
+<p>Para simplificar, escreva</p>
+<p><span class="math display">\[
+Y\in\{-1,+1\}
+\]</span></p>
+<p>e considere um hiperplano</p>
+<p><span class="math display">\[
+\boxed{
+f(\mathbf x)
+=
+\beta_0+\boldsymbol\beta^t\mathbf x
+}
+\]</span></p>
+<hr></section><section id="regra-de-classificação" class="level2"><h2 class="anchored" data-anchor-id="regra-de-classificação">Regra de classificação</h2>
+<p>O sinal de <span class="math inline">\(f(\mathbf x)\)</span> determina a classe</p>
+<p><span class="math display">\[
+\boxed{
+g(\mathbf x)
+=
+\operatorname{sign}
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x
+\right)
+}
+\]</span></p>
+<p>A fronteira de decisão é</p>
+<p><span class="math display">\[
+\boxed{
+\beta_0+\boldsymbol\beta^t\mathbf x=0
+}
+\]</span></p>
+<hr></section><section id="muitos-hiperplanos-podem-separar-os-dados" class="level2"><h2 class="anchored" data-anchor-id="muitos-hiperplanos-podem-separar-os-dados">Muitos hiperplanos podem separar os dados</h2>
+<p>Quando as classes são linearmente separáveis, podem existir vários hiperplanos com erro de treinamento igual a zero</p>
+<p>Qual devemos escolher?</p>
+<p><span class="math display">\[
+\boxed{\text{o hiperplano com maior margem}}
+\]</span></p>
+<hr></section><section id="margem" class="level2"><h2 class="anchored" data-anchor-id="margem">Margem</h2>
+<p>Para a parametrização canônica, as fronteiras da margem são</p>
+<p><span class="math display">\[
+\beta_0+\boldsymbol\beta^t\mathbf x=1
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\beta_0+\boldsymbol\beta^t\mathbf x=-1
+\]</span></p>
+<p>A largura total da margem é</p>
+<p><span class="math display">\[
+\boxed{
+\frac{2}{\|\boldsymbol\beta\|}
+}
+\]</span></p>
+<hr></section><section id="margem-máxima" class="level2"><h2 class="anchored" data-anchor-id="margem-máxima">Margem máxima</h2>
+<p>Maximizar a margem equivale a minimizar</p>
+<p><span class="math display">\[
+\frac12\|\boldsymbol\beta\|^2
+\]</span></p>
+<p>sujeito a</p>
+<p><span class="math display">\[
+\boxed{
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+\geq1,
+\qquad i=1,\ldots,n
+}
+\]</span></p>
+<hr></section><section id="support-vectors" class="level2"><h2 class="anchored" data-anchor-id="support-vectors">Support vectors</h2>
+<p>Os pontos mais próximos da fronteira satisfazem</p>
+<p><span class="math display">\[
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+=
+1
+\]</span></p>
+<p>Essas observações são os <strong>support vectors</strong></p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>A posição da fronteira é determinada principalmente pelas observações próximas à margem</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/classificacao/hiperplano_separador.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="e-quando-não-há-separação-perfeita" class="level2"><h2 class="anchored" data-anchor-id="e-quando-não-há-separação-perfeita">E quando não há separação perfeita?</h2>
+<p>Dados reais frequentemente apresentam:</p>
+<ul>
+<li>sobreposição entre classes</li>
+<li>ruído</li>
+<li>observações atípicas</li>
+</ul>
+<p>Exigir separação perfeita pode produzir uma fronteira instável</p>
+<p>Precisamos permitir violações da margem</p>
+</section></section><section id="soft-margin" class="level1"><h1>Soft Margin</h1>
+<section id="variáveis-de-folga" class="level2"><h2 class="anchored" data-anchor-id="variáveis-de-folga">Variáveis de folga</h2>
+<p>Introduzimos <span class="math inline">\(\xi_i\geq0\)</span>:</p>
+<p><span class="math display">\[
+\boxed{
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+\geq
+1-\xi_i
+}
+\]</span></p>
+<hr></section><section id="problema-de-otimização" class="level2"><h2 class="anchored" data-anchor-id="problema-de-otimização">Problema de otimização</h2>
+<p>Uma formulação da SVM é</p>
+<p><span class="math display">\[
+\boxed{
+\min_{\beta_0,\boldsymbol\beta,\boldsymbol\xi}
+\left\{
+\frac12\|\boldsymbol\beta\|^2
++
+C\sum_{i=1}^{n}\xi_i
+\right\}
+}
+\]</span></p>
+<p>com</p>
+<p><span class="math display">\[
+\xi_i\geq0
+\]</span></p>
+<hr></section><section id="o-papel-de-c" class="level2"><h2 class="anchored" data-anchor-id="o-papel-de-c">O papel de <span class="math inline">\(C\)</span>
+</h2>
+<section id="c-grande" class="level3"><h3 class="anchored" data-anchor-id="c-grande">
+<span class="math inline">\(C\)</span> grande</h3>
+<p>Violações da margem são fortemente penalizadas</p>
+<p><span class="math display">\[
+C\uparrow
+\Rightarrow
+\text{menor tolerância a violações}
+\]</span></p>
+</section><section id="c-pequeno" class="level3"><h3 class="anchored" data-anchor-id="c-pequeno">
+<span class="math inline">\(C\)</span> pequeno</h3>
+<p>Aceitamos mais violações em troca de uma margem maior</p>
+<p><span class="math display">\[
+C\downarrow
+\Rightarrow
+\text{maior regularização}
+\]</span></p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/classificacao/soft_margin.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section></section><section id="hinge-loss" class="level2"><h2 class="anchored" data-anchor-id="hinge-loss">Hinge loss</h2>
+<p>A SVM também pode ser vista como minimização de</p>
+<p><span class="math display">\[
+\boxed{
+L_{\text{hinge}}(y,f(\mathbf x))
+=
+\max\{0,1-yf(\mathbf x)\}
+}
+\]</span></p>
+<p>com uma penalização sobre a complexidade do hiperplano</p>
+<hr></section><section id="interpretando-a-hinge-loss" class="level2"><h2 class="anchored" data-anchor-id="interpretando-a-hinge-loss">Interpretando a hinge loss</h2>
+<p>Se</p>
+<p><span class="math display">\[
+yf(\mathbf x)\geq1
+\]</span></p>
+<p>a observação está corretamente classificada e fora da margem</p>
+<p><span class="math display">\[
+L_{\text{hinge}}=0
+\]</span></p>
+<p>Se</p>
+<p><span class="math display">\[
+yf(\mathbf x)&lt;1
+\]</span></p>
+<p>há penalização</p>
+<hr></section><section id="comparação-conceitual" class="level2"><h2 class="anchored" data-anchor-id="comparação-conceitual">Comparação conceitual</h2>
+<section id="regressão-logística" class="level3"><h3 class="anchored" data-anchor-id="regressão-logística">Regressão logística</h3>
+<p>Estima diretamente uma probabilidade</p>
+<p><span class="math display">\[
+\widehat P(Y=1\mid\mathbf X=\mathbf x)
+\]</span></p>
+</section><section id="svm" class="level3"><h3 class="anchored" data-anchor-id="svm">SVM</h3>
+<p>Constrói diretamente uma função discriminante</p>
+<p><span class="math display">\[
+f(\mathbf x)
+\]</span></p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>A saída bruta de uma SVM não deve ser interpretada automaticamente como probabilidade posterior</p>
+</div>
+</div>
+</div>
+</section></section></section><section id="svm-não-linear" class="level1"><h1>SVM não linear</h1>
+<section id="quando-uma-reta-não-basta" class="level2"><h2 class="anchored" data-anchor-id="quando-uma-reta-não-basta">Quando uma reta não basta</h2>
+<p>Se a separação é não linear, podemos transformar as covariáveis</p>
+<p><span class="math display">\[
+\mathbf x
+\longrightarrow
+\phi(\mathbf x)
+\]</span></p>
+<p>e construir um hiperplano no novo espaço</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/classificacao/kernel_trick.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="kernel-trick" class="level2"><h2 class="anchored" data-anchor-id="kernel-trick">Kernel trick</h2>
+<p>Em vez de calcular explicitamente <span class="math inline">\(\phi(\mathbf x)\)</span>, utilizamos</p>
+<p><span class="math display">\[
+\boxed{
+K(\mathbf x,\mathbf x')
+=
+\langle
+\phi(\mathbf x),
+\phi(\mathbf x')
+\rangle
+}
+\]</span></p>
+<p>Assim, podemos produzir fronteiras não lineares no espaço original</p>
+<hr></section><section id="kernels-comuns" class="level2"><h2 class="anchored" data-anchor-id="kernels-comuns">Kernels comuns</h2>
+<section id="linear" class="level3"><h3 class="anchored" data-anchor-id="linear">Linear</h3>
+<p><span class="math display">\[
+K(\mathbf x,\mathbf x')
+=
+\mathbf x^t\mathbf x'
+\]</span></p>
+</section><section id="polinomial" class="level3"><h3 class="anchored" data-anchor-id="polinomial">Polinomial</h3>
+<p><span class="math display">\[
+K(\mathbf x,\mathbf x')
+=
+(\gamma\mathbf x^t\mathbf x'+c_0)^d
+\]</span></p>
+</section><section id="rbf" class="level3"><h3 class="anchored" data-anchor-id="rbf">RBF</h3>
+<p><span class="math display">\[
+\boxed{
+K(\mathbf x,\mathbf x')
+=
+\exp\left(
+-\gamma\|\mathbf x-\mathbf x'\|^2
+\right)
+}
+\]</span></p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/classificacao/comp_kernel_trick.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section></section><section id="hiperparâmetros" class="level2"><h2 class="anchored" data-anchor-id="hiperparâmetros">Hiperparâmetros</h2>
+<p>Na SVM com kernel RBF, dois parâmetros são especialmente importantes</p>
+<p><span class="math display">\[
+\boxed{
+C
+\qquad\text{e}\qquad
+\gamma
+}
+\]</span></p>
+<p>Eles controlam aspectos diferentes da flexibilidade e devem ser escolhidos por validação</p>
+</section><section id="svm-multi-classe" class="level2"><h2 class="anchored" data-anchor-id="svm-multi-classe">SVM: multi-classe</h2>
+<p>SVM é naturalmente binário. Para <span class="math inline">\(C &gt; 2\)</span> classes, duas estratégias principais:</p>
+<p><strong>One-vs-One (OVO):</strong></p>
+<ul>
+<li>Ajusta <span class="math inline">\(\binom{C}{2}\)</span> classificadores binários</li>
+<li>Cada par de classes tem seu próprio SVM</li>
+<li>Votação: cada classificador “vota” na classe vencedora</li>
+</ul>
+<p><strong>One-vs-Rest (OVR):</strong></p>
+<ul>
+<li>Ajusta <span class="math inline">\(C\)</span> classificadores binários</li>
+<li>Cada classe vs.&nbsp;todas as outras</li>
+<li>Classe com maior pontuação é escolhida</li>
+</ul>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../..\images/classificacao/ovo_ovr.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section><section id="svr-svm" class="level2"><h2 class="anchored" data-anchor-id="svr-svm">SVR × SVM</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Aspecto</th>
+<th>SVR</th>
+<th>SVM</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>tarefa</td>
+<td>regressão</td>
+<td>classificação</td>
+</tr>
+<tr class="even">
+<td>região</td>
+<td>
+<span class="math inline">\(\varepsilon\)</span>-tube</td>
+<td>margem</td>
+</tr>
+<tr class="odd">
+<td>perda</td>
+<td>
+<span class="math inline">\(\varepsilon\)</span>-insensível</td>
+<td>hinge</td>
+</tr>
+<tr class="even">
+<td>kernels</td>
+<td>sim</td>
+<td>sim</td>
+</tr>
+</tbody>
+</table>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

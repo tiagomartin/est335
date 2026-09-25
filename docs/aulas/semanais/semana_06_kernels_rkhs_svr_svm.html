@@ -147,357 +147,619 @@
 <li>tamanho da vizinhança.</li>
 </ul>
 <p>Outra possibilidade é penalizar diretamente a complexidade de uma função.</p>
-</section><section id="já-vimos-regularização-funcional" class="slide level2"><h2>Já vimos regularização funcional</h2>
-<p>No smoothing spline:</p>
+</section><section id="de-onde-vem-a-ideia" class="slide level2"><h2>De onde vem a ideia?</h2>
+<p>Considere o problema de regressão</p>
 <p><span class="math display">\[
-\sum_{i=1}^{n}(Y_i-f(X_i))^2
-+
-\lambda\int[f''(t)]^2dt
+Y=g(X)+\varepsilon
 \]</span></p>
-<p>O primeiro termo mede ajuste.</p>
-<p>O segundo penaliza rugosidade.</p>
-</section><section id="do-ridge-para-funções" class="slide level2"><h2>Do Ridge para funções</h2>
-<p>Ridge:</p>
+<p>Na regressão linear, restringimos a função a uma forma específica:</p>
 <p><span class="math display">\[
-RSS+\lambda\|\boldsymbol\beta\|_2^2
+g(x)=\beta_0+\beta_1x
 \]</span></p>
-<p>Em um espaço de funções <span class="math inline">\(\mathcal H\)</span>:</p>
-<p><span class="math display">\[
-\boxed{
-\sum_i(Y_i-f(X_i))^2
-+
-\lambda\|f\|_{\mathcal H}^2
-}
-\]</span></p>
-<p>A filosofia é a mesma: <strong>ajuste + controle de complexidade</strong>.</p>
-</section><section id="o-que-precisamos-saber-sobre-rkhs" class="slide level2"><h2>O que precisamos saber sobre RKHS?</h2>
-<p>Para esta disciplina, basta interpretar <span class="math inline">\(\mathcal H\)</span> como um espaço estruturado de funções associado a um kernel</p>
-<p><span class="math display">\[
-K(x,x')
-\]</span></p>
-<p>A construção funcional completa não é necessária para utilizar a ideia estatística.</p>
-</section><section id="atenção-dois-usos-da-palavra-kernel" class="slide level2"><h2>Atenção: dois usos da palavra kernel</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<h3 id="kernel-de-suavização">Kernel de suavização</h3>
-<p><span class="math display">\[
-K\left(\frac{x-x_i}{h}\right)
-\]</span></p>
-<p>Define pesos para observações próximas.</p>
-</div><div class="column" style="width:47%;">
-<h3 id="kernel-em-rkhs">Kernel em RKHS</h3>
-<p><span class="math display">\[
-K(x,x')
-\]</span></p>
-<p>Representa uma similaridade/produto interno associado a um espaço de funções.</p>
-</div></div>
-<p><span class="math display">\[
-\boxed{\text{Os papéis matemáticos são diferentes}}
-\]</span></p>
-</section><section id="exemplos" class="slide level2"><h2>Exemplos</h2>
-<p>Kernel linear:</p>
-<p><span class="math display">\[
-K(x,x')=x^\top x'
-\]</span></p>
-<p>Kernel polinomial:</p>
-<p><span class="math display">\[
-K(x,x')=(c+x^\top x')^d
-\]</span></p>
-<p>Kernel Gaussiano/RBF:</p>
-<p><span class="math display">\[
-K(x,x')=
-\exp[-\gamma\|x-x'\|^2]
-\]</span></p>
-</section><section id="teorema-do-representer" class="slide level2"><h2>Teorema do Representer</h2>
-<p>Para uma ampla classe de problemas regularizados em RKHS, a solução possui a forma</p>
-<p><span class="math display">\[
-\boxed{
-\widehat f(x)
-=
-\sum_{i=1}^{n}\alpha_iK(x,X_i)
-}
-\]</span></p>
-<p>Não demonstraremos o resultado aqui.</p>
-<p>O ponto essencial é que uma busca em um espaço potencialmente infinito-dimensional admite uma representação finita baseada nos dados.</p>
-</section><section id="o-papel-de-lambda" class="slide level2"><h2>O papel de <span class="math inline">\(\lambda\)</span>
-</h2>
-<p>No problema</p>
-<p><span class="math display">\[
-\sum_i(Y_i-f(X_i))^2+\lambda\|f\|_{\mathcal H}^2,
-\]</span></p>
-<p>temos:</p>
-<p><span class="math display">\[
-\lambda\downarrow
-\Rightarrow
-\text{maior flexibilidade}
-\]</span></p>
-<p><span class="math display">\[
-\lambda\uparrow
-\Rightarrow
-\text{maior regularização}
-\]</span></p>
-<p>Novamente, <span class="math inline">\(\lambda\)</span> deve ser escolhido por validação.</p>
-</section></section><section><section id="support-vector-regression" class="title-slide slide level1 center"><h1>Support Vector Regression</h1>
-
-</section><section id="regressão-com-margem" class="slide level2"><h2>Regressão com margem</h2>
-<p><span class="math display">\[
-\boxed{L_\varepsilon(y,f(\mathbf x))=\max\{0,|y-f(\mathbf x)|-\varepsilon\}}
-\]</span> A regularização controla a complexidade da função</p>
-</section></section><section><section id="support-vector-machines" class="title-slide slide level1 center"><h1>Support Vector Machines</h1>
-
-</section><section id="da-svr-para-a-svm" class="slide level2"><h2>Da SVR para a SVM</h2>
-<p>Na regressão, a ideia de margem apareceu na <strong>Support Vector Regression</strong></p>
-<p>Agora queremos separar classes</p>
-<p>Para simplificar, escreva</p>
-<p><span class="math display">\[
-Y\in\{-1,+1\}
-\]</span></p>
-<p>e considere um hiperplano</p>
-<p><span class="math display">\[
-\boxed{
-f(\mathbf x)
-=
-\beta_0+\boldsymbol\beta^t\mathbf x
-}
-\]</span></p>
-</section><section id="regra-de-classificação" class="slide level2"><h2>Regra de classificação</h2>
-<p>O sinal de <span class="math inline">\(f(\mathbf x)\)</span> determina a classe</p>
-<p><span class="math display">\[
-\boxed{
-g(\mathbf x)
-=
-\operatorname{sign}
-\left(
-\beta_0+\boldsymbol\beta^t\mathbf x
-\right)
-}
-\]</span></p>
-<p>A fronteira de decisão é</p>
-<p><span class="math display">\[
-\boxed{
-\beta_0+\boldsymbol\beta^t\mathbf x=0
-}
-\]</span></p>
-</section><section id="muitos-hiperplanos-podem-separar-os-dados" class="slide level2"><h2>Muitos hiperplanos podem separar os dados</h2>
-<p>Quando as classes são linearmente separáveis, podem existir vários hiperplanos com erro de treinamento igual a zero</p>
-<p>Qual devemos escolher?</p>
-<p><span class="math display">\[
-\boxed{\text{o hiperplano com maior margem}}
-\]</span></p>
-</section><section id="margem" class="slide level2"><h2>Margem</h2>
-<p>Para a parametrização canônica, as fronteiras da margem são</p>
-<p><span class="math display">\[
-\beta_0+\boldsymbol\beta^t\mathbf x=1
-\]</span></p>
-<p>e</p>
-<p><span class="math display">\[
-\beta_0+\boldsymbol\beta^t\mathbf x=-1
-\]</span></p>
-<p>A largura total da margem é</p>
-<p><span class="math display">\[
-\boxed{
-\frac{2}{\|\boldsymbol\beta\|}
-}
-\]</span></p>
-</section><section id="margem-máxima" class="slide level2"><h2>Margem máxima</h2>
-<p>Maximizar a margem equivale a minimizar</p>
-<p><span class="math display">\[
-\frac12\|\boldsymbol\beta\|^2
-\]</span></p>
-<p>sujeito a</p>
-<p><span class="math display">\[
-\boxed{
-y_i
-\left(
-\beta_0+\boldsymbol\beta^t\mathbf x_i
-\right)
-\geq1,
-\qquad i=1,\ldots,n
-}
-\]</span></p>
-</section><section id="support-vectors" class="slide level2"><h2>Support vectors</h2>
-<p>Os pontos mais próximos da fronteira satisfazem</p>
-<p><span class="math display">\[
-y_i
-\left(
-\beta_0+\boldsymbol\beta^t\mathbf x_i
-\right)
-=
-1
-\]</span></p>
-<p>Essas observações são os <strong>support vectors</strong></p>
-<div class="callout callout-note callout-style-simple">
+<p>Mas e se a relação entre <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> for <strong>não linear</strong> e não quisermos especificar antecipadamente a forma de <span class="math inline">\(g\)</span>?<br><br></p>
+<div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
+<div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
+<p><strong>Nota</strong></p>
+</div>
 <div class="callout-content">
-<p>A posição da fronteira é determinada principalmente pelas observações próximas à margem</p>
+<p>Precisamos definir <strong>em qual conjunto de funções</strong> procuraremos <span class="math inline">\(g\)</span> e como controlar sua complexidade.</p>
 </div>
 </div>
 </div>
-</section><section class="slide level2">
-<img data-src="../..\images/classificacao/hiperplano_separador.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="e-quando-não-há-separação-perfeita" class="slide level2"><h2>E quando não há separação perfeita?</h2>
-<p>Dados reais frequentemente apresentam:</p>
-<ul>
-<li>sobreposição entre classes</li>
-<li>ruído</li>
-<li>observações atípicas</li>
-</ul>
-<p>Exigir separação perfeita pode produzir uma fronteira instável</p>
-<p>Precisamos permitir violações da margem</p>
-</section></section><section><section id="soft-margin" class="title-slide slide level1 center"><h1>Soft Margin</h1>
+</section><section id="da-estimação-de-parâmetros-à-estimação-de-funções" class="slide level2"><h2>Da estimação de parâmetros à estimação de funções</h2>
+<p>Na regressão linear, procuramos um vetor de parâmetros:</p>
+<p><span class="math display">\[
+\boldsymbol\beta=(\beta_0,\beta_1,\ldots,\beta_p)^\top
+\]</span></p>
+<p>Nos métodos baseados em RKHS, procuramos diretamente uma função:</p>
+<p><span class="math display">\[
+\boxed{g\in\mathcal H}
+\]</span></p>
+<p>onde <span class="math inline">\(\mathcal H\)</span> representa um <strong>espaço de funções</strong>.</p>
+<p><span class="math display">\[
+\text{Regressão linear: procurar }\boldsymbol\beta
+\qquad\Longrightarrow\qquad
+\text{RKHS: procurar }g
+\]</span></p>
+</section><section id="o-que-significa-rkhs" class="slide level2"><h2>O que significa RKHS?</h2>
+<p><strong>RKHS</strong> = <em>Reproducing Kernel Hilbert Space</em></p>
+<p>Em português:</p>
+<blockquote>
+<p><strong>Espaço de Hilbert com Núcleo Reprodutor</strong></p>
+</blockquote>
+<p>Para uma primeira abordagem, podemos pensar em uma RKHS como</p>
+<p><span class="math display">\[
+\boxed{\text{um espaço estruturado de funções candidatas para }g}
+\]</span></p>
+</section><section id="o-que-significa-rkhs-1" class="slide level2"><h2>O que significa RKHS?</h2>
+<p>Não precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.<br><br></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>A ideia principal é que a RKHS fornece uma estrutura matemática para <strong>comparar, estimar e regularizar funções</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="onde-entra-o-kernel" class="slide level2"><h2>Onde entra o kernel?</h2>
+<p>Uma RKHS está associada a uma função kernel</p>
+<p><span class="math display">\[
+K(x,x')
+\]</span></p>
+<p>que relaciona dois pontos <span class="math inline">\(x\)</span> e <span class="math inline">\(x'\)</span>.</p>
+<p>Um exemplo importante é o kernel Gaussiano (RBF):</p>
+<p><span class="math display">\[
+K(x,x')=
+\exp\left\{-\frac{(x-x')^2}{2\sigma^2}\right\}
+\]</span></p>
+</section><section id="onde-entra-o-kernel-1" class="slide level2"><h2>Onde entra o kernel?</h2>
+<p>Intuitivamente:</p>
+<p><span class="math display">\[
+x\approx x' \Rightarrow K(x,x')\text{ grande}
+\]</span></p>
+<p><span class="math display">\[
+|x-x'|\text{ grande} \Rightarrow K(x,x')\text{ pequeno}
+\]</span></p>
+</section><section id="kernel-gaussiano-uma-visão-gráfica" class="slide level2"><h2>Kernel Gaussiano: uma visão gráfica</h2>
 
-</section><section id="variáveis-de-folga" class="slide level2"><h2>Variáveis de folga</h2>
-<p>Introduzimos <span class="math inline">\(\xi_i\geq0\)</span>:</p>
+<img data-src="semana_06_kernels_rkhs_svr_svm_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Quanto mais distante <span class="math inline">\(x\)</span> está de <span class="math inline">\(x_0\)</span>, menor é a similaridade determinada pelo kernel.</p>
+</section><section id="construindo-uma-função-com-kernels" class="slide level2"><h2>Construindo uma função com kernels</h2>
+<p>Uma função em muitos métodos baseados em RKHS pode ser representada na forma</p>
 <p><span class="math display">\[
 \boxed{
-y_i
-\left(
-\beta_0+\boldsymbol\beta^t\mathbf x_i
-\right)
-\geq
-1-\xi_i
+g(x)=\sum_{i=1}^{n}\alpha_iK(x,x_i)
 }
 \]</span></p>
-</section><section id="problema-de-otimização" class="slide level2"><h2>Problema de otimização</h2>
-<p>Uma formulação da SVM é</p>
+<p>ou seja,</p>
+<p><span class="math display">\[
+g(x)=
+\alpha_1K(x,x_1)+\cdots+\alpha_nK(x,x_n)
+\]</span></p>
+</section><section id="construindo-uma-função-com-kernels-1" class="slide level2"><h2>Construindo uma função com kernels</h2>
+<p>Cada observação de treinamento contribui para a construção da função.<br><br></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>Os coeficientes <span class="math inline">\(\alpha_i\)</span> determinam <strong>quanto cada função kernel contribui</strong> para a função estimada.</p>
+</div>
+</div>
+</div>
+</section><section id="visualizando-a-construção" class="slide level2"><h2>Visualizando a construção</h2>
+
+<img data-src="semana_06_kernels_rkhs_svr_svm_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>A curva final é uma combinação das funções kernel.</p>
+</section><section id="mas-isso-não-pode-ficar-complexo-demais" class="slide level2"><h2>Mas isso não pode ficar complexo demais?</h2>
+<p>Se procurarmos apenas a função que minimiza</p>
+<p><span class="math display">\[
+\sum_{i=1}^{n}\left[y_i-g(x_i)\right]^2
+\]</span></p>
+<p>podemos obter uma função excessivamente flexível.</p>
+<p><span class="math display">\[
+\text{flexibilidade excessiva}
+\quad\Longrightarrow\quad
+\text{overfitting}
+\]</span></p>
+</section><section id="mas-isso-não-pode-ficar-complexo-demais-1" class="slide level2"><h2>Mas isso não pode ficar complexo demais?</h2>
+<p>Precisamos equilibrar</p>
+<p><span class="math display">\[
+\boxed{\text{qualidade do ajuste} \quad\times\quad \text{complexidade}}
+\]</span></p>
+<p>Essa ideia já apareceu em Ridge, Lasso e smoothing splines.</p>
+</section><section id="regularização-em-uma-rkhs" class="slide level2"><h2>Regularização em uma RKHS</h2>
+<p>Um problema típico é</p>
 <p><span class="math display">\[
 \boxed{
-\min_{\beta_0,\boldsymbol\beta,\boldsymbol\xi}
+\min_{g\in\mathcal H}
 \left\{
-\frac12\|\boldsymbol\beta\|^2
-+
-C\sum_{i=1}^{n}\xi_i
+\frac{1}{n}\sum_{i=1}^{n}[y_i-g(x_i)]^2
++\lambda\|g\|_{\mathcal H}^{2}
 \right\}
 }
 \]</span></p>
-<p>com</p>
+<p>Temos dois componentes:</p>
 <p><span class="math display">\[
-\xi_i\geq0
+\underbrace{
+\frac{1}{n}\sum_{i=1}^{n}[y_i-g(x_i)]^2
+}_{\text{erro de ajuste}}
++
+\underbrace{
+\lambda\|g\|_{\mathcal H}^{2}
+}_{\text{penalização da complexidade}}
 \]</span></p>
-</section><section id="o-papel-de-c" class="slide level2"><h2>O papel de <span class="math inline">\(C\)</span>
+</section><section id="o-papel-de-lambda" class="slide level2"><h2>O papel de <span class="math inline">\(\lambda\)</span>
 </h2>
-<h3 id="c-grande">
-<span class="math inline">\(C\)</span> grande</h3>
-<p>Violações da margem são fortemente penalizadas</p>
+<p>O parâmetro <span class="math inline">\(\lambda\)</span> controla o compromisso entre ajuste e complexidade.<br><br></p>
+<h3 id="lambda-pequeno">
+<span class="math inline">\(\lambda\)</span> pequeno</h3>
 <p><span class="math display">\[
-C\uparrow
+\lambda\downarrow
 \Rightarrow
-\text{menor tolerância a violações}
+\text{penalização menor}
+\Rightarrow
+\text{maior flexibilidade}
 \]</span></p>
-<h3 id="c-pequeno">
-<span class="math inline">\(C\)</span> pequeno</h3>
-<p>Aceitamos mais violações em troca de uma margem maior</p>
+<p>Maior risco de <strong>overfitting</strong>.<br><br></p>
+<h3 id="lambda-grande">
+<span class="math inline">\(\lambda\)</span> grande</h3>
 <p><span class="math display">\[
-C\downarrow
+\lambda\uparrow
 \Rightarrow
-\text{maior regularização}
+\text{penalização maior}
+\Rightarrow
+\text{menor complexidade}
 \]</span></p>
-</section><section class="slide level2">
-<img data-src="../..\images/classificacao/soft_margin.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="hinge-loss" class="slide level2"><h2>Hinge loss</h2>
-<p>A SVM também pode ser vista como minimização de</p>
+<p>Maior risco de <strong>underfitting</strong>.</p>
+</section><section id="a-conexão-com-ridge" class="slide level2"><h2>A conexão com Ridge</h2>
+<p>Na regressão Ridge:</p>
+<p><span class="math display">\[
+\min_{\boldsymbol\beta}
+\left\{
+\frac{1}{n}\|\mathbf y-\mathbf X\boldsymbol\beta\|^2
++\lambda\|\boldsymbol\beta\|^2
+\right\}
+\]</span></p>
+<p>Na RKHS:</p>
+<p><span class="math display">\[
+\min_{g\in\mathcal H}
+\left\{
+\frac{1}{n}\sum_i[y_i-g(x_i)]^2
++\lambda\|g\|_{\mathcal H}^2
+\right\}
+\]</span></p>
+</section><section id="a-conexão-com-ridge-1" class="slide level2"><h2>A conexão com Ridge</h2>
+<table class="caption-top">
+<thead><tr class="header">
+<th style="text-align: center;">Ridge</th>
+<th style="text-align: center;">RKHS</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">estima <span class="math inline">\(\boldsymbol\beta\)</span>
+</td>
+<td style="text-align: center;">estima <span class="math inline">\(g\)</span>
+</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">penaliza <span class="math inline">\(\|\boldsymbol\beta\|^2\)</span>
+</td>
+<td style="text-align: center;">penaliza <span class="math inline">\(\|g\|_{\mathcal H}^2\)</span>
+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">controla coeficientes</td>
+<td style="text-align: center;">controla a complexidade da função</td>
+</tr>
+</tbody>
+</table></section><section id="uma-dificuldade-aparente" class="slide level2"><h2>Uma dificuldade aparente</h2>
+<p>Se <span class="math inline">\(\mathcal H\)</span> pode conter um número enorme (até infinito) de funções, como resolver</p>
+<p><span class="math display">\[
+\min_{g\in\mathcal H} \{\text{erro}+\text{penalização}\}?
+\]</span></p>
+<p>Parece que precisaríamos procurar em um espaço de dimensão infinita.</p>
+<p>Mas um resultado fundamental simplifica o problema.</p>
+</section></section><section><section id="teorema-do-representante" class="title-slide slide level1 center"><h1>Teorema do Representante</h1>
+
+</section><section id="a-ideia-central" class="slide level2"><h2>A ideia central</h2>
+<p>Para uma ampla classe de problemas regularizados, a solução pode ser escrita como</p>
 <p><span class="math display">\[
 \boxed{
-L_{\text{hinge}}(y,f(\mathbf x))
-=
-\max\{0,1-yf(\mathbf x)\}
+\hat g(x)=\sum_{i=1}^{n}\hat\alpha_iK(x,x_i)
 }
 \]</span></p>
-<p>com uma penalização sobre a complexidade do hiperplano</p>
-</section><section id="interpretando-a-hinge-loss" class="slide level2"><h2>Interpretando a hinge loss</h2>
-<p>Se</p>
+<p>Assim, em vez de procurar diretamente uma função em <span class="math inline">\(\mathcal H\)</span>, precisamos estimar apenas</p>
 <p><span class="math display">\[
-yf(\mathbf x)\geq1
+\hat\alpha_1,\hat\alpha_2,\ldots,\hat\alpha_n
 \]</span></p>
-<p>a observação está corretamente classificada e fora da margem</p>
+</section><section id="a-ideia-central-1" class="slide level2"><h2>A ideia central</h2>
+<p>Portanto,<br><br></p>
 <p><span class="math display">\[
-L_{\text{hinge}}=0
+\boxed{
+\text{problema em espaço de funções}
+\longrightarrow
+\text{problema finito de estimação}
+}
 \]</span></p>
-<p>Se</p>
+</section><section id="a-matriz-kernel" class="slide level2"><h2>A matriz kernel</h2>
+<p>Calculamos o kernel para cada par de observações:</p>
 <p><span class="math display">\[
-yf(\mathbf x)&lt;1
+K_{ij}=K(x_i,x_j)
 \]</span></p>
-<p>há penalização</p>
-</section><section id="comparação-conceitual" class="slide level2"><h2>Comparação conceitual</h2>
-<h3 id="regressão-logística">Regressão logística</h3>
-<p>Estima diretamente uma probabilidade</p>
+<p>Isso produz a matriz kernel, ou matriz de Gram:</p>
 <p><span class="math display">\[
-\widehat P(Y=1\mid\mathbf X=\mathbf x)
+\mathbf K=
+\begin{pmatrix}
+K(x_1,x_1)&amp;\cdots&amp;K(x_1,x_n)\\
+\vdots&amp;\ddots&amp;\vdots\\
+K(x_n,x_1)&amp;\cdots&amp;K(x_n,x_n)
+\end{pmatrix}
 \]</span></p>
-<h3 id="svm">SVM</h3>
-<p>Constrói diretamente uma função discriminante</p>
+<p>Nos pontos de treinamento,</p>
 <p><span class="math display">\[
-f(\mathbf x)
+\hat{\mathbf g}=\mathbf K\boldsymbol\alpha
 \]</span></p>
-<div class="callout callout-note callout-style-simple">
+</section><section id="o-kernel-trick" class="slide level2"><h2>O kernel trick</h2>
+<p>Podemos imaginar uma transformação</p>
+<p><span class="math display">\[
+x\longmapsto\phi(x)
+\]</span></p>
+<p>para um espaço de características potencialmente muito grande.</p>
+<p>O kernel permite calcular</p>
+<p><span class="math display">\[
+\boxed{
+K(x,x')=
+\langle\phi(x),\phi(x')\rangle
+}
+\]</span></p>
+<p>sem precisar construir explicitamente <span class="math inline">\(\phi(x)\)</span>.</p>
+<p>Isso é conhecido como <strong>kernel trick</strong>.</p>
+</section><section id="por-que-isso-ajuda-com-relações-não-lineares" class="slide level2"><h2>Por que isso ajuda com relações não lineares?</h2>
+<p>No espaço original, um modelo pode ser simples demais para representar os dados.</p>
+<p>O kernel permite trabalhar implicitamente em um espaço de características mais rico:</p>
+<p><span class="math display">\[
+x
+\longrightarrow
+\phi(x)
+\longrightarrow
+\text{modelo flexível}
+\]</span></p>
+<p>Com isso, podemos representar relações e fronteiras <strong>não lineares</strong> sem criar explicitamente todas as novas variáveis.</p>
+</section></section><section><section id="kernel-ridge-regression" class="title-slide slide level1 center"><h1>Kernel Ridge Regression</h1>
+
+</section><section id="ridge-kernel" class="slide level2"><h2>Ridge + kernel</h2>
+<p>A combinação da perda quadrática com regularização em RKHS leva ao <strong>Kernel Ridge Regression</strong>.</p>
+<p>Com a convenção</p>
+<p><span class="math display">\[
+\frac{1}{n}\|\mathbf y-\mathbf K\boldsymbol\alpha\|^2
++\lambda\boldsymbol\alpha^T\mathbf K\boldsymbol\alpha,
+\]</span></p>
+<p>a solução satisfaz</p>
+<p><span class="math display">\[
+\boxed{
+\hat{\boldsymbol\alpha}
+=(\mathbf K+n\lambda\mathbf I)^{-1}\mathbf y
+}
+\]</span></p>
+</section><section id="ridge-kernel-1" class="slide level2"><h2>Ridge + kernel</h2>
+<p>A predição em um novo ponto <span class="math inline">\(x\)</span> é<br><br></p>
+<p><span class="math display">\[
+\boxed{
+\hat g(x)=\sum_{i=1}^{n}\hat\alpha_iK(x,x_i)
+}
+\]</span></p>
+</section><section id="comparação-com-regressão-kernel" class="slide level2"><h2>Comparação com regressão kernel</h2>
+<p>Não confunda <strong>regressão kernel</strong> com <strong>métodos kernel em RKHS</strong>.<br><br></p>
+<h3 id="nadarayawatson">Nadaraya–Watson</h3>
+<p><span class="math display">\[
+\hat f(x)=
+\frac{\sum_iK_h(x-x_i)y_i}
+{\sum_iK_h(x-x_i)}
+\]</span></p>
+<p>Os pesos são determinados diretamente pela proximidade.</p>
+</section><section id="comparação-com-regressão-kernel-1" class="slide level2"><h2>Comparação com regressão kernel</h2>
+<h3 id="rkhs-kernel-ridge">RKHS / Kernel Ridge</h3>
+<p><span class="math display">\[
+\hat g(x)=\sum_i\hat\alpha_iK(x,x_i)
+\]</span></p>
+<p>Os coeficientes <span class="math inline">\(\alpha_i\)</span> são <strong>estimados globalmente a partir dos dados</strong>, com regularização.</p>
+</section><section id="dois-usos-da-palavra-kernel" class="slide level2"><h2>Dois usos da palavra “kernel”</h2>
+<p>A palavra <em>kernel</em> aparece nos dois contextos, mas os papéis não são idênticos.<br><br></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Suavização kernel</th>
+<th>RKHS</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>pesos locais</td>
+<td>estrutura de um espaço de funções</td>
+</tr>
+<tr class="even">
+<td>largura de banda <span class="math inline">\(h\)</span>
+</td>
+<td>parâmetros do kernel + <span class="math inline">\(\lambda\)</span>
+</td>
+</tr>
+<tr class="odd">
+<td>Nadaraya–Watson</td>
+<td>Kernel Ridge, SVM etc.</td>
+</tr>
+<tr class="even">
+<td>foco em vizinhança</td>
+<td>foco em similaridade/produto interno e regularização</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Cuidado</strong></p>
+</div>
+<div class="callout-content">
+<p>Há conexões matemáticas entre essas ideias, mas não devemos tratá-las como sinônimos.</p>
+</div>
+</div>
+</div>
+</section><section id="e-os-smoothing-splines" class="slide level2"><h2>E os smoothing splines?</h2>
+<p>Os smoothing splines também resolvem um problema penalizado:</p>
+<p><span class="math display">\[
+\min_g
+\left\{
+\sum_{i=1}^{n}[y_i-g(x_i)]^2
++\lambda\int[g''(x)]^2dx
+\right\}.
+\]</span></p>
+<p>A penalização controla a rugosidade da função.</p>
+<p>Essa formulação também pode ser interpretada no contexto de uma RKHS.</p>
+</section><section id="e-os-smoothing-splines-1" class="slide level2"><h2>E os smoothing splines?</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+\boxed{
+\text{smoothing splines}
+\quad\text{e}\quad
+\text{Kernel Ridge}
+}
+\]</span></p>
+<p>podem ser vistos dentro de uma estrutura mais geral de <strong>estimação regularizada de funções</strong>.</p>
+</section><section id="onde-rkhs-aparece-em-machine-learning" class="slide level2"><h2>Onde RKHS aparece em Machine Learning?</h2>
+<p>A mesma estrutura aparece em diferentes métodos:</p>
+<p><span class="math display">\[
+\boxed{\text{Kernel Ridge Regression}}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{\text{SVM com kernel}}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{\text{Smoothing splines}}
+\]</span></p>
+<p><span class="math display">\[
+\boxed{\text{outros métodos kernel regularizados}}
+\]</span></p>
+<p>O que muda entre eles é, entre outras coisas, a <strong>função de perda</strong>, o kernel e a forma de regularização.</p>
+</section></section><section><section id="support-vector-machines-e-regression" class="title-slide slide level1 center"><h1>Support Vector Machines e Regression</h1>
+
+</section><section id="da-rkhs-ao-svm-e-ao-svr" class="slide level2"><h2>Da RKHS ao SVM e ao SVR</h2>
+<p>A estrutura de RKHS permite enxergar diferentes métodos como variações de uma mesma ideia:</p>
+<p><span class="math display">\[
+\boxed{\text{perda nos dados} + \text{regularização da função}}
+\]</span></p>
+<p>Mudando a função de perda, obtemos métodos diferentes.</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\text{Perda quadrática} &amp; \text{Hinge loss} &amp; \varepsilon\text{-insensível}\\
+\downarrow &amp; \downarrow &amp; \downarrow\\
+\text{Kernel Ridge} &amp; \text{SVM} &amp; \text{SVR}
+\end{array}
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>SVM é voltado principalmente à <strong>classificação</strong>; SVR adapta a mesma filosofia para <strong>regressão</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="svm-o-problema-de-classificação" class="slide level2"><h2>SVM: o problema de classificação</h2>
+<p>Considere inicialmente duas classes:</p>
+<p><span class="math display">\[
+Y\in\{-1,+1\}
+\]</span></p>
+<p>Para uma fronteira linear,</p>
+<p><span class="math display">\[
+g(x)=\mathbf w^T x+b
+\]</span></p>
+<p>classificamos de acordo com o sinal de <span class="math inline">\(g(x)\)</span>.</p>
+<p><span class="math display">\[
+g(x)&gt;0 \Rightarrow +1
+\qquad
+g(x)&lt;0 \Rightarrow -1
+\]</span></p>
+</section><section id="svm-o-problema-de-classificação-1" class="slide level2"><h2>SVM: o problema de classificação</h2>
+<p>A questão central do SVM não é apenas encontrar uma fronteira que separe as classes.<br><br></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>O SVM procura uma fronteira que produza uma <strong>margem grande</strong> entre as classes.</p>
+</div>
+</div>
+</div>
+</section><section id="margem-máxima" class="slide level2"><h2>Margem máxima</h2>
+<p>A fronteira de decisão é</p>
+<p><span class="math display">\[
+\mathbf w^T x+b=0
+\]</span></p>
+<p>As fronteiras da margem podem ser escritas como</p>
+<p><span class="math display">\[
+\mathbf w^T x+b=+1
+\]</span></p>
+<p><span class="math display">\[
+\mathbf w^T x+b=-1
+\]</span></p>
+<p>A largura da margem é inversamente relacionada a <span class="math inline">\(\|\mathbf w\|\)</span>.</p>
+</section><section id="margem-máxima-1" class="slide level2"><h2>Margem máxima</h2>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\boxed{\text{maximizar margem}\ \Longleftrightarrow\ \text{minimizar }\frac12\|\mathbf w\|^2}
+\]</span></p>
+</section><section id="quem-são-os-vetores-de-suporte" class="slide level2"><h2>Quem são os vetores de suporte?</h2>
+<p>Nem todas as observações determinam igualmente a fronteira.</p>
+<p>Os pontos mais importantes são aqueles que estão <strong>sobre a margem ou a violam</strong>.</p>
+<p><span class="math display">\[
+\boxed{\text{Support vectors = observações que sustentam a solução}}
+\]</span></p>
+<p>Pontos muito distantes da fronteira podem ter coeficiente igual a zero na representação dual e, portanto, não alteram diretamente a fronteira final.<br><br></p>
+<div class="callout callout-tip callout-style-simple">
 <div class="callout-body">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>A saída bruta de uma SVM não deve ser interpretada automaticamente como probabilidade posterior</p>
+<p>Essa é uma das características marcantes do SVM: a solução pode depender apenas de uma parte das observações de treinamento.</p>
 </div>
 </div>
 </div>
-</section></section><section><section id="svm-não-linear" class="title-slide slide level1 center"><h1>SVM não linear</h1>
-
-</section><section id="quando-uma-reta-não-basta" class="slide level2"><h2>Quando uma reta não basta</h2>
-<p>Se a separação é não linear, podemos transformar as covariáveis</p>
-<p><span class="math display">\[
-\mathbf x
-\longrightarrow
-\phi(\mathbf x)
-\]</span></p>
-<p>e construir um hiperplano no novo espaço</p>
 </section><section class="slide level2">
-<img data-src="../..\images/classificacao/kernel_trick.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="kernel-trick" class="slide level2"><h2>Kernel trick</h2>
-<p>Em vez de calcular explicitamente <span class="math inline">\(\phi(\mathbf x)\)</span>, utilizamos</p>
+<img data-src="../..\images/classificacao/hiperplano_separador.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="e-quando-as-classes-se-sobrepõem" class="slide level2"><h2>E quando as classes se sobrepõem?</h2>
+<p>Em dados reais, uma separação perfeita geralmente não existe.</p>
+<p>O SVM introduz variáveis de folga <span class="math inline">\(\xi_i\geq0\)</span> e resolve um compromisso entre:</p>
 <p><span class="math display">\[
-\boxed{
-K(\mathbf x,\mathbf x')
-=
-\langle
-\phi(\mathbf x),
-\phi(\mathbf x')
-\rangle
-}
-\]</span></p>
-<p>Assim, podemos produzir fronteiras não lineares no espaço original</p>
-</section><section id="kernels-comuns" class="slide level2"><h2>Kernels comuns</h2>
-<h3 id="linear">Linear</h3>
-<p><span class="math display">\[
-K(\mathbf x,\mathbf x')
-=
-\mathbf x^t\mathbf x'
-\]</span></p>
-<h3 id="polinomial">Polinomial</h3>
-<p><span class="math display">\[
-K(\mathbf x,\mathbf x')
-=
-(\gamma\mathbf x^t\mathbf x'+c_0)^d
-\]</span></p>
-<h3 id="rbf">RBF</h3>
-<p><span class="math display">\[
-\boxed{
-K(\mathbf x,\mathbf x')
-=
-\exp\left(
--\gamma\|\mathbf x-\mathbf x'\|^2
-\right)
-}
-\]</span></p>
-</section><section class="slide level2">
-<img data-src="../..\images/classificacao/comp_kernel_trick.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="hiperparâmetros" class="slide level2"><h2>Hiperparâmetros</h2>
-<p>Na SVM com kernel RBF, dois parâmetros são especialmente importantes</p>
-<p><span class="math display">\[
-\boxed{
-C
+\boxed{\text{margem grande}}
 \qquad\text{e}\qquad
-\gamma
+\boxed{\text{poucas violações}}
+\]</span></p>
+<p>Uma formulação clássica é</p>
+<p><span class="math display">\[
+\min_{\mathbf w,b,\boldsymbol\xi}
+\left\{
+\frac12\|\mathbf w\|^2+C\sum_{i=1}^{n}\xi_i
+\right\}
+\]</span></p>
+</section><section id="o-papel-de-c" class="slide level2"><h2>O papel de <span class="math inline">\(C\)</span>
+</h2>
+<p>O hiperparâmetro <span class="math inline">\(C\)</span> controla o custo das violações da margem.</p>
+<p><span class="math display">\[
+C\uparrow
+\Rightarrow
+\text{violações mais caras}
+\Rightarrow
+\text{menor tolerância a erros}
+\]</span></p>
+<p><span class="math display">\[
+C\downarrow
+\Rightarrow
+\text{maior tolerância a violações}
+\Rightarrow
+\text{regularização relativamente mais forte}
+\]</span><br><br></p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Cuidado</strong></p>
+</div>
+<div class="callout-content">
+<p>Não confundir <span class="math inline">\(C\)</span> com <span class="math inline">\(\lambda\)</span>: em parametrizações usuais, aumentar <span class="math inline">\(\lambda\)</span> aumenta a regularização, enquanto aumentar <span class="math inline">\(C\)</span> aumenta o custo dos erros.</p>
+</div>
+</div>
+</div>
+</section><section class="slide level2">
+<img data-src="../..\images/classificacao/soft_margin.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="hinge-loss" class="slide level2"><h2>Hinge loss</h2>
+<p>A perda típica do SVM é</p>
+<p><span class="math display">\[
+\boxed{L(y,g(x))=\max\{0,1-yg(x)\}}
+\]</span></p>
+<p>Se</p>
+<p><span class="math display">\[
+yg(x)\geq1,
+\]</span></p>
+<p>a observação está corretamente classificada e fora da margem, produzindo perda zero.</p>
+</section><section id="hinge-loss-1" class="slide level2"><h2>Hinge loss</h2>
+<p>Se</p>
+<p><span class="math display">\[
+yg(x)&lt;1,
+\]</span></p>
+<p>há penalização.</p>
+<p>Assim, observações dentro da margem ou classificadas incorretamente influenciam a solução.</p>
+</section><section id="svm-não-linear" class="slide level2"><h2>SVM não linear</h2>
+<p>Uma fronteira linear pode ser insuficiente.</p>
+<p>Podemos imaginar uma transformação</p>
+<p><span class="math display">\[
+x\mapsto\phi(x)
+\]</span></p>
+<p>que leva os dados para um espaço de características onde a separação seja mais simples.</p>
+<p>Em vez de calcular explicitamente <span class="math inline">\(\phi(x)\)</span>, utilizamos</p>
+<p><span class="math display">\[
+\boxed{K(x,x')=\langle\phi(x),\phi(x')\rangle}
+\]</span></p>
+<p>Esse é o <strong>kernel trick</strong>.</p>
+</section><section class="slide level2">
+<img data-src="../..\images/classificacao/kernel_trick.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="svm-com-kernel" class="slide level2"><h2>SVM com kernel</h2>
+<p>A função de decisão pode ser escrita como</p>
+<p><span class="math display">\[
+\boxed{
+g(x)=\sum_{i\in SV}\alpha_i y_iK(x_i,x)+b
 }
 \]</span></p>
-<p>Eles controlam aspectos diferentes da flexibilidade e devem ser escolhidos por validação</p>
+<p>Observe a conexão com RKHS:</p>
+<p><span class="math display">\[
+\text{função estimada}
+=
+\text{combinação de kernels centrados nos dados}
+\]</span></p>
+<p>No SVM, apenas os <strong>vetores de suporte</strong> aparecem com coeficientes relevantes na representação final.</p>
+</section><section id="kernel-rbfgaussiano" class="slide level2"><h2>Kernel RBF/Gaussiano</h2>
+<p>Um kernel muito utilizado é</p>
+<p><span class="math display">\[
+K(x,x')=\exp\{-\gamma\|x-x'\|^2\}
+\]</span></p>
+<p>O parâmetro <span class="math inline">\(\gamma\)</span> controla o alcance da influência de cada observação.</p>
+<p><span class="math display">\[
+\gamma\uparrow
+\Rightarrow
+\text{influência mais localizada}
+\Rightarrow
+\text{maior potencial de flexibilidade}
+\]</span></p>
+<p><span class="math display">\[
+\gamma\downarrow
+\Rightarrow
+\text{influência mais ampla}
+\Rightarrow
+\text{fronteira potencialmente mais suave}
+\]</span></p>
 </section><section id="svm-multi-classe" class="slide level2"><h2>SVM: multi-classe</h2>
 <p>SVM é naturalmente binário. Para <span class="math inline">\(C &gt; 2\)</span> classes, duas estratégias principais:</p>
 <p><strong>One-vs-One (OVO):</strong></p>
@@ -512,38 +774,233 @@ C
 <li>Cada classe vs.&nbsp;todas as outras</li>
 <li>Classe com maior pontuação é escolhida</li>
 </ul></section><section class="slide level2">
-<img data-src="../..\images/classificacao/ovo_ovr.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="svr-svm" class="slide level2"><h2>SVR × SVM</h2>
+<img data-src="../..\images/classificacao/ovo_ovr.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="do-svm-para-o-svr" class="slide level2"><h2>Do SVM para o SVR</h2>
+<p>O <strong>Support Vector Regression (SVR)</strong> transporta a mesma filosofia para uma resposta quantitativa.</p>
+<p>No SVM:</p>
+<p><span class="math display">\[
+\boxed{\text{fronteira de decisão + margem}}
+\]</span></p>
+<p>No SVR:</p>
+<p><span class="math display">\[
+\boxed{\text{função de regressão + tubo de tolerância}}
+\]</span></p>
+<p>A ideia agora é encontrar uma função <span class="math inline">\(g(x)\)</span> simples e admitir pequenos erros ao redor dela.</p>
+</section><section id="o-tubo-varepsilon" class="slide level2"><h2>O tubo <span class="math inline">\(\varepsilon\)</span>
+</h2>
+<p>O SVR define uma região ao redor da função estimada:</p>
+<p><span class="math display">\[
+g(x)-\varepsilon
+\leq y \leq
+g(x)+\varepsilon
+\]</span></p>
+<p>Essa região possui largura total <span class="math inline">\(2\varepsilon\)</span>.</p>
+<p>Se</p>
+<p><span class="math display">\[
+|y_i-g(x_i)|\leq\varepsilon,
+\]</span></p>
+<p>o erro é considerado suficientemente pequeno e não é penalizado pela perda <span class="math inline">\(\varepsilon\)</span>-insensível.</p>
+</section><section id="perda-varepsilon-insensível" class="slide level2"><h2>Perda <span class="math inline">\(\varepsilon\)</span>-insensível</h2>
+<p>A função de perda é</p>
+<p><span class="math display">\[
+\boxed{
+L_\varepsilon(y,g(x))
+=
+\max\{0,|y-g(x)|-\varepsilon\}
+}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+|y-g(x)|\leq\varepsilon
+\Rightarrow
+L_\varepsilon=0
+\]</span></p>
+<p>mas</p>
+<p><span class="math display">\[
+|y-g(x)|&gt;\varepsilon
+\Rightarrow
+L_\varepsilon&gt;0
+\]</span></p>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Diferentemente dos mínimos quadrados, o SVR <strong>ignora erros suficientemente pequenos</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="quem-são-os-vetores-de-suporte-no-svr" class="slide level2"><h2>Quem são os vetores de suporte no SVR?</h2>
+<p>As observações dentro do tubo não precisam exercer influência direta sobre a solução.</p>
+<p>Os pontos que estão <strong>sobre ou fora das fronteiras do tubo</strong> podem tornar-se vetores de suporte.</p>
+<p><span class="math display">\[
+\boxed{
+\text{vetores de suporte}
+\Rightarrow
+\text{observações decisivas para }\hat g
+}
+\]</span></p>
+<p>Isso produz uma representação potencialmente esparsa em termos das observações de treinamento.</p>
+</section><section id="svr-regularização-e-violações" class="slide level2"><h2>SVR: regularização e violações</h2>
+<p>No caso linear,</p>
+<p><span class="math display">\[
+g(x)=\mathbf w^Tx+b
+\]</span></p>
+<p>Uma formulação clássica do SVR é</p>
+<p><span class="math display">\[
+\min_{\mathbf w,b,\xi,\xi^*}
+\left\{
+\frac12\|\mathbf w\|^2
++C\sum_{i=1}^{n}(\xi_i+\xi_i^*)
+\right\}
+\]</span></p>
+<p>O primeiro termo controla a complexidade; o segundo penaliza observações que ultrapassam o tubo.</p>
+</section><section id="c-e-varepsilon-têm-papéis-diferentes" class="slide level2"><h2>
+<span class="math inline">\(C\)</span> e <span class="math inline">\(\varepsilon\)</span> têm papéis diferentes</h2>
 <table class="caption-top">
 <thead><tr class="header">
-<th>Aspecto</th>
-<th>SVR</th>
-<th>SVM</th>
+<th>Hiperparâmetro</th>
+<th>Interpretação</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>tarefa</td>
-<td>regressão</td>
-<td>classificação</td>
+<td><span class="math inline">\(\varepsilon\)</span></td>
+<td>largura da região sem penalização</td>
 </tr>
 <tr class="even">
-<td>região</td>
-<td>
-<span class="math inline">\(\varepsilon\)</span>-tube</td>
-<td>margem</td>
-</tr>
-<tr class="odd">
-<td>perda</td>
-<td>
-<span class="math inline">\(\varepsilon\)</span>-insensível</td>
-<td>hinge</td>
-</tr>
-<tr class="even">
-<td>kernels</td>
-<td>sim</td>
-<td>sim</td>
+<td><span class="math inline">\(C\)</span></td>
+<td>custo das violações do tubo</td>
 </tr>
 </tbody>
 </table>
+<p>Assim,</p>
+<p><span class="math display">\[
+\varepsilon\uparrow
+\Rightarrow
+\text{tubo mais largo}
+\Rightarrow
+\text{mais erros ignorados}
+\]</span></p>
+<p>Enquanto</p>
+<p><span class="math display">\[
+C\uparrow
+\Rightarrow
+\text{violações mais caras}
+\]</span></p>
+</section><section id="svr-com-kernel" class="slide level2"><h2>SVR com kernel</h2>
+<p>Para relações não lineares, aplicamos novamente o kernel trick.</p>
+<p>A função estimada assume a forma</p>
+<p><span class="math display">\[
+\boxed{
+\hat g(x)=
+\sum_{i=1}^{n}(\alpha_i-\alpha_i^*)K(x_i,x)+b
+}
+\]</span></p>
+<p>Para muitas observações,</p>
+<p><span class="math display">\[
+\alpha_i-\alpha_i^*=0.
+\]</span></p>
+</section><section id="svr-com-kernel-1" class="slide level2"><h2>SVR com kernel</h2>
+<p>Assim, podemos escrever conceitualmente</p>
+<p><span class="math display">\[
+\boxed{
+\hat g(x)=
+\sum_{i\in SV}\gamma_iK(x_i,x)+b
+}
+\]</span></p>
+</section><section id="voltando-à-combinação-de-kernels" class="slide level2"><h2>Voltando à combinação de kernels</h2>
+<p>Cada vetor de suporte produz uma contribuição do tipo</p>
+<p><span class="math display">\[
+\gamma_iK(x_i,x)
+\]</span></p>
+<p>Se <span class="math inline">\(\gamma_i&gt;0\)</span>, a contribuição pode elevar a função naquela região; se <span class="math inline">\(\gamma_i&lt;0\)</span>, pode reduzi-la.</p>
+<p>A curva final é a soma dessas contribuições:</p>
+<p><span class="math display">\[
+\boxed{
+\hat g(x)=\sum_{i\in SV}\gamma_iK(x_i,x)+b
+}
+\]</span></p>
+<p>Portanto, a interpretação gráfica discutida em RKHS reaparece diretamente no SVR.</p>
+</section><section id="svm-versus-svr" class="slide level2"><h2>SVM versus SVR</h2>
+<table class="caption-top">
+<thead><tr class="header">
+<th>Característica</th>
+<th>SVM</th>
+<th>SVR</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Problema</td>
+<td>Classificação</td>
+<td>Regressão</td>
+</tr>
+<tr class="even">
+<td>Resposta</td>
+<td>Categórica</td>
+<td>Quantitativa</td>
+</tr>
+<tr class="odd">
+<td>Ideia geométrica</td>
+<td>Margem</td>
+<td>Tubo <span class="math inline">\(\varepsilon\)</span>
+</td>
+</tr>
+<tr class="even">
+<td>Perda típica</td>
+<td>Hinge</td>
+<td>
+<span class="math inline">\(\varepsilon\)</span>-insensível</td>
+</tr>
+<tr class="odd">
+<td>Regularização</td>
+<td><span class="math inline">\(\|\mathbf w\|^2\)</span></td>
+<td><span class="math inline">\(\|\mathbf w\|^2\)</span></td>
+</tr>
+<tr class="even">
+<td>Vetores de suporte</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+<tr class="odd">
+<td>Kernel trick</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(C\)</span></td>
+<td>custo das violações</td>
+<td>custo das violações</td>
+</tr>
+<tr class="odd">
+<td>
+<span class="math inline">\(\gamma\)</span> no RBF</td>
+<td>alcance do kernel</td>
+<td>alcance do kernel</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\varepsilon\)</span></td>
+<td>—</td>
+<td>largura do tubo</td>
+</tr>
+</tbody>
+</table></section><section id="uma-visão-unificada" class="slide level2"><h2>Uma visão unificada</h2>
+<p>Podemos enxergar os métodos estudados como escolhas diferentes dentro da mesma estrutura geral:</p>
+<p><span class="math display">\[
+\boxed{
+\text{ajuste aos dados}
++
+\text{controle de complexidade}
+}
+\]</span></p>
+<ul>
+<li>
+<strong>Kernel Ridge:</strong> perda quadrática + regularização</li>
+<li>
+<strong>SVM:</strong> hinge loss + regularização</li>
+<li>
+<strong>SVR:</strong> perda <span class="math inline">\(\varepsilon\)</span>-insensível + regularização</li>
+</ul>
+<p>O kernel permite que essas funções sejam não lineares no espaço original.</p>
 
 
 </section></section>

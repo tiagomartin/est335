@@ -590,109 +590,145 @@ O que muda entre eles é, entre outras coisas, a **função de perda**, o kernel
 
 
 
-# Support Vector Machines e Regression
+# Support Vector Regression
 
-## Da RKHS ao SVM e ao SVR
-
-A estrutura de RKHS permite enxergar diferentes métodos como variações de uma mesma ideia:
-
+## Regressão com margem
 $$
-\boxed{\text{perda nos dados} + \text{regularização da função}}
+\boxed{L_\varepsilon(y,f(\mathbf x))=\max\{0,|y-f(\mathbf x)|-\varepsilon\}}
 $$
+A regularização controla a complexidade da função
 
-Mudando a função de perda, obtemos métodos diferentes.
 
-$$
-\begin{array}{ccc}
-\text{Perda quadrática} & \text{Hinge loss} & \varepsilon\text{-insensível}\\
-\downarrow & \downarrow & \downarrow\\
-\text{Kernel Ridge} & \text{SVM} & \text{SVR}
-\end{array}
-$$
 
-::: {.callout-note}
-## Nota
-SVM é voltado principalmente à **classificação**; SVR adapta a mesma filosofia para **regressão**.
-:::
+# Support Vector Machines
 
-## SVM: o problema de classificação
+## Da SVR para a SVM
 
-Considere inicialmente duas classes:
+Na regressão, a ideia de margem apareceu na **Support Vector Regression**
+
+Agora queremos separar classes
+
+Para simplificar, escreva
 
 $$
 Y\in\{-1,+1\}
 $$
 
-Para uma fronteira linear,
+e considere um hiperplano
 
 $$
-g(x)=\mathbf w^T x+b
+\boxed{
+f(\mathbf x)
+=
+\beta_0+\boldsymbol\beta^t\mathbf x
+}
 $$
 
-classificamos de acordo com o sinal de $g(x)$.
+---
+
+## Regra de classificação
+
+O sinal de $f(\mathbf x)$ determina a classe
 
 $$
-g(x)>0 \Rightarrow +1
-\qquad
-g(x)<0 \Rightarrow -1
+\boxed{
+g(\mathbf x)
+=
+\operatorname{sign}
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x
+\right)
+}
 $$
-
-
-## SVM: o problema de classificação
-
-
-A questão central do SVM não é apenas encontrar uma fronteira que separe as classes.<br><br>
-
-::: {.callout-important}
-## Importante
-O SVM procura uma fronteira que produza uma **margem grande** entre as classes.
-:::
-
-## Margem máxima
 
 A fronteira de decisão é
 
 $$
-\mathbf w^T x+b=0
+\boxed{
+\beta_0+\boldsymbol\beta^t\mathbf x=0
+}
 $$
 
-As fronteiras da margem podem ser escritas como
+---
+
+## Muitos hiperplanos podem separar os dados
+
+Quando as classes são linearmente separáveis, podem existir vários hiperplanos com erro de treinamento igual a zero
+
+Qual devemos escolher?
 
 $$
-\mathbf w^T x+b=+1
+\boxed{\text{o hiperplano com maior margem}}
 $$
 
+---
+
+## Margem
+
+Para a parametrização canônica, as fronteiras da margem são
+
 $$
-\mathbf w^T x+b=-1
+\beta_0+\boldsymbol\beta^t\mathbf x=1
 $$
 
-A largura da margem é inversamente relacionada a $\|\mathbf w\|$.
+e
 
+$$
+\beta_0+\boldsymbol\beta^t\mathbf x=-1
+$$
+
+A largura total da margem é
+
+$$
+\boxed{
+\frac{2}{\|\boldsymbol\beta\|}
+}
+$$
+
+---
 
 ## Margem máxima
 
-Portanto,
+Maximizar a margem equivale a minimizar
 
 $$
-\boxed{\text{maximizar margem}\ \Longleftrightarrow\ \text{minimizar }\frac12\|\mathbf w\|^2}
+\frac12\|\boldsymbol\beta\|^2
 $$
 
-## Quem são os vetores de suporte?
-
-Nem todas as observações determinam igualmente a fronteira.
-
-Os pontos mais importantes são aqueles que estão **sobre a margem ou a violam**.
+sujeito a
 
 $$
-\boxed{\text{Support vectors = observações que sustentam a solução}}
+\boxed{
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+\geq1,
+\qquad i=1,\ldots,n
+}
 $$
 
-Pontos muito distantes da fronteira podem ter coeficiente igual a zero na representação dual e, portanto, não alteram diretamente a fronteira final.<br><br>
+---
 
-::: {.callout-tip appearance="simple"}
-Essa é uma das características marcantes do SVM: a solução pode depender apenas de uma parte das observações de treinamento.
+## Support vectors
+
+Os pontos mais próximos da fronteira satisfazem
+
+$$
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+=
+1
+$$
+
+Essas observações são os **support vectors**
+
+::: {.callout-note appearance="simple"}
+
+A posição da fronteira é determinada principalmente pelas observações próximas à margem
 :::
-
 
 ---
 
@@ -700,52 +736,81 @@ Essa é uma das características marcantes do SVM: a solução pode depender ape
 ![](/images/classificacao/hiperplano_separador.png){fig-align="center"}
 
 
-## E quando as classes se sobrepõem?
+## E quando não há separação perfeita?
 
-Em dados reais, uma separação perfeita geralmente não existe.
+Dados reais frequentemente apresentam:
 
-O SVM introduz variáveis de folga $\xi_i\geq0$ e resolve um compromisso entre:
+- sobreposição entre classes
+- ruído
+- observações atípicas
+
+Exigir separação perfeita pode produzir uma fronteira instável
+
+Precisamos permitir violações da margem
+
+# Soft Margin
+
+## Variáveis de folga
+
+Introduzimos $\xi_i\geq0$:
 
 $$
-\boxed{\text{margem grande}}
-\qquad\text{e}\qquad
-\boxed{\text{poucas violações}}
+\boxed{
+y_i
+\left(
+\beta_0+\boldsymbol\beta^t\mathbf x_i
+\right)
+\geq
+1-\xi_i
+}
 $$
 
-Uma formulação clássica é
+---
+
+## Problema de otimização
+
+Uma formulação da SVM é
 
 $$
-\min_{\mathbf w,b,\boldsymbol\xi}
+\boxed{
+\min_{\beta_0,\boldsymbol\beta,\boldsymbol\xi}
 \left\{
-\frac12\|\mathbf w\|^2+C\sum_{i=1}^{n}\xi_i
+\frac12\|\boldsymbol\beta\|^2
++
+C\sum_{i=1}^{n}\xi_i
 \right\}
+}
 $$
+
+com
+
+$$
+\xi_i\geq0
+$$
+
+---
 
 ## O papel de $C$
 
-O hiperparâmetro $C$ controla o custo das violações da margem.
+### $C$ grande
+
+Violações da margem são fortemente penalizadas
 
 $$
 C\uparrow
 \Rightarrow
-\text{violações mais caras}
-\Rightarrow
-\text{menor tolerância a erros}
+\text{menor tolerância a violações}
 $$
+
+### $C$ pequeno
+
+Aceitamos mais violações em troca de uma margem maior
 
 $$
 C\downarrow
 \Rightarrow
-\text{maior tolerância a violações}
-\Rightarrow
-\text{regularização relativamente mais forte}
-$$<br><br>
-
-::: {.callout-warning}
-## Cuidado
-Não confundir $C$ com $\lambda$: em parametrizações usuais, aumentar $\lambda$ aumenta a regularização, enquanto aumentar $C$ aumenta o custo dos erros.
-:::
-
+\text{maior regularização}
+$$
 
 ---
 
@@ -753,111 +818,155 @@ Não confundir $C$ com $\lambda$: em parametrizações usuais, aumentar $\lambda
 ![](/images/classificacao/soft_margin.png){fig-align="center"}
 
 
-
 ## Hinge loss
 
-A perda típica do SVM é
+A SVM também pode ser vista como minimização de
 
 $$
-\boxed{L(y,g(x))=\max\{0,1-yg(x)\}}
+\boxed{
+L_{\text{hinge}}(y,f(\mathbf x))
+=
+\max\{0,1-yf(\mathbf x)\}
+}
+$$
+
+com uma penalização sobre a complexidade do hiperplano
+
+---
+
+## Interpretando a hinge loss
+
+Se
+
+$$
+yf(\mathbf x)\geq1
+$$
+
+a observação está corretamente classificada e fora da margem
+
+$$
+L_{\text{hinge}}=0
 $$
 
 Se
 
 $$
-yg(x)\geq1,
+yf(\mathbf x)<1
 $$
 
-a observação está corretamente classificada e fora da margem, produzindo perda zero.
+há penalização
 
+---
 
-## Hinge loss
+## Comparação conceitual
 
-Se
+### Regressão logística
 
-$$
-yg(x)<1,
-$$
-
-há penalização.
-
-Assim, observações dentro da margem ou classificadas incorretamente influenciam a solução.
-
-## SVM não linear
-
-Uma fronteira linear pode ser insuficiente.
-
-Podemos imaginar uma transformação
+Estima diretamente uma probabilidade
 
 $$
-x\mapsto\phi(x)
+\widehat P(Y=1\mid\mathbf X=\mathbf x)
 $$
 
-que leva os dados para um espaço de características onde a separação seja mais simples.
+### SVM
 
-Em vez de calcular explicitamente $\phi(x)$, utilizamos
+Constrói diretamente uma função discriminante
 
 $$
-\boxed{K(x,x')=\langle\phi(x),\phi(x')\rangle}
+f(\mathbf x)
 $$
 
-Esse é o **kernel trick**.
+::: {.callout-note appearance="simple"}
 
+A saída bruta de uma SVM não deve ser interpretada automaticamente como probabilidade posterior
+:::
 
+# SVM não linear
+
+## Quando uma reta não basta
+
+Se a separação é não linear, podemos transformar as covariáveis
+
+$$
+\mathbf x
+\longrightarrow
+\phi(\mathbf x)
+$$
+
+e construir um hiperplano no novo espaço
 
 ---
 
 
 ![](/images/classificacao/kernel_trick.png){fig-align="center"}
 
+## Kernel trick
 
-
-## SVM com kernel
-
-A função de decisão pode ser escrita como
+Em vez de calcular explicitamente $\phi(\mathbf x)$, utilizamos
 
 $$
 \boxed{
-g(x)=\sum_{i\in SV}\alpha_i y_iK(x_i,x)+b
+K(\mathbf x,\mathbf x')
+=
+\langle
+\phi(\mathbf x),
+\phi(\mathbf x')
+\rangle
 }
 $$
 
-Observe a conexão com RKHS:
+Assim, podemos produzir fronteiras não lineares no espaço original
+
+---
+
+## Kernels comuns
+
+### Linear
 
 $$
-\text{função estimada}
+K(\mathbf x,\mathbf x')
 =
-\text{combinação de kernels centrados nos dados}
+\mathbf x^t\mathbf x'
 $$
 
-No SVM, apenas os **vetores de suporte** aparecem com coeficientes relevantes na representação final.
-
-## Kernel RBF/Gaussiano
-
-Um kernel muito utilizado é
+### Polinomial
 
 $$
-K(x,x')=\exp\{-\gamma\|x-x'\|^2\}
+K(\mathbf x,\mathbf x')
+=
+(\gamma\mathbf x^t\mathbf x'+c_0)^d
 $$
 
-O parâmetro $\gamma$ controla o alcance da influência de cada observação.
+### RBF
 
 $$
-\gamma\uparrow
-\Rightarrow
-\text{influência mais localizada}
-\Rightarrow
-\text{maior potencial de flexibilidade}
+\boxed{
+K(\mathbf x,\mathbf x')
+=
+\exp\left(
+-\gamma\|\mathbf x-\mathbf x'\|^2
+\right)
+}
 $$
 
+---
+
+
+![](/images/classificacao/comp_kernel_trick.png){fig-align="center"}
+
+## Hiperparâmetros
+
+Na SVM com kernel RBF, dois parâmetros são especialmente importantes
+
 $$
-\gamma\downarrow
-\Rightarrow
-\text{influência mais ampla}
-\Rightarrow
-\text{fronteira potencialmente mais suave}
+\boxed{
+C
+\qquad\text{e}\qquad
+\gamma
+}
 $$
 
+Eles controlam aspectos diferentes da flexibilidade e devem ser escolhidos por validação
 
 ## SVM: multi-classe
 
@@ -881,223 +990,12 @@ SVM é naturalmente binário. Para $C > 2$ classes, duas estratégias principais
 
 ![](/images/classificacao/ovo_ovr.png){fig-align="center"}
 
+## SVR × SVM
 
-
-
-## Do SVM para o SVR
-
-O **Support Vector Regression (SVR)** transporta a mesma filosofia para uma resposta quantitativa.
-
-No SVM:
-
-$$
-\boxed{\text{fronteira de decisão + margem}}
-$$
-
-No SVR:
-
-$$
-\boxed{\text{função de regressão + tubo de tolerância}}
-$$
-
-A ideia agora é encontrar uma função $g(x)$ simples e admitir pequenos erros ao redor dela.
-
-## O tubo $\varepsilon$
-
-O SVR define uma região ao redor da função estimada:
-
-$$
-g(x)-\varepsilon
-\leq y \leq
-g(x)+\varepsilon
-$$
-
-Essa região possui largura total $2\varepsilon$.
-
-Se
-
-$$
-|y_i-g(x_i)|\leq\varepsilon,
-$$
-
-o erro é considerado suficientemente pequeno e não é penalizado pela perda $\varepsilon$-insensível.
-
-## Perda $\varepsilon$-insensível
-
-A função de perda é
-
-$$
-\boxed{
-L_\varepsilon(y,g(x))
-=
-\max\{0,|y-g(x)|-\varepsilon\}
-}
-$$
-
-Portanto,
-
-$$
-|y-g(x)|\leq\varepsilon
-\Rightarrow
-L_\varepsilon=0
-$$
-
-mas
-
-$$
-|y-g(x)|>\varepsilon
-\Rightarrow
-L_\varepsilon>0
-$$
-
-::: {.callout-note appearance="simple"}
-Diferentemente dos mínimos quadrados, o SVR **ignora erros suficientemente pequenos**.
-:::
-
-## Quem são os vetores de suporte no SVR?
-
-As observações dentro do tubo não precisam exercer influência direta sobre a solução.
-
-Os pontos que estão **sobre ou fora das fronteiras do tubo** podem tornar-se vetores de suporte.
-
-$$
-\boxed{
-\text{vetores de suporte}
-\Rightarrow
-\text{observações decisivas para }\hat g
-}
-$$
-
-Isso produz uma representação potencialmente esparsa em termos das observações de treinamento.
-
-## SVR: regularização e violações
-
-No caso linear,
-
-$$
-g(x)=\mathbf w^Tx+b
-$$
-
-Uma formulação clássica do SVR é
-
-$$
-\min_{\mathbf w,b,\xi,\xi^*}
-\left\{
-\frac12\|\mathbf w\|^2
-+C\sum_{i=1}^{n}(\xi_i+\xi_i^*)
-\right\}
-$$
-
-O primeiro termo controla a complexidade; o segundo penaliza observações que ultrapassam o tubo.
-
-## $C$ e $\varepsilon$ têm papéis diferentes
-
-| Hiperparâmetro | Interpretação |
-|---|---|
-| $\varepsilon$ | largura da região sem penalização |
-| $C$ | custo das violações do tubo |
-
-Assim,
-
-$$
-\varepsilon\uparrow
-\Rightarrow
-\text{tubo mais largo}
-\Rightarrow
-\text{mais erros ignorados}
-$$
-
-Enquanto
-
-$$
-C\uparrow
-\Rightarrow
-\text{violações mais caras}
-$$
-
-## SVR com kernel
-
-Para relações não lineares, aplicamos novamente o kernel trick.
-
-A função estimada assume a forma
-
-$$
-\boxed{
-\hat g(x)=
-\sum_{i=1}^{n}(\alpha_i-\alpha_i^*)K(x_i,x)+b
-}
-$$
-
-Para muitas observações,
-
-$$
-\alpha_i-\alpha_i^*=0.
-$$
-
-
-
-## SVR com kernel
-
-
-Assim, podemos escrever conceitualmente
-
-$$
-\boxed{
-\hat g(x)=
-\sum_{i\in SV}\gamma_iK(x_i,x)+b
-}
-$$
-
-## Voltando à combinação de kernels
-
-Cada vetor de suporte produz uma contribuição do tipo
-
-$$
-\gamma_iK(x_i,x)
-$$
-
-Se $\gamma_i>0$, a contribuição pode elevar a função naquela região; se $\gamma_i<0$, pode reduzi-la.
-
-A curva final é a soma dessas contribuições:
-
-$$
-\boxed{
-\hat g(x)=\sum_{i\in SV}\gamma_iK(x_i,x)+b
-}
-$$
-
-Portanto, a interpretação gráfica discutida em RKHS reaparece diretamente no SVR.
-
-## SVM versus SVR
-
-| Característica | SVM | SVR |
+| Aspecto | SVR | SVM |
 |---|---|---|
-| Problema | Classificação | Regressão |
-| Resposta | Categórica | Quantitativa |
-| Ideia geométrica | Margem | Tubo $\varepsilon$ |
-| Perda típica | Hinge | $\varepsilon$-insensível |
-| Regularização | $\|\mathbf w\|^2$ | $\|\mathbf w\|^2$ |
-| Vetores de suporte | Sim | Sim |
-| Kernel trick | Sim | Sim |
-| $C$ | custo das violações | custo das violações |
-| $\gamma$ no RBF | alcance do kernel | alcance do kernel |
-| $\varepsilon$ | — | largura do tubo |
-
-## Uma visão unificada
-
-Podemos enxergar os métodos estudados como escolhas diferentes dentro da mesma estrutura geral:
-
-$$
-\boxed{
-\text{ajuste aos dados}
-+
-\text{controle de complexidade}
-}
-$$
-
-- **Kernel Ridge:** perda quadrática + regularização
-- **SVM:** hinge loss + regularização
-- **SVR:** perda $\varepsilon$-insensível + regularização
-
-O kernel permite que essas funções sejam não lineares no espaço original.
+| tarefa | regressão | classificação |
+| região | $\varepsilon$-tube | margem |
+| perda | $\varepsilon$-insensível | hinge |
+| kernels | sim | sim |
 

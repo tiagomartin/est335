@@ -1067,7 +1067,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -2064,7 +2064,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#já-vimos-regularização-funcional",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Já vimos regularização funcional",
-    "text": "Já vimos regularização funcional\nNo smoothing spline:\n\\[\n\\sum_{i=1}^{n}(Y_i-f(X_i))^2\n+\n\\lambda\\int[f''(t)]^2dt\n\\]\nO primeiro termo mede ajuste.\nO segundo penaliza rugosidade."
+    "text": "Já vimos regularização funcional\nNo smoothing spline:\n\\[\n\\sum_{i=1}^{n}(Y_i-g(X_i))^2\n+\n\\lambda\\int[g''(t)]^2dt\n\\]\nO primeiro termo mede ajuste.\nO segundo penaliza rugosidade."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#do-ridge-para-funções",
@@ -2106,7 +2106,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-papel-de-lambda",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O papel de \\(\\lambda\\)\n",
-    "text": "O papel de \\(\\lambda\\)\n\nNo problema\n\\[\n\\sum_i(Y_i-f(X_i))^2+\\lambda\\|f\\|_{\\mathcal H}^2,\n\\]\ntemos:\n\\[\n\\lambda\\downarrow\n\\Rightarrow\n\\text{maior flexibilidade}\n\\]\n\\[\n\\lambda\\uparrow\n\\Rightarrow\n\\text{maior regularização}\n\\]\nNovamente, \\(\\lambda\\) deve ser escolhido por validação."
+    "text": "O papel de \\(\\lambda\\)\n\nO parâmetro \\(\\lambda\\) controla o compromisso entre ajuste e complexidade.\n\n\\(\\lambda\\) pequeno\n\\[\n\\lambda\\downarrow\n\\Rightarrow\n\\text{penalização menor}\n\\Rightarrow\n\\text{maior flexibilidade}\n\\]\nMaior risco de overfitting.\n\n\\(\\lambda\\) grande\n\\[\n\\lambda\\uparrow\n\\Rightarrow\n\\text{penalização maior}\n\\Rightarrow\n\\text{menor complexidade}\n\\]\nMaior risco de underfitting."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#regressão-com-margem",
@@ -2148,7 +2148,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#margem-máxima",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Margem máxima",
-    "text": "Margem máxima\nMaximizar a margem equivale a minimizar\n\\[\n\\frac12\\|\\boldsymbol\\beta\\|^2\n\\]\nsujeito a\n\\[\n\\boxed{\ny_i\n\\left(\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x_i\n\\right)\n\\geq1,\n\\qquad i=1,\\ldots,n\n}\n\\]"
+    "text": "Margem máxima\nA fronteira de decisão é\n\\[\n\\mathbf w^T x+b=0\n\\]\nAs fronteiras da margem podem ser escritas como\n\\[\n\\mathbf w^T x+b=+1\n\\]\n\\[\n\\mathbf w^T x+b=-1\n\\]\nA largura da margem é inversamente relacionada a \\(\\|\\mathbf w\\|\\)."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#support-vectors",
@@ -2183,14 +2183,14 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-papel-de-c",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O papel de \\(C\\)\n",
-    "text": "O papel de \\(C\\)\n\n\n\\(C\\) grande\nViolações da margem são fortemente penalizadas\n\\[\nC\\uparrow\n\\Rightarrow\n\\text{menor tolerância a violações}\n\\]\n\n\\(C\\) pequeno\nAceitamos mais violações em troca de uma margem maior\n\\[\nC\\downarrow\n\\Rightarrow\n\\text{maior regularização}\n\\]"
+    "text": "O papel de \\(C\\)\n\nO hiperparâmetro \\(C\\) controla o custo das violações da margem.\n\\[\nC\\uparrow\n\\Rightarrow\n\\text{violações mais caras}\n\\Rightarrow\n\\text{menor tolerância a erros}\n\\]\n\\[\nC\\downarrow\n\\Rightarrow\n\\text{maior tolerância a violações}\n\\Rightarrow\n\\text{regularização relativamente mais forte}\n\\]\n\n\n\n\n\n\nCuidado\n\n\nNão confundir \\(C\\) com \\(\\lambda\\): em parametrizações usuais, aumentar \\(\\lambda\\) aumenta a regularização, enquanto aumentar \\(C\\) aumenta o custo dos erros."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#hinge-loss",
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#hinge-loss",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Hinge loss",
-    "text": "Hinge loss\nA SVM também pode ser vista como minimização de\n\\[\n\\boxed{\nL_{\\text{hinge}}(y,f(\\mathbf x))\n=\n\\max\\{0,1-yf(\\mathbf x)\\}\n}\n\\]\ncom uma penalização sobre a complexidade do hiperplano"
+    "text": "Hinge loss\nA perda típica do SVM é\n\\[\n\\boxed{L(y,g(x))=\\max\\{0,1-yg(x)\\}}\n\\]\nSe\n\\[\nyg(x)\\geq1,\n\\]\na observação está corretamente classificada e fora da margem, produzindo perda zero."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#interpretando-a-hinge-loss",
@@ -9879,7 +9879,7 @@
     "href": "aulas.html",
     "title": "Aulas",
     "section": "",
-    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides  \n\n\n Métodos Locais: KNN, Kernel e Regressão Local \n Ver slides",
+    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides  \n\n\n Métodos Locais: KNN, Kernel e Regressão Local \n Ver slides  \n\n\n Kernels, RKHS, SVR e SVM \n Ver slides",
     "crumbs": [
       "Aulas"
     ]
@@ -10855,14 +10855,14 @@
     "href": "programacao/semana-6.html",
     "title": "Semana 06",
     "section": "",
-    "text": "Análise de Componentes Principais"
+    "text": "Métodos Locais: KNN, Kernel e Regressão Local\n Kernels, RKHS, SVR e SVM"
   },
   {
     "objectID": "programacao/semana-6.html#slides",
     "href": "programacao/semana-6.html#slides",
     "title": "Semana 06",
     "section": "",
-    "text": "Análise de Componentes Principais"
+    "text": "Métodos Locais: KNN, Kernel e Regressão Local\n Kernels, RKHS, SVR e SVM"
   },
   {
     "objectID": "programacao/semana-6.html#entrega-lista-de-exercícios-03",
@@ -10982,5 +10982,754 @@
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Regressão Polinomial Local",
     "text": "Regressão Polinomial Local\nNote que:\nnn é a fração de observações utilizada para definir adaptativamente a vizinhança em torno de cada ponto onde a regressão local é ajustada.\n\\[nn\\downarrow\\Rightarrow\\text{vizinhança menor}\\Rightarrow\\text{maior flexibilidade}\\]\n\\[nn\\uparrow\\Rightarrow\\text{vizinhança maior}\\Rightarrow\\text{maior suavização}\\]\nA figura compara estimadores obtidos com o mesmo kernel e a mesma fração de observações nn, variando apenas o grau \\(p\\) do polinômio ajustado localmente.\nQuando \\(p=0\\), obtemos o estimador de Nadaraya-Watson. À medida que o grau aumenta, o modelo local torna-se mais flexível, podendo capturar melhor a curvatura da função de regressão."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#de-onde-vem-a-ideia",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#de-onde-vem-a-ideia",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De onde vem a ideia?",
+    "text": "De onde vem a ideia?\nConsidere o problema de regressão\n\\[\nY=g(X)+\\varepsilon\n\\]\nNa regressão linear, restringimos a função a uma forma específica:\n\\[\ng(x)=\\beta_0+\\beta_1x\n\\]\nMas e se a relação entre \\(X\\) e \\(Y\\) for não linear e não quisermos especificar antecipadamente a forma de \\(g\\)?\n\n\n\n\n\n\nNota\n\n\nPrecisamos definir em qual conjunto de funções procuraremos \\(g\\) e como controlar sua complexidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#da-estimação-de-parâmetros-à-estimação-de-funções",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#da-estimação-de-parâmetros-à-estimação-de-funções",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Da estimação de parâmetros à estimação de funções",
+    "text": "Da estimação de parâmetros à estimação de funções\nNa regressão linear, procuramos um vetor de parâmetros:\n\\[\n\\boldsymbol\\beta=(\\beta_0,\\beta_1,\\ldots,\\beta_p)^\\top\n\\]\nNos métodos baseados em RKHS, procuramos diretamente uma função:\n\\[\n\\boxed{g\\in\\mathcal H}\n\\]\nonde \\(\\mathcal H\\) representa um espaço de funções.\n\\[\n\\text{Regressão linear: procurar }\\boldsymbol\\beta\n\\qquad\\Longrightarrow\\qquad\n\\text{RKHS: procurar }g\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-que-significa-rkhs",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-que-significa-rkhs",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que significa RKHS?",
+    "text": "O que significa RKHS?\nRKHS = Reproducing Kernel Hilbert Space\nEm português:\n\nEspaço de Hilbert com Núcleo Reprodutor\n\nPara uma primeira abordagem, podemos pensar em uma RKHS como\n\\[\n\\boxed{\\text{um espaço estruturado de funções candidatas para }g}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#onde-entra-o-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#onde-entra-o-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Onde entra o kernel?",
+    "text": "Onde entra o kernel?\nUma RKHS está associada a uma função kernel\n\\[\nK(x,x')\n\\]\nque relaciona dois pontos \\(x\\) e \\(x'\\).\nUm exemplo importante é o kernel Gaussiano (RBF):\n\\[\nK(x,x')=\n\\exp\\left\\{-\\frac{(x-x')^2}{2\\sigma^2}\\right\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#kernel-gaussiano-uma-visão-gráfica",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#kernel-gaussiano-uma-visão-gráfica",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Kernel Gaussiano: uma visão gráfica",
+    "text": "Kernel Gaussiano: uma visão gráfica\n\nQuanto mais distante \\(x\\) está de \\(x_0\\), menor é a similaridade determinada pelo kernel."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#construindo-uma-função-com-kernels",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#construindo-uma-função-com-kernels",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Construindo uma função com kernels",
+    "text": "Construindo uma função com kernels\nUma função em muitos métodos baseados em RKHS pode ser representada na forma\n\\[\n\\boxed{\ng(x)=\\sum_{i=1}^{n}\\alpha_iK(x,x_i)\n}\n\\]\nou seja,\n\\[\ng(x)=\n\\alpha_1K(x,x_1)+\\cdots+\\alpha_nK(x,x_n)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#visualizando-a-construção",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#visualizando-a-construção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Visualizando a construção",
+    "text": "Visualizando a construção\n\nA curva final é uma combinação das funções kernel."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#mas-isso-não-pode-ficar-complexo-demais",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#mas-isso-não-pode-ficar-complexo-demais",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mas isso não pode ficar complexo demais?",
+    "text": "Mas isso não pode ficar complexo demais?\nSe procurarmos apenas a função que minimiza\n\\[\n\\sum_{i=1}^{n}\\left[y_i-g(x_i)\\right]^2\n\\]\npodemos obter uma função excessivamente flexível.\n\\[\n\\text{flexibilidade excessiva}\n\\quad\\Longrightarrow\\quad\n\\text{overfitting}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#regularização-em-uma-rkhs",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#regularização-em-uma-rkhs",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regularização em uma RKHS",
+    "text": "Regularização em uma RKHS\nUm problema típico é\n\\[\n\\boxed{\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^{2}\n\\right\\}\n}\n\\]\nTemos dois componentes:\n\\[\n\\underbrace{\n\\frac{1}{n}\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n}_{\\text{erro de ajuste}}\n+\n\\underbrace{\n\\lambda\\|g\\|_{\\mathcal H}^{2}\n}_{\\text{penalização da complexidade}}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-conexão-com-ridge",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-conexão-com-ridge",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A conexão com Ridge",
+    "text": "A conexão com Ridge\nNa regressão Ridge:\n\\[\n\\min_{\\boldsymbol\\beta}\n\\left\\{\n\\frac{1}{n}\\|\\mathbf y-\\mathbf X\\boldsymbol\\beta\\|^2\n+\\lambda\\|\\boldsymbol\\beta\\|^2\n\\right\\}\n\\]\nNa RKHS:\n\\[\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_i[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^2\n\\right\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#uma-dificuldade-aparente",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#uma-dificuldade-aparente",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma dificuldade aparente",
+    "text": "Uma dificuldade aparente\nSe \\(\\mathcal H\\) pode conter um número enorme (até infinito) de funções, como resolver\n\\[\n\\min_{g\\in\\mathcal H} \\{\\text{erro}+\\text{penalização}\\}?\n\\]\nParece que precisaríamos procurar em um espaço de dimensão infinita.\nMas um resultado fundamental simplifica o problema."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-ideia-central",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-ideia-central",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A ideia central",
+    "text": "A ideia central\nPara uma ampla classe de problemas regularizados, a solução pode ser escrita como\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]\nAssim, em vez de procurar diretamente uma função em \\(\\mathcal H\\), precisamos estimar apenas\n\\[\n\\hat\\alpha_1,\\hat\\alpha_2,\\ldots,\\hat\\alpha_n\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-matriz-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-matriz-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A matriz kernel",
+    "text": "A matriz kernel\nCalculamos o kernel para cada par de observações:\n\\[\nK_{ij}=K(x_i,x_j)\n\\]\nIsso produz a matriz kernel, ou matriz de Gram:\n\\[\n\\mathbf K=\n\\begin{pmatrix}\nK(x_1,x_1)&\\cdots&K(x_1,x_n)\\\\\n\\vdots&\\ddots&\\vdots\\\\\nK(x_n,x_1)&\\cdots&K(x_n,x_n)\n\\end{pmatrix}\n\\]\nNos pontos de treinamento,\n\\[\n\\hat{\\mathbf g}=\\mathbf K\\boldsymbol\\alpha\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-kernel-trick",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-kernel-trick",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O kernel trick",
+    "text": "O kernel trick\nPodemos imaginar uma transformação\n\\[\nx\\longmapsto\\phi(x)\n\\]\npara um espaço de características potencialmente muito grande.\nO kernel permite calcular\n\\[\n\\boxed{\nK(x,x')=\n\\langle\\phi(x),\\phi(x')\\rangle\n}\n\\]\nsem precisar construir explicitamente \\(\\phi(x)\\).\nIsso é conhecido como kernel trick."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#por-que-isso-ajuda-com-relações-não-lineares",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#por-que-isso-ajuda-com-relações-não-lineares",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que isso ajuda com relações não lineares?",
+    "text": "Por que isso ajuda com relações não lineares?\nNo espaço original, um modelo pode ser simples demais para representar os dados.\nO kernel permite trabalhar implicitamente em um espaço de características mais rico:\n\\[\nx\n\\longrightarrow\n\\phi(x)\n\\longrightarrow\n\\text{modelo flexível}\n\\]\nCom isso, podemos representar relações e fronteiras não lineares sem criar explicitamente todas as novas variáveis."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ridge + kernel",
+    "text": "Ridge + kernel\nA combinação da perda quadrática com regularização em RKHS leva ao Kernel Ridge Regression.\nCom a convenção\n\\[\n\\frac{1}{n}\\|\\mathbf y-\\mathbf K\\boldsymbol\\alpha\\|^2\n+\\lambda\\boldsymbol\\alpha^T\\mathbf K\\boldsymbol\\alpha,\n\\]\na solução satisfaz\n\\[\n\\boxed{\n\\hat{\\boldsymbol\\alpha}\n=(\\mathbf K+n\\lambda\\mathbf I)^{-1}\\mathbf y\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#comparação-com-regressão-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#comparação-com-regressão-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Comparação com regressão kernel",
+    "text": "Comparação com regressão kernel\nNão confunda regressão kernel com métodos kernel em RKHS.\nNadaraya–Watson\n\\[\n\\hat f(x)=\n\\frac{\\sum_iK_h(x-x_i)y_i}\n{\\sum_iK_h(x-x_i)}\n\\]\nOs pesos são determinados diretamente pela proximidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#dois-usos-da-palavra-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#dois-usos-da-palavra-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Dois usos da palavra “kernel”",
+    "text": "Dois usos da palavra “kernel”\nA palavra kernel aparece nos dois contextos, mas os papéis não são idênticos.\n\n\n\n\n\n\nSuavização kernel\nRKHS\n\n\n\npesos locais\nestrutura de um espaço de funções\n\n\nlargura de banda \\(h\\)\n\nparâmetros do kernel + \\(\\lambda\\)\n\n\n\nNadaraya–Watson\nKernel Ridge, SVM etc.\n\n\nfoco em vizinhança\nfoco em similaridade/produto interno e regularização\n\n\n\n\n\n\n\n\n\nCuidado\n\n\nHá conexões matemáticas entre essas ideias, mas não devemos tratá-las como sinônimos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#e-os-smoothing-splines",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#e-os-smoothing-splines",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E os smoothing splines?",
+    "text": "E os smoothing splines?\nOs smoothing splines também resolvem um problema penalizado:\n\\[\n\\min_g\n\\left\\{\n\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n+\\lambda\\int[g''(x)]^2dx\n\\right\\}.\n\\]\nA penalização controla a rugosidade da função.\nEssa formulação também pode ser interpretada no contexto de uma RKHS."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#onde-rkhs-aparece-em-machine-learning",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#onde-rkhs-aparece-em-machine-learning",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Onde RKHS aparece em Machine Learning?",
+    "text": "Onde RKHS aparece em Machine Learning?\nA mesma estrutura aparece em diferentes métodos:\n\\[\n\\boxed{\\text{Kernel Ridge Regression}}\n\\]\n\\[\n\\boxed{\\text{SVM com kernel}}\n\\]\n\\[\n\\boxed{\\text{Smoothing splines}}\n\\]\n\\[\n\\boxed{\\text{outros métodos kernel regularizados}}\n\\]\nO que muda entre eles é, entre outras coisas, a função de perda, o kernel e a forma de regularização."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#mapa-mental",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#mapa-mental",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mapa mental",
+    "text": "Mapa mental\n\\[\n\\boxed{\\text{Dados}}\n\\]\n\\[\n\\Downarrow\n\\]\n\\[\n\\boxed{K(x,x'): \\text{ kernel}}\n\\]\n\\[\n\\Downarrow\n\\]\n\\[\n\\boxed{\\mathcal H: \\text{ espaço de funções RKHS}}\n\\]\n\\[\n\\Downarrow\n\\]\n\\[\n\\boxed{\\text{erro de ajuste}+\\lambda\\times\\text{complexidade}}\n\\]\n\\[\n\\Downarrow\n\\]\n\\[\n\\boxed{\\hat f(x)=\\sum_i\\hat\\alpha_iK(x,x_i)}\n\\]\n\\[\n\\Downarrow\n\\]\n\\[\n\\boxed{\\text{Predição}}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-que-devemos-guardar",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-que-devemos-guardar",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que devemos guardar?",
+    "text": "O que devemos guardar?\n\nUma RKHS é um espaço estruturado de funções no qual podemos procurar \\(f\\).\nO kernel \\(K(x,x')\\) determina a geometria desse espaço e permite trabalhar com similaridades/produtos internos implicitamente.\n\nA regularização\n\\[\n\\lambda\\|f\\|_{\\mathcal H}^2\n\\]\ncontrola a complexidade da função.\n\n\nO Teorema do Representante permite escrever a solução como\n\\[\n\\hat f(x)=\\sum_i\\hat\\alpha_iK(x,x_i).\n\\]\n\nEssa estrutura fornece a ponte conceitual para métodos como Kernel Ridge e SVM com kernel."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#conexão-com-o-que-já-vimos",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#conexão-com-o-que-já-vimos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Conexão com o que já vimos",
+    "text": "Conexão com o que já vimos\nPodemos organizar os métodos estudados pela mesma ideia geral:\n\\[\n\\boxed{\\text{ajuste aos dados}+\\text{controle de complexidade}}\n\\]\n\n\nMétodo\nComo controla a complexidade?\n\n\n\nKNN\nnúmero de vizinhos \\(k\\)\n\n\n\nRegressão kernel\nlargura de banda \\(h\\)\n\n\n\nRegressão polinomial local\nvizinhança + grau local\n\n\nSmoothing spline\n\\(\\lambda\\int[f''(x)]^2dx\\)\n\n\nRidge\n\\(\\lambda\\sum_j\\beta_j^2\\)\n\n\nLasso\n\\(\\lambda\\sum_j|\\beta_j|\\)\n\n\nRKHS\n\\(\\lambda\\|f\\|_{\\mathcal H}^2\\)\n\n\n\n\n\n\n\n\n\nImportant\n\n\nApesar das diferenças, todos enfrentam a mesma questão central: quanto de flexibilidade devemos permitir ao modelo?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-que-significa-rkhs-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-que-significa-rkhs-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que significa RKHS?",
+    "text": "O que significa RKHS?\nNão precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.\n\n\n\n\n\n\nImportante\n\n\nA ideia principal é que a RKHS fornece uma estrutura matemática para comparar, estimar e regularizar funções."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#onde-entra-o-kernel-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#onde-entra-o-kernel-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Onde entra o kernel?",
+    "text": "Onde entra o kernel?\nIntuitivamente:\n\\[\nx\\approx x' \\Rightarrow K(x,x')\\text{ grande}\n\\]\n\\[\n|x-x'|\\text{ grande} \\Rightarrow K(x,x')\\text{ pequeno}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#construindo-uma-função-com-kernels-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#construindo-uma-função-com-kernels-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Construindo uma função com kernels",
+    "text": "Construindo uma função com kernels\nCada observação de treinamento contribui para a construção da função.\n\n\n\n\n\n\nNota\n\n\nOs coeficientes \\(\\alpha_i\\) determinam quanto cada função kernel contribui para a função estimada."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#mas-isso-não-pode-ficar-complexo-demais-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#mas-isso-não-pode-ficar-complexo-demais-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mas isso não pode ficar complexo demais?",
+    "text": "Mas isso não pode ficar complexo demais?\nPrecisamos equilibrar\n\\[\n\\boxed{\\text{qualidade do ajuste} \\quad\\times\\quad \\text{complexidade}}\n\\]\nEssa ideia já apareceu em Ridge, Lasso e smoothing splines."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-conexão-com-ridge-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-conexão-com-ridge-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A conexão com Ridge",
+    "text": "A conexão com Ridge\n\n\nRidge\nRKHS\n\n\n\nestima \\(\\boldsymbol\\beta\\)\n\nestima \\(g\\)\n\n\n\npenaliza \\(\\|\\boldsymbol\\beta\\|^2\\)\n\npenaliza \\(\\|g\\|_{\\mathcal H}^2\\)\n\n\n\ncontrola coeficientes\ncontrola a complexidade da função"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-ideia-central-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-ideia-central-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A ideia central",
+    "text": "A ideia central\nPortanto,\n\\[\n\\boxed{\n\\text{problema em espaço de funções}\n\\longrightarrow\n\\text{problema finito de estimação}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ridge + kernel",
+    "text": "Ridge + kernel\nA predição em um novo ponto \\(x\\) é\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#comparação-com-regressão-kernel-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#comparação-com-regressão-kernel-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Comparação com regressão kernel",
+    "text": "Comparação com regressão kernel\nRKHS / Kernel Ridge\n\\[\n\\hat g(x)=\\sum_i\\hat\\alpha_iK(x,x_i)\n\\]\nOs coeficientes \\(\\alpha_i\\) são estimados globalmente a partir dos dados, com regularização."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#e-os-smoothing-splines-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#e-os-smoothing-splines-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E os smoothing splines?",
+    "text": "E os smoothing splines?\nAssim,\n\\[\n\\boxed{\n\\text{smoothing splines}\n\\quad\\text{e}\\quad\n\\text{Kernel Ridge}\n}\n\\]\npodem ser vistos dentro de uma estrutura mais geral de estimação regularizada de funções."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#da-rkhs-ao-svm-e-ao-svr",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#da-rkhs-ao-svm-e-ao-svr",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Da RKHS ao SVM e ao SVR",
+    "text": "Da RKHS ao SVM e ao SVR\nA estrutura de RKHS permite enxergar diferentes métodos como variações de uma mesma ideia:\n\\[\n\\boxed{\\text{perda nos dados} + \\text{regularização da função}}\n\\]\nMudando a função de perda, obtemos métodos diferentes.\n\\[\n\\begin{array}{ccc}\n\\text{Perda quadrática} & \\text{Hinge loss} & \\varepsilon\\text{-insensível}\\\\\n\\downarrow & \\downarrow & \\downarrow\\\\\n\\text{Kernel Ridge} & \\text{SVM} & \\text{SVR}\n\\end{array}\n\\]\n\n\n\n\n\n\nNota\n\n\nSVM é voltado principalmente à classificação; SVR adapta a mesma filosofia para regressão."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-o-problema-de-classificação",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-o-problema-de-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM: o problema de classificação",
+    "text": "SVM: o problema de classificação\nConsidere inicialmente duas classes:\n\\[\nY\\in\\{-1,+1\\}\n\\]\nPara uma fronteira linear,\n\\[\ng(x)=\\mathbf w^T x+b\n\\]\nclassificamos de acordo com o sinal de \\(g(x)\\).\n\\[\ng(x)&gt;0 \\Rightarrow +1\n\\qquad\ng(x)&lt;0 \\Rightarrow -1\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#quem-são-os-vetores-de-suporte",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#quem-são-os-vetores-de-suporte",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Quem são os vetores de suporte?",
+    "text": "Quem são os vetores de suporte?\nNem todas as observações determinam igualmente a fronteira.\nOs pontos mais importantes são aqueles que estão sobre a margem ou a violam.\n\\[\n\\boxed{\\text{Support vectors = observações que sustentam a solução}}\n\\]\nPontos muito distantes da fronteira podem ter coeficiente igual a zero na representação dual e, portanto, não alteram diretamente a fronteira final.\n\n\n\n\n\n\nEssa é uma das características marcantes do SVM: a solução pode depender apenas de uma parte das observações de treinamento."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#e-quando-as-classes-se-sobrepõem",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#e-quando-as-classes-se-sobrepõem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E quando as classes se sobrepõem?",
+    "text": "E quando as classes se sobrepõem?\nEm dados reais, uma separação perfeita geralmente não existe.\nO SVM introduz variáveis de folga \\(\\xi_i\\geq0\\) e resolve um compromisso entre:\n\\[\n\\boxed{\\text{margem grande}}\n\\qquad\\text{e}\\qquad\n\\boxed{\\text{poucas violações}}\n\\]\nUma formulação clássica é\n\\[\n\\min_{\\mathbf w,b,\\boldsymbol\\xi}\n\\left\\{\n\\frac12\\|\\mathbf w\\|^2+C\\sum_{i=1}^{n}\\xi_i\n\\right\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-não-linear",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-não-linear",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM não linear",
+    "text": "SVM não linear\nUma fronteira linear pode ser insuficiente.\nPodemos imaginar uma transformação\n\\[\nx\\mapsto\\phi(x)\n\\]\nque leva os dados para um espaço de características onde a separação seja mais simples.\nEm vez de calcular explicitamente \\(\\phi(x)\\), utilizamos\n\\[\n\\boxed{K(x,x')=\\langle\\phi(x),\\phi(x')\\rangle}\n\\]\nEsse é o kernel trick."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-com-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-com-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM com kernel",
+    "text": "SVM com kernel\nA função de decisão pode ser escrita como\n\\[\n\\boxed{\ng(x)=\\sum_{i\\in SV}\\alpha_i y_iK(x_i,x)+b\n}\n\\]\nObserve a conexão com RKHS:\n\\[\n\\text{função estimada}\n=\n\\text{combinação de kernels centrados nos dados}\n\\]\nNo SVM, apenas os vetores de suporte aparecem com coeficientes relevantes na representação final."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#kernel-rbfgaussiano",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#kernel-rbfgaussiano",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Kernel RBF/Gaussiano",
+    "text": "Kernel RBF/Gaussiano\nUm kernel muito utilizado é\n\\[\nK(x,x')=\\exp\\{-\\gamma\\|x-x'\\|^2\\}\n\\]\nO parâmetro \\(\\gamma\\) controla o alcance da influência de cada observação.\n\\[\n\\gamma\\uparrow\n\\Rightarrow\n\\text{influência mais localizada}\n\\Rightarrow\n\\text{maior potencial de flexibilidade}\n\\]\n\\[\n\\gamma\\downarrow\n\\Rightarrow\n\\text{influência mais ampla}\n\\Rightarrow\n\\text{fronteira potencialmente mais suave}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#do-svm-para-o-svr",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#do-svm-para-o-svr",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Do SVM para o SVR",
+    "text": "Do SVM para o SVR\nO Support Vector Regression (SVR) transporta a mesma filosofia para uma resposta quantitativa.\nNo SVM:\n\\[\n\\boxed{\\text{fronteira de decisão + margem}}\n\\]\nNo SVR:\n\\[\n\\boxed{\\text{função de regressão + tubo de tolerância}}\n\\]\nA ideia agora é encontrar uma função \\(g(x)\\) simples e admitir pequenos erros ao redor dela."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-tubo-varepsilon",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-tubo-varepsilon",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O tubo \\(\\varepsilon\\)\n",
+    "text": "O tubo \\(\\varepsilon\\)\n\nO SVR define uma região ao redor da função estimada:\n\\[\ng(x)-\\varepsilon\n\\leq y \\leq\ng(x)+\\varepsilon\n\\]\nEssa região possui largura total \\(2\\varepsilon\\).\nSe\n\\[\n|y_i-g(x_i)|\\leq\\varepsilon,\n\\]\no erro é considerado suficientemente pequeno e não é penalizado pela perda \\(\\varepsilon\\)-insensível."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#perda-varepsilon-insensível",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#perda-varepsilon-insensível",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Perda \\(\\varepsilon\\)-insensível",
+    "text": "Perda \\(\\varepsilon\\)-insensível\nA função de perda é\n\\[\n\\boxed{\nL_\\varepsilon(y,g(x))\n=\n\\max\\{0,|y-g(x)|-\\varepsilon\\}\n}\n\\]\nPortanto,\n\\[\n|y-g(x)|\\leq\\varepsilon\n\\Rightarrow\nL_\\varepsilon=0\n\\]\nmas\n\\[\n|y-g(x)|&gt;\\varepsilon\n\\Rightarrow\nL_\\varepsilon&gt;0\n\\]\n\n\n\n\n\n\nDiferentemente dos mínimos quadrados, o SVR ignora erros suficientemente pequenos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#quem-são-os-vetores-de-suporte-no-svr",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#quem-são-os-vetores-de-suporte-no-svr",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Quem são os vetores de suporte no SVR?",
+    "text": "Quem são os vetores de suporte no SVR?\nAs observações dentro do tubo não precisam exercer influência direta sobre a solução.\nOs pontos que estão sobre ou fora das fronteiras do tubo podem tornar-se vetores de suporte.\n\\[\n\\boxed{\n\\text{vetores de suporte}\n\\Rightarrow\n\\text{observações decisivas para }\\hat g\n}\n\\]\nIsso produz uma representação potencialmente esparsa em termos das observações de treinamento."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svr-regularização-e-violações",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svr-regularização-e-violações",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: regularização e violações",
+    "text": "SVR: regularização e violações\nNo caso linear,\n\\[\ng(x)=\\mathbf w^Tx+b\n\\]\nUma formulação clássica do SVR é\n\\[\n\\min_{\\mathbf w,b,\\xi,\\xi^*}\n\\left\\{\n\\frac12\\|\\mathbf w\\|^2\n+C\\sum_{i=1}^{n}(\\xi_i+\\xi_i^*)\n\\right\\}\n\\]\nO primeiro termo controla a complexidade; o segundo penaliza observações que ultrapassam o tubo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#c-e-varepsilon-têm-papéis-diferentes",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#c-e-varepsilon-têm-papéis-diferentes",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "\n\\(C\\) e \\(\\varepsilon\\) têm papéis diferentes",
+    "text": "\\(C\\) e \\(\\varepsilon\\) têm papéis diferentes\n\n\nHiperparâmetro\nInterpretação\n\n\n\n\\(\\varepsilon\\)\nlargura da região sem penalização\n\n\n\\(C\\)\ncusto das violações do tubo\n\n\n\nAssim,\n\\[\n\\varepsilon\\uparrow\n\\Rightarrow\n\\text{tubo mais largo}\n\\Rightarrow\n\\text{mais erros ignorados}\n\\]\nEnquanto\n\\[\nC\\uparrow\n\\Rightarrow\n\\text{violações mais caras}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svr-com-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svr-com-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR com kernel",
+    "text": "SVR com kernel\nPara relações não lineares, aplicamos novamente o kernel trick.\nA função estimada assume a forma\n\\[\n\\boxed{\n\\hat g(x)=\n\\sum_{i=1}^{n}(\\alpha_i-\\alpha_i^*)K(x_i,x)+b\n}\n\\]\nPara muitas observações,\n\\[\n\\alpha_i-\\alpha_i^*=0.\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#voltando-à-combinação-de-kernels",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#voltando-à-combinação-de-kernels",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Voltando à combinação de kernels",
+    "text": "Voltando à combinação de kernels\nCada vetor de suporte produz uma contribuição do tipo\n\\[\n\\gamma_iK(x_i,x)\n\\]\nSe \\(\\gamma_i&gt;0\\), a contribuição pode elevar a função naquela região; se \\(\\gamma_i&lt;0\\), pode reduzi-la.\nA curva final é a soma dessas contribuições:\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i\\in SV}\\gamma_iK(x_i,x)+b\n}\n\\]\nPortanto, a interpretação gráfica discutida em RKHS reaparece diretamente no SVR."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-versus-svr",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-versus-svr",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM versus SVR",
+    "text": "SVM versus SVR\n\n\nCaracterística\nSVM\nSVR\n\n\n\nProblema\nClassificação\nRegressão\n\n\nResposta\nCategórica\nQuantitativa\n\n\nIdeia geométrica\nMargem\nTubo \\(\\varepsilon\\)\n\n\n\nPerda típica\nHinge\n\n\\(\\varepsilon\\)-insensível\n\n\nRegularização\n\\(\\|\\mathbf w\\|^2\\)\n\\(\\|\\mathbf w\\|^2\\)\n\n\nVetores de suporte\nSim\nSim\n\n\nKernel trick\nSim\nSim\n\n\n\\(C\\)\ncusto das violações\ncusto das violações\n\n\n\n\\(\\gamma\\) no RBF\nalcance do kernel\nalcance do kernel\n\n\n\\(\\varepsilon\\)\n—\nlargura do tubo"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#uma-visão-unificada",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#uma-visão-unificada",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma visão unificada",
+    "text": "Uma visão unificada\nPodemos enxergar os métodos estudados como escolhas diferentes dentro da mesma estrutura geral:\n\\[\n\\boxed{\n\\text{ajuste aos dados}\n+\n\\text{controle de complexidade}\n}\n\\]\n\n\nKernel Ridge: perda quadrática + regularização\n\nSVM: hinge loss + regularização\n\nSVR: perda \\(\\varepsilon\\)-insensível + regularização\n\nO kernel permite que essas funções sejam não lineares no espaço original."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#conexão-com-os-métodos-anteriores",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#conexão-com-os-métodos-anteriores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Conexão com os métodos anteriores",
+    "text": "Conexão com os métodos anteriores\n\n\nMétodo\nPrincipal controle de flexibilidade\n\n\n\nKNN\n\\(k\\)\n\n\nRegressão kernel\nlargura de banda \\(h\\)\n\n\n\nRegressão polinomial local\nvizinhança + grau local\n\n\nSmoothing spline\n\\(\\lambda\\)\n\n\nKernel Ridge\n\n\\(\\lambda\\) + parâmetros do kernel\n\n\nSVM-RBF\n\n\\(C\\) e \\(\\gamma\\)\n\n\n\nSVR-RBF\n\n\\(C\\), \\(\\varepsilon\\) e \\(\\gamma\\)\n\n\n\n\nApesar das diferenças, todos enfrentam o compromisso entre\n\\[\n\\boxed{\\text{flexibilidade} \\quad\\text{e}\\quad \\text{generalização}}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#síntese-final",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#síntese-final",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Síntese final",
+    "text": "Síntese final\n\n\n\n\n\n\nIdeias para levar da aula\n\n\n\nUma RKHS é um espaço estruturado de funções.\nO kernel define produtos internos e permite construir funções flexíveis.\nA regularização controla a complexidade da função estimada.\nO Teorema do Representante transforma o problema em uma combinação finita de kernels.\nO SVM usa margem e hinge loss para classificação.\nO SVR usa um tubo \\(\\varepsilon\\) e perda \\(\\varepsilon\\)-insensível para regressão.\nEm ambos, os vetores de suporte são as observações decisivas para a solução.\nCom kernels, SVM e SVR podem representar relações não lineares.\n\n\n\n\n\\[\n\\boxed{\n\\text{Regularização}\n\\rightarrow\n\\text{RKHS}\n\\rightarrow\n\\text{Kernel trick}\n\\rightarrow\n\\begin{cases}\n\\text{SVM: classificação}\\\\\n\\text{SVR: regressão}\n\\end{cases}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-o-problema-de-classificação-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-o-problema-de-classificação-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM: o problema de classificação",
+    "text": "SVM: o problema de classificação\nA questão central do SVM não é apenas encontrar uma fronteira que separe as classes.\n\n\n\n\n\n\nImportante\n\n\nO SVM procura uma fronteira que produza uma margem grande entre as classes."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#margem-máxima-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#margem-máxima-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Margem máxima",
+    "text": "Margem máxima\nPortanto,\n\\[\n\\boxed{\\text{maximizar margem}\\ \\Longleftrightarrow\\ \\text{minimizar }\\frac12\\|\\mathbf w\\|^2}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#hinge-loss-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#hinge-loss-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Hinge loss",
+    "text": "Hinge loss\nSe\n\\[\nyg(x)&lt;1,\n\\]\nhá penalização.\nAssim, observações dentro da margem ou classificadas incorretamente influenciam a solução."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svr-com-kernel-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svr-com-kernel-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR com kernel",
+    "text": "SVR com kernel\nAssim, podemos escrever conceitualmente\n\\[\n\\boxed{\n\\hat g(x)=\n\\sum_{i\\in SV}\\gamma_iK(x_i,x)+b\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Até agora controlamos flexibilidade por:\n\nnúmero de termos;\nnúmero de nós;\nlargura de banda;\ntamanho da vizinhança.\n\nOutra possibilidade é penalizar diretamente a complexidade de uma função.\n\nConsidere o problema de regressão\n\\[\nY=g(X)+\\varepsilon\n\\]\nNa regressão linear, restringimos a função a uma forma específica:\n\\[\ng(x)=\\beta_0+\\beta_1x\n\\]\nMas e se a relação entre \\(X\\) e \\(Y\\) for não linear e não quisermos especificar antecipadamente a forma de \\(g\\)?\n\n\n\n\n\n\nNota\n\n\n\nPrecisamos definir em qual conjunto de funções procuraremos \\(g\\) e como controlar sua complexidade.\n\n\n\nNa regressão linear, procuramos um vetor de parâmetros:\n\\[\n\\boldsymbol\\beta=(\\beta_0,\\beta_1,\\ldots,\\beta_p)^\\top\n\\]\nNos métodos baseados em RKHS, procuramos diretamente uma função:\n\\[\n\\boxed{g\\in\\mathcal H}\n\\]\nonde \\(\\mathcal H\\) representa um espaço de funções.\n\\[\n\\text{Regressão linear: procurar }\\boldsymbol\\beta\n\\qquad\\Longrightarrow\\qquad\n\\text{RKHS: procurar }g\n\\]\n\nRKHS = Reproducing Kernel Hilbert Space\nEm português:\n\nEspaço de Hilbert com Núcleo Reprodutor\n\nPara uma primeira abordagem, podemos pensar em uma RKHS como\n\\[\n\\boxed{\\text{um espaço estruturado de funções candidatas para }g}\n\\]\n\nNão precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.\n\n\n\n\n\n\nImportante\n\n\n\nA ideia principal é que a RKHS fornece uma estrutura matemática para comparar, estimar e regularizar funções.\n\n\n\nUma RKHS está associada a uma função kernel\n\\[\nK(x,x')\n\\]\nque relaciona dois pontos \\(x\\) e \\(x'\\).\nUm exemplo importante é o kernel Gaussiano (RBF):\n\\[\nK(x,x')=\n\\exp\\left\\{-\\frac{(x-x')^2}{2\\sigma^2}\\right\\}\n\\]\n\nIntuitivamente:\n\\[\nx\\approx x' \\Rightarrow K(x,x')\\text{ grande}\n\\]\n\\[\n|x-x'|\\text{ grande} \\Rightarrow K(x,x')\\text{ pequeno}\n\\]\n\n\n\n\n\n\n\n\n\nQuanto mais distante \\(x\\) está de \\(x_0\\), menor é a similaridade determinada pelo kernel.\n\nUma função em muitos métodos baseados em RKHS pode ser representada na forma\n\\[\n\\boxed{\ng(x)=\\sum_{i=1}^{n}\\alpha_iK(x,x_i)\n}\n\\]\nou seja,\n\\[\ng(x)=\n\\alpha_1K(x,x_1)+\\cdots+\\alpha_nK(x,x_n)\n\\]\n\nCada observação de treinamento contribui para a construção da função.\n\n\n\n\n\n\nNota\n\n\n\nOs coeficientes \\(\\alpha_i\\) determinam quanto cada função kernel contribui para a função estimada.\n\n\n\n\n\n\n\n\n\n\n\nA curva final é uma combinação das funções kernel.\n\nSe procurarmos apenas a função que minimiza\n\\[\n\\sum_{i=1}^{n}\\left[y_i-g(x_i)\\right]^2\n\\]\npodemos obter uma função excessivamente flexível.\n\\[\n\\text{flexibilidade excessiva}\n\\quad\\Longrightarrow\\quad\n\\text{overfitting}\n\\]\n\nPrecisamos equilibrar\n\\[\n\\boxed{\\text{qualidade do ajuste} \\quad\\times\\quad \\text{complexidade}}\n\\]\nEssa ideia já apareceu em Ridge, Lasso e smoothing splines.\n\nUm problema típico é\n\\[\n\\boxed{\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^{2}\n\\right\\}\n}\n\\]\nTemos dois componentes:\n\\[\n\\underbrace{\n\\frac{1}{n}\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n}_{\\text{erro de ajuste}}\n+\n\\underbrace{\n\\lambda\\|g\\|_{\\mathcal H}^{2}\n}_{\\text{penalização da complexidade}}\n\\]\n\nO parâmetro \\(\\lambda\\) controla o compromisso entre ajuste e complexidade.\n\n\\[\n\\lambda\\downarrow\n\\Rightarrow\n\\text{penalização menor}\n\\Rightarrow\n\\text{maior flexibilidade}\n\\]\nMaior risco de overfitting.\n\n\\[\n\\lambda\\uparrow\n\\Rightarrow\n\\text{penalização maior}\n\\Rightarrow\n\\text{menor complexidade}\n\\]\nMaior risco de underfitting.\n\nNa regressão Ridge:\n\\[\n\\min_{\\boldsymbol\\beta}\n\\left\\{\n\\frac{1}{n}\\|\\mathbf y-\\mathbf X\\boldsymbol\\beta\\|^2\n+\\lambda\\|\\boldsymbol\\beta\\|^2\n\\right\\}\n\\]\nNa RKHS:\n\\[\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_i[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^2\n\\right\\}\n\\]\n\n\n\nRidge\nRKHS\n\n\n\nestima \\(\\boldsymbol\\beta\\)\n\nestima \\(g\\)\n\n\n\npenaliza \\(\\|\\boldsymbol\\beta\\|^2\\)\n\npenaliza \\(\\|g\\|_{\\mathcal H}^2\\)\n\n\n\ncontrola coeficientes\ncontrola a complexidade da função\n\n\n\nSe \\(\\mathcal H\\) pode conter um número enorme (até infinito) de funções, como resolver\n\\[\n\\min_{g\\in\\mathcal H} \\{\\text{erro}+\\text{penalização}\\}?\n\\]\nParece que precisaríamos procurar em um espaço de dimensão infinita.\nMas um resultado fundamental simplifica o problema."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#por-que-introduzir-outra-estrutura",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#por-que-introduzir-outra-estrutura",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Até agora controlamos flexibilidade por:\n\nnúmero de termos;\nnúmero de nós;\nlargura de banda;\ntamanho da vizinhança.\n\nOutra possibilidade é penalizar diretamente a complexidade de uma função."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#de-onde-vem-a-ideia",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#de-onde-vem-a-ideia",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Considere o problema de regressão\n\\[\nY=g(X)+\\varepsilon\n\\]\nNa regressão linear, restringimos a função a uma forma específica:\n\\[\ng(x)=\\beta_0+\\beta_1x\n\\]\nMas e se a relação entre \\(X\\) e \\(Y\\) for não linear e não quisermos especificar antecipadamente a forma de \\(g\\)?\n\n\n\n\n\n\nNota\n\n\n\nPrecisamos definir em qual conjunto de funções procuraremos \\(g\\) e como controlar sua complexidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#da-estimação-de-parâmetros-à-estimação-de-funções",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#da-estimação-de-parâmetros-à-estimação-de-funções",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Na regressão linear, procuramos um vetor de parâmetros:\n\\[\n\\boldsymbol\\beta=(\\beta_0,\\beta_1,\\ldots,\\beta_p)^\\top\n\\]\nNos métodos baseados em RKHS, procuramos diretamente uma função:\n\\[\n\\boxed{g\\in\\mathcal H}\n\\]\nonde \\(\\mathcal H\\) representa um espaço de funções.\n\\[\n\\text{Regressão linear: procurar }\\boldsymbol\\beta\n\\qquad\\Longrightarrow\\qquad\n\\text{RKHS: procurar }g\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-que-significa-rkhs",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-que-significa-rkhs",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "RKHS = Reproducing Kernel Hilbert Space\nEm português:\n\nEspaço de Hilbert com Núcleo Reprodutor\n\nPara uma primeira abordagem, podemos pensar em uma RKHS como\n\\[\n\\boxed{\\text{um espaço estruturado de funções candidatas para }g}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-que-significa-rkhs-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-que-significa-rkhs-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Não precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.\n\n\n\n\n\n\nImportante\n\n\n\nA ideia principal é que a RKHS fornece uma estrutura matemática para comparar, estimar e regularizar funções."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#onde-entra-o-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#onde-entra-o-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Uma RKHS está associada a uma função kernel\n\\[\nK(x,x')\n\\]\nque relaciona dois pontos \\(x\\) e \\(x'\\).\nUm exemplo importante é o kernel Gaussiano (RBF):\n\\[\nK(x,x')=\n\\exp\\left\\{-\\frac{(x-x')^2}{2\\sigma^2}\\right\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#onde-entra-o-kernel-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#onde-entra-o-kernel-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Intuitivamente:\n\\[\nx\\approx x' \\Rightarrow K(x,x')\\text{ grande}\n\\]\n\\[\n|x-x'|\\text{ grande} \\Rightarrow K(x,x')\\text{ pequeno}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#kernel-gaussiano-uma-visão-gráfica",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#kernel-gaussiano-uma-visão-gráfica",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Quanto mais distante \\(x\\) está de \\(x_0\\), menor é a similaridade determinada pelo kernel."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#construindo-uma-função-com-kernels",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#construindo-uma-função-com-kernels",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Uma função em muitos métodos baseados em RKHS pode ser representada na forma\n\\[\n\\boxed{\ng(x)=\\sum_{i=1}^{n}\\alpha_iK(x,x_i)\n}\n\\]\nou seja,\n\\[\ng(x)=\n\\alpha_1K(x,x_1)+\\cdots+\\alpha_nK(x,x_n)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#construindo-uma-função-com-kernels-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#construindo-uma-função-com-kernels-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Cada observação de treinamento contribui para a construção da função.\n\n\n\n\n\n\nNota\n\n\n\nOs coeficientes \\(\\alpha_i\\) determinam quanto cada função kernel contribui para a função estimada."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#visualizando-a-construção",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#visualizando-a-construção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "A curva final é uma combinação das funções kernel."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#mas-isso-não-pode-ficar-complexo-demais",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#mas-isso-não-pode-ficar-complexo-demais",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Se procurarmos apenas a função que minimiza\n\\[\n\\sum_{i=1}^{n}\\left[y_i-g(x_i)\\right]^2\n\\]\npodemos obter uma função excessivamente flexível.\n\\[\n\\text{flexibilidade excessiva}\n\\quad\\Longrightarrow\\quad\n\\text{overfitting}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#mas-isso-não-pode-ficar-complexo-demais-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#mas-isso-não-pode-ficar-complexo-demais-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Precisamos equilibrar\n\\[\n\\boxed{\\text{qualidade do ajuste} \\quad\\times\\quad \\text{complexidade}}\n\\]\nEssa ideia já apareceu em Ridge, Lasso e smoothing splines."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#regularização-em-uma-rkhs",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#regularização-em-uma-rkhs",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Um problema típico é\n\\[\n\\boxed{\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^{2}\n\\right\\}\n}\n\\]\nTemos dois componentes:\n\\[\n\\underbrace{\n\\frac{1}{n}\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n}_{\\text{erro de ajuste}}\n+\n\\underbrace{\n\\lambda\\|g\\|_{\\mathcal H}^{2}\n}_{\\text{penalização da complexidade}}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-papel-de-lambda",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-papel-de-lambda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "O parâmetro \\(\\lambda\\) controla o compromisso entre ajuste e complexidade.\n\n\\[\n\\lambda\\downarrow\n\\Rightarrow\n\\text{penalização menor}\n\\Rightarrow\n\\text{maior flexibilidade}\n\\]\nMaior risco de overfitting.\n\n\\[\n\\lambda\\uparrow\n\\Rightarrow\n\\text{penalização maior}\n\\Rightarrow\n\\text{menor complexidade}\n\\]\nMaior risco de underfitting."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-conexão-com-ridge",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-conexão-com-ridge",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Na regressão Ridge:\n\\[\n\\min_{\\boldsymbol\\beta}\n\\left\\{\n\\frac{1}{n}\\|\\mathbf y-\\mathbf X\\boldsymbol\\beta\\|^2\n+\\lambda\\|\\boldsymbol\\beta\\|^2\n\\right\\}\n\\]\nNa RKHS:\n\\[\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_i[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^2\n\\right\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-conexão-com-ridge-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-conexão-com-ridge-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Ridge\nRKHS\n\n\n\nestima \\(\\boldsymbol\\beta\\)\n\nestima \\(g\\)\n\n\n\npenaliza \\(\\|\\boldsymbol\\beta\\|^2\\)\n\npenaliza \\(\\|g\\|_{\\mathcal H}^2\\)\n\n\n\ncontrola coeficientes\ncontrola a complexidade da função"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#uma-dificuldade-aparente",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#uma-dificuldade-aparente",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "",
+    "text": "Se \\(\\mathcal H\\) pode conter um número enorme (até infinito) de funções, como resolver\n\\[\n\\min_{g\\in\\mathcal H} \\{\\text{erro}+\\text{penalização}\\}?\n\\]\nParece que precisaríamos procurar em um espaço de dimensão infinita.\nMas um resultado fundamental simplifica o problema."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-ideia-central",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-ideia-central",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A ideia central",
+    "text": "A ideia central\nPara uma ampla classe de problemas regularizados, a solução pode ser escrita como\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]\nAssim, em vez de procurar diretamente uma função em \\(\\mathcal H\\), precisamos estimar apenas\n\\[\n\\hat\\alpha_1,\\hat\\alpha_2,\\ldots,\\hat\\alpha_n\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-ideia-central-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-ideia-central-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A ideia central",
+    "text": "A ideia central\nPortanto,\n\\[\n\\boxed{\n\\text{problema em espaço de funções}\n\\longrightarrow\n\\text{problema finito de estimação}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-matriz-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#a-matriz-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A matriz kernel",
+    "text": "A matriz kernel\nCalculamos o kernel para cada par de observações:\n\\[\nK_{ij}=K(x_i,x_j)\n\\]\nIsso produz a matriz kernel, ou matriz de Gram:\n\\[\n\\mathbf K=\n\\begin{pmatrix}\nK(x_1,x_1)&\\cdots&K(x_1,x_n)\\\\\n\\vdots&\\ddots&\\vdots\\\\\nK(x_n,x_1)&\\cdots&K(x_n,x_n)\n\\end{pmatrix}\n\\]\nNos pontos de treinamento,\n\\[\n\\hat{\\mathbf g}=\\mathbf K\\boldsymbol\\alpha\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-kernel-trick",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-kernel-trick",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O kernel trick",
+    "text": "O kernel trick\nPodemos imaginar uma transformação\n\\[\nx\\longmapsto\\phi(x)\n\\]\npara um espaço de características potencialmente muito grande.\nO kernel permite calcular\n\\[\n\\boxed{\nK(x,x')=\n\\langle\\phi(x),\\phi(x')\\rangle\n}\n\\]\nsem precisar construir explicitamente \\(\\phi(x)\\).\nIsso é conhecido como kernel trick."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#por-que-isso-ajuda-com-relações-não-lineares",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#por-que-isso-ajuda-com-relações-não-lineares",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que isso ajuda com relações não lineares?",
+    "text": "Por que isso ajuda com relações não lineares?\nNo espaço original, um modelo pode ser simples demais para representar os dados.\nO kernel permite trabalhar implicitamente em um espaço de características mais rico:\n\\[\nx\n\\longrightarrow\n\\phi(x)\n\\longrightarrow\n\\text{modelo flexível}\n\\]\nCom isso, podemos representar relações e fronteiras não lineares sem criar explicitamente todas as novas variáveis."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#ridge-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#ridge-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ridge + kernel",
+    "text": "Ridge + kernel\nA combinação da perda quadrática com regularização em RKHS leva ao Kernel Ridge Regression.\nCom a convenção\n\\[\n\\frac{1}{n}\\|\\mathbf y-\\mathbf K\\boldsymbol\\alpha\\|^2\n+\\lambda\\boldsymbol\\alpha^T\\mathbf K\\boldsymbol\\alpha,\n\\]\na solução satisfaz\n\\[\n\\boxed{\n\\hat{\\boldsymbol\\alpha}\n=(\\mathbf K+n\\lambda\\mathbf I)^{-1}\\mathbf y\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#ridge-kernel-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#ridge-kernel-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ridge + kernel",
+    "text": "Ridge + kernel\nA predição em um novo ponto \\(x\\) é\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#comparação-com-regressão-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#comparação-com-regressão-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Comparação com regressão kernel",
+    "text": "Comparação com regressão kernel\nNão confunda regressão kernel com métodos kernel em RKHS.\nNadaraya–Watson\n\\[\n\\hat f(x)=\n\\frac{\\sum_iK_h(x-x_i)y_i}\n{\\sum_iK_h(x-x_i)}\n\\]\nOs pesos são determinados diretamente pela proximidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#comparação-com-regressão-kernel-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#comparação-com-regressão-kernel-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Comparação com regressão kernel",
+    "text": "Comparação com regressão kernel\nRKHS / Kernel Ridge\n\\[\n\\hat g(x)=\\sum_i\\hat\\alpha_iK(x,x_i)\n\\]\nOs coeficientes \\(\\alpha_i\\) são estimados globalmente a partir dos dados, com regularização."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#dois-usos-da-palavra-kernel",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#dois-usos-da-palavra-kernel",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Dois usos da palavra “kernel”",
+    "text": "Dois usos da palavra “kernel”\nA palavra kernel aparece nos dois contextos, mas os papéis não são idênticos.\n\n\n\n\n\n\nSuavização kernel\nRKHS\n\n\n\npesos locais\nestrutura de um espaço de funções\n\n\nlargura de banda \\(h\\)\n\nparâmetros do kernel + \\(\\lambda\\)\n\n\n\nNadaraya–Watson\nKernel Ridge, SVM etc.\n\n\nfoco em vizinhança\nfoco em similaridade/produto interno e regularização\n\n\n\n\n\n\n\n\n\nCuidado\n\n\n\nHá conexões matemáticas entre essas ideias, mas não devemos tratá-las como sinônimos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#e-os-smoothing-splines",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#e-os-smoothing-splines",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E os smoothing splines?",
+    "text": "E os smoothing splines?\nOs smoothing splines também resolvem um problema penalizado:\n\\[\n\\min_g\n\\left\\{\n\\sum_{i=1}^{n}[y_i-g(x_i)]^2\n+\\lambda\\int[g''(x)]^2dx\n\\right\\}.\n\\]\nA penalização controla a rugosidade da função.\nEssa formulação também pode ser interpretada no contexto de uma RKHS."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#e-os-smoothing-splines-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#e-os-smoothing-splines-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E os smoothing splines?",
+    "text": "E os smoothing splines?\nAssim,\n\\[\n\\boxed{\n\\text{smoothing splines}\n\\quad\\text{e}\\quad\n\\text{Kernel Ridge}\n}\n\\]\npodem ser vistos dentro de uma estrutura mais geral de estimação regularizada de funções."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#onde-rkhs-aparece-em-machine-learning",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#onde-rkhs-aparece-em-machine-learning",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Onde RKHS aparece em Machine Learning?",
+    "text": "Onde RKHS aparece em Machine Learning?\nA mesma estrutura aparece em diferentes métodos:\n\\[\n\\boxed{\\text{Kernel Ridge Regression}}\n\\]\n\\[\n\\boxed{\\text{SVM com kernel}}\n\\]\n\\[\n\\boxed{\\text{Smoothing splines}}\n\\]\n\\[\n\\boxed{\\text{outros métodos kernel regularizados}}\n\\]\nO que muda entre eles é, entre outras coisas, a função de perda, o kernel e a forma de regularização."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#regressão-com-margem",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#regressão-com-margem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão com margem",
+    "text": "Regressão com margem\n\\[\n\\boxed{L_\\varepsilon(y,f(\\mathbf x))=\\max\\{0,|y-f(\\mathbf x)|-\\varepsilon\\}}\n\\] A regularização controla a complexidade da função"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#da-svr-para-a-svm",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#da-svr-para-a-svm",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Da SVR para a SVM",
+    "text": "Da SVR para a SVM\nNa regressão, a ideia de margem apareceu na Support Vector Regression\nAgora queremos separar classes\nPara simplificar, escreva\n\\[\nY\\in\\{-1,+1\\}\n\\]\ne considere um hiperplano\n\\[\n\\boxed{\nf(\\mathbf x)\n=\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#regra-de-classificação",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#regra-de-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regra de classificação",
+    "text": "Regra de classificação\nO sinal de \\(f(\\mathbf x)\\) determina a classe\n\\[\n\\boxed{\ng(\\mathbf x)\n=\n\\operatorname{sign}\n\\left(\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x\n\\right)\n}\n\\]\nA fronteira de decisão é\n\\[\n\\boxed{\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x=0\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#muitos-hiperplanos-podem-separar-os-dados",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#muitos-hiperplanos-podem-separar-os-dados",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Muitos hiperplanos podem separar os dados",
+    "text": "Muitos hiperplanos podem separar os dados\nQuando as classes são linearmente separáveis, podem existir vários hiperplanos com erro de treinamento igual a zero\nQual devemos escolher?\n\\[\n\\boxed{\\text{o hiperplano com maior margem}}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#margem",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#margem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Margem",
+    "text": "Margem\nPara a parametrização canônica, as fronteiras da margem são\n\\[\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x=1\n\\]\ne\n\\[\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x=-1\n\\]\nA largura total da margem é\n\\[\n\\boxed{\n\\frac{2}{\\|\\boldsymbol\\beta\\|}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#margem-máxima",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#margem-máxima",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Margem máxima",
+    "text": "Margem máxima\nMaximizar a margem equivale a minimizar\n\\[\n\\frac12\\|\\boldsymbol\\beta\\|^2\n\\]\nsujeito a\n\\[\n\\boxed{\ny_i\n\\left(\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x_i\n\\right)\n\\geq1,\n\\qquad i=1,\\ldots,n\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#support-vectors",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#support-vectors",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Support vectors",
+    "text": "Support vectors\nOs pontos mais próximos da fronteira satisfazem\n\\[\ny_i\n\\left(\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x_i\n\\right)\n=\n1\n\\]\nEssas observações são os support vectors\n\n\n\n\n\n\nA posição da fronteira é determinada principalmente pelas observações próximas à margem"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#e-quando-não-há-separação-perfeita",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#e-quando-não-há-separação-perfeita",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E quando não há separação perfeita?",
+    "text": "E quando não há separação perfeita?\nDados reais frequentemente apresentam:\n\nsobreposição entre classes\nruído\nobservações atípicas\n\nExigir separação perfeita pode produzir uma fronteira instável\nPrecisamos permitir violações da margem"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#variáveis-de-folga",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#variáveis-de-folga",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Variáveis de folga",
+    "text": "Variáveis de folga\nIntroduzimos \\(\\xi_i\\geq0\\):\n\\[\n\\boxed{\ny_i\n\\left(\n\\beta_0+\\boldsymbol\\beta^t\\mathbf x_i\n\\right)\n\\geq\n1-\\xi_i\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#problema-de-otimização",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#problema-de-otimização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Problema de otimização",
+    "text": "Problema de otimização\nUma formulação da SVM é\n\\[\n\\boxed{\n\\min_{\\beta_0,\\boldsymbol\\beta,\\boldsymbol\\xi}\n\\left\\{\n\\frac12\\|\\boldsymbol\\beta\\|^2\n+\nC\\sum_{i=1}^{n}\\xi_i\n\\right\\}\n}\n\\]\ncom\n\\[\n\\xi_i\\geq0\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-papel-de-c",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#o-papel-de-c",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O papel de \\(C\\)\n",
+    "text": "O papel de \\(C\\)\n\n\n\\(C\\) grande\nViolações da margem são fortemente penalizadas\n\\[\nC\\uparrow\n\\Rightarrow\n\\text{menor tolerância a violações}\n\\]\n\n\\(C\\) pequeno\nAceitamos mais violações em troca de uma margem maior\n\\[\nC\\downarrow\n\\Rightarrow\n\\text{maior regularização}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#hinge-loss",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#hinge-loss",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Hinge loss",
+    "text": "Hinge loss\nA SVM também pode ser vista como minimização de\n\\[\n\\boxed{\nL_{\\text{hinge}}(y,f(\\mathbf x))\n=\n\\max\\{0,1-yf(\\mathbf x)\\}\n}\n\\]\ncom uma penalização sobre a complexidade do hiperplano"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#interpretando-a-hinge-loss",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#interpretando-a-hinge-loss",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Interpretando a hinge loss",
+    "text": "Interpretando a hinge loss\nSe\n\\[\nyf(\\mathbf x)\\geq1\n\\]\na observação está corretamente classificada e fora da margem\n\\[\nL_{\\text{hinge}}=0\n\\]\nSe\n\\[\nyf(\\mathbf x)&lt;1\n\\]\nhá penalização"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#comparação-conceitual",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#comparação-conceitual",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Comparação conceitual",
+    "text": "Comparação conceitual\nRegressão logística\nEstima diretamente uma probabilidade\n\\[\n\\widehat P(Y=1\\mid\\mathbf X=\\mathbf x)\n\\]\nSVM\nConstrói diretamente uma função discriminante\n\\[\nf(\\mathbf x)\n\\]\n\n\n\n\n\n\nA saída bruta de uma SVM não deve ser interpretada automaticamente como probabilidade posterior"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#quando-uma-reta-não-basta",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#quando-uma-reta-não-basta",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Quando uma reta não basta",
+    "text": "Quando uma reta não basta\nSe a separação é não linear, podemos transformar as covariáveis\n\\[\n\\mathbf x\n\\longrightarrow\n\\phi(\\mathbf x)\n\\]\ne construir um hiperplano no novo espaço"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#kernel-trick",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#kernel-trick",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Kernel trick",
+    "text": "Kernel trick\nEm vez de calcular explicitamente \\(\\phi(\\mathbf x)\\), utilizamos\n\\[\n\\boxed{\nK(\\mathbf x,\\mathbf x')\n=\n\\langle\n\\phi(\\mathbf x),\n\\phi(\\mathbf x')\n\\rangle\n}\n\\]\nAssim, podemos produzir fronteiras não lineares no espaço original"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#kernels-comuns",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#kernels-comuns",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Kernels comuns",
+    "text": "Kernels comuns\nLinear\n\\[\nK(\\mathbf x,\\mathbf x')\n=\n\\mathbf x^t\\mathbf x'\n\\]\nPolinomial\n\\[\nK(\\mathbf x,\\mathbf x')\n=\n(\\gamma\\mathbf x^t\\mathbf x'+c_0)^d\n\\]\nRBF\n\\[\n\\boxed{\nK(\\mathbf x,\\mathbf x')\n=\n\\exp\\left(\n-\\gamma\\|\\mathbf x-\\mathbf x'\\|^2\n\\right)\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#hiperparâmetros",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#hiperparâmetros",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Hiperparâmetros",
+    "text": "Hiperparâmetros\nNa SVM com kernel RBF, dois parâmetros são especialmente importantes\n\\[\n\\boxed{\nC\n\\qquad\\text{e}\\qquad\n\\gamma\n}\n\\]\nEles controlam aspectos diferentes da flexibilidade e devem ser escolhidos por validação"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#svm-multi-classe",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#svm-multi-classe",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM: multi-classe",
+    "text": "SVM: multi-classe\nSVM é naturalmente binário. Para \\(C &gt; 2\\) classes, duas estratégias principais:\nOne-vs-One (OVO):\n\nAjusta \\(\\binom{C}{2}\\) classificadores binários\nCada par de classes tem seu próprio SVM\nVotação: cada classificador “vota” na classe vencedora\n\nOne-vs-Rest (OVR):\n\nAjusta \\(C\\) classificadores binários\nCada classe vs. todas as outras\nClasse com maior pontuação é escolhida"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#svr-svm",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_vp.html#svr-svm",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR × SVM",
+    "text": "SVR × SVM\n\n\nAspecto\nSVR\nSVM\n\n\n\ntarefa\nregressão\nclassificação\n\n\nregião\n\n\\(\\varepsilon\\)-tube\nmargem\n\n\nperda\n\n\\(\\varepsilon\\)-insensível\nhinge\n\n\nkernels\nsim\nsim"
   }
 ]
