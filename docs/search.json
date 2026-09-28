@@ -11051,7 +11051,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-conexão-com-ridge",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "A conexão com Ridge",
-    "text": "A conexão com Ridge\nNa regressão Ridge:\n\\[\n\\min_{\\boldsymbol\\beta}\n\\left\\{\n\\frac{1}{n}\\|\\mathbf y-\\mathbf X\\boldsymbol\\beta\\|^2\n+\\lambda\\|\\boldsymbol\\beta\\|^2\n\\right\\}\n\\]\nNa RKHS:\n\\[\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_i[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^2\n\\right\\}\n\\]"
+    "text": "A conexão com Ridge\nNa regressão Ridge:\n\\[\n\\min_{\\boldsymbol{\\beta}}\n\\left\\{\n\\frac{1}{n}\n\\sum_{i=1}^{n}\n\\left(y_i-\\mathbf{x}_i^\\top\\boldsymbol{\\beta}\\right)^2\n+\n\\lambda \\|\\boldsymbol{\\beta}\\|_2^2\n\\right\\}\n\\]\nNa RKHS:\n\\[\n\\min_{g\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_i[y_i-g(x_i)]^2\n+\\lambda\\|g\\|_{\\mathcal H}^2\n\\right\\}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#uma-dificuldade-aparente",
@@ -11072,28 +11072,28 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#a-matriz-kernel",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "A matriz kernel",
-    "text": "A matriz kernel\nCalculamos o kernel para cada par de observações:\n\\[\nK_{ij}=K(x_i,x_j)\n\\]\nIsso produz a matriz kernel, ou matriz de Gram:\n\\[\n\\mathbf K=\n\\begin{pmatrix}\nK(x_1,x_1)&\\cdots&K(x_1,x_n)\\\\\n\\vdots&\\ddots&\\vdots\\\\\nK(x_n,x_1)&\\cdots&K(x_n,x_n)\n\\end{pmatrix}\n\\]\nNos pontos de treinamento,\n\\[\n\\hat{\\mathbf g}=\\mathbf K\\boldsymbol\\alpha\n\\]"
+    "text": "A matriz kernel\nCalculamos o kernel para cada par de observações:\n\\[\nK_{ij}=K(x_i,x_j)\n\\]\nIsso produz a matriz kernel, ou matriz de Gram:\n\\[\n\\mathbf K=\n\\begin{pmatrix}\nK(x_1,x_1)&\\cdots&K(x_1,x_n)\\\\\n\\vdots&\\ddots&\\vdots\\\\\nK(x_n,x_1)&\\cdots&K(x_n,x_n)\n\\end{pmatrix}\n\\]\nNos pontos de treinamento,\n\\[\n\\hat{\\mathbf y}=\\mathbf K\\boldsymbol\\alpha\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-kernel-trick",
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-kernel-trick",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O kernel trick",
-    "text": "O kernel trick\nPodemos imaginar uma transformação\n\\[\nx\\longmapsto\\phi(x)\n\\]\npara um espaço de características potencialmente muito grande.\nO kernel permite calcular\n\\[\n\\boxed{\nK(x,x')=\n\\langle\\phi(x),\\phi(x')\\rangle\n}\n\\]\nsem precisar construir explicitamente \\(\\phi(x)\\).\nIsso é conhecido como kernel trick."
+    "text": "O kernel trick\nPodemos imaginar uma transformação\n\\[\nx\\longmapsto\\phi(x)\n\\]\npara um espaço de características potencialmente muito grande.\nEm vez de construir explicitamente \\(\\phi(x)\\), calculamos diretamente\n\\[\n\\boxed{\nK(x,x')=\n\\langle\\phi(x),\\phi(x')\\rangle\n}\n\\]\nAssim, a matriz kernel contém os produtos internos entre as observações no espaço transformado.\nIsso é conhecido como kernel trick."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#por-que-isso-ajuda-com-relações-não-lineares",
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#por-que-isso-ajuda-com-relações-não-lineares",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que isso ajuda com relações não lineares?",
-    "text": "Por que isso ajuda com relações não lineares?\nNo espaço original, um modelo pode ser simples demais para representar os dados.\nO kernel permite trabalhar implicitamente em um espaço de características mais rico:\n\\[\nx\n\\longrightarrow\n\\phi(x)\n\\longrightarrow\n\\text{modelo flexível}\n\\]\nCom isso, podemos representar relações e fronteiras não lineares sem criar explicitamente todas as novas variáveis."
+    "text": "Por que isso ajuda com relações não lineares?\nNo espaço original, um modelo linear pode ser simples demais para representar os dados.\nPodemos imaginar uma transformação\n\\[\nx \\longmapsto \\phi(x)\n\\]\nque leva os dados para um espaço de características mais rico."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel",
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Ridge + kernel",
-    "text": "Ridge + kernel\nA combinação da perda quadrática com regularização em RKHS leva ao Kernel Ridge Regression.\nCom a convenção\n\\[\n\\frac{1}{n}\\|\\mathbf y-\\mathbf K\\boldsymbol\\alpha\\|^2\n+\\lambda\\boldsymbol\\alpha^T\\mathbf K\\boldsymbol\\alpha,\n\\]\na solução satisfaz\n\\[\n\\boxed{\n\\hat{\\boldsymbol\\alpha}\n=(\\mathbf K+n\\lambda\\mathbf I)^{-1}\\mathbf y\n}\n\\]"
+    "text": "Ridge + kernel\nA combinação da perda quadrática com a regularização em uma RKHS leva ao Kernel Ridge Regression.\nSubstituindo a representação\n\\[\ng(x)=\\sum_{j=1}^{n}\\alpha_jK(x_j,x)\n\\]\nno problema regularizado, obtemos\n\\[\n\\min_{\\boldsymbol{\\alpha}}\n\\left\\{\n\\frac{1}{n}\n\\left\\|\n\\mathbf y-\\mathbf K\\boldsymbol{\\alpha}\n\\right\\|_2^2\n+\n\\lambda\n\\boldsymbol{\\alpha}^{\\top}\n\\mathbf K\n\\boldsymbol{\\alpha}\n\\right\\}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#comparação-com-regressão-kernel",
@@ -11149,7 +11149,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#o-que-significa-rkhs-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O que significa RKHS?",
-    "text": "O que significa RKHS?\nNão precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.\n\n\n\n\n\n\nImportante\n\n\nA ideia principal é que a RKHS fornece uma estrutura matemática para comparar, estimar e regularizar funções."
+    "text": "O que significa RKHS?\nNão precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert. Basicamente,\n\nUm espaço de Hilbert permite tratar funções geometricamente como tratamos vetores: podemos definir produto interno, norma, distância e projeção.\n\n\nUma RKHS é um espaço de Hilbert de funções no qual um kernel permite avaliar e representar essas funções de maneira particularmente conveniente.\n\n\n\n\n\n\n\nImportante\n\n\nA ideia principal é que a RKHS fornece uma estrutura matemática para comparar, estimar e regularizar funções."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#onde-entra-o-kernel-1",
@@ -11191,7 +11191,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Ridge + kernel",
-    "text": "Ridge + kernel\nA predição em um novo ponto \\(x\\) é\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]"
+    "text": "Ridge + kernel\nMinimizando em relação a \\(\\boldsymbol{\\alpha}\\):\n\\[\n\\boxed{\n\\widehat{\\boldsymbol{\\alpha}}\n=\n\\left(\n\\mathbf K+n\\lambda\\mathbf I\n\\right)^{-1}\n\\mathbf y\n}\n\\]\nAssim, um problema de otimização sobre funções é reduzido à estimação dos coeficientes \\(\\alpha_1,\\ldots,\\alpha_n\\).\nA predição em um novo ponto \\(x\\) é\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#comparação-com-regressão-kernel-1",
@@ -11731,5 +11731,26 @@
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "SVR × SVM",
     "text": "SVR × SVM\n\n\nAspecto\nSVR\nSVM\n\n\n\ntarefa\nregressão\nclassificação\n\n\nregião\n\n\\(\\varepsilon\\)-tube\nmargem\n\n\nperda\n\n\\(\\varepsilon\\)-insensível\nhinge\n\n\nkernels\nsim\nsim"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-e-svr",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#svm-e-svr",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM e SVR",
+    "text": "SVM e SVR\nA estrutura de RKHS permite enxergar diferentes métodos como variações de uma mesma ideia:\n\\[\n\\boxed{\\text{perda nos dados} + \\text{regularização da função}}\n\\]\nMudando a função de perda, obtemos métodos diferentes.\n\\[\n\\begin{array}{ccc}\n\\text{Perda quadrática} & \\text{Hinge loss} & \\varepsilon\\text{-insensível}\\\\\n\\downarrow & \\downarrow & \\downarrow\\\\\n\\text{Kernel Ridge} & \\text{SVM} & \\text{SVR}\n\\end{array}\n\\]\n\n\n\n\n\n\nNota\n\n\nSVM é voltado principalmente à classificação; SVR adapta a mesma filosofia para regressão."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#por-que-isso-ajuda-com-relações-não-lineares-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#por-que-isso-ajuda-com-relações-não-lineares-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que isso ajuda com relações não lineares?",
+    "text": "Por que isso ajuda com relações não lineares?\nNesse novo espaço, ajustamos um modelo linear em \\(\\phi(x)\\):\n\\[\nf(x) = \\mathbf{w}^{\\top}\\phi(x)\n\\]\nmas que pode corresponder a uma relação não linear em \\(x\\):\n\\[\n\\boxed{\nx\n\\longrightarrow\n\\phi(x)\n\\longrightarrow\n\\text{modelo linear em } \\phi(x)\n\\longrightarrow\n\\text{relação não linear em } x\n}\n\\]\nO kernel trick permite fazer isso implicitamente, sem construir explicitamente todas as novas características \\(\\phi(x)\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel-2",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#ridge-kernel-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ridge + kernel",
+    "text": "Ridge + kernel\nA predição em um novo ponto \\(x\\) é\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]"
   }
 ]

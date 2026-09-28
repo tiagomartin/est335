@@ -103,7 +103,13 @@ $$
 
 ## O que significa RKHS?
 
-Não precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.<br><br>
+Não precisamos, neste momento, aprofundar a definição formal de **espaço de Hilbert**. Basicamente,
+
+
+> Um espaço de Hilbert permite tratar funções geometricamente como tratamos vetores: podemos definir produto interno, norma, distância e projeção. 
+
+> Uma RKHS é um espaço de Hilbert de funções no qual um kernel permite avaliar e representar essas funções de maneira particularmente conveniente.<br><br>
+
 
 ::: {.callout-important}
 ## Importante
@@ -320,10 +326,13 @@ Maior risco de **underfitting**.
 Na regressão Ridge:
 
 $$
-\min_{\boldsymbol\beta}
+\min_{\boldsymbol{\beta}}
 \left\{
-\frac{1}{n}\|\mathbf y-\mathbf X\boldsymbol\beta\|^2
-+\lambda\|\boldsymbol\beta\|^2
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(y_i-\mathbf{x}_i^\top\boldsymbol{\beta}\right)^2
++
+\lambda \|\boldsymbol{\beta}\|_2^2
 \right\}
 $$
 
@@ -410,7 +419,7 @@ $$
 Nos pontos de treinamento,
 
 $$
-\hat{\mathbf g}=\mathbf K\boldsymbol\alpha
+\hat{\mathbf y}=\mathbf K\boldsymbol\alpha
 $$
 
 ## O kernel trick
@@ -421,9 +430,10 @@ $$
 x\longmapsto\phi(x)
 $$
 
-para um espaço de características potencialmente muito grande.
+para um espaço de características potencialmente muito grande. 
 
-O kernel permite calcular
+Em vez de construir explicitamente $\phi(x)$, calculamos diretamente
+
 
 $$
 \boxed{
@@ -432,7 +442,8 @@ K(x,x')=
 }
 $$
 
-sem precisar construir explicitamente $\phi(x)$.
+Assim, a matriz kernel contém os produtos internos entre as observações no espaço transformado.
+
 
 Isso é conhecido como **kernel trick**.
 
@@ -441,45 +452,98 @@ Isso é conhecido como **kernel trick**.
 
 ## Por que isso ajuda com relações não lineares?
 
-No espaço original, um modelo pode ser simples demais para representar os dados.
+No espaço original, um modelo **linear** pode ser simples demais para representar os dados.
 
-O kernel permite trabalhar implicitamente em um espaço de características mais rico:
+Podemos imaginar uma transformação
 
 $$
+x \longmapsto \phi(x)
+$$
+
+que leva os dados para um espaço de características mais rico.
+
+
+
+## Por que isso ajuda com relações não lineares?
+
+
+Nesse novo espaço, ajustamos um modelo **linear em $\phi(x)$**:
+
+$$
+f(x) = \mathbf{w}^{\top}\phi(x)
+$$
+
+mas que pode corresponder a uma relação **não linear em $x$**:
+
+$$
+\boxed{
 x
 \longrightarrow
 \phi(x)
 \longrightarrow
-\text{modelo flexível}
+\text{modelo linear em } \phi(x)
+\longrightarrow
+\text{relação não linear em } x
+}
 $$
 
-Com isso, podemos representar relações e fronteiras **não lineares** sem criar explicitamente todas as novas variáveis.
+O **kernel trick** permite fazer isso implicitamente, sem construir
+explicitamente todas as novas características $\phi(x)$.
+
+
 
 # Kernel Ridge Regression
 
 ## Ridge + kernel
 
-A combinação da perda quadrática com regularização em RKHS leva ao **Kernel Ridge Regression**.
+A combinação da **perda quadrática** com a regularização em uma RKHS leva ao
+**Kernel Ridge Regression**.
 
-Com a convenção
-
-$$
-\frac{1}{n}\|\mathbf y-\mathbf K\boldsymbol\alpha\|^2
-+\lambda\boldsymbol\alpha^T\mathbf K\boldsymbol\alpha,
-$$
-
-a solução satisfaz
+Substituindo a representação
 
 $$
-\boxed{
-\hat{\boldsymbol\alpha}
-=(\mathbf K+n\lambda\mathbf I)^{-1}\mathbf y
-}
+g(x)=\sum_{j=1}^{n}\alpha_jK(x_j,x)
 $$
 
+no problema regularizado, obtemos
+
+$$
+\min_{\boldsymbol{\alpha}}
+\left\{
+\frac{1}{n}
+\left\|
+\mathbf y-\mathbf K\boldsymbol{\alpha}
+\right\|_2^2
++
+\lambda
+\boldsymbol{\alpha}^{\top}
+\mathbf K
+\boldsymbol{\alpha}
+\right\}
+$$
 
 
 ## Ridge + kernel
+
+
+Minimizando em relação a $\boldsymbol{\alpha}$:
+
+$$
+\boxed{
+\widehat{\boldsymbol{\alpha}}
+=
+\left(
+\mathbf K+n\lambda\mathbf I
+\right)^{-1}
+\mathbf y
+}
+$$
+
+Assim, um problema de otimização sobre **funções** é reduzido à estimação
+dos coeficientes $\alpha_1,\ldots,\alpha_n$.
+
+
+
 
 
 A predição em um novo ponto $x$ é<br><br>
@@ -592,7 +656,7 @@ O que muda entre eles é, entre outras coisas, a **função de perda**, o kernel
 
 # Support Vector Machines e Regression
 
-## Da RKHS ao SVM e ao SVR
+## SVM e SVR
 
 A estrutura de RKHS permite enxergar diferentes métodos como variações de uma mesma ideia:
 

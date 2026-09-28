@@ -196,7 +196,13 @@ g(x)=\beta_0+\beta_1x
 \boxed{\text{um espaço estruturado de funções candidatas para }g}
 \]</span></p>
 </section><section id="o-que-significa-rkhs-1" class="slide level2"><h2>O que significa RKHS?</h2>
-<p>Não precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.<br><br></p>
+<p>Não precisamos, neste momento, aprofundar a definição formal de <strong>espaço de Hilbert</strong>. Basicamente,</p>
+<blockquote>
+<p>Um espaço de Hilbert permite tratar funções geometricamente como tratamos vetores: podemos definir produto interno, norma, distância e projeção.</p>
+</blockquote>
+<blockquote>
+<p>Uma RKHS é um espaço de Hilbert de funções no qual um kernel permite avaliar e representar essas funções de maneira particularmente conveniente.<br><br></p>
+</blockquote>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -326,10 +332,13 @@ g(x)=
 </section><section id="a-conexão-com-ridge" class="slide level2"><h2>A conexão com Ridge</h2>
 <p>Na regressão Ridge:</p>
 <p><span class="math display">\[
-\min_{\boldsymbol\beta}
+\min_{\boldsymbol{\beta}}
 \left\{
-\frac{1}{n}\|\mathbf y-\mathbf X\boldsymbol\beta\|^2
-+\lambda\|\boldsymbol\beta\|^2
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(y_i-\mathbf{x}_i^\top\boldsymbol{\beta}\right)^2
++
+\lambda \|\boldsymbol{\beta}\|_2^2
 \right\}
 \]</span></p>
 <p>Na RKHS:</p>
@@ -409,7 +418,7 @@ K(x_n,x_1)&amp;\cdots&amp;K(x_n,x_n)
 \]</span></p>
 <p>Nos pontos de treinamento,</p>
 <p><span class="math display">\[
-\hat{\mathbf g}=\mathbf K\boldsymbol\alpha
+\hat{\mathbf y}=\mathbf K\boldsymbol\alpha
 \]</span></p>
 </section><section id="o-kernel-trick" class="slide level2"><h2>O kernel trick</h2>
 <p>Podemos imaginar uma transformação</p>
@@ -417,43 +426,76 @@ K(x_n,x_1)&amp;\cdots&amp;K(x_n,x_n)
 x\longmapsto\phi(x)
 \]</span></p>
 <p>para um espaço de características potencialmente muito grande.</p>
-<p>O kernel permite calcular</p>
+<p>Em vez de construir explicitamente <span class="math inline">\(\phi(x)\)</span>, calculamos diretamente</p>
 <p><span class="math display">\[
 \boxed{
 K(x,x')=
 \langle\phi(x),\phi(x')\rangle
 }
 \]</span></p>
-<p>sem precisar construir explicitamente <span class="math inline">\(\phi(x)\)</span>.</p>
+<p>Assim, a matriz kernel contém os produtos internos entre as observações no espaço transformado.</p>
 <p>Isso é conhecido como <strong>kernel trick</strong>.</p>
 </section><section id="por-que-isso-ajuda-com-relações-não-lineares" class="slide level2"><h2>Por que isso ajuda com relações não lineares?</h2>
-<p>No espaço original, um modelo pode ser simples demais para representar os dados.</p>
-<p>O kernel permite trabalhar implicitamente em um espaço de características mais rico:</p>
+<p>No espaço original, um modelo <strong>linear</strong> pode ser simples demais para representar os dados.</p>
+<p>Podemos imaginar uma transformação</p>
 <p><span class="math display">\[
+x \longmapsto \phi(x)
+\]</span></p>
+<p>que leva os dados para um espaço de características mais rico.</p>
+</section><section id="por-que-isso-ajuda-com-relações-não-lineares-1" class="slide level2"><h2>Por que isso ajuda com relações não lineares?</h2>
+<p>Nesse novo espaço, ajustamos um modelo <strong>linear em <span class="math inline">\(\phi(x)\)</span></strong>:</p>
+<p><span class="math display">\[
+f(x) = \mathbf{w}^{\top}\phi(x)
+\]</span></p>
+<p>mas que pode corresponder a uma relação <strong>não linear em <span class="math inline">\(x\)</span></strong>:</p>
+<p><span class="math display">\[
+\boxed{
 x
 \longrightarrow
 \phi(x)
 \longrightarrow
-\text{modelo flexível}
+\text{modelo linear em } \phi(x)
+\longrightarrow
+\text{relação não linear em } x
+}
 \]</span></p>
-<p>Com isso, podemos representar relações e fronteiras <strong>não lineares</strong> sem criar explicitamente todas as novas variáveis.</p>
+<p>O <strong>kernel trick</strong> permite fazer isso implicitamente, sem construir explicitamente todas as novas características <span class="math inline">\(\phi(x)\)</span>.</p>
 </section></section><section><section id="kernel-ridge-regression" class="title-slide slide level1 center"><h1>Kernel Ridge Regression</h1>
 
 </section><section id="ridge-kernel" class="slide level2"><h2>Ridge + kernel</h2>
-<p>A combinação da perda quadrática com regularização em RKHS leva ao <strong>Kernel Ridge Regression</strong>.</p>
-<p>Com a convenção</p>
+<p>A combinação da <strong>perda quadrática</strong> com a regularização em uma RKHS leva ao <strong>Kernel Ridge Regression</strong>.</p>
+<p>Substituindo a representação</p>
 <p><span class="math display">\[
-\frac{1}{n}\|\mathbf y-\mathbf K\boldsymbol\alpha\|^2
-+\lambda\boldsymbol\alpha^T\mathbf K\boldsymbol\alpha,
+g(x)=\sum_{j=1}^{n}\alpha_jK(x_j,x)
 \]</span></p>
-<p>a solução satisfaz</p>
+<p>no problema regularizado, obtemos</p>
 <p><span class="math display">\[
-\boxed{
-\hat{\boldsymbol\alpha}
-=(\mathbf K+n\lambda\mathbf I)^{-1}\mathbf y
-}
+\min_{\boldsymbol{\alpha}}
+\left\{
+\frac{1}{n}
+\left\|
+\mathbf y-\mathbf K\boldsymbol{\alpha}
+\right\|_2^2
++
+\lambda
+\boldsymbol{\alpha}^{\top}
+\mathbf K
+\boldsymbol{\alpha}
+\right\}
 \]</span></p>
 </section><section id="ridge-kernel-1" class="slide level2"><h2>Ridge + kernel</h2>
+<p>Minimizando em relação a <span class="math inline">\(\boldsymbol{\alpha}\)</span>:</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\alpha}}
+=
+\left(
+\mathbf K+n\lambda\mathbf I
+\right)^{-1}
+\mathbf y
+}
+\]</span></p>
+<p>Assim, um problema de otimização sobre <strong>funções</strong> é reduzido à estimação dos coeficientes <span class="math inline">\(\alpha_1,\ldots,\alpha_n\)</span>.</p>
 <p>A predição em um novo ponto <span class="math inline">\(x\)</span> é<br><br></p>
 <p><span class="math display">\[
 \boxed{
@@ -558,7 +600,7 @@ x
 <p>O que muda entre eles é, entre outras coisas, a <strong>função de perda</strong>, o kernel e a forma de regularização.</p>
 </section></section><section><section id="support-vector-machines-e-regression" class="title-slide slide level1 center"><h1>Support Vector Machines e Regression</h1>
 
-</section><section id="da-rkhs-ao-svm-e-ao-svr" class="slide level2"><h2>Da RKHS ao SVM e ao SVR</h2>
+</section><section id="svm-e-svr" class="slide level2"><h2>SVM e SVR</h2>
 <p>A estrutura de RKHS permite enxergar diferentes métodos como variações de uma mesma ideia:</p>
 <p><span class="math display">\[
 \boxed{\text{perda nos dados} + \text{regularização da função}}
