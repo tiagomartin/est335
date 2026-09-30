@@ -1,0 +1,1330 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Kernels, RKHS, SVR e SVM</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 6"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+```
+
+# Métodos baseados em RKHS
+
+## Por que introduzir outra estrutura?
+
+Até agora controlamos flexibilidade por:
+
+- número de termos;
+- número de nós;
+- largura de banda;
+- tamanho da vizinhança.
+
+Outra possibilidade é penalizar diretamente a complexidade de uma função.
+
+## De onde vem a ideia?
+
+Considere o problema de regressão
+
+$$
+Y=g(X)+\varepsilon
+$$
+
+Na regressão linear, restringimos a função a uma forma específica:
+
+$$
+g(x)=\beta_0+\beta_1x
+$$
+
+Mas e se a relação entre $X$ e $Y$ for **não linear** e não quisermos especificar antecipadamente a forma de $g$?<br><br>
+
+::: {.callout-note}
+## Nota
+Precisamos definir **em qual conjunto de funções** procuraremos $g$ e como controlar sua complexidade.
+:::
+
+## Da estimação de parâmetros à estimação de funções
+
+Na regressão linear, procuramos um vetor de parâmetros:
+
+$$
+\boldsymbol\beta=(\beta_0,\beta_1,\ldots,\beta_p)^\top
+$$
+
+Nos métodos baseados em RKHS, procuramos diretamente uma função:
+
+$$
+\boxed{g\in\mathcal H}
+$$
+
+onde $\mathcal H$ representa um **espaço de funções**.
+
+$$
+\text{Regressão linear: procurar }\boldsymbol\beta
+\qquad\Longrightarrow\qquad
+\text{RKHS: procurar }g
+$$
+
+## O que significa RKHS?
+
+**RKHS** = *Reproducing Kernel Hilbert Space*
+
+Em português:
+
+> **Espaço de Hilbert com Núcleo Reprodutor**
+
+Para uma primeira abordagem, podemos pensar em uma RKHS como
+
+$$
+\boxed{\text{um espaço estruturado de funções candidatas para }g}
+$$
+
+
+## O que significa RKHS?
+
+Não precisamos, neste momento, aprofundar a definição formal de **espaço de Hilbert**. Basicamente,
+
+
+> Um espaço de Hilbert permite tratar funções geometricamente como tratamos vetores: podemos definir produto interno, norma, distância e projeção. 
+
+> Uma RKHS é um espaço de Hilbert de funções no qual um kernel permite avaliar e representar essas funções de maneira particularmente conveniente.<br><br>
+
+
+::: {.callout-important}
+## Importante
+A ideia principal é que a RKHS fornece uma estrutura matemática para **comparar, estimar e regularizar funções**.
+:::
+
+## Onde entra o kernel?
+
+Uma RKHS está associada a uma função kernel
+
+$$
+K(x,x')
+$$
+
+que relaciona dois pontos $x$ e $x'$.
+
+Um exemplo importante é o kernel Gaussiano (RBF):
+
+$$
+K(x,x')=
+\exp\left\{-\frac{(x-x')^2}{2\sigma^2}\right\}
+$$
+
+
+## Onde entra o kernel?
+
+Intuitivamente:
+
+$$
+x\approx x' \Rightarrow K(x,x')\text{ grande}
+$$
+
+$$
+|x-x'|\text{ grande} \Rightarrow K(x,x')\text{ pequeno}
+$$
+
+## Kernel Gaussiano: uma visão gráfica
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.7
+#| out-width: 78%
+#| fig-align: center
+
+
+library(ggplot2)
+
+x <- seq(-3, 3, length.out = 500)
+sigma <- 1
+K <- exp(-(x^2)/(2 * sigma^2))
+
+df_k <- data.frame(x = x, K = K)
+
+ggplot(df_k, aes(x, K)) +
+  geom_line(linewidth = 1.5, color = "#2C7FB8") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey50") +
+  labs(
+    x = expression(x - x[0]),
+    y = expression(K(x,x[0]))
+  ) +
+  theme_minimal(base_size = 22) +
+  theme(panel.grid.minor = element_blank())
+```
+
+Quanto mais distante $x$ está de $x_0$, menor é a similaridade determinada pelo kernel.
+
+## Construindo uma função com kernels
+
+Uma função em muitos métodos baseados em RKHS pode ser representada na forma
+
+$$
+\boxed{
+g(x)=\sum_{i=1}^{n}\alpha_iK(x,x_i)
+}
+$$
+
+ou seja,
+
+$$
+g(x)=
+\alpha_1K(x,x_1)+\cdots+\alpha_nK(x,x_n)
+$$
+
+
+## Construindo uma função com kernels
+
+Cada observação de treinamento contribui para a construção da função.<br><br>
+
+::: {.callout-note}
+## Nota
+Os coeficientes $\alpha_i$ determinam **quanto cada função kernel contribui** para a função estimada.
+:::
+
+## Visualizando a construção
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.7
+#| out-width: 78%
+#| fig-align: center
+xg <- seq(-4, 4, length.out = 600)
+centros <- c(-2, 0, 1.7)
+alpha <- c(0.8, -0.45, 1.0)
+sigma <- 0.7
+
+comp <- lapply(seq_along(centros), function(i) {
+  data.frame(
+    x = xg,
+    valor = alpha[i] * exp(-(xg-centros[i])^2/(2*sigma^2)),
+    componente = paste0("Componente ", i)
+  )
+})
+comp <- do.call(rbind, comp)
+
+total <- aggregate(valor ~ x, comp, sum)
+
+ggplot() +
+  geom_line(data = comp,
+            aes(x, valor, group = componente),
+            linewidth = .8, linetype = "dashed", alpha = .7) +
+  geom_line(data = total, aes(x, valor),
+            linewidth = 1.7, color = "#2C7FB8") +
+  labs(x = "x", y = expression(g(x))) +
+  theme_minimal(base_size = 21) +
+  theme(panel.grid.minor = element_blank())
+```
+
+A curva final é uma combinação das funções kernel.
+
+## Mas isso não pode ficar complexo demais?
+
+Se procurarmos apenas a função que minimiza
+
+$$
+\sum_{i=1}^{n}\left[y_i-g(x_i)\right]^2
+$$
+
+podemos obter uma função excessivamente flexível.
+
+$$
+\text{flexibilidade excessiva}
+\quad\Longrightarrow\quad
+\text{overfitting}
+$$
+
+
+
+## Mas isso não pode ficar complexo demais?
+
+Precisamos equilibrar
+
+$$
+\boxed{\text{qualidade do ajuste} \quad\times\quad \text{complexidade}}
+$$
+
+Essa ideia já apareceu em Ridge, Lasso e smoothing splines.
+
+## Regularização em uma RKHS
+
+Um problema típico é
+
+$$
+\boxed{
+\min_{g\in\mathcal H}
+\left\{
+\frac{1}{n}\sum_{i=1}^{n}[y_i-g(x_i)]^2
++\lambda\|g\|_{\mathcal H}^{2}
+\right\}
+}
+$$
+
+Temos dois componentes:
+
+$$
+\underbrace{
+\frac{1}{n}\sum_{i=1}^{n}[y_i-g(x_i)]^2
+}_{\text{erro de ajuste}}
++
+\underbrace{
+\lambda\|g\|_{\mathcal H}^{2}
+}_{\text{penalização da complexidade}}
+$$
+
+## O papel de $\lambda$
+
+O parâmetro $\lambda$ controla o compromisso entre ajuste e complexidade.<br><br>
+
+### $\lambda$ pequeno
+
+$$
+\lambda\downarrow
+\Rightarrow
+\text{penalização menor}
+\Rightarrow
+\text{maior flexibilidade}
+$$
+
+Maior risco de **overfitting**.<br><br>
+
+### $\lambda$ grande
+
+$$
+\lambda\uparrow
+\Rightarrow
+\text{penalização maior}
+\Rightarrow
+\text{menor complexidade}
+$$
+
+Maior risco de **underfitting**.
+
+## A conexão com Ridge
+
+Na regressão Ridge:
+
+$$
+\min_{\boldsymbol{\beta}}
+\left\{
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(y_i-\mathbf{x}_i^\top\boldsymbol{\beta}\right)^2
++
+\lambda \|\boldsymbol{\beta}\|_2^2
+\right\}
+$$
+
+Na RKHS:
+
+$$
+\min_{g\in\mathcal H}
+\left\{
+\frac{1}{n}\sum_i[y_i-g(x_i)]^2
++\lambda\|g\|_{\mathcal H}^2
+\right\}
+$$
+
+
+## A conexão com Ridge
+
+| Ridge | RKHS |
+|:---:|:---:|
+| estima $\boldsymbol\beta$ | estima $g$ |
+| penaliza $\|\boldsymbol\beta\|^2$ | penaliza $\|g\|_{\mathcal H}^2$ |
+| controla coeficientes | controla a complexidade da função |
+
+## Uma dificuldade aparente
+
+Se $\mathcal H$ pode conter um número enorme (até infinito) de funções, como resolver
+
+$$
+\min_{g\in\mathcal H} \{\text{erro}+\text{penalização}\}?
+$$
+
+Parece que precisaríamos procurar em um espaço de dimensão infinita.
+
+Mas um resultado fundamental simplifica o problema.
+
+# Teorema do Representante
+
+## A ideia central
+
+Para uma ampla classe de problemas regularizados, a solução pode ser escrita como
+
+$$
+\boxed{
+\hat g(x)=\sum_{i=1}^{n}\hat\alpha_iK(x,x_i)
+}
+$$
+
+Assim, em vez de procurar diretamente uma função em $\mathcal H$, precisamos estimar apenas
+
+$$
+\hat\alpha_1,\hat\alpha_2,\ldots,\hat\alpha_n
+$$
+
+## A ideia central
+
+Portanto,<br><br>
+
+$$
+\boxed{
+\text{problema em espaço de funções}
+\longrightarrow
+\text{problema finito de estimação}
+}
+$$
+
+## A matriz kernel
+
+Calculamos o kernel para cada par de observações:
+
+$$
+K_{ij}=K(x_i,x_j)
+$$
+
+Isso produz a matriz kernel, ou matriz de Gram:
+
+$$
+\mathbf K=
+\begin{pmatrix}
+K(x_1,x_1)&\cdots&K(x_1,x_n)\\
+\vdots&\ddots&\vdots\\
+K(x_n,x_1)&\cdots&K(x_n,x_n)
+\end{pmatrix}
+$$
+
+Nos pontos de treinamento,
+
+$$
+\hat{\mathbf y}=\mathbf K\boldsymbol\alpha
+$$
+
+## O kernel trick
+
+Podemos imaginar uma transformação
+
+$$
+x\longmapsto\phi(x)
+$$
+
+para um espaço de características potencialmente muito grande. 
+
+Em vez de construir explicitamente $\phi(x)$, calculamos diretamente
+
+
+$$
+\boxed{
+K(x,x')=
+\langle\phi(x),\phi(x')\rangle
+}
+$$
+
+Assim, a matriz kernel contém os produtos internos entre as observações no espaço transformado.
+
+
+Isso é conhecido como **kernel trick**.
+
+
+
+
+## Por que isso ajuda com relações não lineares?
+
+No espaço original, um modelo **linear** pode ser simples demais para representar os dados.
+
+Podemos imaginar uma transformação
+
+$$
+x \longmapsto \phi(x)
+$$
+
+que leva os dados para um espaço de características mais rico.
+
+
+
+## Por que isso ajuda com relações não lineares?
+
+
+Nesse novo espaço, ajustamos um modelo **linear em $\phi(x)$**:
+
+$$
+f(x) = \mathbf{w}^{\top}\phi(x)
+$$
+
+mas que pode corresponder a uma relação **não linear em $x$**:
+
+$$
+\boxed{
+x
+\longrightarrow
+\phi(x)
+\longrightarrow
+\text{modelo linear em } \phi(x)
+\longrightarrow
+\text{relação não linear em } x
+}
+$$
+
+O **kernel trick** permite fazer isso implicitamente, sem construir
+explicitamente todas as novas características $\phi(x)$.
+
+
+
+# Kernel Ridge Regression
+
+## Ridge + kernel
+
+A combinação da **perda quadrática** com a regularização em uma RKHS leva ao
+**Kernel Ridge Regression**.
+
+Substituindo a representação
+
+$$
+g(x)=\sum_{j=1}^{n}\alpha_jK(x_j,x)
+$$
+
+no problema regularizado, obtemos
+
+$$
+\min_{\boldsymbol{\alpha}}
+\left\{
+\frac{1}{n}
+\left\|
+\mathbf y-\mathbf K\boldsymbol{\alpha}
+\right\|_2^2
++
+\lambda
+\boldsymbol{\alpha}^{\top}
+\mathbf K
+\boldsymbol{\alpha}
+\right\}
+$$
+
+
+## Ridge + kernel
+
+
+Minimizando em relação a $\boldsymbol{\alpha}$:
+
+$$
+\boxed{
+\widehat{\boldsymbol{\alpha}}
+=
+\left(
+\mathbf K+n\lambda\mathbf I
+\right)^{-1}
+\mathbf y
+}
+$$
+
+Assim, um problema de otimização sobre **funções** é reduzido à estimação
+dos coeficientes $\alpha_1,\ldots,\alpha_n$.
+
+
+
+
+
+A predição em um novo ponto $x$ é<br><br>
+
+$$
+\boxed{
+\hat g(x)=\sum_{i=1}^{n}\hat\alpha_iK(x,x_i)
+}
+$$
+
+<!-- ## Comparação com regressão kernel -->
+
+<!-- Não confunda **regressão kernel** com **métodos kernel em RKHS**.<br><br> -->
+
+<!-- ### Nadaraya--Watson -->
+
+<!-- $$ -->
+<!-- \hat f(x)= -->
+<!-- \frac{\sum_iK_h(x-x_i)y_i} -->
+<!-- {\sum_iK_h(x-x_i)} -->
+<!-- $$ -->
+
+<!-- Os pesos são determinados diretamente pela proximidade. -->
+
+
+
+<!-- ## Comparação com regressão kernel -->
+
+
+<!-- ### RKHS / Kernel Ridge -->
+
+<!-- $$ -->
+<!-- \hat g(x)=\sum_i\hat\alpha_iK(x,x_i) -->
+<!-- $$ -->
+
+<!-- Os coeficientes $\alpha_i$ são **estimados globalmente a partir dos dados**, com regularização. -->
+
+
+
+<!-- ## Dois usos da palavra "kernel" -->
+
+<!-- A palavra *kernel* aparece nos dois contextos, mas os papéis não são idênticos.<br><br> -->
+
+<!-- | Suavização kernel | RKHS | -->
+<!-- |---|---| -->
+<!-- | pesos locais | estrutura de um espaço de funções | -->
+<!-- | largura de banda $h$ | parâmetros do kernel + $\lambda$ | -->
+<!-- | Nadaraya--Watson | Kernel Ridge, SVM etc. | -->
+<!-- | foco em vizinhança | foco em similaridade/produto interno e regularização | -->
+
+<!-- ::: {.callout-warning} -->
+<!-- ## Cuidado -->
+<!-- Há conexões matemáticas entre essas ideias, mas não devemos tratá-las como sinônimos. -->
+<!-- ::: -->
+
+<!-- ## E os smoothing splines? -->
+
+<!-- Os smoothing splines também resolvem um problema penalizado: -->
+
+<!-- $$ -->
+<!-- \min_g -->
+<!-- \left\{ -->
+<!-- \sum_{i=1}^{n}[y_i-g(x_i)]^2 -->
+<!-- +\lambda\int[g''(x)]^2dx -->
+<!-- \right\}. -->
+<!-- $$ -->
+
+<!-- A penalização controla a rugosidade da função. -->
+
+<!-- Essa formulação também pode ser interpretada no contexto de uma RKHS. -->
+
+<!-- ## E os smoothing splines? -->
+
+
+<!-- Assim, -->
+
+<!-- $$ -->
+<!-- \boxed{ -->
+<!-- \text{smoothing splines} -->
+<!-- \quad\text{e}\quad -->
+<!-- \text{Kernel Ridge} -->
+<!-- } -->
+<!-- $$ -->
+
+<!-- podem ser vistos dentro de uma estrutura mais geral de **estimação regularizada de funções**. -->
+
+## Onde RKHS aparece em Machine Learning?
+
+A mesma estrutura aparece em diferentes métodos:
+
+$$
+\boxed{\text{Kernel Ridge Regression}}
+$$
+
+$$
+\boxed{\text{SVM com kernel}}
+$$
+
+$$
+\boxed{\text{Smoothing splines}}
+$$
+
+$$
+\boxed{\text{outros métodos kernel regularizados}}
+$$
+
+O que muda entre eles é, entre outras coisas, a **função de perda**, o kernel e a forma de regularização.
+
+
+
+# Support Vector Machines e Regression
+
+## Ideia central
+
+Até aqui vimos que um modelo pode ser mais ou menos flexível.
+
+No SVM e no SVR, a ideia central continua sendo:
+
+$$
+\boxed{\text{ajustar bem os dados} \quad + \quad \text{evitar complexidade desnecessária}}
+$$
+
+
+## Ideia central
+
+A diferença é o tipo de problema:
+
+::: {.columns}
+::: {.column width="50%"}
+
+### SVM
+
+**Classificação**
+
+Queremos separar grupos com uma fronteira que tenha uma **margem grande**.
+
+:::
+
+::: {.column width="50%"}
+
+### SVR
+
+**Regressão**
+
+Queremos uma função que aceite pequenos erros dentro de uma **faixa de tolerância**.
+
+:::
+:::
+
+::: {.callout-tip appearance="simple"}
+Por enquanto, pense em **margem** para SVM e em **tubo de tolerância** para SVR. As formulações matemáticas vêm depois.
+:::
+
+## SVM: começando por um exemplo
+
+Imagine duas classes de clientes descritas por duas variáveis:
+
+- $x_1$: renda
+- $x_2$: gasto mensal
+
+Queremos prever
+
+$$
+Y\in\{-1,+1\}
+$$
+
+Se os grupos puderem ser separados por uma reta, existem várias fronteiras possíveis.
+
+
+## SVM: começando por um exemplo
+
+A pergunta do SVM é:
+
+> **Qual dessas fronteiras deixa a maior distância possível entre os dois grupos?**
+
+## Não basta separar
+
+Uma fronteira pode classificar corretamente os dados de treinamento e ainda passar muito perto das observações.
+
+O SVM prefere uma fronteira com uma **região de segurança** maior.
+
+$$
+\boxed{\text{essa região de segurança é a margem}}
+$$
+
+::: {.callout-important}
+## Ideia principal
+Entre várias fronteiras capazes de separar as classes, o SVM procura aquela com **maior margem**.
+:::
+
+---
+
+![](/images/classificacao/hiperplano_separador.png){fig-align="center"}
+
+## A função de decisão
+
+Para duas variáveis, uma fronteira linear pode ser escrita como
+
+$$
+g(\mathbf x)=\mathbf w^T\mathbf x+b
+$$
+
+Se
+
+$$
+\mathbf x=
+\begin{pmatrix}
+x_1\\x_2
+\end{pmatrix},
+\qquad
+\mathbf w=
+\begin{pmatrix}
+w_1\\w_2
+\end{pmatrix},
+$$
+
+então
+
+$$
+g(\mathbf x)=w_1x_1+w_2x_2+b
+$$
+
+
+## A função de decisão
+
+
+A classificação é feita pelo sinal:
+
+$$
+g(\mathbf x)>0 \Rightarrow +1
+\qquad
+g(\mathbf x)<0 \Rightarrow -1
+$$
+
+::: {.callout-note appearance="simple"}
+$\mathbf w$ contém os **pesos do modelo** e determina a orientação da fronteira. O termo $b$ desloca essa fronteira.
+:::
+
+## A função de decisão
+
+A fronteira de decisão corresponde aos pontos para os quais
+
+$$
+g(\mathbf x)=0,
+$$
+
+isto é,
+
+$$
+\boxed{\mathbf w^T\mathbf x+b=0}
+$$
+
+No caso de duas variáveis, isso é uma reta.
+
+Em três variáveis, é um plano.
+
+Em dimensões maiores, usamos o nome **hiperplano**.
+
+
+
+## A função de decisão
+
+Na parametrização usual do SVM, as bordas da margem são
+
+$$
+\mathbf w^T\mathbf x+b=+1
+$$
+
+e
+
+$$
+\mathbf w^T\mathbf x+b=-1
+$$
+
+A largura total da margem é
+
+$$
+\boxed{\frac{2}{\|\mathbf w\|}}
+$$
+
+
+## A função de decisão
+
+
+Portanto,
+
+$$
+\|\mathbf w\|\downarrow
+\quad\Rightarrow\quad
+\text{margem}\uparrow
+$$
+
+Assim,
+
+$$
+\boxed{
+\text{maximizar a margem}
+\Longleftrightarrow
+\text{minimizar }\frac12\|\mathbf w\|^2
+}
+$$
+
+::: {.callout-tip appearance="simple"}
+O termo $\frac12\|\mathbf w\|^2$ funciona como um **controle de complexidade**: queremos uma fronteira que classifique bem sem ficar excessivamente ajustada aos dados.
+:::
+
+## Quem realmente determina a fronteira?
+
+Nem todas as observações têm a mesma importância.
+
+Os pontos mais próximos da fronteira são os que limitam quanto podemos aumentar a margem.
+
+Esses pontos são chamados de **vetores de suporte**.
+
+$$
+\boxed{
+\text{vetores de suporte}
+=
+\text{observações que sustentam a fronteira}
+}
+$$
+
+Se movermos um ponto muito distante da margem, a fronteira pode praticamente não mudar.
+
+Se movermos um vetor de suporte, a fronteira pode mudar bastante.
+
+---
+
+![](/images/classificacao/hiperplano_separador.png){fig-align="center"}
+
+
+
+## Soft margin: permitindo violações
+
+Em dados reais, nem sempre é possível separar perfeitamente as classes.
+
+No **hard margin**, exigíamos
+
+$$
+y_i g(\mathbf{x}_i) \geq 1
+$$
+
+No **soft margin**, introduzimos uma variável de folga $\xi_i$:
+
+$$
+\boxed{
+y_i g(\mathbf{x}_i) \geq 1-\xi_i,
+\qquad \xi_i\geq 0
+}
+$$
+
+
+## Soft margin: permitindo violações
+
+
+A variável $\xi_i$ mede **quanto precisamos relaxar a condição de margem**
+para acomodar a observação $i$.
+
+| Valor de $\xi_i$ | Situação |
+|---|---|
+| $\xi_i=0$ | sobre ou fora da margem |
+| $0<\xi_i<1$ | corretamente classificada, mas dentro da margem |
+| $\xi_i=1$ | sobre a fronteira de decisão |
+| $\xi_i>1$ | classificada incorretamente |
+
+::: {.callout-important}
+## Importante
+$\xi_i>0$ **não significa necessariamente erro de classificação**.
+
+Uma observação pode estar corretamente classificada e ainda violar a margem.
+:::
+
+---
+
+![](/images/classificacao/soft_margin.png){fig-align="center"}
+
+
+
+## Da variável de folga à hinge loss
+
+Da restrição do soft margin,
+
+$$
+y_i g(\mathbf{x}_i)\geq 1-\xi_i,
+$$
+
+obtemos
+
+$$
+\xi_i\geq 1-y_i g(\mathbf{x}_i)
+$$
+
+
+
+## Da variável de folga à hinge loss
+
+
+Como também exigimos
+
+$$
+\xi_i\geq0,
+$$
+
+a **menor folga necessária** é
+
+$$
+\boxed{
+\xi_i=
+\max\left\{0,\;1-y_i g(\mathbf{x}_i)\right\}
+}
+$$
+
+
+## Da variável de folga à hinge loss
+
+Mas essa expressão é exatamente a **hinge loss**, que é a função de perda do SVM:
+
+$$
+\boxed{
+L_i=
+\max\left\{0,\;1-y_i g(\mathbf{x}_i)\right\}
+}
+$$
+
+Portanto, na solução ótima,
+
+$$
+\boxed{\xi_i=L_i}
+$$
+
+::: {.callout-tip}
+### Qual é a diferença?
+
+- $\xi_i$ é a **variável de folga** introduzida para relaxar a restrição;
+- a **hinge loss** é a função que calcula diretamente o tamanho dessa violação.
+
+Na solução ótima do SVM soft margin, elas assumem o mesmo valor.
+:::
+
+
+
+
+
+
+
+
+## Interpretando a hinge loss
+
+Considere
+
+$$
+L_i=\max\{0,1-y_i g(\mathbf{x}_i)\}.
+$$
+
+| $y_i g(\mathbf{x}_i)$ | Situação | $\xi_i=L_i$ |
+|---:|---|---:|
+| $1.5$ | correta e fora da margem | $0$ |
+| $1.0$ | sobre a margem | $0$ |
+| $0.7$ | correta, mas dentro da margem | $0.3$ |
+| $0$ | sobre a fronteira de decisão | $1$ |
+| $-0.4$ | classificada incorretamente | $1.4$ |
+
+
+
+## Interpretando a hinge loss
+
+
+Assim, o SVM não pergunta apenas:
+
+> **"A classe foi prevista corretamente?"**
+
+Ele também considera:
+
+> **"A observação está suficientemente afastada da fronteira?"**
+
+
+
+
+
+
+
+
+
+
+
+
+## Problemas não linearmente separáveis
+
+Considere dados em que uma classe esteja aproximadamente no centro e outra ao redor dela.
+
+Nenhuma reta separará bem os grupos no espaço original.
+
+Uma possibilidade seria criar manualmente novas variáveis.
+
+O SVM com kernel faz algo mais conveniente:
+
+$$
+\boxed{\text{usa similaridades para construir uma fronteira não linear}}
+$$
+
+---
+
+![](/images/classificacao/kernel_trick.png){fig-align="center"}
+
+## SVM com kernel: o que muda?
+
+A lógica continua sendo a mesma:
+
+$$
+\boxed{\text{margem grande + controle das violações}}
+$$
+
+O que muda é a forma da fronteira.
+
+Com um kernel, o SVM pode produzir fronteiras **não lineares** no espaço original.
+
+
+
+## SVM com kernel: o que muda?
+
+
+Um kernel muito utilizado é o RBF:
+
+$$
+K(\mathbf x,\mathbf x')
+=
+\exp\{-\gamma\|\mathbf x-\mathbf x'\|^2\}
+$$
+
+Não precisamos construir explicitamente todas as transformações de $\mathbf x$.
+
+Esse é o **kernel trick**.
+
+## O papel de $\gamma$ no RBF
+
+$\gamma$ controla quão local é a influência de uma observação.
+
+::: {.columns}
+::: {.column width="50%"}
+
+### $\gamma$ pequeno
+
+Influência mais ampla
+
+Fronteira tende a ser mais suave
+
+Menor flexibilidade
+
+:::
+
+::: {.column width="50%"}
+
+### $\gamma$ grande
+
+Influência mais localizada
+
+Fronteira pode ficar mais irregular
+
+Maior flexibilidade
+
+:::
+:::
+
+
+
+
+
+## SVM multiclasse
+
+O SVM nasce como classificador binário.
+
+Para mais de duas classes, podemos combinar vários SVMs binários.
+
+**One-vs-Rest (OVR)**
+
+- uma classe contra todas as demais;
+- para $G$ classes, ajustamos $G$ classificadores.
+
+**One-vs-One (OVO)**
+
+- comparamos as classes duas a duas;
+- para $G$ classes, ajustamos $\binom{G}{2}$ classificadores.
+
+
+
+---
+
+![](/images/classificacao/ovo_ovr.png){fig-align="center"}
+
+# Support Vector Regression
+
+## Do SVM para o SVR
+
+Agora trocamos o tipo de resposta.
+
+No SVM:
+
+$$
+Y=\text{classe}
+$$
+
+No SVR:
+
+$$
+Y=\text{valor quantitativo}
+$$
+
+
+## Do SVM para o SVR
+
+A ideia geométrica também muda:
+
+$$
+\boxed{\text{SVM: margem ao redor da fronteira}}
+$$
+
+$$
+\boxed{\text{SVR: tubo de tolerância ao redor da função}}
+$$
+
+## Um exemplo simples
+
+Suponha que queremos prever o preço de um imóvel.
+
+Uma previsão de R\$ 500.000 para um imóvel que vale R\$ 501.000 possui erro de R\$ 1.000.
+
+Talvez, para o problema, esse erro seja pequeno demais para merecer atenção.
+
+O SVR permite definir uma tolerância:
+
+$$
+\varepsilon
+$$
+
+Erros menores que essa tolerância podem ser tratados como **aceitáveis**.
+
+## O tubo $\varepsilon$
+
+O SVR procura uma função $g(\mathbf x)$ e cria ao redor dela uma faixa:
+
+$$
+g(\mathbf x)-\varepsilon
+\leq y \leq
+g(\mathbf x)+\varepsilon
+$$
+
+A largura total é
+
+$$
+2\varepsilon
+$$
+
+## O tubo $\varepsilon$
+
+
+Se
+
+$$
+|y_i-g(\mathbf x_i)|\leq\varepsilon,
+$$
+
+a observação está dentro do tubo.
+
+Nesse caso, o SVR atribui **perda zero** a esse erro.
+
+## A perda $\varepsilon$-insensível
+
+A função de perda é
+
+$$
+\boxed{
+L_\varepsilon(y,g(\mathbf x))
+=
+\max\{0,|y-g(\mathbf x)|-\varepsilon\}
+}
+$$
+
+Sua leitura é simples:
+
+$$
+|y-g(\mathbf x)|\leq\varepsilon
+\Rightarrow
+L_\varepsilon=0
+$$
+
+e
+
+$$
+|y-g(\mathbf x)|>\varepsilon
+\Rightarrow
+L_\varepsilon>0
+$$
+
+::: {.callout-tip appearance="simple"}
+Diferentemente do erro quadrático, o SVR possui uma **zona de tolerância**: pequenos erros podem ser ignorados.
+:::
+
+## Quem são os vetores de suporte no SVR?
+
+Considere três tipos de observações:
+
+| Posição | Papel |
+|---|---|
+| dentro do tubo | geralmente não determina diretamente a solução |
+| sobre a borda do tubo | pode ser vetor de suporte |
+| fora do tubo | pode ser vetor de suporte e gera penalização |
+
+Assim,
+
+$$
+\boxed{
+\text{vetores de suporte}
+=
+\text{pontos que ajudam a determinar o tubo e a função}
+}
+$$
+
+Essa é a origem do nome **Support Vector Regression**.
+
+
+## O papel de $\varepsilon$
+
+$\varepsilon$ responde a pergunta:
+
+> **Qual erro considero pequeno o suficiente para ignorar?**
+
+$$
+\varepsilon\uparrow
+\Rightarrow
+\text{tubo mais largo}
+\Rightarrow
+\text{mais erros com perda zero}
+$$
+
+$$
+\varepsilon\downarrow
+\Rightarrow
+\text{tubo mais estreito}
+\Rightarrow
+\text{mais observações influenciam o ajuste}
+$$
+
+
+
+## SVR com kernel
+
+Se a relação entre $X$ e $Y$ não for linear, podemos utilizar kernels.
+
+Com RBF, por exemplo,
+
+$$
+K(\mathbf x,\mathbf x')
+=
+\exp\{-\gamma\|\mathbf x-\mathbf x'\|^2\}
+$$
+
+A interpretação prática permanece:
+
+ $\varepsilon$: largura da tolerância;
+- $\gamma$: localidade/flexibilidade do kernel.
+
+$$
+\boxed{
+(\varepsilon,\gamma)
+\quad\text{são hiperparâmetros}
+}
+$$
+
+e devem ser escolhidos com dados de treinamento, tipicamente por **validação cruzada**.
+
+## Como interpretar o SVR com kernel?
+
+A solução matemática pode ser escrita como uma combinação de kernels centrados em vetores de suporte.
+
+Para o nível desta disciplina, a mensagem importante é:
+
+$$
+\boxed{
+\text{a previsão depende principalmente dos vetores de suporte}
+}
+$$
+
+
+
