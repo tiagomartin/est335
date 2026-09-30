@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Semana 06 – EST335 - Métodos Estatísticos para Machine Learning</title>
+<title>A2 — Métodos Locais e Kernels – EST335 - Métodos Estatísticos para Machine Learning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -43,8 +43,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -73,9 +71,38 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Semana 06 – EST335 - Métodos Estatísticos para Machine Learning">
-<meta property="og:description" content="Homepage da disciplina EST335 - Métodos Estatísticos para Machine Learning, 2026/2">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="A2 — Métodos Locais e Kernels – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Atividade Avaliativa 2">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
 </head>
 
@@ -249,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Semana 06</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">A2 — Métodos Locais e Kernels</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -318,11 +345,38 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#slides" id="toc-slides" class="nav-link active" data-scroll-target="#slides">Slides</a></li>
-  <li><a href="#material-complementar" id="toc-material-complementar" class="nav-link" data-scroll-target="#material-complementar">Material Complementar</a></li>
-  <li><a href="#atividade-avaliativa---a2" id="toc-atividade-avaliativa---a2" class="nav-link" data-scroll-target="#atividade-avaliativa---a2">Atividade Avaliativa - A2</a></li>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo"><span class="header-section-number">1</span> Objetivo</a></li>
+  <li><a href="#dados" id="toc-dados" class="nav-link" data-scroll-target="#dados"><span class="header-section-number">2</span> Dados</a></li>
+  <li><a href="#regras-gerais" id="toc-regras-gerais" class="nav-link" data-scroll-target="#regras-gerais"><span class="header-section-number">3</span> Regras gerais</a></li>
+  <li><a href="#parte-i-estratégia-de-avaliação-e-compreensão-dos-dados-20-pontos" id="toc-parte-i-estratégia-de-avaliação-e-compreensão-dos-dados-20-pontos" class="nav-link" data-scroll-target="#parte-i-estratégia-de-avaliação-e-compreensão-dos-dados-20-pontos"><span class="header-section-number">4</span> Parte I — Estratégia de avaliação e compreensão dos dados [2,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-1" id="toc-questão-1" class="nav-link" data-scroll-target="#questão-1"><span class="header-section-number">4.1</span> Questão 1</a></li>
+  </ul></li>
+  <li><a href="#parte-ii-regressão-knn-40-pontos" id="toc-parte-ii-regressão-knn-40-pontos" class="nav-link" data-scroll-target="#parte-ii-regressão-knn-40-pontos"><span class="header-section-number">5</span> Parte II — Regressão KNN [4,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-2" id="toc-questão-2" class="nav-link" data-scroll-target="#questão-2"><span class="header-section-number">5.1</span> Questão 2</a></li>
+  </ul></li>
+  <li><a href="#parte-iii-nadarayawatson-40-pontos" id="toc-parte-iii-nadarayawatson-40-pontos" class="nav-link" data-scroll-target="#parte-iii-nadarayawatson-40-pontos"><span class="header-section-number">6</span> Parte III — Nadaraya–Watson [4,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-3" id="toc-questão-3" class="nav-link" data-scroll-target="#questão-3"><span class="header-section-number">6.1</span> Questão 3</a></li>
+  </ul></li>
+  <li><a href="#parte-iv-regressão-polinomial-local-30-pontos" id="toc-parte-iv-regressão-polinomial-local-30-pontos" class="nav-link" data-scroll-target="#parte-iv-regressão-polinomial-local-30-pontos"><span class="header-section-number">7</span> Parte IV — Regressão polinomial local [3,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-4" id="toc-questão-4" class="nav-link" data-scroll-target="#questão-4"><span class="header-section-number">7.1</span> Questão 4</a></li>
+  </ul></li>
+  <li><a href="#parte-v-kernel-ridge-e-rkhs-30-pontos" id="toc-parte-v-kernel-ridge-e-rkhs-30-pontos" class="nav-link" data-scroll-target="#parte-v-kernel-ridge-e-rkhs-30-pontos"><span class="header-section-number">8</span> Parte V — Kernel Ridge e RKHS [3,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-5" id="toc-questão-5" class="nav-link" data-scroll-target="#questão-5"><span class="header-section-number">8.1</span> Questão 5</a></li>
+  </ul></li>
+  <li><a href="#parte-vi-avaliação-final-da-generalização-40-pontos" id="toc-parte-vi-avaliação-final-da-generalização-40-pontos" class="nav-link" data-scroll-target="#parte-vi-avaliação-final-da-generalização-40-pontos"><span class="header-section-number">9</span> Parte VI — Avaliação final da generalização [4,0 pontos]</a>
+  <ul class="collapse">
+  <li><a href="#questão-6" id="toc-questão-6" class="nav-link" data-scroll-target="#questão-6"><span class="header-section-number">9.1</span> Questão 6</a></li>
+  </ul></li>
+  <li><a href="#o-que-deverá-ser-entregue" id="toc-o-que-deverá-ser-entregue" class="nav-link" data-scroll-target="#o-que-deverá-ser-entregue"><span class="header-section-number">10</span> O que deverá ser entregue</a></li>
+  <li><a href="#critérios-de-avaliação" id="toc-critérios-de-avaliação" class="nav-link" data-scroll-target="#critérios-de-avaliação"><span class="header-section-number">11</span> Critérios de avaliação</a></li>
+  <li><a href="#pergunta-central" id="toc-pergunta-central" class="nav-link" data-scroll-target="#pergunta-central"><span class="header-section-number">12</span> Pergunta central</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/programacao/semana-6.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/atividades/atividade_2_metodos_locais_kernels.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -330,7 +384,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Semana 06</h1>
+<h1 class="title">A2 — Métodos Locais e Kernels</h1>
+<p class="subtitle lead">Atividade Avaliativa 2</p>
 </div>
 
 
@@ -347,18 +402,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="slides" class="level2">
-<h2 class="anchored" data-anchor-id="slides">Slides</h2>
-<p><i class="fa-solid fa-file-powerpoint fa-lg" aria-label="file-powerpoint"></i> <a href="..\aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/title-slide" aria-label="KNN, Kernel e Regressão Local" title="KNN, Kernel e Regressão Local">Métodos Locais: KNN, Kernel e Regressão Local</a></p>
-<p><i class="fa-solid fa-file-powerpoint fa-lg" aria-label="file-powerpoint"></i> <a href="..\aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#/title-slide" aria-label="Kernels, RKHS, SVR e SVM" title="Kernels, RKHS, SVR e SVM">Kernels, RKHS, SVR e SVM</a></p>
-</section>
-<section id="material-complementar" class="level2">
-<h2 class="anchored" data-anchor-id="material-complementar">Material Complementar</h2>
-<p><i class="fa-solid fa-folder fa-lg" aria-label="folder"></i> <a href="..\material_complementar/material_complementar_a2_metodos_locais.html" aria-label="Material Complementar A2" title="Material Complementar A2">Métodos Locais e Kernels</a></p>
-</section>
-<section id="atividade-avaliativa---a2" class="level2">
-<h2 class="anchored" data-anchor-id="atividade-avaliativa---a2">Atividade Avaliativa - A2</h2>
-<p><i class="fa-solid fa-list-check fa-lg" aria-label="list-check"></i> <a href="..\atividades/atividade_2_metodos_locais_kernels.html" aria-label="Atividade Avaliativa - A2" title="Atividade Avaliativa - A2">A2 — Métodos Locais e Kernels</a></p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -372,9 +415,484 @@ Informações da atividade
 <p><strong>Valor:</strong> 20 pontos<br>
 <strong>Liberação:</strong> 30/09/2026<br>
 <strong>Entrega:</strong> 11/10/2026</p>
-<p>Entrega via <a href="https://moodlepresencial.ufop.br/login/index.php">Moodle</a></p>
+<p>A atividade deverá ser entregue na forma de um <strong>relatório computacional reprodutível</strong>, contendo código, resultados, gráficos, tabelas e, principalmente, <strong>interpretação estatística</strong>.</p>
 </div>
 </div>
+<section id="objetivo" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Objetivo</h1>
+<p>Nesta atividade, você investigará empiricamente como métodos não paramétricos constroem previsões a partir da ideia de <strong>localidade</strong> e como diferentes hiperparâmetros controlam a <strong>flexibilidade</strong>, a <strong>suavização</strong> e a <strong>capacidade de generalização</strong> dos modelos.</p>
+<p>Serão estudados:</p>
+<ul>
+<li>regressão KNN;</li>
+<li>estimador de Nadaraya–Watson;</li>
+<li>regressão polinomial local;</li>
+<li>Kernel Ridge Regression e sua conexão com RKHS.</li>
+</ul>
+<p>A atividade procura estabelecer a seguinte progressão:</p>
+<p><span class="math display">\[
+\text{vizinhança}
+\longrightarrow
+\text{pesos locais}
+\longrightarrow
+\text{suavização}
+\longrightarrow
+\text{regularização}
+\longrightarrow
+\text{generalização}
+\]</span></p>
+<p>Ao final, você deverá responder à seguinte questão:</p>
+<blockquote class="blockquote">
+<p><strong>Como a escolha do mecanismo de localidade e de seus hiperparâmetros afeta o compromisso entre flexibilidade, viés, variância e capacidade de generalização?</strong></p>
+</blockquote>
+</section>
+<section id="dados" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Dados</h1>
+<p><a href="../dados/dados_a2.csv" class="btn btn-primary" download="dados_a2.csv">Baixar base de dados da A2</a></p>
+<p>Utilize o arquivo <a href="../dados/dados_a2.csv"><code>dados_a2.csv</code></a>, disponibilizado juntamente com esta atividade.</p>
+<p>A base contém uma variável resposta quantitativa <code>y</code> e quatro variáveis preditoras: <code>x1</code>, <code>x2</code>, <code>x3</code> e <code>x4</code>.</p>
+<p>As variáveis podem apresentar diferentes graus de informação preditiva, e a relação entre os preditores e a resposta não precisa ser adequadamente representada por uma única função linear global.</p>
+<p>Suas conclusões deverão ser baseadas nos dados e nos procedimentos estatísticos utilizados.</p>
+</section>
+<section id="regras-gerais" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Regras gerais</h1>
+<ol type="1">
+<li>Fixe uma semente aleatória utilizando <code>set.seed()</code> para garantir a reprodutibilidade</li>
+<li>Separe inicialmente os dados em <strong>treinamento (80%)</strong> e <strong>teste (20%)</strong></li>
+<li>O conjunto de teste deverá permanecer isolado até a última parte da atividade</li>
+<li>Todas as decisões de modelagem deverão ser realizadas utilizando apenas o conjunto de treinamento</li>
+<li>Para seleção de hiperparâmetros, utilize <strong>validação cruzada com 10 folds</strong></li>
+<li>Utilize o <strong>RMSE</strong> como medida principal de erro preditivo</li>
+<li>Em métodos baseados em distância com mais de uma covariável, padronize os preditores utilizando <strong>apenas informações do conjunto de treinamento</strong></li>
+<li>Utilize os <strong>mesmos folds</strong> sempre que a comparação entre procedimentos exigir condições equivalentes</li>
+<li>Justifique as decisões tomadas. A simples apresentação do código ou de resultados numéricos não será suficiente</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Regra fundamental
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>O conjunto de teste <strong>não poderá ser utilizado</strong> para escolher <span class="math inline">\(k\)</span>, <span class="math inline">\(h\)</span>, <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\lambda\)</span>, selecionar covariáveis ou decidir qual configuração de um modelo será utilizada.</p>
+<p>O teste será aberto <strong>uma única vez</strong>, ao final da análise, para avaliar a capacidade de generalização dos modelos já definidos.</p>
+</div>
+</div>
+</section>
+<section id="parte-i-estratégia-de-avaliação-e-compreensão-dos-dados-20-pontos" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Parte I — Estratégia de avaliação e compreensão dos dados [2,0 pontos]</h1>
+<section id="questão-1" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="questão-1"><span class="header-section-number">4.1</span> Questão 1</h2>
+<p>Realize a separação dos dados em treinamento e teste.</p>
+<ol type="a">
+<li><p>Informe o número de observações em cada conjunto e descreva o procedimento utilizado.</p></li>
+<li><p>Utilizando <strong>apenas o conjunto de treinamento</strong>, apresente:</p></li>
+</ol>
+<ul>
+<li>estatísticas descritivas;</li>
+<li>investigação de valores ausentes;</li>
+<li>gráficos de <code>y</code> em função de <code>x1</code>, <code>x2</code>, <code>x3</code> e <code>x4</code>.</li>
+</ul>
+<ol start="3" type="a">
+<li>Com base na análise exploratória, discuta:</li>
+</ol>
+<ul>
+<li>há indícios de relações não lineares?</li>
+<li>todas as covariáveis parecem igualmente informativas?</li>
+<li>por que uma regressão linear global pode ter dificuldade para representar determinadas estruturas observadas?</li>
+</ul>
+<ol start="4" type="a">
+<li><p>Explique por que o conjunto de teste deve permanecer isolado durante a construção dos modelos.</p></li>
+<li><p>Explique a diferença entre <strong>erro de treinamento</strong>, <strong>erro estimado por validação cruzada</strong> e <strong>erro de teste</strong>.</p></li>
+</ol>
+</section>
+</section>
+<section id="parte-ii-regressão-knn-40-pontos" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Parte II — Regressão KNN [4,0 pontos]</h1>
+<p>Considere inicialmente apenas a covariável <code>x1</code>.</p>
+<p>Para um ponto <span class="math inline">\(x_0\)</span>, a regressão KNN pode ser escrita como</p>
+<p><span class="math display">\[
+\widehat g(x_0)
+=
+\frac{1}{k}
+\sum_{i\in N_k(x_0)}Y_i
+\]</span></p>
+<p>em que <span class="math inline">\(N_k(x_0)\)</span> representa o conjunto dos <span class="math inline">\(k\)</span> vizinhos mais próximos de <span class="math inline">\(x_0\)</span>.</p>
+<section id="questão-2" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="questão-2"><span class="header-section-number">5.1</span> Questão 2</h2>
+<ol type="a">
+<li>Mostre que a previsão KNN é equivalente à solução do problema de mínimos quadrados local</li>
+</ol>
+<p><span class="math display">\[
+\widehat\beta_0(x_0)
+=
+\arg\min_{\beta_0}
+\sum_{i\in N_k(x_0)}
+(Y_i-\beta_0)^2
+\]</span></p>
+<p>e explique em que sentido o KNN pode ser interpretado como uma <strong>regressão local de grau zero</strong>.</p>
+<ol start="2" type="a">
+<li>Considere uma grade suficientemente ampla de valores de <span class="math inline">\(k\)</span>. Utilizando os 10 folds do conjunto de treinamento, obtenha o RMSE médio de validação para cada valor e selecione</li>
+</ol>
+<p><span class="math display">\[
+k^\ast
+=
+\arg\min_k
+\widehat R_{CV}(k)
+\]</span></p>
+<p>Apresente a grade utilizada, o gráfico do RMSE de validação em função de <span class="math inline">\(k\)</span> e identifique visualmente <span class="math inline">\(k^\ast\)</span>.</p>
+<ol start="3" type="a">
+<li>Compare graficamente três ajustes:</li>
+</ol>
+<ul>
+<li>um valor pequeno de <span class="math inline">\(k\)</span>;</li>
+<li><span class="math inline">\(k=k^\ast\)</span>;</li>
+<li>um valor grande de <span class="math inline">\(k\)</span>.</li>
+</ul>
+<p>Explique o comportamento observado em termos de <strong>localidade, flexibilidade, viés e variância</strong>.</p>
+<ol start="4" type="a">
+<li>Repita o procedimento de seleção de <span class="math inline">\(k\)</span>, ainda utilizando <strong>somente validação cruzada no conjunto de treinamento</strong>, para:</li>
+</ol>
+<ol type="1">
+<li><code>x1</code>;</li>
+<li><code>x1 + x2</code>;</li>
+<li><code>x1 + x2 + x3 + x4</code>.</li>
+</ol>
+<p>Compare os RMSEs médios de validação e os valores de <span class="math inline">\(k\)</span> selecionados. Discuta por que adicionar covariáveis pode alterar (e eventualmente piorar) a qualidade das vizinhanças em um método baseado em distância.</p>
+<ol start="5" type="a">
+<li>Explique por que a padronização dos preditores é importante quando o KNN utiliza mais de uma covariável.</li>
+</ol>
+</section>
+</section>
+<section id="parte-iii-nadarayawatson-40-pontos" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Parte III — Nadaraya–Watson [4,0 pontos]</h1>
+<p>Considere novamente, inicialmente, apenas <code>x1</code>.</p>
+<p>O estimador de Nadaraya–Watson é</p>
+<p><span class="math display">\[
+\widehat g_h(x_0)
+=
+\frac{
+\sum_{i=1}^{n}
+K\left(\frac{x_i-x_0}{h}\right)y_i
+}{
+\sum_{i=1}^{n}
+K\left(\frac{x_i-x_0}{h}\right)
+}
+\]</span></p>
+<p>em que <span class="math inline">\(K(\cdot)\)</span> é uma função kernel e <span class="math inline">\(h&gt;0\)</span> é a largura de banda.</p>
+<section id="questão-3" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="questão-3"><span class="header-section-number">6.1</span> Questão 3</h2>
+<ol type="a">
+<li><p>Compare os pesos atribuídos às observações pelo KNN e pelo estimador de Nadaraya–Watson. Explique como o uso de um kernel transforma uma vizinhança rígida em uma <strong>vizinhança ponderada</strong>.</p></li>
+<li><p>Implemente o estimador utilizando kernel Gaussiano. Considere uma grade suficientemente ampla de valores de <span class="math inline">\(h\)</span> e selecione, por validação cruzada,</p></li>
+</ol>
+<p><span class="math display">\[
+h^\ast
+=
+\arg\min_h
+\widehat R_{CV}(h)
+\]</span></p>
+<p>Apresente a grade utilizada, o gráfico do RMSE médio de validação em função de <span class="math inline">\(h\)</span> e o valor selecionado.</p>
+<ol start="3" type="a">
+<li>Construa três ajustes utilizando:</li>
+</ol>
+<ul>
+<li>um valor de <span class="math inline">\(h\)</span> menor que <span class="math inline">\(h^\ast\)</span>;</li>
+<li><span class="math inline">\(h=h^\ast\)</span>;</li>
+<li>um valor de <span class="math inline">\(h\)</span> substancialmente maior que <span class="math inline">\(h^\ast\)</span>.</li>
+</ul>
+<p>Explique o comportamento observado em termos de <strong>suavização, flexibilidade, viés e variância</strong>.</p>
+<ol start="4" type="a">
+<li>Compare o kernel Gaussiano com o kernel Epanechnikov. Para que a comparação preditiva seja adequada, selecione a largura de banda de cada procedimento utilizando validação cruzada.</li>
+</ol>
+<p>Apresente os resultados e discuta:</p>
+<blockquote class="blockquote">
+<p><strong>Nesta aplicação, a escolha da forma do kernel parece exercer maior ou menor influência que a escolha da largura de banda?</strong></p>
+</blockquote>
+<ol start="5" type="a">
+<li>Compare o papel de <span class="math inline">\(k\)</span> no KNN com o papel de <span class="math inline">\(h\)</span> no Nadaraya–Watson. Explique por que</li>
+</ol>
+<p><span class="math display">\[
+k\downarrow
+\Longrightarrow
+\text{flexibilidade}\uparrow
+\]</span></p>
+<p>enquanto</p>
+<p><span class="math display">\[
+h\downarrow
+\Longrightarrow
+\text{flexibilidade}\uparrow
+\]</span></p>
+</section>
+</section>
+<section id="parte-iv-regressão-polinomial-local-30-pontos" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Parte IV — Regressão polinomial local [3,0 pontos]</h1>
+<p>Em vez de aproximar a função por uma constante na vizinhança de <span class="math inline">\(x_0\)</span>, podemos utilizar uma aproximação linear local:</p>
+<p><span class="math display">\[
+Y_i
+\approx
+\beta_0(x_0)
++
+\beta_1(x_0)(X_i-x_0)
+\]</span></p>
+<section id="questão-4" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="questão-4"><span class="header-section-number">7.1</span> Questão 4</h2>
+<ol type="a">
+<li><p>Utilizando <code>x1</code>, ajuste uma regressão local de <strong>grau 0</strong> e uma regressão local de <strong>grau 1</strong>. Selecione o parâmetro de suavização de cada modelo por validação cruzada.</p></li>
+<li><p>Compare graficamente os dois ajustes, dando atenção especial às regiões próximas às fronteiras do domínio de <code>x1</code>.</p></li>
+<li><p>Explique por que a regressão linear local pode reduzir o <strong>viés de fronteira</strong> em relação ao ajuste local constante.</p></li>
+<li><p>Compare KNN, Nadaraya–Watson e regressão polinomial local quanto a:</p></li>
+</ol>
+<ul>
+<li>definição da vizinhança;</li>
+<li>forma dos pesos;</li>
+<li>modelo ajustado localmente;</li>
+<li>hiperparâmetro de suavização.</li>
+</ul>
+<p>Apresente uma síntese organizada das principais semelhanças e diferenças.</p>
+</section>
+</section>
+<section id="parte-v-kernel-ridge-e-rkhs-30-pontos" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Parte V — Kernel Ridge e RKHS [3,0 pontos]</h1>
+<p>Nesta parte, utilize <code>x1</code> e <code>x2</code>.</p>
+<p>Considere Kernel Ridge Regression com kernel Gaussiano/RBF:</p>
+<p><span class="math display">\[
+K(\mathbf x,\mathbf x')
+=
+\exp\left(
+-\gamma\|\mathbf x-\mathbf x'\|^2
+\right)
+\]</span></p>
+<p>e o problema de regularização</p>
+<p><span class="math display">\[
+\widehat f
+=
+\arg\min_{f\in\mathcal H}
+\left\{
+\sum_{i=1}^{n}
+(y_i-f(\mathbf x_i))^2
++
+\lambda\|f\|_{\mathcal H}^{2}
+\right\}
+\]</span></p>
+<section id="questão-5" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="questão-5"><span class="header-section-number">8.1</span> Questão 5</h2>
+<ol type="a">
+<li>Explique o papel de cada termo da função objetivo. Em particular, interprete:</li>
+</ol>
+<p><span class="math display">\[
+\sum_{i=1}^{n}
+(y_i-f(\mathbf x_i))^2
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\lambda\|f\|_{\mathcal H}^{2}
+\]</span></p>
+<ol start="2" type="a">
+<li>Utilizando validação cruzada no conjunto de treinamento, investigue uma grade de valores de <span class="math inline">\(\gamma\)</span> e <span class="math inline">\(\lambda\)</span> e selecione conjuntamente</li>
+</ol>
+<p><span class="math display">\[
+(\gamma^\ast,\lambda^\ast)
+=
+\arg\min_{\gamma,\lambda}
+\widehat R_{CV}(\gamma,\lambda)
+\]</span></p>
+<p>Apresente a grade utilizada e um gráfico que permita visualizar o RMSE de validação para as diferentes combinações.</p>
+<ol start="3" type="a">
+<li><p>Explique os papéis distintos de <span class="math inline">\(\gamma\)</span> e <span class="math inline">\(\lambda\)</span>. O que cada hiperparâmetro controla?</p></li>
+<li><p>Explique o que tende a ocorrer quando <span class="math inline">\(\lambda\rightarrow 0\)</span> e quando <span class="math inline">\(\lambda\)</span> aumenta.</p></li>
+<li><p>Estabeleça uma conexão conceitual entre o Ridge estudado na Atividade 1 e o Kernel Ridge:</p></li>
+</ol>
+<p><span class="math display">\[
+\text{Ridge}
+\longrightarrow
+\text{penalização dos coeficientes}
+\]</span></p>
+<p><span class="math display">\[
+\text{Kernel Ridge}
+\longrightarrow
+\text{penalização da complexidade de }f
+\]</span></p>
+</section>
+</section>
+<section id="parte-vi-avaliação-final-da-generalização-40-pontos" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Parte VI — Avaliação final da generalização [4,0 pontos]</h1>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Agora o conjunto de teste pode ser utilizado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A partir deste ponto, todos os métodos, conjuntos de covariáveis e hiperparâmetros já devem estar completamente definidos.</p>
+<p>Não altere <span class="math inline">\(k\)</span>, <span class="math inline">\(h\)</span>, <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\lambda\)</span> ou qualquer outra decisão de modelagem com base nos resultados obtidos no teste.</p>
+</div>
+</div>
+<section id="questão-6" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="questão-6"><span class="header-section-number">9.1</span> Questão 6</h2>
+<p>Avalie no <strong>mesmo conjunto de teste</strong> os seguintes procedimentos, utilizando exclusivamente as configurações previamente selecionadas por validação cruzada:</p>
+<ol type="1">
+<li>melhor configuração de KNN definida na Parte II;</li>
+<li>Nadaraya–Watson com a configuração selecionada na Parte III;</li>
+<li>regressão polinomial local com a configuração selecionada na Parte IV;</li>
+<li>Kernel Ridge com <span class="math inline">\((\gamma^\ast,\lambda^\ast)\)</span>.</li>
+</ol>
+<ol type="a">
+<li><p>Para cada método, calcule <strong>RMSE</strong> e <strong>MAE</strong> no conjunto de teste.</p></li>
+<li><p>Construa uma tabela final no formato:</p></li>
+</ol>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modelo</th>
+<th style="text-align: left;">Hiperparâmetro(s) selecionado(s)</th>
+<th style="text-align: right;">RMSE validação</th>
+<th style="text-align: right;">RMSE teste</th>
+<th style="text-align: right;">MAE teste</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">KNN</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nadaraya–Watson</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Regressão polinomial local</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kernel Ridge</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<ol start="3" type="a">
+<li>Para cada método, construa:</li>
+</ol>
+<ul>
+<li>gráfico observado versus predito;</li>
+<li>gráfico de resíduos.</li>
+</ul>
+<ol start="4" type="a">
+<li><p>O método com menor RMSE médio de validação foi também aquele com menor RMSE de teste? Discuta os resultados sem utilizar o teste para redefinir os modelos.</p></li>
+<li><p>Existe um método claramente superior em todos os critérios? Fundamente sua resposta utilizando as métricas e os diagnósticos gráficos.</p></li>
+<li><p>Analise o comportamento dos erros ao longo do domínio de <code>x1</code>. Existem regiões em que algum dos métodos apresenta maior dificuldade?</p></li>
+<li><p>Imagine que um dos procedimentos será utilizado para predizer <code>y</code> para novas observações.</p></li>
+</ol>
+<p><strong>Escolha um único método para utilização futura e defenda sua decisão.</strong></p>
+<p>Sua justificativa não deverá se limitar a identificar o menor RMSE. Considere conjuntamente:</p>
+<ul>
+<li>capacidade de generalização;</li>
+<li>estabilidade;</li>
+<li>flexibilidade;</li>
+<li>comportamento dos resíduos;</li>
+<li>sensibilidade aos hiperparâmetros;</li>
+<li>complexidade do procedimento;</li>
+<li>interpretabilidade.</li>
+</ul>
+</section>
+</section>
+<section id="o-que-deverá-ser-entregue" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> O que deverá ser entregue</h1>
+<p>Entregue <strong>um único relatório reprodutível</strong>, contendo:</p>
+<ul>
+<li>nome e número de matrícula;</li>
+<li>código utilizado;</li>
+<li>resultados numéricos;</li>
+<li>gráficos solicitados;</li>
+<li>tabela comparativa final;</li>
+<li>interpretação estatística de cada resultado;</li>
+<li>resposta à questão final de decisão.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cuidado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Relatórios contendo apenas código, <em>outputs</em> ou gráficos sem interpretação estatística terão pontuação reduzida.</p>
+</div>
+</div>
+</section>
+<section id="critérios-de-avaliação" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Critérios de avaliação</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Componente</th>
+<th style="text-align: right;">Pontuação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Estratégia de avaliação e compreensão dos dados</td>
+<td style="text-align: right;">2,0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KNN e seleção de <span class="math inline">\(k\)</span></td>
+<td style="text-align: right;">4,0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nadaraya–Watson e seleção de <span class="math inline">\(h\)</span></td>
+<td style="text-align: right;">4,0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Regressão polinomial local</td>
+<td style="text-align: right;">3,0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kernel Ridge / RKHS</td>
+<td style="text-align: right;">3,0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Avaliação final e argumentação estatística</td>
+<td style="text-align: right;">4,0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: right;"><strong>20,0</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pergunta-central" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Pergunta central</h1>
+<p>Ao concluir a atividade, você deverá ser capaz de responder:</p>
+<blockquote class="blockquote">
+<p><strong>Como diferentes mecanismos de localidade, suavização e regularização controlam a complexidade dos modelos e afetam sua capacidade de generalização?</strong></p>
+</blockquote>
 
 
 </section>
@@ -800,7 +1318,7 @@ Informações da atividade
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/programacao/semana-6.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/atividades/atividade_2_metodos_locais_kernels.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

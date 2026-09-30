@@ -1,0 +1,419 @@
+---
+title: "A2 — Métodos Locais e Kernels"
+subtitle: "Atividade Avaliativa 2"
+page-layout: article
+toc: true
+toc-depth: 3
+number-sections: true
+comments: false
+---
+
+::: {.callout-important}
+## Informações da atividade
+
+**Valor:** 20 pontos  
+**Liberação:** 30/09/2026  
+**Entrega:** 11/10/2026  
+
+A atividade deverá ser entregue na forma de um **relatório computacional reprodutível**, contendo código, resultados, gráficos, tabelas e, principalmente, **interpretação estatística**.
+:::
+
+# Objetivo
+
+Nesta atividade, você investigará empiricamente como métodos não paramétricos constroem previsões a partir da ideia de **localidade** e como diferentes hiperparâmetros controlam a **flexibilidade**, a **suavização** e a **capacidade de generalização** dos modelos.
+
+Serão estudados:
+
+- regressão KNN;
+- estimador de Nadaraya--Watson;
+- regressão polinomial local;
+- Kernel Ridge Regression e sua conexão com RKHS.
+
+A atividade procura estabelecer a seguinte progressão:
+
+$$
+\text{vizinhança}
+\longrightarrow
+\text{pesos locais}
+\longrightarrow
+\text{suavização}
+\longrightarrow
+\text{regularização}
+\longrightarrow
+\text{generalização}
+$$
+
+Ao final, você deverá responder à seguinte questão:
+
+> **Como a escolha do mecanismo de localidade e de seus hiperparâmetros afeta o compromisso entre flexibilidade, viés, variância e capacidade de generalização?**
+
+# Dados
+
+[Baixar base de dados da A2](../dados/dados_a2.csv){.btn .btn-primary download="dados_a2.csv"}
+
+Utilize o arquivo [`dados_a2.csv`](../dados/dados_a2.csv), disponibilizado juntamente com esta atividade.
+
+A base contém uma variável resposta quantitativa `y` e quatro variáveis preditoras: `x1`, `x2`, `x3` e `x4`.
+
+As variáveis podem apresentar diferentes graus de informação preditiva, e a relação entre os preditores e a resposta não precisa ser adequadamente representada por uma única função linear global.
+
+Suas conclusões deverão ser baseadas nos dados e nos procedimentos estatísticos utilizados.
+
+# Regras gerais
+
+1. Fixe uma semente aleatória utilizando `set.seed()` para garantir a reprodutibilidade
+2. Separe inicialmente os dados em **treinamento (80%)** e **teste (20%)**
+3. O conjunto de teste deverá permanecer isolado até a última parte da atividade
+4. Todas as decisões de modelagem deverão ser realizadas utilizando apenas o conjunto de treinamento
+5. Para seleção de hiperparâmetros, utilize **validação cruzada com 10 folds**
+6. Utilize o **RMSE** como medida principal de erro preditivo
+7. Em métodos baseados em distância com mais de uma covariável, padronize os preditores utilizando **apenas informações do conjunto de treinamento**
+8. Utilize os **mesmos folds** sempre que a comparação entre procedimentos exigir condições equivalentes
+9. Justifique as decisões tomadas. A simples apresentação do código ou de resultados numéricos não será suficiente
+
+::: {.callout-warning}
+## Regra fundamental
+
+O conjunto de teste **não poderá ser utilizado** para escolher $k$, $h$, $\gamma$, $\lambda$, selecionar covariáveis ou decidir qual configuração de um modelo será utilizada.
+
+O teste será aberto **uma única vez**, ao final da análise, para avaliar a capacidade de generalização dos modelos já definidos.
+:::
+
+# Parte I — Estratégia de avaliação e compreensão dos dados [2,0 pontos]
+
+## Questão 1
+
+Realize a separação dos dados em treinamento e teste.
+
+a) Informe o número de observações em cada conjunto e descreva o procedimento utilizado.
+
+b) Utilizando **apenas o conjunto de treinamento**, apresente:
+
+- estatísticas descritivas;
+- investigação de valores ausentes;
+- gráficos de `y` em função de `x1`, `x2`, `x3` e `x4`.
+
+c) Com base na análise exploratória, discuta:
+
+- há indícios de relações não lineares?
+- todas as covariáveis parecem igualmente informativas?
+- por que uma regressão linear global pode ter dificuldade para representar determinadas estruturas observadas?
+
+d) Explique por que o conjunto de teste deve permanecer isolado durante a construção dos modelos.
+
+e) Explique a diferença entre **erro de treinamento**, **erro estimado por validação cruzada** e **erro de teste**.
+
+# Parte II — Regressão KNN [4,0 pontos]
+
+Considere inicialmente apenas a covariável `x1`.
+
+Para um ponto $x_0$, a regressão KNN pode ser escrita como
+
+$$
+\widehat g(x_0)
+=
+\frac{1}{k}
+\sum_{i\in N_k(x_0)}Y_i
+$$
+
+em que $N_k(x_0)$ representa o conjunto dos $k$ vizinhos mais próximos de $x_0$.
+
+## Questão 2
+
+a) Mostre que a previsão KNN é equivalente à solução do problema de mínimos quadrados local
+
+$$
+\widehat\beta_0(x_0)
+=
+\arg\min_{\beta_0}
+\sum_{i\in N_k(x_0)}
+(Y_i-\beta_0)^2
+$$
+
+e explique em que sentido o KNN pode ser interpretado como uma **regressão local de grau zero**.
+
+b) Considere uma grade suficientemente ampla de valores de $k$. Utilizando os 10 folds do conjunto de treinamento, obtenha o RMSE médio de validação para cada valor e selecione
+
+$$
+k^\ast
+=
+\arg\min_k
+\widehat R_{CV}(k)
+$$
+
+Apresente a grade utilizada, o gráfico do RMSE de validação em função de $k$ e identifique visualmente $k^\ast$.
+
+c) Compare graficamente três ajustes:
+
+- um valor pequeno de $k$;
+- $k=k^\ast$;
+- um valor grande de $k$.
+
+Explique o comportamento observado em termos de **localidade, flexibilidade, viés e variância**.
+
+d) Repita o procedimento de seleção de $k$, ainda utilizando **somente validação cruzada no conjunto de treinamento**, para:
+
+1. `x1`;
+2. `x1 + x2`;
+3. `x1 + x2 + x3 + x4`.
+
+Compare os RMSEs médios de validação e os valores de $k$ selecionados. Discuta por que adicionar covariáveis pode alterar (e eventualmente piorar) a qualidade das vizinhanças em um método baseado em distância.
+
+e) Explique por que a padronização dos preditores é importante quando o KNN utiliza mais de uma covariável.
+
+# Parte III — Nadaraya--Watson [4,0 pontos]
+
+Considere novamente, inicialmente, apenas `x1`.
+
+O estimador de Nadaraya--Watson é
+
+$$
+\widehat g_h(x_0)
+=
+\frac{
+\sum_{i=1}^{n}
+K\left(\frac{x_i-x_0}{h}\right)y_i
+}{
+\sum_{i=1}^{n}
+K\left(\frac{x_i-x_0}{h}\right)
+}
+$$
+
+em que $K(\cdot)$ é uma função kernel e $h>0$ é a largura de banda.
+
+## Questão 3
+
+a) Compare os pesos atribuídos às observações pelo KNN e pelo estimador de Nadaraya--Watson. Explique como o uso de um kernel transforma uma vizinhança rígida em uma **vizinhança ponderada**.
+
+b) Implemente o estimador utilizando kernel Gaussiano. Considere uma grade suficientemente ampla de valores de $h$ e selecione, por validação cruzada,
+
+$$
+h^\ast
+=
+\arg\min_h
+\widehat R_{CV}(h)
+$$
+
+Apresente a grade utilizada, o gráfico do RMSE médio de validação em função de $h$ e o valor selecionado.
+
+c) Construa três ajustes utilizando:
+
+- um valor de $h$ menor que $h^\ast$;
+- $h=h^\ast$;
+- um valor de $h$ substancialmente maior que $h^\ast$.
+
+Explique o comportamento observado em termos de **suavização, flexibilidade, viés e variância**.
+
+d) Compare o kernel Gaussiano com o kernel Epanechnikov. Para que a comparação preditiva seja adequada, selecione a largura de banda de cada procedimento utilizando validação cruzada.
+
+Apresente os resultados e discuta:
+
+> **Nesta aplicação, a escolha da forma do kernel parece exercer maior ou menor influência que a escolha da largura de banda?**
+
+e) Compare o papel de $k$ no KNN com o papel de $h$ no Nadaraya--Watson. Explique por que
+
+$$
+k\downarrow
+\Longrightarrow
+\text{flexibilidade}\uparrow
+$$
+
+enquanto
+
+$$
+h\downarrow
+\Longrightarrow
+\text{flexibilidade}\uparrow
+$$
+
+# Parte IV — Regressão polinomial local [3,0 pontos]
+
+Em vez de aproximar a função por uma constante na vizinhança de $x_0$, podemos utilizar uma aproximação linear local:
+
+$$
+Y_i
+\approx
+\beta_0(x_0)
++
+\beta_1(x_0)(X_i-x_0)
+$$
+
+## Questão 4
+
+a) Utilizando `x1`, ajuste uma regressão local de **grau 0** e uma regressão local de **grau 1**. Selecione o parâmetro de suavização de cada modelo por validação cruzada.
+
+b) Compare graficamente os dois ajustes, dando atenção especial às regiões próximas às fronteiras do domínio de `x1`.
+
+c) Explique por que a regressão linear local pode reduzir o **viés de fronteira** em relação ao ajuste local constante.
+
+d) Compare KNN, Nadaraya--Watson e regressão polinomial local quanto a:
+
+- definição da vizinhança;
+- forma dos pesos;
+- modelo ajustado localmente;
+- hiperparâmetro de suavização.
+
+Apresente uma síntese organizada das principais semelhanças e diferenças.
+
+# Parte V — Kernel Ridge e RKHS [3,0 pontos]
+
+Nesta parte, utilize `x1` e `x2`.
+
+Considere Kernel Ridge Regression com kernel Gaussiano/RBF:
+
+$$
+K(\mathbf x,\mathbf x')
+=
+\exp\left(
+-\gamma\|\mathbf x-\mathbf x'\|^2
+\right)
+$$
+
+e o problema de regularização
+
+$$
+\widehat f
+=
+\arg\min_{f\in\mathcal H}
+\left\{
+\sum_{i=1}^{n}
+(y_i-f(\mathbf x_i))^2
++
+\lambda\|f\|_{\mathcal H}^{2}
+\right\}
+$$
+
+## Questão 5
+
+a) Explique o papel de cada termo da função objetivo. Em particular, interprete:
+
+$$
+\sum_{i=1}^{n}
+(y_i-f(\mathbf x_i))^2
+$$
+
+e
+
+$$
+\lambda\|f\|_{\mathcal H}^{2}
+$$
+
+b) Utilizando validação cruzada no conjunto de treinamento, investigue uma grade de valores de $\gamma$ e $\lambda$ e selecione conjuntamente
+
+$$
+(\gamma^\ast,\lambda^\ast)
+=
+\arg\min_{\gamma,\lambda}
+\widehat R_{CV}(\gamma,\lambda)
+$$
+
+Apresente a grade utilizada e um gráfico que permita visualizar o RMSE de validação para as diferentes combinações.
+
+c) Explique os papéis distintos de $\gamma$ e $\lambda$. O que cada hiperparâmetro controla?
+
+d) Explique o que tende a ocorrer quando $\lambda\rightarrow 0$ e quando $\lambda$ aumenta.
+
+e) Estabeleça uma conexão conceitual entre o Ridge estudado na Atividade 1 e o Kernel Ridge:
+
+$$
+\text{Ridge}
+\longrightarrow
+\text{penalização dos coeficientes}
+$$
+
+$$
+\text{Kernel Ridge}
+\longrightarrow
+\text{penalização da complexidade de }f
+$$
+
+# Parte VI — Avaliação final da generalização [4,0 pontos]
+
+::: {.callout-important}
+## Agora o conjunto de teste pode ser utilizado
+
+A partir deste ponto, todos os métodos, conjuntos de covariáveis e hiperparâmetros já devem estar completamente definidos.
+
+Não altere $k$, $h$, $\gamma$, $\lambda$ ou qualquer outra decisão de modelagem com base nos resultados obtidos no teste.
+:::
+
+## Questão 6
+
+Avalie no **mesmo conjunto de teste** os seguintes procedimentos, utilizando exclusivamente as configurações previamente selecionadas por validação cruzada:
+
+1. melhor configuração de KNN definida na Parte II;
+2. Nadaraya--Watson com a configuração selecionada na Parte III;
+3. regressão polinomial local com a configuração selecionada na Parte IV;
+4. Kernel Ridge com $(\gamma^\ast,\lambda^\ast)$.
+
+a) Para cada método, calcule **RMSE** e **MAE** no conjunto de teste.
+
+b) Construa uma tabela final no formato:
+
+| Modelo | Hiperparâmetro(s) selecionado(s) | RMSE validação | RMSE teste | MAE teste |
+|:--|:--|--:|--:|--:|
+| KNN |  |  |  |  |
+| Nadaraya--Watson |  |  |  |  |
+| Regressão polinomial local |  |  |  |  |
+| Kernel Ridge |  |  |  |  |
+
+c) Para cada método, construa:
+
+- gráfico observado versus predito;
+- gráfico de resíduos.
+
+d) O método com menor RMSE médio de validação foi também aquele com menor RMSE de teste? Discuta os resultados sem utilizar o teste para redefinir os modelos.
+
+e) Existe um método claramente superior em todos os critérios? Fundamente sua resposta utilizando as métricas e os diagnósticos gráficos.
+
+f) Analise o comportamento dos erros ao longo do domínio de `x1`. Existem regiões em que algum dos métodos apresenta maior dificuldade?
+
+g) Imagine que um dos procedimentos será utilizado para predizer `y` para novas observações.
+
+**Escolha um único método para utilização futura e defenda sua decisão.**
+
+Sua justificativa não deverá se limitar a identificar o menor RMSE. Considere conjuntamente:
+
+- capacidade de generalização;
+- estabilidade;
+- flexibilidade;
+- comportamento dos resíduos;
+- sensibilidade aos hiperparâmetros;
+- complexidade do procedimento;
+- interpretabilidade.
+
+# O que deverá ser entregue
+
+Entregue **um único relatório reprodutível**, contendo:
+
+- nome e número de matrícula;
+- código utilizado;
+- resultados numéricos;
+- gráficos solicitados;
+- tabela comparativa final;
+- interpretação estatística de cada resultado;
+- resposta à questão final de decisão.
+
+::: {.callout-warning}
+## Cuidado
+
+Relatórios contendo apenas código, *outputs* ou gráficos sem interpretação estatística terão pontuação reduzida.
+:::
+
+# Critérios de avaliação
+
+| Componente | Pontuação |
+|:--|--:|
+| Estratégia de avaliação e compreensão dos dados | 2,0 |
+| KNN e seleção de $k$ | 4,0 |
+| Nadaraya--Watson e seleção de $h$ | 4,0 |
+| Regressão polinomial local | 3,0 |
+| Kernel Ridge / RKHS | 3,0 |
+| Avaliação final e argumentação estatística | 4,0 |
+| **Total** | **20,0** |
+
+# Pergunta central
+
+Ao concluir a atividade, você deverá ser capaz de responder:
+
+> **Como diferentes mecanismos de localidade, suavização e regularização controlam a complexidade dos modelos e afetam sua capacidade de generalização?**

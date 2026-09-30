@@ -49,4 +49,26 @@ Exemplo completo em R com separação treino/teste, validação cruzada, mínimo
 
 :::
 
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+
+### Métodos Locais e Kernels
+
+Aplicação prática em R com KNN para regressão, seleção de $k$ por validação cruzada, Nadaraya--Watson, escolha da largura de banda $h$, comparação entre kernels, regressão polinomial local e Kernel Ridge/RKHS.
+
+</div>
+
+<div>
+
+[Ver material](material_complementar/material_complementar_a2_metodos_locais.qmd){.btn .btn-est335-main .btn-sm}
+
+</div>
+
+:::
+
+
+
+
 :::

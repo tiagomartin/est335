@@ -2,12 +2,11 @@
 title: "Aulas"
 format:
   html:
-    theme: cosmo
     fontsize: 1.2em
     include-in-header:
       text: |
         <style>
-        /* Estilos visuais EST304 sem quebrar tipografia do Quarto */
+        /* Estilos visuais EST335 sem quebrar tipografia do Quarto */
         .aulas-list .list-group-item {
           border-left: 4px solid #003287;
           padding-top: 0.8rem;
@@ -19,26 +18,27 @@ format:
         .disciplina-badge {
           background-color: #003287;
         }
-        .btn-est304-main {
+        .btn-est335-main {
           background-color: #003287;
           border-color: #003287;
           color: #fff;
         }
-        .btn-est304-main:hover {
+        .btn-est335-main:hover {
           background-color: #789CEB;
           border-color: #789CEB;
           color: #fff;
         }
-        .btn-est304-outline {
+        .btn-est335-outline {
           color: #003287;
           border-color: #003287;
         }
-        .btn-est304-outline:hover {
+        .btn-est335-outline:hover {
           background-color: #003287;
           color: #fff;
         }
         </style>
 ---
+
 <!-- Esta página contém aulas que serão apresentadas ao longo do semestre. Você pode baixar as aulas em uma versão PDF. -->
 
 Esta página contém aulas que serão apresentadas ao longo do semestre. 
@@ -51,8 +51,8 @@ Esta página contém aulas que serão apresentadas ao longo do semestre.
 </span>
 
 <span>
-[Ver slides](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide){.btn .btn-est304-main .btn-sm}
-<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+[Ver slides](/aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide){.btn .btn-est335-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est335-outline .btn-sm} -->
 </span>
 :::
 
@@ -63,8 +63,8 @@ Esta página contém aulas que serão apresentadas ao longo do semestre.
 </span>
 
 <span>
-[Ver slides](/aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#/title-slide){.btn .btn-est304-main .btn-sm}
-<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+[Ver slides](/aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#/title-slide){.btn .btn-est335-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est335-outline .btn-sm} -->
 </span>
 :::
 
@@ -75,8 +75,8 @@ Esta página contém aulas que serão apresentadas ao longo do semestre.
 </span>
 
 <span>
-[Ver slides](/aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide){.btn .btn-est304-main .btn-sm}
-<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+[Ver slides](/aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide){.btn .btn-est335-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est335-outline .btn-sm} -->
 </span>
 :::
 
@@ -88,8 +88,8 @@ Esta página contém aulas que serão apresentadas ao longo do semestre.
 </span>
 
 <span>
-[Ver slides](/aulas/semanais/semana_04_selecao_regularizacao_v2.html#/title-slide){.btn .btn-est304-main .btn-sm}
-<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+[Ver slides](/aulas/semanais/semana_04_selecao_regularizacao_v2.html#/title-slide){.btn .btn-est335-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est335-outline .btn-sm} -->
 </span>
 :::
 
@@ -100,8 +100,8 @@ Métodos Locais: KNN, Kernel e Regressão Local
 </span>
 
 <span>
-[Ver slides](/aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/title-slide){.btn .btn-est304-main .btn-sm}
-<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+[Ver slides](/aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/title-slide){.btn .btn-est335-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est335-outline .btn-sm} -->
 </span>
 :::
 
@@ -113,8 +113,8 @@ Kernels, RKHS, SVR e SVM
 </span>
 
 <span>
-[Ver slides](/aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#/title-slide){.btn .btn-est304-main .btn-sm}
-<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est304-outline .btn-sm} -->
+[Ver slides](/aulas/semanais/semana_06_kernels_rkhs_svr_svm.html#/title-slide){.btn .btn-est335-main .btn-sm}
+<!-- [PDF](/aulas/regressao/intro/intro.pdf){.btn .btn-est335-outline .btn-sm} -->
 </span>
 :::
 

@@ -1057,7 +1057,7 @@
     "href": "material.html",
     "title": "Material Complementar",
     "section": "",
-    "text": "Nesta página serão disponibilizados materiais complementares com aplicações práticas dos conteúdos estudados na disciplina.\n\n\n\nGeneralização e Regularização\nExemplo completo em R com separação treino/teste, validação cruzada, mínimos quadrados, Ridge, Lasso, seleção de \\(\\lambda\\) e avaliação final.\n\n\nVer material",
+    "text": "Nesta página serão disponibilizados materiais complementares com aplicações práticas dos conteúdos estudados na disciplina.\n\n\n\nGeneralização e Regularização\nExemplo completo em R com separação treino/teste, validação cruzada, mínimos quadrados, Ridge, Lasso, seleção de \\(\\lambda\\) e avaliação final.\n\n\nVer material\n\n\n\n\nMétodos Locais e Kernels\nAplicação prática em R com KNN para regressão, seleção de \\(k\\) por validação cruzada, Nadaraya–Watson, escolha da largura de banda \\(h\\), comparação entre kernels, regressão polinomial local e Kernel Ridge/RKHS.\n\n\nVer material",
     "crumbs": [
       "Material Complementar"
     ]
@@ -6026,7 +6026,7 @@
     "href": "atividades.html",
     "title": "Atividades",
     "section": "",
-    "text": "Nesta página serão disponibilizadas as atividades avaliativas da disciplina.\n\n\n\n\nA1 — Generalização e Regularização\nValor: 20 pontos\nLiberação: 16/09/2026 · Entrega: 27/09/2026\nTreinamento, validação e teste; mínimos quadrados; regularização Ridge e Lasso; seleção de \\(\\lambda\\) por validação cruzada e avaliação da capacidade de generalização.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\nA2 — Métodos Locais e Kernels\nLiberação: 30/09/2026 · Entrega: 11/10/2026\nEm breve.\n\n\nA3 — Desafio Supervisionado\nLiberação: 21/10/2026 · Entrega: 22/11/2026\nEm breve.\n\n\nA4 — Estruturas e Padrões\nLiberação: 23/11/2026 · Entrega: 06/12/2026\nEm breve.\n\n\nA5 — Sistemas de Recomendação\nLiberação: 07/12/2026 · Entrega: 16/12/2026\nEm breve.",
+    "text": "Nesta página serão disponibilizadas as atividades avaliativas da disciplina.\n\n\n\n\nA1 — Generalização e Regularização\nValor: 20 pontos\nLiberação: 16/09/2026 · Entrega: 27/09/2026\nTreinamento, validação e teste; mínimos quadrados; regularização Ridge e Lasso; seleção de \\(\\lambda\\) por validação cruzada e avaliação da capacidade de generalização.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\n\n\nA2 — Métodos Locais e Kernels\nValor: 20 pontos\nLiberação: 30/09/2026 · Entrega: 11/10/2026\nKNN para regressão; seleção de \\(k\\) por validação cruzada; Nadaraya–Watson; seleção da largura de banda \\(h\\); comparação entre kernels; regressão polinomial local; Kernel Ridge e regularização em RKHS.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\nA3 — Desafio Supervisionado\nLiberação: 21/10/2026 · Entrega: 22/11/2026\nEm breve.\n\n\nA4 — Estruturas e Padrões\nLiberação: 23/11/2026 · Entrega: 06/12/2026\nEm breve.\n\n\nA5 — Sistemas de Recomendação\nLiberação: 07/12/2026 · Entrega: 16/12/2026\nEm breve.",
     "crumbs": [
       "Atividades"
     ]
@@ -11752,5 +11752,299 @@
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Ridge + kernel",
     "text": "Ridge + kernel\nA predição em um novo ponto \\(x\\) é\n\\[\n\\boxed{\n\\hat g(x)=\\sum_{i=1}^{n}\\hat\\alpha_iK(x,x_i)\n}\n\\]"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html",
+    "href": "material_complementar/material_complementar_metodos_locais.html",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "",
+    "text": "Este material apresenta um roteiro prático para estudar métodos locais, suavização e kernels em R. Os exemplos usam dados simulados diferentes dos dados da Atividade 2 e não fornecem sua solução.\nA ideia central é perceber que métodos não paramétricos substituem uma forma funcional global rígida por mecanismos que controlam a complexidade localmente."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#objetivo",
+    "href": "material_complementar/material_complementar_metodos_locais.html#objetivo",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "",
+    "text": "Este material apresenta um roteiro prático para estudar métodos locais, suavização e kernels em R. Os exemplos usam dados simulados diferentes dos dados da Atividade 2 e não fornecem sua solução.\nA ideia central é perceber que métodos não paramétricos substituem uma forma funcional global rígida por mecanismos que controlam a complexidade localmente."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#dados-para-os-exemplos",
+    "href": "material_complementar/material_complementar_metodos_locais.html#dados-para-os-exemplos",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "1. Dados para os exemplos",
+    "text": "1. Dados para os exemplos\n\nset.seed(335)\n\nn &lt;- 250\nx &lt;- runif(n, -3, 3)\ny &lt;- sin(1.5*x) + 0.25*x + rnorm(n, sd = 0.35)\n\ndados &lt;- data.frame(x, y)\n\nplot(\n  dados$x, dados$y,\n  pch = 19, col = rgb(0,0,0,0.35),\n  xlab = \"x\", ylab = \"y\"\n)"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#knn-como-regressão-local-constante",
+    "href": "material_complementar/material_complementar_metodos_locais.html#knn-como-regressão-local-constante",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "2. KNN como regressão local constante",
+    "text": "2. KNN como regressão local constante\nPara um ponto \\(x_0\\), o KNN usa os \\(k\\) vizinhos mais próximos:\n\\[\n\\widehat g(x_0)\n=\n\\frac{1}{k}\\sum_{i\\in N_k(x_0)}y_i.\n\\]\nEssa média também resolve\n\\[\n\\min_{\\beta_0}\n\\sum_{i\\in N_k(x_0)}\n(y_i-\\beta_0)^2.\n\\]\nAssim, KNN pode ser interpretado como um ajuste local de grau zero.\n\nImplementação simples\n\npred_knn &lt;- function(x_train, y_train, x_new, k) {\n  sapply(x_new, function(x0) {\n    ind &lt;- order(abs(x_train - x0))[1:k]\n    mean(y_train[ind])\n  })\n}\n\ngrid &lt;- seq(min(x), max(x), length.out = 300)\n\np3  &lt;- pred_knn(x, y, grid, k = 3)\np15 &lt;- pred_knn(x, y, grid, k = 15)\np60 &lt;- pred_knn(x, y, grid, k = 60)\n\nplot(dados$x, dados$y, pch = 19, col = rgb(0,0,0,0.25))\nlines(grid, p3,  lwd = 2)\nlines(grid, p15, lwd = 2, lty = 2)\nlines(grid, p60, lwd = 2, lty = 3)\nlegend(\n  \"topleft\",\n  legend = c(\"k = 3\", \"k = 15\", \"k = 60\"),\n  lty = 1:3, lwd = 2, bty = \"n\"\n)\n\n\n\n\n\n\n\n\nObserve que \\(k\\) funciona como parâmetro de suavização:\n\\[\nk\\downarrow \\Rightarrow \\text{modelo mais local e flexível},\n\\]\n\\[\nk\\uparrow \\Rightarrow \\text{modelo mais suave}.\n\\]"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#escolha-de-hiperparâmetros-por-validação-cruzada",
+    "href": "material_complementar/material_complementar_metodos_locais.html#escolha-de-hiperparâmetros-por-validação-cruzada",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "3. Escolha de hiperparâmetros por validação cruzada",
+    "text": "3. Escolha de hiperparâmetros por validação cruzada\nO conjunto de teste deve representar dados ainda não utilizados. Portanto, \\(k\\) não deve ser escolhido minimizando o erro de teste.\nUm procedimento adequado é:\n\nseparar treino e teste;\nexecutar validação cruzada apenas no treino;\nselecionar \\(k\\);\najustar o procedimento escolhido;\navaliar uma única vez no teste.\n\nO mesmo princípio será usado para \\(h\\), \\(\\lambda\\) e outros hiperparâmetros."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#nadarayawatson",
+    "href": "material_complementar/material_complementar_metodos_locais.html#nadarayawatson",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "4. Nadaraya–Watson",
+    "text": "4. Nadaraya–Watson\nO estimador é\n\\[\n\\widehat g_h(x_0)\n=\n\\frac{\n\\sum_i K\\left(\\frac{x_i-x_0}{h}\\right)y_i\n}{\n\\sum_i K\\left(\\frac{x_i-x_0}{h}\\right)\n}.\n\\]\nCom kernel Gaussiano:\n\nK_gauss &lt;- function(u) {\n  dnorm(u)\n}\n\nnw &lt;- function(x_train, y_train, x_new, h) {\n  sapply(x_new, function(x0) {\n    w &lt;- K_gauss((x_train - x0)/h)\n    sum(w*y_train) / sum(w)\n  })\n}\n\nh1 &lt;- nw(x, y, grid, h = 0.10)\nh2 &lt;- nw(x, y, grid, h = 0.35)\nh3 &lt;- nw(x, y, grid, h = 1.00)\n\nplot(dados$x, dados$y, pch = 19, col = rgb(0,0,0,0.25))\nlines(grid, h1, lwd = 2)\nlines(grid, h2, lwd = 2, lty = 2)\nlines(grid, h3, lwd = 2, lty = 3)\n\n\n\n\n\n\n\n\nAqui, ao contrário do KNN,\n\\[\nh\\downarrow\n\\Rightarrow\n\\text{maior localidade},\n\\]\nenquanto\n\\[\nh\\uparrow\n\\Rightarrow\n\\text{maior suavização}.\n\\]"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#knn-versus-kernel",
+    "href": "material_complementar/material_complementar_metodos_locais.html#knn-versus-kernel",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "5. KNN versus kernel",
+    "text": "5. KNN versus kernel\nNo KNN, uma representação simplificada dos pesos é\n\\[\nw_i(x_0)\n=\n\\begin{cases}\n1/k, & x_i\\in N_k(x_0),\\\\\n0, & \\text{caso contrário}.\n\\end{cases}\n\\]\nNo Nadaraya–Watson,\n\\[\nw_i(x_0)\n=\n\\frac{\nK\\left((x_i-x_0)/h\\right)\n}{\n\\sum_j K\\left((x_j-x_0)/h\\right)\n}.\n\\]\nAssim, o kernel permite que a importância das observações varie continuamente com a distância."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#regressão-polinomial-local",
+    "href": "material_complementar/material_complementar_metodos_locais.html#regressão-polinomial-local",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "6. Regressão polinomial local",
+    "text": "6. Regressão polinomial local\nEm vez de assumir que a função é constante perto de \\(x_0\\), podemos aproximá-la localmente por\n\\[\ny_i\n\\approx\n\\beta_0(x_0)\n+\n\\beta_1(x_0)(x_i-x_0).\n\\]\nO ajuste é obtido por mínimos quadrados ponderados:\n\\[\n\\min_{\\beta_0,\\beta_1}\n\\sum_i\nK\\left(\\frac{x_i-x_0}{h}\\right)\n\\left[\ny_i-\\beta_0-\\beta_1(x_i-x_0)\n\\right]^2.\n\\]\nEm R, loess() permite explorar essa ideia:\n\najuste &lt;- loess(\n  y ~ x,\n  data = dados,\n  degree = 1,\n  span = 0.35\n)\n\npred &lt;- predict(\n  ajuste,\n  newdata = data.frame(x = grid)\n)\n\nplot(dados$x, dados$y, pch = 19, col = rgb(0,0,0,0.25))\nlines(grid, pred, lwd = 2)\n\n\n\n\n\n\n\n\nUma vantagem importante do ajuste linear local é seu comportamento próximo às fronteiras."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#variáveis-irrelevantes-e-distância",
+    "href": "material_complementar/material_complementar_metodos_locais.html#variáveis-irrelevantes-e-distância",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "7. Variáveis irrelevantes e distância",
+    "text": "7. Variáveis irrelevantes e distância\nConsidere que a resposta dependa principalmente de \\(x_1\\), mas adicionemos variáveis independentes \\(z_1,z_2,\\ldots\\).\nEm métodos baseados em distância, a noção de “vizinho” passa a depender de todas as coordenadas utilizadas.\nCom o aumento da dimensão, os pontos tendem a ficar mais esparsos no espaço:\n\\[\nd\\uparrow\n\\quad\\Rightarrow\\quad\n\\text{vizinhanças locais tornam-se menos informativas}.\n\\]\nEsse fenômeno está relacionado à maldição da dimensionalidade.\nPor isso, padronização e seleção de covariáveis são especialmente relevantes para KNN."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#kernel-ridge",
+    "href": "material_complementar/material_complementar_metodos_locais.html#kernel-ridge",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "8. Kernel Ridge",
+    "text": "8. Kernel Ridge\nNa regressão Ridge tradicional:\n\\[\n\\widehat\\beta\n=\n\\arg\\min_\\beta\n\\left\\{\n\\sum_i(y_i-x_i^\\top\\beta)^2\n+\n\\lambda\\|\\beta\\|_2^2\n\\right\\}.\n\\]\nEm um espaço de Hilbert com kernel, podemos considerar\n\\[\n\\widehat f\n=\n\\arg\\min_{f\\in\\mathcal H}\n\\left\\{\n\\frac1n\\sum_i(y_i-f(x_i))^2\n+\n\\lambda\\|f\\|_{\\mathcal H}^2\n\\right\\}.\n\\]\nO primeiro termo controla o ajuste aos dados. O segundo controla a complexidade da função.\nPelo Teorema do Representante, a solução pode ser escrita como\n\\[\n\\widehat f(x)\n=\n\\sum_{i=1}^{n}\\alpha_i K(x_i,x).\n\\]\nAssim, não é necessário trabalhar explicitamente com todas as coordenadas do espaço de características induzido pelo kernel."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#kernel-gaussiano",
+    "href": "material_complementar/material_complementar_metodos_locais.html#kernel-gaussiano",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "9. Kernel Gaussiano",
+    "text": "9. Kernel Gaussiano\nUm kernel muito utilizado é\n\\[\nK(x,x')\n=\n\\exp\\left(\n-\\gamma\\|x-x'\\|^2\n\\right).\n\\]\nO parâmetro \\(\\gamma\\) controla a escala de similaridade, enquanto \\(\\lambda\\) controla a regularização.\nPortanto, existem dois mecanismos distintos:\n\\[\n\\gamma\n\\rightarrow\n\\text{geometria/localidade do kernel},\n\\]\n\\[\n\\lambda\n\\rightarrow\n\\text{penalização da complexidade}.\n\\]"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_metodos_locais.html#o-que-observar-na-prática",
+    "href": "material_complementar/material_complementar_metodos_locais.html#o-que-observar-na-prática",
+    "title": "Material Complementar — Métodos Locais e Kernels",
+    "section": "10. O que observar na prática",
+    "text": "10. O que observar na prática\nAo comparar os métodos, não se limite a perguntar qual produz o menor RMSE.\nPergunte também:\n\ncomo a curva muda quando o parâmetro de suavização muda?\no que acontece nas fronteiras?\ncomo o método reage a regiões com poucos dados?\no que ocorre quando covariáveis irrelevantes entram na distância?\ncomo o desempenho de validação se relaciona ao desempenho de teste?\nquais parâmetros controlam a complexidade em cada método?\n\nA comparação dessas respostas é mais importante para a compreensão estatística dos métodos do que a simples ordenação das métricas."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html",
+    "title": "A2 — Métodos Locais e Kernels",
+    "section": "",
+    "text": "Informações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 30/09/2026\nEntrega: 11/10/2026\nA atividade deverá ser entregue na forma de um relatório computacional reprodutível, contendo código, resultados, gráficos, tabelas e, principalmente, interpretação estatística."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#informações-gerais",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#informações-gerais",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "",
+    "text": "Valor: 20 pontos\nLiberação: 30/09/2026\nEntrega: 11/10/2026\nArquivo de dados: dados_a2.csv\nProduto a entregar: um único documento .qmd, acompanhado do arquivo renderizado em HTML ou PDF\nTodas as análises devem ser reprodutíveis\nGráficos, tabelas e métricas devem ser acompanhados de interpretação\nA escolha de hiperparâmetros deve ser feita sem utilizar o conjunto de teste"
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#objetivo",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#objetivo",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "Objetivo",
+    "text": "Objetivo\nNesta atividade, você investigará métodos de regressão não paramétrica e sua relação com a ideia de localidade, suavização e regularização.\nA análise deve permitir compreender empiricamente como a complexidade do estimador é controlada em diferentes métodos e como esse controle afeta o compromisso entre viés e variância.\nSerão estudados:\n\nregressão KNN;\nregressão de Nadaraya–Watson;\nregressão polinomial local;\nKernel Ridge Regression e sua conexão com RKHS.\n\nO objetivo não é apenas encontrar o menor erro de teste, mas explicar por que os métodos apresentam comportamentos diferentes."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#conhecendo-o-problema-2-pontos",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#conhecendo-o-problema-2-pontos",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "1. Conhecendo o problema — 2 pontos",
+    "text": "1. Conhecendo o problema — 2 pontos\nA base contém uma variável resposta contínua y e quatro covariáveis x1, x2, x3 e x4.\n\n1.1\nFaça uma análise exploratória inicial que contenha, no mínimo:\n\ndimensão da base;\nestatísticas descritivas;\ninvestigação de valores ausentes;\ngráficos de y em função de cada covariável.\n\n\n\n1.2\nCom base somente na análise exploratória, discuta:\n\nHá indícios de não linearidade?\n\nTodas as covariáveis parecem igualmente informativas?\n\nPor que uma relação não linear pode representar uma dificuldade para uma regressão linear global?\n\n\nNão utilize os resultados dos modelos das seções seguintes para responder a esta questão."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#regressão-knn-4-pontos",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#regressão-knn-4-pontos",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "2. Regressão KNN — 4 pontos",
+    "text": "2. Regressão KNN — 4 pontos\nConsidere inicialmente apenas a covariável x1.\n\n2.1 — Interpretação como ajuste local\nMostre que a previsão KNN em um ponto \\(x_0\\),\n\\[\n\\widehat g(x_0)\n=\n\\frac{1}{k}\n\\sum_{i\\in N_k(x_0)}y_i,\n\\]\né equivalente à solução do problema de mínimos quadrados local\n\\[\n\\widehat\\beta_0(x_0)\n=\n\\arg\\min_{\\beta_0}\n\\sum_{i\\in N_k(x_0)}\n(y_i-\\beta_0)^2.\n\\]\nInterprete o resultado. Em que sentido o KNN pode ser visto como uma regressão local de grau zero?\n\n\n2.2 — Escolha de \\(k\\)\nSepare os dados em treino (80%) e teste (20%), utilizando uma semente fixa.\nUsando somente o conjunto de treino, escolha \\(k\\) por validação cruzada com 10 folds.\nConsidere uma grade suficientemente ampla para evidenciar modelos muito flexíveis e muito suavizados.\nApresente:\n\ngráfico do erro de validação em função de \\(k\\);\nvalor de \\(k\\) selecionado;\njustificativa da escolha.\n\n\n\n2.3 — Flexibilidade\nCompare graficamente pelo menos três valores de \\(k\\):\n\num pequeno;\no selecionado por validação cruzada;\num grande.\n\nExplique o comportamento observado em termos de\n\\[\nk\\downarrow\n\\quad\\Longrightarrow\\quad\n\\text{flexibilidade}\\uparrow\n\\]\ne\n\\[\nk\\uparrow\n\\quad\\Longrightarrow\\quad\n\\text{suavização}\\uparrow.\n\\]\n\n\n2.4 — Distância e variáveis irrelevantes\nRepita o KNN usando:\n\napenas x1;\nx1 e x2;\nx1, x2, x3 e x4.\n\nPadronize as covariáveis antes de calcular distâncias.\nEscolha \\(k\\) por validação cruzada em cada caso e compare o desempenho no conjunto de teste.\nDiscuta por que adicionar covariáveis pode piorar um método baseado em distância, mesmo quando há mais informação disponível."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#nadarayawatson-4-pontos",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#nadarayawatson-4-pontos",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "3. Nadaraya–Watson — 4 pontos",
+    "text": "3. Nadaraya–Watson — 4 pontos\nConsidere novamente inicialmente apenas x1.\nO estimador de Nadaraya–Watson pode ser escrito como\n\\[\n\\widehat g_h(x_0)\n=\n\\frac{\n\\sum_{i=1}^{n}\nK\\left(\\frac{x_i-x_0}{h}\\right)y_i\n}{\n\\sum_{i=1}^{n}\nK\\left(\\frac{x_i-x_0}{h}\\right)\n}.\n\\]\n\n3.1 — Da vizinhança rígida aos pesos suaves\nExplique a principal diferença entre os pesos atribuídos às observações pelo KNN e pelo estimador de Nadaraya–Watson.\nRelacione sua resposta à ideia de localidade.\n\n\n3.2 — Largura de banda\nImplemente o estimador utilizando kernel Gaussiano e escolha a largura de banda \\(h\\) por validação cruzada no conjunto de treino.\nApresente:\n\ngrade de valores investigados;\nerro de validação;\n\\(h\\) selecionado.\n\n\n\n3.3 — Viés e variância\nConstrua estimativas usando:\n\num \\(h\\) menor que o selecionado;\no \\(h\\) selecionado;\num \\(h\\) substancialmente maior.\n\nApresente as três curvas juntamente com os dados e interprete-as em termos de viés, variância e suavização.\n\n\n3.4 — Forma do kernel\nMantendo uma comparação coerente, confronte o kernel Gaussiano com pelo menos um segundo kernel (por exemplo, uniforme, triangular ou Epanechnikov).\nDiscuta: a escolha da forma do kernel parece ser mais ou menos importante que a escolha de \\(h\\) nesta aplicação?"
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#regressão-polinomial-local-3-pontos",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#regressão-polinomial-local-3-pontos",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "4. Regressão polinomial local — 3 pontos",
+    "text": "4. Regressão polinomial local — 3 pontos\n\n4.1\nAjuste, utilizando x1, uma regressão local de:\n\ngrau 0;\ngrau 1.\n\nUse um procedimento de validação para selecionar o parâmetro de suavização de cada modelo.\n\n\n4.2\nCompare as curvas estimadas, dando atenção especial às regiões próximas às fronteiras do domínio de x1.\nExplique por que o ajuste linear local pode reduzir o viés de fronteira em relação ao ajuste local constante.\n\n\n4.3\nCompare os resultados desta seção com KNN e Nadaraya–Watson. Identifique semelhanças e diferenças na maneira como os três métodos constroem uma previsão em \\(x_0\\)."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#comparação-dos-métodos-locais-3-pontos",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#comparação-dos-métodos-locais-3-pontos",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "5. Comparação dos métodos locais — 3 pontos",
+    "text": "5. Comparação dos métodos locais — 3 pontos\nCompare os melhores modelos obtidos nas seções anteriores utilizando o mesmo conjunto de teste.\nApresente pelo menos:\n\nRMSE;\nMAE;\ngráfico observado versus predito;\ngráfico dos resíduos.\n\n\n5.1\nExiste um método claramente superior em todos os critérios?\n\n\n5.2\nAnalise o erro ao longo do domínio de x1. O comportamento dos métodos é homogêneo ou existem regiões em que determinados estimadores apresentam maior dificuldade?\n\n\n5.3\nConstrua uma síntese relacionando explicitamente:\n\\[\nk,\\qquad h,\\qquad\n\\text{flexibilidade},\\qquad\n\\text{viés},\\qquad\n\\text{variância}.\n\\]"
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#kernel-ridge-e-rkhs-3-pontos",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#kernel-ridge-e-rkhs-3-pontos",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "6. Kernel Ridge e RKHS — 3 pontos",
+    "text": "6. Kernel Ridge e RKHS — 3 pontos\nNesta seção utilize x1 e x2.\nConsidere Kernel Ridge Regression com kernel Gaussiano/RBF.\n\n6.1\nSelecione os hiperparâmetros por validação cruzada no conjunto de treino. Em particular, investigue o papel:\n\ndo parâmetro do kernel que controla a escala/localidade;\ndo parâmetro de regularização \\(\\lambda\\).\n\n\n\n6.2\nApresente o desempenho no conjunto de teste e compare-o com os resultados anteriores.\n\n\n6.3 — Interpretação\nConsidere o problema\n\\[\n\\widehat f\n=\n\\arg\\min_{f\\in\\mathcal H}\n\\left\\{\n\\frac{1}{n}\\sum_{i=1}^{n}\n(y_i-f(x_i))^2\n+\n\\lambda\\|f\\|_{\\mathcal H}^{2}\n\\right\\}.\n\\]\nExplique:\n\no papel do primeiro termo;\n\no papel de \\(\\lambda\\|f\\|_{\\mathcal H}^{2}\\);\n\no que tende a acontecer quando \\(\\lambda\\rightarrow 0\\);\n\no que tende a acontecer quando \\(\\lambda\\) aumenta.\n\nPor fim, estabeleça uma conexão conceitual entre Ridge e Kernel Ridge:\n\\[\n\\text{Ridge}\n\\longrightarrow\n\\text{penalização dos coeficientes}\n\\]\ne\n\\[\n\\text{Kernel Ridge}\n\\longrightarrow\n\\text{penalização da complexidade de }f.\n\\]"
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#síntese-crítica-1-ponto",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#síntese-crítica-1-ponto",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "7. Síntese crítica — 1 ponto",
+    "text": "7. Síntese crítica — 1 ponto\nEscreva uma conclusão de aproximadamente 200 a 300 palavras, sem tópicos, respondendo:\n\nO que controla a complexidade de um método não paramétrico e por que não existe um único nível de suavização adequado para todos os problemas?\n\nSua resposta deve fazer referência aos resultados obtidos na atividade e estabelecer relações entre KNN, kernels, regressão local e regularização."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#critérios-de-avaliação",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#critérios-de-avaliação",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "Critérios de avaliação",
+    "text": "Critérios de avaliação\n\n\n\nCritério\nPontos\n\n\n\n\nExploração e compreensão do problema\n2\n\n\nKNN\n4\n\n\nNadaraya–Watson\n4\n\n\nRegressão polinomial local\n3\n\n\nComparação dos métodos locais\n3\n\n\nKernel Ridge / RKHS\n3\n\n\nSíntese crítica\n1\n\n\nTotal\n20\n\n\n\nAlém da correção numérica, serão considerados:\n\ncoerência metodológica;\nseparação adequada entre treino, validação e teste;\njustificativa dos hiperparâmetros;\nqualidade dos gráficos;\ninterpretação estatística;\nclareza e organização;\nreprodutibilidade."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#observações-importantes",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#observações-importantes",
+    "title": "Atividade Avaliativa 2 — Métodos Locais e Kernels",
+    "section": "Observações importantes",
+    "text": "Observações importantes\n\nO conjunto de teste não deve ser utilizado para escolher hiperparâmetros.\nResultados sem interpretação terão pontuação reduzida.\nNão basta informar qual método apresentou menor RMSE; é necessário explicar o comportamento observado.\nToda fonte externa, pacote ou código adaptado deve ser devidamente indicado.\nO uso de ferramentas computacionais não substitui a justificativa estatística das escolhas realizadas."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "",
+    "text": "Este material apresenta, de forma prática, um fluxo completo para os conceitos estudados em métodos locais e kernels:\n\n\n\n\n\n\nFluxo de análise\n\n\n\nDados → treino/teste → validação cruzada → KNN → Nadaraya–Watson → regressão local → Kernel Ridge → avaliação final\n\n\nEste material serve de apoio para a realização da Atividade Avaliativa A2. O exemplo deve ser utilizado como referência para compreender a lógica dos procedimentos, a seleção dos hiperparâmetros e sua implementação em R.\nA base utilizada aqui é diferente da base da atividade avaliativa.\nO objetivo principal não é descobrir qual método é universalmente melhor, mas compreender como diferentes mecanismos de localidade e suavização controlam a flexibilidade do modelo."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#knn-como-regressão-local-de-grau-zero",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#knn-como-regressão-local-de-grau-zero",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "7.1 KNN como regressão local de grau zero",
+    "text": "7.1 KNN como regressão local de grau zero\nConsidere o problema\n\\[\n\\widehat\\beta_0(x_0)\n=\n\\arg\\min_{\\beta_0}\n\\sum_{i\\in N_k(x_0)}\n(Y_i-\\beta_0)^2\n\\]\nDerivando:\n\\[\n\\frac{\\partial}{\\partial\\beta_0}\n\\sum_{i\\in N_k(x_0)}\n(Y_i-\\beta_0)^2\n=\n-2\n\\sum_{i\\in N_k(x_0)}\n(Y_i-\\beta_0)\n\\]\nIgualando a zero:\n\\[\n\\widehat\\beta_0(x_0)\n=\n\\frac{1}{k}\n\\sum_{i\\in N_k(x_0)}Y_i\n\\]\nPortanto,\n\\[\n\\boxed{\n\\widehat g_{\\text{KNN}}(x_0)\n=\n\\widehat\\beta_0(x_0)\n}\n\\]\nO KNN pode ser interpretado como uma regressão local constante, ou regressão local de grau zero.\nA palavra local é essencial: uma nova constante é obtida para cada ponto \\(x_0\\)."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#como-interpretar",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#como-interpretar",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "11.1 Como interpretar?",
+    "text": "11.1 Como interpretar?\nCom \\(k\\) muito pequeno, o modelo pode acompanhar excessivamente particularidades da amostra.\nIsso tende a produzir\n\\[\n\\text{baixo viés}\n\\qquad\\text{e}\\qquad\n\\text{alta variância}\n\\]\nCom \\(k\\) muito grande, muitas observações distantes influenciam a previsão.\nO modelo se torna mais suave:\n\\[\n\\text{maior viés}\n\\qquad\\text{e}\\qquad\n\\text{menor variância}\n\\]\nA validação cruzada procura um compromisso entre esses dois extremos."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#regressão-linear",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#regressão-linear",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "31.1 Regressão linear",
+    "text": "31.1 Regressão linear\n\npred_teste_lm &lt;-\n  predict(\n    ajuste_lm,\n    new_data = teste\n  ) |&gt;\n  bind_cols(\n    teste |&gt; select(y)\n  )\n\nrmse_lm &lt;-\n  pred_teste_lm |&gt;\n  rmse(\n    truth = y,\n    estimate = .pred\n  )\n\nrmse_lm\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard        1.56"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#knn-final",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#knn-final",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "31.2 KNN final",
+    "text": "31.2 KNN final\n\nwf_knn_final &lt;-\n  finalize_workflow(\n    wf_knn,\n    melhor_knn\n  )\n\najuste_knn_final &lt;-\n  fit(\n    wf_knn_final,\n    data = treino\n  )\n\npred_teste_knn &lt;-\n  predict(\n    ajuste_knn_final,\n    new_data = teste\n  ) |&gt;\n  bind_cols(\n    teste |&gt; select(y)\n  )\n\nrmse_knn &lt;-\n  pred_teste_knn |&gt;\n  rmse(\n    truth = y,\n    estimate = .pred\n  )\n\nrmse_knn\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard       0.628"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#nadarayawatson-final",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#nadarayawatson-final",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "31.3 Nadaraya–Watson final",
+    "text": "31.3 Nadaraya–Watson final\n\npred_teste_nw &lt;-\n  nw_gauss(\n    treino$x,\n    treino$y,\n    teste$x,\n    melhor_h$h\n  )\n\nrmse_nw &lt;-\n  sqrt(\n    mean(\n      (teste$y - pred_teste_nw)^2\n    )\n  )\n\nrmse_nw\n\n[1] 0.6233488"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#kernel-ridge-final",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#kernel-ridge-final",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "31.4 Kernel Ridge final",
+    "text": "31.4 Kernel Ridge final\n\najuste_krr_final &lt;-\n  ajustar_krr(\n    X = treino |&gt; select(x),\n    y = treino$y,\n    gamma = melhor_krr$gamma,\n    lambda = melhor_krr$lambda\n  )\n\npred_teste_krr &lt;-\n  predizer_krr(\n    ajuste_krr_final,\n    teste |&gt; select(x)\n  )\n\nrmse_krr &lt;-\n  sqrt(\n    mean(\n      (teste$y - pred_teste_krr)^2\n    )\n  )\n\nrmse_krr\n\n[1] 0.6060287"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#grau-zero-versus-grau-um",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#grau-zero-versus-grau-um",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "Grau zero versus grau um",
+    "text": "Grau zero versus grau um\nUsaremos locfit() para visualizar os dois casos.\n\nfit_local_0 &lt;-\n  locfit(\n    y ~ lp(x, deg = 0, nn = 0.25),\n    data = treino\n  )\n\nfit_local_1 &lt;-\n  locfit(\n    y ~ lp(x, deg = 1, nn = 0.25),\n    data = treino\n  )\n\nPrevisões:\n\npred_local &lt;-\n  bind_rows(\n    grid_x |&gt;\n      mutate(\n        .pred = predict(\n          fit_local_0,\n          newdata = grid_x\n        ),\n        grau = \"Grau 0\"\n      ),\n\n    grid_x |&gt;\n      mutate(\n        .pred = predict(\n          fit_local_1,\n          newdata = grid_x\n        ),\n        grau = \"Grau 1\"\n      )\n  )\n\n\n# Cores\ncores_grau &lt;- c(\n  \"Grau 0\" = \"#0072B2\",\n  \"Grau 1\" = \"#D55E00\"\n)\n\n# Tipos de linha\nlinhas_grau &lt;- c(\n  \"Grau 0\" = \"dashed\",\n  \"Grau 1\" = \"solid\"\n)\n\nggplot(treino, aes(x = x, y = y)) +\n  geom_point(\n    alpha = 0.45,\n    color = \"grey55\"\n  ) +\n  geom_line(\n    data = pred_local,\n    aes(\n      y = .pred,\n      color = grau,\n      linetype = grau\n    ),\n    linewidth = 1.2\n  ) +\n  scale_color_manual(values = cores_grau) +\n  scale_linetype_manual(values = linhas_grau) +\n  labs(\n    title = \"Regressão polinomial local\",\n    subtitle = \"Comparação entre grau 0 e grau 1\",\n    x = \"x\",\n    y = \"y\",\n    color = NULL,\n    linetype = NULL\n  ) +\n  theme_minimal(base_size = 13) +\n  theme(\n    legend.position = \"bottom\"\n  )\n\n\n\n\n\n\n\n\nUma vantagem importante do ajuste linear local aparece nas fronteiras.\nPerto de uma extremidade do domínio, as observações disponíveis tendem a se concentrar de apenas um lado de \\(x_0\\).\nO ajuste constante local pode sofrer maior viés nessa situação.\nA inclinação adicional do modelo de grau 1 permite compensar parte dessa assimetria."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#observação",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#observação",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "Observação",
+    "text": "Observação\nAté aqui usamos apenas uma variável.\nSuponha agora que existam \\(p\\) preditores e que a distância Euclidiana seja\n\\[\nd(\\mathbf x_i,\\mathbf x_0)\n=\n\\sqrt{\n\\sum_{j=1}^{p}\n(x_{ij}-x_{0j})^2\n}\n\\]\nÀ medida que \\(p\\) cresce, manter pontos realmente próximos de \\(\\mathbf x_0\\) torna-se mais difícil.\nO espaço se torna progressivamente mais esparso.\nEsse fenômeno está associado à maldição da dimensionalidade.\nEm métodos baseados em distância, adicionar uma variável pouco informativa pode alterar quem são os vizinhos sem fornecer sinal útil para prever \\(Y\\).\nPortanto,\n\\[\n\\text{mais variáveis}\n\\not\\Rightarrow\n\\text{melhores vizinhanças}\n\\]"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a2_metodos_locais.html#kernel-ridge-regression",
+    "href": "material_complementar/material_complementar_a2_metodos_locais.html#kernel-ridge-regression",
+    "title": "Aplicação prática: métodos locais e kernels",
+    "section": "Kernel Ridge Regression",
+    "text": "Kernel Ridge Regression\nNa regressão Ridge estudada na Atividade 1,\n\\[\n\\widehat{\\boldsymbol\\beta}\n=\n\\arg\\min_{\\boldsymbol\\beta}\n\\left\\{\n\\sum_{i=1}^{n}\n(y_i-\\mathbf x_i^\\top\\boldsymbol\\beta)^2\n+\n\\lambda\\|\\boldsymbol\\beta\\|_2^2\n\\right\\}\n\\]\nA penalização atua diretamente sobre os coeficientes.\nEm Kernel Ridge, procuramos uma função \\(f\\) pertencente a um espaço de Hilbert com núcleo reprodutor \\(\\mathcal H\\):\n\\[\n\\widehat f\n=\n\\arg\\min_{f\\in\\mathcal H}\n\\left\\{\n\\sum_{i=1}^{n}\n(y_i-f(x_i))^2\n+\n\\lambda\\|f\\|_{\\mathcal H}^2\n\\right\\}\n\\]\nO primeiro termo mede o ajuste aos dados:\n\\[\n\\underbrace{\n\\sum_{i=1}^{n}(y_i-f(x_i))^2\n}_{\\text{erro de treinamento}}\n\\]\nO segundo controla a complexidade da função:\n\\[\n\\underbrace{\n\\lambda\\|f\\|_{\\mathcal H}^2\n}_{\\text{regularização}}\n\\]\nAssim,\n\\[\n\\text{Ridge}\n\\rightarrow\n\\text{penaliza }\\boldsymbol\\beta\n\\]\nenquanto\n\\[\n\\text{Kernel Ridge}\n\\rightarrow\n\\text{penaliza a complexidade de }f\n\\]\n\n\n\n\n\n\nConvenção usada neste material\n\n\n\nUtilizamos a função objetivo sem o fator \\(1/n\\) diante da soma dos quadrados. Com essa convenção, a solução matricial contém \\(\\mathbf K+\\lambda\\mathbf I\\).\nSe a função objetivo fosse escrita com \\(\\frac{1}{n}\\sum_i(\\cdot)^2\\), a solução equivalente conteria \\(\\mathbf K+n\\lambda\\mathbf I\\). Portanto, é importante manter a parametrização teórica e a implementação coerentes.\n\n\n\nTeorema do Representante e matriz de Gram\nO Teorema do Representante garante que a solução pode ser escrita como\n\\[\n\\widehat f(x)\n=\n\\sum_{i=1}^{n}\n\\alpha_i K(x_i,x)\n\\]\nMesmo que \\(\\mathcal H\\) seja um espaço de funções de dimensão muito grande — ou infinita — o estimador é determinado por apenas \\(n\\) coeficientes:\n\\[\n\\boldsymbol\\alpha\n=\n(\\alpha_1,\\ldots,\\alpha_n)^\\top\n\\]\nDefinimos a matriz de Gram\n\\[\n\\mathbf K\n=\n\\begin{bmatrix}\nK(x_1,x_1) & \\cdots & K(x_1,x_n)\\\\\n\\vdots & \\ddots & \\vdots\\\\\nK(x_n,x_1) & \\cdots & K(x_n,x_n)\n\\end{bmatrix}\n\\]\nComo\n\\[\nf(\\mathbf X)=\\mathbf K\\boldsymbol\\alpha\n\\]\ne\n\\[\n\\|f\\|_{\\mathcal H}^2\n=\n\\boldsymbol\\alpha^\\top\n\\mathbf K\n\\boldsymbol\\alpha,\n\\]\no problema funcional pode ser escrito como\n\\[\n\\widehat{\\boldsymbol\\alpha}\n=\n\\arg\\min_{\\boldsymbol\\alpha\\in\\mathbb R^n}\n\\left\\{\n\\|\\mathbf y-\\mathbf K\\boldsymbol\\alpha\\|_2^2\n+\n\\lambda\n\\boldsymbol\\alpha^\\top\n\\mathbf K\n\\boldsymbol\\alpha\n\\right\\}\n\\]\nA solução é\n\\[\n\\boxed{\n\\widehat{\\boldsymbol\\alpha}\n=\n(\\mathbf K+\\lambda\\mathbf I)^{-1}\\mathbf y\n}\n\\]\nNa prática, não calcularemos a inversa explicitamente. Resolveremos o sistema linear\n\\[\n(\\mathbf K+\\lambda\\mathbf I)\n\\widehat{\\boldsymbol\\alpha}\n=\n\\mathbf y\n\\]\npor estabilidade numérica.\n\n\nImplementando Kernel Ridge explicitamente em R\nPrimeiro implementamos o kernel RBF.\n\nkernel_rbf &lt;- function(X1, X2, gamma) {\n\n  X1 &lt;- as.matrix(X1)\n  X2 &lt;- as.matrix(X2)\n\n  n1 &lt;- rowSums(X1^2)\n  n2 &lt;- rowSums(X2^2)\n\n  dist2 &lt;- outer(n1, n2, \"+\") - 2 * X1 %*% t(X2)\n  dist2 &lt;- pmax(dist2, 0)\n\n  exp(-gamma * dist2)\n}\n\nAgora construímos uma função de ajuste.\n\najustar_krr &lt;- function(X, y, gamma, lambda) {\n\n  X &lt;- as.matrix(X)\n  y &lt;- as.numeric(y)\n\n  K &lt;- kernel_rbf(X, X, gamma)\n\n  alpha &lt;- solve(\n    K + lambda * diag(nrow(K)),\n    y\n  )\n\n  list(\n    X_train = X,\n    alpha = alpha,\n    gamma = gamma,\n    lambda = lambda\n  )\n}\n\nA função de previsão utiliza\n\\[\n\\widehat f(x_0)\n=\n\\mathbf k(x_0)^\\top\n\\widehat{\\boldsymbol\\alpha},\n\\]\nem que\n\\[\n\\mathbf k(x_0)\n=\n\\left[\nK(x_0,x_1),\\ldots,K(x_0,x_n)\n\\right]^\\top.\n\\]\n\npredizer_krr &lt;- function(modelo, X_new) {\n\n  K_new &lt;- kernel_rbf(\n    as.matrix(X_new),\n    modelo$X_train,\n    modelo$gamma\n  )\n\n  as.numeric(\n    K_new %*% modelo$alpha\n  )\n}\n\nEssa implementação deixa explícitos os objetos discutidos teoricamente:\n\\[\n\\boxed{\n\\mathbf K,\n\\quad\n\\lambda,\n\\quad\n\\boldsymbol\\alpha,\n\\quad\n\\widehat f(x)\n}\n\\]\n\n\nDois hiperparâmetros com papéis diferentes\nPara o kernel RBF,\n\\[\nK_\\gamma(x,x')\n=\n\\exp\\{-\\gamma(x-x')^2\\},\n\\]\ntemos dois controles de complexidade que não devem ser confundidos.\nO parâmetro \\(\\gamma\\) atua na geometria do kernel e determina quão rapidamente a similaridade diminui com a distância.\nJá \\(\\lambda\\) controla a regularização da função estimada.\nDe forma esquemática:\n\\[\n\\gamma\\uparrow\n\\Rightarrow\n\\text{kernel mais localizado}\n\\]\n\\[\n\\lambda\\uparrow\n\\Rightarrow\n\\text{regularização mais forte}\n\\]\nPortanto, não devemos interpretar \\(\\gamma\\) e \\(\\lambda\\) como duas versões do mesmo parâmetro.\n\n\nSelecionando \\(\\gamma\\) e \\(\\lambda\\) por validação cruzada\nCriamos uma grade para os dois hiperparâmetros.\n\ngrade_krr &lt;-\n  crossing(\n    gamma = c(0.05, 0.10, 0.25, 0.50, 1, 2),\n    lambda = 10^seq(-3, 1, length.out = 7)\n  )\n\ngrade_krr\n\n# A tibble: 42 × 2\n   gamma   lambda\n   &lt;dbl&gt;    &lt;dbl&gt;\n 1  0.05  0.001  \n 2  0.05  0.00464\n 3  0.05  0.0215 \n 4  0.05  0.1    \n 5  0.05  0.464  \n 6  0.05  2.15   \n 7  0.05 10      \n 8  0.1   0.001  \n 9  0.1   0.00464\n10  0.1   0.0215 \n# ℹ 32 more rows\n\n\nComo estamos usando apenas x, não há problema de escala entre diferentes preditores neste exemplo. Em aplicações multivariadas, a padronização deve ser incorporada ao procedimento de reamostragem para evitar vazamento de informação.\nCriamos uma função para avaliar uma combinação \\((\\gamma,\\lambda)\\) em um fold.\n\nrmse_krr_fold &lt;- function(split, gamma, lambda) {\n\n  dados_ajuste &lt;- analysis(split)\n  dados_val    &lt;- assessment(split)\n\n  modelo &lt;-\n    ajustar_krr(\n      X = dados_ajuste |&gt; select(x),\n      y = dados_ajuste$y,\n      gamma = gamma,\n      lambda = lambda\n    )\n\n  pred &lt;-\n    predizer_krr(\n      modelo,\n      dados_val |&gt; select(x)\n    )\n\n  sqrt(\n    mean(\n      (dados_val$y - pred)^2\n    )\n  )\n}\n\nExecutamos a validação cruzada:\n\nresultados_krr &lt;-\n  grade_krr |&gt;\n  mutate(\n    rmse_cv = map2_dbl(\n      gamma,\n      lambda,\n      function(gamma_atual, lambda_atual) {\n\n        map_dbl(\n          folds$splits,\n          rmse_krr_fold,\n          gamma = gamma_atual,\n          lambda = lambda_atual\n        ) |&gt;\n          mean()\n      }\n    )\n  )\n\nresultados_krr |&gt;\n  arrange(rmse_cv)\n\n# A tibble: 42 × 3\n   gamma  lambda rmse_cv\n   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;\n 1  0.25 0.1       0.643\n 2  0.5  0.464     0.643\n 3  0.25 0.0215    0.643\n 4  0.1  0.001     0.644\n 5  0.25 0.00464   0.644\n 6  0.25 0.464     0.645\n 7  0.5  0.1       0.645\n 8  0.25 0.001     0.645\n 9  0.1  0.00464   0.645\n10  0.5  0.0215    0.647\n# ℹ 32 more rows\n\n\nSelecionamos a combinação com menor erro médio de validação:\n\nmelhor_krr &lt;-\n  resultados_krr |&gt;\n  slice_min(\n    rmse_cv,\n    n = 1,\n    with_ties = FALSE\n  )\n\nmelhor_krr\n\n# A tibble: 1 × 3\n  gamma lambda rmse_cv\n  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;\n1  0.25    0.1   0.643\n\n\nAssim,\n\\[\n\\boxed{\n(\\gamma^\\ast,\\lambda^\\ast)\n=\n\\arg\\min_{\\gamma,\\lambda}\n\\widehat R_{CV}(\\gamma,\\lambda)\n}\n\\]\nO conjunto de teste continua intocado.\n\n\nVisualizando a interação entre kernel e regularização\n\n# Garantir que gamma seja tratado como variável categórica\nresultados_krr_plot &lt;-\n  resultados_krr |&gt;\n  mutate(\n    gamma_f = factor(\n      gamma,\n      levels = sort(unique(gamma))\n    )\n  )\n\nggplot(\n  resultados_krr_plot,\n  aes(\n    x = lambda,\n    y = rmse_cv,\n    color = gamma_f,\n    linetype = gamma_f,\n    group = gamma_f\n  )\n) +\n  geom_line(linewidth = 1.1) +\n  geom_point(size = 2.5) +\n  geom_point(\n  data = melhor_krr,\n  aes(\n    x = lambda,\n    y = rmse_cv\n  ),\n  inherit.aes = FALSE,\n  shape = 21,\n  size = 5,\n  stroke = 1.3,\n  fill = \"white\"\n) +\n  scale_x_log10() +\n  scale_color_manual(\n    values = c(\n      \"#0072B2\",\n      \"#D55E00\",\n      \"#009E73\",\n      \"#CC79A7\",\n      \"#E69F00\",\n      \"#56B4E9\"\n    )\n  ) +\n  scale_linetype_manual(\n    values = c(\n      \"solid\",\n      \"dashed\",\n      \"dotdash\",\n      \"longdash\",\n      \"twodash\",\n      \"dotted\"\n    )\n  ) +\n  labs(\n    x = expression(lambda),\n    y = \"RMSE médio de validação\",\n    color = expression(gamma),\n    linetype = expression(gamma),\n    title = expression(\n      \"Kernel Ridge: seleção conjunta de \" * gamma * \" e \" * lambda\n    )\n  ) +\n  theme_minimal(base_size = 13) +\n  theme(\n    legend.position = \"bottom\"\n  )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO que observar?\n\n\n\nCada curva representa um valor de \\(\\gamma\\), enquanto o eixo horizontal representa diferentes valores de regularização \\(\\lambda\\).\nAssim, a validação cruzada não seleciona \\(\\gamma\\) e \\(\\lambda\\) separadamente. Ela procura a combinação\n\\[\n(\\gamma^\\ast,\\lambda^\\ast)\n=\n\\arg\\min_{\\gamma,\\lambda}\n\\widehat R_{CV}(\\gamma,\\lambda)\n\\]\nEntre as combinações avaliadas, o ponto destacado corresponde ao menor RMSE médio de validação.\nOs dois hiperparâmetros exercem papéis diferentes: \\(\\gamma\\) controla a escala de similaridade do kernel RBF, enquanto \\(\\lambda\\) controla a intensidade da regularização.\n\n\nO gráfico permite observar que a qualidade do modelo depende da combinação entre a escala de similaridade do kernel e a intensidade da regularização.\nUma combinação inadequada pode produzir tanto um modelo excessivamente flexível quanto excessivamente rígido."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#questão-1",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#questão-1",
+    "title": "A2 — Métodos Locais e Kernels",
+    "section": "4.1 Questão 1",
+    "text": "4.1 Questão 1\nRealize a separação dos dados em treinamento e teste.\n\nInforme o número de observações em cada conjunto e descreva o procedimento utilizado.\nUtilizando apenas o conjunto de treinamento, apresente:\n\n\nestatísticas descritivas;\ninvestigação de valores ausentes;\ngráficos de y em função de x1, x2, x3 e x4.\n\n\nCom base na análise exploratória, discuta:\n\n\nhá indícios de relações não lineares?\ntodas as covariáveis parecem igualmente informativas?\npor que uma regressão linear global pode ter dificuldade para representar determinadas estruturas observadas?\n\n\nExplique por que o conjunto de teste deve permanecer isolado durante a construção dos modelos.\nExplique a diferença entre erro de treinamento, erro estimado por validação cruzada e erro de teste."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#questão-2",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#questão-2",
+    "title": "A2 — Métodos Locais e Kernels",
+    "section": "5.1 Questão 2",
+    "text": "5.1 Questão 2\n\nMostre que a previsão KNN é equivalente à solução do problema de mínimos quadrados local\n\n\\[\n\\widehat\\beta_0(x_0)\n=\n\\arg\\min_{\\beta_0}\n\\sum_{i\\in N_k(x_0)}\n(Y_i-\\beta_0)^2\n\\]\ne explique em que sentido o KNN pode ser interpretado como uma regressão local de grau zero.\n\nConsidere uma grade suficientemente ampla de valores de \\(k\\). Utilizando os 10 folds do conjunto de treinamento, obtenha o RMSE médio de validação para cada valor e selecione\n\n\\[\nk^\\ast\n=\n\\arg\\min_k\n\\widehat R_{CV}(k)\n\\]\nApresente a grade utilizada, o gráfico do RMSE de validação em função de \\(k\\) e identifique visualmente \\(k^\\ast\\).\n\nCompare graficamente três ajustes:\n\n\num valor pequeno de \\(k\\);\n\\(k=k^\\ast\\);\num valor grande de \\(k\\).\n\nExplique o comportamento observado em termos de localidade, flexibilidade, viés e variância.\n\nRepita o procedimento de seleção de \\(k\\), ainda utilizando somente validação cruzada no conjunto de treinamento, para:\n\n\nx1;\nx1 + x2;\nx1 + x2 + x3 + x4.\n\nCompare os RMSEs médios de validação e os valores de \\(k\\) selecionados. Discuta por que adicionar covariáveis pode alterar (e eventualmente piorar) a qualidade das vizinhanças em um método baseado em distância.\n\nExplique por que a padronização dos preditores é importante quando o KNN utiliza mais de uma covariável."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#questão-3",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#questão-3",
+    "title": "A2 — Métodos Locais e Kernels",
+    "section": "6.1 Questão 3",
+    "text": "6.1 Questão 3\n\nCompare os pesos atribuídos às observações pelo KNN e pelo estimador de Nadaraya–Watson. Explique como o uso de um kernel transforma uma vizinhança rígida em uma vizinhança ponderada.\nImplemente o estimador utilizando kernel Gaussiano. Considere uma grade suficientemente ampla de valores de \\(h\\) e selecione, por validação cruzada,\n\n\\[\nh^\\ast\n=\n\\arg\\min_h\n\\widehat R_{CV}(h)\n\\]\nApresente a grade utilizada, o gráfico do RMSE médio de validação em função de \\(h\\) e o valor selecionado.\n\nConstrua três ajustes utilizando:\n\n\num valor de \\(h\\) menor que \\(h^\\ast\\);\n\\(h=h^\\ast\\);\num valor de \\(h\\) substancialmente maior que \\(h^\\ast\\).\n\nExplique o comportamento observado em termos de suavização, flexibilidade, viés e variância.\n\nCompare o kernel Gaussiano com o kernel Epanechnikov. Para que a comparação preditiva seja adequada, selecione a largura de banda de cada procedimento utilizando validação cruzada.\n\nApresente os resultados e discuta:\n\nNesta aplicação, a escolha da forma do kernel parece exercer maior ou menor influência que a escolha da largura de banda?\n\n\nCompare o papel de \\(k\\) no KNN com o papel de \\(h\\) no Nadaraya–Watson. Explique por que\n\n\\[\nk\\downarrow\n\\Longrightarrow\n\\text{flexibilidade}\\uparrow\n\\]\nenquanto\n\\[\nh\\downarrow\n\\Longrightarrow\n\\text{flexibilidade}\\uparrow\n\\]"
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#questão-4",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#questão-4",
+    "title": "A2 — Métodos Locais e Kernels",
+    "section": "7.1 Questão 4",
+    "text": "7.1 Questão 4\n\nUtilizando x1, ajuste uma regressão local de grau 0 e uma regressão local de grau 1. Selecione o parâmetro de suavização de cada modelo por validação cruzada.\nCompare graficamente os dois ajustes, dando atenção especial às regiões próximas às fronteiras do domínio de x1.\nExplique por que a regressão linear local pode reduzir o viés de fronteira em relação ao ajuste local constante.\nCompare KNN, Nadaraya–Watson e regressão polinomial local quanto a:\n\n\ndefinição da vizinhança;\nforma dos pesos;\nmodelo ajustado localmente;\nhiperparâmetro de suavização.\n\nApresente uma síntese organizada das principais semelhanças e diferenças."
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#questão-5",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#questão-5",
+    "title": "A2 — Métodos Locais e Kernels",
+    "section": "8.1 Questão 5",
+    "text": "8.1 Questão 5\n\nExplique o papel de cada termo da função objetivo. Em particular, interprete:\n\n\\[\n\\sum_{i=1}^{n}\n(y_i-f(\\mathbf x_i))^2\n\\]\ne\n\\[\n\\lambda\\|f\\|_{\\mathcal H}^{2}\n\\]\n\nUtilizando validação cruzada no conjunto de treinamento, investigue uma grade de valores de \\(\\gamma\\) e \\(\\lambda\\) e selecione conjuntamente\n\n\\[\n(\\gamma^\\ast,\\lambda^\\ast)\n=\n\\arg\\min_{\\gamma,\\lambda}\n\\widehat R_{CV}(\\gamma,\\lambda)\n\\]\nApresente a grade utilizada e um gráfico que permita visualizar o RMSE de validação para as diferentes combinações.\n\nExplique os papéis distintos de \\(\\gamma\\) e \\(\\lambda\\). O que cada hiperparâmetro controla?\nExplique o que tende a ocorrer quando \\(\\lambda\\rightarrow 0\\) e quando \\(\\lambda\\) aumenta.\nEstabeleça uma conexão conceitual entre o Ridge estudado na Atividade 1 e o Kernel Ridge:\n\n\\[\n\\text{Ridge}\n\\longrightarrow\n\\text{penalização dos coeficientes}\n\\]\n\\[\n\\text{Kernel Ridge}\n\\longrightarrow\n\\text{penalização da complexidade de }f\n\\]"
+  },
+  {
+    "objectID": "atividades/atividade_2_metodos_locais_kernels.html#questão-6",
+    "href": "atividades/atividade_2_metodos_locais_kernels.html#questão-6",
+    "title": "A2 — Métodos Locais e Kernels",
+    "section": "9.1 Questão 6",
+    "text": "9.1 Questão 6\nAvalie no mesmo conjunto de teste os seguintes procedimentos, utilizando exclusivamente as configurações previamente selecionadas por validação cruzada:\n\nmelhor configuração de KNN definida na Parte II;\nNadaraya–Watson com a configuração selecionada na Parte III;\nregressão polinomial local com a configuração selecionada na Parte IV;\nKernel Ridge com \\((\\gamma^\\ast,\\lambda^\\ast)\\).\n\n\nPara cada método, calcule RMSE e MAE no conjunto de teste.\nConstrua uma tabela final no formato:\n\n\n\n\n\n\n\n\n\n\n\nModelo\nHiperparâmetro(s) selecionado(s)\nRMSE validação\nRMSE teste\nMAE teste\n\n\n\n\nKNN\n\n\n\n\n\n\nNadaraya–Watson\n\n\n\n\n\n\nRegressão polinomial local\n\n\n\n\n\n\nKernel Ridge\n\n\n\n\n\n\n\n\nPara cada método, construa:\n\n\ngráfico observado versus predito;\ngráfico de resíduos.\n\n\nO método com menor RMSE médio de validação foi também aquele com menor RMSE de teste? Discuta os resultados sem utilizar o teste para redefinir os modelos.\nExiste um método claramente superior em todos os critérios? Fundamente sua resposta utilizando as métricas e os diagnósticos gráficos.\nAnalise o comportamento dos erros ao longo do domínio de x1. Existem regiões em que algum dos métodos apresenta maior dificuldade?\nImagine que um dos procedimentos será utilizado para predizer y para novas observações.\n\nEscolha um único método para utilização futura e defenda sua decisão.\nSua justificativa não deverá se limitar a identificar o menor RMSE. Considere conjuntamente:\n\ncapacidade de generalização;\nestabilidade;\nflexibilidade;\ncomportamento dos resíduos;\nsensibilidade aos hiperparâmetros;\ncomplexidade do procedimento;\ninterpretabilidade."
+  },
+  {
+    "objectID": "programacao/semana-6.html#material-complementar",
+    "href": "programacao/semana-6.html#material-complementar",
+    "title": "Semana 06",
+    "section": "Material Complementar",
+    "text": "Material Complementar\n Métodos Locais e Kernels"
+  },
+  {
+    "objectID": "programacao/semana-6.html#atividade-avaliativa---a2",
+    "href": "programacao/semana-6.html#atividade-avaliativa---a2",
+    "title": "Semana 06",
+    "section": "Atividade Avaliativa - A2",
+    "text": "Atividade Avaliativa - A2\n A2 — Métodos Locais e Kernels\n\n\n\n\n\n\nInformações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 30/09/2026\nEntrega: 11/10/2026\nEntrega via Moodle"
   }
 ]

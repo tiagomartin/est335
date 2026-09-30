@@ -1,0 +1,1988 @@
+---
+title: "Aplicação prática: métodos locais e kernels"
+subtitle: "Material complementar — A2"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    embed-resources: true
+lang: pt-BR
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# 1 Objetivo
+
+Este material apresenta, de forma prática, um fluxo completo para os conceitos estudados em **métodos locais e kernels**:
+
+::: {.callout-note appearance="simple"}
+## Fluxo de análise
+
+**Dados** → **treino/teste** → **validação cruzada** → **KNN** → **Nadaraya–Watson** → **regressão local** → **Kernel Ridge** → **avaliação final**
+:::
+
+Este material serve de apoio para a realização da **Atividade Avaliativa A2**. O exemplo deve ser utilizado como referência para compreender a lógica dos procedimentos, a seleção dos hiperparâmetros e sua implementação em R.
+
+A base utilizada aqui é **diferente da base da atividade avaliativa**.
+
+O objetivo principal não é descobrir qual método é universalmente melhor, mas compreender como diferentes mecanismos de **localidade e suavização** controlam a flexibilidade do modelo.
+
+# 2 Pacotes
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(kknn)
+library(KernSmooth)
+library(locfit)
+
+tidymodels_prefer()
+
+set.seed(335)
+```
+
+# 3 Uma base simulada para estudo
+
+Vamos construir uma relação não linear entre uma variável preditora $x$ e uma resposta $y$.
+
+```{r}
+set.seed(335)
+
+n <- 300
+
+x <- runif(n, -3, 3)
+
+y <-
+  2 * sin(1.5 * x) +
+  0.45 * x +
+  rnorm(n, mean = 0, sd = 0.65)
+
+dados <-
+  tibble(
+    x = x,
+    y = y
+  )
+
+glimpse(dados)
+```
+
+Visualizamos os dados:
+
+```{r}
+ggplot(dados, aes(x = x, y = y)) +
+  geom_point(alpha = 0.55) +
+  labs(
+    x = "x",
+    y = "y",
+    title = "Relação não linear entre x e y"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+A relação entre $x$ e $y$ é claramente não linear. Portanto, uma reta global pode ser excessivamente rígida para representar a estrutura dos dados.
+
+Em uma aplicação real, naturalmente, não conhecemos a função que gerou os dados.
+
+# 4 Treinamento, validação e teste
+
+Assim como na Atividade 1, começamos reservando o conjunto de teste:
+
+$$
+\mathcal D
+=
+\mathcal D_{\text{treino}}
+\cup
+\mathcal D_{\text{teste}}
+$$
+
+```{r}
+set.seed(335)
+
+split <-
+  initial_split(
+    dados,
+    prop = 0.80
+  )
+
+treino <- training(split)
+teste  <- testing(split)
+
+dim(treino)
+dim(teste)
+```
+
+::: {.callout-important}
+## Importante
+
+O conjunto de **teste** será reservado exclusivamente para a **avaliação final do modelo**.
+
+A escolha de $k$, $h$, $\lambda$ e dos demais hiperparâmetros será realizada por **validação cruzada aplicada apenas ao conjunto de treinamento**.
+:::
+
+# 5 Validação cruzada
+
+Criamos 10 partições dentro do conjunto de treinamento:
+
+```{r}
+set.seed(335)
+
+folds <-
+  vfold_cv(
+    treino,
+    v = 10
+  )
+
+folds
+```
+
+Em cada iteração, aproximadamente nove partes são utilizadas para ajuste e uma parte para validação.
+
+A lógica continua sendo:
+
+$$
+\text{Treino}
+\rightarrow
+\text{validação cruzada}
+\rightarrow
+\text{hiperparâmetro ótimo}
+$$
+
+O teste permanece intocado.
+
+# 6 Modelo de referência: regressão linear
+
+Antes dos métodos locais, ajustamos uma regressão linear simples:
+
+$$
+Y=\beta_0+\beta_1X+\varepsilon
+$$
+
+```{r}
+modelo_lm <-
+  linear_reg() |>
+  set_engine("lm")
+
+wf_lm <-
+  workflow() |>
+  add_formula(y ~ x) |>
+  add_model(modelo_lm)
+
+ajuste_lm <-
+  fit(
+    wf_lm,
+    data = treino
+  )
+```
+
+Visualizamos o ajuste:
+
+```{r}
+grid_x <-
+  tibble(
+    x = seq(
+      min(treino$x),
+      max(treino$x),
+      length.out = 300
+    )
+  )
+
+pred_lm <-
+  predict(
+    ajuste_lm,
+    new_data = grid_x
+  ) |>
+  bind_cols(grid_x)
+
+ggplot(treino, aes(x = x, y = y)) +
+  geom_point(alpha = 0.4) +
+  geom_line(
+    data = pred_lm,
+    aes(y = .pred),
+    linewidth = 1
+  ) +
+  labs(
+    title = "Regressão linear global",
+    x = "x",
+    y = "y"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+A dificuldade é visual: uma única reta tenta representar toda a relação entre $x$ e $y$.
+
+Os métodos locais seguirão outra estratégia.
+
+# 7 KNN para regressão
+
+Para prever em $x_0$, o KNN identifica os $k$ pontos mais próximos:
+
+$$
+N_k(x_0)
+=
+\{\text{$k$ vizinhos mais próximos de }x_0\}
+$$
+
+e calcula
+
+$$
+\widehat g(x_0)
+=
+\frac{1}{k}
+\sum_{i\in N_k(x_0)}Y_i
+$$
+
+Assim, a previsão é uma média local.
+
+## 7.1 KNN como regressão local de grau zero
+
+Considere o problema
+
+$$
+\widehat\beta_0(x_0)
+=
+\arg\min_{\beta_0}
+\sum_{i\in N_k(x_0)}
+(Y_i-\beta_0)^2
+$$
+
+Derivando:
+
+$$
+\frac{\partial}{\partial\beta_0}
+\sum_{i\in N_k(x_0)}
+(Y_i-\beta_0)^2
+=
+-2
+\sum_{i\in N_k(x_0)}
+(Y_i-\beta_0)
+$$
+
+Igualando a zero:
+
+$$
+\widehat\beta_0(x_0)
+=
+\frac{1}{k}
+\sum_{i\in N_k(x_0)}Y_i
+$$
+
+Portanto,
+
+$$
+\boxed{
+\widehat g_{\text{KNN}}(x_0)
+=
+\widehat\beta_0(x_0)
+}
+$$
+
+O KNN pode ser interpretado como uma **regressão local constante**, ou regressão local de grau zero.
+
+A palavra **local** é essencial: uma nova constante é obtida para cada ponto $x_0$.
+
+# 8 Ajustando KNN com tidymodels
+
+No `parsnip`, utilizamos `nearest_neighbor()`.
+
+```{r}
+modelo_knn <-
+  nearest_neighbor(
+    neighbors = tune(),
+    weight_func = "rectangular",
+    dist_power = 2
+  ) |>
+  set_mode("regression") |>
+  set_engine("kknn")
+```
+
+Construímos a receita:
+
+```{r}
+receita_knn <-
+  recipe(y ~ x, data = treino) |>
+  step_normalize(all_predictors())
+```
+
+Mesmo com apenas uma variável, manteremos a padronização para que o procedimento possa ser generalizado para várias covariáveis.
+
+```{r}
+wf_knn <-
+  workflow() |>
+  add_recipe(receita_knn) |>
+  add_model(modelo_knn)
+```
+
+# 9 Construindo a grade de $k$
+
+Investigamos diferentes tamanhos de vizinhança:
+
+```{r}
+grade_k <-
+  tibble(
+    neighbors = seq(1, 61, by = 2)
+  )
+
+grade_k
+```
+
+Valores pequenos de $k$ produzem vizinhanças muito locais.
+
+Valores grandes utilizam uma parcela maior dos dados.
+
+Esquematicamente,
+
+$$
+k\downarrow
+\quad\Longrightarrow\quad
+\text{localidade}\uparrow
+\quad\Longrightarrow\quad
+\text{flexibilidade}\uparrow
+$$
+
+enquanto
+
+$$
+k\uparrow
+\quad\Longrightarrow\quad
+\text{suavização}\uparrow
+\quad\Longrightarrow\quad
+\text{flexibilidade}\downarrow
+$$
+
+# 10 Selecionando $k$ por validação cruzada
+
+```{r}
+set.seed(335)
+
+tuning_knn <-
+  tune_grid(
+    wf_knn,
+    resamples = folds,
+    grid = grade_k,
+    metrics = metric_set(rmse),
+    control = control_grid(save_pred = TRUE)
+  )
+```
+
+Extraímos os resultados:
+
+```{r}
+resultados_knn <-
+  collect_metrics(tuning_knn) |>
+  filter(.metric == "rmse")
+
+resultados_knn |>
+  select(neighbors, mean, std_err) |>
+  arrange(neighbors)
+```
+
+Selecionamos o menor RMSE médio:
+
+```{r}
+melhor_knn <-
+  select_best(
+    tuning_knn,
+    metric = "rmse"
+  )
+
+melhor_knn
+```
+
+O ponto fundamental é:
+
+$$
+\boxed{
+k^\ast
+=
+\arg\min_k
+\widehat R_{CV}(k)
+}
+$$
+
+O conjunto de teste ainda não foi utilizado.
+
+# 11 Curva do erro de validação do KNN
+
+```{r}
+ggplot(
+  resultados_knn,
+  aes(x = neighbors, y = mean)
+) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  geom_vline(
+    xintercept = melhor_knn$neighbors,
+    linetype = 2
+  ) +
+  labs(
+    x = "Número de vizinhos (k)",
+    y = "RMSE médio de validação",
+    title = "KNN: seleção de k por validação cruzada"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+## 11.1 Como interpretar?
+
+Com $k$ muito pequeno, o modelo pode acompanhar excessivamente particularidades da amostra.
+
+Isso tende a produzir
+
+$$
+\text{baixo viés}
+\qquad\text{e}\qquad
+\text{alta variância}
+$$
+
+Com $k$ muito grande, muitas observações distantes influenciam a previsão.
+
+O modelo se torna mais suave:
+
+$$
+\text{maior viés}
+\qquad\text{e}\qquad
+\text{menor variância}
+$$
+
+A validação cruzada procura um compromisso entre esses dois extremos.
+
+# 12 Visualizando diferentes valores de $k$
+
+Vamos comparar três níveis de flexibilidade.
+
+```{r}
+ajustar_knn <- function(k) {
+
+  modelo <-
+    nearest_neighbor(
+      neighbors = k,
+      weight_func = "rectangular",
+      dist_power = 2
+    ) |>
+    set_mode("regression") |>
+    set_engine("kknn")
+
+  workflow() |>
+    add_recipe(receita_knn) |>
+    add_model(modelo) |>
+    fit(data = treino)
+}
+
+k_pequeno <- 3
+k_otimo   <- melhor_knn$neighbors
+k_grande  <- 51
+
+fit_k3  <- ajustar_knn(k_pequeno)
+fit_kcv <- ajustar_knn(k_otimo)
+fit_k51 <- ajustar_knn(k_grande)
+```
+
+Previsões em uma grade:
+
+```{r}
+pred_k <-
+  bind_rows(
+    predict(fit_k3, grid_x) |>
+      bind_cols(grid_x) |>
+      mutate(modelo = paste0("k = ", k_pequeno)),
+
+    predict(fit_kcv, grid_x) |>
+      bind_cols(grid_x) |>
+      mutate(modelo = paste0("k = ", k_otimo, " (CV)")),
+
+    predict(fit_k51, grid_x) |>
+      bind_cols(grid_x) |>
+      mutate(modelo = paste0("k = ", k_grande))
+  )
+```
+
+```{r}
+# Rótulos dos modelos
+rot_pequeno <- paste0("k = ", k_pequeno)
+rot_otimo   <- paste0("k = ", k_otimo, " (CV)")
+rot_grande  <- paste0("k = ", k_grande)
+
+# Cores
+cores_k <- setNames(
+  c("#D55E00", "#0072B2", "#009E73"),
+  c(rot_pequeno, rot_otimo, rot_grande)
+)
+
+# Tipos de linha
+linhas_k <- setNames(
+  c("dashed", "solid", "dotdash"),
+  c(rot_pequeno, rot_otimo, rot_grande)
+)
+
+ggplot(treino, aes(x = x, y = y)) +
+  geom_point(
+    alpha = 0.45,
+    color = "grey55"
+  ) +
+  geom_line(
+    data = pred_k,
+    aes(
+      y = .pred,
+      color = modelo,
+      linetype = modelo
+    ),
+    linewidth = 1.2
+  ) +
+  scale_color_manual(values = cores_k) +
+  scale_linetype_manual(values = linhas_k) +
+  labs(
+    x = "x",
+    y = "y",
+    color = NULL,
+    linetype = NULL,
+    title = "KNN: efeito de k sobre a flexibilidade"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+Observe que $k$ não é apenas um detalhe computacional. Ele controla diretamente a complexidade do estimador.
+
+# 13 Do KNN aos kernels
+
+No KNN uniforme, podemos escrever os pesos aproximadamente como
+
+$$
+w_i(x_0)
+=
+\begin{cases}
+1/k, & X_i\in N_k(x_0)\\
+0, & \text{caso contrário}
+\end{cases}
+$$
+
+Todos os $k$ vizinhos recebem o mesmo peso.
+
+Isso cria uma fronteira rígida:
+
+$$
+\text{vizinho}
+\quad\text{versus}\quad
+\text{não vizinho}
+$$
+
+Uma alternativa é permitir que a influência de uma observação diminua gradualmente com sua distância a $x_0$.
+
+É exatamente essa a ideia dos **kernels de suavização**.
+
+# 14 Estimador de Nadaraya--Watson
+
+O estimador pode ser escrito como
+
+$$
+\widehat g_h(x_0)
+=
+\frac{
+\sum_{i=1}^{n}
+K\left(
+\frac{X_i-x_0}{h}
+\right)Y_i
+}{
+\sum_{i=1}^{n}
+K\left(
+\frac{X_i-x_0}{h}
+\right)
+}
+$$
+
+ou, equivalentemente,
+
+$$
+\widehat g_h(x_0)
+=
+\sum_{i=1}^{n}
+w_i(x_0)Y_i
+$$
+
+com
+
+$$
+w_i(x_0)
+=
+\frac{
+K\left(
+\frac{X_i-x_0}{h}
+\right)
+}{
+\sum_{j=1}^{n}
+K\left(
+\frac{X_j-x_0}{h}
+\right)
+}
+$$
+
+Os pesos dependem da distância ao ponto em que queremos realizar a previsão.
+
+# 15 Kernel Gaussiano
+
+Considere
+
+$$
+K(u)
+=
+\frac{1}{\sqrt{2\pi}}
+\exp\left(-\frac{u^2}{2}\right)
+$$
+
+Implementamos o estimador:
+
+```{r}
+nw_gauss <- function(x_train, y_train, x_new, h) {
+
+  map_dbl(
+    x_new,
+    function(x0) {
+
+      pesos <-
+        dnorm(
+          (x_train - x0) / h
+        )
+
+      sum(pesos * y_train) /
+        sum(pesos)
+    }
+  )
+}
+```
+
+Exemplo com $h=0.30$:
+
+```{r}
+pred_nw_exemplo <-
+  grid_x |>
+  mutate(
+    .pred = nw_gauss(
+      treino$x,
+      treino$y,
+      x,
+      h = 0.30
+    )
+  )
+
+ggplot(treino, aes(x = x, y = y)) +
+  geom_point(alpha = 0.35) +
+  geom_line(
+    data = pred_nw_exemplo,
+    aes(y = .pred),
+    linewidth = 1
+  ) +
+  labs(
+    title = "Nadaraya–Watson com kernel Gaussiano",
+    subtitle = "Exemplo com h = 0,30",
+    x = "x",
+    y = "y"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+# 16 O papel da largura de banda $h$
+
+No estimador kernel, $h$ controla o tamanho efetivo da vizinhança.
+
+Quando
+
+$$
+h\downarrow
+$$
+
+os pesos se concentram fortemente em observações próximas de $x_0$.
+
+Assim,
+
+$$
+h\downarrow
+\quad\Longrightarrow\quad
+\text{localidade}\uparrow
+\quad\Longrightarrow\quad
+\text{flexibilidade}\uparrow
+$$
+
+Por outro lado,
+
+$$
+h\uparrow
+\quad\Longrightarrow\quad
+\text{suavização}\uparrow
+\quad\Longrightarrow\quad
+\text{flexibilidade}\downarrow
+$$
+
+::: {.callout-note}
+## Comparação com KNN
+
+Observe que $k$ e $h$ caminham em sentidos opostos:
+
+$$
+k\downarrow
+\Rightarrow
+\text{flexibilidade}\uparrow
+$$
+
+mas
+
+$$
+h\downarrow
+\Rightarrow
+\text{flexibilidade}\uparrow
+$$
+
+Logo, **aumentar $k$ suaviza**, enquanto **aumentar $h$ também suaviza**.
+:::
+
+# 17 Selecionando $h$ por validação cruzada
+
+Como nossa implementação de Nadaraya--Watson é direta, podemos escrever uma função para avaliar cada $h$ nos folds.
+
+```{r}
+rmse_nw_fold <- function(split, h) {
+
+  dados_ajuste <- analysis(split)
+  dados_val    <- assessment(split)
+
+  pred <-
+    nw_gauss(
+      dados_ajuste$x,
+      dados_ajuste$y,
+      dados_val$x,
+      h
+    )
+
+  sqrt(
+    mean(
+      (dados_val$y - pred)^2
+    )
+  )
+}
+```
+
+Construímos uma grade:
+
+```{r}
+grade_h <-
+  tibble(
+    h = seq(0.05, 1.20, length.out = 35)
+  )
+```
+
+Calculamos o RMSE médio de validação:
+
+```{r}
+resultados_h <-
+  grade_h |>
+  mutate(
+    rmse_cv = map_dbl(
+      h,
+      function(h_atual) {
+
+        map_dbl(
+          folds$splits,
+          rmse_nw_fold,
+          h = h_atual
+        ) |>
+          mean()
+      }
+    )
+  )
+
+resultados_h
+```
+
+Selecionamos
+
+```{r}
+melhor_h <-
+  resultados_h |>
+  slice_min(
+    rmse_cv,
+    n = 1
+  )
+
+melhor_h
+```
+
+Portanto,
+
+$$
+\boxed{
+h^\ast
+=
+\arg\min_h
+\widehat R_{CV}(h)
+}
+$$
+
+Novamente, o conjunto de teste não participou da escolha.
+
+# 18 Curva do erro de validação em função de $h$
+
+```{r}
+ggplot(
+  resultados_h,
+  aes(x = h, y = rmse_cv)
+) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 1.8) +
+  geom_vline(
+    xintercept = melhor_h$h,
+    linetype = 2
+  ) +
+  labs(
+    x = "Largura de banda (h)",
+    y = "RMSE médio de validação",
+    title = "Nadaraya–Watson: seleção de h"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+Valores muito pequenos de $h$ podem gerar um ajuste excessivamente variável.
+
+Valores muito grandes podem suavizar a estrutura dos dados em excesso.
+
+# 19 Visualizando diferentes valores de $h$
+
+```{r}
+h_pequeno <- 0.08
+h_otimo   <- melhor_h$h
+h_grande  <- 0.90
+
+pred_h <-
+  bind_rows(
+    grid_x |>
+      mutate(
+        .pred = nw_gauss(
+          treino$x, treino$y, x, h_pequeno
+        ),
+        modelo = paste0("h = ", h_pequeno)
+      ),
+
+    grid_x |>
+      mutate(
+        .pred = nw_gauss(
+          treino$x, treino$y, x, h_otimo
+        ),
+        modelo = paste0("h = ", round(h_otimo, 3), " (CV)")
+      ),
+
+    grid_x |>
+      mutate(
+        .pred = nw_gauss(
+          treino$x, treino$y, x, h_grande
+        ),
+        modelo = paste0("h = ", h_grande)
+      )
+  )
+```
+
+```{r}
+# Rótulos dos modelos
+rot_h_pequeno <- paste0("h = ", h_pequeno)
+rot_h_otimo   <- paste0("h = ", round(h_otimo, 3), " (CV)")
+rot_h_grande  <- paste0("h = ", h_grande)
+
+# Cores:
+# laranja = mais flexível
+# azul    = selecionado por CV
+# verde   = mais suavizado
+cores_h <- setNames(
+  c("#D55E00", "#0072B2", "#009E73"),
+  c(rot_h_pequeno, rot_h_otimo, rot_h_grande)
+)
+
+# Tipos de linha
+linhas_h <- setNames(
+  c("dashed", "solid", "dotdash"),
+  c(rot_h_pequeno, rot_h_otimo, rot_h_grande)
+)
+
+ggplot(treino, aes(x = x, y = y)) +
+  geom_point(
+    alpha = 0.45,
+    color = "grey55"
+  ) +
+  geom_line(
+    data = pred_h,
+    aes(
+      y = .pred,
+      color = modelo,
+      linetype = modelo
+    ),
+    linewidth = 1.2
+  ) +
+  scale_color_manual(values = cores_h) +
+  scale_linetype_manual(values = linhas_h) +
+  labs(
+    x = "x",
+    y = "y",
+    color = NULL,
+    linetype = NULL,
+    title = "Nadaraya–Watson: efeito de h"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+A comparação torna visível o compromisso entre viés e variância.
+
+# 20 A forma do kernel
+
+A largura de banda não é a única escolha possível. Também podemos modificar a forma de $K$.
+
+Por exemplo, o kernel Epanechnikov é
+
+$$
+K(u)
+=
+\frac{3}{4}(1-u^2)
+I(|u|\leq 1)
+$$
+
+Implementamos:
+
+```{r}
+K_epan <- function(u) {
+
+  ifelse(
+    abs(u) <= 1,
+    0.75 * (1 - u^2),
+    0
+  )
+}
+
+nw_epan <- function(x_train, y_train, x_new, h) {
+
+  map_dbl(
+    x_new,
+    function(x0) {
+
+      pesos <-
+        K_epan(
+          (x_train - x0) / h
+        )
+
+      if (sum(pesos) == 0) {
+        return(
+          y_train[
+            which.min(
+              abs(x_train - x0)
+            )
+          ]
+        )
+      }
+
+      sum(pesos * y_train) /
+        sum(pesos)
+    }
+  )
+}
+```
+
+Podemos comparar os kernels utilizando uma mesma largura de banda apenas para compreender visualmente a diferença:
+
+```{r}
+h_comparacao <- 0.40
+
+comparacao_kernel <-
+  bind_rows(
+    grid_x |>
+      mutate(
+        .pred = nw_gauss(
+          treino$x,
+          treino$y,
+          x,
+          h_comparacao
+        ),
+        kernel = "Gaussiano"
+      ),
+
+    grid_x |>
+      mutate(
+        .pred = nw_epan(
+          treino$x,
+          treino$y,
+          x,
+          h_comparacao
+        ),
+        kernel = "Epanechnikov"
+      )
+  )
+
+# Cores dos kernels
+cores_kernel <- c(
+  "Epanechnikov" = "#D55E00",
+  "Gaussiano"    = "#0072B2"
+)
+
+# Tipos de linha
+linhas_kernel <- c(
+  "Epanechnikov" = "solid",
+  "Gaussiano"    = "dashed"
+)
+
+ggplot(treino, aes(x = x, y = y)) +
+  geom_point(
+    alpha = 0.45,
+    color = "grey55"
+  ) +
+  geom_line(
+    data = comparacao_kernel,
+    aes(
+      y = .pred,
+      color = kernel,
+      linetype = kernel
+    ),
+    linewidth = 1.2
+  ) +
+  scale_color_manual(values = cores_kernel) +
+  scale_linetype_manual(values = linhas_kernel) +
+  labs(
+    title = "Comparação entre kernels",
+    subtitle = paste0("h = ", h_comparacao),
+    x = "x",
+    y = "y",
+    color = NULL,
+    linetype = NULL
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+::: {.callout-important}
+## Atenção
+
+- Para uma mesma largura de banda, os kernels **Gaussiano** e **Epanechnikov** produzem ajustes bastante semelhantes.
+
+- Neste exemplo, a **largura de banda $h$ exerce um efeito muito mais evidente sobre a flexibilidade do estimador do que a escolha da forma do kernel**.
+
+- Isso sugere que, na prática, a seleção adequada de $h$ costuma ser mais importante do que pequenas diferenças entre kernels razoáveis.
+
+- Usar o mesmo valor numérico de $h$ é útil para uma comparação didática das formas dos kernels, mas não significa que esse valor seja ótimo para ambos.
+
+- Em uma análise preditiva, cada procedimento deve ter seus hiperparâmetros selecionados adequadamente por validação.
+:::
+
+# 21 Regressão polinomial local (LOESS)
+
+Nadaraya--Watson pode ser interpretado como um ajuste local constante.
+
+Uma extensão natural é permitir uma reta diferente em torno de cada ponto $x_0$:
+
+$$
+Y_i
+\approx
+\beta_0(x_0)
++
+\beta_1(x_0)(X_i-x_0)
+$$
+
+Os parâmetros são obtidos resolvendo
+
+$$
+\min_{\beta_0,\beta_1}
+\sum_{i=1}^{n}
+K\left(
+\frac{X_i-x_0}{h}
+\right)
+\left[
+Y_i-\beta_0-\beta_1(X_i-x_0)
+\right]^2
+$$
+
+A estimativa no ponto $x_0$ é
+
+$$
+\widehat g(x_0)
+=
+\widehat\beta_0(x_0)
+$$
+
+## Grau zero versus grau um
+
+Usaremos `locfit()` para visualizar os dois casos.
+
+```{r}
+fit_local_0 <-
+  locfit(
+    y ~ lp(x, deg = 0, nn = 0.25),
+    data = treino
+  )
+
+fit_local_1 <-
+  locfit(
+    y ~ lp(x, deg = 1, nn = 0.25),
+    data = treino
+  )
+```
+
+Previsões:
+
+```{r}
+pred_local <-
+  bind_rows(
+    grid_x |>
+      mutate(
+        .pred = predict(
+          fit_local_0,
+          newdata = grid_x
+        ),
+        grau = "Grau 0"
+      ),
+
+    grid_x |>
+      mutate(
+        .pred = predict(
+          fit_local_1,
+          newdata = grid_x
+        ),
+        grau = "Grau 1"
+      )
+  )
+```
+
+```{r}
+# Cores
+cores_grau <- c(
+  "Grau 0" = "#0072B2",
+  "Grau 1" = "#D55E00"
+)
+
+# Tipos de linha
+linhas_grau <- c(
+  "Grau 0" = "dashed",
+  "Grau 1" = "solid"
+)
+
+ggplot(treino, aes(x = x, y = y)) +
+  geom_point(
+    alpha = 0.45,
+    color = "grey55"
+  ) +
+  geom_line(
+    data = pred_local,
+    aes(
+      y = .pred,
+      color = grau,
+      linetype = grau
+    ),
+    linewidth = 1.2
+  ) +
+  scale_color_manual(values = cores_grau) +
+  scale_linetype_manual(values = linhas_grau) +
+  labs(
+    title = "Regressão polinomial local",
+    subtitle = "Comparação entre grau 0 e grau 1",
+    x = "x",
+    y = "y",
+    color = NULL,
+    linetype = NULL
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+Uma vantagem importante do ajuste linear local aparece nas fronteiras.
+
+Perto de uma extremidade do domínio, as observações disponíveis tendem a se concentrar de apenas um lado de $x_0$.
+
+O ajuste constante local pode sofrer maior viés nessa situação.
+
+A inclinação adicional do modelo de grau 1 permite compensar parte dessa assimetria.
+
+# 22 Três visões de uma mesma ideia
+
+KNN, Nadaraya--Watson e regressão polinomial local compartilham um princípio:
+
+$$
+\text{usar principalmente informação próxima de }x_0
+$$
+
+Mas fazem isso de formas diferentes.
+
+| Método | Vizinhança/pesos | Ajuste local |
+|---|---|---|
+| KNN | $k$ vizinhos | constante |
+| Nadaraya--Watson | pesos kernel | constante |
+| Polinomial local | pesos kernel | polinômio |
+
+Assim,
+
+$$
+\text{KNN}
+\rightarrow
+\text{vizinhança discreta}
+$$
+
+$$
+\text{Nadaraya--Watson}
+\rightarrow
+\text{vizinhança ponderada}
+$$
+
+$$
+\text{Regressão local}
+\rightarrow
+\text{vizinhança ponderada + estrutura local}
+$$
+
+## Observação
+
+Até aqui usamos apenas uma variável.
+
+Suponha agora que existam $p$ preditores e que a distância Euclidiana seja
+
+$$
+d(\mathbf x_i,\mathbf x_0)
+=
+\sqrt{
+\sum_{j=1}^{p}
+(x_{ij}-x_{0j})^2
+}
+$$
+
+À medida que $p$ cresce, manter pontos realmente próximos de $\mathbf x_0$ torna-se mais difícil.
+
+O espaço se torna progressivamente mais esparso.
+
+Esse fenômeno está associado à **maldição da dimensionalidade**.
+
+Em métodos baseados em distância, adicionar uma variável pouco informativa pode alterar quem são os vizinhos sem fornecer sinal útil para prever $Y$.
+
+Portanto,
+
+$$
+\text{mais variáveis}
+\not\Rightarrow
+\text{melhores vizinhanças}
+$$
+
+# 23 Métodos de kernel
+
+Até agora, o kernel foi utilizado para definir **pesos locais**. Em métodos de kernel, a mesma ideia de similaridade também pode ser usada para construir modelos em espaços de funções potencialmente muito ricos.
+
+Considere um kernel
+
+$$
+K(\mathbf x,\mathbf x')
+$$
+
+que mede similaridade entre duas observações. Um exemplo importante é o kernel Gaussiano/RBF:
+
+$$
+K_\gamma(\mathbf x,\mathbf x')
+=
+\exp\left\{
+-\gamma\|\mathbf x-\mathbf x'\|^2
+\right\}
+$$
+
+O parâmetro $\gamma$ controla a **escala de similaridade**:
+
+$$
+\gamma\uparrow
+\quad\Longrightarrow\quad
+\text{similaridade cai mais rapidamente com a distância}
+$$
+
+$$
+\gamma\downarrow
+\quad\Longrightarrow\quad
+\text{similaridade permanece alta em distâncias maiores}
+$$
+
+Observe que esse papel não é o mesmo de $\lambda$, que aparecerá como parâmetro de regularização.
+
+## Kernel Ridge Regression
+
+Na regressão Ridge estudada na Atividade 1,
+
+$$
+\widehat{\boldsymbol\beta}
+=
+\arg\min_{\boldsymbol\beta}
+\left\{
+\sum_{i=1}^{n}
+(y_i-\mathbf x_i^\top\boldsymbol\beta)^2
++
+\lambda\|\boldsymbol\beta\|_2^2
+\right\}
+$$
+
+A penalização atua diretamente sobre os coeficientes.
+
+Em Kernel Ridge, procuramos uma função $f$ pertencente a um espaço de Hilbert com núcleo reprodutor $\mathcal H$:
+
+$$
+\widehat f
+=
+\arg\min_{f\in\mathcal H}
+\left\{
+\sum_{i=1}^{n}
+(y_i-f(x_i))^2
++
+\lambda\|f\|_{\mathcal H}^2
+\right\}
+$$
+
+O primeiro termo mede o ajuste aos dados:
+
+$$
+\underbrace{
+\sum_{i=1}^{n}(y_i-f(x_i))^2
+}_{\text{erro de treinamento}}
+$$
+
+O segundo controla a complexidade da função:
+
+$$
+\underbrace{
+\lambda\|f\|_{\mathcal H}^2
+}_{\text{regularização}}
+$$
+
+Assim,
+
+$$
+\text{Ridge}
+\rightarrow
+\text{penaliza }\boldsymbol\beta
+$$
+
+enquanto
+
+$$
+\text{Kernel Ridge}
+\rightarrow
+\text{penaliza a complexidade de }f
+$$
+
+::: {.callout-note}
+## Convenção usada neste material
+
+Utilizamos a função objetivo **sem** o fator $1/n$ diante da soma dos quadrados. Com essa convenção, a solução matricial contém $\mathbf K+\lambda\mathbf I$.
+
+Se a função objetivo fosse escrita com $\frac{1}{n}\sum_i(\cdot)^2$, a solução equivalente conteria $\mathbf K+n\lambda\mathbf I$. Portanto, é importante manter a parametrização teórica e a implementação coerentes.
+:::
+
+### Teorema do Representante e matriz de Gram
+
+O Teorema do Representante garante que a solução pode ser escrita como
+
+$$
+\widehat f(x)
+=
+\sum_{i=1}^{n}
+\alpha_i K(x_i,x)
+$$
+
+Mesmo que $\mathcal H$ seja um espaço de funções de dimensão muito grande — ou infinita — o estimador é determinado por apenas $n$ coeficientes:
+
+$$
+\boldsymbol\alpha
+=
+(\alpha_1,\ldots,\alpha_n)^\top
+$$
+
+Definimos a **matriz de Gram**
+
+$$
+\mathbf K
+=
+\begin{bmatrix}
+K(x_1,x_1) & \cdots & K(x_1,x_n)\\
+\vdots & \ddots & \vdots\\
+K(x_n,x_1) & \cdots & K(x_n,x_n)
+\end{bmatrix}
+$$
+
+Como
+
+$$
+f(\mathbf X)=\mathbf K\boldsymbol\alpha
+$$
+
+e
+
+$$
+\|f\|_{\mathcal H}^2
+=
+\boldsymbol\alpha^\top
+\mathbf K
+\boldsymbol\alpha,
+$$
+
+o problema funcional pode ser escrito como
+
+$$
+\widehat{\boldsymbol\alpha}
+=
+\arg\min_{\boldsymbol\alpha\in\mathbb R^n}
+\left\{
+\|\mathbf y-\mathbf K\boldsymbol\alpha\|_2^2
++
+\lambda
+\boldsymbol\alpha^\top
+\mathbf K
+\boldsymbol\alpha
+\right\}
+$$
+
+A solução é
+
+$$
+\boxed{
+\widehat{\boldsymbol\alpha}
+=
+(\mathbf K+\lambda\mathbf I)^{-1}\mathbf y
+}
+$$
+
+Na prática, não calcularemos a inversa explicitamente. Resolveremos o sistema linear
+
+$$
+(\mathbf K+\lambda\mathbf I)
+\widehat{\boldsymbol\alpha}
+=
+\mathbf y
+$$
+
+por estabilidade numérica.
+
+### Implementando Kernel Ridge explicitamente em R
+
+Primeiro implementamos o kernel RBF.
+
+```{r}
+kernel_rbf <- function(X1, X2, gamma) {
+
+  X1 <- as.matrix(X1)
+  X2 <- as.matrix(X2)
+
+  n1 <- rowSums(X1^2)
+  n2 <- rowSums(X2^2)
+
+  dist2 <- outer(n1, n2, "+") - 2 * X1 %*% t(X2)
+  dist2 <- pmax(dist2, 0)
+
+  exp(-gamma * dist2)
+}
+```
+
+Agora construímos uma função de ajuste.
+
+```{r}
+ajustar_krr <- function(X, y, gamma, lambda) {
+
+  X <- as.matrix(X)
+  y <- as.numeric(y)
+
+  K <- kernel_rbf(X, X, gamma)
+
+  alpha <- solve(
+    K + lambda * diag(nrow(K)),
+    y
+  )
+
+  list(
+    X_train = X,
+    alpha = alpha,
+    gamma = gamma,
+    lambda = lambda
+  )
+}
+```
+
+A função de previsão utiliza
+
+$$
+\widehat f(x_0)
+=
+\mathbf k(x_0)^\top
+\widehat{\boldsymbol\alpha},
+$$
+
+em que
+
+$$
+\mathbf k(x_0)
+=
+\left[
+K(x_0,x_1),\ldots,K(x_0,x_n)
+\right]^\top.
+$$
+
+```{r}
+predizer_krr <- function(modelo, X_new) {
+
+  K_new <- kernel_rbf(
+    as.matrix(X_new),
+    modelo$X_train,
+    modelo$gamma
+  )
+
+  as.numeric(
+    K_new %*% modelo$alpha
+  )
+}
+```
+
+Essa implementação deixa explícitos os objetos discutidos teoricamente:
+
+$$
+\boxed{
+\mathbf K,
+\quad
+\lambda,
+\quad
+\boldsymbol\alpha,
+\quad
+\widehat f(x)
+}
+$$
+
+### Dois hiperparâmetros com papéis diferentes
+
+Para o kernel RBF,
+
+$$
+K_\gamma(x,x')
+=
+\exp\{-\gamma(x-x')^2\},
+$$
+
+temos dois controles de complexidade que não devem ser confundidos.
+
+O parâmetro $\gamma$ atua na **geometria do kernel** e determina quão rapidamente a similaridade diminui com a distância.
+
+Já $\lambda$ controla a **regularização** da função estimada.
+
+De forma esquemática:
+
+$$
+\gamma\uparrow
+\Rightarrow
+\text{kernel mais localizado}
+$$
+
+$$
+\lambda\uparrow
+\Rightarrow
+\text{regularização mais forte}
+$$
+
+Portanto, não devemos interpretar $\gamma$ e $\lambda$ como duas versões do mesmo parâmetro.
+
+### Selecionando $\gamma$ e $\lambda$ por validação cruzada
+
+Criamos uma grade para os dois hiperparâmetros.
+
+```{r}
+grade_krr <-
+  crossing(
+    gamma = c(0.05, 0.10, 0.25, 0.50, 1, 2),
+    lambda = 10^seq(-3, 1, length.out = 7)
+  )
+
+grade_krr
+```
+
+Como estamos usando apenas `x`, não há problema de escala entre diferentes preditores neste exemplo. Em aplicações multivariadas, a padronização deve ser incorporada ao procedimento de reamostragem para evitar vazamento de informação.
+
+Criamos uma função para avaliar uma combinação $(\gamma,\lambda)$ em um fold.
+
+```{r}
+rmse_krr_fold <- function(split, gamma, lambda) {
+
+  dados_ajuste <- analysis(split)
+  dados_val    <- assessment(split)
+
+  modelo <-
+    ajustar_krr(
+      X = dados_ajuste |> select(x),
+      y = dados_ajuste$y,
+      gamma = gamma,
+      lambda = lambda
+    )
+
+  pred <-
+    predizer_krr(
+      modelo,
+      dados_val |> select(x)
+    )
+
+  sqrt(
+    mean(
+      (dados_val$y - pred)^2
+    )
+  )
+}
+```
+
+Executamos a validação cruzada:
+
+```{r}
+resultados_krr <-
+  grade_krr |>
+  mutate(
+    rmse_cv = map2_dbl(
+      gamma,
+      lambda,
+      function(gamma_atual, lambda_atual) {
+
+        map_dbl(
+          folds$splits,
+          rmse_krr_fold,
+          gamma = gamma_atual,
+          lambda = lambda_atual
+        ) |>
+          mean()
+      }
+    )
+  )
+
+resultados_krr |>
+  arrange(rmse_cv)
+```
+
+Selecionamos a combinação com menor erro médio de validação:
+
+```{r}
+melhor_krr <-
+  resultados_krr |>
+  slice_min(
+    rmse_cv,
+    n = 1,
+    with_ties = FALSE
+  )
+
+melhor_krr
+```
+
+Assim,
+
+$$
+\boxed{
+(\gamma^\ast,\lambda^\ast)
+=
+\arg\min_{\gamma,\lambda}
+\widehat R_{CV}(\gamma,\lambda)
+}
+$$
+
+O conjunto de teste continua intocado.
+
+### Visualizando a interação entre kernel e regularização
+
+```{r}
+# Garantir que gamma seja tratado como variável categórica
+resultados_krr_plot <-
+  resultados_krr |>
+  mutate(
+    gamma_f = factor(
+      gamma,
+      levels = sort(unique(gamma))
+    )
+  )
+
+ggplot(
+  resultados_krr_plot,
+  aes(
+    x = lambda,
+    y = rmse_cv,
+    color = gamma_f,
+    linetype = gamma_f,
+    group = gamma_f
+  )
+) +
+  geom_line(linewidth = 1.1) +
+  geom_point(size = 2.5) +
+  geom_point(
+  data = melhor_krr,
+  aes(
+    x = lambda,
+    y = rmse_cv
+  ),
+  inherit.aes = FALSE,
+  shape = 21,
+  size = 5,
+  stroke = 1.3,
+  fill = "white"
+) +
+  scale_x_log10() +
+  scale_color_manual(
+    values = c(
+      "#0072B2",
+      "#D55E00",
+      "#009E73",
+      "#CC79A7",
+      "#E69F00",
+      "#56B4E9"
+    )
+  ) +
+  scale_linetype_manual(
+    values = c(
+      "solid",
+      "dashed",
+      "dotdash",
+      "longdash",
+      "twodash",
+      "dotted"
+    )
+  ) +
+  labs(
+    x = expression(lambda),
+    y = "RMSE médio de validação",
+    color = expression(gamma),
+    linetype = expression(gamma),
+    title = expression(
+      "Kernel Ridge: seleção conjunta de " * gamma * " e " * lambda
+    )
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+
+
+::: {.callout-note}
+## O que observar?
+
+Cada curva representa um valor de $\gamma$, enquanto o eixo horizontal
+representa diferentes valores de regularização $\lambda$.
+
+Assim, a validação cruzada não seleciona $\gamma$ e $\lambda$
+separadamente. Ela procura a combinação
+
+$$
+(\gamma^\ast,\lambda^\ast)
+=
+\arg\min_{\gamma,\lambda}
+\widehat R_{CV}(\gamma,\lambda)
+$$
+
+Entre as combinações avaliadas, o ponto destacado corresponde ao menor
+RMSE médio de validação.
+
+Os dois hiperparâmetros exercem papéis diferentes: $\gamma$ controla a
+**escala de similaridade do kernel RBF**, enquanto $\lambda$ controla a
+**intensidade da regularização**.
+:::
+
+
+O gráfico permite observar que a qualidade do modelo depende da **combinação** entre a escala de similaridade do kernel e a intensidade da regularização.
+
+Uma combinação inadequada pode produzir tanto um modelo excessivamente flexível quanto excessivamente rígido.
+
+# 24 Finalmente: o conjunto de teste
+
+Somente agora utilizaremos o conjunto de teste.
+
+Os hiperparâmetros já foram escolhidos utilizando apenas o conjunto de treinamento.
+
+### Regressão linear
+
+```{r}
+pred_teste_lm <-
+  predict(
+    ajuste_lm,
+    new_data = teste
+  ) |>
+  bind_cols(
+    teste |> select(y)
+  )
+
+rmse_lm <-
+  pred_teste_lm |>
+  rmse(
+    truth = y,
+    estimate = .pred
+  )
+
+rmse_lm
+```
+
+### KNN final
+
+```{r}
+wf_knn_final <-
+  finalize_workflow(
+    wf_knn,
+    melhor_knn
+  )
+
+ajuste_knn_final <-
+  fit(
+    wf_knn_final,
+    data = treino
+  )
+
+pred_teste_knn <-
+  predict(
+    ajuste_knn_final,
+    new_data = teste
+  ) |>
+  bind_cols(
+    teste |> select(y)
+  )
+
+rmse_knn <-
+  pred_teste_knn |>
+  rmse(
+    truth = y,
+    estimate = .pred
+  )
+
+rmse_knn
+```
+
+### Nadaraya--Watson final
+
+```{r}
+pred_teste_nw <-
+  nw_gauss(
+    treino$x,
+    treino$y,
+    teste$x,
+    melhor_h$h
+  )
+
+rmse_nw <-
+  sqrt(
+    mean(
+      (teste$y - pred_teste_nw)^2
+    )
+  )
+
+rmse_nw
+```
+
+### Kernel Ridge final
+
+```{r}
+ajuste_krr_final <-
+  ajustar_krr(
+    X = treino |> select(x),
+    y = treino$y,
+    gamma = melhor_krr$gamma,
+    lambda = melhor_krr$lambda
+  )
+
+pred_teste_krr <-
+  predizer_krr(
+    ajuste_krr_final,
+    teste |> select(x)
+  )
+
+rmse_krr <-
+  sqrt(
+    mean(
+      (teste$y - pred_teste_krr)^2
+    )
+  )
+
+rmse_krr
+```
+
+# 25 Comparação final
+
+```{r}
+comparacao_final <-
+  tibble(
+    metodo = c(
+      "Regressão linear",
+      "KNN",
+      "Nadaraya-Watson",
+      "Kernel Ridge"
+    ),
+    RMSE = c(
+      rmse_lm$.estimate,
+      rmse_knn$.estimate,
+      rmse_nw,
+      rmse_krr
+    )
+  ) |>
+  arrange(RMSE)
+
+comparacao_final
+```
+
+O objetivo dessa tabela não é concluir que o método com menor RMSE será sempre superior.
+
+Ela responde apenas:
+
+> Para este problema, com estas escolhas feitas previamente por validação, qual foi o desempenho em observações que não participaram da seleção dos modelos?
+
+# 26 O que o teste responde?
+
+O teste **não responde**:
+
+> Qual $k$, $h$, $\sigma$ ou $\lambda$ devo escolher?
+
+Essas perguntas já foram respondidas pela validação cruzada.
+
+O teste responde:
+
+> Depois de realizar todas as escolhas usando os dados de treinamento, qual é o desempenho do procedimento em novas observações?
+
+Essa distinção continua sendo fundamental.
+
+# 27 Fluxo correto de modelagem
+
+O procedimento pode ser resumido como:
+
+$$
+\text{Dados}
+\rightarrow
+\begin{cases}
+\text{Treino}\\
+\text{Teste}
+\end{cases}
+$$
+
+Dentro do treinamento:
+
+$$
+\text{Treino}
+\rightarrow
+\text{validação cruzada}
+\rightarrow
+\text{hiperparâmetros}^{\ast}
+\rightarrow
+\text{modelo final}
+$$
+
+Somente depois:
+
+$$
+\text{Modelo final}
++
+\text{Teste}
+\rightarrow
+\text{estimativa final de generalização}
+$$
+
+Em particular,
+
+$$
+\text{seleção de hiperparâmetros}
+\neq
+\text{avaliação final no teste}
+$$
+
+Esse fluxo será central na **Atividade Avaliativa 2**.
