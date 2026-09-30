@@ -1,23 +1,121 @@
 ---
 title: "Semana 04"
+format:
+  html:
+    fontsize: 1.2em
+    include-in-header:
+      text: |
+        <style>
+        /* Estilos visuais EST304 sem quebrar tipografia do Quarto */
+        .aulas-list .list-group-item {
+          border-left: 4px solid #2761E3;
+          padding-top: 0.8rem;
+          padding-bottom: 0.8rem;
+        }
+        .aulas-list .list-group-item:hover {
+          background-color: #F2F2F2;
+        }
+        .disciplina-badge {
+          background-color: #2761E3;
+        }
+        .btn-est304-main {
+          background-color: #2761E3;
+          border-color: #2761E3;
+          color: #fff;
+        }
+        .btn-est304-main:hover {
+          background-color: #789CEB;
+          border-color: #789CEB;
+          color: #fff;
+        }
+        .btn-est304-outline {
+          color: #2761E3;
+          border-color: #2761E3;
+        }
+        .btn-est304-outline:hover {
+          background-color: #2761E3;
+          color: #fff;
+        }
+        .due-date-badge {
+          color: red;
+          border-color: #7F2E2F;
+          font-size: 16pt;  
+          font-weight: 600;
+          padding: 4px 8px;
+        }
+        </style>
 ---
+
 
 
 ## Slides
 
-{{< fa file-powerpoint size=lg >}} [Flexibilidade: Funções de Base, Polinômios, Splines e Séries](/aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide "Funções de Base, Polinômios, Splines e Séries"){aria-label="Funções de Base, Polinômios, Splines e Séries"}
+::: {.list-group .aulas-list}
 
-{{< fa file-powerpoint size=lg >}} [Seleção de Variáveis e Regularização](/aulas/semanais/semana_04_selecao_regularizacao_v2.html#/title-slide "Seleção de Variáveis e Regularização"){aria-label="Seleção de Variáveis e Regularização"}
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+  <span class="fw-bold">{{< fa file-powerpoint size=lg >}} Flexibilidade: Funções de Base, Polinômios, Splines e Séries </span>
+</div>
+
+<div class="d-flex align-items-center gap-3">
+
+[Ver slides](/aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide){.btn .btn-est304-main .btn-sm}
+
+</div>
+
+:::
+
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+  <span class="fw-bold">{{< fa file-powerpoint size=lg >}} Seleção de Variáveis e Regularização </span>
+</div>
+
+<div class="d-flex align-items-center gap-3">
+
+[Ver slides](/aulas/semanais/semana_04_selecao_regularizacao_v2.html#/title-slide){.btn .btn-est304-main .btn-sm}
+
+</div>
+
+:::
 
 
 ## Material Complementar
 
-{{< fa folder size=lg >}} [Generalização e Regularização](/material_complementar/regularizacao_pratica.html "Material Complementar A1"){aria-label="Material Complementar A1"}
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+  <span class="fw-bold">{{< fa folder size=lg >}} Generalização e Regularização </span>
+</div>
+
+<div class="d-flex align-items-center gap-3">
+
+[Ver material](/material_complementar/regularizacao_pratica.html){.btn .btn-est304-main .btn-sm}
+
+</div>
+
+:::
+
 
 
 ## Atividade Avaliativa - A1
 
-{{< fa list-check size=lg >}} [ A1 — Generalização e Regularização](/atividades/atividade_1_generalizacao_regularizacao.html "Atividade Avaliativa - A1"){aria-label="Atividade Avaliativa - A1"}
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+  <span class="fw-bold">{{< fa list-check size=lg >}} A1 — Generalização e Regularização </span>
+</div>
+
+<div class="d-flex align-items-center gap-3">
+
+[Ver atividade](/atividades/atividade_1_generalizacao_regularizacao.html){.btn .btn-est304-main .btn-sm}
+
+</div>
+
+:::
 
 ::: {.callout-important}
 ## Informações da atividade
@@ -28,4 +126,8 @@ title: "Semana 04"
 
 Entrega via [Moodle](https://moodlepresencial.ufop.br/login/index.php)
 :::
+
+:::
+
+
 
