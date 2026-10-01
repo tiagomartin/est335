@@ -10226,7 +10226,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-com-kernel",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "SVR com kernel",
-    "text": "SVR com kernel\nSe a relação entre \\(X\\) e \\(Y\\) não for linear, podemos utilizar kernels.\nCom RBF, por exemplo,\n\\[\nK(\\mathbf x,\\mathbf x')\n=\n\\exp\\{-\\gamma\\|\\mathbf x-\\mathbf x'\\|^2\\}\n\\]\nA interpretação prática permanece:\n\\(\\varepsilon\\): largura da tolerância; - \\(\\gamma\\): localidade/flexibilidade do kernel.\n\\[\n\\boxed{\n(\\varepsilon,\\gamma)\n\\quad\\text{são hiperparâmetros}\n}\n\\]\ne devem ser escolhidos com dados de treinamento, tipicamente por validação cruzada."
+    "text": "SVR com kernel\nSe a relação entre \\(X\\) e \\(Y\\) não for linear, podemos utilizar kernels.\nCom RBF, por exemplo,\n\\[\nK(\\mathbf x,\\mathbf x')\n=\n\\exp\\{-\\gamma\\|\\mathbf x-\\mathbf x'\\|^2\\}\n\\]\nInterpretação prática:\n\n\n\\(\\varepsilon\\): largura da tolerância;\n\n\\(\\gamma\\): localidade/flexibilidade do kernel.\n\n\\[\n\\boxed{\n(\\varepsilon,\\gamma)\n\\quad\\text{são hiperparâmetros}\n}\n\\]\ne devem ser escolhidos com dados de treinamento, tipicamente por validação cruzada."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#como-interpretar-o-svr-com-kernel",

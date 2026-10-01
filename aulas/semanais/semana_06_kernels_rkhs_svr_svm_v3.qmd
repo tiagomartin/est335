@@ -1300,9 +1300,9 @@ K(\mathbf x,\mathbf x')
 \exp\{-\gamma\|\mathbf x-\mathbf x'\|^2\}
 $$
 
-A interpretação prática permanece:
+Interpretação prática:
 
- $\varepsilon$: largura da tolerância;
+- $\varepsilon$: largura da tolerância;
 - $\gamma$: localidade/flexibilidade do kernel.
 
 $$
