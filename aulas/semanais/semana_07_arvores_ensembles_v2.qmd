@@ -1,0 +1,2136 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Modelos baseados em árvores</span>"
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    footer: "EST335 — Semana 7"
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+incremental: false
+code-link: true
+bibliography: references.bib
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(rpart)
+library(patchwork)
+library(gganimate)
+library(gifski)
+
+theme_set(theme_minimal(base_size = 18))
+set.seed(335)
+```
+
+# Modelos baseados em árvores
+
+## De funções suaves para regras
+
+Até aqui, aproximamos $g(\mathbf{x})$ usando funções suaves:
+
+- splines
+- regressão local
+- kernels
+
+Árvores seguem outra lógica:
+
+$$
+\boxed{
+\text{dividir o espaço de } \mathbf{x}
+\longrightarrow
+\text{formar regiões homogêneas}
+\longrightarrow
+\text{predizer dentro de cada região}
+}
+$$
+
+## De funções suaves para regras
+
+A estrutura da árvore é praticamente a mesma em **regressão** e **classificação**.
+
+O que muda é:
+
+> **o que significa "região homogênea", o que guardamos nas folhas e como combinamos as árvores.**
+
+---
+
+## Antes de tudo: regressão ou classificação?
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Regressão
+
+A resposta é quantitativa:
+
+$$
+Y\in\mathbb{R}
+$$
+
+Exemplos:
+
+- preço de uma casa
+- consumo de energia
+- tempo de internação
+
+**Folha:** produz um valor numérico.
+
+:::
+
+::: {.column width="48%"}
+
+### Classificação
+
+A resposta é categórica:
+
+$$
+Y\in\{1,\ldots,K\}
+$$
+
+Exemplos:
+
+- inadimplente / não inadimplente
+- espécie
+- churn / não churn
+
+**Folha:** produz classe e/ou probabilidades.
+
+:::
+
+::::
+
+
+
+## Nós, ramos, folhas e regiões
+
+![](/images/regressao/arvore_regioes_animada.gif){fig-align="center" width="88%"}
+
+::: {.callout-note appearance="simple"}
+Cada caminho da raiz até uma folha define uma região $\mathcal{R}_m$. Quatro folhas correspondem às regiões $\mathcal{R}_1,\ldots,\mathcal{R}_4$.
+:::
+
+---
+
+## Nós, ramos, folhas e regiões
+
+Da raiz até uma folha, fazemos uma sequência de perguntas do tipo
+
+$$
+X_j \leq s?
+$$
+
+Cada resposta escolhe um ramo. Ao final,
+
+$$
+\boxed{\text{folha }m \Longleftrightarrow \text{região }\mathcal{R}_m}
+$$
+
+A árvore é simultaneamente um conjunto de **regras**, uma **partição do espaço preditor** e um modelo que associa uma previsão a cada região.
+
+---
+
+## Nós, ramos, folhas e regiões
+
+Uma árvore com $M$ folhas particiona o espaço em
+
+$$
+\mathcal{R}_1,\mathcal{R}_2,\ldots,\mathcal{R}_M.
+$$
+
+Para uma nova observação $\mathbf{x}$:
+
+1. começamos no nó raiz;
+2. seguimos as regras de divisão;
+3. chegamos a uma única folha;
+4. usamos a previsão associada àquela região.
+
+$$
+\boxed{
+\mathbf{x}\in\mathcal{R}_m
+\quad\Rightarrow\quad
+\text{predição da folha }m
+}
+$$
+
+---
+
+## Nós, ramos, folhas e regiões
+
+| | Regressão | Classificação |
+|---|---|---|
+| Resposta | quantitativa | categórica |
+| Resumo da folha | média $\bar y_m$ | proporções $\hat p_{mk}$ |
+| Predição | $\hat y=\bar y_m$ | classe de maior probabilidade |
+| Região boa | valores de $y$ parecidos | predominância de uma classe |
+
+
+
+## Nós, ramos, folhas e regiões
+
+
+Para regressão:
+
+$$
+\hat g(\mathbf{x})
+=
+\sum_{m=1}^{M}\bar y_m\,I(\mathbf{x}\in\mathcal{R}_m)
+$$
+
+Para classificação:
+
+$$
+\hat p_k(\mathbf{x})
+=
+\hat p_{mk},
+\qquad \mathbf{x}\in\mathcal{R}_m
+$$
+
+
+## A pergunta feita em cada nó
+
+Para cada variável $X_j$ e ponto de corte $s$, testamos uma regra:
+
+$$
+X_j\leq s
+\qquad\text{versus}\qquad
+X_j>s.
+$$
+
+Ela cria duas regiões filhas.
+
+A árvore procura a divisão que produz **filhos mais homogêneos que o pai**.
+
+$$
+\boxed{
+\text{melhor split}
+=
+\text{maior ganho de homogeneidade}
+}
+$$
+
+O significado de homogeneidade depende do problema.
+
+
+## Regressão: reduzir o erro quadrático
+
+Em uma região $\mathcal{R}_m$, a melhor constante sob perda quadrática é
+
+$$
+\bar y_m
+=
+\frac{1}{n_m}
+\sum_{i:\mathbf{x}_i\in\mathcal{R}_m}y_i
+$$
+
+A impureza do nó pode ser medida por
+
+$$
+RSS_m
+=
+\sum_{i:\mathbf{x}_i\in\mathcal{R}_m}
+(y_i-\bar y_m)^2
+$$
+
+
+## Regressão: reduzir o erro quadrático
+
+
+Uma boa divisão produz:
+
+$$
+\boxed{
+RSS_{\text{esq}}+RSS_{\text{dir}}
+<
+RSS_{\text{pai}}
+}
+$$
+
+Quanto maior a redução, melhor o *split*.
+
+
+
+
+## Classificação: reduzir a mistura de classes
+
+Se $\hat p_{mk}$ é a proporção da classe $k$ no nó $m$, uma medida comum é o **índice de Gini**:
+
+$$
+G_m
+=
+1-\sum_{k=1}^{K}\hat p_{mk}^{\,2}
+$$
+
+- $G_m=0$: nó puro
+- $G_m$ maior: classes mais misturadas
+
+
+
+## Classificação: reduzir a mistura de classes
+
+A árvore escolhe o *split* que reduz a impureza ponderada:
+
+
+$$
+\boxed{
+G_{\text{pai}}
+-
+\left(
+\frac{n_E}{n}G_E+
+\frac{n_D}{n}G_D
+\right)
+}
+$$
+
+Uma alternativa ao índice de Gini é a **entropia**:
+
+$$
+\boxed{
+H_m
+=
+-\sum_{k=1}^{K}
+\hat p_{mk}\log_2(\hat p_{mk})
+}
+$$
+
+onde $\hat p_{mk}$ é a proporção de observações da classe $k$ no nó $m$.
+
+
+## Classificação: reduzir a mistura de classes
+
+
+- **Entropia baixa** $\rightarrow$ nó mais puro
+- **Entropia alta** $\rightarrow$ maior mistura entre as classes<br><br>
+
+::: {.callout-note appearance="simple"}
+Tanto **Gini** quanto **entropia** procuram a mesma coisa:
+*divisões que produzam nós filhos mais puros que o nó pai*.
+:::
+
+
+## Mesma árvore, critérios diferentes
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Regressão
+
+**Pergunta**
+
+> A divisão reduz a dispersão dos valores de $Y$?
+
+Critério típico:
+
+$$
+RSS
+$$
+
+Folha:
+
+$$
+\bar y_m
+$$
+
+:::
+
+::: {.column width="48%"}
+
+### Classificação
+
+**Pergunta**
+
+> A divisão separa melhor as classes?
+
+Critérios típicos:
+
+$$
+\text{Gini ou Entropia}
+$$
+
+Folha:
+
+$$
+(\hat p_{m1},\ldots,\hat p_{mK})
+$$
+
+:::
+
+::::
+
+---
+
+## Exemplo: uma árvore de regressão
+
+```{r}
+#| fig-width: 11
+#| fig-height: 6
+f_real <- function(x) 12 + 4*x - 6*x^2 + x^3 + sin(x)
+n <- 150
+x <- sort(runif(n, -1.5, 3))
+y <- f_real(x) + rnorm(n, sd = 4)
+df_reg <- data.frame(x, y)
+
+fit_reg <- rpart(
+  y ~ x, data = df_reg, method = "anova",
+  control = rpart.control(cp = 0.002, minsplit = 10, maxdepth = 3)
+)
+
+grid_reg <- data.frame(x = seq(min(x), max(x), length.out = 800))
+grid_reg$tree <- predict(fit_reg, grid_reg)
+grid_reg$truth <- f_real(grid_reg$x)
+
+ggplot(df_reg, aes(x, y)) +
+  geom_point(alpha = .48, size = 2) +
+  geom_line(data = grid_reg, aes(x, truth), linewidth = 1.25,
+            linetype = 2) +
+  geom_step(data = grid_reg, aes(x, tree), linewidth = 1.4) +
+  labs(
+    title = "A árvore aproxima uma curva por degraus",
+    subtitle = "Em cada folha, a previsão é constante",
+    x = "X", y = "Y"
+  ) +
+  theme(panel.grid.minor = element_blank())
+```
+
+---
+
+## Exemplo: uma árvore de classificação
+
+```{r}
+#| fig-width: 11
+#| fig-height: 6
+set.seed(336)
+n <- 350
+x1 <- rnorm(n)
+x2 <- rnorm(n)
+eta <- 1.4*x1 - 1.1*x2 + 1.3*x1*x2
+p <- plogis(eta)
+classe <- factor(ifelse(runif(n) < p, "Classe B", "Classe A"))
+df_cls <- data.frame(x1, x2, classe)
+
+fit_cls <- rpart(
+  classe ~ x1 + x2, data = df_cls, method = "class",
+  control = rpart.control(cp = .01, maxdepth = 4, minsplit = 20)
+)
+
+gx <- seq(min(x1), max(x1), length.out = 140)
+gy <- seq(min(x2), max(x2), length.out = 140)
+gr <- expand.grid(x1 = gx, x2 = gy)
+gr$prob_B <- predict(fit_cls, gr, type = "prob")[, "Classe B"]
+
+ggplot() +
+  geom_raster(data = gr, aes(x1, x2, fill = prob_B), alpha = .32) +
+  geom_contour(data = gr, aes(x1, x2, z = prob_B),
+               breaks = .5, linewidth = 1.2) +
+  geom_point(data = df_cls, aes(x1, x2, shape = classe),
+             size = 2, alpha = .65) +
+  labs(
+    title = "Na classificação, as folhas definem regiões de probabilidade",
+    subtitle = "A fronteira aparece onde a probabilidade estimada cruza 0,5",
+    x = expression(X[1]), y = expression(X[2]),
+    fill = "P(Classe B)", shape = "Classe"
+  ) +
+  theme(panel.grid.minor = element_blank())
+```
+
+
+
+## Árvore profunda: baixo viés, alta variância
+
+Uma árvore pode continuar dividindo os dados até criar folhas muito pequenas.
+
+Isso reduz o erro de treinamento, mas pode produzir regras instáveis.
+
+$$
+\boxed{
+\text{árvore muito profunda}
+\Rightarrow
+\text{maior flexibilidade}
+\Rightarrow
+\text{maior risco de overfitting}
+}
+$$
+
+Pequenas mudanças na amostra podem gerar uma árvore bastante diferente.
+
+
+
+## Poda (pruning)
+
+Para regressão, uma forma de pensar na poda é:
+
+$$
+\boxed{
+\text{erro da árvore}
++
+\alpha\times\text{complexidade}
+}
+$$
+
+ou, mais especificamente,
+
+$$
+\sum_{m=1}^{|T|}
+\sum_{i:\mathbf{x}_i\in\mathcal{R}_m}
+(y_i-\bar y_m)^2
++
+\alpha|T|
+$$
+
+- $\alpha$ pequeno $\rightarrow$ árvore maior
+- $\alpha$ grande $\rightarrow$ árvore menor
+
+
+
+
+## Poda (pruning)
+
+
+Na classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.<br><br>
+
+::: {.callout-tip appearance="simple"}
+A poda regulariza **uma árvore**. Bagging, Random Forest e Boosting seguem outra estratégia: **combinar muitas árvores**.
+:::
+
+
+
+## O problema da árvore individual
+
+Árvores são:
+
+- interpretáveis
+- capazes de capturar não linearidade
+- capazes de capturar interações
+
+Mas são também:
+
+- instáveis
+- sensíveis à amostra
+- de alta variância
+
+
+
+
+
+## Por que combinar árvores?
+
+Considere dois estimadores $g_1(\mathbf{x})$ e $g_2(\mathbf{x})$.
+
+Definimos o estimador combinado:
+
+$$
+g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
+$$
+
+O erro esperado é:
+
+$$
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+=
+\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
++ \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
++ \text{bias}^2
+$$
+
+
+## Por que combinar árvores?
+
+
+Se $g_1(\mathbf{x})$ e $g_2(\mathbf{x})$ são:
+
+-   não viesados\
+-   com mesma variância\
+-   não correlacionados
+
+então:
+
+$$
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+=
+\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
++ \frac{1}{2}\mathbb{V}(g_i(\mathbf{x}))
+$$
+
+#### Conclusão
+
+$$
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\le
+\mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
+$$
+
+## Por que combinar árvores?
+
+Assim, combinar modelos:
+
+-   mantém o viés\
+-   reduz a variância
+
+
+
+
+## Três maneiras de combinar árvores
+
+Os ensembles respondem de formas diferentes:
+
+$$
+\boxed{\text{Bagging: construir em paralelo e agregar}}
+$$
+
+$$
+\boxed{\text{Random Forest: descorrelacionar e agregar}}
+$$
+
+$$
+\boxed{\text{Boosting: construir correções sequenciais}}
+$$
+
+Durante os próximos slides, acompanhe duas perguntas:
+
+1. **Como cada nova árvore é construída?**
+2. **Como as árvores são combinadas?**
+
+# Bagging (Bootstrap Aggregating)
+
+> Média de vários modelos instáveis → modelo mais estável
+
+## Bagging = Bootstrap + Aggregating
+
+Para $b=1,\ldots,B$:
+
+1. sorteie uma amostra *bootstrap*;
+2. ajuste uma árvore $T_b$;
+3. repita muitas vezes;
+4. combine as previsões.
+
+$$
+\boxed{
+\text{Bagging}
+=
+\text{Bootstrap}
++
+\text{Agregação}
+}
+$$
+
+As árvores são ajustadas **em paralelo**: uma não depende da anterior.
+
+
+
+
+---
+
+![](/images/regressao/bagging.png){fig-align="center"}
+
+
+
+## Como agregamos?
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Regressão
+
+Cada árvore fornece um número:
+
+$$
+\hat y_b(\mathbf{x}).
+$$
+
+Agregamos pela média:
+
+$$
+\boxed{
+\hat y_{\text{bag}}(\mathbf{x})
+=
+\frac1B\sum_{b=1}^{B}\hat y_b(\mathbf{x})
+}
+$$
+
+:::
+
+::: {.column width="48%"}
+
+### Classificação
+
+Cada árvore fornece classe ou probabilidades.
+
+Podemos usar:
+
+$$
+\boxed{\text{voto majoritário}}
+$$
+
+ou, preferencialmente, promediar probabilidades:
+
+$$
+\boxed{
+\hat p_k(\mathbf{x})
+=
+\frac1B\sum_{b=1}^{B}\hat p_{bk}(\mathbf{x})
+}
+$$
+
+:::
+
+::::
+
+
+
+
+---
+
+## Bagging em regressão: veja a estabilização
+
+![](/images/regressao/bagging_regressao.gif){fig-align="center" width="88%"}
+
+::: {.callout-note appearance="simple"}
+As árvores individuais variam bastante. A média acumulada se torna progressivamente mais estável.
+:::
+
+---
+
+## Por que a média ajuda?
+
+Se cada árvore tem variância aproximadamente $\sigma^2$ e correlação média $\rho$, então
+
+$$
+\boxed{
+\operatorname{Var}(\bar T)
+=
+\rho\sigma^2+
+\frac{1-\rho}{B}\sigma^2
+}
+$$
+
+Duas mensagens:
+
+1. aumentar $B$ reduz a segunda parcela;
+2. a parcela $\rho\sigma^2$ permanece.
+
+Logo:
+
+$$
+\boxed{
+\text{não basta ter muitas árvores; é útil que elas sejam diferentes}
+}
+$$
+
+---
+
+## Bagging em classificação
+
+O mecanismo é o mesmo:
+
+$$
+\text{bootstrap}
+\rightarrow
+\text{árvore de classificação}
+\rightarrow
+\text{probabilidade/voto}
+\rightarrow
+\text{agregação}.
+$$
+
+O que muda em relação à regressão?
+
+| Etapa | Regressão | Classificação |
+|---|---|---|
+| split | RSS/variância | Gini/entropia |
+| folha | média | proporções/classes |
+| agregação | média de $\hat y$ | média de probabilidades/voto |
+
+
+# Random Forest
+
+> Construir muitas árvores diferentes e combinar suas previsões
+
+
+## O limite do Bagging
+
+Mesmo com amostras *bootstrap* diferentes, árvores podem ficar muito parecidas.
+
+Por quê?
+
+Se uma variável é muito forte, ela tende a ser escolhida repetidamente perto da raiz.
+
+Resultado:
+
+$$
+\text{árvores semelhantes}
+\Rightarrow
+\rho \text{ alto}
+\Rightarrow
+\text{menor redução de variância}.
+$$
+
+---
+
+## Random Forest: descorrelacionar as árvores
+
+O Random Forest adiciona uma segunda fonte de aleatoriedade.
+
+Para cada árvore:
+
+1. sorteamos uma amostra *bootstrap*;
+2. em **cada nó**, sorteamos apenas $m_{\text{try}}$ das $p$ variáveis;
+3. procuramos o melhor *split* somente entre essas candidatas;
+4. repetimos até construir muitas árvores.
+
+$$
+\boxed{
+\text{RF}
+=
+\text{Bagging}
++
+\text{subamostragem de variáveis em cada split}
+}
+$$
+
+
+---
+
+## Onde Bagging e Random Forest se separam?
+
+![](/images/regressao/bagging_vs_random_forest_animado.gif){fig-align="center" width="90%"}
+
+No **Bagging**, todas as $p$ variáveis podem disputar cada split.
+
+No **Random Forest**, apenas $m_{\text{try}}<p$ variáveis sorteadas podem disputar aquele split.
+
+::: {.callout-important}
+## Importante
+O subconjunto de variáveis é sorteado **novamente em cada nó**. Essa aleatoriedade adicional ajuda a reduzir a correlação entre as árvores.
+:::
+
+
+
+---
+
+![](/images/regressao/rf.png){fig-align="center"}
+
+
+
+
+## Bagging versus Random Forest
+
+| | Bagging | Random Forest |
+|---|---|---|
+| Bootstrap de observações | sim | sim |
+| Variáveis candidatas por split | todas | subconjunto aleatório |
+| Objetivo adicional | estabilizar | estabilizar + descorrelacionar |
+| Regressão | média | média |
+| Classificação | voto/probabilidades | voto/probabilidades |
+
+
+
+## Bagging versus Random Forest
+
+
+Se
+
+$$
+m_{\text{try}}=p,
+$$
+
+o Random Forest se reduz, essencialmente, ao Bagging de árvores.<br><br>
+
+::: {.callout-warning appearance="simple"}
+Com **apenas uma variável preditora**, não é possível visualizar a diferença essencial entre Bagging e Random Forest: não há variáveis para sortear. Por isso, uma animação univariada de RF se comporta como Bagging.
+:::
+
+---
+
+## O que $m_{\text{try}}$ controla?
+
+$$
+m_{\text{try}}
+=
+\text{número de variáveis candidatas em cada nó}.
+$$
+
+- valor grande $\rightarrow$ árvores mais parecidas
+- valor pequeno $\rightarrow$ árvores mais diversas
+- pequeno demais $\rightarrow$ splits individuais podem piorar
+
+Portanto, existe um compromisso:
+
+$$
+\boxed{
+\text{força de cada árvore}
+\quad\text{versus}\quad
+\text{correlação entre árvores}
+}
+$$
+
+$m_{\text{try}}$ deve ser tratado como hiperparâmetro e pode ser ajustado por validação.
+
+---
+
+## OOB: validação "embutida" no bootstrap
+
+Em cada amostra *bootstrap*, algumas observações ficam de fora.
+
+Elas são chamadas de **out-of-bag (OOB)**.
+
+Para uma observação $i$:
+
+1. use apenas árvores em que $i$ ficou fora do bootstrap;
+2. agregue suas previsões;
+3. compare com $y_i$.
+
+
+## OOB: validação "embutida" no bootstrap
+
+
+Isso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.<br><br>
+
+::: {.callout-note}
+## Nota
+OOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final.
+:::
+
+---
+
+
+
+
+```{r}
+library(ggplot2)
+library(rpart)
+library(dplyr)
+library(tidyr)
+library(gganimate)
+library(gifski)
+
+set.seed(123)
+
+# -----------------------------
+# Função de regressão real
+# -----------------------------
+f_real <- function(x, beta = c(12, 4, -6, 1)) {
+  beta[1] + beta[2] * x + beta[3] * x^2 + beta[4] * x^3 + sin(x)
+}
+
+# -----------------------------
+# Dados simulados
+# -----------------------------
+n <- 150
+x <- sort(runif(n, -1.5, 3))
+
+f_true <- f_real(x)
+y <- f_true + rnorm(n, sd = 4.0)
+
+df <- data.frame(x = x, y = y)
+
+# -----------------------------
+# Grade para previsão
+# -----------------------------
+xg <- seq(min(x), max(x), length.out = 300)
+grid <- data.frame(x = xg)
+
+# função verdadeira na grade
+df_true <- data.frame(
+  x = xg,
+  y_true = f_real(xg)
+)
+
+# -----------------------------
+# Gerar várias árvores bootstrap
+# -----------------------------
+B <- 100
+pred_mat <- matrix(NA_real_, nrow = length(xg), ncol = B)
+
+for (b in 1:B) {
+  idx <- sample(1:n, n, replace = TRUE)
+  df_boot <- df[idx, ]
+
+  fit <- rpart(
+    y ~ x,
+    data = df_boot,
+    method = "anova",
+    control = rpart.control(maxdepth = 3, cp = 0.002, minsplit = 10)
+  )
+
+  pred_mat[, b] <- predict(fit, newdata = grid)
+}
+
+# -----------------------------
+# Árvores individuais em formato longo
+# -----------------------------
+df_trees <- as.data.frame(pred_mat)
+names(df_trees) <- paste0("tree_", 1:B)
+df_trees$x <- xg
+
+df_trees_long <- df_trees |>
+  pivot_longer(
+    cols = starts_with("tree_"),
+    names_to = "tree",
+    values_to = "y_hat"
+  ) |>
+  mutate(tree_id = as.integer(gsub("tree_", "", tree)))
+
+# -----------------------------
+# Média acumulada das árvores
+# -----------------------------
+cumavg_mat <- sapply(1:B, function(b) {
+  rowMeans(pred_mat[, 1:b, drop = FALSE])
+})
+
+df_avg <- as.data.frame(cumavg_mat)
+names(df_avg) <- paste0("avg_", 1:B)
+df_avg$x <- xg
+
+df_avg_long <- df_avg |>
+  pivot_longer(
+    cols = starts_with("avg_"),
+    names_to = "avg",
+    values_to = "y_avg"
+  ) |>
+  mutate(
+    tree_id = as.integer(gsub("avg_", "", avg)),
+    frame_id = tree_id
+  )
+
+# -----------------------------
+# Replicar dados observados para cada frame
+# -----------------------------
+df_points <- bind_rows(
+  lapply(1:B, function(b) {
+    data.frame(
+      x = df$x,
+      y = df$y,
+      frame_id = b
+    )
+  })
+)
+
+# -----------------------------
+# Replicar função verdadeira para cada frame
+# -----------------------------
+df_true_anim <- bind_rows(
+  lapply(1:B, function(b) {
+    data.frame(
+      x = df_true$x,
+      y_true = df_true$y_true,
+      frame_id = b
+    )
+  })
+)
+
+# -----------------------------
+# Se quiser reativar as árvores individuais,
+# basta usar este objeto:
+# -----------------------------
+df_trees_anim <- bind_rows(
+  lapply(1:B, function(b) {
+    subset(df_trees_long, tree_id <= b) |>
+      mutate(frame_id = b)
+  })
+)
+
+df_avg_anim <- df_avg_long |>
+  transmute(
+    x = x,
+    y_avg = y_avg,
+    frame_id = frame_id
+  )
+
+# -----------------------------
+# Gráfico animado
+# -----------------------------
+anim_plot <- ggplot() +
+  geom_point(
+    data = df_points,
+    aes(x, y),
+    color = "#2C7FB8",
+    alpha = 0.45,
+    size = 1.8
+  ) +
+  # Para mostrar também as árvores individuais, descomente:
+  geom_line(
+    data = df_trees_anim,
+    aes(x, y_hat, group = tree),
+    color = "#1468f5",
+    alpha = 0.08,
+    linewidth = 0.8
+  ) +
+  geom_line(
+    data = df_avg_anim,
+    aes(x, y_avg),
+    color = "#00BA38",
+    linewidth = 1.3
+  ) +
+  geom_line(
+    data = df_true_anim,
+    aes(x, y_true),
+    color = "#D62728",
+    linewidth = 1.3
+  ) +
+  labs(
+    title = "Construção do Random Forest: {current_frame} árvores",
+    subtitle = "Azul: árvores individuais | Verde: média acumulada | Vermelho: regressão real",
+    x = "X",
+    y = "Y"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 11)
+  ) +
+  transition_manual(frame_id)
+
+# -----------------------------
+# Renderizar e salvar gif
+# -----------------------------
+anim2 = animate(
+  anim_plot,
+  nframes = B,
+  fps = 3,
+  width = 7.5,
+  height = 4.2,
+  units = "in",
+  res = 120,
+  renderer = gifski_renderer("rf_animado.gif")
+)
+
+# -----------------------------
+# PNG estático para PDF
+# -----------------------------
+frame_pdf <- 45
+
+plot_pdf22 <- ggplot() +
+  geom_point(
+    data = subset(df_points, frame_id == frame_pdf),
+    aes(x, y),
+    color = "#2C7FB8",
+    alpha = 0.45,
+    size = 1.8
+  ) +
+  geom_line(
+    data = subset(df_trees_anim, frame_id == frame_pdf),
+    aes(x, y_hat, group = tree_id),
+    color = "#619CFF",
+    alpha = 0.12,
+    linewidth = 1.0
+  ) +
+  geom_line(
+    data = subset(df_avg_long, frame_id == frame_pdf),
+    aes(x, y_avg),
+    color = "#00BA38",
+    linewidth = 1.3
+  ) +
+  geom_line(
+    data = subset(df_true_anim, frame_id == frame_pdf),
+    aes(x, y_true),
+    color = "#D62728",
+    linewidth = 1.3
+  ) +
+  labs(
+    title = paste("Construção do Random Forest:", frame_pdf, "árvores"),
+    subtitle = "Azul: Árvores individuais | Verde: Média acumulada | Vermelho: Regressão real",
+    x = "X",
+    y = "Y"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 11)
+  )
+```
+
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| out-width: "90%"
+#| fig-align: "center"
+#| results: 'asis'
+
+if (knitr::is_html_output()) {
+  knitr::include_graphics("rf_animado.gif")
+} else if (knitr::is_latex_output()) {
+  
+  # fecha dispositivos abertos
+  while (!is.null(dev.list())) dev.off()
+  
+  png(
+    filename = "rf_animado.png",
+    width = 900,
+    height = 500,
+    res = 120
+  )
+  
+  print(plot_pdf22)
+  
+  invisible(dev.off())
+  
+  knitr::include_graphics("rf_animado.png")
+}
+```
+
+
+# Boosting
+
+> Construir o modelo sequencialmente, fazendo cada nova árvore corrigir o modelo atual
+
+
+## A mudança fundamental
+
+Bagging e Random Forest constroem árvores aproximadamente **em paralelo**.
+
+Boosting constrói modelos **sequencialmente**:
+
+$$
+\hat h_1
+\rightarrow
+\hat h_2
+\rightarrow
+\hat h_3
+\rightarrow\cdots
+$$
+
+Cada nova árvore tenta melhorar o modelo acumulado.
+
+
+
+## A mudança fundamental
+
+
+### Notação 
+
+- $\hat g^{(b)}(\mathbf{x})$: modelo acumulado após $b$ iterações
+- $\hat h_b(\mathbf{x})$: árvore que fornece a correção na iteração $b$
+- $r_i^{(b)}$: resíduo ou pseudo-resíduo usado na iteração $b$
+- $\lambda$: *learning rate*
+- $B$: número total de árvores
+
+$$
+\boxed{
+\hat g^{(B)}(\mathbf{x})
+=
+\hat g^{(0)}(\mathbf{x})
++
+\lambda\sum_{b=1}^{B}\hat h_b(\mathbf{x})
+}
+$$
+
+
+
+## Boosting em regressão: começando pelo erro atual
+
+Com perda quadrática,
+
+$$
+L(y,g)=(y-g)^2,
+$$
+
+o sinal de correção é proporcional ao resíduo:
+
+$$
+r_i^{(b)}
+=
+y_i-\hat g^{(b-1)}(\mathbf{x}_i)
+$$
+
+## Boosting em regressão: começando pelo erro atual
+
+
+
+Na iteração $b$:
+
+1. calcule os resíduos atuais;
+2. ajuste $\hat h_b(\mathbf{x})$, uma árvore rasa, aos resíduos;
+3. adicione uma pequena fração dessa correção ao modelo atual:
+
+$$
+\hat g^{(b)}(\mathbf{x})
+=
+\hat g^{(b-1)}(\mathbf{x})
++
+\lambda\hat h_b(\mathbf{x})
+$$
+
+Portanto,
+
+$$
+\boxed{
+\text{modelo atual}
+\rightarrow
+\text{resíduos}
+\rightarrow
+\text{nova árvore}
+\rightarrow
+\text{modelo atualizado}
+}
+$$
+
+
+
+---
+
+![](/images/regressao/boosting3.png){fig-align="center" width="100%"}
+
+
+---
+
+## Boosting em regressão: veja o modelo aprender
+
+![](/images/regressao/boosting_regressao.gif){fig-align="center" width="88%"}
+
+::: {.callout-important}
+## Importante
+A linha da **nova árvore** não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o **modelo acumulado**.
+:::
+
+
+
+## E na classificação?
+
+Aqui está uma diferença importante.
+
+Em classificação, não faz sentido usar simplesmente
+
+$$
+y_i-\hat y_i
+$$
+
+como se as classes fossem números contínuos.
+
+Usamos uma **função de perda de classificação**, como a *log-loss*.
+
+
+## E na classificação?
+
+
+No *gradient boosting*, cada nova árvore é ajustada ao **gradiente negativo da perda** (*pseudo-resíduo*).
+
+$$
+\boxed{
+\text{regressão quadrática: pseudo-resíduo = resíduo usual}
+}
+$$
+
+$$
+\boxed{
+\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}
+}
+$$
+
+
+
+## Classificação binária
+
+Se $y_i\in\{0,1\}$ e o modelo atual fornece
+
+$$
+\hat p_i^{(b-1)}
+=
+P\!\left(Y_i=1\mid\mathbf{x}_i;\,\hat g^{(b-1)}\right),
+$$
+
+sob log-loss, o sinal de correção é proporcional a
+
+$$
+\boxed{
+r_i^{(b)}=y_i-\hat p_i^{(b-1)}
+}
+$$
+
+
+
+## Classificação binária
+
+
+Exemplos:
+
+
+| $y_i$ | $\hat p_i^{(b-1)}$ | $y_i-\hat p_i^{(b-1)}$ | leitura |
+|---:|---:|---:|---|
+| 1 | 0,95 | 0,05 | quase nada a corrigir |
+| 1 | 0,20 | 0,80 | aumentar fortemente a evidência para classe 1 |
+| 0 | 0,10 | -0,10 | pequena correção |
+| 0 | 0,85 | -0,85 | reduzir fortemente a evidência para classe 1 |<br><br>
+
+::: {.callout-note}
+## Nota
+Essa tabela é uma interpretação didática do *gradient boosting* binário com log-loss. A implementação trabalha na escala do escore/logit e atualiza o modelo aditivo.
+:::
+
+
+---
+
+## Boosting em classificação: veja a correção
+
+![](/images/regressao/boosting_classificacao_animado.gif){fig-align="center" width="90%"}
+
+À esquerda, o modelo acumulado atualiza a probabilidade $\hat p^{(b)}=P(Y=1\mid X)$.
+
+À direita, visualizamos o sinal de correção $y_i-\hat p_i^{(b-1)}$.
+
+::: {.callout-tip appearance="simple"}
+Compare com regressão: a lógica **modelo atual + pequena correção** permanece. O que muda é a função de perda e, consequentemente, o pseudo-resíduo.
+:::
+
+---
+
+## O papel do learning rate $\lambda$
+
+Cada árvore sugere uma correção.
+
+O *learning rate* controla quanto dessa correção será incorporado:
+
+$$
+\hat g^{(b)}(\mathbf{x})
+=
+\hat g^{(b-1)}(\mathbf{x})
++
+\lambda\hat h_b(\mathbf{x})
+$$
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### $\lambda$ pequeno
+
+- passos menores
+- aprendizado mais gradual
+- normalmente exige mais árvores
+- tende a oferecer maior controle
+
+:::
+
+::: {.column width="48%"}
+
+### $\lambda$ grande
+
+- passos maiores
+- aprende mais rapidamente
+- pode precisar de menos árvores
+- pode sobreajustar mais cedo
+
+:::
+
+::::
+
+
+
+## Boosting: o papel do *learning rate* $\lambda$
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 12
+#| fig-height: 7
+#| fig-align: center
+#| out-width: 82%
+
+library(ggplot2)
+library(rpart)
+library(dplyr)
+
+set.seed(123)
+
+# ============================================================
+# 1. Função de regressão verdadeira
+# ============================================================
+
+g_real <- function(x, beta = c(12, 4, -6, 1)) {
+  
+  beta[1] +
+    beta[2] * x +
+    beta[3] * x^2 +
+    beta[4] * x^3 +
+    sin(x)
+}
+
+
+# ============================================================
+# 2. Dados simulados
+# ============================================================
+
+n <- 150
+
+x <- sort(
+  runif(
+    n,
+    min = -1.2,
+    max = 2.8
+  )
+)
+
+# Função verdadeira
+g_true <- g_real(x)
+
+# Resposta observada
+y <- g_true + rnorm(
+  n,
+  mean = 0,
+  sd = 2.5
+)
+
+df <- data.frame(
+  x = x,
+  y = y
+)
+
+
+# ============================================================
+# 3. Função de Boosting com árvores rasas
+# ============================================================
+#
+# Notação utilizada na disciplina:
+#
+#   g_hat^(b)(x)
+#   =
+#   g_hat^(b-1)(x) + lambda * h_hat_b(x)
+#
+# Para perda quadrática:
+#
+#   r_i^(b)
+#   =
+#   y_i - g_hat^(b-1)(x_i)
+#
+# ============================================================
+
+boost_stumps <- function(
+    x,
+    y,
+    x_grid,
+    B = 100,
+    lambda = 0.1,
+    minsplit = 10
+) {
+  
+  # ----------------------------------------------------------
+  # Modelo inicial
+  #
+  # g_hat^(0)(x) = média de Y
+  # ----------------------------------------------------------
+  
+  g0 <- mean(y)
+  
+  g_train <- rep(
+    g0,
+    length(x)
+  )
+  
+  g_grid <- rep(
+    g0,
+    length(x_grid)
+  )
+  
+  
+  # ----------------------------------------------------------
+  # Iterações do Boosting
+  # ----------------------------------------------------------
+  
+  for (b in seq_len(B)) {
+    
+    # --------------------------------------------------------
+    # Resíduos atuais
+    #
+    # r_i^(b)
+    # =
+    # y_i - g_hat^(b-1)(x_i)
+    # --------------------------------------------------------
+    
+    r_b <- y - g_train
+    
+    
+    # --------------------------------------------------------
+    # Ajuste da nova árvore aos resíduos
+    #
+    # h_hat_b(x)
+    # --------------------------------------------------------
+    
+    dados_b <- data.frame(
+      x = x,
+      r_b = r_b
+    )
+    
+    fit_b <- rpart(
+      r_b ~ x,
+      data = dados_b,
+      method = "anova",
+      control = rpart.control(
+        maxdepth = 1,
+        cp = 0,
+        minsplit = minsplit
+      )
+    )
+    
+    
+    # --------------------------------------------------------
+    # Predições da árvore h_hat_b
+    # --------------------------------------------------------
+    
+    h_train_b <- predict(
+      fit_b,
+      newdata = data.frame(x = x)
+    )
+    
+    h_grid_b <- predict(
+      fit_b,
+      newdata = data.frame(x = x_grid)
+    )
+    
+    
+    # --------------------------------------------------------
+    # Atualização do modelo
+    #
+    # g_hat^(b)(x)
+    # =
+    # g_hat^(b-1)(x)
+    # +
+    # lambda * h_hat_b(x)
+    # --------------------------------------------------------
+    
+    g_train <- g_train +
+      lambda * h_train_b
+    
+    g_grid <- g_grid +
+      lambda * h_grid_b
+  }
+  
+  
+  # ----------------------------------------------------------
+  # Retorna o modelo acumulado após B árvores
+  # ----------------------------------------------------------
+  
+  return(g_grid)
+}
+
+
+# ============================================================
+# 4. Grade para visualização
+# ============================================================
+
+x_grid <- seq(
+  min(x),
+  max(x),
+  length.out = 500
+)
+
+
+# ============================================================
+# 5. Número de árvores
+# ============================================================
+
+B <- 100
+
+
+# ============================================================
+# 6. Valores do learning rate
+# ============================================================
+
+lambda_vals <- c(
+  0.001,
+  0.01,
+  0.1,
+  0.2,
+  0.5,
+  1
+)
+
+
+# ============================================================
+# 7. Rótulos matemáticos para os painéis
+# ============================================================
+#
+# Esses rótulos serão interpretados pelo label_parsed
+# ============================================================
+
+lambda_labels <- c(
+  "lambda == 0.001",
+  "lambda == 0.01",
+  "lambda == 0.1",
+  "lambda == 0.2",
+  "lambda == 0.5",
+  "lambda == 1"
+)
+
+
+# ============================================================
+# 8. Ajuste do Boosting para cada valor de lambda
+# ============================================================
+
+pred_list <- lapply(
+  seq_along(lambda_vals),
+  function(j) {
+    
+    lam <- lambda_vals[j]
+    
+    g_hat_B <- boost_stumps(
+      x = x,
+      y = y,
+      x_grid = x_grid,
+      B = B,
+      lambda = lam
+    )
+    
+    data.frame(
+      x = x_grid,
+      g_hat = g_hat_B,
+      lambda = lambda_labels[j]
+    )
+  }
+)
+
+pred_df <- bind_rows(pred_list)
+
+
+# Definir ordem dos painéis
+pred_df$lambda <- factor(
+  pred_df$lambda,
+  levels = lambda_labels
+)
+
+
+# ============================================================
+# 9. Replicar os pontos observados em todos os painéis
+# ============================================================
+
+points_list <- lapply(
+  seq_along(lambda_vals),
+  function(j) {
+    
+    data.frame(
+      x = x,
+      y = y,
+      lambda = lambda_labels[j]
+    )
+  }
+)
+
+points_df <- bind_rows(points_list)
+
+
+points_df$lambda <- factor(
+  points_df$lambda,
+  levels = lambda_labels
+)
+
+
+# ============================================================
+# 10. Gráfico
+# ============================================================
+
+p_lambda <- ggplot() +
+  
+  # ----------------------------------------------------------
+  # Dados observados
+  # ----------------------------------------------------------
+  
+  geom_point(
+    data = points_df,
+    aes(
+      x = x,
+      y = y
+    ),
+    color = "#2C7FB8",
+    alpha = 0.70,
+    size = 1.6
+  ) +
+  
+  
+  # ----------------------------------------------------------
+  # Modelo acumulado após B árvores
+  #
+  # g_hat^(B)(x)
+  # ----------------------------------------------------------
+  
+  geom_step(
+    data = pred_df,
+    aes(
+      x = x,
+      y = g_hat
+    ),
+    color = "#D62728",
+    linewidth = 1.15
+  ) +
+  
+  
+  # ----------------------------------------------------------
+  # Painéis para cada lambda
+  # ----------------------------------------------------------
+  
+  facet_wrap(
+    ~ lambda,
+    ncol = 3,
+    labeller = label_parsed
+  ) +
+  
+  
+  # ----------------------------------------------------------
+  # Títulos e eixos
+  # ----------------------------------------------------------
+  
+  labs(
+    title = NULL,
+    
+    subtitle = paste0(
+      "Mesmo número de árvores em todos os ajustes: B = ",
+      B
+    ),
+    
+    x = "X",
+    y = "Y",
+    
+    caption = "Pontos: dados observados | Linha vermelha: modelo acumulado"
+  ) +
+  
+  
+  # ----------------------------------------------------------
+  # Tema
+  # ----------------------------------------------------------
+  
+  theme_minimal(
+    base_size = 14
+  ) +
+  
+  theme(
+    
+    plot.title = element_text(
+      face = "bold",
+      size = 18
+    ),
+    
+    plot.subtitle = element_text(
+      size = 13,
+      margin = margin(
+        b = 12
+      )
+    ),
+    
+    strip.text = element_text(
+      face = "bold",
+      size = 13
+    ),
+    
+    panel.grid.minor = element_blank(),
+    
+    panel.grid.major = element_line(
+      linewidth = 0.35
+    ),
+    
+    axis.title = element_text(
+      size = 14
+    ),
+    
+    plot.caption = element_text(
+      hjust = 0,
+      size = 10,
+      margin = margin(
+        t = 10
+      )
+    ),
+    
+    legend.position = "none"
+  )
+
+
+# ============================================================
+# 11. Exibir gráfico
+# ============================================================
+
+p_lambda
+```
+
+::: {.callout-important appearance="simple"}
+**Observe a figura:** para o mesmo número de iterações, aumentar $\lambda$ faz o modelo acumulado se aproximar mais rapidamente dos dados. Portanto, $\lambda$ e o número de árvores $B$ devem ser analisados **conjuntamente**.
+:::
+
+
+
+
+
+## Boosting e Estimadores Fracos
+
+O *boosting* não é restrito ao uso de árvores.
+
+
+Podemos usar qualquer modelo como base, desde que seja um **estimador fraco**. (Deve aprender **uma correção**, não resolver sozinho todo o problema)
+
+
+<br>
+
+#### O que é um estimador fraco?
+
+- modelo simples
+- baixo poder preditivo individual
+- pequeno viés de ajuste
+
+**Exemplos:** árvores rasas (*stumps*), regressão linear simples, modelos com poucos parâmetros
+
+---
+
+## Por que usar modelos fracos?
+
+- evitam overfitting em cada etapa
+- permitem correções graduais
+- tornam o aprendizado mais estável
+
+
+
+Se você usar modelos muito complexos (ex: árvores profundas):
+
+👉 boosting pode superajustar rapidamente
+
+
+---
+
+```{r}
+library(ggplot2)
+library(rpart)
+library(patchwork)
+
+set.seed(123)
+
+# -----------------------------
+# Função de regressão real
+# -----------------------------
+f_real <- function(x, beta = c(12, 4, -6, 1)) {
+  beta[1] + beta[2] * x + beta[3] * x^2 + beta[4] * x^3 + sin(x)
+}
+
+# -----------------------------
+# Dados simulados
+# -----------------------------
+n <- 150
+x <- sort(runif(n, -1.2, 2.8))
+
+f_true <- f_real(x)
+y <- f_true + rnorm(n, sd = 2.5)
+
+df <- data.frame(x = x, y = y)
+
+# -----------------------------
+# Grid
+# -----------------------------
+xg <- seq(min(x), max(x), length.out = 500)
+
+df_true <- data.frame(
+  x = xg,
+  y_true = f_real(xg)
+)
+
+# -----------------------------
+# Função Boosting genérica
+# -----------------------------
+boost_fit <- function(x, y, xg, B = 100, lambda = 0.1, depth = 1) {
+
+  g_train <- rep(0, length(x))
+  g_grid  <- rep(0, length(xg))
+
+  for (b in 1:B) {
+
+    r <- y - g_train
+
+    fit <- rpart(
+      r ~ x,
+      data = data.frame(x = x, r = r),
+      method = "anova",
+      control = rpart.control(
+        maxdepth = depth,
+        cp = 0,
+        minsplit = 10
+      )
+    )
+
+    pred_train <- predict(fit, newdata = data.frame(x = x))
+    pred_grid  <- predict(fit, newdata = data.frame(x = xg))
+
+    g_train <- g_train + lambda * pred_train
+    g_grid  <- g_grid  + lambda * pred_grid
+  }
+
+  g_grid
+}
+
+# -----------------------------
+# Ajustes
+# -----------------------------
+B <- 80
+lambda <- 0.1
+
+# stump
+pred_stump <- boost_fit(x, y, xg, B, lambda, depth = 1)
+
+# árvore profunda
+pred_deep <- boost_fit(x, y, xg, B, lambda, depth = 5)
+
+df_stump <- data.frame(x = xg, y_hat = pred_stump)
+df_deep  <- data.frame(x = xg, y_hat = pred_deep)
+
+# -----------------------------
+# Gráficos
+# -----------------------------
+p1 <- ggplot(df, aes(x, y)) +
+  geom_point(color = "#2C7FB8", alpha = 0.5) +
+  geom_line(data = df_true, aes(x, y_true),
+            color = "#D62728", linewidth = 1.2) +
+  geom_line(data = df_stump, aes(x, y_hat),
+            color = "#00BA38", linewidth = 1.3) +
+  theme_minimal() +
+  labs(
+    title = "a) Boosting com stumps",
+    subtitle = "Aprendizado gradual",
+    x = "X", y = "Y"
+  ) +
+  theme(panel.grid.minor = element_blank())
+
+p2 <- ggplot(df, aes(x, y)) +
+  geom_point(color = "#2C7FB8", alpha = 0.5) +
+  geom_line(data = df_true, aes(x, y_true),
+            color = "#D62728", linewidth = 1.2) +
+  geom_line(data = df_deep, aes(x, y_hat),
+            color = "#00BA38", linewidth = 1.3) +
+  theme_minimal() +
+  labs(
+    title = "b) Boosting com árvores profundas",
+    subtitle = "Aprendizado agressivo",
+    x = "X", y = "Y"
+  ) +
+  theme(panel.grid.minor = element_blank())
+
+p1 + p2
+```
+
+
+
+
+# Três ensembles, três mecanismos
+
+## Bagging, Random Forest e Boosting
+
+| | Bagging | Random Forest | Boosting |
+|---|---|---|---|
+| Construção | paralela | paralela | sequencial |
+| Reamostragem | bootstrap | bootstrap | depende do algoritmo |
+| Variáveis por split | todas | subconjunto | geralmente todas |
+| Principal ideia | média reduz variância | reduzir variância e correlação | corrigir erros/gradiente |
+| Árvores | usualmente profundas | usualmente profundas | usualmente rasas |
+| Regressão | média | média | soma aditiva |
+| Classificação | voto/prob. | voto/prob. | escore/prob. aditivos |
+
+---
+
+## O que permanece igual entre regressão e classificação?
+
+A estrutura geral:
+
+$$
+\boxed{
+\text{regras recursivas}
+\rightarrow
+\text{regiões}
+\rightarrow
+\text{folhas}
+}
+$$
+
+e as ideias dos ensembles:
+
+- Bagging: **agregar**
+- Random Forest: **agregar árvores menos correlacionadas**
+- Boosting: **somar correções sequenciais**
+
+---
+
+## O que muda entre regressão e classificação?
+
+| Componente | Regressão | Classificação |
+|---|---|---|
+| alvo | número | classe |
+| split de árvore | RSS/variância | Gini/entropia |
+| folha | média | probabilidade/classe |
+| perda típica | quadrática | log-loss, erro etc. |
+| bagging/RF | média | probabilidade média/voto |
+| boosting | resíduos sob MSE | pseudo-resíduos da perda |<br><br>
+
+::: {.callout-important appearance="simple"}
+A mudança não está na ideia de "árvore". Está na **função de perda**, no **critério de split** e na **forma de produzir/agregar a previsão**.
+:::
+
+
+
+# Como escolher na prática?
+
+## Uma leitura estatística
+
+**Árvore individual**
+
+- máxima interpretabilidade
+- regras explícitas
+- maior instabilidade
+
+**Bagging**
+
+- reduz variância
+- perde parte da interpretabilidade da árvore única
+
+
+## Uma leitura estatística
+
+**Random Forest**
+
+- reduz variância e correlação entre árvores
+- forte baseline para dados tabulares
+
+**Boosting**
+
+- constrói modelo aditivo de forma sequencial
+- frequentemente alto desempenho
+- maior sensibilidade à escolha dos hiperparâmetros
+
+---
+
+## Fluxo de modelagem
+
+$$
+\boxed{
+\text{treino}
+\rightarrow
+\text{reamostragem/validação}
+\rightarrow
+\text{ajuste de hiperparâmetros}
+\rightarrow
+\text{modelo final}
+\rightarrow
+\text{teste}
+}
+$$
+
+Exemplos de hiperparâmetros:
+
+- árvore: profundidade, tamanho mínimo do nó, poda
+- Random Forest: $m_{\text{try}}$, tamanho mínimo do nó, número de árvores
+- Boosting: $B$, $\lambda$, profundidade
+
+O conjunto de teste permanece reservado para a **avaliação final**.
+

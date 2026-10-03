@@ -1,21 +1,74 @@
 ---
 title: "Semana 07"
-format: html
-fontsize: 1.2em
+format:
+  html:
+    fontsize: 1.2em
+    include-in-header:
+      text: |
+        <style>
+        /* Estilos visuais EST304 sem quebrar tipografia do Quarto */
+        .aulas-list .list-group-item {
+          border-left: 4px solid #2761E3;
+          padding-top: 0.8rem;
+          padding-bottom: 0.8rem;
+        }
+        .aulas-list .list-group-item:hover {
+          background-color: #F2F2F2;
+        }
+        .disciplina-badge {
+          background-color: #2761E3;
+        }
+        .btn-est304-main {
+          background-color: #2761E3;
+          border-color: #2761E3;
+          color: #fff;
+        }
+        .btn-est304-main:hover {
+          background-color: #789CEB;
+          border-color: #789CEB;
+          color: #fff;
+        }
+        .btn-est304-outline {
+          color: #2761E3;
+          border-color: #2761E3;
+        }
+        .btn-est304-outline:hover {
+          background-color: #2761E3;
+          color: #fff;
+        }
+        .due-date-badge {
+          color: red;
+          border-color: #7F2E2F;
+          font-size: 16pt;  
+          font-weight: 600;
+          padding: 4px 8px;
+        }
+        </style>
 ---
 
-Não haverá aula!
 
-## Entrega lista de exercícios 03
 
-::: callout-important
+## Slides
 
-## Fique Atento!
+::: {.list-group .aulas-list}
 
-{{< fa file-lines size=lg >}} [Lista de exercícios 03](/exercicios/lista03.html "Lista de exercícios 03"){aria-label="Lista de exercícios 03"} 
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
 
-Entrega via [Moodle](https://moodlepresencial.ufop.br/login/index.php)
+<div>
+  <span class="fw-bold">{{< fa file-powerpoint size=lg >}} Modelos baseados em árvores </span>
+</div>
 
--   Data de entrega:
-    -   02 de dezembro de 2025
+<div class="d-flex align-items-center gap-3">
+
+[Ver slides](/aulas/semanais/semana_07_arvores_ensembles_v2.html#/title-slide){.btn .btn-est304-main .btn-sm}
+
+</div>
+
 :::
+
+:::
+
+
+
+
+

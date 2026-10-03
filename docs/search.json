@@ -25,7 +25,7 @@
     "href": "programacao/semana-7.html",
     "title": "Semana 07",
     "section": "",
-    "text": "Não haverá aula!"
+    "text": "Modelos baseados em árvores \n\n\nVer slides"
   },
   {
     "objectID": "programacao/semana-7.html#entrega-lista-de-exercícios-03",
@@ -1393,7 +1393,7 @@
     "href": "aulas.html",
     "title": "Aulas",
     "section": "",
-    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides  \n\n\n Métodos Locais: KNN, Kernel e Regressão Local \n Ver slides  \n\n\n Kernels, RKHS, SVR e SVM \n Ver slides",
+    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides  \n\n\n Métodos Locais: KNN, Kernel e Regressão Local \n Ver slides  \n\n\n Kernels, RKHS, SVR e SVM \n Ver slides  \n\n\n Modelos baseados em árvores \n Ver slides",
     "crumbs": [
       "Aulas"
     ]
@@ -2313,7 +2313,7 @@
     "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#uma-estratégia-diferente",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Uma estratégia diferente",
-    "text": "Uma estratégia diferente\nUma árvore divide o espaço de entrada em regiões:\n\\[\n\\mathcal X=\\mathcal R_1\\cup\\cdots\\cup\\mathcal R_M\n\\]\ne atribui uma predição a cada região."
+    "text": "Uma estratégia diferente\nAté agora, modelamos \\(g(\\mathbf{x})\\) como uma função suave:\n\nsplines\n\nkernels\n\nregressão local\n\nAgora adotamos uma abordagem diferente:\n\nmodelar \\(g(\\mathbf{x})\\) por partições do espaço das covariáveis."
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#o-modelo",
@@ -11220,7 +11220,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -11955,5 +11955,1335 @@
     "title": "Semana 08",
     "section": "",
     "text": "Mapas Perceptuais com PCA: estudo de marcas \n Ver análise PDF"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#interpretação",
+    "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#interpretação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Interpretação",
+    "text": "Interpretação\n\no espaço é dividido em “caixas”\ndentro de cada região, a previsão é constante → média dos dados\no modelo é uma função piecewise constante\n\n\n\nProblema de estimação\nQueremos encontrar a melhor partição:\n\\[\n\\{\\mathcal{R}_1, \\ldots, \\mathcal{R}_M\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#por-que-combinar-árvores",
+    "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#por-que-combinar-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#bagging-bootstrap-aggregating",
+    "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#bagging-bootstrap-aggregating",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging (Bootstrap Aggregating)",
+    "text": "Bagging (Bootstrap Aggregating)\nA ideia central é combinar vários estimadores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nonde \\(g_b(\\mathbf{x})\\) é a predição da \\(b\\)-ésima árvore.\nPara cada \\(b = 1, \\ldots, B\\):\n\namostramos com reposição (bootstrap)\n\najustamos uma árvore aos dados"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#florestas-aleatórias-random-forest",
+    "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#florestas-aleatórias-random-forest",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Florestas Aleatórias (Random Forest)",
+    "text": "Florestas Aleatórias (Random Forest)\nNo Bagging, combinamos várias árvores:\n\\[\ng(\\mathbf{x}) = \\frac{1}{B} \\sum_{b=1}^B g_b(\\mathbf{x})\n\\]\nComo as amostras bootstrap não são i.i.d,\n\nCada árvore é diferente, mas nasce do mesmo mecanismo, então têm variâncias semelhantes, ou seja,\n\n\\[\n\\mathrm{Var}(g_b(\\mathbf{x})) = \\sigma^2\n\\quad \\text{para todo } b\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#boosting",
+    "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#boosting",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting",
+    "text": "Boosting\nO boosting constrói o estimador de forma sequencial, corrigindo erros do modelo anterior.\n\nIdeia central\nComeçamos com um modelo simples e vamos ajustando os resíduos:\n\\[\nr_i = y_i - g(x_i)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#ideia-central",
+    "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#ideia-central",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ideia central",
+    "text": "Ideia central\nUma árvore de regressão divide o espaço de entrada em regiões:\n\\[\n\\mathcal{R}_1, \\mathcal{R}_2, \\ldots, \\mathcal{R}_M\n\\]\ne define:\n\\[\n\\hat{g}(\\mathbf{x}) = \\sum_{m=1}^M c_m \\mathbf{I}(\\mathbf{x} \\in \\mathcal{R}_m)\n\\]\nPara cada região \\(\\mathcal{R}_m\\), usamos:\n\\[\nc_m = \\frac{1}{|\\mathcal{R}_m|} \\sum_{i:x_i \\in \\mathcal{R}_m} y_i\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#problema-de-estimação",
+    "href": "aulas/semanais/semana_07_arvores_regressao_classificacao.html#problema-de-estimação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Problema de estimação",
+    "text": "Problema de estimação\nQueremos encontrar a melhor partição:\n\\[\n\\{\\mathcal{R}_1, \\ldots, \\mathcal{R}_M\\}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#de-funções-suaves-para-regras",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#de-funções-suaves-para-regras",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De funções suaves para regras",
+    "text": "De funções suaves para regras\nAté aqui, aproximamos \\(g(\\mathbf{x})\\) usando funções suaves:\n\nsplines\nregressão local\nkernels\n\nÁrvores seguem outra lógica:\n\\[\n\\boxed{\n\\text{dividir o espaço de } \\mathbf{x}\n\\longrightarrow\n\\text{formar regiões homogêneas}\n\\longrightarrow\n\\text{predizer dentro de cada região}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#antes-de-tudo-regressão-ou-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#antes-de-tudo-regressão-ou-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Antes de tudo: regressão ou classificação?",
+    "text": "Antes de tudo: regressão ou classificação?\n\n\nRegressão\nA resposta é quantitativa:\n\\[\nY\\in\\mathbb{R}\n\\]\nExemplos:\n\npreço de uma casa\nconsumo de energia\ntempo de internação\n\nFolha: produz um valor numérico.\n\nClassificação\nA resposta é categórica:\n\\[\nY\\in\\{1,\\ldots,K\\}\n\\]\nExemplos:\n\ninadimplente / não inadimplente\nespécie\nchurn / não churn\n\nFolha: produz classe e/ou probabilidades."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\n\n\n\n\n\n\n\nCada caminho da raiz até uma folha define uma região \\(\\mathcal{R}_m\\). Quatro folhas correspondem às regiões \\(\\mathcal{R}_1,\\ldots,\\mathcal{R}_4\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#como-ler-uma-árvore",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#como-ler-uma-árvore",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como ler uma árvore?",
+    "text": "Como ler uma árvore?\nDa raiz até uma folha, fazemos uma sequência de perguntas do tipo\n\\[\nX_j \\leq s?\n\\]\nCada resposta escolhe um ramo. Ao final,\n\\[\n\\boxed{\\text{folha }m \\Longleftrightarrow \\text{região }\\mathcal{R}_m}\n\\]\nA árvore é simultaneamente um conjunto de regras, uma partição do espaço preditor e um modelo que associa uma previsão a cada região."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#da-árvore-às-regiões",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#da-árvore-às-regiões",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Da árvore às regiões",
+    "text": "Da árvore às regiões\nUma árvore com \\(M\\) folhas particiona o espaço em\n\\[\n\\mathcal{R}_1,\\mathcal{R}_2,\\ldots,\\mathcal{R}_M.\n\\]\nPara uma nova observação \\(\\mathbf{x}\\):\n\ncomeçamos no nó raiz;\nseguimos as regras de divisão;\nchegamos a uma única folha;\nusamos a previsão associada àquela região.\n\n\\[\n\\boxed{\n\\mathbf{x}\\in\\mathcal{R}_m\n\\quad\\Rightarrow\\quad\n\\text{predição da folha }m\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-existe-dentro-de-uma-folha",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-existe-dentro-de-uma-folha",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que existe dentro de uma folha?",
+    "text": "O que existe dentro de uma folha?\n\n\n\nRegressão\nClassificação\n\n\n\nResposta\nquantitativa\ncategórica\n\n\nResumo da folha\nmédia \\(\\bar y_m\\)\n\nproporções \\(\\hat p_{mk}\\)\n\n\n\nPredição\n\\(\\hat y=\\bar y_m\\)\nclasse de maior probabilidade\n\n\nRegião boa\nvalores de \\(y\\) parecidos\npredominância de uma classe"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#a-pergunta-feita-em-cada-nó",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#a-pergunta-feita-em-cada-nó",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A pergunta feita em cada nó",
+    "text": "A pergunta feita em cada nó\nPara cada variável \\(X_j\\) e ponto de corte \\(s\\), testamos uma regra:\n\\[\nX_j\\leq s\n\\qquad\\text{versus}\\qquad\nX_j&gt;s.\n\\]\nEla cria duas regiões filhas.\nA árvore procura a divisão que produz filhos mais homogêneos que o pai.\n\\[\n\\boxed{\n\\text{melhor split}\n=\n\\text{maior ganho de homogeneidade}\n}\n\\]\nO significado de homogeneidade depende do problema."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#regressão-reduzir-o-erro-quadrático",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#regressão-reduzir-o-erro-quadrático",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão: reduzir o erro quadrático",
+    "text": "Regressão: reduzir o erro quadrático\nEm uma região \\(\\mathcal{R}_m\\), a melhor constante sob perda quadrática é\n\\[\n\\bar y_m\n=\n\\frac{1}{n_m}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}y_i\n\\]\nA impureza do nó pode ser medida por\n\\[\nRSS_m\n=\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-reduzir-a-mistura-de-classes",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-reduzir-a-mistura-de-classes",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\nSe \\(\\hat p_{mk}\\) é a proporção da classe \\(k\\) no nó \\(m\\), uma medida comum é o índice de Gini:\n\\[\nG_m\n=\n1-\\sum_{k=1}^{K}\\hat p_{mk}^{\\,2}\n\\]\n\n\n\\(G_m=0\\): nó puro\n\n\\(G_m\\) maior: classes mais misturadas"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#mesma-árvore-critérios-diferentes",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#mesma-árvore-critérios-diferentes",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mesma árvore, critérios diferentes",
+    "text": "Mesma árvore, critérios diferentes\n\n\nRegressão\nPergunta\n\nA divisão reduz a dispersão dos valores de \\(Y\\)?\n\nCritério típico:\n\\[\nRSS\n\\]\nFolha:\n\\[\n\\bar y_m\n\\]\n\nClassificação\nPergunta\n\nA divisão separa melhor as classes?\n\nCritérios típicos:\n\\[\n\\text{Gini ou Entropia}\n\\]\nFolha:\n\\[\n(\\hat p_{m1},\\ldots,\\hat p_{mK})\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#exemplo-uma-árvore-de-regressão",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#exemplo-uma-árvore-de-regressão",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exemplo: uma árvore de regressão",
+    "text": "Exemplo: uma árvore de regressão"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#exemplo-uma-árvore-de-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#exemplo-uma-árvore-de-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exemplo: uma árvore de classificação",
+    "text": "Exemplo: uma árvore de classificação"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#árvore-profunda-baixo-viés-alta-variância",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#árvore-profunda-baixo-viés-alta-variância",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Árvore profunda: baixo viés, alta variância",
+    "text": "Árvore profunda: baixo viés, alta variância\nUma árvore pode continuar dividindo os dados até criar folhas muito pequenas.\nIsso reduz o erro de treinamento, mas pode produzir regras instáveis.\n\\[\n\\boxed{\n\\text{árvore muito profunda}\n\\Rightarrow\n\\text{maior flexibilidade}\n\\Rightarrow\n\\text{maior risco de overfitting}\n}\n\\]\nPequenas mudanças na amostra podem gerar uma árvore bastante diferente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda-trocar-ajuste-por-simplicidade",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda-trocar-ajuste-por-simplicidade",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda: trocar ajuste por simplicidade",
+    "text": "Poda: trocar ajuste por simplicidade\nPara regressão, uma forma de pensar na poda é:\n\\[\n\\boxed{\n\\text{erro da árvore}\n+\n\\alpha\\times\\text{complexidade}\n}\n\\]\nou, mais especificamente,\n\\[\n\\sum_{m=1}^{|T|}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n+\n\\alpha|T|.\n\\]\n\n\n\\(\\alpha\\) pequeno \\(\\rightarrow\\) árvore maior\n\n\\(\\alpha\\) grande \\(\\rightarrow\\) árvore menor\n\nNa classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.\n\n\n\n\n\n\nTip\n\n\nA poda regulariza uma árvore. Bagging, Random Forest e Boosting seguem outra estratégia: combinar muitas árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-problema-da-árvore-individual",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-problema-da-árvore-individual",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O problema da árvore individual",
+    "text": "O problema da árvore individual\nÁrvores são:\n\ninterpretáveis\ncapazes de capturar não linearidade\ncapazes de capturar interações\n\nMas são também:\n\ninstáveis\nsensíveis à amostra\nde alta variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#três-maneiras-de-combinar-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#três-maneiras-de-combinar-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Três maneiras de combinar árvores",
+    "text": "Três maneiras de combinar árvores\nOs ensembles respondem de formas diferentes:\n\\[\n\\boxed{\\text{Bagging: construir em paralelo e agregar}}\n\\]\n\\[\n\\boxed{\\text{Random Forest: descorrelacionar e agregar}}\n\\]\n\\[\n\\boxed{\\text{Boosting: construir correções sequenciais}}\n\\]\nDurante os próximos slides, acompanhe duas perguntas:\n\nComo cada nova árvore é construída?\nComo as árvores são combinadas?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-bootstrap-aggregating",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-bootstrap-aggregating",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging = Bootstrap + Aggregating",
+    "text": "Bagging = Bootstrap + Aggregating\nPara \\(b=1,\\ldots,B\\):\n\nsorteie uma amostra bootstrap;\najuste uma árvore \\(T_b\\);\nrepita muitas vezes;\ncombine as previsões.\n\n\\[\n\\boxed{\n\\text{Bagging}\n=\n\\text{Bootstrap}\n+\n\\text{Agregação}\n}\n\\]\nAs árvores são ajustadas em paralelo: uma não depende da anterior."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#como-agregamos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#como-agregamos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como agregamos?",
+    "text": "Como agregamos?\n\n\nRegressão\nCada árvore fornece um número:\n\\[\n\\hat y_b(\\mathbf{x}).\n\\]\nAgregamos pela média:\n\\[\n\\boxed{\n\\hat y_{\\text{bag}}(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat y_b(\\mathbf{x})\n}\n\\]\n\nClassificação\nCada árvore fornece classe ou probabilidades.\nPodemos usar:\n\\[\n\\boxed{\\text{voto majoritário}}\n\\]\nou, preferencialmente, promediar probabilidades:\n\\[\n\\boxed{\n\\hat p_k(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat p_{bk}(\\mathbf{x})\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-em-regressão-veja-a-estabilização",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-em-regressão-veja-a-estabilização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging em regressão: veja a estabilização",
+    "text": "Bagging em regressão: veja a estabilização\n\n\n\n\n\n\n\nAs árvores individuais variam bastante. A média acumulada se torna progressivamente mais estável."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-a-média-ajuda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-a-média-ajuda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que a média ajuda?",
+    "text": "Por que a média ajuda?\nSe cada árvore tem variância aproximadamente \\(\\sigma^2\\) e correlação média \\(\\rho\\), então\n\\[\n\\boxed{\n\\operatorname{Var}(\\bar T)\n=\n\\rho\\sigma^2+\n\\frac{1-\\rho}{B}\\sigma^2\n}\n\\]\nDuas mensagens:\n\naumentar \\(B\\) reduz a segunda parcela;\na parcela \\(\\rho\\sigma^2\\) permanece.\n\nLogo:\n\\[\n\\boxed{\n\\text{não basta ter muitas árvores; é útil que elas sejam diferentes}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-em-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-em-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging em classificação",
+    "text": "Bagging em classificação\nO mecanismo é o mesmo:\n\\[\n\\text{bootstrap}\n\\rightarrow\n\\text{árvore de classificação}\n\\rightarrow\n\\text{probabilidade/voto}\n\\rightarrow\n\\text{agregação}.\n\\]\nO que muda em relação à regressão?\n\n\nEtapa\nRegressão\nClassificação\n\n\n\nsplit\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nproporções/classes\n\n\nagregação\nmédia de \\(\\hat y\\)\n\nmédia de probabilidades/voto"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-limite-do-bagging",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-limite-do-bagging",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O limite do Bagging",
+    "text": "O limite do Bagging\nMesmo com amostras bootstrap diferentes, árvores podem ficar muito parecidas.\nPor quê?\nSe uma variável é muito forte, ela tende a ser escolhida repetidamente perto da raiz.\nResultado:\n\\[\n\\text{árvores semelhantes}\n\\Rightarrow\n\\rho \\text{ alto}\n\\Rightarrow\n\\text{menor redução de variância}.\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#random-forest-descorrelacionar-as-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#random-forest-descorrelacionar-as-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Random Forest: descorrelacionar as árvores",
+    "text": "Random Forest: descorrelacionar as árvores\nO Random Forest adiciona uma segunda fonte de aleatoriedade.\nPara cada árvore:\n\nsorteamos uma amostra bootstrap;\nem cada nó, sorteamos apenas \\(m_{\\text{try}}\\) das \\(p\\) variáveis;\nprocuramos o melhor split somente entre essas candidatas;\nrepetimos até construir muitas árvores.\n\n\\[\n\\boxed{\n\\text{RF}\n=\n\\text{Bagging}\n+\n\\text{subamostragem de variáveis em cada split}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#onde-bagging-e-random-forest-se-separam",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#onde-bagging-e-random-forest-se-separam",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Onde Bagging e Random Forest se separam?",
+    "text": "Onde Bagging e Random Forest se separam?\n\nNo Bagging, todas as \\(p\\) variáveis podem disputar cada split.\nNo Random Forest, apenas \\(m_{\\text{try}}&lt;p\\) variáveis sorteadas podem disputar aquele split.\n\n\n\n\n\n\nImportante\n\n\nO subconjunto de variáveis é sorteado novamente em cada nó. Essa aleatoriedade adicional ajuda a reduzir a correlação entre as árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-versus-random-forest",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-versus-random-forest",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging versus Random Forest",
+    "text": "Bagging versus Random Forest\n\n\n\nBagging\nRandom Forest\n\n\n\nBootstrap de observações\nsim\nsim\n\n\nVariáveis candidatas por split\ntodas\nsubconjunto aleatório\n\n\nObjetivo adicional\nestabilizar\nestabilizar + descorrelacionar\n\n\nRegressão\nmédia\nmédia\n\n\nClassificação\nvoto/probabilidades\nvoto/probabilidades"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-m_texttry-controla",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-m_texttry-controla",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que \\(m_{\\text{try}}\\) controla?",
+    "text": "O que \\(m_{\\text{try}}\\) controla?\n\\[\nm_{\\text{try}}\n=\n\\text{número de variáveis candidatas em cada nó}.\n\\]\n\nvalor grande \\(\\rightarrow\\) árvores mais parecidas\nvalor pequeno \\(\\rightarrow\\) árvores mais diversas\npequeno demais \\(\\rightarrow\\) splits individuais podem piorar\n\nPortanto, existe um compromisso:\n\\[\n\\boxed{\n\\text{força de cada árvore}\n\\quad\\text{versus}\\quad\n\\text{correlação entre árvores}\n}\n\\]\n\\(m_{\\text{try}}\\) deve ser tratado como hiperparâmetro e pode ser ajustado por validação."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#oob-validação-embutida-no-bootstrap",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#oob-validação-embutida-no-bootstrap",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\nEm cada amostra bootstrap, algumas observações ficam de fora.\nElas são chamadas de out-of-bag (OOB).\nPara uma observação \\(i\\):\n\nuse apenas árvores em que \\(i\\) ficou fora do bootstrap;\nagregue suas previsões;\ncompare com \\(y_i\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#a-mudança-fundamental",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#a-mudança-fundamental",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A mudança fundamental",
+    "text": "A mudança fundamental\nBagging e Random Forest constroem árvores aproximadamente em paralelo.\nBoosting constrói modelos sequencialmente:\n\\[\nT_1\n\\rightarrow\nT_2\n\\rightarrow\nT_3\n\\rightarrow\\cdots\n\\]\nCada nova árvore tenta melhorar o modelo acumulado.\n\\[\n\\boxed{\nF_B(\\mathbf{x})\n=\nF_0(\\mathbf{x})\n+\n\\lambda\\sum_{b=1}^{B}T_b(\\mathbf{x})\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#boosting-em-regressão-começando-pelo-erro-atual",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#boosting-em-regressão-começando-pelo-erro-atual",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: começando pelo erro atual",
+    "text": "Boosting em regressão: começando pelo erro atual\nCom perda quadrática,\n\\[\nL(y,F)=(y-F)^2,\n\\]\no sinal de correção é proporcional ao resíduo:\n\\[\nr_i^{(b)}\n=\ny_i-F_{b-1}(\\mathbf{x}_i).\n\\]\nNa iteração \\(b\\):\n\ncalcule os resíduos atuais;\najuste uma árvore rasa aos resíduos;\nadicione uma pequena fração da nova árvore:\n\n\\[\nF_b(\\mathbf{x})\n=\nF_{b-1}(\\mathbf{x})\n+\n\\lambda T_b(\\mathbf{x}).\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#boosting-em-regressão-veja-o-modelo-aprender",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#boosting-em-regressão-veja-o-modelo-aprender",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: veja o modelo aprender",
+    "text": "Boosting em regressão: veja o modelo aprender\n\n\n\n\n\n\n\nImportant\n\n\nA linha da nova árvore não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o modelo acumulado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#e-na-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#e-na-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E na classificação?",
+    "text": "E na classificação?\nAqui está uma diferença importante.\nEm classificação, não faz sentido usar simplesmente\n\\[\ny_i-\\hat y_i\n\\]\ncomo se as classes fossem números contínuos.\nUsamos uma função de perda de classificação, como a log-loss.\nNo gradient boosting, cada nova árvore é ajustada ao gradiente negativo da perda (pseudo-resíduo).\n\\[\n\\boxed{\n\\text{regressão quadrática: pseudo-resíduo = resíduo usual}\n}\n\\]\n\\[\n\\boxed{\n\\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-binária-uma-leitura-intuitiva",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-binária-uma-leitura-intuitiva",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária: uma leitura intuitiva",
+    "text": "Classificação binária: uma leitura intuitiva\nSe \\(y_i\\in\\{0,1\\}\\) e o modelo atual fornece\n\\[\n\\hat p_i=P(Y_i=1\\mid\\mathbf{x}_i),\n\\]\nsob log-loss, o sinal de correção é proporcional a\n\\[\n\\boxed{\nr_i^{(b)}=y_i-\\hat p_i.\n}\n\\]\nExemplos:\n\n\n\\(y_i\\)\n\\(\\hat p_i\\)\n\\(y_i-\\hat p_i\\)\nleitura\n\n\n\n1\n0,95\n0,05\nquase nada a corrigir\n\n\n1\n0,20\n0,80\naumentar fortemente a evidência para classe 1\n\n\n0\n0,10\n-0,10\npequena correção\n\n\n0\n0,85\n-0,85\nreduzir fortemente a evidência para classe 1\n\n\n\n\n\n\n\n\n\nNote\n\n\nEssa tabela é uma interpretação didática do gradient boosting binário com log-loss. A implementação trabalha na escala do escore/logit e atualiza o modelo aditivo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#boosting-em-classificação-veja-a-correção",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#boosting-em-classificação-veja-a-correção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em classificação: veja a correção",
+    "text": "Boosting em classificação: veja a correção\n\nÀ esquerda, o modelo acumulado atualiza \\(\\hat p=P(Y=1\\mid X)\\).\nÀ direita, visualizamos o sinal de correção \\(y_i-\\hat p_i\\).\n\n\n\n\n\n\nTip\n\n\nCompare com regressão: a lógica modelo atual + pequena correção permanece. O que muda é a função de perda e, consequentemente, o pseudo-resíduo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-papel-do-learning-rate-lambda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-papel-do-learning-rate-lambda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O papel do learning rate \\(\\lambda\\)\n",
+    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção.\nO learning rate controla quanto dessa correção será incorporado:\n\\[\nF_b\n=\nF_{b-1}\n+\n\\lambda T_b.\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\npassos menores\naprendizado mais gradual\nnormalmente exige mais árvores\ntende a oferecer maior controle\n\n\n\n\\(\\lambda\\) grande\n\npassos maiores\naprende mais rapidamente\npode precisar de menos árvores\npode sobreajustar mais cedo"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#profundidade-das-árvores-no-boosting",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#profundidade-das-árvores-no-boosting",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Profundidade das árvores no Boosting",
+    "text": "Profundidade das árvores no Boosting\nÁrvores rasas são comuns porque cada árvore deve aprender uma correção, não resolver sozinha todo o problema.\n\n\nstump (profundidade 1): efeitos muito simples\nprofundidade 2–4: permite interações de baixa ordem\nárvores profundas: correções mais complexas e maior risco de overfitting\n\n\\[\n\\boxed{\n\\text{complexidade final}\n=\n\\text{profundidade}\n+\nB\n+\n\\lambda\n}\n\\]\nEsses hiperparâmetros devem ser considerados conjuntamente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-random-forest-e-boosting",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-random-forest-e-boosting",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging, Random Forest e Boosting",
+    "text": "Bagging, Random Forest e Boosting\n\n\n\n\n\n\n\n\n\nBagging\nRandom Forest\nBoosting\n\n\n\nConstrução\nparalela\nparalela\nsequencial\n\n\nReamostragem\nbootstrap\nbootstrap\ndepende do algoritmo\n\n\nVariáveis por split\ntodas\nsubconjunto\ngeralmente todas\n\n\nPrincipal ideia\nmédia reduz variância\nreduzir variância e correlação\ncorrigir erros/gradiente\n\n\nÁrvores\nusualmente profundas\nusualmente profundas\nusualmente rasas\n\n\nRegressão\nmédia\nmédia\nsoma aditiva\n\n\nClassificação\nvoto/prob.\nvoto/prob.\nescore/prob. aditivos"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-permanece-igual-entre-regressão-e-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-permanece-igual-entre-regressão-e-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que permanece igual entre regressão e classificação?",
+    "text": "O que permanece igual entre regressão e classificação?\nA estrutura geral:\n\\[\n\\boxed{\n\\text{regras recursivas}\n\\rightarrow\n\\text{regiões}\n\\rightarrow\n\\text{folhas}\n}\n\\]\ne as ideias dos ensembles:\n\nBagging: agregar\n\nRandom Forest: agregar árvores menos correlacionadas\n\nBoosting: somar correções sequenciais"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-muda-entre-regressão-e-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-muda-entre-regressão-e-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que muda entre regressão e classificação?",
+    "text": "O que muda entre regressão e classificação?\n\n\nComponente\nRegressão\nClassificação\n\n\n\nalvo\nnúmero\nclasse\n\n\nsplit de árvore\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nprobabilidade/classe\n\n\nperda típica\nquadrática\nlog-loss, erro etc.\n\n\nbagging/RF\nmédia\nprobabilidade média/voto\n\n\nboosting\nresíduos sob MSE\npseudo-resíduos da perda\n\n\n\n\n\n\n\n\n\nImportant\n\n\nA mudança não está na ideia de “árvore”. Está na função de perda, no critério de split e na forma de produzir/agregar a previsão."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#uma-leitura-estatística",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#uma-leitura-estatística",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma leitura estatística",
+    "text": "Uma leitura estatística\nÁrvore individual\n\nmáxima interpretabilidade\nregras explícitas\nmaior instabilidade\n\nBagging\n\nreduz variância\nperde parte da interpretabilidade da árvore única\n\nRandom Forest\n\nreduz variância e correlação entre árvores\nforte baseline para dados tabulares\n\nBoosting\n\nconstrói modelo aditivo de forma sequencial\nfrequentemente alto desempenho\nmaior sensibilidade à escolha dos hiperparâmetros"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#fluxo-de-modelagem",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#fluxo-de-modelagem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Fluxo de modelagem",
+    "text": "Fluxo de modelagem\n\\[\n\\boxed{\n\\text{treino}\n\\rightarrow\n\\text{reamostragem/validação}\n\\rightarrow\n\\text{ajuste de hiperparâmetros}\n\\rightarrow\n\\text{modelo final}\n\\rightarrow\n\\text{teste}\n}\n\\]\nExemplos de hiperparâmetros:\n\nárvore: profundidade, tamanho mínimo do nó, poda\nRandom Forest: \\(m_{\\text{try}}\\), tamanho mínimo do nó, número de árvores\nBoosting: \\(B\\), \\(\\lambda\\), profundidade\n\nO conjunto de teste permanece reservado para a avaliação final."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#mapa-mental-da-semana-7",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#mapa-mental-da-semana-7",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mapa mental da Semana 7",
+    "text": "Mapa mental da Semana 7\n\\[\n\\boxed{\\text{Árvore}}\n\\]\n\\[\n\\downarrow\n\\]\n\\[\n\\text{partições do espaço}\n\\rightarrow\n\\begin{cases}\n\\text{média} & \\text{regressão}\\\\\n\\text{probabilidade/classe} & \\text{classificação}\n\\end{cases}\n\\]\n\\[\n\\downarrow\n\\]\n\\[\n\\begin{array}{ccc}\n\\text{Bagging} & \\text{Random Forest} & \\text{Boosting}\\\\\n\\text{agregar} &\n\\text{descorrelacionar + agregar} &\n\\text{corrigir sequencialmente}\n\\end{array}\n\\]\n\n\n\n\n\n\nTip\n\n\nSe o aluno compreender o que acontece em uma folha, como um split é escolhido e como as árvores são combinadas, ele compreendeu a essência desses quatro métodos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#de-funções-suaves-para-regras-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#de-funções-suaves-para-regras-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De funções suaves para regras",
+    "text": "De funções suaves para regras\nA estrutura da árvore é praticamente a mesma em regressão e classificação.\nO que muda é:\n\no que significa “região homogênea”, o que guardamos nas folhas e como combinamos as árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-existe-dentro-de-uma-folha-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#o-que-existe-dentro-de-uma-folha-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que existe dentro de uma folha?",
+    "text": "O que existe dentro de uma folha?\nPara regressão:\n\\[\n\\hat g(\\mathbf{x})\n=\n\\sum_{m=1}^{M}\\bar y_m\\,I(\\mathbf{x}\\in\\mathcal{R}_m)\n\\]\nPara classificação:\n\\[\n\\hat p_k(\\mathbf{x})\n=\n\\hat p_{mk},\n\\qquad \\mathbf{x}\\in\\mathcal{R}_m\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nDa raiz até uma folha, fazemos uma sequência de perguntas do tipo\n\\[\nX_j \\leq s?\n\\]\nCada resposta escolhe um ramo. Ao final,\n\\[\n\\boxed{\\text{folha }m \\Longleftrightarrow \\text{região }\\mathcal{R}_m}\n\\]\nA árvore é simultaneamente um conjunto de regras, uma partição do espaço preditor e um modelo que associa uma previsão a cada região."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nUma árvore com \\(M\\) folhas particiona o espaço em\n\\[\n\\mathcal{R}_1,\\mathcal{R}_2,\\ldots,\\mathcal{R}_M.\n\\]\nPara uma nova observação \\(\\mathbf{x}\\):\n\ncomeçamos no nó raiz;\nseguimos as regras de divisão;\nchegamos a uma única folha;\nusamos a previsão associada àquela região.\n\n\\[\n\\boxed{\n\\mathbf{x}\\in\\mathcal{R}_m\n\\quad\\Rightarrow\\quad\n\\text{predição da folha }m\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-3",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-3",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\n\n\n\nRegressão\nClassificação\n\n\n\nResposta\nquantitativa\ncategórica\n\n\nResumo da folha\nmédia \\(\\bar y_m\\)\n\nproporções \\(\\hat p_{mk}\\)\n\n\n\nPredição\n\\(\\hat y=\\bar y_m\\)\nclasse de maior probabilidade\n\n\nRegião boa\nvalores de \\(y\\) parecidos\npredominância de uma classe"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-4",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#nós-ramos-folhas-e-regiões-4",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nPara regressão:\n\\[\n\\hat g(\\mathbf{x})\n=\n\\sum_{m=1}^{M}\\bar y_m\\,I(\\mathbf{x}\\in\\mathcal{R}_m)\n\\]\nPara classificação:\n\\[\n\\hat p_k(\\mathbf{x})\n=\n\\hat p_{mk},\n\\qquad \\mathbf{x}\\in\\mathcal{R}_m\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#regressão-reduzir-o-erro-quadrático-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#regressão-reduzir-o-erro-quadrático-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão: reduzir o erro quadrático",
+    "text": "Regressão: reduzir o erro quadrático\nUma boa divisão produz:\n\\[\n\\boxed{\nRSS_{\\text{esq}}+RSS_{\\text{dir}}\n&lt;\nRSS_{\\text{pai}}\n}\n\\]\nQuanto maior a redução, melhor o split."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-reduzir-a-mistura-de-classes-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-reduzir-a-mistura-de-classes-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\nA árvore escolhe o split que reduz a impureza ponderada:\n\\[\n\\boxed{\nG_{\\text{pai}}\n-\n\\left(\n\\frac{n_E}{n}G_E+\n\\frac{n_D}{n}G_D\n\\right)\n}\n\\]\nUma alternativa ao índice de Gini é a entropia:\n\\[\n\\boxed{\nH_m\n=\n-\\sum_{k=1}^{K}\n\\hat p_{mk}\\log_2(\\hat p_{mk})\n}\n\\]\nonde \\(\\hat p_{mk}\\) é a proporção de observações da classe \\(k\\) no nó \\(m\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-reduzir-a-mistura-de-classes-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#classificação-reduzir-a-mistura-de-classes-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\n\n\nEntropia baixa \\(\\rightarrow\\) nó mais puro\n\nEntropia alta \\(\\rightarrow\\) maior mistura entre as classes\n\n\n\n\n\n\n\n\nTanto Gini quanto entropia procuram a mesma coisa: divisões que produzam nós filhos mais puros que o nó pai."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda",
+    "text": "Poda\nPara regressão, uma forma de pensar na poda é:\n\\[\n\\boxed{\n\\text{erro da árvore}\n+\n\\alpha\\times\\text{complexidade}\n}\n\\]\nou, mais especificamente,\n\\[\n\\sum_{m=1}^{|T|}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n+\n\\alpha|T|.\n\\]\n\n\n\\(\\alpha\\) pequeno \\(\\rightarrow\\) árvore maior\n\n\\(\\alpha\\) grande \\(\\rightarrow\\) árvore menor\n\nNa classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.\n\n\n\n\n\n\nTip\n\n\nA poda regulariza uma árvore. Bagging, Random Forest e Boosting seguem outra estratégia: combinar muitas árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda-pruning",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda-pruning",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda (pruning)",
+    "text": "Poda (pruning)\nPara regressão, uma forma de pensar na poda é:\n\\[\n\\boxed{\n\\text{erro da árvore}\n+\n\\alpha\\times\\text{complexidade}\n}\n\\]\nou, mais especificamente,\n\\[\n\\sum_{m=1}^{|T|}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n+\n\\alpha|T|\n\\]\n\n\n\\(\\alpha\\) pequeno \\(\\rightarrow\\) árvore maior\n\n\\(\\alpha\\) grande \\(\\rightarrow\\) árvore menor"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda-pruning-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#poda-pruning-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda (pruning)",
+    "text": "Poda (pruning)\nNa classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.\n\n\n\n\n\n\nA poda regulariza uma árvore. Bagging, Random Forest e Boosting seguem outra estratégia: combinar muitas árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-combinar-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-combinar-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-combinar-árvores-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-combinar-árvores-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nSe \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\) são:\n\nnão viesados\n\ncom mesma variância\n\nnão correlacionados\n\nentão:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{2}\\mathbb{V}(g_i(\\mathbf{x}))\n\\]\nConclusão\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\le\n\\mathbb{E}\\big[(\\boldsymbol{y} - g_i(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-combinar-árvores-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#por-que-combinar-árvores-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nAssim, combinar modelos:\n\nmantém o viés\n\nreduz a variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#ideia-central-do-bagging",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#ideia-central-do-bagging",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ideia central do Bagging",
+    "text": "Ideia central do Bagging\n\nMédia de vários modelos instáveis → modelo mais estável"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-bootstrap-aggregating-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-bootstrap-aggregating-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging = Bootstrap + Aggregating",
+    "text": "Bagging = Bootstrap + Aggregating\nPara \\(b=1,\\ldots,B\\):\n\nsorteie uma amostra bootstrap;\najuste uma árvore \\(T_b\\);\nrepita muitas vezes;\ncombine as previsões.\n\n\\[\n\\boxed{\n\\text{Bagging}\n=\n\\text{Bootstrap}\n+\n\\text{Agregação}\n}\n\\]\nAs árvores são ajustadas em paralelo: uma não depende da anterior."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-versus-random-forest-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#bagging-versus-random-forest-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging versus Random Forest",
+    "text": "Bagging versus Random Forest\nSe\n\\[\nm_{\\text{try}}=p,\n\\]\no Random Forest se reduz, essencialmente, ao Bagging de árvores.\n\n\n\n\n\n\nCom apenas uma variável preditora, não é possível visualizar a diferença essencial entre Bagging e Random Forest: não há variáveis para sortear. Por isso, uma animação univariada de RF se comporta como Bagging."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#oob-validação-embutida-no-bootstrap-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_animacoes.html#oob-validação-embutida-no-bootstrap-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\nIsso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.\n\n\n\n\n\n\nNota\n\n\nOOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#de-funções-suaves-para-regras",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#de-funções-suaves-para-regras",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De funções suaves para regras",
+    "text": "De funções suaves para regras\nAté aqui, aproximamos \\(g(\\mathbf{x})\\) usando funções suaves:\n\nsplines\nregressão local\nkernels\n\nÁrvores seguem outra lógica:\n\\[\n\\boxed{\n\\text{dividir o espaço de } \\mathbf{x}\n\\longrightarrow\n\\text{formar regiões homogêneas}\n\\longrightarrow\n\\text{predizer dentro de cada região}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#de-funções-suaves-para-regras-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#de-funções-suaves-para-regras-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De funções suaves para regras",
+    "text": "De funções suaves para regras\nA estrutura da árvore é praticamente a mesma em regressão e classificação.\nO que muda é:\n\no que significa “região homogênea”, o que guardamos nas folhas e como combinamos as árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#antes-de-tudo-regressão-ou-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#antes-de-tudo-regressão-ou-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Antes de tudo: regressão ou classificação?",
+    "text": "Antes de tudo: regressão ou classificação?\n\n\nRegressão\nA resposta é quantitativa:\n\\[\nY\\in\\mathbb{R}\n\\]\nExemplos:\n\npreço de uma casa\nconsumo de energia\ntempo de internação\n\nFolha: produz um valor numérico.\n\nClassificação\nA resposta é categórica:\n\\[\nY\\in\\{1,\\ldots,K\\}\n\\]\nExemplos:\n\ninadimplente / não inadimplente\nespécie\nchurn / não churn\n\nFolha: produz classe e/ou probabilidades."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\n\n\n\n\n\n\n\nCada caminho da raiz até uma folha define uma região \\(\\mathcal{R}_m\\). Quatro folhas correspondem às regiões \\(\\mathcal{R}_1,\\ldots,\\mathcal{R}_4\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nDa raiz até uma folha, fazemos uma sequência de perguntas do tipo\n\\[\nX_j \\leq s?\n\\]\nCada resposta escolhe um ramo. Ao final,\n\\[\n\\boxed{\\text{folha }m \\Longleftrightarrow \\text{região }\\mathcal{R}_m}\n\\]\nA árvore é simultaneamente um conjunto de regras, uma partição do espaço preditor e um modelo que associa uma previsão a cada região."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nUma árvore com \\(M\\) folhas particiona o espaço em\n\\[\n\\mathcal{R}_1,\\mathcal{R}_2,\\ldots,\\mathcal{R}_M.\n\\]\nPara uma nova observação \\(\\mathbf{x}\\):\n\ncomeçamos no nó raiz;\nseguimos as regras de divisão;\nchegamos a uma única folha;\nusamos a previsão associada àquela região.\n\n\\[\n\\boxed{\n\\mathbf{x}\\in\\mathcal{R}_m\n\\quad\\Rightarrow\\quad\n\\text{predição da folha }m\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-3",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-3",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\n\n\n\nRegressão\nClassificação\n\n\n\nResposta\nquantitativa\ncategórica\n\n\nResumo da folha\nmédia \\(\\bar y_m\\)\n\nproporções \\(\\hat p_{mk}\\)\n\n\n\nPredição\n\\(\\hat y=\\bar y_m\\)\nclasse de maior probabilidade\n\n\nRegião boa\nvalores de \\(y\\) parecidos\npredominância de uma classe"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-4",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#nós-ramos-folhas-e-regiões-4",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nPara regressão:\n\\[\n\\hat g(\\mathbf{x})\n=\n\\sum_{m=1}^{M}\\bar y_m\\,I(\\mathbf{x}\\in\\mathcal{R}_m)\n\\]\nPara classificação:\n\\[\n\\hat p_k(\\mathbf{x})\n=\n\\hat p_{mk},\n\\qquad \\mathbf{x}\\in\\mathcal{R}_m\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#a-pergunta-feita-em-cada-nó",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#a-pergunta-feita-em-cada-nó",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A pergunta feita em cada nó",
+    "text": "A pergunta feita em cada nó\nPara cada variável \\(X_j\\) e ponto de corte \\(s\\), testamos uma regra:\n\\[\nX_j\\leq s\n\\qquad\\text{versus}\\qquad\nX_j&gt;s.\n\\]\nEla cria duas regiões filhas.\nA árvore procura a divisão que produz filhos mais homogêneos que o pai.\n\\[\n\\boxed{\n\\text{melhor split}\n=\n\\text{maior ganho de homogeneidade}\n}\n\\]\nO significado de homogeneidade depende do problema."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#regressão-reduzir-o-erro-quadrático",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#regressão-reduzir-o-erro-quadrático",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão: reduzir o erro quadrático",
+    "text": "Regressão: reduzir o erro quadrático\nEm uma região \\(\\mathcal{R}_m\\), a melhor constante sob perda quadrática é\n\\[\n\\bar y_m\n=\n\\frac{1}{n_m}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}y_i\n\\]\nA impureza do nó pode ser medida por\n\\[\nRSS_m\n=\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#regressão-reduzir-o-erro-quadrático-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#regressão-reduzir-o-erro-quadrático-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão: reduzir o erro quadrático",
+    "text": "Regressão: reduzir o erro quadrático\nUma boa divisão produz:\n\\[\n\\boxed{\nRSS_{\\text{esq}}+RSS_{\\text{dir}}\n&lt;\nRSS_{\\text{pai}}\n}\n\\]\nQuanto maior a redução, melhor o split."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-reduzir-a-mistura-de-classes",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-reduzir-a-mistura-de-classes",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\nSe \\(\\hat p_{mk}\\) é a proporção da classe \\(k\\) no nó \\(m\\), uma medida comum é o índice de Gini:\n\\[\nG_m\n=\n1-\\sum_{k=1}^{K}\\hat p_{mk}^{\\,2}\n\\]\n\n\n\\(G_m=0\\): nó puro\n\n\\(G_m\\) maior: classes mais misturadas"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-reduzir-a-mistura-de-classes-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-reduzir-a-mistura-de-classes-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\nA árvore escolhe o split que reduz a impureza ponderada:\n\\[\n\\boxed{\nG_{\\text{pai}}\n-\n\\left(\n\\frac{n_E}{n}G_E+\n\\frac{n_D}{n}G_D\n\\right)\n}\n\\]\nUma alternativa ao índice de Gini é a entropia:\n\\[\n\\boxed{\nH_m\n=\n-\\sum_{k=1}^{K}\n\\hat p_{mk}\\log_2(\\hat p_{mk})\n}\n\\]\nonde \\(\\hat p_{mk}\\) é a proporção de observações da classe \\(k\\) no nó \\(m\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-reduzir-a-mistura-de-classes-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-reduzir-a-mistura-de-classes-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\n\n\nEntropia baixa \\(\\rightarrow\\) nó mais puro\n\nEntropia alta \\(\\rightarrow\\) maior mistura entre as classes\n\n\n\n\n\n\n\n\nTanto Gini quanto entropia procuram a mesma coisa: divisões que produzam nós filhos mais puros que o nó pai."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#mesma-árvore-critérios-diferentes",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#mesma-árvore-critérios-diferentes",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mesma árvore, critérios diferentes",
+    "text": "Mesma árvore, critérios diferentes\n\n\nRegressão\nPergunta\n\nA divisão reduz a dispersão dos valores de \\(Y\\)?\n\nCritério típico:\n\\[\nRSS\n\\]\nFolha:\n\\[\n\\bar y_m\n\\]\n\nClassificação\nPergunta\n\nA divisão separa melhor as classes?\n\nCritérios típicos:\n\\[\n\\text{Gini ou Entropia}\n\\]\nFolha:\n\\[\n(\\hat p_{m1},\\ldots,\\hat p_{mK})\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#exemplo-uma-árvore-de-regressão",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#exemplo-uma-árvore-de-regressão",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exemplo: uma árvore de regressão",
+    "text": "Exemplo: uma árvore de regressão"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#exemplo-uma-árvore-de-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#exemplo-uma-árvore-de-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exemplo: uma árvore de classificação",
+    "text": "Exemplo: uma árvore de classificação"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#árvore-profunda-baixo-viés-alta-variância",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#árvore-profunda-baixo-viés-alta-variância",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Árvore profunda: baixo viés, alta variância",
+    "text": "Árvore profunda: baixo viés, alta variância\nUma árvore pode continuar dividindo os dados até criar folhas muito pequenas.\nIsso reduz o erro de treinamento, mas pode produzir regras instáveis.\n\\[\n\\boxed{\n\\text{árvore muito profunda}\n\\Rightarrow\n\\text{maior flexibilidade}\n\\Rightarrow\n\\text{maior risco de overfitting}\n}\n\\]\nPequenas mudanças na amostra podem gerar uma árvore bastante diferente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#poda-pruning",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#poda-pruning",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda (pruning)",
+    "text": "Poda (pruning)\nPara regressão, uma forma de pensar na poda é:\n\\[\n\\boxed{\n\\text{erro da árvore}\n+\n\\alpha\\times\\text{complexidade}\n}\n\\]\nou, mais especificamente,\n\\[\n\\sum_{m=1}^{|T|}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n+\n\\alpha|T|\n\\]\n\n\n\\(\\alpha\\) pequeno \\(\\rightarrow\\) árvore maior\n\n\\(\\alpha\\) grande \\(\\rightarrow\\) árvore menor"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#poda-pruning-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#poda-pruning-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda (pruning)",
+    "text": "Poda (pruning)\nNa classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.\n\n\n\n\n\n\nA poda regulariza uma árvore. Bagging, Random Forest e Boosting seguem outra estratégia: combinar muitas árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-problema-da-árvore-individual",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-problema-da-árvore-individual",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O problema da árvore individual",
+    "text": "O problema da árvore individual\nÁrvores são:\n\ninterpretáveis\ncapazes de capturar não linearidade\ncapazes de capturar interações\n\nMas são também:\n\ninstáveis\nsensíveis à amostra\nde alta variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-combinar-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-combinar-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-combinar-árvores-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-combinar-árvores-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nSe \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\) são:\n\nnão viesados\n\ncom mesma variância\n\nnão correlacionados\n\nentão:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{2}\\mathbb{V}(g_i(\\mathbf{x}))\n\\]\nConclusão\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\le\n\\mathbb{E}\\big[(\\boldsymbol{y} - g_i(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-combinar-árvores-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-combinar-árvores-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nAssim, combinar modelos:\n\nmantém o viés\n\nreduz a variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#três-maneiras-de-combinar-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#três-maneiras-de-combinar-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Três maneiras de combinar árvores",
+    "text": "Três maneiras de combinar árvores\nOs ensembles respondem de formas diferentes:\n\\[\n\\boxed{\\text{Bagging: construir em paralelo e agregar}}\n\\]\n\\[\n\\boxed{\\text{Random Forest: descorrelacionar e agregar}}\n\\]\n\\[\n\\boxed{\\text{Boosting: construir correções sequenciais}}\n\\]\nDurante os próximos slides, acompanhe duas perguntas:\n\nComo cada nova árvore é construída?\nComo as árvores são combinadas?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-bootstrap-aggregating-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-bootstrap-aggregating-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging = Bootstrap + Aggregating",
+    "text": "Bagging = Bootstrap + Aggregating\nPara \\(b=1,\\ldots,B\\):\n\nsorteie uma amostra bootstrap;\najuste uma árvore \\(T_b\\);\nrepita muitas vezes;\ncombine as previsões.\n\n\\[\n\\boxed{\n\\text{Bagging}\n=\n\\text{Bootstrap}\n+\n\\text{Agregação}\n}\n\\]\nAs árvores são ajustadas em paralelo: uma não depende da anterior."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#como-agregamos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#como-agregamos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como agregamos?",
+    "text": "Como agregamos?\n\n\nRegressão\nCada árvore fornece um número:\n\\[\n\\hat y_b(\\mathbf{x}).\n\\]\nAgregamos pela média:\n\\[\n\\boxed{\n\\hat y_{\\text{bag}}(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat y_b(\\mathbf{x})\n}\n\\]\n\nClassificação\nCada árvore fornece classe ou probabilidades.\nPodemos usar:\n\\[\n\\boxed{\\text{voto majoritário}}\n\\]\nou, preferencialmente, promediar probabilidades:\n\\[\n\\boxed{\n\\hat p_k(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat p_{bk}(\\mathbf{x})\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-em-regressão-veja-a-estabilização",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-em-regressão-veja-a-estabilização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging em regressão: veja a estabilização",
+    "text": "Bagging em regressão: veja a estabilização\n\n\n\n\n\n\n\nAs árvores individuais variam bastante. A média acumulada se torna progressivamente mais estável."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-a-média-ajuda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-a-média-ajuda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que a média ajuda?",
+    "text": "Por que a média ajuda?\nSe cada árvore tem variância aproximadamente \\(\\sigma^2\\) e correlação média \\(\\rho\\), então\n\\[\n\\boxed{\n\\operatorname{Var}(\\bar T)\n=\n\\rho\\sigma^2+\n\\frac{1-\\rho}{B}\\sigma^2\n}\n\\]\nDuas mensagens:\n\naumentar \\(B\\) reduz a segunda parcela;\na parcela \\(\\rho\\sigma^2\\) permanece.\n\nLogo:\n\\[\n\\boxed{\n\\text{não basta ter muitas árvores; é útil que elas sejam diferentes}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-em-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-em-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging em classificação",
+    "text": "Bagging em classificação\nO mecanismo é o mesmo:\n\\[\n\\text{bootstrap}\n\\rightarrow\n\\text{árvore de classificação}\n\\rightarrow\n\\text{probabilidade/voto}\n\\rightarrow\n\\text{agregação}.\n\\]\nO que muda em relação à regressão?\n\n\nEtapa\nRegressão\nClassificação\n\n\n\nsplit\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nproporções/classes\n\n\nagregação\nmédia de \\(\\hat y\\)\n\nmédia de probabilidades/voto"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-limite-do-bagging",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-limite-do-bagging",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O limite do Bagging",
+    "text": "O limite do Bagging\nMesmo com amostras bootstrap diferentes, árvores podem ficar muito parecidas.\nPor quê?\nSe uma variável é muito forte, ela tende a ser escolhida repetidamente perto da raiz.\nResultado:\n\\[\n\\text{árvores semelhantes}\n\\Rightarrow\n\\rho \\text{ alto}\n\\Rightarrow\n\\text{menor redução de variância}.\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#random-forest-descorrelacionar-as-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#random-forest-descorrelacionar-as-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Random Forest: descorrelacionar as árvores",
+    "text": "Random Forest: descorrelacionar as árvores\nO Random Forest adiciona uma segunda fonte de aleatoriedade.\nPara cada árvore:\n\nsorteamos uma amostra bootstrap;\nem cada nó, sorteamos apenas \\(m_{\\text{try}}\\) das \\(p\\) variáveis;\nprocuramos o melhor split somente entre essas candidatas;\nrepetimos até construir muitas árvores.\n\n\\[\n\\boxed{\n\\text{RF}\n=\n\\text{Bagging}\n+\n\\text{subamostragem de variáveis em cada split}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#onde-bagging-e-random-forest-se-separam",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#onde-bagging-e-random-forest-se-separam",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Onde Bagging e Random Forest se separam?",
+    "text": "Onde Bagging e Random Forest se separam?\n\nNo Bagging, todas as \\(p\\) variáveis podem disputar cada split.\nNo Random Forest, apenas \\(m_{\\text{try}}&lt;p\\) variáveis sorteadas podem disputar aquele split.\n\n\n\n\n\n\nImportante\n\n\nO subconjunto de variáveis é sorteado novamente em cada nó. Essa aleatoriedade adicional ajuda a reduzir a correlação entre as árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-versus-random-forest",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-versus-random-forest",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging versus Random Forest",
+    "text": "Bagging versus Random Forest\n\n\n\nBagging\nRandom Forest\n\n\n\nBootstrap de observações\nsim\nsim\n\n\nVariáveis candidatas por split\ntodas\nsubconjunto aleatório\n\n\nObjetivo adicional\nestabilizar\nestabilizar + descorrelacionar\n\n\nRegressão\nmédia\nmédia\n\n\nClassificação\nvoto/probabilidades\nvoto/probabilidades"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-versus-random-forest-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-versus-random-forest-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging versus Random Forest",
+    "text": "Bagging versus Random Forest\nSe\n\\[\nm_{\\text{try}}=p,\n\\]\no Random Forest se reduz, essencialmente, ao Bagging de árvores.\n\n\n\n\n\n\nCom apenas uma variável preditora, não é possível visualizar a diferença essencial entre Bagging e Random Forest: não há variáveis para sortear. Por isso, uma animação univariada de RF se comporta como Bagging."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-que-m_texttry-controla",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-que-m_texttry-controla",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que \\(m_{\\text{try}}\\) controla?",
+    "text": "O que \\(m_{\\text{try}}\\) controla?\n\\[\nm_{\\text{try}}\n=\n\\text{número de variáveis candidatas em cada nó}.\n\\]\n\nvalor grande \\(\\rightarrow\\) árvores mais parecidas\nvalor pequeno \\(\\rightarrow\\) árvores mais diversas\npequeno demais \\(\\rightarrow\\) splits individuais podem piorar\n\nPortanto, existe um compromisso:\n\\[\n\\boxed{\n\\text{força de cada árvore}\n\\quad\\text{versus}\\quad\n\\text{correlação entre árvores}\n}\n\\]\n\\(m_{\\text{try}}\\) deve ser tratado como hiperparâmetro e pode ser ajustado por validação."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#oob-validação-embutida-no-bootstrap",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#oob-validação-embutida-no-bootstrap",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\nEm cada amostra bootstrap, algumas observações ficam de fora.\nElas são chamadas de out-of-bag (OOB).\nPara uma observação \\(i\\):\n\nuse apenas árvores em que \\(i\\) ficou fora do bootstrap;\nagregue suas previsões;\ncompare com \\(y_i\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#oob-validação-embutida-no-bootstrap-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#oob-validação-embutida-no-bootstrap-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\nIsso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.\n\n\n\n\n\n\nNota\n\n\nOOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#a-mudança-fundamental",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#a-mudança-fundamental",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A mudança fundamental",
+    "text": "A mudança fundamental\nBagging e Random Forest constroem árvores aproximadamente em paralelo.\nBoosting constrói modelos sequencialmente:\n\\[\n\\hat h_1\n\\rightarrow\n\\hat h_2\n\\rightarrow\n\\hat h_3\n\\rightarrow\\cdots\n\\]\nCada nova árvore tenta melhorar o modelo acumulado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-regressão-começando-pelo-erro-atual",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-regressão-começando-pelo-erro-atual",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: começando pelo erro atual",
+    "text": "Boosting em regressão: começando pelo erro atual\nCom perda quadrática,\n\\[\nL(y,g)=(y-g)^2,\n\\]\no sinal de correção é proporcional ao resíduo:\n\\[\nr_i^{(b)}\n=\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-regressão-veja-o-modelo-aprender",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-regressão-veja-o-modelo-aprender",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: veja o modelo aprender",
+    "text": "Boosting em regressão: veja o modelo aprender\n\n\n\n\n\n\n\nImportante\n\n\nA linha da nova árvore não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o modelo acumulado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#e-na-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#e-na-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E na classificação?",
+    "text": "E na classificação?\nAqui está uma diferença importante.\nEm classificação, não faz sentido usar simplesmente\n\\[\ny_i-\\hat y_i\n\\]\ncomo se as classes fossem números contínuos.\nUsamos uma função de perda de classificação, como a log-loss."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-binária-uma-leitura-intuitiva",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-binária-uma-leitura-intuitiva",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária: uma leitura intuitiva",
+    "text": "Classificação binária: uma leitura intuitiva\nSe \\(y_i\\in\\{0,1\\}\\) e o modelo atual fornece\n\\[\n\\hat p_i^{(b-1)}\n=\nP\\!\\left(Y_i=1\\mid\\mathbf{x}_i;\\,\\hat g^{(b-1)}\\right),\n\\]\nsob log-loss, o sinal de correção é proporcional a\n\\[\n\\boxed{\nr_i^{(b)}=y_i-\\hat p_i^{(b-1)}.\n}\n\\]\nExemplos:\n\n\n\\(y_i\\)\n\\(\\hat p_i^{(b-1)}\\)\n\\(y_i-\\hat p_i^{(b-1)}\\)\nleitura\n\n\n\n1\n0,95\n0,05\nquase nada a corrigir\n\n\n1\n0,20\n0,80\naumentar fortemente a evidência para classe 1\n\n\n0\n0,10\n-0,10\npequena correção\n\n\n0\n0,85\n-0,85\nreduzir fortemente a evidência para classe 1\n\n\n\n\n\n\n\n\n\nNote\n\n\nEssa tabela é uma interpretação didática do gradient boosting binário com log-loss. A implementação trabalha na escala do escore/logit e atualiza o modelo aditivo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-classificação-veja-a-correção",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-classificação-veja-a-correção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em classificação: veja a correção",
+    "text": "Boosting em classificação: veja a correção\n\nÀ esquerda, o modelo acumulado atualiza a probabilidade \\(\\hat p^{(b)}=P(Y=1\\mid X)\\).\nÀ direita, visualizamos o sinal de correção \\(y_i-\\hat p_i^{(b-1)}\\).\n\n\n\n\n\n\nCompare com regressão: a lógica modelo atual + pequena correção permanece. O que muda é a função de perda e, consequentemente, o pseudo-resíduo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-papel-do-learning-rate-lambda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-papel-do-learning-rate-lambda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O papel do learning rate \\(\\lambda\\)\n",
+    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção.\nO learning rate controla quanto dessa correção será incorporado:\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\npassos menores\naprendizado mais gradual\nnormalmente exige mais árvores\ntende a oferecer maior controle\n\n\n\n\\(\\lambda\\) grande\n\npassos maiores\naprende mais rapidamente\npode precisar de menos árvores\npode sobreajustar mais cedo"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#profundidade-das-árvores-no-boosting",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#profundidade-das-árvores-no-boosting",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Profundidade das árvores no Boosting",
+    "text": "Profundidade das árvores no Boosting\nÁrvores rasas são comuns porque cada árvore deve aprender uma correção, não resolver sozinha todo o problema.\n\n\nstump (profundidade 1): efeitos muito simples\nprofundidade 2–4: permite interações de baixa ordem\nárvores profundas: correções mais complexas e maior risco de overfitting\n\nA flexibilidade do modelo final é controlada conjuntamente por\n\\[\n\\boxed{\nB,\\qquad \\lambda,\\qquad \\text{profundidade das árvores}\n}\n\\]\nNão existe uma soma literal entre esses hiperparâmetros: eles atuam de maneiras diferentes e devem ser ajustados conjuntamente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-random-forest-e-boosting",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#bagging-random-forest-e-boosting",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging, Random Forest e Boosting",
+    "text": "Bagging, Random Forest e Boosting\n\n\n\n\n\n\n\n\n\nBagging\nRandom Forest\nBoosting\n\n\n\nConstrução\nparalela\nparalela\nsequencial\n\n\nReamostragem\nbootstrap\nbootstrap\ndepende do algoritmo\n\n\nVariáveis por split\ntodas\nsubconjunto\ngeralmente todas\n\n\nPrincipal ideia\nmédia reduz variância\nreduzir variância e correlação\ncorrigir erros/gradiente\n\n\nÁrvores\nusualmente profundas\nusualmente profundas\nusualmente rasas\n\n\nRegressão\nmédia\nmédia\nsoma aditiva\n\n\nClassificação\nvoto/prob.\nvoto/prob.\nescore/prob. aditivos"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-que-permanece-igual-entre-regressão-e-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-que-permanece-igual-entre-regressão-e-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que permanece igual entre regressão e classificação?",
+    "text": "O que permanece igual entre regressão e classificação?\nA estrutura geral:\n\\[\n\\boxed{\n\\text{regras recursivas}\n\\rightarrow\n\\text{regiões}\n\\rightarrow\n\\text{folhas}\n}\n\\]\ne as ideias dos ensembles:\n\nBagging: agregar\n\nRandom Forest: agregar árvores menos correlacionadas\n\nBoosting: somar correções sequenciais"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-que-muda-entre-regressão-e-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-que-muda-entre-regressão-e-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que muda entre regressão e classificação?",
+    "text": "O que muda entre regressão e classificação?\n\n\nComponente\nRegressão\nClassificação\n\n\n\nalvo\nnúmero\nclasse\n\n\nsplit de árvore\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nprobabilidade/classe\n\n\nperda típica\nquadrática\nlog-loss, erro etc.\n\n\nbagging/RF\nmédia\nprobabilidade média/voto\n\n\nboosting\nresíduos sob MSE\npseudo-resíduos da perda\n\n\n\n\n\n\n\n\n\nA mudança não está na ideia de “árvore”. Está na função de perda, no critério de split e na forma de produzir/agregar a previsão."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#uma-leitura-estatística",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#uma-leitura-estatística",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma leitura estatística",
+    "text": "Uma leitura estatística\nÁrvore individual\n\nmáxima interpretabilidade\nregras explícitas\nmaior instabilidade\n\nBagging\n\nreduz variância\nperde parte da interpretabilidade da árvore única"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#fluxo-de-modelagem",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#fluxo-de-modelagem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Fluxo de modelagem",
+    "text": "Fluxo de modelagem\n\\[\n\\boxed{\n\\text{treino}\n\\rightarrow\n\\text{reamostragem/validação}\n\\rightarrow\n\\text{ajuste de hiperparâmetros}\n\\rightarrow\n\\text{modelo final}\n\\rightarrow\n\\text{teste}\n}\n\\]\nExemplos de hiperparâmetros:\n\nárvore: profundidade, tamanho mínimo do nó, poda\nRandom Forest: \\(m_{\\text{try}}\\), tamanho mínimo do nó, número de árvores\nBoosting: \\(B\\), \\(\\lambda\\), profundidade\n\nO conjunto de teste permanece reservado para a avaliação final."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#mapa-mental-da-semana-7",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#mapa-mental-da-semana-7",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mapa mental da Semana 7",
+    "text": "Mapa mental da Semana 7\n\\[\n\\boxed{\\text{Árvore}}\n\\]\n\\[\n\\downarrow\n\\]\n\\[\n\\text{partições do espaço}\n\\rightarrow\n\\begin{cases}\n\\text{média} & \\text{regressão}\\\\\n\\text{probabilidade/classe} & \\text{classificação}\n\\end{cases}\n\\]\n\\[\n\\downarrow\n\\]\n\\[\n\\begin{array}{ccc}\n\\text{Bagging} & \\text{Random Forest} & \\text{Boosting}\\\\\n\\text{agregar} &\n\\text{descorrelacionar + agregar} &\n\\text{corrigir sequencialmente}\n\\end{array}\n\\]\n\n\n\n\n\n\nTip\n\n\nSe o aluno compreender o que acontece em uma folha, como um split é escolhido e como as árvores são combinadas, ele compreendeu a essência desses quatro métodos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html",
+    "title": "Modelos baseados em árvores",
+    "section": "",
+    "text": "1’— title: “Parte I : Aprendizado Supervisionado” subtitle: “Modelos baseados em árvores” format: revealjs: width: 1600 height: 900 footer: “EST335 — Semana 7” theme: quartomonothemer.scss slide-number: c/t show-slide-number: all chalkboard: true incremental: false code-link: true bibliography: references.bib title-slide-attributes: data-background-image: /images/back.png data-background-size: cover data-background-opacity: “0.3” execute: echo: false warning: false message: false cache: true —"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#a-mudança-fundamental-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#a-mudança-fundamental-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A mudança fundamental",
+    "text": "A mudança fundamental\nNotação\n\n\n\\(\\hat g^{(b)}(\\mathbf{x})\\): modelo acumulado após \\(b\\) iterações\n\n\\(\\hat h_b(\\mathbf{x})\\): árvore que fornece a correção na iteração \\(b\\)\n\n\n\\(r_i^{(b)}\\): resíduo ou pseudo-resíduo usado na iteração \\(b\\)\n\n\n\\(\\lambda\\): learning rate\n\n\n\\(B\\): número total de árvores\n\n\\[\n\\boxed{\n\\hat g^{(B)}(\\mathbf{x})\n=\n\\hat g^{(0)}(\\mathbf{x})\n+\n\\lambda\\sum_{b=1}^{B}\\hat h_b(\\mathbf{x})\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-regressão-começando-pelo-erro-atual-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-em-regressão-começando-pelo-erro-atual-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: começando pelo erro atual",
+    "text": "Boosting em regressão: começando pelo erro atual\nNa iteração \\(b\\):\n\ncalcule os resíduos atuais;\najuste \\(\\hat h_b(\\mathbf{x})\\), uma árvore rasa, aos resíduos;\nadicione uma pequena fração dessa correção ao modelo atual:\n\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]\nPortanto,\n\\[\n\\boxed{\n\\text{modelo atual}\n\\rightarrow\n\\text{resíduos}\n\\rightarrow\n\\text{nova árvore}\n\\rightarrow\n\\text{modelo atualizado}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-o-papel-do-learning-rate-lambda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-o-papel-do-learning-rate-lambda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: o papel do learning rate \\(\\lambda\\)\n",
+    "text": "Boosting: o papel do learning rate \\(\\lambda\\)\n\n\n\n\n\n\n\n\nObserve a figura: para o mesmo número de iterações, aumentar \\(\\lambda\\) faz o modelo acumulado se aproximar mais rapidamente dos dados. Portanto, \\(\\lambda\\) e o número de árvores \\(B\\) devem ser analisados conjuntamente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-o-papel-do-learning-rate-lambda-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-o-papel-do-learning-rate-lambda-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: o papel do learning rate \\(\\lambda\\)\n",
+    "text": "Boosting: o papel do learning rate \\(\\lambda\\)\n\n\n\n\n\n\n\n\nObserve a figura: para o mesmo número de iterações, aumentar \\(\\lambda\\) faz o modelo acumulado se aproximar mais rapidamente dos dados. Portanto, \\(\\lambda\\) e o número de árvores \\(B\\) devem ser analisados conjuntamente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#e-na-classificação-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#e-na-classificação-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E na classificação?",
+    "text": "E na classificação?\nNo gradient boosting, cada nova árvore é ajustada ao gradiente negativo da perda (pseudo-resíduo).\n\\[\n\\boxed{\n\\text{regressão quadrática: pseudo-resíduo = resíduo usual}\n}\n\\]\n\\[\n\\boxed{\n\\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-binária",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-binária",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária",
+    "text": "Classificação binária\nSe \\(y_i\\in\\{0,1\\}\\) e o modelo atual fornece\n\\[\n\\hat p_i^{(b-1)}\n=\nP\\!\\left(Y_i=1\\mid\\mathbf{x}_i;\\,\\hat g^{(b-1)}\\right),\n\\]\nsob log-loss, o sinal de correção é proporcional a\n\\[\n\\boxed{\nr_i^{(b)}=y_i-\\hat p_i^{(b-1)}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-binária-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#classificação-binária-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária",
+    "text": "Classificação binária\nExemplos:\n\n\n\\(y_i\\)\n\\(\\hat p_i^{(b-1)}\\)\n\\(y_i-\\hat p_i^{(b-1)}\\)\nleitura\n\n\n\n1\n0,95\n0,05\nquase nada a corrigir\n\n\n1\n0,20\n0,80\naumentar fortemente a evidência para classe 1\n\n\n0\n0,10\n-0,10\npequena correção\n\n\n0\n0,85\n-0,85\nreduzir fortemente a evidência para classe 1\n\n\n\n\n\n\n\n\n\nNota\n\n\nEssa tabela é uma interpretação didática do gradient boosting binário com log-loss. A implementação trabalha na escala do escore/logit e atualiza o modelo aditivo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-papel-do-learning-rate-lambda-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#o-papel-do-learning-rate-lambda-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O papel do learning rate \\(\\lambda\\)\n",
+    "text": "O papel do learning rate \\(\\lambda\\)\n\n\n\n\n\n\n\n\nO parâmetro \\(\\lambda\\) controla quanto cada nova árvore pode alterar o modelo acumulado:\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\,\\hat h_b(\\mathbf{x})\n\\]\n\n\n\n\n\n\n\\(\\lambda\\) pequeno\n\ncorreções menores a cada iteração\naprendizado mais gradual\n\nsão necessárias mais árvores\n\nmaior regularização\n\n\n\n\\(\\lambda\\) grande\n\ncorreções maiores a cada iteração\naprendizado mais rápido\n\nsão necessárias menos árvores\n\nmaior risco de ajustar o ruído"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-e-estimadores-fracos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#boosting-e-estimadores-fracos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting e Estimadores Fracos",
+    "text": "Boosting e Estimadores Fracos\nO boosting não é restrito ao uso de árvores.\nPodemos usar qualquer modelo como base, desde que seja um estimador fraco. (Deve aprender uma correção, não resolver sozinho todo o problema)\n\nO que é um estimador fraco?\n\nmodelo simples\nbaixo poder preditivo individual\npequeno viés de ajuste\n\nExemplos: árvores rasas (stumps), regressão linear simples, modelos com poucos parâmetros"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-usar-modelos-fracos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#por-que-usar-modelos-fracos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que usar modelos fracos?",
+    "text": "Por que usar modelos fracos?\n\nevitam overfitting em cada etapa\npermitem correções graduais\ntornam o aprendizado mais estável\n\nSe você usar modelos muito complexos (ex: árvores profundas):\n👉 boosting pode superajustar rapidamente"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#uma-leitura-estatística-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_notacao_padronizada.html#uma-leitura-estatística-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma leitura estatística",
+    "text": "Uma leitura estatística\nRandom Forest\n\nreduz variância e correlação entre árvores\nforte baseline para dados tabulares\n\nBoosting\n\nconstrói modelo aditivo de forma sequencial\nfrequentemente alto desempenho\nmaior sensibilidade à escolha dos hiperparâmetros"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#de-funções-suaves-para-regras",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#de-funções-suaves-para-regras",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De funções suaves para regras",
+    "text": "De funções suaves para regras\nAté aqui, aproximamos \\(g(\\mathbf{x})\\) usando funções suaves:\n\nsplines\nregressão local\nkernels\n\nÁrvores seguem outra lógica:\n\\[\n\\boxed{\n\\text{dividir o espaço de } \\mathbf{x}\n\\longrightarrow\n\\text{formar regiões homogêneas}\n\\longrightarrow\n\\text{predizer dentro de cada região}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#de-funções-suaves-para-regras-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#de-funções-suaves-para-regras-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De funções suaves para regras",
+    "text": "De funções suaves para regras\nA estrutura da árvore é praticamente a mesma em regressão e classificação.\nO que muda é:\n\no que significa “região homogênea”, o que guardamos nas folhas e como combinamos as árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#antes-de-tudo-regressão-ou-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#antes-de-tudo-regressão-ou-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Antes de tudo: regressão ou classificação?",
+    "text": "Antes de tudo: regressão ou classificação?\n\n\nRegressão\nA resposta é quantitativa:\n\\[\nY\\in\\mathbb{R}\n\\]\nExemplos:\n\npreço de uma casa\nconsumo de energia\ntempo de internação\n\nFolha: produz um valor numérico.\n\nClassificação\nA resposta é categórica:\n\\[\nY\\in\\{1,\\ldots,K\\}\n\\]\nExemplos:\n\ninadimplente / não inadimplente\nespécie\nchurn / não churn\n\nFolha: produz classe e/ou probabilidades."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\n\n\n\n\n\n\n\nCada caminho da raiz até uma folha define uma região \\(\\mathcal{R}_m\\). Quatro folhas correspondem às regiões \\(\\mathcal{R}_1,\\ldots,\\mathcal{R}_4\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nDa raiz até uma folha, fazemos uma sequência de perguntas do tipo\n\\[\nX_j \\leq s?\n\\]\nCada resposta escolhe um ramo. Ao final,\n\\[\n\\boxed{\\text{folha }m \\Longleftrightarrow \\text{região }\\mathcal{R}_m}\n\\]\nA árvore é simultaneamente um conjunto de regras, uma partição do espaço preditor e um modelo que associa uma previsão a cada região."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nUma árvore com \\(M\\) folhas particiona o espaço em\n\\[\n\\mathcal{R}_1,\\mathcal{R}_2,\\ldots,\\mathcal{R}_M.\n\\]\nPara uma nova observação \\(\\mathbf{x}\\):\n\ncomeçamos no nó raiz;\nseguimos as regras de divisão;\nchegamos a uma única folha;\nusamos a previsão associada àquela região.\n\n\\[\n\\boxed{\n\\mathbf{x}\\in\\mathcal{R}_m\n\\quad\\Rightarrow\\quad\n\\text{predição da folha }m\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-3",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-3",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\n\n\n\nRegressão\nClassificação\n\n\n\nResposta\nquantitativa\ncategórica\n\n\nResumo da folha\nmédia \\(\\bar y_m\\)\n\nproporções \\(\\hat p_{mk}\\)\n\n\n\nPredição\n\\(\\hat y=\\bar y_m\\)\nclasse de maior probabilidade\n\n\nRegião boa\nvalores de \\(y\\) parecidos\npredominância de uma classe"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-4",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-4",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Nós, ramos, folhas e regiões",
+    "text": "Nós, ramos, folhas e regiões\nPara regressão:\n\\[\n\\hat g(\\mathbf{x})\n=\n\\sum_{m=1}^{M}\\bar y_m\\,I(\\mathbf{x}\\in\\mathcal{R}_m)\n\\]\nPara classificação:\n\\[\n\\hat p_k(\\mathbf{x})\n=\n\\hat p_{mk},\n\\qquad \\mathbf{x}\\in\\mathcal{R}_m\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-pergunta-feita-em-cada-nó",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-pergunta-feita-em-cada-nó",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A pergunta feita em cada nó",
+    "text": "A pergunta feita em cada nó\nPara cada variável \\(X_j\\) e ponto de corte \\(s\\), testamos uma regra:\n\\[\nX_j\\leq s\n\\qquad\\text{versus}\\qquad\nX_j&gt;s.\n\\]\nEla cria duas regiões filhas.\nA árvore procura a divisão que produz filhos mais homogêneos que o pai.\n\\[\n\\boxed{\n\\text{melhor split}\n=\n\\text{maior ganho de homogeneidade}\n}\n\\]\nO significado de homogeneidade depende do problema."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-reduzir-o-erro-quadrático",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-reduzir-o-erro-quadrático",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão: reduzir o erro quadrático",
+    "text": "Regressão: reduzir o erro quadrático\nEm uma região \\(\\mathcal{R}_m\\), a melhor constante sob perda quadrática é\n\\[\n\\bar y_m\n=\n\\frac{1}{n_m}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}y_i\n\\]\nA impureza do nó pode ser medida por\n\\[\nRSS_m\n=\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-reduzir-o-erro-quadrático-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-reduzir-o-erro-quadrático-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão: reduzir o erro quadrático",
+    "text": "Regressão: reduzir o erro quadrático\nUma boa divisão produz:\n\\[\n\\boxed{\nRSS_{\\text{esq}}+RSS_{\\text{dir}}\n&lt;\nRSS_{\\text{pai}}\n}\n\\]\nQuanto maior a redução, melhor o split."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-reduzir-a-mistura-de-classes",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-reduzir-a-mistura-de-classes",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\nSe \\(\\hat p_{mk}\\) é a proporção da classe \\(k\\) no nó \\(m\\), uma medida comum é o índice de Gini:\n\\[\nG_m\n=\n1-\\sum_{k=1}^{K}\\hat p_{mk}^{\\,2}\n\\]\n\n\n\\(G_m=0\\): nó puro\n\n\\(G_m\\) maior: classes mais misturadas"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-reduzir-a-mistura-de-classes-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-reduzir-a-mistura-de-classes-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\nA árvore escolhe o split que reduz a impureza ponderada:\n\\[\n\\boxed{\nG_{\\text{pai}}\n-\n\\left(\n\\frac{n_E}{n}G_E+\n\\frac{n_D}{n}G_D\n\\right)\n}\n\\]\nUma alternativa ao índice de Gini é a entropia:\n\\[\n\\boxed{\nH_m\n=\n-\\sum_{k=1}^{K}\n\\hat p_{mk}\\log_2(\\hat p_{mk})\n}\n\\]\nonde \\(\\hat p_{mk}\\) é a proporção de observações da classe \\(k\\) no nó \\(m\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-reduzir-a-mistura-de-classes-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-reduzir-a-mistura-de-classes-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação: reduzir a mistura de classes",
+    "text": "Classificação: reduzir a mistura de classes\n\n\nEntropia baixa \\(\\rightarrow\\) nó mais puro\n\nEntropia alta \\(\\rightarrow\\) maior mistura entre as classes\n\n\n\n\n\n\n\n\nTanto Gini quanto entropia procuram a mesma coisa: divisões que produzam nós filhos mais puros que o nó pai."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#mesma-árvore-critérios-diferentes",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#mesma-árvore-critérios-diferentes",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Mesma árvore, critérios diferentes",
+    "text": "Mesma árvore, critérios diferentes\n\n\nRegressão\nPergunta\n\nA divisão reduz a dispersão dos valores de \\(Y\\)?\n\nCritério típico:\n\\[\nRSS\n\\]\nFolha:\n\\[\n\\bar y_m\n\\]\n\nClassificação\nPergunta\n\nA divisão separa melhor as classes?\n\nCritérios típicos:\n\\[\n\\text{Gini ou Entropia}\n\\]\nFolha:\n\\[\n(\\hat p_{m1},\\ldots,\\hat p_{mK})\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#exemplo-uma-árvore-de-regressão",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#exemplo-uma-árvore-de-regressão",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exemplo: uma árvore de regressão",
+    "text": "Exemplo: uma árvore de regressão"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#exemplo-uma-árvore-de-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#exemplo-uma-árvore-de-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exemplo: uma árvore de classificação",
+    "text": "Exemplo: uma árvore de classificação"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#árvore-profunda-baixo-viés-alta-variância",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#árvore-profunda-baixo-viés-alta-variância",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Árvore profunda: baixo viés, alta variância",
+    "text": "Árvore profunda: baixo viés, alta variância\nUma árvore pode continuar dividindo os dados até criar folhas muito pequenas.\nIsso reduz o erro de treinamento, mas pode produzir regras instáveis.\n\\[\n\\boxed{\n\\text{árvore muito profunda}\n\\Rightarrow\n\\text{maior flexibilidade}\n\\Rightarrow\n\\text{maior risco de overfitting}\n}\n\\]\nPequenas mudanças na amostra podem gerar uma árvore bastante diferente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#poda-pruning",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#poda-pruning",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda (pruning)",
+    "text": "Poda (pruning)\nPara regressão, uma forma de pensar na poda é:\n\\[\n\\boxed{\n\\text{erro da árvore}\n+\n\\alpha\\times\\text{complexidade}\n}\n\\]\nou, mais especificamente,\n\\[\n\\sum_{m=1}^{|T|}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n+\n\\alpha|T|\n\\]\n\n\n\\(\\alpha\\) pequeno \\(\\rightarrow\\) árvore maior\n\n\\(\\alpha\\) grande \\(\\rightarrow\\) árvore menor"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#poda-pruning-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#poda-pruning-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Poda (pruning)",
+    "text": "Poda (pruning)\nNa classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.\n\n\n\n\n\n\nA poda regulariza uma árvore. Bagging, Random Forest e Boosting seguem outra estratégia: combinar muitas árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-problema-da-árvore-individual",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-problema-da-árvore-individual",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O problema da árvore individual",
+    "text": "O problema da árvore individual\nÁrvores são:\n\ninterpretáveis\ncapazes de capturar não linearidade\ncapazes de capturar interações\n\nMas são também:\n\ninstáveis\nsensíveis à amostra\nde alta variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nSe \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\) são:\n\nnão viesados\n\ncom mesma variância\n\nnão correlacionados\n\nentão:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{2}\\mathbb{V}(g_i(\\mathbf{x}))\n\\]\nConclusão\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\le\n\\mathbb{E}\\big[(\\boldsymbol{y} - g_i(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nAssim, combinar modelos:\n\nmantém o viés\n\nreduz a variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#três-maneiras-de-combinar-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#três-maneiras-de-combinar-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Três maneiras de combinar árvores",
+    "text": "Três maneiras de combinar árvores\nOs ensembles respondem de formas diferentes:\n\\[\n\\boxed{\\text{Bagging: construir em paralelo e agregar}}\n\\]\n\\[\n\\boxed{\\text{Random Forest: descorrelacionar e agregar}}\n\\]\n\\[\n\\boxed{\\text{Boosting: construir correções sequenciais}}\n\\]\nDurante os próximos slides, acompanhe duas perguntas:\n\nComo cada nova árvore é construída?\nComo as árvores são combinadas?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-bootstrap-aggregating-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-bootstrap-aggregating-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging = Bootstrap + Aggregating",
+    "text": "Bagging = Bootstrap + Aggregating\nPara \\(b=1,\\ldots,B\\):\n\nsorteie uma amostra bootstrap;\najuste uma árvore \\(T_b\\);\nrepita muitas vezes;\ncombine as previsões.\n\n\\[\n\\boxed{\n\\text{Bagging}\n=\n\\text{Bootstrap}\n+\n\\text{Agregação}\n}\n\\]\nAs árvores são ajustadas em paralelo: uma não depende da anterior."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#como-agregamos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#como-agregamos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como agregamos?",
+    "text": "Como agregamos?\n\n\nRegressão\nCada árvore fornece um número:\n\\[\n\\hat y_b(\\mathbf{x}).\n\\]\nAgregamos pela média:\n\\[\n\\boxed{\n\\hat y_{\\text{bag}}(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat y_b(\\mathbf{x})\n}\n\\]\n\nClassificação\nCada árvore fornece classe ou probabilidades.\nPodemos usar:\n\\[\n\\boxed{\\text{voto majoritário}}\n\\]\nou, preferencialmente, promediar probabilidades:\n\\[\n\\boxed{\n\\hat p_k(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat p_{bk}(\\mathbf{x})\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-em-regressão-veja-a-estabilização",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-em-regressão-veja-a-estabilização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging em regressão: veja a estabilização",
+    "text": "Bagging em regressão: veja a estabilização\n\n\n\n\n\n\n\nAs árvores individuais variam bastante. A média acumulada se torna progressivamente mais estável."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-a-média-ajuda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-a-média-ajuda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que a média ajuda?",
+    "text": "Por que a média ajuda?\nSe cada árvore tem variância aproximadamente \\(\\sigma^2\\) e correlação média \\(\\rho\\), então\n\\[\n\\boxed{\n\\operatorname{Var}(\\bar T)\n=\n\\rho\\sigma^2+\n\\frac{1-\\rho}{B}\\sigma^2\n}\n\\]\nDuas mensagens:\n\naumentar \\(B\\) reduz a segunda parcela;\na parcela \\(\\rho\\sigma^2\\) permanece.\n\nLogo:\n\\[\n\\boxed{\n\\text{não basta ter muitas árvores; é útil que elas sejam diferentes}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-em-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-em-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging em classificação",
+    "text": "Bagging em classificação\nO mecanismo é o mesmo:\n\\[\n\\text{bootstrap}\n\\rightarrow\n\\text{árvore de classificação}\n\\rightarrow\n\\text{probabilidade/voto}\n\\rightarrow\n\\text{agregação}.\n\\]\nO que muda em relação à regressão?\n\n\nEtapa\nRegressão\nClassificação\n\n\n\nsplit\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nproporções/classes\n\n\nagregação\nmédia de \\(\\hat y\\)\n\nmédia de probabilidades/voto"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-limite-do-bagging",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-limite-do-bagging",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O limite do Bagging",
+    "text": "O limite do Bagging\nMesmo com amostras bootstrap diferentes, árvores podem ficar muito parecidas.\nPor quê?\nSe uma variável é muito forte, ela tende a ser escolhida repetidamente perto da raiz.\nResultado:\n\\[\n\\text{árvores semelhantes}\n\\Rightarrow\n\\rho \\text{ alto}\n\\Rightarrow\n\\text{menor redução de variância}.\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#random-forest-descorrelacionar-as-árvores",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#random-forest-descorrelacionar-as-árvores",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Random Forest: descorrelacionar as árvores",
+    "text": "Random Forest: descorrelacionar as árvores\nO Random Forest adiciona uma segunda fonte de aleatoriedade.\nPara cada árvore:\n\nsorteamos uma amostra bootstrap;\nem cada nó, sorteamos apenas \\(m_{\\text{try}}\\) das \\(p\\) variáveis;\nprocuramos o melhor split somente entre essas candidatas;\nrepetimos até construir muitas árvores.\n\n\\[\n\\boxed{\n\\text{RF}\n=\n\\text{Bagging}\n+\n\\text{subamostragem de variáveis em cada split}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#onde-bagging-e-random-forest-se-separam",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#onde-bagging-e-random-forest-se-separam",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Onde Bagging e Random Forest se separam?",
+    "text": "Onde Bagging e Random Forest se separam?\n\nNo Bagging, todas as \\(p\\) variáveis podem disputar cada split.\nNo Random Forest, apenas \\(m_{\\text{try}}&lt;p\\) variáveis sorteadas podem disputar aquele split.\n\n\n\n\n\n\nImportante\n\n\nO subconjunto de variáveis é sorteado novamente em cada nó. Essa aleatoriedade adicional ajuda a reduzir a correlação entre as árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-versus-random-forest",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-versus-random-forest",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging versus Random Forest",
+    "text": "Bagging versus Random Forest\n\n\n\nBagging\nRandom Forest\n\n\n\nBootstrap de observações\nsim\nsim\n\n\nVariáveis candidatas por split\ntodas\nsubconjunto aleatório\n\n\nObjetivo adicional\nestabilizar\nestabilizar + descorrelacionar\n\n\nRegressão\nmédia\nmédia\n\n\nClassificação\nvoto/probabilidades\nvoto/probabilidades"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-versus-random-forest-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-versus-random-forest-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging versus Random Forest",
+    "text": "Bagging versus Random Forest\nSe\n\\[\nm_{\\text{try}}=p,\n\\]\no Random Forest se reduz, essencialmente, ao Bagging de árvores.\n\n\n\n\n\n\nCom apenas uma variável preditora, não é possível visualizar a diferença essencial entre Bagging e Random Forest: não há variáveis para sortear. Por isso, uma animação univariada de RF se comporta como Bagging."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-que-m_texttry-controla",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-que-m_texttry-controla",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que \\(m_{\\text{try}}\\) controla?",
+    "text": "O que \\(m_{\\text{try}}\\) controla?\n\\[\nm_{\\text{try}}\n=\n\\text{número de variáveis candidatas em cada nó}.\n\\]\n\nvalor grande \\(\\rightarrow\\) árvores mais parecidas\nvalor pequeno \\(\\rightarrow\\) árvores mais diversas\npequeno demais \\(\\rightarrow\\) splits individuais podem piorar\n\nPortanto, existe um compromisso:\n\\[\n\\boxed{\n\\text{força de cada árvore}\n\\quad\\text{versus}\\quad\n\\text{correlação entre árvores}\n}\n\\]\n\\(m_{\\text{try}}\\) deve ser tratado como hiperparâmetro e pode ser ajustado por validação."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\nEm cada amostra bootstrap, algumas observações ficam de fora.\nElas são chamadas de out-of-bag (OOB).\nPara uma observação \\(i\\):\n\nuse apenas árvores em que \\(i\\) ficou fora do bootstrap;\nagregue suas previsões;\ncompare com \\(y_i\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\nIsso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.\n\n\n\n\n\n\nNota\n\n\nOOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-mudança-fundamental",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-mudança-fundamental",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A mudança fundamental",
+    "text": "A mudança fundamental\nBagging e Random Forest constroem árvores aproximadamente em paralelo.\nBoosting constrói modelos sequencialmente:\n\\[\n\\hat h_1\n\\rightarrow\n\\hat h_2\n\\rightarrow\n\\hat h_3\n\\rightarrow\\cdots\n\\]\nCada nova árvore tenta melhorar o modelo acumulado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-mudança-fundamental-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-mudança-fundamental-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A mudança fundamental",
+    "text": "A mudança fundamental\nNotação\n\n\n\\(\\hat g^{(b)}(\\mathbf{x})\\): modelo acumulado após \\(b\\) iterações\n\n\\(\\hat h_b(\\mathbf{x})\\): árvore que fornece a correção na iteração \\(b\\)\n\n\n\\(r_i^{(b)}\\): resíduo ou pseudo-resíduo usado na iteração \\(b\\)\n\n\n\\(\\lambda\\): learning rate\n\n\n\\(B\\): número total de árvores\n\n\\[\n\\boxed{\n\\hat g^{(B)}(\\mathbf{x})\n=\n\\hat g^{(0)}(\\mathbf{x})\n+\n\\lambda\\sum_{b=1}^{B}\\hat h_b(\\mathbf{x})\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-começando-pelo-erro-atual",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-começando-pelo-erro-atual",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: começando pelo erro atual",
+    "text": "Boosting em regressão: começando pelo erro atual\nCom perda quadrática,\n\\[\nL(y,g)=(y-g)^2,\n\\]\no sinal de correção é proporcional ao resíduo:\n\\[\nr_i^{(b)}\n=\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-começando-pelo-erro-atual-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-começando-pelo-erro-atual-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: começando pelo erro atual",
+    "text": "Boosting em regressão: começando pelo erro atual\nNa iteração \\(b\\):\n\ncalcule os resíduos atuais;\najuste \\(\\hat h_b(\\mathbf{x})\\), uma árvore rasa, aos resíduos;\nadicione uma pequena fração dessa correção ao modelo atual:\n\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]\nPortanto,\n\\[\n\\boxed{\n\\text{modelo atual}\n\\rightarrow\n\\text{resíduos}\n\\rightarrow\n\\text{nova árvore}\n\\rightarrow\n\\text{modelo atualizado}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-veja-o-modelo-aprender",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-veja-o-modelo-aprender",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: veja o modelo aprender",
+    "text": "Boosting em regressão: veja o modelo aprender\n\n\n\n\n\n\n\nImportante\n\n\nA linha da nova árvore não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o modelo acumulado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E na classificação?",
+    "text": "E na classificação?\nAqui está uma diferença importante.\nEm classificação, não faz sentido usar simplesmente\n\\[\ny_i-\\hat y_i\n\\]\ncomo se as classes fossem números contínuos.\nUsamos uma função de perda de classificação, como a log-loss."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E na classificação?",
+    "text": "E na classificação?\nNo gradient boosting, cada nova árvore é ajustada ao gradiente negativo da perda (pseudo-resíduo).\n\\[\n\\boxed{\n\\text{regressão quadrática: pseudo-resíduo = resíduo usual}\n}\n\\]\n\\[\n\\boxed{\n\\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária",
+    "text": "Classificação binária\nSe \\(y_i\\in\\{0,1\\}\\) e o modelo atual fornece\n\\[\n\\hat p_i^{(b-1)}\n=\nP\\!\\left(Y_i=1\\mid\\mathbf{x}_i;\\,\\hat g^{(b-1)}\\right),\n\\]\nsob log-loss, o sinal de correção é proporcional a\n\\[\n\\boxed{\nr_i^{(b)}=y_i-\\hat p_i^{(b-1)}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária",
+    "text": "Classificação binária\nExemplos:\n\n\n\\(y_i\\)\n\\(\\hat p_i^{(b-1)}\\)\n\\(y_i-\\hat p_i^{(b-1)}\\)\nleitura\n\n\n\n1\n0,95\n0,05\nquase nada a corrigir\n\n\n1\n0,20\n0,80\naumentar fortemente a evidência para classe 1\n\n\n0\n0,10\n-0,10\npequena correção\n\n\n0\n0,85\n-0,85\nreduzir fortemente a evidência para classe 1\n\n\n\n\n\n\n\n\n\nNota\n\n\nEssa tabela é uma interpretação didática do gradient boosting binário com log-loss. A implementação trabalha na escala do escore/logit e atualiza o modelo aditivo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-classificação-veja-a-correção",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-classificação-veja-a-correção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em classificação: veja a correção",
+    "text": "Boosting em classificação: veja a correção\n\nÀ esquerda, o modelo acumulado atualiza a probabilidade \\(\\hat p^{(b)}=P(Y=1\\mid X)\\).\nÀ direita, visualizamos o sinal de correção \\(y_i-\\hat p_i^{(b-1)}\\).\n\n\n\n\n\n\nCompare com regressão: a lógica modelo atual + pequena correção permanece. O que muda é a função de perda e, consequentemente, o pseudo-resíduo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-papel-do-learning-rate-lambda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-papel-do-learning-rate-lambda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O papel do learning rate \\(\\lambda\\)\n",
+    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção.\nO learning rate controla quanto dessa correção será incorporado:\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\npassos menores\naprendizado mais gradual\nnormalmente exige mais árvores\ntende a oferecer maior controle\n\n\n\n\\(\\lambda\\) grande\n\npassos maiores\naprende mais rapidamente\npode precisar de menos árvores\npode sobreajustar mais cedo"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-o-papel-do-learning-rate-lambda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-o-papel-do-learning-rate-lambda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: o papel do learning rate \\(\\lambda\\)\n",
+    "text": "Boosting: o papel do learning rate \\(\\lambda\\)\n\n\n\n\n\n\n\n\nObserve a figura: para o mesmo número de iterações, aumentar \\(\\lambda\\) faz o modelo acumulado se aproximar mais rapidamente dos dados. Portanto, \\(\\lambda\\) e o número de árvores \\(B\\) devem ser analisados conjuntamente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-e-estimadores-fracos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-e-estimadores-fracos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting e Estimadores Fracos",
+    "text": "Boosting e Estimadores Fracos\nO boosting não é restrito ao uso de árvores.\nPodemos usar qualquer modelo como base, desde que seja um estimador fraco. (Deve aprender uma correção, não resolver sozinho todo o problema)\n\nO que é um estimador fraco?\n\nmodelo simples\nbaixo poder preditivo individual\npequeno viés de ajuste\n\nExemplos: árvores rasas (stumps), regressão linear simples, modelos com poucos parâmetros"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-usar-modelos-fracos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-usar-modelos-fracos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que usar modelos fracos?",
+    "text": "Por que usar modelos fracos?\n\nevitam overfitting em cada etapa\npermitem correções graduais\ntornam o aprendizado mais estável\n\nSe você usar modelos muito complexos (ex: árvores profundas):\n👉 boosting pode superajustar rapidamente"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-random-forest-e-boosting",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-random-forest-e-boosting",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Bagging, Random Forest e Boosting",
+    "text": "Bagging, Random Forest e Boosting\n\n\n\n\n\n\n\n\n\nBagging\nRandom Forest\nBoosting\n\n\n\nConstrução\nparalela\nparalela\nsequencial\n\n\nReamostragem\nbootstrap\nbootstrap\ndepende do algoritmo\n\n\nVariáveis por split\ntodas\nsubconjunto\ngeralmente todas\n\n\nPrincipal ideia\nmédia reduz variância\nreduzir variância e correlação\ncorrigir erros/gradiente\n\n\nÁrvores\nusualmente profundas\nusualmente profundas\nusualmente rasas\n\n\nRegressão\nmédia\nmédia\nsoma aditiva\n\n\nClassificação\nvoto/prob.\nvoto/prob.\nescore/prob. aditivos"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-que-permanece-igual-entre-regressão-e-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-que-permanece-igual-entre-regressão-e-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que permanece igual entre regressão e classificação?",
+    "text": "O que permanece igual entre regressão e classificação?\nA estrutura geral:\n\\[\n\\boxed{\n\\text{regras recursivas}\n\\rightarrow\n\\text{regiões}\n\\rightarrow\n\\text{folhas}\n}\n\\]\ne as ideias dos ensembles:\n\nBagging: agregar\n\nRandom Forest: agregar árvores menos correlacionadas\n\nBoosting: somar correções sequenciais"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-que-muda-entre-regressão-e-classificação",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-que-muda-entre-regressão-e-classificação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que muda entre regressão e classificação?",
+    "text": "O que muda entre regressão e classificação?\n\n\nComponente\nRegressão\nClassificação\n\n\n\nalvo\nnúmero\nclasse\n\n\nsplit de árvore\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nprobabilidade/classe\n\n\nperda típica\nquadrática\nlog-loss, erro etc.\n\n\nbagging/RF\nmédia\nprobabilidade média/voto\n\n\nboosting\nresíduos sob MSE\npseudo-resíduos da perda\n\n\n\n\n\n\n\n\n\nA mudança não está na ideia de “árvore”. Está na função de perda, no critério de split e na forma de produzir/agregar a previsão."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#uma-leitura-estatística",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#uma-leitura-estatística",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma leitura estatística",
+    "text": "Uma leitura estatística\nÁrvore individual\n\nmáxima interpretabilidade\nregras explícitas\nmaior instabilidade\n\nBagging\n\nreduz variância\nperde parte da interpretabilidade da árvore única"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#uma-leitura-estatística-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#uma-leitura-estatística-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma leitura estatística",
+    "text": "Uma leitura estatística\nRandom Forest\n\nreduz variância e correlação entre árvores\nforte baseline para dados tabulares\n\nBoosting\n\nconstrói modelo aditivo de forma sequencial\nfrequentemente alto desempenho\nmaior sensibilidade à escolha dos hiperparâmetros"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#fluxo-de-modelagem",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#fluxo-de-modelagem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Fluxo de modelagem",
+    "text": "Fluxo de modelagem\n\\[\n\\boxed{\n\\text{treino}\n\\rightarrow\n\\text{reamostragem/validação}\n\\rightarrow\n\\text{ajuste de hiperparâmetros}\n\\rightarrow\n\\text{modelo final}\n\\rightarrow\n\\text{teste}\n}\n\\]\nExemplos de hiperparâmetros:\n\nárvore: profundidade, tamanho mínimo do nó, poda\nRandom Forest: \\(m_{\\text{try}}\\), tamanho mínimo do nó, número de árvores\nBoosting: \\(B\\), \\(\\lambda\\), profundidade\n\nO conjunto de teste permanece reservado para a avaliação final."
+  },
+  {
+    "objectID": "programacao/semana-7.html#slides",
+    "href": "programacao/semana-7.html#slides",
+    "title": "Semana 07",
+    "section": "",
+    "text": "Modelos baseados em árvores \n\n\nVer slides"
   }
 ]

@@ -123,7 +123,7 @@
     }
   </style>
 <meta property="og:title" content="Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning">
-<meta property="og:description" content="Árvores: Regressão e Classificação">
+<meta property="og:description" content="Árvores, Bagging, Random Forest e Boosting">
 <meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
 </head>
 <body class="quarto-light">
@@ -131,7 +131,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
-  <p class="subtitle"><span class="custom-subtitle">Árvores: Regressão e Classificação</span></p>
+  <p class="subtitle"><span class="custom-subtitle">Árvores, Bagging, Random Forest e Boosting</span></p>
 
 <div class="quarto-title-authors">
 </div>
@@ -139,291 +139,479 @@
 </section><section><section id="árvores-de-regressão" class="title-slide slide level1 center"><h1>Árvores de regressão</h1>
 
 </section><section id="uma-estratégia-diferente" class="slide level2"><h2>Uma estratégia diferente</h2>
-<p>Uma árvore divide o espaço de entrada em regiões:</p>
+<p>Até agora, modelamos <span class="math inline">\(g(\mathbf{x})\)</span> como uma função suave:</p>
+<ul>
+<li>splines<br>
+</li>
+<li>kernels<br>
+</li>
+<li>regressão local</li>
+</ul>
+<p>Agora adotamos uma abordagem diferente:</p>
+<blockquote>
+<p>modelar <span class="math inline">\(g(\mathbf{x})\)</span> por partições do espaço das covariáveis.</p>
+</blockquote>
+</section><section id="ideia-central" class="slide level2"><h2>Ideia central</h2>
+<p>Uma árvore de regressão divide o espaço de entrada em regiões:</p>
 <p><span class="math display">\[
-\mathcal X=\mathcal R_1\cup\cdots\cup\mathcal R_M
+\mathcal{R}_1, \mathcal{R}_2, \ldots, \mathcal{R}_M
 \]</span></p>
-<p>e atribui uma predição a cada região.</p>
-</section><section id="o-modelo" class="slide level2"><h2>O modelo</h2>
+<p>e define:</p>
 <p><span class="math display">\[
-\boxed{
-\widehat g(\mathbf x)=
-\sum_{m=1}^{M}c_mI(\mathbf x\in\mathcal R_m)
-}
+\hat{g}(\mathbf{x}) = \sum_{m=1}^M c_m \mathbf{I}(\mathbf{x} \in \mathcal{R}_m)
 \]</span></p>
-<p>A função estimada é <strong>constante por partes</strong>.</p>
-</section><section id="qual-a-melhor-constante-em-uma-região" class="slide level2"><h2>Qual a melhor constante em uma região?</h2>
-<p>Fixada <span class="math inline">\(\mathcal R_m\)</span>:</p>
+<p>Para cada região <span class="math inline">\(\mathcal{R}_m\)</span>, usamos:</p>
 <p><span class="math display">\[
-\widehat c_m=
-\arg\min_c
-\sum_{i:\mathbf x_i\in\mathcal R_m}(y_i-c)^2
+c_m = \frac{1}{|\mathcal{R}_m|} \sum_{i:x_i \in \mathcal{R}_m} y_i
 \]</span></p>
-<p>A solução é:</p>
+</section><section class="slide level2">
+<img data-src="../..\images/regressao/Árvore de Regressão.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="problema-de-estimação" class="slide level2"><h2>Problema de estimação</h2>
+<p>Queremos encontrar a melhor partição:</p>
 <p><span class="math display">\[
-\boxed{
-\widehat c_m=
-\frac{1}{N_m}\sum_{i:\mathbf x_i\in\mathcal R_m}y_i
-}
+\{\mathcal{R}_1, \ldots, \mathcal{R}_M\}
 \]</span></p>
-<p>ou seja, a média das respostas na região.</p>
-</section><section id="função-objetivo" class="slide level2"><h2>Função objetivo</h2>
-<p>Para uma árvore <span class="math inline">\(T\)</span> com <span class="math inline">\(M\)</span> folhas:</p>
+</section><section class="slide level2"><h3 id="critério-de-qualidade">Critério de qualidade</h3>
+<p>A qualidade da árvore é medida por:</p>
 <p><span class="math display">\[
-\boxed{
-RSS(T)=
-\sum_{m=1}^{M}
-\sum_{i:\mathbf x_i\in\mathcal R_m}
-(y_i-\widehat c_m)^2
-}
-\]</span></p>
-<p>Boas regiões são internamente homogêneas em relação a <span class="math inline">\(Y\)</span>.</p>
-</section><section id="como-encontrar-a-partição" class="slide level2"><h2>Como encontrar a partição?</h2>
-<p>Buscar globalmente todas as partições é inviável.</p>
-<p>Usamos uma estratégia gulosa:</p>
+\mathcal{P}(T) =
+\sum_{m=1}^M \sum_{i:x_i \in \mathcal{R}_m}
+(y_i - c_m)^2
+\]</span> <br></p>
+<h3 id="interpretação-do-critério">Interpretação do critério</h3>
+<ul>
+<li>mede a variabilidade dentro das regiões<br>
+</li>
+<li>regiões boas → valores de <span class="math inline">\(y\)</span> homogêneos<br>
+</li>
+<li>objetivo → minimizar a variância intra-região</li>
+</ul></section><section class="slide level2"><h3 id="dificuldade-do-problema">Dificuldade do problema</h3>
+<p>Minimizar <span class="math inline">\(\mathcal{P}(T)\)</span> globalmente é:</p>
+<ul>
+<li>computacionalmente inviável<br>
+</li>
+<li>envolve todas as possíveis partições</li>
+</ul>
+<p><br></p>
+<h3 id="solução-prática">Solução prática</h3>
+<p>Utilizamos uma abordagem gulosa:</p>
+<ul>
+<li>escolhemos a melhor divisão local<br>
+</li>
+<li>repetimos recursivamente</li>
+</ul></section><section class="slide level2"><h3 id="divisão-em-um-nó">Divisão em um nó</h3>
+<p>Para cada variável <span class="math inline">\(X_j\)</span> e ponto <span class="math inline">\(s\)</span>:</p>
 <p><span class="math display">\[
-\boxed{\text{recursive binary splitting}}
+\mathcal{R}_1 = \{x: x_j \leq s\}, \quad
+\mathcal{R}_2 = \{x: x_j &gt; s\}
 \]</span></p>
-<p>Em cada etapa escolhemos a melhor divisão disponível.</p>
-</section><section id="uma-divisão-candidata" class="slide level2"><h2>Uma divisão candidata</h2>
-<p>Para variável <span class="math inline">\(X_j\)</span> e ponto de corte <span class="math inline">\(s\)</span>:</p>
-<p><span class="math display">\[
-\mathcal R_1(j,s)=\{\mathbf x:x_j\le s\},
-\qquad
-\mathcal R_2(j,s)=\{\mathbf x:x_j&gt;s\}
-\]</span></p>
-</section><section id="o-melhor-split" class="slide level2"><h2>O melhor split</h2>
+<p><br></p>
+<h3 id="melhor-divisão">Melhor divisão</h3>
 <p>Escolhemos <span class="math inline">\((j,s)\)</span> que minimiza:</p>
 <p><span class="math display">\[
-\boxed{
-\sum_{i:\mathbf x_i\in\mathcal R_1(j,s)}
-(y_i-\widehat c_1)^2+
-\sum_{i:\mathbf x_i\in\mathcal R_2(j,s)}
-(y_i-\widehat c_2)^2
-}
+\sum_{i \in \mathcal{R}_1} (y_i - c_{m_1})^2 +
+\sum_{i \in \mathcal{R}_2} (y_i - c_{m_2})^2
 \]</span></p>
-<p>Depois repetimos dentro das regiões resultantes.</p>
-</section><section id="construção-completa" class="slide level2"><h2>Construção completa</h2>
+</section><section class="slide level2"><h3 id="construção-completa">Construção completa</h3>
 <ol type="1">
-<li>Começar com todas as observações.</li>
-<li>Procurar o melhor <span class="math inline">\((j,s)\)</span>.</li>
-<li>Dividir o nó.</li>
-<li>Repetir recursivamente.</li>
-<li>Interromper segundo um critério de parada.</li>
+<li>Começa com todos os dados<br>
+</li>
+<li>Escolhe melhor split<br>
+</li>
+<li>Divide<br>
+</li>
+<li>Repete</li>
 </ol>
-<p>Cada split reduz o RSS de treinamento.</p>
-</section><section id="interações-aparecem-naturalmente" class="slide level2"><h2>Interações aparecem naturalmente</h2>
-<p>Se uma divisão em <span class="math inline">\(X_2\)</span> ocorre apenas no ramo definido por <span class="math inline">\(X_1\le s_1\)</span>, o efeito de <span class="math inline">\(X_2\)</span> depende da região definida por <span class="math inline">\(X_1\)</span>.</p>
-<p><span class="math display">\[
-\boxed{\text{Árvores capturam interações sem especificá-las previamente}}
-\]</span></p>
-</section><section id="seleção-de-variáveis-é-implícita" class="slide level2"><h2>Seleção de variáveis é implícita</h2>
-<p>A cada nó, apenas uma variável é escolhida.</p>
-<p>Variáveis que não ajudam a reduzir o erro podem nunca aparecer.</p>
-<p>Assim, árvores combinam:</p>
-<p><span class="math display">\[
-\text{não linearidade}
-+
-\text{interações}
-+
-\text{seleção implícita}
-\]</span></p>
-</section></section><section><section id="complexidade" class="title-slide slide level1 center"><h1>Complexidade</h1>
-
-</section><section id="por-que-não-continuar-dividindo" class="slide level2"><h2>Por que não continuar dividindo?</h2>
-<p>Como cada split reduz o RSS:</p>
-<p><span class="math display">\[
-\text{profundidade}\uparrow
-\Rightarrow
-RSS_{treino}\downarrow
-\]</span></p>
-<p>Mas árvores muito profundas tendem a adaptar-se às particularidades da amostra.</p>
-<p><span class="math display">\[
-\boxed{\text{árvore profunda}\Rightarrow\text{alta variância}}
-\]</span></p>
-</section><section id="instabilidade" class="slide level2"><h2>Instabilidade</h2>
-<p>Pequenas alterações na amostra podem mudar:</p>
+<p><br></p>
+<h3 id="overfitting">Overfitting</h3>
+<p>A árvore completa tende a:</p>
 <ul>
-<li>o primeiro split;</li>
-<li>as divisões subsequentes;</li>
-<li>a estrutura inteira da árvore.</li>
+<li>ajustar demais os dados<br>
+</li>
+<li>ter alta variância</li>
+</ul></section><section class="slide level2"><h3 id="poda-pruning">Poda (pruning)</h3>
+<p>Árvores completas tendem a sobreajustar os dados.</p>
+<p>A poda consiste em escolher uma subárvore que minimize:</p>
+<p><span class="math display">\[
+\sum_{m=1}^{|T|} \sum_{i:x_i \in \mathcal{R}_m} (y_i - c_m)^2 + \alpha |T|
+\]</span></p>
+<ul>
+<li>
+<span class="math inline">\(|T|\)</span> = número de folhas (complexidade da árvore)<br>
+</li>
+<li>
+<span class="math inline">\(\alpha\)</span> controla o trade-off entre ajuste e simplicidade</li>
 </ul>
-<p>Essa instabilidade é uma manifestação da variância do estimador.</p>
-</section><section id="regularização-da-árvore" class="slide level2"><h2>Regularização da árvore</h2>
-<p>Podemos controlar a complexidade por profundidade, tamanho mínimo dos nós e poda.</p>
-<p>A ideia estatística central é:</p>
-<p><span class="math display">\[
-\boxed{\text{ajuste}+\text{penalização pela complexidade}}
-\]</span></p>
-</section><section id="cost-complexity-pruning" class="slide level2"><h2>Cost-complexity pruning</h2>
-<p><span class="math display">\[
-\boxed{
-R_\alpha(T)=RSS(T)+\alpha|T|
-}
-\]</span></p>
-<p>onde <span class="math inline">\(|T|\)</span> é o número de folhas.</p>
-<p><span class="math display">\[
-\alpha\uparrow\Rightarrow\text{árvores menores}
-\]</span></p>
-</section><section id="tuning-novamente" class="slide level2"><h2>Tuning novamente</h2>
-<p><span class="math inline">\(\alpha\)</span> deve ser escolhido por validação:</p>
-<p><span class="math display">\[
-\widehat\alpha=
-\arg\min_\alpha\widehat R_{CV}(T_\alpha)
-\]</span></p>
-<p>A lógica introduzida no início da disciplina reaparece aqui.</p>
+<p>Valores grandes de <span class="math inline">\(\alpha\)</span> produzem árvores menores e mais estáveis.</p>
 </section><section class="slide level2">
-<img data-src="semana_07_arvores_regressao_classificacao_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section><section id="interpretação-da-árvore-de-regressão" class="slide level2"><h2>Interpretação da árvore de regressão</h2>
+<img data-src="semana_07_arvores_regressao_classificacao_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section><section class="slide level2"><h3 id="interpretação-da-árvore-de-regressão">Interpretação da árvore de regressão</h3>
 <p>A linha tracejada representa a função verdadeira que gerou os dados.</p>
 <p>A curva em degraus representa a árvore ajustada, que aproxima a função de regressão por regiões nas quais a predição é constante.</p>
-<p>Isso evidencia que árvores de regressão constroem estimadores do tipo <strong>piecewise</strong> constante.<br><br></p>
-<div class="callout callout-note callout-style-simple">
-<div class="callout-body">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-content">
-<p>Um estimador do tipo piecewise constante (ou constante por partes) é um método estatístico e de machine learning que divide o espaço dos dados em várias regiões distintas e assume um valor fixo (constante) para cada uma delas.</p>
-</div>
-</div>
-</div>
-</section><section id="vantagens-limitações" class="slide level2"><h2>Vantagens × limitações</h2>
-<table class="caption-top">
-<thead><tr class="header">
-<th>Vantagens</th>
-<th>Limitações</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>regras interpretáveis</td>
-<td>função em degraus</td>
-</tr>
-<tr class="even">
-<td>não linearidade</td>
-<td>alta variância</td>
-</tr>
-<tr class="odd">
-<td>interações automáticas</td>
-<td>instabilidade</td>
-</tr>
-<tr class="even">
-<td>seleção implícita</td>
-<td>árvore única pode predizer pior que ensembles</td>
-</tr>
-</tbody>
-</table></section></section><section><section id="árvores-de-classificação" class="title-slide slide level1 center"><h1>Árvores de classificação</h1>
-
-</section><section id="o-mecanismo-permanece" class="slide level2"><h2>O mecanismo permanece</h2>
-<p>Uma árvore continua:</p>
-<ol type="1">
-<li>dividindo recursivamente o espaço das covariáveis</li>
-<li>criando regiões</li>
-<li>produzindo uma predição em cada região</li>
-</ol>
-<p>O que muda é o critério usado para avaliar as divisões e a predição terminal</p>
-</section><section id="regressão-versus-classificação" class="slide level2"><h2>Regressão versus classificação</h2>
-<h3 id="árvore-de-regressão">Árvore de regressão</h3>
-<p>Em cada folha:</p>
+<p>Isso evidencia que árvores de regressão constroem estimadores do tipo <strong>piecewise</strong> constante.</p>
+</section><section class="slide level2"><h3 id="vantagens-das-árvores-de-regressão">Vantagens das Árvores de Regressão</h3>
+<p>Além de serem facilmente interpretáveis, árvores apresentam propriedades importantes:</p>
+<p><br></p>
+<h4 id="variáveis-categóricas">Variáveis categóricas</h4>
+<p>Árvores lidam naturalmente com variáveis discretas:</p>
 <p><span class="math display">\[
-\widehat y
-=
-\text{média das respostas}
+X_1 \in \{\text{verde}, \text{vermelho}\}
 \]</span></p>
-<p>Divisões procuram reduzir o erro quadrático</p>
-<h3 id="árvore-de-classificação">Árvore de classificação</h3>
-<p>Em cada folha:</p>
-<p><span class="math display">\[
-\widehat P(Y=k)
-=
-\text{proporção da classe }k
-\]</span></p>
-<p>A classe pode ser escolhida pela maior probabilidade estimada</p>
-</section><section id="por-que-precisamos-de-outra-medida" class="slide level2"><h2>Por que precisamos de outra medida?</h2>
-<p>Considere uma região <span class="math inline">\(R_m\)</span> e defina</p>
-<p><span class="math display">\[
-\widehat p_{mk}
-=
-\frac{1}{N_m}
-\sum_{\mathbf x_i\in R_m}
-I(y_i=k)
-\]</span></p>
-<p>Queremos medir quão misturadas estão as classes dentro dessa região</p>
-</section><section id="índice-de-gini" class="slide level2"><h2>Índice de Gini</h2>
-<p><span class="math display">\[
-\boxed{
-G_m
-=
-\sum_{k=1}^{K}
-\widehat p_{mk}
-(1-\widehat p_{mk})
-}
-\]</span></p>
-<p>Equivalentemente,</p>
-<p><span class="math display">\[
-G_m
-=
-1-
-\sum_{k=1}^{K}
-\widehat p_{mk}^2
-\]</span></p>
-</section><section id="entropia" class="slide level2"><h2>Entropia</h2>
-<p>Outra medida é</p>
-<p><span class="math display">\[
-\boxed{
-H_m
-=
--
-\sum_{k=1}^{K}
-\widehat p_{mk}
-\log(\widehat p_{mk})
-}
-\]</span></p>
-<p>Uma folha pura apresenta impureza mínima</p>
-</section><section id="exemplo-binário" class="slide level2"><h2>Exemplo binário</h2>
-<p>Se em uma folha</p>
-<p><span class="math display">\[
-\widehat p_1=0.5
-\qquad
-\widehat p_0=0.5
-\]</span></p>
-<p>há grande mistura entre as classes</p>
-<p>Se</p>
-<p><span class="math display">\[
-\widehat p_1=1
-\qquad
-\widehat p_0=0
-\]</span></p>
-<p>a folha é pura</p>
-</section><section id="escolhendo-uma-divisão" class="slide level2"><h2>Escolhendo uma divisão</h2>
-<p>Uma divisão produz duas regiões filhas</p>
-<p>Escolhemos divisões que reduzam a impureza ponderada</p>
-<p><span class="math display">\[
-\boxed{
-\Delta I
-=
-I(R)
--
-\left[
-\frac{N_L}{N}I(R_L)
-+
-\frac{N_R}{N}I(R_R)
-\right]
-}
-\]</span></p>
-<p>Quanto maior <span class="math inline">\(\Delta I\)</span>, melhor a separação produzida pelo split</p>
-</section><section id="o-que-continua-igual" class="slide level2"><h2>O que continua igual?</h2>
 <ul>
-<li>crescimento recursivo</li>
-<li>profundidade</li>
-<li>tamanho mínimo dos nós</li>
-<li>poda</li>
-<li>overfitting</li>
-<li>seleção por validação</li>
+<li>não é necessário criar variáveis dummy</li>
+<li>as divisões são feitas diretamente nas categorias</li>
+</ul></section><section class="slide level2"><h4 id="seleção-automática-de-variáveis">Seleção automática de variáveis</h4>
+<ul>
+<li>variáveis irrelevantes tendem a não ser utilizadas<br>
+</li>
+<li>o modelo realiza seleção de variáveis de forma implícita</li>
 </ul>
-<p>Portanto, não precisamos reconstruir toda a teoria de árvores</p>
+<p><br></p>
+<h4 id="interações-entre-variáveis">Interações entre variáveis</h4>
+<ul>
+<li>árvores capturam interações automaticamente<br>
+</li>
+<li>não é necessário especificar termos de interação</li>
+</ul></section><section class="slide level2"><h3 id="limitação-importante">Limitação importante</h3>
+<p>Apesar dessas vantagens:</p>
+<ul>
+<li>árvores individuais têm alta variância<br>
+</li>
+<li>pequenas mudanças nos dados podem gerar árvores muito diferentes</li>
+</ul>
+<p>Para melhorar o desempenho preditivo:</p>
+<blockquote>
+<p>combinamos várias árvores em um único modelo</p>
+</blockquote>
+</section><section id="por-que-combinar-árvores" class="slide level2"><h2>Por que combinar árvores?</h2>
+<p>Considere dois estimadores <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span>.</p>
+<p>Definimos o estimador combinado:</p>
+<p><span class="math display">\[
+g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
+\]</span></p>
+<p>O erro esperado é:</p>
+<p><span class="math display">\[
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+=
+\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
++ \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
++ \text{bias}^2
+\]</span></p>
+</section><section class="slide level2"><p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
+<ul>
+<li>não viesados<br>
+</li>
+<li>com mesma variância<br>
+</li>
+<li>não correlacionados</li>
+</ul>
+<p>então:</p>
+<p><span class="math display">\[
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+=
+\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
++ \frac{1}{2}\mathbb{V}(g_i(\mathbf{x}))
+\]</span></p>
+<h4 id="conclusão">Conclusão</h4>
+<p><span class="math display">\[
+\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}x\big]
+\le
+\mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\]</span></p>
+</section><section class="slide level2"><p>Assim, combinar modelos:</p>
+<ul>
+<li>mantém o viés<br>
+</li>
+<li>reduz a variância</li>
+</ul>
+<p><br></p>
+<h4 id="ideia-central-do-bagging">Ideia central do Bagging</h4>
+<blockquote>
+<p>Média de vários modelos instáveis → modelo mais estável</p>
+</blockquote>
+</section><section id="bagging-bootstrap-aggregating" class="slide level2"><h2>Bagging (Bootstrap Aggregating)</h2>
+<p>A ideia central é combinar vários estimadores:</p>
+<p><span class="math display">\[
+g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
+\]</span></p>
+<p>onde <span class="math inline">\(g_b(\mathbf{x})\)</span> é a predição da <span class="math inline">\(b\)</span>-ésima árvore.</p>
+<p>Para cada <span class="math inline">\(b = 1, \ldots, B\)</span>:</p>
+<ul>
+<li>amostramos com reposição (bootstrap)<br>
+</li>
+<li>ajustamos uma árvore aos dados</li>
+</ul></section><section class="slide level2">
+<img data-src="../..\images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><h3 id="propriedade-fundamental">Propriedade fundamental</h3>
+<p>Se os estimadores são aproximadamente não viesados:</p>
+<ul>
+<li>o viés permanece semelhante<br>
+</li>
+<li>a variância é reduzida</li>
+</ul>
+<p>Assim,</p>
+<p><span class="math display">\[
+\mathbb{E}[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}]
+\le
+\mathbb{E}[(\boldsymbol{y} - g_b(\mathbf{x}))^2 \mid \mathbf{x}]
+\]</span></p>
+</section><section class="slide level2"><h3 id="importância-de-variáveis-em-árvores">Importância de Variáveis em Árvores</h3>
+<p>Bagging permite medir a relevância de cada variável:</p>
+<ul>
+<li>baseada na redução do erro (RSS)<br>
+</li>
+<li>cada divisão reduz a variabilidade</li>
+</ul>
+<p>A qualidade de uma divisão é medida pela redução do erro quadrático (RSS).</p>
+<p>Considere um nó pai dividido em dois nós:</p>
+<ul>
+<li>esquerda (<span class="math inline">\(\mathcal{R}_{esq}\)</span>)<br>
+</li>
+<li>direita (<span class="math inline">\(\mathcal{R}_{dir}\)</span>)</li>
+</ul></section><section class="slide level2"><h3 id="redução-do-erro">Redução do erro</h3>
+<p>A redução no RSS é dada por:</p>
+<p><span class="math display">\[
+\text{RSS}_{pai}
+-
+\text{RSS}_{esq}
+-
+\text{RSS}_{dir}
+\]</span></p>
+<p>Ou, explicitamente:</p>
+<p><span class="math display">\[
+\sum_{i \in \mathcal{R}_{pai}} (y_i - \bar{y}_{pai})^2
+-
+\sum_{i \in \mathcal{R}_{esq}} (y_i - \bar{y}_{esq})^2
+-
+\sum_{i \in \mathcal{R}_{dir}} (y_i - \bar{y}_{dir})^2
+\]</span></p>
+</section><section class="slide level2"><h3 id="interpretação">Interpretação</h3>
+<ul>
+<li>quanto maior a redução → melhor a divisão<br>
+</li>
+<li>boas variáveis geram partições mais homogêneas</li>
+</ul>
+<blockquote>
+<p>Variáveis importantes são aquelas que mais reduzem a variabilidade da resposta.</p>
+</blockquote>
+</section><section class="slide level2">
+<img data-src="bagging_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section id="florestas-aleatórias-random-forest" class="slide level2"><h2>Florestas Aleatórias (Random Forest)</h2>
+<p>No Bagging, combinamos várias árvores:</p>
+<p><span class="math display">\[
+g(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^B g_b(\mathbf{x})
+\]</span></p>
+<p>Como as amostras <em>bootstrap</em> não são <em>i.i.d</em>,</p>
+<ul>
+<li>Cada árvore é diferente, mas nasce do mesmo mecanismo, então têm variâncias semelhantes, ou seja,</li>
+</ul>
+<p><span class="math display">\[
+\mathrm{Var}(g_b(\mathbf{x})) = \sigma^2
+\quad \text{para todo } b
+\]</span></p>
+</section><section class="slide level2"><ul>
+<li>As árvores não são independentes, mas podemos resumir essa dependência por uma correlação média. Assim, a correlação entre quaisquer duas árvores é</li>
+</ul>
+<p><span class="math display">\[
+\mathrm{Cor}(g_b(\mathbf{x}),g_{b'}(\mathbf{x})) = \rho
+\quad (b \neq b')
+\]</span></p>
+<p>Logo,</p>
+<p><span class="math display">\[
+\mathrm{Cov}(g_b(\mathbf{x}),g_{b'}(\mathbf{x})) = \rho \sigma^2
+\]</span></p>
+<p>Então,</p>
+<p><span class="math display">\[
+\mathrm{Var}\!\big(g(\mathbf{x}) \big)
+=
+\mathrm{Var}\!\left(\frac{1}{B}\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+=
+\frac{1}{B^2}\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+\]</span></p>
+</section><section class="slide level2"><p>Expandindo a variância da soma:</p>
+<p><span class="math display">\[
+\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+=
+\sum_{b=1}^{B}\mathrm{Var}(g_b\big(\mathbf{x})\big)
++
+\sum_{b \neq b'}\mathrm{Cov}\big(g_b(\mathbf{x}),g_{b'}(\mathbf{x})\big)
+\]</span></p>
+<p>Substituindo as hipóteses:</p>
+<p><span class="math display">\[
+\sum_{b=1}^{B}\mathrm{Var}\big(g_b(\mathbf{x})\big)=B\sigma^2
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\sum_{b \neq b'}\mathrm{Cov}\big(g_b(\mathbf{x}),g_{b'}(\mathbf{x})\big)
+=
+B(B-1)\rho\sigma^2
+\]</span></p>
+</section><section class="slide level2"><p>Portanto,</p>
+<p><span class="math display">\[
+\mathrm{Var}\!\left(\sum_{b=1}^{B} g_b(\mathbf{x})\right)
+=
+B\sigma^2 + B(B-1)\rho\sigma^2
+\]</span></p>
+<p>e, assim,</p>
+<p><span class="math display">\[
+\mathrm{Var}\!\left(g(\mathbf{x})\right)
+=
+\frac{1}{B^2}
+\left[
+B\sigma^2 + B(B-1)\rho\sigma^2
+\right]
+\]</span></p>
+</section><section class="slide level2"><p>Simplificando,</p>
+<p><span class="math display">\[
+\mathrm{Var}\!\big(g(\mathbf{x})\big)
+=
+\frac{\sigma^2}{B}
++
+\frac{B-1}{B}\rho\sigma^2
+\]</span></p>
+<p>ou, equivalentemente,</p>
+<p><span class="math display">\[
+\boxed{
+\mathrm{Var}\!\big(g(\mathbf{x})\big)
+=
+\rho\sigma^2 + \frac{1-\rho}{B}\sigma^2
+}
+\]</span></p>
+<p>Note que,</p>
+<ul>
+<li>
+<span class="math inline">\(\rho\sigma^2\)</span> é a parte da variância que <strong>não desaparece</strong> com o aumento de <span class="math inline">\(B\)</span>
+</li>
+<li>
+<span class="math inline">\(\dfrac{1-\rho}{B}\sigma^2\)</span> é a parte que <strong>cai com o número de árvores</strong>
+</li>
+</ul></section><section class="slide level2"><h3 id="consequência-importante">Consequência importante</h3>
+<ul>
+<li>se <span class="math inline">\(\rho\)</span> é pequeno, o bagging reduz bastante a variância</li>
+<li>se <span class="math inline">\(\rho\)</span> é grande, o ganho é limitado</li>
+</ul>
+<p>Além disso,</p>
+<ul>
+<li>mesmas variáveis dominantes<br>
+</li>
+<li>divisões semelhantes<br>
+</li>
+<li>predições parecidas</li>
+</ul></section><section class="slide level2"><h3 id="problema">Problema</h3>
+<p>A redução de variância depende da correlação:</p>
+<blockquote>
+<p>árvores muito parecidas → pouco ganho ao combinar</p>
+</blockquote>
+<p><br></p>
+<h3 id="ideia-do-random-forest">Ideia do Random Forest</h3>
+<p>Introduzir aleatoriedade adicional:</p>
+<blockquote>
+<p>em cada nó, escolhemos um subconjunto aleatório de variáveis</p>
+</blockquote>
+</section><section class="slide level2"><h3 id="construção">Construção</h3>
+<p>Para cada árvore:</p>
+<ul>
+<li>amostra bootstrap dos dados</li>
+<li>em cada divisão:
+<ul>
+<li>seleciona-se aleatoriamente <span class="math inline">\(m\)</span> variáveis</li>
+<li>escolhe-se o melhor <em>split</em> entre elas</li>
+</ul>
+</li>
+</ul>
+<h3 id="parâmetro-chave">Parâmetro chave</h3>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><span class="math inline">\(m\)</span> = número de variáveis candidatas por <em>split</em></p>
+<ul>
+<li>
+<span class="math inline">\(m = d \rightarrow\)</span> Bagging</li>
+<li>
+<span class="math inline">\(m &lt; d \rightarrow\)</span> Random Forest</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><span class="math display">\[
+m \approx \frac{d}{3}
+\]</span></p>
+</div></div>
+</section><section class="slide level2">
+<img data-src="../..\images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2">
+<img data-src="semana_07_arvores_regressao_classificacao_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section><section class="slide level2">
+<img data-src="rf_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section id="boosting" class="slide level2"><h2>Boosting</h2>
+<p>O <em>boosting</em> constrói o estimador de forma <strong>sequencial</strong>, corrigindo erros do modelo anterior.</p>
+<p><br></p>
+<h3 id="ideia-central-1">Ideia central</h3>
+<p>Começamos com um modelo simples e vamos <strong>ajustando os resíduos</strong>:</p>
+<p><span class="math display">\[
+r_i = y_i - g(x_i)
+\]</span></p>
+</section><section class="slide level2"><h3 id="algoritmo">Algoritmo</h3>
+<ol type="1">
+<li>Inicialize:</li>
+</ol>
+<p><span class="math display">\[
+g(\mathbf{x}) = 0
+\]</span></p>
+<ol start="2" type="1">
+<li>Para <span class="math inline">\(b = 1, \dots, B\)</span>:</li>
+</ol>
+<ul>
+<li>Ajuste um modelo simples (ex: árvore rasa) aos resíduos:</li>
+</ul>
+<p><span class="math display">\[
+r_i = y_i - g(x_i)
+\]</span></p>
+<ul>
+<li>Atualize:</li>
+</ul>
+<p><span class="math display">\[
+g(\mathbf{x}) \leftarrow g(\mathbf{x}) + \lambda g^{(b)}(\mathbf{x})
+\]</span></p>
+</section><section class="slide level2"><h3 id="parâmetros-importantes">Parâmetros importantes</h3>
+<ul>
+<li>
+<span class="math inline">\(B\)</span> → número de iterações (<span class="math inline">\(B \approx 1000\)</span>)</li>
+<li>
+<span class="math inline">\(\lambda\)</span> → <em>learning rate</em>, tipicamente pequeno (<span class="math inline">\(\lambda \approx 0,01\)</span>)
+<ul>
+<li>
+<span class="math inline">\(\lambda\)</span> grande → aprendizado rápido → risco de overfitting</li>
+<li>
+<span class="math inline">\(\lambda\)</span> pequeno → aprendizado lento → mais estável</li>
+</ul>
+</li>
+<li>
+<span class="math inline">\(p\)</span> → complexidade da árvore (<span class="math inline">\(p = 2\)</span> ou <span class="math inline">\(p = 4\)</span>)</li>
+</ul>
+<p><br></p>
+<h3 id="observação">Observação</h3>
+<ul>
+<li>cada modelo aprende <strong>o que o anterior errou</strong>
+</li>
+<li>reduz <strong>viés</strong> (diferente do bagging)</li>
+</ul></section><section id="section" class="slide level2" data-background-image="../../images/regressao/boosting.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat"><h2></h2>
+<!-- ![](/images/regressao/boosting.png){fig-align="center"} -->
+</section><section class="slide level2">
+<img data-src="semana_07_arvores_regressao_classificacao_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section><section class="slide level2">
+<img data-src="boosting_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section class="slide level2"><h3 id="boosting-e-estimadores-fracos">Boosting e Estimadores Fracos</h3>
+<p>O <em>boosting</em> não é restrito ao uso de árvores.</p>
+<p>Podemos usar qualquer modelo como base, desde que seja um <strong>estimador fraco</strong>.</p>
+<p><br></p>
+<h4 id="o-que-é-um-estimador-fraco">O que é um estimador fraco?</h4>
+<ul>
+<li>modelo simples</li>
+<li>baixo poder preditivo individual</li>
+<li>pequeno viés de ajuste</li>
+</ul>
+<p><strong>Exemplos:</strong> árvores rasas (<em>stumps</em>), regressão linear simples, modelos com poucos parâmetros</p>
+</section><section class="slide level2"><h3 id="por-que-usar-modelos-fracos">Por que usar modelos fracos?</h3>
+<ul>
+<li>evitam overfitting em cada etapa</li>
+<li>permitem correções graduais</li>
+<li>tornam o aprendizado mais estável</li>
+</ul>
+<p>Se você usar modelos muito complexos (ex: árvores profundas):</p>
+<p>👉 boosting pode superajustar rapidamente</p>
+</section><section class="slide level2">
 
 
-</section></section>
+<img data-src="semana_07_arvores_regressao_classificacao_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section></section>
 </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
