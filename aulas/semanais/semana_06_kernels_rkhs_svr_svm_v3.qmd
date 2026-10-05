@@ -904,7 +904,7 @@ para acomodar a observação $i$.
 
 | Valor de $\xi_i$ | Situação |
 |---|---|
-| $\xi_i=0$ | sobre ou fora da margem |
+| $\xi_i=0$ | observação $i$ não viola a margem do SVM |
 | $0<\xi_i<1$ | corretamente classificada, mas dentro da margem |
 | $\xi_i=1$ | sobre a fronteira de decisão |
 | $\xi_i>1$ | classificada incorretamente |
@@ -995,7 +995,7 @@ Na solução ótima do SVM soft margin, elas assumem o mesmo valor.
 Considere
 
 $$
-L_i=\max\{0,1-y_i g(\mathbf{x}_i)\}.
+L_i=\max\{0,1-y_i g(\mathbf{x}_i)\}
 $$
 
 | $y_i g(\mathbf{x}_i)$ | Situação | $\xi_i=L_i$ |
@@ -1021,10 +1021,117 @@ Ele também considera:
 
 
 
+## SVM *soft margin*: regularização + perda
+
+A variável de folga $\xi_i$ mede **quanto a observação $i$ viola a margem**:
+
+$$
+\small
+y_i g(\mathbf{x}_i) \geq 1-\xi_i,
+\qquad
+\xi_i\geq0.
+$$
+
+Como queremos o menor valor possível de $\xi_i$,
+
+$$
+\small
+\xi_i
+=
+\max\left\{0,\;1-y_i g(\mathbf{x}_i)\right\}
+=
+L_{\text{hinge},i}
+$$
+
+Portanto, a função objetivo do SVM pode ser escrita como
+
+$$
+\small
+\min_{\mathbf w,b}
+\left[
+\underbrace{\frac{1}{2}\|\mathbf w\|^2}_{\text{regularização}}
++
+C\,
+\underbrace{
+\sum_{i=1}^{n}
+L_{\text{hinge},i}
+}_{\text{perda nos dados}}
+\right]
+$$
+
+
+## SVM *soft margin*: regularização + perda
 
 
 
 
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Regularização
+
+$$
+\frac{1}{2}\|\mathbf w\|^2
+$$
+
+Favorece uma **margem maior** e controla a complexidade da solução
+
+:::
+
+::: {.column width="48%"}
+
+### Hinge loss
+
+$$
+L_{\text{hinge},i}
+=
+\max\{0,1-y_i g(\mathbf{x}_i)\}
+$$
+
+Penaliza observações que **entram na margem ou são classificadas incorretamente**<br><br>
+
+:::
+
+::::
+
+::: {.callout-important}
+### Conexão com o que já vimos
+
+O SVM segue a mesma ideia de **risco empírico regularizado**:
+
+$$
+\boxed{
+\text{Função objetivo}
+=
+\text{Regularização}
++
+C\times\text{Perda}
+}
+$$
+:::
+
+
+
+## SVM *soft margin*: o papel do parâmetro $C$
+
+
+::: {.callout-important}
+### Interpretação
+
+O Parâmetro $C$ $(C>0)$ controla o compromisso entre
+
+$$
+\boxed{
+\text{regularização}
+\quad\longleftrightarrow\quad
+\text{penalização das violações}
+}
+$$
+
+**$C$ pequeno:** toleramos mais violações em favor da regularização  
+**$C$ grande:** damos maior prioridade a reduzir as violações da margem
+:::
 
 
 
@@ -1209,6 +1316,13 @@ a observação está dentro do tubo.
 
 Nesse caso, o SVR atribui **perda zero** a esse erro.
 
+
+---
+
+![](/images/regressao/SVR.png){fig-align="center"}
+
+
+
 ## A perda $\varepsilon$-insensível
 
 A função de perda é
@@ -1240,6 +1354,92 @@ $$
 ::: {.callout-tip appearance="simple"}
 Diferentemente do erro quadrático, o SVR possui uma **zona de tolerância**: pequenos erros podem ser ignorados.
 :::
+
+
+
+## SVR: regularização + perda $\varepsilon$-insensível
+
+A função objetivo do SVR pode então ser escrita diretamente como
+
+$$
+\min_{\mathbf w,b}
+\left[
+\underbrace{\frac{1}{2}\|\mathbf w\|^2}_{\text{regularização}}
++
+C\,
+\underbrace{
+\sum_{i=1}^{n}
+L_{\varepsilon}\left(y_i,g(\mathbf{x}_i)\right)
+}_{\text{perda nos dados}}
+\right]
+$$
+
+
+
+## SVR: regularização + perda $\varepsilon$-insensível
+
+
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Regularização
+
+$$
+\frac{1}{2}\|\mathbf w\|^2
+$$
+
+Controla a **complexidade** da função estimada.
+
+Quanto maior seu peso relativo, maior a preferência por uma solução mais regularizada
+
+:::
+
+::: {.column width="48%"}
+
+### Perda $\varepsilon$-insensível
+
+$$
+L_{\varepsilon}
+=
+\max\{0,|y_i-g(\mathbf{x}_i)|-\varepsilon\}
+$$
+
+- dentro do tubo: perda $=0$
+- fora do tubo: perda $>0$
+- penaliza apenas a parte do erro que **ultrapassa $\varepsilon$**
+
+:::
+
+::::
+
+
+
+
+## SVR: regularização + perda $\varepsilon$-insensível
+
+
+::: {.callout-important}
+### Ideia central
+
+Assim como no SVM,
+
+$$
+\boxed{
+\text{Função objetivo}
+=
+\text{Regularização}
++
+C\times\text{Perda}
+}
+$$
+
+No **SVR**, a perda é a **$\varepsilon$-insensível** e $C>0$ controla quanto penalizamos as observações que ultrapassam o tubo.
+:::
+
+
+
 
 ## Quem são os vetores de suporte no SVR?
 
@@ -1298,33 +1498,110 @@ $$
 K(\mathbf x,\mathbf x')
 =
 \exp\{-\gamma\|\mathbf x-\mathbf x'\|^2\}
+$$<br><br>
+
+::: {.callout-important}
+## Observação
 $$
-
-Interpretação prática:
-
-- $\varepsilon$: largura da tolerância;
-- $\gamma$: localidade/flexibilidade do kernel.
-
-$$
-\boxed{
-(\varepsilon,\gamma)
+(C,\varepsilon,\gamma)
 \quad\text{são hiperparâmetros}
-}
 $$
 
 e devem ser escolhidos com dados de treinamento, tipicamente por **validação cruzada**.
+:::
 
-## Como interpretar o SVR com kernel?
 
-A solução matemática pode ser escrita como uma combinação de kernels centrados em vetores de suporte.
 
-Para o nível desta disciplina, a mensagem importante é:
+
+
+
+
+## SVR: forma da solução
+
+A minimização da função objetivo leva a uma solução da forma
 
 $$
 \boxed{
-\text{a previsão depende principalmente dos vetores de suporte}
+\hat g(\mathbf{x})
+=
+\sum_{i=1}^{n}
+(\alpha_i-\alpha_i^*)
+K(\mathbf{x}_i,\mathbf{x})
++b
 }
 $$
 
+em que $\alpha_i$ e $\alpha_i^*$ são coeficientes determinados durante a otimização.<br><br>
 
+::: {.callout-important icon="true" appearance="simple"}
+Para observações **estritamente dentro do tubo de tolerância**, ou seja, $|y_i-\hat g(\mathbf{x}_i)|<\varepsilon,$ temos
+
+$$
+\alpha_i=\alpha_i^*=0.
+$$
+
+Logo, essas observações **não são vetores de suporte** e não contribuem diretamente para a função estimada.
+:::
+
+
+## SVR: forma da solução
+
+
+Assim, podemos pensar na solução como
+
+$$
+\boxed{
+\hat g(\mathbf{x})
+=
+\sum_{i\in SV}
+(\alpha_i-\alpha_i^*)
+K(\mathbf{x}_i,\mathbf{x})
++b
+}
+$$
+
+onde $SV$ representa o conjunto dos **vetores de suporte**.
+
+
+
+## SVR: forma da solução
+
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+### Dentro do tubo
+
+Em geral,
+
+$$
+\alpha_i=\alpha_i^*=0
+$$
+
+e a observação não participa diretamente da solução
+
+:::
+
+::: {.column width="48%"}
+
+### Na borda ou fora do tubo
+
+Podemos ter
+
+$$
+\alpha_i-\alpha_i^*\neq0
+$$
+
+Essas observações são os **vetores de suporte**<br><br>
+
+:::
+
+::::
+
+::: {.callout-note}
+### Ideia central
+
+A função estimada pelo SVR é construída principalmente a partir das observações que **definem ou violam o tubo de tolerância**.
+:::
 

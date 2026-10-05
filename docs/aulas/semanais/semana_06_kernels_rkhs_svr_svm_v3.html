@@ -759,7 +759,7 @@ y_i g(\mathbf{x}_i) \geq 1-\xi_i,
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\xi_i=0\)</span></td>
-<td>sobre ou fora da margem</td>
+<td>observação <span class="math inline">\(i\)</span> não viola a margem do SVM</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(0&lt;\xi_i&lt;1\)</span></td>
@@ -844,7 +844,7 @@ L_i=
 </section><section id="interpretando-a-hinge-loss" class="slide level2"><h2>Interpretando a hinge loss</h2>
 <p>Considere</p>
 <p><span class="math display">\[
-L_i=\max\{0,1-y_i g(\mathbf{x}_i)\}.
+L_i=\max\{0,1-y_i g(\mathbf{x}_i)\}
 \]</span></p>
 <table class="caption-top">
 <thead><tr class="header">
@@ -888,6 +888,99 @@ L_i=\max\{0,1-y_i g(\mathbf{x}_i)\}.
 <blockquote>
 <p><strong>“A observação está suficientemente afastada da fronteira?”</strong></p>
 </blockquote>
+</section><section id="svm-soft-margin-regularização-perda" class="slide level2"><h2>SVM <em>soft margin</em>: regularização + perda</h2>
+<p>A variável de folga <span class="math inline">\(\xi_i\)</span> mede <strong>quanto a observação <span class="math inline">\(i\)</span> viola a margem</strong>:</p>
+<p><span class="math display">\[
+\small
+y_i g(\mathbf{x}_i) \geq 1-\xi_i,
+\qquad
+\xi_i\geq0.
+\]</span></p>
+<p>Como queremos o menor valor possível de <span class="math inline">\(\xi_i\)</span>,</p>
+<p><span class="math display">\[
+\small
+\xi_i
+=
+\max\left\{0,\;1-y_i g(\mathbf{x}_i)\right\}
+=
+L_{\text{hinge},i}
+\]</span></p>
+<p>Portanto, a função objetivo do SVM pode ser escrita como</p>
+<p><span class="math display">\[
+\small
+\min_{\mathbf w,b}
+\left[
+\underbrace{\frac{1}{2}\|\mathbf w\|^2}_{\text{regularização}}
++
+C\,
+\underbrace{
+\sum_{i=1}^{n}
+L_{\text{hinge},i}
+}_{\text{perda nos dados}}
+\right]
+\]</span></p>
+</section><section id="svm-soft-margin-regularização-perda-1" class="slide level2"><h2>SVM <em>soft margin</em>: regularização + perda</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="regularização">Regularização</h3>
+<p><span class="math display">\[
+\frac{1}{2}\|\mathbf w\|^2
+\]</span></p>
+<p>Favorece uma <strong>margem maior</strong> e controla a complexidade da solução</p>
+</div><div class="column" style="width:48%;">
+<h3 id="hinge-loss">Hinge loss</h3>
+<p><span class="math display">\[
+L_{\text{hinge},i}
+=
+\max\{0,1-y_i g(\mathbf{x}_i)\}
+\]</span></p>
+<p>Penaliza observações que <strong>entram na margem ou são classificadas incorretamente</strong><br><br></p>
+</div></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Conexão com o que já vimos</strong></p>
+</div>
+<div class="callout-content">
+<p>O SVM segue a mesma ideia de <strong>risco empírico regularizado</strong>:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Função objetivo}
+=
+\text{Regularização}
++
+C\times\text{Perda}
+}
+\]</span></p>
+</div>
+</div>
+</div>
+</section><section id="svm-soft-margin-o-papel-do-parâmetro-c" class="slide level2"><h2>SVM <em>soft margin</em>: o papel do parâmetro <span class="math inline">\(C\)</span>
+</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Interpretação</strong></p>
+</div>
+<div class="callout-content">
+<p>O Parâmetro <span class="math inline">\(C\)</span> <span class="math inline">\((C&gt;0)\)</span> controla o compromisso entre</p>
+<p><span class="math display">\[
+\boxed{
+\text{regularização}
+\quad\longleftrightarrow\quad
+\text{penalização das violações}
+}
+\]</span></p>
+<p><strong><span class="math inline">\(C\)</span> pequeno:</strong> toleramos mais violações em favor da regularização<br><strong><span class="math inline">\(C\)</span> grande:</strong> damos maior prioridade a reduzir as violações da margem</p>
+</div>
+</div>
+</div>
 </section><section id="problemas-não-linearmente-separáveis" class="slide level2"><h2>Problemas não linearmente separáveis</h2>
 <p>Considere dados em que uma classe esteja aproximadamente no centro e outra ao redor dela.</p>
 <p>Nenhuma reta separará bem os grupos no espaço original.</p>
@@ -991,7 +1084,8 @@ g(\mathbf x)+\varepsilon
 \]</span></p>
 <p>a observação está dentro do tubo.</p>
 <p>Nesse caso, o SVR atribui <strong>perda zero</strong> a esse erro.</p>
-</section><section id="a-perda-varepsilon-insensível" class="slide level2"><h2>A perda <span class="math inline">\(\varepsilon\)</span>-insensível</h2>
+</section><section class="slide level2">
+<img data-src="../..\images/regressao/SVR.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="a-perda-varepsilon-insensível" class="slide level2"><h2>A perda <span class="math inline">\(\varepsilon\)</span>-insensível</h2>
 <p>A função de perda é</p>
 <p><span class="math display">\[
 \boxed{
@@ -1019,6 +1113,69 @@ L_\varepsilon&gt;0
 </div>
 <div class="callout-content">
 <p>Diferentemente do erro quadrático, o SVR possui uma <strong>zona de tolerância</strong>: pequenos erros podem ser ignorados.</p>
+</div>
+</div>
+</div>
+</section><section id="svr-regularização-perda-varepsilon-insensível" class="slide level2"><h2>SVR: regularização + perda <span class="math inline">\(\varepsilon\)</span>-insensível</h2>
+<p>A função objetivo do SVR pode então ser escrita diretamente como</p>
+<p><span class="math display">\[
+\min_{\mathbf w,b}
+\left[
+\underbrace{\frac{1}{2}\|\mathbf w\|^2}_{\text{regularização}}
++
+C\,
+\underbrace{
+\sum_{i=1}^{n}
+L_{\varepsilon}\left(y_i,g(\mathbf{x}_i)\right)
+}_{\text{perda nos dados}}
+\right]
+\]</span></p>
+</section><section id="svr-regularização-perda-varepsilon-insensível-1" class="slide level2"><h2>SVR: regularização + perda <span class="math inline">\(\varepsilon\)</span>-insensível</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="regularização-1">Regularização</h3>
+<p><span class="math display">\[
+\frac{1}{2}\|\mathbf w\|^2
+\]</span></p>
+<p>Controla a <strong>complexidade</strong> da função estimada.</p>
+<p>Quanto maior seu peso relativo, maior a preferência por uma solução mais regularizada</p>
+</div><div class="column" style="width:48%;">
+<h3 id="perda-varepsilon-insensível">Perda <span class="math inline">\(\varepsilon\)</span>-insensível</h3>
+<p><span class="math display">\[
+L_{\varepsilon}
+=
+\max\{0,|y_i-g(\mathbf{x}_i)|-\varepsilon\}
+\]</span></p>
+<ul>
+<li>dentro do tubo: perda <span class="math inline">\(=0\)</span>
+</li>
+<li>fora do tubo: perda <span class="math inline">\(&gt;0\)</span>
+</li>
+<li>penaliza apenas a parte do erro que <strong>ultrapassa <span class="math inline">\(\varepsilon\)</span></strong>
+</li>
+</ul>
+</div></div>
+</section><section id="svr-regularização-perda-varepsilon-insensível-2" class="slide level2"><h2>SVR: regularização + perda <span class="math inline">\(\varepsilon\)</span>-insensível</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Ideia central</strong></p>
+</div>
+<div class="callout-content">
+<p>Assim como no SVM,</p>
+<p><span class="math display">\[
+\boxed{
+\text{Função objetivo}
+=
+\text{Regularização}
++
+C\times\text{Perda}
+}
+\]</span></p>
+<p>No <strong>SVR</strong>, a perda é a <strong><span class="math inline">\(\varepsilon\)</span>-insensível</strong> e <span class="math inline">\(C&gt;0\)</span> controla quanto penalizamos as observações que ultrapassam o tubo.</p>
 </div>
 </div>
 </div>
@@ -1080,29 +1237,94 @@ L_\varepsilon&gt;0
 K(\mathbf x,\mathbf x')
 =
 \exp\{-\gamma\|\mathbf x-\mathbf x'\|^2\}
-\]</span></p>
-<p>Interpretação prática:</p>
-<ul>
-<li>
-<span class="math inline">\(\varepsilon\)</span>: largura da tolerância;</li>
-<li>
-<span class="math inline">\(\gamma\)</span>: localidade/flexibilidade do kernel.</li>
-</ul>
+\]</span><br><br></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Observação</strong></p>
+</div>
+<div class="callout-content">
 <p><span class="math display">\[
-\boxed{
-(\varepsilon,\gamma)
+(C,\varepsilon,\gamma)
 \quad\text{são hiperparâmetros}
-}
 \]</span></p>
 <p>e devem ser escolhidos com dados de treinamento, tipicamente por <strong>validação cruzada</strong>.</p>
-</section><section id="como-interpretar-o-svr-com-kernel" class="slide level2"><h2>Como interpretar o SVR com kernel?</h2>
-<p>A solução matemática pode ser escrita como uma combinação de kernels centrados em vetores de suporte.</p>
-<p>Para o nível desta disciplina, a mensagem importante é:</p>
+</div>
+</div>
+</div>
+</section><section id="svr-forma-da-solução" class="slide level2"><h2>SVR: forma da solução</h2>
+<p>A minimização da função objetivo leva a uma solução da forma</p>
 <p><span class="math display">\[
 \boxed{
-\text{a previsão depende principalmente dos vetores de suporte}
+\hat g(\mathbf{x})
+=
+\sum_{i=1}^{n}
+(\alpha_i-\alpha_i^*)
+K(\mathbf{x}_i,\mathbf{x})
++b
 }
 \]</span></p>
+<p>em que <span class="math inline">\(\alpha_i\)</span> e <span class="math inline">\(\alpha_i^*\)</span> são coeficientes determinados durante a otimização.<br><br></p>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Para observações <strong>estritamente dentro do tubo de tolerância</strong>, ou seja, <span class="math inline">\(|y_i-\hat g(\mathbf{x}_i)|&lt;\varepsilon,\)</span> temos</p>
+<p><span class="math display">\[
+\alpha_i=\alpha_i^*=0.
+\]</span></p>
+<p>Logo, essas observações <strong>não são vetores de suporte</strong> e não contribuem diretamente para a função estimada.</p>
+</div>
+</div>
+</div>
+</section><section id="svr-forma-da-solução-1" class="slide level2"><h2>SVR: forma da solução</h2>
+<p>Assim, podemos pensar na solução como</p>
+<p><span class="math display">\[
+\boxed{
+\hat g(\mathbf{x})
+=
+\sum_{i\in SV}
+(\alpha_i-\alpha_i^*)
+K(\mathbf{x}_i,\mathbf{x})
++b
+}
+\]</span></p>
+<p>onde <span class="math inline">\(SV\)</span> representa o conjunto dos <strong>vetores de suporte</strong>.</p>
+</section><section id="svr-forma-da-solução-2" class="slide level2"><h2>SVR: forma da solução</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="dentro-do-tubo">Dentro do tubo</h3>
+<p>Em geral,</p>
+<p><span class="math display">\[
+\alpha_i=\alpha_i^*=0
+\]</span></p>
+<p>e a observação não participa diretamente da solução</p>
+</div><div class="column" style="width:48%;">
+<h3 id="na-borda-ou-fora-do-tubo">Na borda ou fora do tubo</h3>
+<p>Podemos ter</p>
+<p><span class="math display">\[
+\alpha_i-\alpha_i^*\neq0
+\]</span></p>
+<p>Essas observações são os <strong>vetores de suporte</strong><br><br></p>
+</div></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Ideia central</strong></p>
+</div>
+<div class="callout-content">
+<p>A função estimada pelo SVR é construída principalmente a partir das observações que <strong>definem ou violam o tubo de tolerância</strong>.</p>
+</div>
+</div>
+</div>
 
 
 </section></section>

@@ -10093,7 +10093,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#soft-margin-permitindo-violações-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Soft margin: permitindo violações",
-    "text": "Soft margin: permitindo violações\nA variável \\(\\xi_i\\) mede quanto precisamos relaxar a condição de margem para acomodar a observação \\(i\\).\n\n\nValor de \\(\\xi_i\\)\n\nSituação\n\n\n\n\\(\\xi_i=0\\)\nsobre ou fora da margem\n\n\n\\(0&lt;\\xi_i&lt;1\\)\ncorretamente classificada, mas dentro da margem\n\n\n\\(\\xi_i=1\\)\nsobre a fronteira de decisão\n\n\n\\(\\xi_i&gt;1\\)\nclassificada incorretamente\n\n\n\n\n\n\n\n\n\nImportante\n\n\n\\(\\xi_i&gt;0\\) não significa necessariamente erro de classificação.\nUma observação pode estar corretamente classificada e ainda violar a margem."
+    "text": "Soft margin: permitindo violações\nA variável \\(\\xi_i\\) mede quanto precisamos relaxar a condição de margem para acomodar a observação \\(i\\).\n\n\nValor de \\(\\xi_i\\)\n\nSituação\n\n\n\n\\(\\xi_i=0\\)\nobservação \\(i\\) não viola a margem do SVM\n\n\n\\(0&lt;\\xi_i&lt;1\\)\ncorretamente classificada, mas dentro da margem\n\n\n\\(\\xi_i=1\\)\nsobre a fronteira de decisão\n\n\n\\(\\xi_i&gt;1\\)\nclassificada incorretamente\n\n\n\n\n\n\n\n\n\nImportante\n\n\n\\(\\xi_i&gt;0\\) não significa necessariamente erro de classificação.\nUma observação pode estar corretamente classificada e ainda violar a margem."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#da-variável-de-folga-à-hinge-loss",
@@ -10121,7 +10121,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#interpretando-a-hinge-loss",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Interpretando a hinge loss",
-    "text": "Interpretando a hinge loss\nConsidere\n\\[\nL_i=\\max\\{0,1-y_i g(\\mathbf{x}_i)\\}.\n\\]\n\n\n\\(y_i g(\\mathbf{x}_i)\\)\nSituação\n\\(\\xi_i=L_i\\)\n\n\n\n\\(1.5\\)\ncorreta e fora da margem\n\\(0\\)\n\n\n\\(1.0\\)\nsobre a margem\n\\(0\\)\n\n\n\\(0.7\\)\ncorreta, mas dentro da margem\n\\(0.3\\)\n\n\n\\(0\\)\nsobre a fronteira de decisão\n\\(1\\)\n\n\n\\(-0.4\\)\nclassificada incorretamente\n\\(1.4\\)"
+    "text": "Interpretando a hinge loss\nConsidere\n\\[\nL_i=\\max\\{0,1-y_i g(\\mathbf{x}_i)\\}\n\\]\n\n\n\\(y_i g(\\mathbf{x}_i)\\)\nSituação\n\\(\\xi_i=L_i\\)\n\n\n\n\\(1.5\\)\ncorreta e fora da margem\n\\(0\\)\n\n\n\\(1.0\\)\nsobre a margem\n\\(0\\)\n\n\n\\(0.7\\)\ncorreta, mas dentro da margem\n\\(0.3\\)\n\n\n\\(0\\)\nsobre a fronteira de decisão\n\\(1\\)\n\n\n\\(-0.4\\)\nclassificada incorretamente\n\\(1.4\\)"
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#interpretando-a-hinge-loss-1",
@@ -10226,7 +10226,7 @@
     "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-com-kernel",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "SVR com kernel",
-    "text": "SVR com kernel\nSe a relação entre \\(X\\) e \\(Y\\) não for linear, podemos utilizar kernels.\nCom RBF, por exemplo,\n\\[\nK(\\mathbf x,\\mathbf x')\n=\n\\exp\\{-\\gamma\\|\\mathbf x-\\mathbf x'\\|^2\\}\n\\]\nInterpretação prática:\n\n\n\\(\\varepsilon\\): largura da tolerância;\n\n\\(\\gamma\\): localidade/flexibilidade do kernel.\n\n\\[\n\\boxed{\n(\\varepsilon,\\gamma)\n\\quad\\text{são hiperparâmetros}\n}\n\\]\ne devem ser escolhidos com dados de treinamento, tipicamente por validação cruzada."
+    "text": "SVR com kernel\nSe a relação entre \\(X\\) e \\(Y\\) não for linear, podemos utilizar kernels.\nCom RBF, por exemplo,\n\\[\nK(\\mathbf x,\\mathbf x')\n=\n\\exp\\{-\\gamma\\|\\mathbf x-\\mathbf x'\\|^2\\}\n\\]\n\n\n\n\n\n\nObservação\n\n\n\\[\n(C,\\varepsilon,\\gamma)\n\\quad\\text{são hiperparâmetros}\n\\]\ne devem ser escolhidos com dados de treinamento, tipicamente por validação cruzada."
   },
   {
     "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#como-interpretar-o-svr-com-kernel",
@@ -11220,7 +11220,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -13285,5 +13285,75 @@
     "title": "Semana 07",
     "section": "",
     "text": "Modelos baseados em árvores \n\n\nVer slides"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svm-soft-margin-regularização-perda",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svm-soft-margin-regularização-perda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM soft margin: regularização + perda",
+    "text": "SVM soft margin: regularização + perda\nA variável de folga \\(\\xi_i\\) mede quanto a observação \\(i\\) viola a margem:\n\\[\n\\small\ny_i g(\\mathbf{x}_i) \\geq 1-\\xi_i,\n\\qquad\n\\xi_i\\geq0.\n\\]\nComo queremos o menor valor possível de \\(\\xi_i\\),\n\\[\n\\small\n\\xi_i\n=\n\\max\\left\\{0,\\;1-y_i g(\\mathbf{x}_i)\\right\\}\n=\nL_{\\text{hinge},i}\n\\]\nPortanto, a função objetivo do SVM pode ser escrita como\n\\[\n\\small\n\\min_{\\mathbf w,b}\n\\left[\n\\underbrace{\\frac{1}{2}\\|\\mathbf w\\|^2}_{\\text{regularização}}\n+\nC\\,\n\\underbrace{\n\\sum_{i=1}^{n}\nL_{\\text{hinge},i}\n}_{\\text{perda nos dados}}\n\\right]\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svm-soft-margin-regularização-perda-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svm-soft-margin-regularização-perda-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM soft margin: regularização + perda",
+    "text": "SVM soft margin: regularização + perda\n\n\nRegularização\n\\[\n\\frac{1}{2}\\|\\mathbf w\\|^2\n\\]\nFavorece uma margem maior e controla a complexidade da solução\n\nHinge loss\n\\[\nL_{\\text{hinge},i}\n=\n\\max\\{0,1-y_i g(\\mathbf{x}_i)\\}\n\\]\nPenaliza observações que entram na margem ou são classificadas incorretamente\n\n\n\n\n\n\n\nConexão com o que já vimos\n\n\nO SVM segue a mesma ideia de risco empírico regularizado:\n\\[\n\\boxed{\n\\text{Função objetivo}\n=\n\\text{Regularização}\n+\nC\\times\\text{Perda}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svm-soft-margin-o-papel-do-parâmetro-c",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svm-soft-margin-o-papel-do-parâmetro-c",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVM soft margin: o papel do parâmetro \\(C\\)\n",
+    "text": "SVM soft margin: o papel do parâmetro \\(C\\)\n\n\n\n\n\n\n\nInterpretação\n\n\nO Parâmetro \\(C\\) \\((C&gt;0)\\) controla o compromisso entre\n\\[\n\\boxed{\n\\text{regularização}\n\\quad\\longleftrightarrow\\quad\n\\text{penalização das violações}\n}\n\\]\n\\(C\\) pequeno: toleramos mais violações em favor da regularização\\(C\\) grande: damos maior prioridade a reduzir as violações da margem"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-função-objetivo",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-função-objetivo",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: função objetivo",
+    "text": "SVR: função objetivo\nNo SVR, queremos uma função pouco complexa, mas permitindo que algumas observações fiquem fora do tubo de tolerância \\(\\varepsilon\\).\n\\[\n\\boxed{\n\\min_{\\mathbf{w},b,\\boldsymbol{\\xi},\\boldsymbol{\\xi}^{*}}\n\\left\\{\n\\underbrace{\\frac{1}{2}\\|\\mathbf{w}\\|^2}_{\\text{regularização}}\n+\nC\\underbrace{\\sum_{i=1}^{n}\n\\left(\\xi_i+\\xi_i^{*}\\right)}_{\\text{violações do tubo}}\n\\right\\}\n}\n\\]\nsujeito a\n\\[\n\\begin{aligned}\ny_i-g(\\mathbf{x}_i) &\\leq \\varepsilon+\\xi_i \\\\[2mm]\ng(\\mathbf{x}_i)-y_i &\\leq \\varepsilon+\\xi_i^{*} \\\\[2mm]\n\\xi_i,\\xi_i^{*} &\\geq 0\n\\end{aligned}\n\\]\n\n\n\\(\\frac{1}{2}\\|\\mathbf{w}\\|^2\\)\nControla a complexidade da função estimada.\n\\[\n\\|\\mathbf w\\|\\downarrow\n\\quad\\Rightarrow\\quad\n\\text{solução mais regularizada}\n\\]\n\n\n\\(\\xi_i\\) e \\(\\xi_i^{*}\\)\n\nMedem quanto a observação ultrapassa o tubo:\n\n\n\\(\\xi_i\\): violação acima do tubo\n\n\\(\\xi_i^{*}\\): violação abaixo do tubo\ndentro do tubo: ambos são zero\n\n\n\n\n\n\n\n\nIdeia central\n\n\nO SVR equilibra\n\\[\n\\boxed{\n\\text{regularização}\n\\quad\\longleftrightarrow\\quad\n\\text{penalização dos erros maiores que }\\varepsilon\n}\n\\]\nO parâmetro \\(C&gt;0\\) controla quanto custa ultrapassar o tubo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-regularização-perda-varepsilon-insensível",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-regularização-perda-varepsilon-insensível",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: regularização + perda \\(\\varepsilon\\)-insensível",
+    "text": "SVR: regularização + perda \\(\\varepsilon\\)-insensível\nA função objetivo do SVR pode então ser escrita diretamente como\n\\[\n\\min_{\\mathbf w,b}\n\\left[\n\\underbrace{\\frac{1}{2}\\|\\mathbf w\\|^2}_{\\text{regularização}}\n+\nC\\,\n\\underbrace{\n\\sum_{i=1}^{n}\nL_{\\varepsilon}\\left(y_i,g(\\mathbf{x}_i)\\right)\n}_{\\text{perda nos dados}}\n\\right]\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-regularização-perda-varepsilon-insensível-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-regularização-perda-varepsilon-insensível-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: regularização + perda \\(\\varepsilon\\)-insensível",
+    "text": "SVR: regularização + perda \\(\\varepsilon\\)-insensível\n\n\nRegularização\n\\[\n\\frac{1}{2}\\|\\mathbf w\\|^2\n\\]\nControla a complexidade da função estimada.\nQuanto maior seu peso relativo, maior a preferência por uma solução mais regularizada\n\nPerda \\(\\varepsilon\\)-insensível\n\\[\nL_{\\varepsilon}\n=\n\\max\\{0,|y_i-g(\\mathbf{x}_i)|-\\varepsilon\\}\n\\]\n\ndentro do tubo: perda \\(=0\\)\n\nfora do tubo: perda \\(&gt;0\\)\n\npenaliza apenas a parte do erro que ultrapassa \\(\\varepsilon\\)"
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-regularização-perda-varepsilon-insensível-2",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-regularização-perda-varepsilon-insensível-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: regularização + perda \\(\\varepsilon\\)-insensível",
+    "text": "SVR: regularização + perda \\(\\varepsilon\\)-insensível\n\n\n\n\n\n\nIdeia central\n\n\nAssim como no SVM,\n\\[\n\\boxed{\n\\text{Função objetivo}\n=\n\\text{Regularização}\n+\nC\\times\\text{Perda}\n}\n\\]\nNo SVR, a perda é a \\(\\varepsilon\\)-insensível e \\(C&gt;0\\) controla quanto penalizamos as observações que ultrapassam o tubo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-forma-da-solução",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-forma-da-solução",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: forma da solução",
+    "text": "SVR: forma da solução\nA minimização da função objetivo leva a uma solução da forma\n\\[\n\\boxed{\n\\hat g(\\mathbf{x})\n=\n\\sum_{i=1}^{n}\n(\\alpha_i-\\alpha_i^*)\nK(\\mathbf{x}_i,\\mathbf{x})\n+b\n}\n\\]\nem que \\(\\alpha_i\\) e \\(\\alpha_i^*\\) são coeficientes determinados durante a otimização.\n\n\n\n\n\n\nPara observações estritamente dentro do tubo de tolerância, ou seja, \\(|y_i-\\hat g(\\mathbf{x}_i)|&lt;\\varepsilon,\\) temos\n\\[\n\\alpha_i=\\alpha_i^*=0.\n\\]\nLogo, essas observações não são vetores de suporte e não contribuem diretamente para a função estimada."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-forma-da-solução-1",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-forma-da-solução-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: forma da solução",
+    "text": "SVR: forma da solução\nAssim, podemos pensar na solução como\n\\[\n\\boxed{\n\\hat g(\\mathbf{x})\n=\n\\sum_{i\\in SV}\n(\\alpha_i-\\alpha_i^*)\nK(\\mathbf{x}_i,\\mathbf{x})\n+b\n}\n\\]\nonde \\(SV\\) representa o conjunto dos vetores de suporte."
+  },
+  {
+    "objectID": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-forma-da-solução-2",
+    "href": "aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#svr-forma-da-solução-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "SVR: forma da solução",
+    "text": "SVR: forma da solução\n\n\nDentro do tubo\nEm geral,\n\\[\n\\alpha_i=\\alpha_i^*=0\n\\]\ne a observação não participa diretamente da solução\n\nNa borda ou fora do tubo\nPodemos ter\n\\[\n\\alpha_i-\\alpha_i^*\\neq0\n\\]\nEssas observações são os vetores de suporte\n\n\n\n\n\n\n\nIdeia central\n\n\nA função estimada pelo SVR é construída principalmente a partir das observações que definem ou violam o tubo de tolerância."
   }
 ]
