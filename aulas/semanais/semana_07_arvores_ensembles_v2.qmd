@@ -51,6 +51,7 @@ Até aqui, aproximamos $g(\mathbf{x})$ usando funções suaves:
 Árvores seguem outra lógica:
 
 $$
+\small
 \boxed{
 \text{dividir o espaço de } \mathbf{x}
 \longrightarrow
@@ -68,59 +69,650 @@ O que muda é:
 
 > **o que significa "região homogênea", o que guardamos nas folhas e como combinamos as árvores.**
 
----
+<!-- --- -->
 
-## Antes de tudo: regressão ou classificação?
+<!-- ## Antes de tudo: regressão ou classificação? -->
 
-:::: {.columns}
+<!-- :::: {.columns} -->
 
-::: {.column width="48%"}
+<!-- ::: {.column width="48%"} -->
 
-### Regressão
+<!-- ### Regressão -->
 
-A resposta é quantitativa:
+<!-- A resposta é quantitativa: -->
 
-$$
-Y\in\mathbb{R}
-$$
+<!-- $$ -->
+<!-- Y\in\mathbb{R} -->
+<!-- $$ -->
 
-Exemplos:
+<!-- Exemplos: -->
 
-- preço de uma casa
-- consumo de energia
-- tempo de internação
+<!-- - preço de uma casa -->
+<!-- - consumo de energia -->
+<!-- - tempo de internação -->
 
-**Folha:** produz um valor numérico.
+<!-- **Folha:** produz um valor numérico. -->
 
-:::
+<!-- ::: -->
 
-::: {.column width="48%"}
+<!-- ::: {.column width="48%"} -->
 
-### Classificação
+<!-- ### Classificação -->
 
-A resposta é categórica:
+<!-- A resposta é categórica: -->
 
-$$
-Y\in\{1,\ldots,K\}
-$$
+<!-- $$ -->
+<!-- Y\in\{1,\ldots,K\} -->
+<!-- $$ -->
 
-Exemplos:
+<!-- Exemplos: -->
 
-- inadimplente / não inadimplente
-- espécie
-- churn / não churn
+<!-- - inadimplente / não inadimplente -->
+<!-- - espécie -->
+<!-- - churn / não churn -->
 
-**Folha:** produz classe e/ou probabilidades.
+<!-- **Folha:** produz classe e/ou probabilidades. -->
 
-:::
+<!-- ::: -->
 
-::::
+<!-- :::: -->
 
 
 
 ## Nós, ramos, folhas e regiões
 
-![](/images/regressao/arvore_regioes_animada.gif){fig-align="center" width="88%"}
+<!-- ![](/images/regressao/arvore_regioes_animada.gif){fig-align="center" width="88%"} -->
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-align: center
+#| out-width: 90%
+
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(gifski)
+library(knitr)
+
+# ============================================================
+# 1. DIRETÓRIOS
+# ============================================================
+
+dir.create("images", showWarnings = FALSE, recursive = TRUE)
+
+pasta_frames <- "frames_arvore"
+dir.create(pasta_frames, showWarnings = FALSE, recursive = TRUE)
+
+arquivo_gif <- "images/arvore_particionamento.gif"
+
+# ============================================================
+# 2. CONFIGURAÇÕES
+# ============================================================
+
+xmin <- 0
+xmax <- 10
+ymin <- 0
+ymax <- 10
+
+# Splits
+corte_x1_1 <- 5
+corte_x2   <- 6
+corte_x1_2 <- 8
+
+# Cores dos splits
+cor_split1 <- "#0072B2"   # azul   : X1 <= 5
+cor_split2 <- "#D55E00"   # laranja: X2 <= 6
+cor_split3 <- "#009E73"   # verde  : X1 <= 8
+
+
+# ============================================================
+# 3. FUNÇÃO PARA DESENHAR A ÁRVORE
+# ============================================================
+
+grafico_arvore <- function(etapa) {
+
+  # --------------------------
+  # Ramos
+  # --------------------------
+
+  segmentos <- data.frame(
+    x = numeric(),
+    y = numeric(),
+    xend = numeric(),
+    yend = numeric(),
+    split = character()
+  )
+
+  rotulos <- data.frame(
+    x = numeric(),
+    y = numeric(),
+    label = character()
+  )
+
+  # ==========================================================
+  # Primeiro split
+  # ==========================================================
+
+  nos <- data.frame(
+    x = 0.50,
+    y = 0.90,
+    label = "X[1] <= 5",
+    split = "split1"
+  )
+
+  # ==========================================================
+  # Segundo split
+  # ==========================================================
+
+  if (etapa >= 2) {
+
+    segmentos <- bind_rows(
+      segmentos,
+      data.frame(
+        x     = c(0.50, 0.50),
+        y     = c(0.84, 0.84),
+        xend  = c(0.27, 0.73),
+        yend  = c(0.66, 0.66),
+        split = c("split1", "split1")
+      )
+    )
+
+    rotulos <- bind_rows(
+      rotulos,
+      data.frame(
+        x = c(0.35, 0.65),
+        y = c(0.76, 0.76),
+        label = c("Sim", "Não")
+      )
+    )
+
+    nos <- bind_rows(
+      nos,
+      data.frame(
+        x = c(0.27, 0.73),
+        y = c(0.60, 0.60),
+        label = c(
+          "R[1]",
+          "X[2] <= 6"
+        ),
+        split = c(
+          "folha",
+          "split2"
+        )
+      )
+    )
+  }
+
+  # ==========================================================
+  # Terceiro split
+  # ==========================================================
+
+  if (etapa >= 3) {
+
+    segmentos <- bind_rows(
+      segmentos,
+      data.frame(
+        x     = c(0.73, 0.73),
+        y     = c(0.54, 0.54),
+        xend  = c(0.57, 0.89),
+        yend  = c(0.36, 0.36),
+        split = c("split2", "split2")
+      )
+    )
+
+    rotulos <- bind_rows(
+      rotulos,
+      data.frame(
+        x = c(0.62, 0.84),
+        y = c(0.45, 0.45),
+        label = c("Sim", "Não")
+      )
+    )
+
+    nos <- bind_rows(
+      nos,
+      data.frame(
+        x = c(0.57, 0.89),
+        y = c(0.30, 0.30),
+        label = c(
+          "X[1] <= 8",
+          "R[2]"
+        ),
+        split = c(
+          "split3",
+          "folha"
+        )
+      )
+    )
+  }
+
+  # ==========================================================
+  # Folhas finais
+  # ==========================================================
+
+  if (etapa >= 4) {
+
+    segmentos <- bind_rows(
+      segmentos,
+      data.frame(
+        x     = c(0.57, 0.57),
+        y     = c(0.24, 0.24),
+        xend  = c(0.47, 0.67),
+        yend  = c(0.08, 0.08),
+        split = c("split3", "split3")
+      )
+    )
+
+    rotulos <- bind_rows(
+      rotulos,
+      data.frame(
+        x = c(0.50, 0.64),
+        y = c(0.16, 0.16),
+        label = c("Sim", "Não")
+      )
+    )
+
+    nos <- bind_rows(
+      nos,
+      data.frame(
+        x = c(0.47, 0.67),
+        y = c(0.04, 0.04),
+        label = c(
+          "R[3]",
+          "R[4]"
+        ),
+        split = c(
+          "folha",
+          "folha"
+        )
+      )
+    )
+  }
+
+  # Cores dos nós
+  cores_nos <- c(
+    split1 = cor_split1,
+    split2 = cor_split2,
+    split3 = cor_split3,
+    folha  = "#444444"
+  )
+
+  # Cores dos ramos
+  cores_ramos <- c(
+    split1 = cor_split1,
+    split2 = cor_split2,
+    split3 = cor_split3
+  )
+
+  ggplot() +
+
+    geom_segment(
+      data = segmentos,
+      aes(
+        x = x,
+        y = y,
+        xend = xend,
+        yend = yend,
+        color = split
+      ),
+      linewidth = 1.25,
+      lineend = "round",
+      show.legend = FALSE
+    ) +
+
+    geom_label(
+      data = nos,
+      aes(
+        x = x,
+        y = y,
+        label = label,
+        color = split
+      ),
+      parse = TRUE,
+      size = 5,
+      linewidth = 0.5,
+      fill = "white",
+      show.legend = FALSE
+    ) +
+
+    geom_text(
+      data = rotulos,
+      aes(
+        x = x,
+        y = y,
+        label = label
+      ),
+      size = 4,
+      fontface = "italic"
+    ) +
+
+    scale_color_manual(
+      values = c(
+        cores_nos,
+        cores_ramos
+      )
+    ) +
+
+    coord_cartesian(
+      xlim = c(0.05, 1.03),
+      ylim = c(-0.02, 1),
+      clip = "off"
+    ) +
+
+    labs(title = "Árvore") +
+
+    theme_void(base_size = 14) +
+
+    theme(
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 18,
+        face = "bold"
+      )
+    )
+}
+
+
+# ============================================================
+# 4. FUNÇÃO PARA O ESPAÇO PREDITOR
+# ============================================================
+
+grafico_espaco <- function(etapa) {
+
+  p <- ggplot() +
+
+    coord_cartesian(
+      xlim = c(xmin, xmax),
+      ylim = c(ymin, ymax),
+      expand = FALSE
+    ) +
+
+    scale_x_continuous(
+      breaks = seq(0, 10, 2)
+    ) +
+
+    scale_y_continuous(
+      breaks = seq(0, 10, 2)
+    ) +
+
+    labs(
+      title = "Espaço preditor",
+      x = expression(X[1]),
+      y = expression(X[2])
+    ) +
+
+    theme_classic(base_size = 14) +
+
+    theme(
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 18,
+        face = "bold"
+      ),
+      axis.title = element_text(size = 15),
+      axis.text  = element_text(size = 12)
+    )
+
+  # ==========================================================
+  # SPLIT 1 — azul
+  # ==========================================================
+
+  if (etapa >= 1) {
+
+    p <- p +
+
+      geom_vline(
+        xintercept = corte_x1_1,
+        color = cor_split1,
+        linewidth = 1.5
+      ) +
+
+      annotate(
+        "text",
+        x = 4.78,
+        y = 9.55,
+        label = "X[1] == 5",
+        parse = TRUE,
+        color = cor_split1,
+        hjust = 1,
+        size = 4.5
+      )
+  }
+
+  # ==========================================================
+  # SPLIT 2 — laranja
+  # ==========================================================
+
+  if (etapa >= 2) {
+
+    p <- p +
+
+      annotate(
+        "segment",
+        x = corte_x1_1,
+        xend = xmax,
+        y = corte_x2,
+        yend = corte_x2,
+        color = cor_split2,
+        linewidth = 1.5
+      ) +
+
+      annotate(
+        "text",
+        x = 9.65,
+        y = 6.30,
+        label = "X[2] == 6",
+        parse = TRUE,
+        color = cor_split2,
+        hjust = 1,
+        size = 4.5
+      )
+  }
+
+  # ==========================================================
+  # SPLIT 3 — verde
+  # ==========================================================
+
+  if (etapa >= 3) {
+
+    p <- p +
+
+      annotate(
+        "segment",
+        x = corte_x1_2,
+        xend = corte_x1_2,
+        y = ymin,
+        yend = corte_x2,
+        color = cor_split3,
+        linewidth = 1.5
+      ) +
+
+      annotate(
+        "text",
+        x = 8.15,
+        y = 0.55,
+        label = "X[1] == 8",
+        parse = TRUE,
+        color = cor_split3,
+        hjust = 0,
+        size = 4.5
+      )
+  }
+
+  # ==========================================================
+  # REGIÕES FINAIS
+  # ==========================================================
+
+  if (etapa >= 4) {
+
+    p <- p +
+
+      annotate(
+        "label",
+        x = 2.5,
+        y = 5,
+        label = "R[1]",
+        parse = TRUE,
+        size = 6,
+        fill = "white"
+      ) +
+
+      annotate(
+        "label",
+        x = 7.5,
+        y = 8,
+        label = "R[2]",
+        parse = TRUE,
+        size = 6,
+        fill = "white"
+      ) +
+
+      annotate(
+        "label",
+        x = 6.5,
+        y = 3,
+        label = "R[3]",
+        parse = TRUE,
+        size = 6,
+        fill = "white"
+      ) +
+
+      annotate(
+        "label",
+        x = 9,
+        y = 3,
+        label = "R[4]",
+        parse = TRUE,
+        size = 6,
+        fill = "white"
+      )
+  }
+
+  p
+}
+
+
+# ============================================================
+# 5. TÍTULOS
+# ============================================================
+
+titulos <- c(
+  "1. Primeiro split: X₁ ≤ 5",
+  "2. Segundo split: X₂ ≤ 6",
+  "3. Terceiro split: X₁ ≤ 8",
+  "4. Folhas da árvore ↔ regiões do espaço preditor"
+)
+
+
+# ============================================================
+# 6. GERAR FRAMES
+# ============================================================
+
+arquivos <- character(4)
+
+for (etapa in 1:4) {
+
+  painel <- (
+    grafico_arvore(etapa) +
+    grafico_espaco(etapa) +
+    plot_layout(widths = c(0.90, 1.50))
+  ) +
+
+    plot_annotation(
+      title = titulos[etapa],
+      theme = theme(
+        plot.title = element_text(
+          hjust = 0.5,
+          size = 22,
+          face = "bold",
+          margin = margin(b = 15)
+        )
+      )
+    )
+
+  arquivo_frame <- file.path(
+    pasta_frames,
+    sprintf("frame_%02d.png", etapa)
+  )
+
+  ggsave(
+    filename = arquivo_frame,
+    plot = painel,
+    width = 12,
+    height = 6.5,
+    dpi = 120,
+    bg = "white"
+  )
+
+  arquivos[etapa] <- arquivo_frame
+}
+
+
+# ============================================================
+# 7. VELOCIDADE DO GIF
+# ============================================================
+#
+# Antes:
+# 5 s + 5 s + 5 s + 8 s = 23 segundos
+#
+# Agora:
+# 2 s + 2 s + 2 s + 3 s = 9 segundos
+# ============================================================
+
+fps <- 10
+
+duracao <- c(
+  2,
+  2,
+  2,
+  3
+)
+
+frames_gif <- unlist(
+  Map(
+    function(arquivo, segundos) {
+      rep(arquivo, segundos * fps)
+    },
+    arquivos,
+    duracao
+  )
+)
+
+
+# ============================================================
+# 8. GERAR GIF
+# ============================================================
+#
+# invisible() evita que o caminho do arquivo apareça no slide.
+# ============================================================
+
+invisible(
+  gifski(
+    png_files = frames_gif,
+    gif_file = arquivo_gif,
+    width = 1440,
+    height = 780,
+    delay = 1 / fps,
+    loop = TRUE
+  )
+)
+
+
+# ============================================================
+# 9. EXIBIR NO SLIDE
+# ============================================================
+
+knitr::include_graphics(
+  arquivo_gif
+)
+```
+
+
+
+
 
 ::: {.callout-note appearance="simple"}
 Cada caminho da raiz até uma folha define uma região $\mathcal{R}_m$. Quatro folhas correspondem às regiões $\mathcal{R}_1,\ldots,\mathcal{R}_4$.
@@ -381,32 +973,407 @@ $$
 ```{r}
 #| fig-width: 11
 #| fig-height: 6
-f_real <- function(x) 12 + 4*x - 6*x^2 + x^3 + sin(x)
-n <- 150
-x <- sort(runif(n, -1.5, 3))
-y <- f_real(x) + rnorm(n, sd = 4)
-df_reg <- data.frame(x, y)
+# ============================================================
+# ÁRVORE DE REGRESSÃO
+# Regiões, folhas e previsão constante
+# ============================================================
 
-fit_reg <- rpart(
-  y ~ x, data = df_reg, method = "anova",
-  control = rpart.control(cp = 0.002, minsplit = 10, maxdepth = 3)
+library(ggplot2)
+library(rpart)
+library(dplyr)
+
+set.seed(123)
+
+# ============================================================
+# 1. FUNÇÃO DE REGRESSÃO VERDADEIRA
+# ============================================================
+
+f_real <- function(x, beta = c(12, 4, -6, 1)) {
+  beta[1] +
+    beta[2] * x +
+    beta[3] * x^2 +
+    beta[4] * x^3 +
+    sin(x)
+}
+
+
+# ============================================================
+# 2. SIMULAR OS DADOS
+# ============================================================
+
+n <- 150
+
+x <- sort(
+  runif(
+    n,
+    min = -1.5,
+    max = 3
+  )
 )
 
-grid_reg <- data.frame(x = seq(min(x), max(x), length.out = 800))
-grid_reg$tree <- predict(fit_reg, grid_reg)
-grid_reg$truth <- f_real(grid_reg$x)
+f_true <- f_real(x)
 
-ggplot(df_reg, aes(x, y)) +
-  geom_point(alpha = .48, size = 2) +
-  geom_line(data = grid_reg, aes(x, truth), linewidth = 1.25,
-            linetype = 2) +
-  geom_step(data = grid_reg, aes(x, tree), linewidth = 1.4) +
+y <- f_true + rnorm(
+  n,
+  mean = 0,
+  sd = 3.5
+)
+
+df <- data.frame(
+  x = x,
+  y = y
+)
+
+
+# ============================================================
+# 3. AJUSTAR UMA ÁRVORE DE REGRESSÃO
+# ============================================================
+
+arvore <- rpart(
+  y ~ x,
+  data = df,
+  method = "anova",
+  control = rpart.control(
+    cp = 0.015,
+    minsplit = 15,
+    maxdepth = 4
+  )
+)
+
+
+# ============================================================
+# 4. GRADE PARA VISUALIZAR A FUNÇÃO ESTIMADA
+# ============================================================
+
+x_grid <- seq(
+  min(df$x),
+  max(df$x),
+  length.out = 1000
+)
+
+grid <- data.frame(
+  x = x_grid
+)
+
+grid$y_hat <- predict(
+  arvore,
+  newdata = grid
+)
+
+grid$f_true <- f_real(
+  grid$x
+)
+
+
+# ============================================================
+# 5. IDENTIFICAR AS REGIÕES CRIADAS PELA ÁRVORE
+# ============================================================
+#
+# A predição é constante dentro de cada folha.
+# Mudanças em y_hat indicam os pontos de corte.
+# ============================================================
+
+mudancas <- which(
+  diff(grid$y_hat) != 0
+)
+
+splits <- (
+  grid$x[mudancas] +
+  grid$x[mudancas + 1]
+) / 2
+
+
+# ============================================================
+# 6. LIMITES DAS REGIÕES
+# ============================================================
+
+limites <- c(
+  min(df$x),
+  splits,
+  max(df$x)
+)
+
+M <- length(limites) - 1
+
+
+# ============================================================
+# 7. CRIAR TABELA DAS REGIÕES
+# ============================================================
+
+regioes <- data.frame(
+  regiao = seq_len(M),
+  xmin = limites[-length(limites)],
+  xmax = limites[-1]
+)
+
+regioes$xmid <- (
+  regioes$xmin +
+  regioes$xmax
+) / 2
+
+
+# ============================================================
+# 8. PREVISÃO EM CADA REGIÃO
+# ============================================================
+
+regioes$y_hat <- sapply(
+  regioes$xmid,
+  function(z) {
+    predict(
+      arvore,
+      newdata = data.frame(x = z)
+    )
+  }
+)
+
+
+# ============================================================
+# 9. ESCOLHER UMA REGIÃO PARA DESTACAR
+# ============================================================
+#
+# Escolhemos uma região central para mostrar ao aluno que:
+#
+#   previsão da folha = média dos Y da região
+#
+# ============================================================
+
+m_destaque <- ceiling(M / 2)
+
+R_destaque <- regioes[
+  m_destaque,
+]
+
+
+# ============================================================
+# 10. OBSERVAÇÕES QUE PERTENCEM À REGIÃO DESTACADA
+# ============================================================
+
+dados_regiao <- df %>%
+  filter(
+    x > R_destaque$xmin,
+    x <= R_destaque$xmax
+  )
+
+
+# ============================================================
+# 11. MÉDIA DE Y NA REGIÃO DESTACADA
+# ============================================================
+
+media_regiao <- mean(
+  dados_regiao$y
+)
+
+
+# ============================================================
+# 12. POSIÇÃO DOS RÓTULOS DAS REGIÕES
+# ============================================================
+
+y_min <- min(
+  df$y,
+  grid$f_true,
+  grid$y_hat
+)
+
+y_max <- max(
+  df$y,
+  grid$f_true,
+  grid$y_hat
+)
+
+amplitude_y <- y_max - y_min
+
+y_regioes <- y_min +
+  0.06 * amplitude_y
+
+
+# ============================================================
+# 13. DATA FRAME DOS SPLITS
+# ============================================================
+
+df_splits <- data.frame(
+  x = splits
+)
+
+
+# ============================================================
+# 14. GRÁFICO
+# ============================================================
+
+p <- ggplot() +
+
+  # ----------------------------------------------------------
+  # Destacar uma folha/região
+  # ----------------------------------------------------------
+
+  annotate(
+    "rect",
+    xmin = R_destaque$xmin,
+    xmax = R_destaque$xmax,
+    ymin = -Inf,
+    ymax = Inf,
+    fill = "#F3E5AB",
+    alpha = 0.22
+  ) +
+
+  # ----------------------------------------------------------
+  # Splits da árvore
+  # ----------------------------------------------------------
+
+  geom_vline(
+    data = df_splits,
+    aes(xintercept = x),
+    linetype = "dashed",
+    linewidth = 0.55,
+    alpha = 0.55
+  ) +
+
+  # ----------------------------------------------------------
+  # Dados observados
+  # ----------------------------------------------------------
+
+  geom_point(
+    data = df,
+    aes(
+      x = x,
+      y = y
+    ),
+    size = 2.1,
+    alpha = 0.65
+  ) +
+
+  # ----------------------------------------------------------
+  # Função verdadeira
+  # ----------------------------------------------------------
+
+  geom_line(
+    data = grid,
+    aes(
+      x = x,
+      y = f_true
+    ),
+    linetype = "dashed",
+    linewidth = 1.15
+  ) +
+
+  # ----------------------------------------------------------
+  # Previsão da árvore
+  # ----------------------------------------------------------
+
+  geom_step(
+    data = grid,
+    aes(
+      x = x,
+      y = y_hat
+    ),
+    linewidth = 1.25,
+    direction = "hv"
+  ) +
+
+  # ----------------------------------------------------------
+  # Média da região destacada
+  # ----------------------------------------------------------
+
+  annotate(
+    "segment",
+    x = R_destaque$xmin,
+    xend = R_destaque$xmax,
+    y = media_regiao,
+    yend = media_regiao,
+    linewidth = 1.8
+  ) +
+
+  # ----------------------------------------------------------
+  # Rótulo da média
+  # ----------------------------------------------------------
+
+  annotate(
+    "label",
+    x = R_destaque$xmid,
+    y = media_regiao - 0.39 * amplitude_y,
+    label = paste0(
+      "hat(y)[R[",
+      m_destaque,
+      "]] == bar(y)[R[",
+      m_destaque,
+      "]]"
+    ),
+    parse = TRUE,
+    size = 4.5,
+    fill = "white"
+  ) +
+
+  # ----------------------------------------------------------
+  # Identificação das regiões
+  # ----------------------------------------------------------
+
+  geom_text(
+    data = regioes,
+    aes(
+      x = xmid,
+      y = y_regioes,
+      label = paste0(
+        "R[",
+        regiao,
+        "]"
+      )
+    ),
+    parse = TRUE,
+    size = 4.5,
+    fontface = "bold"
+  ) +
+
+  # ----------------------------------------------------------
+  # Títulos
+  # ----------------------------------------------------------
+
   labs(
     title = "A árvore aproxima uma curva por degraus",
-    subtitle = "Em cada folha, a previsão é constante",
-    x = "X", y = "Y"
+    subtitle = paste0(
+      "Os splits dividem X em regiões; ",
+      "em cada folha, a previsão é constante"
+    ),
+    x = "X",
+    y = "Y"
   ) +
-  theme(panel.grid.minor = element_blank())
+
+  theme_minimal(
+    base_size = 15
+  ) +
+
+  theme(
+    plot.title = element_text(
+      size = 20,
+      face = "bold"
+    ),
+
+    plot.subtitle = element_text(
+      size = 15
+    ),
+
+    panel.grid.minor = element_blank(),
+
+    axis.title = element_text(
+      size = 15
+    ),
+
+    axis.text = element_text(
+      size = 12
+    ),
+
+    plot.margin = margin(
+      15,
+      20,
+      15,
+      15
+    )
+  )
+
+
+# ============================================================
+# 15. EXIBIR
+# ============================================================
+
+p
 ```
 
 ---
@@ -443,7 +1410,7 @@ ggplot() +
              size = 2, alpha = .65) +
   labs(
     title = "Na classificação, as folhas definem regiões de probabilidade",
-    subtitle = "A fronteira aparece onde a probabilidade estimada cruza 0,5",
+    subtitle = "A fronteira de decisão separa folhas classificadas como A de folhas classificadas como B.",
     x = expression(X[1]), y = expression(X[2]),
     fill = "P(Classe B)", shape = "Classe"
   ) +
@@ -496,8 +1463,8 @@ $$
 
 - $\alpha$ pequeno $\rightarrow$ árvore maior
 - $\alpha$ grande $\rightarrow$ árvore menor
-
-
+- $T:$ árvore
+- $|T|:$ número de folhas (nós terminais) de $T$
 
 
 ## Poda (pruning)
@@ -528,53 +1495,107 @@ Mas são também:
 
 
 
+## Por que combinar árvores?
+
+Imagine que treinamos duas árvores de regressão e, para uma mesma entrada $\mathbf{x}$, elas produzam, $g_1(\mathbf{x})$ e $g_2(\mathbf{x})$. Podemos combinar suas previsões pela média:
+
+$$
+\boxed{
+g(\mathbf{x})
+=
+\frac{g_1(\mathbf{x})+g_2(\mathbf{x})}{2}
+}
+$$
+
+Se ambas têm o mesmo valor esperado,
+
+$$
+\mathbb{E}[g_1(\mathbf{x})]
+=
+\mathbb{E}[g_2(\mathbf{x})]
+=
+\mu_g(\mathbf{x}),
+$$
+
+então
+
+$$
+\mathbb{E}[g(\mathbf{x})]
+=
+\frac{
+\mathbb{E}[g_1(\mathbf{x})]
++
+\mathbb{E}[g_2(\mathbf{x})]
+}{2}
+=
+\mu_g(\mathbf{x})
+$$
 
 ## Por que combinar árvores?
 
-Considere dois estimadores $g_1(\mathbf{x})$ e $g_2(\mathbf{x})$.
 
-Definimos o estimador combinado:
-
-$$
-g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
-$$
-
-O erro esperado é:
+Portanto,
 
 $$
-\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\boxed{
+\operatorname{Bias}[g(\mathbf{x})]
 =
-\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
-+ \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
-+ \text{bias}^2
+\mu_g(\mathbf{x})-f(\mathbf{x})
+}
+$$
+
+::: {.callout-note appearance="simple"}
+**A média não corrige um viés comum às árvores.**
+
+Se $g_1$ e $g_2$ têm o mesmo viés, a combinação mantém esse viés, mas pode **reduzir a variância**.
+:::
+
+
+
+A variância da previsão combinada é
+
+$$
+\operatorname{Var}\!\left[g(\mathbf{x})\right]
+=
+\frac{1}{4}
+\left[
+\operatorname{Var}(g_1)
++
+\operatorname{Var}(g_2)
++
+2\operatorname{Cov}(g_1,g_2)
+\right]
 $$
 
 
 ## Por que combinar árvores?
 
 
-Se $g_1(\mathbf{x})$ e $g_2(\mathbf{x})$ são:
-
--   não viesados\
--   com mesma variância\
--   não correlacionados
-
-então:
+Se as árvores têm a mesma variância $\sigma_g^2$ e correlação $\rho$,
 
 $$
-\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\boxed{
+\operatorname{Var}\!\left[g(\mathbf{x})\right]
 =
-\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
-+ \frac{1}{2}\mathbb{V}(g_i(\mathbf{x}))
-$$
+\frac{\sigma_g^2}{2}(1+\rho)
+}
+$$<br><br>
 
-#### Conclusão
+::: {.callout-important appearance="simple"}
+**Ideia central:** fazer a média reduz a variância, mas o ganho é maior quando as árvores são **menos correlacionadas**.
 
 $$
-\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
-\le
-\mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\rho \downarrow
+\quad\Longrightarrow\quad
+\operatorname{Var}[g(\mathbf{x})]\downarrow
 $$
+:::
+
+
+
+
+
+
 
 ## Por que combinar árvores?
 
@@ -586,26 +1607,37 @@ Assim, combinar modelos:
 
 
 
+
+
+
+
 ## Três maneiras de combinar árvores
 
-Os ensembles respondem de formas diferentes:
+Os métodos diferem na forma de **construir** e **combinar** as árvores:
 
 $$
-\boxed{\text{Bagging: construir em paralelo e agregar}}
-$$
-
-$$
-\boxed{\text{Random Forest: descorrelacionar e agregar}}
+\boxed{\text{Bagging: construir em paralelo} \;\longrightarrow\; \text{agregar}}
 $$
 
 $$
-\boxed{\text{Boosting: construir correções sequenciais}}
+\boxed{\text{Random Forest: construir em paralelo + descorrelacionar} \;\longrightarrow\; \text{agregar}}
 $$
 
-Durante os próximos slides, acompanhe duas perguntas:
+$$
+\boxed{\text{Boosting: construir sequencialmente} \;\longrightarrow\; \text{acumular}}
+$$
 
-1. **Como cada nova árvore é construída?**
-2. **Como as árvores são combinadas?**
+::: {.callout-important appearance="simple"}
+**Qual é a ideia de cada estratégia?**
+
+**Bagging:** reduzir a **variância** pela agregação de árvores
+
+**Random Forest:** reduzir a **correlação entre as árvores**, potencializando a redução da variância
+
+**Boosting:** melhorar **progressivamente o modelo**, adicionando novas árvores de forma sequencial
+:::
+
+
 
 # Bagging (Bootstrap Aggregating)
 
@@ -652,7 +1684,7 @@ As árvores são ajustadas **em paralelo**: uma não depende da anterior.
 Cada árvore fornece um número:
 
 $$
-\hat y_b(\mathbf{x}).
+\hat y_b(\mathbf{x})
 $$
 
 Agregamos pela média:
@@ -747,7 +1779,7 @@ $$
 \rightarrow
 \text{probabilidade/voto}
 \rightarrow
-\text{agregação}.
+\text{agregação}
 $$
 
 O que muda em relação à regressão?
@@ -885,28 +1917,99 @@ $m_{\text{try}}$ deve ser tratado como hiperparâmetro e pode ser ajustado por v
 
 ---
 
-## OOB: validação "embutida" no bootstrap
-
-Em cada amostra *bootstrap*, algumas observações ficam de fora.
-
-Elas são chamadas de **out-of-bag (OOB)**.
-
-Para uma observação $i$:
-
-1. use apenas árvores em que $i$ ficou fora do bootstrap;
-2. agregue suas previsões;
-3. compare com $y_i$.
 
 
 ## OOB: validação "embutida" no bootstrap
 
+Para cada árvore $T_b$, a amostra *bootstrap* deixa algumas observações de fora. 
 
-Isso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.<br><br>
+Elas são chamadas de **out-of-bag (OOB)**:
 
-::: {.callout-note}
-## Nota
-OOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final.
+$$
+\boxed{
+OOB_b
+=
+\{\text{observações não utilizadas no treinamento de }T_b\}
+}
+$$
+
+Em média, aproximadamente **36,8%** das observações ficam OOB para cada árvore.
+
+
+## OOB: validação "embutida" no bootstrap
+
+
+Para avaliar uma observação $i$:
+
+1. selecione apenas as árvores para as quais $i$ ficou **OOB**;
+2. obtenha as previsões dessas árvores para $\mathbf{x}_i$;
+3. **agregue** essas previsões, obtendo $\hat y_i^{OOB}$;
+4. compare $\hat y_i^{OOB}$ com o valor observado $y_i$, usando, por exemplo,
+
+$$
+RMSE_{OOB}
+=
+\sqrt{
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(y_i-\hat{y}_i^{OOB}\right)^2
+}
+$$
+
+
+## OOB: validação "embutida" no bootstrap
+
+
+
+:::: {.columns}
+
+::: {.column width="48%"}
+### Regressão
+
+Agregamos pela **média**:
+
+$$
+\hat y_i^{OOB}
+=
+\frac{1}{|\mathcal B_i|}
+\sum_{b\in\mathcal B_i}
+T_b(\mathbf{x}_i)
+$$
 :::
+
+::: {.column width="48%"}
+### Classificação
+
+Agregamos por **votação** ou pelas probabilidades estimadas:
+
+$$
+\hat y_i^{OOB}
+=
+\operatorname{classe}
+\left(
+\{T_b(\mathbf{x}_i):b\in\mathcal B_i\}
+\right)
+$$
+:::
+
+::::
+
+::: {.callout-important appearance="simple"}
+**Ideia central:** cada observação é avaliada somente pelas árvores que **não a utilizaram no treinamento**.
+
+$\Rightarrow$ O próprio *bootstrap* fornece uma estimativa interna do desempenho preditivo.
+:::
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
@@ -1197,57 +2300,280 @@ if (knitr::is_html_output()) {
 > Construir o modelo sequencialmente, fazendo cada nova árvore corrigir o modelo atual
 
 
-## A mudança fundamental
+
+
+## Boosting: árvores que aprendem sequencialmente
 
 Bagging e Random Forest constroem árvores aproximadamente **em paralelo**.
 
-Boosting constrói modelos **sequencialmente**:
+No **boosting**, cada nova árvore depende do modelo que já foi construído:
 
 $$
 \hat h_1
-\rightarrow
+\;\longrightarrow\;
 \hat h_2
-\rightarrow
+\;\longrightarrow\;
 \hat h_3
-\rightarrow\cdots
+\;\longrightarrow\;\cdots
 $$
 
-Cada nova árvore tenta melhorar o modelo acumulado.
+A ideia é simples:
 
+::: {.callout-important appearance="simple"}
+Cada nova árvore tenta aprender **uma correção** para os erros que ainda permanecem no modelo.
+:::
 
-
-## A mudança fundamental
-
-
-### Notação 
-
-- $\hat g^{(b)}(\mathbf{x})$: modelo acumulado após $b$ iterações
-- $\hat h_b(\mathbf{x})$: árvore que fornece a correção na iteração $b$
-- $r_i^{(b)}$: resíduo ou pseudo-resíduo usado na iteração $b$
-- $\lambda$: *learning rate*
-- $B$: número total de árvores
+Assim, em vez de combinar árvores independentes,
 
 $$
 \boxed{
-\hat g^{(B)}(\mathbf{x})
-=
-\hat g^{(0)}(\mathbf{x})
-+
-\lambda\sum_{b=1}^{B}\hat h_b(\mathbf{x})
+\text{modelo atual}
+\;\longrightarrow\;
+\text{erro atual}
+\;\longrightarrow\;
+\text{nova árvore}
+\;\longrightarrow\;
+\text{modelo melhorado}
 }
 $$
 
 
+## Boosting: modelo atual + uma correção
 
-## Boosting em regressão: começando pelo erro atual
-
-Com perda quadrática,
+Na iteração $b$, já temos um modelo acumulado:
 
 $$
-L(y,g)=(y-g)^2,
+\hat g^{(b-1)}(\mathbf{x})
 $$
 
-o sinal de correção é proporcional ao resíduo:
+A nova árvore $\hat h_b(\mathbf{x})$ não precisa resolver todo o problema.
+
+Ela aprende apenas uma **correção**.
+
+O modelo é atualizado por
+
+$$
+\boxed{
+\hat g^{(b)}(\mathbf{x})
+=
+\hat g^{(b-1)}(\mathbf{x})
++
+\lambda \hat h_b(\mathbf{x})
+}
+$$
+
+
+## Boosting: modelo atual + uma correção
+
+em que:
+
+- $\hat g^{(b-1)}(\mathbf{x})$: modelo atual;
+- $\hat h_b(\mathbf{x})$: correção aprendida pela nova árvore;
+- $\lambda$: *learning rate*.
+
+::: {.callout-note appearance="simple"}
+**Ideia central:** boosting constrói uma função complexa acumulando muitas correções simples.
+:::
+
+
+## Boosting em regressão: quanto ainda falta corrigir?
+
+Considere a observação $i$.
+
+O modelo atual prevê
+
+$$
+\hat g^{(b-1)}(\mathbf{x}_i),
+$$
+
+mas observamos $y_i$.
+
+
+## Boosting em regressão: quanto ainda falta corrigir?
+
+
+
+A diferença é
+
+$$
+\boxed{
+r_i^{(b)}
+=
+y_i-\hat g^{(b-1)}(\mathbf{x}_i)
+}
+$$
+
+:::: {.columns}
+
+::: {.column width="48%"}
+### $r_i^{(b)}>0$
+
+O modelo previu **abaixo** do observado.
+
+$$
+y_i >
+\hat g^{(b-1)}(\mathbf{x}_i)
+$$
+
+A previsão precisa **aumentar**.
+:::
+
+::: {.column width="48%"}
+### $r_i^{(b)}<0$
+
+O modelo previu **acima** do observado.
+
+$$
+y_i <
+\hat g^{(b-1)}(\mathbf{x}_i)
+$$
+
+A previsão precisa **diminuir**.
+:::
+
+::::
+
+::: {.callout-important appearance="simple"}
+O resíduo informa simultaneamente **a direção** e **o tamanho** da correção necessária.
+:::
+
+
+## A nova árvore aprende o que ainda falta
+
+Na iteração $b$, usamos os resíduos como nova resposta:
+
+$$
+(\mathbf{x}_i,r_i^{(b)}),
+\qquad i=1,\ldots,n
+$$
+
+A nova árvore é ajustada para aproximar
+
+$$
+\boxed{
+\hat h_b(\mathbf{x}_i)
+\approx
+r_i^{(b)}
+}
+$$
+
+Portanto,
+
+$$
+\mathbf{x}_i
+\longrightarrow
+r_i^{(b)}
+\longrightarrow
+\hat h_b(\mathbf{x}_i)
+$$
+
+
+## A nova árvore aprende o que ainda falta
+
+
+
+
+Depois incorporamos **uma fração** dessa correção:
+
+$$
+\boxed{
+\hat g^{(b)}(\mathbf{x})
+=
+\hat g^{(b-1)}(\mathbf{x})
++
+\lambda\hat h_b(\mathbf{x})
+}
+$$
+
+::: {.callout-note appearance="simple"}
+A nova árvore não prevê diretamente $Y$: ela aprende **como corrigir o modelo atual**.
+:::
+
+
+## Uma iteração do boosting
+
+Na iteração $b$:
+
+$$
+\boxed{
+\begin{array}{c}
+\text{1. Modelo atual}\\[2mm]
+\hat g^{(b-1)}(\mathbf{x})
+\end{array}
+}
+\quad\longrightarrow\quad
+\boxed{
+\begin{array}{c}
+\text{2. Calcular resíduos}\\[2mm]
+r_i^{(b)}
+=
+y_i-\hat g^{(b-1)}(\mathbf{x}_i)
+\end{array}
+}
+$$
+
+$$
+\Downarrow
+$$
+
+$$
+\boxed{
+\begin{array}{c}
+\text{3. Aprender a correção}\\[2mm]
+\hat h_b(\mathbf{x})
+\end{array}
+}
+\quad\longrightarrow\quad
+\boxed{
+\begin{array}{c}
+\text{4. Atualizar}\\[2mm]
+\hat g^{(b)}
+=
+\hat g^{(b-1)}
++
+\lambda\hat h_b
+\end{array}
+}
+$$
+
+::: {.callout-important appearance="simple"}
+Depois da atualização, calculamos **novos erros** e repetimos o processo.
+:::
+
+
+## Boosting: construção sequencial do modelo
+
+<!-- Inserir aqui a figura atual do slide 52 -->
+
+![](/images/regressao/boosting4.png){fig-align="center" width="100%"}
+
+
+::: {.callout-note appearance="simple"}
+Leia a figura da esquerda para a direita:
+
+**modelo atual $\rightarrow$ erros restantes $\rightarrow$ nova árvore $\rightarrow$ pequena correção $\rightarrow$ novo modelo**
+:::
+
+
+## Boosting em regressão: veja o modelo aprender
+
+<!-- Inserir aqui o GIF que já está sendo utilizado -->
+
+
+![](/images/regressao/boosting_regressao.gif){fig-align="center" width="88%"}
+
+::: {.callout-important appearance="simple"}
+A **nova árvore** não representa a previsão final.
+
+Ela representa apenas a correção $\hat h_b(\mathbf{x})$.
+
+A previsão é dada pelo **modelo acumulado** $\hat g^{(b)}(\mathbf{x})$.
+:::
+
+
+## Por que os resíduos aparecem?
+
+Até agora usamos o resíduo
 
 $$
 r_i^{(b)}
@@ -1255,152 +2581,89 @@ r_i^{(b)}
 y_i-\hat g^{(b-1)}(\mathbf{x}_i)
 $$
 
-## Boosting em regressão: começando pelo erro atual
+Mas isso **não é uma escolha arbitrária**.
 
-
-
-Na iteração $b$:
-
-1. calcule os resíduos atuais;
-2. ajuste $\hat h_b(\mathbf{x})$, uma árvore rasa, aos resíduos;
-3. adicione uma pequena fração dessa correção ao modelo atual:
+Considere a perda quadrática:
 
 $$
-\hat g^{(b)}(\mathbf{x})
+L(y,g)=(y-g)^2
+$$
+
+
+
+## Por que os resíduos aparecem?
+
+
+O **gradiente da perda em relação à previsão $g$** é
+
+$$
+\boxed{
+\nabla_g L(y,g)
 =
-\hat g^{(b-1)}(\mathbf{x})
-+
-\lambda\hat h_b(\mathbf{x})
+\frac{\partial L(y,g)}{\partial g}
+=
+-2(y-g)
+}
+$$
+
+::: {.callout-note appearance="simple"}
+Aqui, como derivamos em relação a uma única quantidade $g$, o gradiente é simplesmente a **derivada da perda em relação à previsão**.
+
+O gradiente indica a direção de **aumento** da perda.
+:::
+
+## Por que os resíduos aparecem?
+
+
+
+Logo, a direção oposta ao gradiente é
+
+$$
+-\frac{\partial L(y,g)}{\partial g}
+=
+2(y-g)
 $$
 
 Portanto,
 
 $$
 \boxed{
-\text{modelo atual}
-\rightarrow
-\text{resíduos}
-\rightarrow
-\text{nova árvore}
-\rightarrow
-\text{modelo atualizado}
-}
-$$
-
-
-
----
-
-![](/images/regressao/boosting3.png){fig-align="center" width="100%"}
-
-
----
-
-## Boosting em regressão: veja o modelo aprender
-
-![](/images/regressao/boosting_regressao.gif){fig-align="center" width="88%"}
-
-::: {.callout-important}
-## Importante
-A linha da **nova árvore** não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o **modelo acumulado**.
-:::
-
-
-
-## E na classificação?
-
-Aqui está uma diferença importante.
-
-Em classificação, não faz sentido usar simplesmente
-
-$$
-y_i-\hat y_i
-$$
-
-como se as classes fossem números contínuos.
-
-Usamos uma **função de perda de classificação**, como a *log-loss*.
-
-
-## E na classificação?
-
-
-No *gradient boosting*, cada nova árvore é ajustada ao **gradiente negativo da perda** (*pseudo-resíduo*).
-
-$$
-\boxed{
-\text{regressão quadrática: pseudo-resíduo = resíduo usual}
-}
-$$
-
-$$
-\boxed{
-\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}
-}
-$$
-
-
-
-## Classificação binária
-
-Se $y_i\in\{0,1\}$ e o modelo atual fornece
-
-$$
-\hat p_i^{(b-1)}
+-\frac{\partial L}{\partial g}
+\propto
+y-g
 =
-P\!\left(Y_i=1\mid\mathbf{x}_i;\,\hat g^{(b-1)}\right),
-$$
-
-sob log-loss, o sinal de correção é proporcional a
-
-$$
-\boxed{
-r_i^{(b)}=y_i-\hat p_i^{(b-1)}
+r
 }
 $$
 
-
-
-## Classificação binária
-
-
-Exemplos:
-
-
-| $y_i$ | $\hat p_i^{(b-1)}$ | $y_i-\hat p_i^{(b-1)}$ | leitura |
-|---:|---:|---:|---|
-| 1 | 0,95 | 0,05 | quase nada a corrigir |
-| 1 | 0,20 | 0,80 | aumentar fortemente a evidência para classe 1 |
-| 0 | 0,10 | -0,10 | pequena correção |
-| 0 | 0,85 | -0,85 | reduzir fortemente a evidência para classe 1 |<br><br>
-
-::: {.callout-note}
-## Nota
-Essa tabela é uma interpretação didática do *gradient boosting* binário com log-loss. A implementação trabalha na escala do escore/logit e atualiza o modelo aditivo.
+::: {.callout-important appearance="simple"}
+Com **perda quadrática**, seguir o gradiente negativo equivale a aprender os **resíduos**.
 :::
 
 
----
+## Gradient Boosting: a ideia mais geral
 
-## Boosting em classificação: veja a correção
+Agora podemos generalizar.
 
-![](/images/regressao/boosting_classificacao_animado.gif){fig-align="center" width="90%"}
+Para uma função de perda $L(y,g)$, definimos o pseudo-resíduo:
 
-À esquerda, o modelo acumulado atualiza a probabilidade $\hat p^{(b)}=P(Y=1\mid X)$.
+$$
+\boxed{
+r_i^{(b)}
+=
+-
+\left.
+\frac{\partial L(y_i,g)}
+{\partial g}
+\right|_{
+g=\hat g^{(b-1)}(\mathbf{x}_i)
+}
+}
+$$
 
-À direita, visualizamos o sinal de correção $y_i-\hat p_i^{(b-1)}$.
+A nova árvore $\hat h_b$ tenta aprender esses pseudo-resíduos.
 
-::: {.callout-tip appearance="simple"}
-Compare com regressão: a lógica **modelo atual + pequena correção** permanece. O que muda é a função de perda e, consequentemente, o pseudo-resíduo.
-:::
-
----
-
-## O papel do learning rate $\lambda$
-
-Cada árvore sugere uma correção.
-
-O *learning rate* controla quanto dessa correção será incorporado:
+Depois,
 
 $$
 \hat g^{(b)}(\mathbf{x})
@@ -1410,27 +2673,240 @@ $$
 \lambda\hat h_b(\mathbf{x})
 $$
 
+
+## Gradient Boosting: a ideia mais geral
+
+
+Assim,
+
+$$
+\boxed{
+\text{Gradient Boosting}
+=
+\text{corrigir o modelo na direção que reduz a perda}
+}
+$$
+
+::: {.callout-note appearance="simple"}
+O **resíduo usual** é apenas um caso particular do **pseudo-resíduo**.
+:::
+
+
+## Regressão e classificação: o que muda?
+
+A estrutura do algoritmo permanece a mesma:
+
+$$
+\boxed{
+\text{modelo atual}
+\rightarrow
+\text{perda}
+\rightarrow
+\text{pseudo-resíduos}
+\rightarrow
+\text{nova árvore}
+\rightarrow
+\text{atualização}
+}
+$$
+
+O que muda é principalmente a **função de perda**.
+
+| | Regressão | Classificação binária |
+|---|---|---|
+| Resposta | $y\in\mathbb R$ | $y\in\{0,1\}$ |
+| Exemplo de perda | quadrática | log-loss |
+| Correção | relacionada a $y-\hat g$ | relacionada a $y-\hat p$ |
+| Saída final | valor contínuo | probabilidade/classe |
+
+
+
+## Regressão e classificação: o que muda?
+
+
+::: {.callout-important appearance="simple"}
+Boosting não é essencialmente um algoritmo de regressão ou classificação.
+
+Ele é uma estratégia para **reduzir iterativamente uma função de perda**.
+:::
+
+
+## E na classificação?
+
+Para $Y\in\{0,1\}$, não calculamos um resíduo entre a classe observada e uma **classe predita** como se fossem valores contínuos.
+
+Em vez disso, trabalhamos com uma perda apropriada para classificação.
+
+Para classificação binária, uma escolha comum é a **log-loss**:
+
+$$
+\boxed{
+L(y,p)
+=
+-\left[
+y\log(p)
++
+(1-y)\log(1-p)
+\right]
+}
+$$
+
+em que
+
+$$
+p=P(Y=1\mid\mathbf{x})
+$$
+
+
+## E na classificação?
+
+
+O princípio continua sendo o mesmo:
+
+
+$$
+\boxed{
+\text{encontrar a direção que reduz a perda}
+}
+$$
+
+
+## Classificação binária: score e probabilidade
+
+No Gradient Boosting binário, é útil distinguir o **score acumulado**
+
+$$
+F^{(b)}(\mathbf{x})
+$$
+
+da probabilidade estimada.
+
+A probabilidade é obtida pela função logística:
+
+$$
+\boxed{
+\hat p^{(b)}(\mathbf{x})
+=
+\frac{1}
+{1+\exp[-F^{(b)}(\mathbf{x})]}
+}
+$$
+
+
+
+## Classificação binária: score e probabilidade
+
+
+As árvores são acumuladas na escala do **score**:
+
+$$
+\boxed{
+F^{(b)}(\mathbf{x})
+=
+F^{(b-1)}(\mathbf{x})
++
+\lambda\hat h_b(\mathbf{x})
+}
+$$
+
+e o score é então convertido em probabilidade.
+
+::: {.callout-note appearance="simple"}
+A soma das árvores não precisa estar limitada entre $0$ e $1$.
+
+É a transformação logística que produz uma **probabilidade**.
+:::
+
+
+## Classificação binária: o que a nova árvore aprende?
+
+Com log-loss e
+
+$$
+\hat p_i^{(b-1)}
+=
+P(Y_i=1\mid\mathbf{x}_i),
+$$
+
+o gradiente negativo leva ao pseudo-resíduo
+
+$$
+\boxed{
+r_i^{(b)}
+=
+y_i-\hat p_i^{(b-1)}
+}
+$$
+
+
+## Classificação binária: o que a nova árvore aprende?
+
+
+
+
+Por exemplo:
+
+| $y_i$ | $\hat p_i^{(b-1)}$ | $r_i^{(b)}$ | Interpretação |
+|---:|---:|---:|---|
+| 1 | 0,95 | 0,05 | quase nada a corrigir |
+| 1 | 0,20 | 0,80 | aumentar evidência para classe 1 |
+| 0 | 0,10 | -0,10 | pequena correção |
+| 0 | 0,85 | -0,85 | reduzir evidência para classe 1 |
+
+::: {.callout-important appearance="simple"}
+Quanto mais **confiante e errada** estiver a previsão atual, maior será a magnitude da correção.
+:::
+
+
+## Boosting em classificação: veja a correção acontecer
+
+
+![](/images/regressao/boosting_classificacao_animado_v4.gif){fig-align="center" width="100%"}
+
+## Regressão e classificação: a mesma lógica
+
 :::: {.columns}
 
 ::: {.column width="48%"}
+### Regressão
 
-### $\lambda$ pequeno
+Perda quadrática:
 
-- passos menores
-- aprendizado mais gradual
-- normalmente exige mais árvores
-- tende a oferecer maior controle
+$$
+L(y,g)=(y-g)^2
+$$
 
+Pseudo-resíduo:
+
+$$
+r_i^{(b)}
+\propto
+y_i-\hat g^{(b-1)}(\mathbf{x}_i)
+$$
+
+**Corrigir o valor previsto.**
 :::
 
 ::: {.column width="48%"}
+### Classificação
 
-### $\lambda$ grande
+Log-loss:
 
-- passos maiores
-- aprende mais rapidamente
-- pode precisar de menos árvores
-- pode sobreajustar mais cedo
+$$
+L(y,p)
+=
+-[y\log p+(1-y)\log(1-p)]
+$$
+
+Pseudo-resíduo:
+
+$$
+r_i^{(b)}
+=
+y_i-\hat p_i^{(b-1)}
+$$
+
+**Corrigir a evidência/probabilidade.**
 
 :::
 
@@ -1438,7 +2914,65 @@ $$
 
 
 
-## Boosting: o papel do *learning rate* $\lambda$
+## Regressão e classificação: a mesma lógica
+
+
+::: {.callout-important appearance="simple"}
+O que permanece:
+
+**modelo atual + pequena correção**
+
+O que muda:
+
+**a perda e, consequentemente, o pseudo-resíduo**.
+:::
+
+
+## O papel do *learning rate* $\lambda$
+
+Cada árvore sugere uma correção $\hat h_b(\mathbf{x})$.
+
+O *learning rate* determina **quanto dessa correção será incorporado**:
+
+$$
+\small
+\boxed{
+\hat g^{(b)}(\mathbf{x})
+=
+\hat g^{(b-1)}(\mathbf{x})
++
+\lambda\hat h_b(\mathbf{x})
+}
+$$
+
+:::: {.columns}
+
+::: {.column width="48%"}
+#### $\lambda$ pequeno
+
+- correções menores;
+- aprendizado mais gradual;
+- normalmente exige mais árvores;
+- maior controle sobre o processo.
+:::
+
+::: {.column width="48%"}
+#### $\lambda$ grande
+
+- correções maiores;
+- aprendizado mais rápido;
+- pode exigir menos árvores;
+- pode sobreajustar mais cedo.
+:::
+
+::::
+
+::: {.callout-note appearance="simple"}
+$\lambda$ controla o **tamanho do passo**, não a direção da correção.
+:::
+
+
+## $\lambda$ e $B$ trabalham juntos
 
 ```{r}
 #| echo: false
@@ -1861,48 +3395,63 @@ p_lambda <- ggplot() +
 p_lambda
 ```
 
+
+## $\lambda$ e $B$ trabalham juntos
+
+Na figura, todos os modelos possuem o mesmo número de árvores:
+
+$$
+B=100
+$$
+
+Quando $\lambda$ aumenta, cada árvore exerce maior influência sobre o modelo acumulado.
+
 ::: {.callout-important appearance="simple"}
-**Observe a figura:** para o mesmo número de iterações, aumentar $\lambda$ faz o modelo acumulado se aproximar mais rapidamente dos dados. Portanto, $\lambda$ e o número de árvores $B$ devem ser analisados **conjuntamente**.
+Não faz sentido escolher $\lambda$ isoladamente.
+
+$$
+\boxed{
+\lambda\;\text{e}\;B
+\quad\text{devem ser analisados conjuntamente}
+}
+$$
+:::
+
+
+## Por que usar árvores simples?
+
+Cada árvore do boosting precisa aprender apenas **uma parte da correção**.
+
+Por isso, normalmente utilizamos árvores relativamente rasas como modelos base.
+
+Uma árvore simples:
+
+- captura uma estrutura que ainda falta ao modelo;
+- evita correções excessivamente complexas em uma única etapa;
+- permite que o padrão seja construído gradualmente.
+
+
+## Por que usar árvores simples?
+
+
+Um caso extremo é o **stump**:
+
+$$
+\boxed{\text{stump}=\text{árvore com apenas um split}}
+$$
+
+::: {.callout-note appearance="simple"}
+Um modelo base não precisa ser excelente sozinho.
+
+Ele precisa fornecer uma **correção útil** quando combinado com as demais árvores.
 :::
 
 
 
-
-
-## Boosting e Estimadores Fracos
-
-O *boosting* não é restrito ao uso de árvores.
-
-
-Podemos usar qualquer modelo como base, desde que seja um **estimador fraco**. (Deve aprender **uma correção**, não resolver sozinho todo o problema)
-
-
-<br>
-
-#### O que é um estimador fraco?
-
-- modelo simples
-- baixo poder preditivo individual
-- pequeno viés de ajuste
-
-**Exemplos:** árvores rasas (*stumps*), regressão linear simples, modelos com poucos parâmetros
-
----
-
-## Por que usar modelos fracos?
-
-- evitam overfitting em cada etapa
-- permitem correções graduais
-- tornam o aprendizado mais estável
+## Profundidade da árvore: complexidade da correção
 
 
 
-Se você usar modelos muito complexos (ex: árvores profundas):
-
-👉 boosting pode superajustar rapidamente
-
-
----
 
 ```{r}
 library(ggplot2)
@@ -2020,6 +3569,153 @@ p2 <- ggplot(df, aes(x, y)) +
 
 p1 + p2
 ```
+
+
+
+
+## Profundidade da árvore: complexidade da correção
+
+
+:::: {.columns}
+
+::: {.column width="48%"}
+### Árvores rasas
+
+Correções mais simples e graduais.
+
+$$
+\text{menor complexidade por etapa}
+$$
+:::
+
+::: {.column width="48%"}
+### Árvores profundas
+
+Cada árvore consegue aprender correções muito mais complexas.
+
+$$
+\text{maior risco de aprender ruído}
+$$
+:::
+
+::::
+
+::: {.callout-important appearance="simple"}
+A complexidade do boosting depende conjuntamente de:
+
+$$
+\boxed{
+\lambda,\qquad B,\qquad
+\text{complexidade das árvores}
+}
+$$
+:::
+
+
+## Boosting: a ideia que deve ficar
+
+Boosting constrói o modelo **sequencialmente**:
+
+$$
+\boxed{
+\text{modelo atual}
+\rightarrow
+\text{avaliar a perda}
+\rightarrow
+\text{aprender uma correção}
+\rightarrow
+\text{atualizar}
+\rightarrow
+\text{repetir}
+}
+$$
+
+No **Gradient Boosting**, a correção é guiada por
+
+$$
+\boxed{
+r_i^{(b)}
+=
+-
+\left.
+\frac{\partial L(y_i,g)}
+{\partial g}
+\right|_{g=\hat g^{(b-1)}(\mathbf{x}_i)}
+}
+$$
+
+## Boosting: a ideia que deve ficar
+
+
+
+- perda quadrática $\Rightarrow$ resíduos;
+- log-loss $\Rightarrow$ pseudo-resíduos de classificação;
+- $\lambda$ controla o tamanho de cada passo;
+- $B$ controla quantas correções são acumuladas;
+- a profundidade controla a complexidade de cada correção.
+
+::: {.callout-important appearance="simple"}
+**Bagging/RF:** construir várias árvores e depois agregá-las.
+
+**Boosting:** construir cada nova árvore para melhorar o que já foi aprendido.
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

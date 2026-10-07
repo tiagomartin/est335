@@ -147,6 +147,7 @@
 </ul>
 <p>Árvores seguem outra lógica:</p>
 <p><span class="math display">\[
+\small
 \boxed{
 \text{dividir o espaço de } \mathbf{x}
 \longrightarrow
@@ -161,38 +162,38 @@
 <blockquote>
 <p><strong>o que significa “região homogênea”, o que guardamos nas folhas e como combinamos as árvores.</strong></p>
 </blockquote>
-</section><section id="antes-de-tudo-regressão-ou-classificação" class="slide level2"><h2>Antes de tudo: regressão ou classificação?</h2>
-<div class="columns">
-<div class="column" style="width:48%;">
-<h3 id="regressão">Regressão</h3>
-<p>A resposta é quantitativa:</p>
-<p><span class="math display">\[
-Y\in\mathbb{R}
-\]</span></p>
-<p>Exemplos:</p>
-<ul>
-<li>preço de uma casa</li>
-<li>consumo de energia</li>
-<li>tempo de internação</li>
-</ul>
-<p><strong>Folha:</strong> produz um valor numérico.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="classificação">Classificação</h3>
-<p>A resposta é categórica:</p>
-<p><span class="math display">\[
-Y\in\{1,\ldots,K\}
-\]</span></p>
-<p>Exemplos:</p>
-<ul>
-<li>inadimplente / não inadimplente</li>
-<li>espécie</li>
-<li>churn / não churn</li>
-</ul>
-<p><strong>Folha:</strong> produz classe e/ou probabilidades.</p>
-</div></div>
+<!-- --- -->
+<!-- ## Antes de tudo: regressão ou classificação? -->
+<!-- :::: {.columns} -->
+<!-- ::: {.column width="48%"} -->
+<!-- ### Regressão -->
+<!-- A resposta é quantitativa: -->
+<!-- $$ -->
+<!-- Y\in\mathbb{R} -->
+<!-- $$ -->
+<!-- Exemplos: -->
+<!-- - preço de uma casa -->
+<!-- - consumo de energia -->
+<!-- - tempo de internação -->
+<!-- **Folha:** produz um valor numérico. -->
+<!-- ::: -->
+<!-- ::: {.column width="48%"} -->
+<!-- ### Classificação -->
+<!-- A resposta é categórica: -->
+<!-- $$ -->
+<!-- Y\in\{1,\ldots,K\} -->
+<!-- $$ -->
+<!-- Exemplos: -->
+<!-- - inadimplente / não inadimplente -->
+<!-- - espécie -->
+<!-- - churn / não churn -->
+<!-- **Folha:** produz classe e/ou probabilidades. -->
+<!-- ::: -->
+<!-- :::: -->
 </section><section id="nós-ramos-folhas-e-regiões" class="slide level2"><h2>Nós, ramos, folhas e regiões</h2>
+<!-- ![](/images/regressao/arvore_regioes_animada.gif){fig-align="center" width="88%"} -->
 
-<img data-src="../..\images/regressao/arvore_regioes_animada.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-note callout-style-simple">
+<img data-src="images/arvore_particionamento.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><div class="callout callout-note callout-style-simple">
 <div class="callout-body">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -373,7 +374,7 @@ H_m
 </section><section id="mesma-árvore-critérios-diferentes" class="slide level2"><h2>Mesma árvore, critérios diferentes</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="regressão-1">Regressão</h3>
+<h3 id="regressão">Regressão</h3>
 <p><strong>Pergunta</strong></p>
 <blockquote>
 <p>A divisão reduz a dispersão dos valores de <span class="math inline">\(Y\)</span>?</p>
@@ -387,7 +388,7 @@ RSS
 \bar y_m
 \]</span></p>
 </div><div class="column" style="width:48%;">
-<h3 id="classificação-1">Classificação</h3>
+<h3 id="classificação">Classificação</h3>
 <p><strong>Pergunta</strong></p>
 <blockquote>
 <p>A divisão separa melhor as classes?</p>
@@ -403,9 +404,9 @@ RSS
 </div></div>
 </section><section id="exemplo-uma-árvore-de-regressão" class="slide level2"><h2>Exemplo: uma árvore de regressão</h2>
 
-<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-2-1.png" width="1056" class="r-stretch"></section><section id="exemplo-uma-árvore-de-classificação" class="slide level2"><h2>Exemplo: uma árvore de classificação</h2>
+<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-3-1.png" width="1056" class="r-stretch"></section><section id="exemplo-uma-árvore-de-classificação" class="slide level2"><h2>Exemplo: uma árvore de classificação</h2>
 
-<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-3-1.png" width="1056" class="r-stretch"></section><section id="árvore-profunda-baixo-viés-alta-variância" class="slide level2"><h2>Árvore profunda: baixo viés, alta variância</h2>
+<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-4-1.png" width="1056" class="r-stretch"></section><section id="árvore-profunda-baixo-viés-alta-variância" class="slide level2"><h2>Árvore profunda: baixo viés, alta variância</h2>
 <p>Uma árvore pode continuar dividindo os dados até criar folhas muito pequenas.</p>
 <p>Isso reduz o erro de treinamento, mas pode produzir regras instáveis.</p>
 <p><span class="math display">\[
@@ -440,6 +441,11 @@ RSS
 <span class="math inline">\(\alpha\)</span> pequeno <span class="math inline">\(\rightarrow\)</span> árvore maior</li>
 <li>
 <span class="math inline">\(\alpha\)</span> grande <span class="math inline">\(\rightarrow\)</span> árvore menor</li>
+<li>
+<span class="math inline">\(T:\)</span> árvore</li>
+<li>
+<span class="math inline">\(|T|:\)</span> número de folhas (nós terminais) de <span class="math inline">\(T\)</span>
+</li>
 </ul></section><section id="poda-pruning-1" class="slide level2"><h2>Poda (pruning)</h2>
 <p>Na classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.<br><br></p>
 <div class="callout callout-tip callout-style-simple">
@@ -465,63 +471,122 @@ RSS
 <li>sensíveis à amostra</li>
 <li>de alta variância</li>
 </ul></section><section id="por-que-combinar-árvores" class="slide level2"><h2>Por que combinar árvores?</h2>
-<p>Considere dois estimadores <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span>.</p>
-<p>Definimos o estimador combinado:</p>
+<p>Imagine que treinamos duas árvores de regressão e, para uma mesma entrada <span class="math inline">\(\mathbf{x}\)</span>, elas produzam, <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span>. Podemos combinar suas previsões pela média:</p>
 <p><span class="math display">\[
-g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
-\]</span></p>
-<p>O erro esperado é:</p>
-<p><span class="math display">\[
-\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\boxed{
+g(\mathbf{x})
 =
-\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
-+ \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
-+ \text{bias}^2
+\frac{g_1(\mathbf{x})+g_2(\mathbf{x})}{2}
+}
+\]</span></p>
+<p>Se ambas têm o mesmo valor esperado,</p>
+<p><span class="math display">\[
+\mathbb{E}[g_1(\mathbf{x})]
+=
+\mathbb{E}[g_2(\mathbf{x})]
+=
+\mu_g(\mathbf{x}),
+\]</span></p>
+<p>então</p>
+<p><span class="math display">\[
+\mathbb{E}[g(\mathbf{x})]
+=
+\frac{
+\mathbb{E}[g_1(\mathbf{x})]
++
+\mathbb{E}[g_2(\mathbf{x})]
+}{2}
+=
+\mu_g(\mathbf{x})
 \]</span></p>
 </section><section id="por-que-combinar-árvores-1" class="slide level2"><h2>Por que combinar árvores?</h2>
-<p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
-<ul>
-<li>não viesados<br>
-</li>
-<li>com mesma variância<br>
-</li>
-<li>não correlacionados</li>
-</ul>
-<p>então:</p>
+<p>Portanto,</p>
 <p><span class="math display">\[
-\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\boxed{
+\operatorname{Bias}[g(\mathbf{x})]
 =
-\mathbb{V}(\boldsymbol{y} \mid \mathbf{x})
-+ \frac{1}{2}\mathbb{V}(g_i(\mathbf{x}))
+\mu_g(\mathbf{x})-f(\mathbf{x})
+}
 \]</span></p>
-<h4 id="conclusão">Conclusão</h4>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p><strong>A média não corrige um viés comum às árvores.</strong></p>
+<p>Se <span class="math inline">\(g_1\)</span> e <span class="math inline">\(g_2\)</span> têm o mesmo viés, a combinação mantém esse viés, mas pode <strong>reduzir a variância</strong>.</p>
+</div>
+</div>
+</div>
+<p>A variância da previsão combinada é</p>
 <p><span class="math display">\[
-\mathbb{E}\big[(\boldsymbol{y} - g(\mathbf{x}))^2 \mid \mathbf{x}\big]
-\le
-\mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
+\operatorname{Var}\!\left[g(\mathbf{x})\right]
+=
+\frac{1}{4}
+\left[
+\operatorname{Var}(g_1)
++
+\operatorname{Var}(g_2)
++
+2\operatorname{Cov}(g_1,g_2)
+\right]
 \]</span></p>
 </section><section id="por-que-combinar-árvores-2" class="slide level2"><h2>Por que combinar árvores?</h2>
+<p>Se as árvores têm a mesma variância <span class="math inline">\(\sigma_g^2\)</span> e correlação <span class="math inline">\(\rho\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}\!\left[g(\mathbf{x})\right]
+=
+\frac{\sigma_g^2}{2}(1+\rho)
+}
+\]</span><br><br></p>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p><strong>Ideia central:</strong> fazer a média reduz a variância, mas o ganho é maior quando as árvores são <strong>menos correlacionadas</strong>.</p>
+<p><span class="math display">\[
+\rho \downarrow
+\quad\Longrightarrow\quad
+\operatorname{Var}[g(\mathbf{x})]\downarrow
+\]</span></p>
+</div>
+</div>
+</div>
+</section><section id="por-que-combinar-árvores-3" class="slide level2"><h2>Por que combinar árvores?</h2>
 <p>Assim, combinar modelos:</p>
 <ul>
 <li>mantém o viés<br>
 </li>
 <li>reduz a variância</li>
 </ul></section><section id="três-maneiras-de-combinar-árvores" class="slide level2"><h2>Três maneiras de combinar árvores</h2>
-<p>Os ensembles respondem de formas diferentes:</p>
+<p>Os métodos diferem na forma de <strong>construir</strong> e <strong>combinar</strong> as árvores:</p>
 <p><span class="math display">\[
-\boxed{\text{Bagging: construir em paralelo e agregar}}
+\boxed{\text{Bagging: construir em paralelo} \;\longrightarrow\; \text{agregar}}
 \]</span></p>
 <p><span class="math display">\[
-\boxed{\text{Random Forest: descorrelacionar e agregar}}
+\boxed{\text{Random Forest: construir em paralelo + descorrelacionar} \;\longrightarrow\; \text{agregar}}
 \]</span></p>
 <p><span class="math display">\[
-\boxed{\text{Boosting: construir correções sequenciais}}
+\boxed{\text{Boosting: construir sequencialmente} \;\longrightarrow\; \text{acumular}}
 \]</span></p>
-<p>Durante os próximos slides, acompanhe duas perguntas:</p>
-<ol type="1">
-<li><strong>Como cada nova árvore é construída?</strong></li>
-<li><strong>Como as árvores são combinadas?</strong></li>
-</ol></section></section><section><section id="bagging-bootstrap-aggregating" class="title-slide slide level1 center"><h1>Bagging (Bootstrap Aggregating)</h1>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p><strong>Qual é a ideia de cada estratégia?</strong></p>
+<p><strong>Bagging:</strong> reduzir a <strong>variância</strong> pela agregação de árvores</p>
+<p><strong>Random Forest:</strong> reduzir a <strong>correlação entre as árvores</strong>, potencializando a redução da variância</p>
+<p><strong>Boosting:</strong> melhorar <strong>progressivamente o modelo</strong>, adicionando novas árvores de forma sequencial</p>
+</div>
+</div>
+</div>
+</section></section><section><section id="bagging-bootstrap-aggregating" class="title-slide slide level1 center"><h1>Bagging (Bootstrap Aggregating)</h1>
 <blockquote>
 <p>Média de vários modelos instáveis → modelo mais estável</p>
 </blockquote>
@@ -547,10 +612,10 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 <img data-src="../..\images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="como-agregamos" class="slide level2"><h2>Como agregamos?</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="regressão-2">Regressão</h3>
+<h3 id="regressão-1">Regressão</h3>
 <p>Cada árvore fornece um número:</p>
 <p><span class="math display">\[
-\hat y_b(\mathbf{x}).
+\hat y_b(\mathbf{x})
 \]</span></p>
 <p>Agregamos pela média:</p>
 <p><span class="math display">\[
@@ -561,7 +626,7 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 }
 \]</span></p>
 </div><div class="column" style="width:48%;">
-<h3 id="classificação-2">Classificação</h3>
+<h3 id="classificação-1">Classificação</h3>
 <p>Cada árvore fornece classe ou probabilidades.</p>
 <p>Podemos usar:</p>
 <p><span class="math display">\[
@@ -618,7 +683,7 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \rightarrow
 \text{probabilidade/voto}
 \rightarrow
-\text{agregação}.
+\text{agregação}
 \]</span></p>
 <p>O que muda em relação à regressão?</p>
 <table class="caption-top">
@@ -768,25 +833,66 @@ m_{\text{try}}
 \]</span></p>
 <p><span class="math inline">\(m_{\text{try}}\)</span> deve ser tratado como hiperparâmetro e pode ser ajustado por validação.</p>
 </section><section id="oob-validação-embutida-no-bootstrap" class="slide level2"><h2>OOB: validação “embutida” no bootstrap</h2>
-<p>Em cada amostra <em>bootstrap</em>, algumas observações ficam de fora.</p>
-<p>Elas são chamadas de <strong>out-of-bag (OOB)</strong>.</p>
-<p>Para uma observação <span class="math inline">\(i\)</span>:</p>
+<p>Para cada árvore <span class="math inline">\(T_b\)</span>, a amostra <em>bootstrap</em> deixa algumas observações de fora.</p>
+<p>Elas são chamadas de <strong>out-of-bag (OOB)</strong>:</p>
+<p><span class="math display">\[
+\boxed{
+OOB_b
+=
+\{\text{observações não utilizadas no treinamento de }T_b\}
+}
+\]</span></p>
+<p>Em média, aproximadamente <strong>36,8%</strong> das observações ficam OOB para cada árvore.</p>
+</section><section id="oob-validação-embutida-no-bootstrap-1" class="slide level2"><h2>OOB: validação “embutida” no bootstrap</h2>
+<p>Para avaliar uma observação <span class="math inline">\(i\)</span>:</p>
 <ol type="1">
-<li>use apenas árvores em que <span class="math inline">\(i\)</span> ficou fora do bootstrap;</li>
-<li>agregue suas previsões;</li>
-<li>compare com <span class="math inline">\(y_i\)</span>.</li>
-</ol></section><section id="oob-validação-embutida-no-bootstrap-1" class="slide level2"><h2>OOB: validação “embutida” no bootstrap</h2>
-<p>Isso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.<br><br></p>
-<div class="callout callout-note callout-titled callout-style-default">
+<li>selecione apenas as árvores para as quais <span class="math inline">\(i\)</span> ficou <strong>OOB</strong>;</li>
+<li>obtenha as previsões dessas árvores para <span class="math inline">\(\mathbf{x}_i\)</span>;</li>
+<li>
+<strong>agregue</strong> essas previsões, obtendo <span class="math inline">\(\hat y_i^{OOB}\)</span>;</li>
+<li>compare <span class="math inline">\(\hat y_i^{OOB}\)</span> com o valor observado <span class="math inline">\(y_i\)</span>, usando, por exemplo,</li>
+</ol>
+<p><span class="math display">\[
+RMSE_{OOB}
+=
+\sqrt{
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(y_i-\hat{y}_i^{OOB}\right)^2
+}
+\]</span></p>
+</section><section id="oob-validação-embutida-no-bootstrap-2" class="slide level2"><h2>OOB: validação “embutida” no bootstrap</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="regressão-2">Regressão</h3>
+<p>Agregamos pela <strong>média</strong>:</p>
+<p><span class="math display">\[
+\hat y_i^{OOB}
+=
+\frac{1}{|\mathcal B_i|}
+\sum_{b\in\mathcal B_i}
+T_b(\mathbf{x}_i)
+\]</span></p>
+</div><div class="column" style="width:48%;">
+<h3 id="classificação-2">Classificação</h3>
+<p>Agregamos por <strong>votação</strong> ou pelas probabilidades estimadas:</p>
+<p><span class="math display">\[
+\hat y_i^{OOB}
+=
+\operatorname{classe}
+\left(
+\{T_b(\mathbf{x}_i):b\in\mathcal B_i\}
+\right)
+\]</span></p>
+</div></div>
+<div class="callout callout-important callout-style-simple">
 <div class="callout-body">
-<div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Nota</strong></p>
-</div>
 <div class="callout-content">
-<p>OOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final.</p>
+<p><strong>Ideia central:</strong> cada observação é avaliada somente pelas árvores que <strong>não a utilizaram no treinamento</strong>.</p>
+<p><span class="math inline">\(\Rightarrow\)</span> O próprio <em>bootstrap</em> fornece uma estimativa interna do desempenho preditivo.</p>
 </div>
 </div>
 </div>
@@ -795,62 +901,323 @@ m_{\text{try}}
 <blockquote>
 <p>Construir o modelo sequencialmente, fazendo cada nova árvore corrigir o modelo atual</p>
 </blockquote>
-</section><section id="a-mudança-fundamental" class="slide level2"><h2>A mudança fundamental</h2>
+</section><section id="boosting-árvores-que-aprendem-sequencialmente" class="slide level2"><h2>Boosting: árvores que aprendem sequencialmente</h2>
 <p>Bagging e Random Forest constroem árvores aproximadamente <strong>em paralelo</strong>.</p>
-<p>Boosting constrói modelos <strong>sequencialmente</strong>:</p>
+<p>No <strong>boosting</strong>, cada nova árvore depende do modelo que já foi construído:</p>
 <p><span class="math display">\[
 \hat h_1
-\rightarrow
+\;\longrightarrow\;
 \hat h_2
-\rightarrow
+\;\longrightarrow\;
 \hat h_3
-\rightarrow\cdots
+\;\longrightarrow\;\cdots
 \]</span></p>
-<p>Cada nova árvore tenta melhorar o modelo acumulado.</p>
-</section><section id="a-mudança-fundamental-1" class="slide level2"><h2>A mudança fundamental</h2>
-<h3 id="notação">Notação</h3>
-<ul>
-<li>
-<span class="math inline">\(\hat g^{(b)}(\mathbf{x})\)</span>: modelo acumulado após <span class="math inline">\(b\)</span> iterações</li>
-<li>
-<span class="math inline">\(\hat h_b(\mathbf{x})\)</span>: árvore que fornece a correção na iteração <span class="math inline">\(b\)</span>
-</li>
-<li>
-<span class="math inline">\(r_i^{(b)}\)</span>: resíduo ou pseudo-resíduo usado na iteração <span class="math inline">\(b\)</span>
-</li>
-<li>
-<span class="math inline">\(\lambda\)</span>: <em>learning rate</em>
-</li>
-<li>
-<span class="math inline">\(B\)</span>: número total de árvores</li>
-</ul>
+<p>A ideia é simples:</p>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Cada nova árvore tenta aprender <strong>uma correção</strong> para os erros que ainda permanecem no modelo.</p>
+</div>
+</div>
+</div>
+<p>Assim, em vez de combinar árvores independentes,</p>
 <p><span class="math display">\[
 \boxed{
-\hat g^{(B)}(\mathbf{x})
-=
-\hat g^{(0)}(\mathbf{x})
-+
-\lambda\sum_{b=1}^{B}\hat h_b(\mathbf{x})
+\text{modelo atual}
+\;\longrightarrow\;
+\text{erro atual}
+\;\longrightarrow\;
+\text{nova árvore}
+\;\longrightarrow\;
+\text{modelo melhorado}
 }
 \]</span></p>
-</section><section id="boosting-em-regressão-começando-pelo-erro-atual" class="slide level2"><h2>Boosting em regressão: começando pelo erro atual</h2>
-<p>Com perda quadrática,</p>
+</section><section id="boosting-modelo-atual-uma-correção" class="slide level2"><h2>Boosting: modelo atual + uma correção</h2>
+<p>Na iteração <span class="math inline">\(b\)</span>, já temos um modelo acumulado:</p>
 <p><span class="math display">\[
-L(y,g)=(y-g)^2,
+\hat g^{(b-1)}(\mathbf{x})
 \]</span></p>
-<p>o sinal de correção é proporcional ao resíduo:</p>
+<p>A nova árvore <span class="math inline">\(\hat h_b(\mathbf{x})\)</span> não precisa resolver todo o problema.</p>
+<p>Ela aprende apenas uma <strong>correção</strong>.</p>
+<p>O modelo é atualizado por</p>
+<p><span class="math display">\[
+\boxed{
+\hat g^{(b)}(\mathbf{x})
+=
+\hat g^{(b-1)}(\mathbf{x})
++
+\lambda \hat h_b(\mathbf{x})
+}
+\]</span></p>
+</section><section id="boosting-modelo-atual-uma-correção-1" class="slide level2"><h2>Boosting: modelo atual + uma correção</h2>
+<p>em que:</p>
+<ul>
+<li>
+<span class="math inline">\(\hat g^{(b-1)}(\mathbf{x})\)</span>: modelo atual;</li>
+<li>
+<span class="math inline">\(\hat h_b(\mathbf{x})\)</span>: correção aprendida pela nova árvore;</li>
+<li>
+<span class="math inline">\(\lambda\)</span>: <em>learning rate</em>.</li>
+</ul>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p><strong>Ideia central:</strong> boosting constrói uma função complexa acumulando muitas correções simples.</p>
+</div>
+</div>
+</div>
+</section><section id="boosting-em-regressão-quanto-ainda-falta-corrigir" class="slide level2"><h2>Boosting em regressão: quanto ainda falta corrigir?</h2>
+<p>Considere a observação <span class="math inline">\(i\)</span>.</p>
+<p>O modelo atual prevê</p>
+<p><span class="math display">\[
+\hat g^{(b-1)}(\mathbf{x}_i),
+\]</span></p>
+<p>mas observamos <span class="math inline">\(y_i\)</span>.</p>
+</section><section id="boosting-em-regressão-quanto-ainda-falta-corrigir-1" class="slide level2"><h2>Boosting em regressão: quanto ainda falta corrigir?</h2>
+<p>A diferença é</p>
+<p><span class="math display">\[
+\boxed{
+r_i^{(b)}
+=
+y_i-\hat g^{(b-1)}(\mathbf{x}_i)
+}
+\]</span></p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="r_ib0"><span class="math inline">\(r_i^{(b)}&gt;0\)</span></h3>
+<p>O modelo previu <strong>abaixo</strong> do observado.</p>
+<p><span class="math display">\[
+y_i &gt;
+\hat g^{(b-1)}(\mathbf{x}_i)
+\]</span></p>
+<p>A previsão precisa <strong>aumentar</strong>.</p>
+</div><div class="column" style="width:48%;">
+<h3 id="r_ib0-1"><span class="math inline">\(r_i^{(b)}&lt;0\)</span></h3>
+<p>O modelo previu <strong>acima</strong> do observado.</p>
+<p><span class="math display">\[
+y_i &lt;
+\hat g^{(b-1)}(\mathbf{x}_i)
+\]</span></p>
+<p>A previsão precisa <strong>diminuir</strong>.</p>
+</div></div>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>O resíduo informa simultaneamente <strong>a direção</strong> e <strong>o tamanho</strong> da correção necessária.</p>
+</div>
+</div>
+</div>
+</section><section id="a-nova-árvore-aprende-o-que-ainda-falta" class="slide level2"><h2>A nova árvore aprende o que ainda falta</h2>
+<p>Na iteração <span class="math inline">\(b\)</span>, usamos os resíduos como nova resposta:</p>
+<p><span class="math display">\[
+(\mathbf{x}_i,r_i^{(b)}),
+\qquad i=1,\ldots,n
+\]</span></p>
+<p>A nova árvore é ajustada para aproximar</p>
+<p><span class="math display">\[
+\boxed{
+\hat h_b(\mathbf{x}_i)
+\approx
+r_i^{(b)}
+}
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\mathbf{x}_i
+\longrightarrow
+r_i^{(b)}
+\longrightarrow
+\hat h_b(\mathbf{x}_i)
+\]</span></p>
+</section><section id="a-nova-árvore-aprende-o-que-ainda-falta-1" class="slide level2"><h2>A nova árvore aprende o que ainda falta</h2>
+<p>Depois incorporamos <strong>uma fração</strong> dessa correção:</p>
+<p><span class="math display">\[
+\boxed{
+\hat g^{(b)}(\mathbf{x})
+=
+\hat g^{(b-1)}(\mathbf{x})
++
+\lambda\hat h_b(\mathbf{x})
+}
+\]</span></p>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>A nova árvore não prevê diretamente <span class="math inline">\(Y\)</span>: ela aprende <strong>como corrigir o modelo atual</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="uma-iteração-do-boosting" class="slide level2"><h2>Uma iteração do boosting</h2>
+<p>Na iteração <span class="math inline">\(b\)</span>:</p>
+<p><span class="math display">\[
+\boxed{
+\begin{array}{c}
+\text{1. Modelo atual}\\[2mm]
+\hat g^{(b-1)}(\mathbf{x})
+\end{array}
+}
+\quad\longrightarrow\quad
+\boxed{
+\begin{array}{c}
+\text{2. Calcular resíduos}\\[2mm]
+r_i^{(b)}
+=
+y_i-\hat g^{(b-1)}(\mathbf{x}_i)
+\end{array}
+}
+\]</span></p>
+<p><span class="math display">\[
+\Downarrow
+\]</span></p>
+<p><span class="math display">\[
+\boxed{
+\begin{array}{c}
+\text{3. Aprender a correção}\\[2mm]
+\hat h_b(\mathbf{x})
+\end{array}
+}
+\quad\longrightarrow\quad
+\boxed{
+\begin{array}{c}
+\text{4. Atualizar}\\[2mm]
+\hat g^{(b)}
+=
+\hat g^{(b-1)}
++
+\lambda\hat h_b
+\end{array}
+}
+\]</span></p>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Depois da atualização, calculamos <strong>novos erros</strong> e repetimos o processo.</p>
+</div>
+</div>
+</div>
+</section><section id="boosting-construção-sequencial-do-modelo" class="slide level2"><h2>Boosting: construção sequencial do modelo</h2>
+<!-- Inserir aqui a figura atual do slide 52 -->
+
+<img data-src="../..\images/regressao/boosting4.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Leia a figura da esquerda para a direita:</p>
+<p><strong>modelo atual <span class="math inline">\(\rightarrow\)</span> erros restantes <span class="math inline">\(\rightarrow\)</span> nova árvore <span class="math inline">\(\rightarrow\)</span> pequena correção <span class="math inline">\(\rightarrow\)</span> novo modelo</strong></p>
+</div>
+</div>
+</div>
+</section><section id="boosting-em-regressão-veja-o-modelo-aprender" class="slide level2"><h2>Boosting em regressão: veja o modelo aprender</h2>
+<!-- Inserir aqui o GIF que já está sendo utilizado -->
+
+<img data-src="../..\images/regressao/boosting_regressao.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>A <strong>nova árvore</strong> não representa a previsão final.</p>
+<p>Ela representa apenas a correção <span class="math inline">\(\hat h_b(\mathbf{x})\)</span>.</p>
+<p>A previsão é dada pelo <strong>modelo acumulado</strong> <span class="math inline">\(\hat g^{(b)}(\mathbf{x})\)</span>.</p>
+</div>
+</div>
+</div>
+</section><section id="por-que-os-resíduos-aparecem" class="slide level2"><h2>Por que os resíduos aparecem?</h2>
+<p>Até agora usamos o resíduo</p>
 <p><span class="math display">\[
 r_i^{(b)}
 =
 y_i-\hat g^{(b-1)}(\mathbf{x}_i)
 \]</span></p>
-</section><section id="boosting-em-regressão-começando-pelo-erro-atual-1" class="slide level2"><h2>Boosting em regressão: começando pelo erro atual</h2>
-<p>Na iteração <span class="math inline">\(b\)</span>:</p>
-<ol type="1">
-<li>calcule os resíduos atuais;</li>
-<li>ajuste <span class="math inline">\(\hat h_b(\mathbf{x})\)</span>, uma árvore rasa, aos resíduos;</li>
-<li>adicione uma pequena fração dessa correção ao modelo atual:</li>
-</ol>
+<p>Mas isso <strong>não é uma escolha arbitrária</strong>.</p>
+<p>Considere a perda quadrática:</p>
+<p><span class="math display">\[
+L(y,g)=(y-g)^2
+\]</span></p>
+</section><section id="por-que-os-resíduos-aparecem-1" class="slide level2"><h2>Por que os resíduos aparecem?</h2>
+<p>O <strong>gradiente da perda em relação à previsão <span class="math inline">\(g\)</span></strong> é</p>
+<p><span class="math display">\[
+\boxed{
+\nabla_g L(y,g)
+=
+\frac{\partial L(y,g)}{\partial g}
+=
+-2(y-g)
+}
+\]</span></p>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Aqui, como derivamos em relação a uma única quantidade <span class="math inline">\(g\)</span>, o gradiente é simplesmente a <strong>derivada da perda em relação à previsão</strong>.</p>
+<p>O gradiente indica a direção de <strong>aumento</strong> da perda.</p>
+</div>
+</div>
+</div>
+</section><section id="por-que-os-resíduos-aparecem-2" class="slide level2"><h2>Por que os resíduos aparecem?</h2>
+<p>Logo, a direção oposta ao gradiente é</p>
+<p><span class="math display">\[
+-\frac{\partial L(y,g)}{\partial g}
+=
+2(y-g)
+\]</span></p>
+<p>Portanto,</p>
+<p><span class="math display">\[
+\boxed{
+-\frac{\partial L}{\partial g}
+\propto
+y-g
+=
+r
+}
+\]</span></p>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Com <strong>perda quadrática</strong>, seguir o gradiente negativo equivale a aprender os <strong>resíduos</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="gradient-boosting-a-ideia-mais-geral" class="slide level2"><h2>Gradient Boosting: a ideia mais geral</h2>
+<p>Agora podemos generalizar.</p>
+<p>Para uma função de perda <span class="math inline">\(L(y,g)\)</span>, definimos o pseudo-resíduo:</p>
+<p><span class="math display">\[
+\boxed{
+r_i^{(b)}
+=
+-
+\left.
+\frac{\partial L(y_i,g)}
+{\partial g}
+\right|_{
+g=\hat g^{(b-1)}(\mathbf{x}_i)
+}
+}
+\]</span></p>
+<p>A nova árvore <span class="math inline">\(\hat h_b\)</span> tenta aprender esses pseudo-resíduos.</p>
+<p>Depois,</p>
 <p><span class="math display">\[
 \hat g^{(b)}(\mathbf{x})
 =
@@ -858,75 +1225,170 @@ y_i-\hat g^{(b-1)}(\mathbf{x}_i)
 +
 \lambda\hat h_b(\mathbf{x})
 \]</span></p>
-<p>Portanto,</p>
+</section><section id="gradient-boosting-a-ideia-mais-geral-1" class="slide level2"><h2>Gradient Boosting: a ideia mais geral</h2>
+<p>Assim,</p>
+<p><span class="math display">\[
+\boxed{
+\text{Gradient Boosting}
+=
+\text{corrigir o modelo na direção que reduz a perda}
+}
+\]</span></p>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>O <strong>resíduo usual</strong> é apenas um caso particular do <strong>pseudo-resíduo</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="regressão-e-classificação-o-que-muda" class="slide level2"><h2>Regressão e classificação: o que muda?</h2>
+<p>A estrutura do algoritmo permanece a mesma:</p>
 <p><span class="math display">\[
 \boxed{
 \text{modelo atual}
 \rightarrow
-\text{resíduos}
+\text{perda}
+\rightarrow
+\text{pseudo-resíduos}
 \rightarrow
 \text{nova árvore}
 \rightarrow
-\text{modelo atualizado}
+\text{atualização}
 }
 \]</span></p>
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/boosting3.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section><section id="boosting-em-regressão-veja-o-modelo-aprender" class="slide level2"><h2>Boosting em regressão: veja o modelo aprender</h2>
-
-<img data-src="../..\images/regressao/boosting_regressao.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-important callout-titled callout-style-default">
+<p>O que muda é principalmente a <strong>função de perda</strong>.</p>
+<table class="caption-top">
+<thead><tr class="header">
+<th></th>
+<th>Regressão</th>
+<th>Classificação binária</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Resposta</td>
+<td><span class="math inline">\(y\in\mathbb R\)</span></td>
+<td><span class="math inline">\(y\in\{0,1\}\)</span></td>
+</tr>
+<tr class="even">
+<td>Exemplo de perda</td>
+<td>quadrática</td>
+<td>log-loss</td>
+</tr>
+<tr class="odd">
+<td>Correção</td>
+<td>relacionada a <span class="math inline">\(y-\hat g\)</span>
+</td>
+<td>relacionada a <span class="math inline">\(y-\hat p\)</span>
+</td>
+</tr>
+<tr class="even">
+<td>Saída final</td>
+<td>valor contínuo</td>
+<td>probabilidade/classe</td>
+</tr>
+</tbody>
+</table></section><section id="regressão-e-classificação-o-que-muda-1" class="slide level2"><h2>Regressão e classificação: o que muda?</h2>
+<div class="callout callout-important callout-style-simple">
 <div class="callout-body">
-<div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Importante</strong></p>
-</div>
 <div class="callout-content">
-<p>A linha da <strong>nova árvore</strong> não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o <strong>modelo acumulado</strong>.</p>
+<p>Boosting não é essencialmente um algoritmo de regressão ou classificação.</p>
+<p>Ele é uma estratégia para <strong>reduzir iterativamente uma função de perda</strong>.</p>
 </div>
 </div>
 </div>
 </section><section id="e-na-classificação" class="slide level2"><h2>E na classificação?</h2>
-<p>Aqui está uma diferença importante.</p>
-<p>Em classificação, não faz sentido usar simplesmente</p>
+<p>Para <span class="math inline">\(Y\in\{0,1\}\)</span>, não calculamos um resíduo entre a classe observada e uma <strong>classe predita</strong> como se fossem valores contínuos.</p>
+<p>Em vez disso, trabalhamos com uma perda apropriada para classificação.</p>
+<p>Para classificação binária, uma escolha comum é a <strong>log-loss</strong>:</p>
 <p><span class="math display">\[
-y_i-\hat y_i
+\boxed{
+L(y,p)
+=
+-\left[
+y\log(p)
++
+(1-y)\log(1-p)
+\right]
+}
 \]</span></p>
-<p>como se as classes fossem números contínuos.</p>
-<p>Usamos uma <strong>função de perda de classificação</strong>, como a <em>log-loss</em>.</p>
+<p>em que</p>
+<p><span class="math display">\[
+p=P(Y=1\mid\mathbf{x})
+\]</span></p>
 </section><section id="e-na-classificação-1" class="slide level2"><h2>E na classificação?</h2>
-<p>No <em>gradient boosting</em>, cada nova árvore é ajustada ao <strong>gradiente negativo da perda</strong> (<em>pseudo-resíduo</em>).</p>
+<p>O princípio continua sendo o mesmo:</p>
 <p><span class="math display">\[
 \boxed{
-\text{regressão quadrática: pseudo-resíduo = resíduo usual}
+\text{encontrar a direção que reduz a perda}
 }
 \]</span></p>
+</section><section id="classificação-binária-score-e-probabilidade" class="slide level2"><h2>Classificação binária: score e probabilidade</h2>
+<p>No Gradient Boosting binário, é útil distinguir o <strong>score acumulado</strong></p>
+<p><span class="math display">\[
+F^{(b)}(\mathbf{x})
+\]</span></p>
+<p>da probabilidade estimada.</p>
+<p>A probabilidade é obtida pela função logística:</p>
 <p><span class="math display">\[
 \boxed{
-\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}
+\hat p^{(b)}(\mathbf{x})
+=
+\frac{1}
+{1+\exp[-F^{(b)}(\mathbf{x})]}
 }
 \]</span></p>
-</section><section id="classificação-binária" class="slide level2"><h2>Classificação binária</h2>
-<p>Se <span class="math inline">\(y_i\in\{0,1\}\)</span> e o modelo atual fornece</p>
+</section><section id="classificação-binária-score-e-probabilidade-1" class="slide level2"><h2>Classificação binária: score e probabilidade</h2>
+<p>As árvores são acumuladas na escala do <strong>score</strong>:</p>
+<p><span class="math display">\[
+\boxed{
+F^{(b)}(\mathbf{x})
+=
+F^{(b-1)}(\mathbf{x})
++
+\lambda\hat h_b(\mathbf{x})
+}
+\]</span></p>
+<p>e o score é então convertido em probabilidade.</p>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>A soma das árvores não precisa estar limitada entre <span class="math inline">\(0\)</span> e <span class="math inline">\(1\)</span>.</p>
+<p>É a transformação logística que produz uma <strong>probabilidade</strong>.</p>
+</div>
+</div>
+</div>
+</section><section id="classificação-binária-o-que-a-nova-árvore-aprende" class="slide level2"><h2>Classificação binária: o que a nova árvore aprende?</h2>
+<p>Com log-loss e</p>
 <p><span class="math display">\[
 \hat p_i^{(b-1)}
 =
-P\!\left(Y_i=1\mid\mathbf{x}_i;\,\hat g^{(b-1)}\right),
+P(Y_i=1\mid\mathbf{x}_i),
 \]</span></p>
-<p>sob log-loss, o sinal de correção é proporcional a</p>
+<p>o gradiente negativo leva ao pseudo-resíduo</p>
 <p><span class="math display">\[
 \boxed{
-r_i^{(b)}=y_i-\hat p_i^{(b-1)}
+r_i^{(b)}
+=
+y_i-\hat p_i^{(b-1)}
 }
 \]</span></p>
-</section><section id="classificação-binária-1" class="slide level2"><h2>Classificação binária</h2>
-<p>Exemplos:</p>
+</section><section id="classificação-binária-o-que-a-nova-árvore-aprende-1" class="slide level2"><h2>Classificação binária: o que a nova árvore aprende?</h2>
+<p>Por exemplo:</p>
 <table class="caption-top">
 <thead><tr class="header">
 <th style="text-align: right;"><span class="math inline">\(y_i\)</span></th>
 <th style="text-align: right;"><span class="math inline">\(\hat p_i^{(b-1)}\)</span></th>
-<th style="text-align: right;"><span class="math inline">\(y_i-\hat p_i^{(b-1)}\)</span></th>
-<th>leitura</th>
+<th style="text-align: right;"><span class="math inline">\(r_i^{(b)}\)</span></th>
+<th>Interpretação</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -939,7 +1401,7 @@ r_i^{(b)}=y_i-\hat p_i^{(b-1)}
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">0,20</td>
 <td style="text-align: right;">0,80</td>
-<td>aumentar fortemente a evidência para classe 1</td>
+<td>aumentar evidência para classe 1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">0</td>
@@ -951,102 +1413,243 @@ r_i^{(b)}=y_i-\hat p_i^{(b-1)}
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0,85</td>
 <td style="text-align: right;">-0,85</td>
-<td>reduzir fortemente a evidência para classe 1</td>
+<td>reduzir evidência para classe 1</td>
 </tr>
 </tbody>
 </table>
-<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout callout-important callout-style-simple">
 <div class="callout-body">
-<div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Nota</strong></p>
-</div>
 <div class="callout-content">
-<p>Essa tabela é uma interpretação didática do <em>gradient boosting</em> binário com log-loss. A implementação trabalha na escala do escore/logit e atualiza o modelo aditivo.</p>
+<p>Quanto mais <strong>confiante e errada</strong> estiver a previsão atual, maior será a magnitude da correção.</p>
 </div>
 </div>
 </div>
-</section><section id="boosting-em-classificação-veja-a-correção" class="slide level2"><h2>Boosting em classificação: veja a correção</h2>
+</section><section id="boosting-em-classificação-veja-a-correção-acontecer" class="slide level2"><h2>Boosting em classificação: veja a correção acontecer</h2>
 
-<img data-src="../..\images/regressao/boosting_classificacao_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><p>À esquerda, o modelo acumulado atualiza a probabilidade <span class="math inline">\(\hat p^{(b)}=P(Y=1\mid X)\)</span>.</p>
-<p>À direita, visualizamos o sinal de correção <span class="math inline">\(y_i-\hat p_i^{(b-1)}\)</span>.</p>
-<div class="callout callout-tip callout-style-simple">
+<img data-src="../..\images/regressao/boosting_classificacao_animado_v4.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section><section id="regressão-e-classificação-a-mesma-lógica" class="slide level2"><h2>Regressão e classificação: a mesma lógica</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="regressão-3">Regressão</h3>
+<p>Perda quadrática:</p>
+<p><span class="math display">\[
+L(y,g)=(y-g)^2
+\]</span></p>
+<p>Pseudo-resíduo:</p>
+<p><span class="math display">\[
+r_i^{(b)}
+\propto
+y_i-\hat g^{(b-1)}(\mathbf{x}_i)
+\]</span></p>
+<p><strong>Corrigir o valor previsto.</strong></p>
+</div><div class="column" style="width:48%;">
+<h3 id="classificação-3">Classificação</h3>
+<p>Log-loss:</p>
+<p><span class="math display">\[
+L(y,p)
+=
+-[y\log p+(1-y)\log(1-p)]
+\]</span></p>
+<p>Pseudo-resíduo:</p>
+<p><span class="math display">\[
+r_i^{(b)}
+=
+y_i-\hat p_i^{(b-1)}
+\]</span></p>
+<p><strong>Corrigir a evidência/probabilidade.</strong></p>
+</div></div>
+</section><section id="regressão-e-classificação-a-mesma-lógica-1" class="slide level2"><h2>Regressão e classificação: a mesma lógica</h2>
+<div class="callout callout-important callout-style-simple">
 <div class="callout-body">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>Compare com regressão: a lógica <strong>modelo atual + pequena correção</strong> permanece. O que muda é a função de perda e, consequentemente, o pseudo-resíduo.</p>
+<p>O que permanece:</p>
+<p><strong>modelo atual + pequena correção</strong></p>
+<p>O que muda:</p>
+<p><strong>a perda e, consequentemente, o pseudo-resíduo</strong>.</p>
 </div>
 </div>
 </div>
-</section><section id="o-papel-do-learning-rate-lambda" class="slide level2"><h2>O papel do learning rate <span class="math inline">\(\lambda\)</span>
+</section><section id="o-papel-do-learning-rate-lambda" class="slide level2"><h2>O papel do <em>learning rate</em> <span class="math inline">\(\lambda\)</span>
 </h2>
-<p>Cada árvore sugere uma correção.</p>
-<p>O <em>learning rate</em> controla quanto dessa correção será incorporado:</p>
+<p>Cada árvore sugere uma correção <span class="math inline">\(\hat h_b(\mathbf{x})\)</span>.</p>
+<p>O <em>learning rate</em> determina <strong>quanto dessa correção será incorporado</strong>:</p>
 <p><span class="math display">\[
+\small
+\boxed{
 \hat g^{(b)}(\mathbf{x})
 =
 \hat g^{(b-1)}(\mathbf{x})
 +
 \lambda\hat h_b(\mathbf{x})
+}
 \]</span></p>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="lambda-pequeno">
-<span class="math inline">\(\lambda\)</span> pequeno</h3>
+<h4 id="lambda-pequeno">
+<span class="math inline">\(\lambda\)</span> pequeno</h4>
 <ul>
-<li>passos menores</li>
-<li>aprendizado mais gradual</li>
-<li>normalmente exige mais árvores</li>
-<li>tende a oferecer maior controle</li>
+<li>correções menores;</li>
+<li>aprendizado mais gradual;</li>
+<li>normalmente exige mais árvores;</li>
+<li>maior controle sobre o processo.</li>
 </ul>
 </div><div class="column" style="width:48%;">
-<h3 id="lambda-grande">
-<span class="math inline">\(\lambda\)</span> grande</h3>
+<h4 id="lambda-grande">
+<span class="math inline">\(\lambda\)</span> grande</h4>
 <ul>
-<li>passos maiores</li>
-<li>aprende mais rapidamente</li>
-<li>pode precisar de menos árvores</li>
-<li>pode sobreajustar mais cedo</li>
+<li>correções maiores;</li>
+<li>aprendizado mais rápido;</li>
+<li>pode exigir menos árvores;</li>
+<li>pode sobreajustar mais cedo.</li>
 </ul>
 </div></div>
-</section><section id="boosting-o-papel-do-learning-rate-lambda" class="slide level2"><h2>Boosting: o papel do <em>learning rate</em> <span class="math inline">\(\lambda\)</span>
-</h2>
-
-<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><div class="callout callout-important callout-style-simple">
+<div class="callout callout-note callout-style-simple">
 <div class="callout-body">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p><strong>Observe a figura:</strong> para o mesmo número de iterações, aumentar <span class="math inline">\(\lambda\)</span> faz o modelo acumulado se aproximar mais rapidamente dos dados. Portanto, <span class="math inline">\(\lambda\)</span> e o número de árvores <span class="math inline">\(B\)</span> devem ser analisados <strong>conjuntamente</strong>.</p>
+<p><span class="math inline">\(\lambda\)</span> controla o <strong>tamanho do passo</strong>, não a direção da correção.</p>
 </div>
 </div>
 </div>
-</section><section id="boosting-e-estimadores-fracos" class="slide level2"><h2>Boosting e Estimadores Fracos</h2>
-<p>O <em>boosting</em> não é restrito ao uso de árvores.</p>
-<p>Podemos usar qualquer modelo como base, desde que seja um <strong>estimador fraco</strong>. (Deve aprender <strong>uma correção</strong>, não resolver sozinho todo o problema)</p>
-<p><br></p>
-<h4 id="o-que-é-um-estimador-fraco">O que é um estimador fraco?</h4>
+</section><section id="lambda-e-b-trabalham-juntos" class="slide level2"><h2>
+<span class="math inline">\(\lambda\)</span> e <span class="math inline">\(B\)</span> trabalham juntos</h2>
+
+<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"></section><section id="lambda-e-b-trabalham-juntos-1" class="slide level2"><h2>
+<span class="math inline">\(\lambda\)</span> e <span class="math inline">\(B\)</span> trabalham juntos</h2>
+<p>Na figura, todos os modelos possuem o mesmo número de árvores:</p>
+<p><span class="math display">\[
+B=100
+\]</span></p>
+<p>Quando <span class="math inline">\(\lambda\)</span> aumenta, cada árvore exerce maior influência sobre o modelo acumulado.</p>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Não faz sentido escolher <span class="math inline">\(\lambda\)</span> isoladamente.</p>
+<p><span class="math display">\[
+\boxed{
+\lambda\;\text{e}\;B
+\quad\text{devem ser analisados conjuntamente}
+}
+\]</span></p>
+</div>
+</div>
+</div>
+</section><section id="por-que-usar-árvores-simples" class="slide level2"><h2>Por que usar árvores simples?</h2>
+<p>Cada árvore do boosting precisa aprender apenas <strong>uma parte da correção</strong>.</p>
+<p>Por isso, normalmente utilizamos árvores relativamente rasas como modelos base.</p>
+<p>Uma árvore simples:</p>
 <ul>
-<li>modelo simples</li>
-<li>baixo poder preditivo individual</li>
-<li>pequeno viés de ajuste</li>
-</ul>
-<p><strong>Exemplos:</strong> árvores rasas (<em>stumps</em>), regressão linear simples, modelos com poucos parâmetros</p>
-</section><section id="por-que-usar-modelos-fracos" class="slide level2"><h2>Por que usar modelos fracos?</h2>
+<li>captura uma estrutura que ainda falta ao modelo;</li>
+<li>evita correções excessivamente complexas em uma única etapa;</li>
+<li>permite que o padrão seja construído gradualmente.</li>
+</ul></section><section id="por-que-usar-árvores-simples-1" class="slide level2"><h2>Por que usar árvores simples?</h2>
+<p>Um caso extremo é o <strong>stump</strong>:</p>
+<p><span class="math display">\[
+\boxed{\text{stump}=\text{árvore com apenas um split}}
+\]</span></p>
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Um modelo base não precisa ser excelente sozinho.</p>
+<p>Ele precisa fornecer uma <strong>correção útil</strong> quando combinado com as demais árvores.</p>
+</div>
+</div>
+</div>
+</section><section id="profundidade-da-árvore-complexidade-da-correção" class="slide level2"><h2>Profundidade da árvore: complexidade da correção</h2>
+
+<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section><section id="profundidade-da-árvore-complexidade-da-correção-1" class="slide level2"><h2>Profundidade da árvore: complexidade da correção</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="árvores-rasas">Árvores rasas</h3>
+<p>Correções mais simples e graduais.</p>
+<p><span class="math display">\[
+\text{menor complexidade por etapa}
+\]</span></p>
+</div><div class="column" style="width:48%;">
+<h3 id="árvores-profundas">Árvores profundas</h3>
+<p>Cada árvore consegue aprender correções muito mais complexas.</p>
+<p><span class="math display">\[
+\text{maior risco de aprender ruído}
+\]</span></p>
+</div></div>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>A complexidade do boosting depende conjuntamente de:</p>
+<p><span class="math display">\[
+\boxed{
+\lambda,\qquad B,\qquad
+\text{complexidade das árvores}
+}
+\]</span></p>
+</div>
+</div>
+</div>
+</section><section id="boosting-a-ideia-que-deve-ficar" class="slide level2"><h2>Boosting: a ideia que deve ficar</h2>
+<p>Boosting constrói o modelo <strong>sequencialmente</strong>:</p>
+<p><span class="math display">\[
+\boxed{
+\text{modelo atual}
+\rightarrow
+\text{avaliar a perda}
+\rightarrow
+\text{aprender uma correção}
+\rightarrow
+\text{atualizar}
+\rightarrow
+\text{repetir}
+}
+\]</span></p>
+<p>No <strong>Gradient Boosting</strong>, a correção é guiada por</p>
+<p><span class="math display">\[
+\boxed{
+r_i^{(b)}
+=
+-
+\left.
+\frac{\partial L(y_i,g)}
+{\partial g}
+\right|_{g=\hat g^{(b-1)}(\mathbf{x}_i)}
+}
+\]</span></p>
+</section><section id="boosting-a-ideia-que-deve-ficar-1" class="slide level2"><h2>Boosting: a ideia que deve ficar</h2>
 <ul>
-<li>evitam overfitting em cada etapa</li>
-<li>permitem correções graduais</li>
-<li>tornam o aprendizado mais estável</li>
+<li>perda quadrática <span class="math inline">\(\Rightarrow\)</span> resíduos;</li>
+<li>log-loss <span class="math inline">\(\Rightarrow\)</span> pseudo-resíduos de classificação;</li>
+<li>
+<span class="math inline">\(\lambda\)</span> controla o tamanho de cada passo;</li>
+<li>
+<span class="math inline">\(B\)</span> controla quantas correções são acumuladas;</li>
+<li>a profundidade controla a complexidade de cada correção.</li>
 </ul>
-<p>Se você usar modelos muito complexos (ex: árvores profundas):</p>
-<p>👉 boosting pode superajustar rapidamente</p>
-</section><section class="slide level2">
-<img data-src="semana_07_arvores_ensembles_v2_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section></section><section><section id="três-ensembles-três-mecanismos" class="title-slide slide level1 center"><h1>Três ensembles, três mecanismos</h1>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p><strong>Bagging/RF:</strong> construir várias árvores e depois agregá-las.</p>
+<p><strong>Boosting:</strong> construir cada nova árvore para melhorar o que já foi aprendido.</p>
+</div>
+</div>
+</div>
+</section></section><section><section id="três-ensembles-três-mecanismos" class="title-slide slide level1 center"><h1>Três ensembles, três mecanismos</h1>
 
 </section><section id="bagging-random-forest-e-boosting" class="slide level2"><h2>Bagging, Random Forest e Boosting</h2>
 <table class="caption-top">

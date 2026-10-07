@@ -12878,7 +12878,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#de-funções-suaves-para-regras",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "De funções suaves para regras",
-    "text": "De funções suaves para regras\nAté aqui, aproximamos \\(g(\\mathbf{x})\\) usando funções suaves:\n\nsplines\nregressão local\nkernels\n\nÁrvores seguem outra lógica:\n\\[\n\\boxed{\n\\text{dividir o espaço de } \\mathbf{x}\n\\longrightarrow\n\\text{formar regiões homogêneas}\n\\longrightarrow\n\\text{predizer dentro de cada região}\n}\n\\]"
+    "text": "De funções suaves para regras\nAté aqui, aproximamos \\(g(\\mathbf{x})\\) usando funções suaves:\n\nsplines\nregressão local\nkernels\n\nÁrvores seguem outra lógica:\n\\[\n\\small\n\\boxed{\n\\text{dividir o espaço de } \\mathbf{x}\n\\longrightarrow\n\\text{formar regiões homogêneas}\n\\longrightarrow\n\\text{predizer dentro de cada região}\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#de-funções-suaves-para-regras-1",
@@ -12899,7 +12899,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Nós, ramos, folhas e regiões",
-    "text": "Nós, ramos, folhas e regiões\n\n\n\n\n\n\n\nCada caminho da raiz até uma folha define uma região \\(\\mathcal{R}_m\\). Quatro folhas correspondem às regiões \\(\\mathcal{R}_1,\\ldots,\\mathcal{R}_4\\)."
+    "text": "Nós, ramos, folhas e regiões\n\n\n\n\n\n\n\n\nCada caminho da raiz até uma folha define uma região \\(\\mathcal{R}_m\\). Quatro folhas correspondem às regiões \\(\\mathcal{R}_1,\\ldots,\\mathcal{R}_4\\)."
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#nós-ramos-folhas-e-regiões-1",
@@ -13004,7 +13004,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#poda-pruning",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Poda (pruning)",
-    "text": "Poda (pruning)\nPara regressão, uma forma de pensar na poda é:\n\\[\n\\boxed{\n\\text{erro da árvore}\n+\n\\alpha\\times\\text{complexidade}\n}\n\\]\nou, mais especificamente,\n\\[\n\\sum_{m=1}^{|T|}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n+\n\\alpha|T|\n\\]\n\n\n\\(\\alpha\\) pequeno \\(\\rightarrow\\) árvore maior\n\n\\(\\alpha\\) grande \\(\\rightarrow\\) árvore menor"
+    "text": "Poda (pruning)\nPara regressão, uma forma de pensar na poda é:\n\\[\n\\boxed{\n\\text{erro da árvore}\n+\n\\alpha\\times\\text{complexidade}\n}\n\\]\nou, mais especificamente,\n\\[\n\\sum_{m=1}^{|T|}\n\\sum_{i:\\mathbf{x}_i\\in\\mathcal{R}_m}\n(y_i-\\bar y_m)^2\n+\n\\alpha|T|\n\\]\n\n\n\\(\\alpha\\) pequeno \\(\\rightarrow\\) árvore maior\n\n\\(\\alpha\\) grande \\(\\rightarrow\\) árvore menor\n\n\\(T:\\) árvore\n\n\\(|T|:\\) número de folhas (nós terminais) de \\(T\\)"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#poda-pruning-1",
@@ -13025,28 +13025,28 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que combinar árvores?",
-    "text": "Por que combinar árvores?\nConsidere dois estimadores \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\).\nDefinimos o estimador combinado:\n\\[\ng(\\mathbf{x}) = \\frac{g_1(\\mathbf{x}) + g_2(\\mathbf{x})}{2}\n\\]\nO erro esperado é:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{4}\\mathbb{V}(g_1(\\mathbf{x}) + g_2(\\mathbf{x}))\n+ \\text{bias}^2\n\\]"
+    "text": "Por que combinar árvores?\nImagine que treinamos duas árvores de regressão e, para uma mesma entrada \\(\\mathbf{x}\\), elas produzam, \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\). Podemos combinar suas previsões pela média:\n\\[\n\\boxed{\ng(\\mathbf{x})\n=\n\\frac{g_1(\\mathbf{x})+g_2(\\mathbf{x})}{2}\n}\n\\]\nSe ambas têm o mesmo valor esperado,\n\\[\n\\mathbb{E}[g_1(\\mathbf{x})]\n=\n\\mathbb{E}[g_2(\\mathbf{x})]\n=\n\\mu_g(\\mathbf{x}),\n\\]\nentão\n\\[\n\\mathbb{E}[g(\\mathbf{x})]\n=\n\\frac{\n\\mathbb{E}[g_1(\\mathbf{x})]\n+\n\\mathbb{E}[g_2(\\mathbf{x})]\n}{2}\n=\n\\mu_g(\\mathbf{x})\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-1",
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que combinar árvores?",
-    "text": "Por que combinar árvores?\nSe \\(g_1(\\mathbf{x})\\) e \\(g_2(\\mathbf{x})\\) são:\n\nnão viesados\n\ncom mesma variância\n\nnão correlacionados\n\nentão:\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n=\n\\mathbb{V}(\\boldsymbol{y} \\mid \\mathbf{x})\n+ \\frac{1}{2}\\mathbb{V}(g_i(\\mathbf{x}))\n\\]\nConclusão\n\\[\n\\mathbb{E}\\big[(\\boldsymbol{y} - g(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\le\n\\mathbb{E}\\big[(\\boldsymbol{y} - g_i(\\mathbf{x}))^2 \\mid \\mathbf{x}\\big]\n\\]"
+    "text": "Por que combinar árvores?\nPortanto,\n\\[\n\\boxed{\n\\operatorname{Bias}[g(\\mathbf{x})]\n=\n\\mu_g(\\mathbf{x})-f(\\mathbf{x})\n}\n\\]\n\n\n\n\n\n\nA média não corrige um viés comum às árvores.\nSe \\(g_1\\) e \\(g_2\\) têm o mesmo viés, a combinação mantém esse viés, mas pode reduzir a variância.\n\n\n\nA variância da previsão combinada é\n\\[\n\\operatorname{Var}\\!\\left[g(\\mathbf{x})\\right]\n=\n\\frac{1}{4}\n\\left[\n\\operatorname{Var}(g_1)\n+\n\\operatorname{Var}(g_2)\n+\n2\\operatorname{Cov}(g_1,g_2)\n\\right]\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-2",
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-2",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Por que combinar árvores?",
-    "text": "Por que combinar árvores?\nAssim, combinar modelos:\n\nmantém o viés\n\nreduz a variância"
+    "text": "Por que combinar árvores?\nSe as árvores têm a mesma variância \\(\\sigma_g^2\\) e correlação \\(\\rho\\),\n\\[\n\\boxed{\n\\operatorname{Var}\\!\\left[g(\\mathbf{x})\\right]\n=\n\\frac{\\sigma_g^2}{2}(1+\\rho)\n}\n\\]\n\n\n\n\n\n\nIdeia central: fazer a média reduz a variância, mas o ganho é maior quando as árvores são menos correlacionadas.\n\\[\n\\rho \\downarrow\n\\quad\\Longrightarrow\\quad\n\\operatorname{Var}[g(\\mathbf{x})]\\downarrow\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#três-maneiras-de-combinar-árvores",
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#três-maneiras-de-combinar-árvores",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Três maneiras de combinar árvores",
-    "text": "Três maneiras de combinar árvores\nOs ensembles respondem de formas diferentes:\n\\[\n\\boxed{\\text{Bagging: construir em paralelo e agregar}}\n\\]\n\\[\n\\boxed{\\text{Random Forest: descorrelacionar e agregar}}\n\\]\n\\[\n\\boxed{\\text{Boosting: construir correções sequenciais}}\n\\]\nDurante os próximos slides, acompanhe duas perguntas:\n\nComo cada nova árvore é construída?\nComo as árvores são combinadas?"
+    "text": "Três maneiras de combinar árvores\nOs métodos diferem na forma de construir e combinar as árvores:\n\\[\n\\boxed{\\text{Bagging: construir em paralelo} \\;\\longrightarrow\\; \\text{agregar}}\n\\]\n\\[\n\\boxed{\\text{Random Forest: construir em paralelo + descorrelacionar} \\;\\longrightarrow\\; \\text{agregar}}\n\\]\n\\[\n\\boxed{\\text{Boosting: construir sequencialmente} \\;\\longrightarrow\\; \\text{acumular}}\n\\]\n\n\n\n\n\n\nQual é a ideia de cada estratégia?\nBagging: reduzir a variância pela agregação de árvores\nRandom Forest: reduzir a correlação entre as árvores, potencializando a redução da variância\nBoosting: melhorar progressivamente o modelo, adicionando novas árvores de forma sequencial"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-bootstrap-aggregating-1",
@@ -13060,7 +13060,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#como-agregamos",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Como agregamos?",
-    "text": "Como agregamos?\n\n\nRegressão\nCada árvore fornece um número:\n\\[\n\\hat y_b(\\mathbf{x}).\n\\]\nAgregamos pela média:\n\\[\n\\boxed{\n\\hat y_{\\text{bag}}(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat y_b(\\mathbf{x})\n}\n\\]\n\nClassificação\nCada árvore fornece classe ou probabilidades.\nPodemos usar:\n\\[\n\\boxed{\\text{voto majoritário}}\n\\]\nou, preferencialmente, promediar probabilidades:\n\\[\n\\boxed{\n\\hat p_k(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat p_{bk}(\\mathbf{x})\n}\n\\]"
+    "text": "Como agregamos?\n\n\nRegressão\nCada árvore fornece um número:\n\\[\n\\hat y_b(\\mathbf{x})\n\\]\nAgregamos pela média:\n\\[\n\\boxed{\n\\hat y_{\\text{bag}}(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat y_b(\\mathbf{x})\n}\n\\]\n\nClassificação\nCada árvore fornece classe ou probabilidades.\nPodemos usar:\n\\[\n\\boxed{\\text{voto majoritário}}\n\\]\nou, preferencialmente, promediar probabilidades:\n\\[\n\\boxed{\n\\hat p_k(\\mathbf{x})\n=\n\\frac1B\\sum_{b=1}^{B}\\hat p_{bk}(\\mathbf{x})\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-em-regressão-veja-a-estabilização",
@@ -13081,7 +13081,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#bagging-em-classificação",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Bagging em classificação",
-    "text": "Bagging em classificação\nO mecanismo é o mesmo:\n\\[\n\\text{bootstrap}\n\\rightarrow\n\\text{árvore de classificação}\n\\rightarrow\n\\text{probabilidade/voto}\n\\rightarrow\n\\text{agregação}.\n\\]\nO que muda em relação à regressão?\n\n\nEtapa\nRegressão\nClassificação\n\n\n\nsplit\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nproporções/classes\n\n\nagregação\nmédia de \\(\\hat y\\)\n\nmédia de probabilidades/voto"
+    "text": "Bagging em classificação\nO mecanismo é o mesmo:\n\\[\n\\text{bootstrap}\n\\rightarrow\n\\text{árvore de classificação}\n\\rightarrow\n\\text{probabilidade/voto}\n\\rightarrow\n\\text{agregação}\n\\]\nO que muda em relação à regressão?\n\n\nEtapa\nRegressão\nClassificação\n\n\n\nsplit\nRSS/variância\nGini/entropia\n\n\nfolha\nmédia\nproporções/classes\n\n\nagregação\nmédia de \\(\\hat y\\)\n\nmédia de probabilidades/voto"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-limite-do-bagging",
@@ -13130,14 +13130,14 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "OOB: validação “embutida” no bootstrap",
-    "text": "OOB: validação “embutida” no bootstrap\nEm cada amostra bootstrap, algumas observações ficam de fora.\nElas são chamadas de out-of-bag (OOB).\nPara uma observação \\(i\\):\n\nuse apenas árvores em que \\(i\\) ficou fora do bootstrap;\nagregue suas previsões;\ncompare com \\(y_i\\)."
+    "text": "OOB: validação “embutida” no bootstrap\nPara cada árvore \\(T_b\\), a amostra bootstrap deixa algumas observações de fora.\nElas são chamadas de out-of-bag (OOB):\n\\[\n\\boxed{\nOOB_b\n=\n\\{\\text{observações não utilizadas no treinamento de }T_b\\}\n}\n\\]\nEm média, aproximadamente 36,8% das observações ficam OOB para cada árvore."
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-1",
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "OOB: validação “embutida” no bootstrap",
-    "text": "OOB: validação “embutida” no bootstrap\nIsso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.\n\n\n\n\n\n\nNota\n\n\nOOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final."
+    "text": "OOB: validação “embutida” no bootstrap\nPara avaliar uma observação \\(i\\):\n\nselecione apenas as árvores para as quais \\(i\\) ficou OOB;\nobtenha as previsões dessas árvores para \\(\\mathbf{x}_i\\);\n\nagregue essas previsões, obtendo \\(\\hat y_i^{OOB}\\);\ncompare \\(\\hat y_i^{OOB}\\) com o valor observado \\(y_i\\), usando, por exemplo,\n\n\\[\nRMSE_{OOB}\n=\n\\sqrt{\n\\frac{1}{n}\n\\sum_{i=1}^{n}\n\\left(y_i-\\hat{y}_i^{OOB}\\right)^2\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-mudança-fundamental",
@@ -13172,21 +13172,21 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-veja-o-modelo-aprender",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Boosting em regressão: veja o modelo aprender",
-    "text": "Boosting em regressão: veja o modelo aprender\n\n\n\n\n\n\n\nImportante\n\n\nA linha da nova árvore não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o modelo acumulado."
+    "text": "Boosting em regressão: veja o modelo aprender\n\n\n\n\n\n\n\n\nA nova árvore não representa a previsão final.\nEla representa apenas a correção \\(\\hat h_b(\\mathbf{x})\\).\nA previsão é dada pelo modelo acumulado \\(\\hat g^{(b)}(\\mathbf{x})\\)."
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação",
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "E na classificação?",
-    "text": "E na classificação?\nAqui está uma diferença importante.\nEm classificação, não faz sentido usar simplesmente\n\\[\ny_i-\\hat y_i\n\\]\ncomo se as classes fossem números contínuos.\nUsamos uma função de perda de classificação, como a log-loss."
+    "text": "E na classificação?\nPara \\(Y\\in\\{0,1\\}\\), não calculamos um resíduo entre a classe observada e uma classe predita como se fossem valores contínuos.\nEm vez disso, trabalhamos com uma perda apropriada para classificação.\nPara classificação binária, uma escolha comum é a log-loss:\n\\[\n\\boxed{\nL(y,p)\n=\n-\\left[\ny\\log(p)\n+\n(1-y)\\log(1-p)\n\\right]\n}\n\\]\nem que\n\\[\np=P(Y=1\\mid\\mathbf{x})\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-1",
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "E na classificação?",
-    "text": "E na classificação?\nNo gradient boosting, cada nova árvore é ajustada ao gradiente negativo da perda (pseudo-resíduo).\n\\[\n\\boxed{\n\\text{regressão quadrática: pseudo-resíduo = resíduo usual}\n}\n\\]\n\\[\n\\boxed{\n\\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}\n}\n\\]"
+    "text": "E na classificação?\nO princípio continua sendo o mesmo:\n\\[\n\\boxed{\n\\text{encontrar a direção que reduz a perda}\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária",
@@ -13214,7 +13214,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-papel-do-learning-rate-lambda",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O papel do learning rate \\(\\lambda\\)\n",
-    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção.\nO learning rate controla quanto dessa correção será incorporado:\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\npassos menores\naprendizado mais gradual\nnormalmente exige mais árvores\ntende a oferecer maior controle\n\n\n\n\\(\\lambda\\) grande\n\npassos maiores\naprende mais rapidamente\npode precisar de menos árvores\npode sobreajustar mais cedo"
+    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção \\(\\hat h_b(\\mathbf{x})\\).\nO learning rate determina quanto dessa correção será incorporado:\n\\[\n\\small\n\\boxed{\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n}\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\ncorreções menores;\naprendizado mais gradual;\nnormalmente exige mais árvores;\nmaior controle sobre o processo.\n\n\n\n\\(\\lambda\\) grande\n\ncorreções maiores;\naprendizado mais rápido;\npode exigir menos árvores;\npode sobreajustar mais cedo.\n\n\n\n\n\n\n\n\n\\(\\lambda\\) controla o tamanho do passo, não a direção da correção."
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-o-papel-do-learning-rate-lambda",
@@ -13355,5 +13355,292 @@
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "SVR: forma da solução",
     "text": "SVR: forma da solução\n\n\nDentro do tubo\nEm geral,\n\\[\n\\alpha_i=\\alpha_i^*=0\n\\]\ne a observação não participa diretamente da solução\n\nNa borda ou fora do tubo\nPodemos ter\n\\[\n\\alpha_i-\\alpha_i^*\\neq0\n\\]\nEssas observações são os vetores de suporte\n\n\n\n\n\n\n\nIdeia central\n\n\nA função estimada pelo SVR é construída principalmente a partir das observações que definem ou violam o tubo de tolerância."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-3",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-3",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nAssim, combinar modelos:\n\nmantém o viés\n\nreduz a variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-4",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-combinar-árvores-4",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que combinar árvores?",
+    "text": "Por que combinar árvores?\nAssim, combinar modelos:\n\nmantém o viés\n\nreduz a variância"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#combinar-árvores-o-que-acontece-com-o-viés",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#combinar-árvores-o-que-acontece-com-o-viés",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Combinar árvores: o que acontece com o viés?",
+    "text": "Combinar árvores: o que acontece com o viés?\nConsidere \\(B\\) árvores \\(g_1(\\mathbf{x}),\\ldots,g_B(\\mathbf{x})\\) e sua média:\n\\[\n\\boxed{\ng(\\mathbf{x})\n=\n\\frac{1}{B}\\sum_{b=1}^{B}g_b(\\mathbf{x})\n}\n\\]\nSe as árvores têm o mesmo valor esperado,\n\\[\n\\mathbb{E}[g_b(\\mathbf{x})]=\\mu_g(\\mathbf{x}),\n\\]\nentão, pela linearidade da esperança,\n\\[\n\\mathbb{E}[g(\\mathbf{x})]\n=\n\\frac{1}{B}\\sum_{b=1}^{B}\\mathbb{E}[g_b(\\mathbf{x})]\n=\n\\mu_g(\\mathbf{x}).\n\\]\nLogo,\n\\[\n\\boxed{\n\\operatorname{Bias}[g(\\mathbf{x})]\n=\n\\mu_g(\\mathbf{x})-f(\\mathbf{x})\n}\n\\]\n\n\n\n\n\n\nA média não elimina um erro sistemático comum às árvores.\n\\(\\Rightarrow\\) O viés permanece, aproximadamente, o mesmo.\n\\(\\Rightarrow\\) O principal ganho da combinação será a redução da variância."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#três-maneiras-de-combinar-árvores-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#três-maneiras-de-combinar-árvores-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Três maneiras de combinar árvores",
+    "text": "Três maneiras de combinar árvores\nOs ensembles respondem de formas diferentes:\n\\[\n\\boxed{\\text{Bagging: construir em paralelo e agregar}}\n\\]\n\\[\n\\boxed{\\text{Random Forest: descorrelacionar e agregar}}\n\\]\n\\[\n\\boxed{\\text{Boosting: construir correções sequenciais}}\n\\]\nDurante os próximos slides, acompanhe duas perguntas:\n\nComo cada nova árvore é construída?\nComo as árvores são combinadas?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\n\n\nRegressão\nAgregamos pela média:\n\\[\n\\hat y_i^{OOB}\n=\n\\frac{1}{|\\mathcal B_i|}\n\\sum_{b\\in\\mathcal B_i}\nT_b(\\mathbf{x}_i)\n\\]\n\nClassificação\nAgregamos por votação ou pelas probabilidades estimadas:\n\\[\n\\hat y_i^{OOB}\n=\n\\operatorname{classe}\n\\left(\n\\{T_b(\\mathbf{x}_i):b\\in\\mathcal B_i\\}\n\\right)\n\\]\n\n\n\n\n\n\n\nIdeia central: cada observação é avaliada somente pelas árvores que não a utilizaram no treinamento.\n\\(\\Rightarrow\\) O próprio bootstrap fornece uma estimativa interna do desempenho preditivo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-3",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#oob-validação-embutida-no-bootstrap-3",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "OOB: validação “embutida” no bootstrap",
+    "text": "OOB: validação “embutida” no bootstrap\nIsso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.\n\n\n\n\n\n\nNota\n\n\nOOB é especialmente natural em Bagging e Random Forest. Ainda assim, um conjunto de teste independente continua sendo útil para a avaliação final."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-árvores-que-aprendem-sequencialmente",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-árvores-que-aprendem-sequencialmente",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: árvores que aprendem sequencialmente",
+    "text": "Boosting: árvores que aprendem sequencialmente\nBagging e Random Forest constroem árvores aproximadamente em paralelo.\nNo boosting, cada nova árvore depende do modelo que já foi construído:\n\\[\n\\hat h_1\n\\;\\longrightarrow\\;\n\\hat h_2\n\\;\\longrightarrow\\;\n\\hat h_3\n\\;\\longrightarrow\\;\\cdots\n\\]\nA ideia é simples:\n\n\n\n\n\n\nCada nova árvore tenta aprender uma correção para os erros que ainda permanecem no modelo.\n\n\n\nAssim, em vez de combinar árvores independentes,\n\\[\n\\boxed{\n\\text{modelo atual}\n\\;\\longrightarrow\\;\n\\text{erro atual}\n\\;\\longrightarrow\\;\n\\text{nova árvore}\n\\;\\longrightarrow\\;\n\\text{modelo melhorado}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-modelo-atual-uma-correção",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-modelo-atual-uma-correção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: modelo atual + uma correção",
+    "text": "Boosting: modelo atual + uma correção\nNa iteração \\(b\\), já temos um modelo acumulado:\n\\[\n\\hat g^{(b-1)}(\\mathbf{x})\n\\]\nA nova árvore \\(\\hat h_b(\\mathbf{x})\\) não precisa resolver todo o problema.\nEla aprende apenas uma correção.\nO modelo é atualizado por\n\\[\n\\boxed{\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda \\hat h_b(\\mathbf{x})\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-quanto-ainda-falta-corrigir",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-quanto-ainda-falta-corrigir",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: quanto ainda falta corrigir?",
+    "text": "Boosting em regressão: quanto ainda falta corrigir?\nConsidere a observação \\(i\\).\nO modelo atual prevê\n\\[\n\\hat g^{(b-1)}(\\mathbf{x}_i),\n\\]\nmas observamos \\(y_i\\)."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-nova-árvore-aprende-o-que-ainda-falta",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-nova-árvore-aprende-o-que-ainda-falta",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A nova árvore aprende o que ainda falta",
+    "text": "A nova árvore aprende o que ainda falta\nNa iteração \\(b\\), usamos os resíduos como nova resposta:\n\\[\n(\\mathbf{x}_i,r_i^{(b)}),\n\\qquad i=1,\\ldots,n\n\\]\nA nova árvore é ajustada para aproximar\n\\[\n\\boxed{\n\\hat h_b(\\mathbf{x}_i)\n\\approx\nr_i^{(b)}\n}\n\\]\nPortanto,\n\\[\n\\mathbf{x}_i\n\\longrightarrow\nr_i^{(b)}\n\\longrightarrow\n\\hat h_b(\\mathbf{x}_i)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#uma-iteração-do-boosting",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#uma-iteração-do-boosting",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Uma iteração do boosting",
+    "text": "Uma iteração do boosting\nNa iteração \\(b\\):\n\\[\n\\boxed{\n\\begin{array}{c}\n\\text{1. Modelo atual}\\\\[2mm]\n\\hat g^{(b-1)}(\\mathbf{x})\n\\end{array}\n}\n\\quad\\longrightarrow\\quad\n\\boxed{\n\\begin{array}{c}\n\\text{2. Calcular resíduos}\\\\[2mm]\nr_i^{(b)}\n=\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\end{array}\n}\n\\]\n\\[\n\\Downarrow\n\\]\n\\[\n\\boxed{\n\\begin{array}{c}\n\\text{3. Aprender a correção}\\\\[2mm]\n\\hat h_b(\\mathbf{x})\n\\end{array}\n}\n\\quad\\longrightarrow\\quad\n\\boxed{\n\\begin{array}{c}\n\\text{4. Atualizar}\\\\[2mm]\n\\hat g^{(b)}\n=\n\\hat g^{(b-1)}\n+\n\\lambda\\hat h_b\n\\end{array}\n}\n\\]\n\n\n\n\n\n\nDepois da atualização, calculamos novos erros e repetimos o processo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-construção-sequencial-do-modelo",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-construção-sequencial-do-modelo",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: construção sequencial do modelo",
+    "text": "Boosting: construção sequencial do modelo\n\n\n\n\n\n\n\n\nLeia a figura da esquerda para a direita:\nmodelo atual \\(\\rightarrow\\) erros restantes \\(\\rightarrow\\) nova árvore \\(\\rightarrow\\) pequena correção \\(\\rightarrow\\) novo modelo"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-os-resíduos-aparecem",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-os-resíduos-aparecem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que os resíduos aparecem?",
+    "text": "Por que os resíduos aparecem?\nAté agora usamos o resíduo\n\\[\nr_i^{(b)}\n=\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nMas isso não é uma escolha arbitrária.\nConsidere a perda quadrática:\n\\[\nL(y,g)=(y-g)^2\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#gradient-boosting-a-ideia-mais-geral",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#gradient-boosting-a-ideia-mais-geral",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Gradient Boosting: a ideia mais geral",
+    "text": "Gradient Boosting: a ideia mais geral\nAgora podemos generalizar.\nPara uma função de perda \\(L(y,g)\\), definimos o pseudo-resíduo:\n\\[\n\\boxed{\nr_i^{(b)}\n=\n-\n\\left.\n\\frac{\\partial L(y_i,g)}\n{\\partial g}\n\\right|_{\ng=\\hat g^{(b-1)}(\\mathbf{x}_i)\n}\n}\n\\]\nA nova árvore \\(\\hat h_b\\) tenta aprender esses pseudo-resíduos.\nDepois,\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-o-que-muda",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-o-que-muda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão e classificação: o que muda?",
+    "text": "Regressão e classificação: o que muda?\nA estrutura do algoritmo permanece a mesma:\n\\[\n\\boxed{\n\\text{modelo atual}\n\\rightarrow\n\\text{perda}\n\\rightarrow\n\\text{pseudo-resíduos}\n\\rightarrow\n\\text{nova árvore}\n\\rightarrow\n\\text{atualização}\n}\n\\]\nO que muda é principalmente a função de perda.\n\n\n\nRegressão\nClassificação binária\n\n\n\nResposta\n\\(y\\in\\mathbb R\\)\n\\(y\\in\\{0,1\\}\\)\n\n\nExemplo de perda\nquadrática\nlog-loss\n\n\nCorreção\nrelacionada a \\(y-\\hat g\\)\n\nrelacionada a \\(y-\\hat p\\)\n\n\n\nSaída final\nvalor contínuo\nprobabilidade/classe"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-score-e-probabilidade",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-score-e-probabilidade",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária: score e probabilidade",
+    "text": "Classificação binária: score e probabilidade\nNo Gradient Boosting binário, é útil distinguir o score acumulado\n\\[\nF^{(b)}(\\mathbf{x})\n\\]\nda probabilidade estimada.\nA probabilidade é obtida pela função logística:\n\\[\n\\boxed{\n\\hat p^{(b)}(\\mathbf{x})\n=\n\\frac{1}\n{1+\\exp[-F^{(b)}(\\mathbf{x})]}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-o-que-a-nova-árvore-aprende",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-o-que-a-nova-árvore-aprende",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária: o que a nova árvore aprende?",
+    "text": "Classificação binária: o que a nova árvore aprende?\nCom log-loss e\n\\[\n\\hat p_i^{(b-1)}\n=\nP(Y_i=1\\mid\\mathbf{x}_i),\n\\]\no gradiente negativo leva ao pseudo-resíduo\n\\[\n\\boxed{\nr_i^{(b)}\n=\ny_i-\\hat p_i^{(b-1)}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-a-mesma-lógica",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-a-mesma-lógica",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão e classificação: a mesma lógica",
+    "text": "Regressão e classificação: a mesma lógica\n\n\nRegressão\nPerda quadrática:\n\\[\nL(y,g)=(y-g)^2\n\\]\nPseudo-resíduo:\n\\[\nr_i^{(b)}\n\\propto\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nCorrigir o valor previsto.\n\nClassificação\nLog-loss:\n\\[\nL(y,p)\n=\n-[y\\log p+(1-y)\\log(1-p)]\n\\]\nPseudo-resíduo:\n\\[\nr_i^{(b)}\n=\ny_i-\\hat p_i^{(b-1)}\n\\]\nCorrigir a evidência/probabilidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#lambda-e-b-trabalham-juntos",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#lambda-e-b-trabalham-juntos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "\n\\(\\lambda\\) e \\(B\\) trabalham juntos",
+    "text": "\\(\\lambda\\) e \\(B\\) trabalham juntos"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-usar-árvores-simples",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-usar-árvores-simples",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que usar árvores simples?",
+    "text": "Por que usar árvores simples?\nCada árvore do boosting precisa aprender apenas uma parte da correção.\nPor isso, normalmente utilizamos árvores relativamente rasas como modelos base.\nUma árvore simples:\n\ncaptura uma estrutura que ainda falta ao modelo;\nevita correções excessivamente complexas em uma única etapa;\npermite que o padrão seja construído gradualmente."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#profundidade-da-árvore-complexidade-da-correção",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#profundidade-da-árvore-complexidade-da-correção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Profundidade da árvore: complexidade da correção",
+    "text": "Profundidade da árvore: complexidade da correção"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-a-ideia-que-deve-ficar",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-a-ideia-que-deve-ficar",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: a ideia que deve ficar",
+    "text": "Boosting: a ideia que deve ficar\nBoosting constrói o modelo sequencialmente:\n\\[\n\\boxed{\n\\text{modelo atual}\n\\rightarrow\n\\text{avaliar a perda}\n\\rightarrow\n\\text{aprender uma correção}\n\\rightarrow\n\\text{atualizar}\n\\rightarrow\n\\text{repetir}\n}\n\\]\nNo Gradient Boosting, a correção é guiada por\n\\[\n\\boxed{\nr_i^{(b)}\n=\n-\n\\left.\n\\frac{\\partial L(y_i,g)}\n{\\partial g}\n\\right|_{g=\\hat g^{(b-1)}(\\mathbf{x}_i)}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-veja-o-modelo-aprender-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-veja-o-modelo-aprender-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: veja o modelo aprender",
+    "text": "Boosting em regressão: veja o modelo aprender\n\n\n\n\n\n\n\nImportante\n\n\nA linha da nova árvore não é a previsão final. Ela representa apenas a correção adicionada naquela iteração. A previsão é o modelo acumulado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E na classificação?",
+    "text": "E na classificação?\nAqui está uma diferença importante.\nEm classificação, não faz sentido usar simplesmente\n\\[\ny_i-\\hat y_i\n\\]\ncomo se as classes fossem números contínuos.\nUsamos uma função de perda de classificação, como a log-loss."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-papel-do-learning-rate-lambda-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-papel-do-learning-rate-lambda-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O papel do learning rate \\(\\lambda\\)\n",
+    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção.\nO learning rate controla quanto dessa correção será incorporado:\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\npassos menores\naprendizado mais gradual\nnormalmente exige mais árvores\ntende a oferecer maior controle\n\n\n\n\\(\\lambda\\) grande\n\npassos maiores\naprende mais rapidamente\npode precisar de menos árvores\npode sobreajustar mais cedo"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-modelo-atual-uma-correção-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-modelo-atual-uma-correção-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: modelo atual + uma correção",
+    "text": "Boosting: modelo atual + uma correção\nem que:\n\n\n\\(\\hat g^{(b-1)}(\\mathbf{x})\\): modelo atual;\n\n\\(\\hat h_b(\\mathbf{x})\\): correção aprendida pela nova árvore;\n\n\\(\\lambda\\): learning rate.\n\n\n\n\n\n\n\nIdeia central: boosting constrói uma função complexa acumulando muitas correções simples."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-quanto-ainda-falta-corrigir-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-quanto-ainda-falta-corrigir-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em regressão: quanto ainda falta corrigir?",
+    "text": "Boosting em regressão: quanto ainda falta corrigir?\nA diferença é\n\\[\n\\boxed{\nr_i^{(b)}\n=\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n}\n\\]\n\n\n\\(r_i^{(b)}&gt;0\\)\nO modelo previu abaixo do observado.\n\\[\ny_i &gt;\n\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nA previsão precisa aumentar.\n\n\\(r_i^{(b)}&lt;0\\)\nO modelo previu acima do observado.\n\\[\ny_i &lt;\n\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nA previsão precisa diminuir.\n\n\n\n\n\n\n\nO resíduo informa simultaneamente a direção e o tamanho da correção necessária."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-nova-árvore-aprende-o-que-ainda-falta-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-nova-árvore-aprende-o-que-ainda-falta-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "A nova árvore aprende o que ainda falta",
+    "text": "A nova árvore aprende o que ainda falta\nDepois incorporamos uma fração dessa correção:\n\\[\n\\boxed{\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n}\n\\]\n\n\n\n\n\n\nA nova árvore não prevê diretamente \\(Y\\): ela aprende como corrigir o modelo atual."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-os-resíduos-aparecem-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-os-resíduos-aparecem-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que os resíduos aparecem?",
+    "text": "Por que os resíduos aparecem?\nO gradiente da perda em relação à previsão \\(g\\) é\n\\[\n\\boxed{\n\\nabla_g L(y,g)\n=\n\\frac{\\partial L(y,g)}{\\partial g}\n=\n-2(y-g)\n}\n\\]\n\n\n\n\n\n\nAqui, como derivamos em relação a uma única quantidade \\(g\\), o gradiente é simplesmente a derivada da perda em relação à previsão.\nO gradiente indica a direção de aumento da perda."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-os-resíduos-aparecem-2",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-os-resíduos-aparecem-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que os resíduos aparecem?",
+    "text": "Por que os resíduos aparecem?\nLogo, a direção oposta ao gradiente é\n\\[\n-\\frac{\\partial L(y,g)}{\\partial g}\n=\n2(y-g)\n\\]\nPortanto,\n\\[\n\\boxed{\n-\\frac{\\partial L}{\\partial g}\n\\propto\ny-g\n=\nr\n}\n\\]\n\n\n\n\n\n\nCom perda quadrática, seguir o gradiente negativo equivale a aprender os resíduos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#gradient-boosting-a-ideia-mais-geral-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#gradient-boosting-a-ideia-mais-geral-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Gradient Boosting: a ideia mais geral",
+    "text": "Gradient Boosting: a ideia mais geral\nAssim,\n\\[\n\\boxed{\n\\text{Gradient Boosting}\n=\n\\text{corrigir o modelo na direção que reduz a perda}\n}\n\\]\n\n\n\n\n\n\nO resíduo usual é apenas um caso particular do pseudo-resíduo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-o-que-muda-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-o-que-muda-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão e classificação: o que muda?",
+    "text": "Regressão e classificação: o que muda?\n\n\n\n\n\n\nBoosting não é essencialmente um algoritmo de regressão ou classificação.\nEle é uma estratégia para reduzir iterativamente uma função de perda."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-3",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#e-na-classificação-3",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "E na classificação?",
+    "text": "E na classificação?\nNo gradient boosting, cada nova árvore é ajustada ao gradiente negativo da perda (pseudo-resíduo).\n\\[\n\\boxed{\n\\text{regressão quadrática: pseudo-resíduo = resíduo usual}\n}\n\\]\n\\[\n\\boxed{\n\\text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-score-e-probabilidade-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-score-e-probabilidade-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária: score e probabilidade",
+    "text": "Classificação binária: score e probabilidade\nAs árvores são acumuladas na escala do score:\n\\[\n\\boxed{\nF^{(b)}(\\mathbf{x})\n=\nF^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n}\n\\]\ne o score é então convertido em probabilidade.\n\n\n\n\n\n\nA soma das árvores não precisa estar limitada entre \\(0\\) e \\(1\\).\nÉ a transformação logística que produz uma probabilidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-o-que-a-nova-árvore-aprende-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#classificação-binária-o-que-a-nova-árvore-aprende-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Classificação binária: o que a nova árvore aprende?",
+    "text": "Classificação binária: o que a nova árvore aprende?\nPor exemplo:\n\n\n\\(y_i\\)\n\\(\\hat p_i^{(b-1)}\\)\n\\(r_i^{(b)}\\)\nInterpretação\n\n\n\n1\n0,95\n0,05\nquase nada a corrigir\n\n\n1\n0,20\n0,80\naumentar evidência para classe 1\n\n\n0\n0,10\n-0,10\npequena correção\n\n\n0\n0,85\n-0,85\nreduzir evidência para classe 1\n\n\n\n\n\n\n\n\n\nQuanto mais confiante e errada estiver a previsão atual, maior será a magnitude da correção."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-a-mesma-lógica-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#regressão-e-classificação-a-mesma-lógica-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão e classificação: a mesma lógica",
+    "text": "Regressão e classificação: a mesma lógica\n\n\n\n\n\n\nO que permanece:\nmodelo atual + pequena correção\nO que muda:\na perda e, consequentemente, o pseudo-resíduo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#lambda-e-b-trabalham-juntos-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#lambda-e-b-trabalham-juntos-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "\n\\(\\lambda\\) e \\(B\\) trabalham juntos",
+    "text": "\\(\\lambda\\) e \\(B\\) trabalham juntos\nNa figura, todos os modelos possuem o mesmo número de árvores:\n\\[\nB=100\n\\]\nQuando \\(\\lambda\\) aumenta, cada árvore exerce maior influência sobre o modelo acumulado.\n\n\n\n\n\n\nNão faz sentido escolher \\(\\lambda\\) isoladamente.\n\\[\n\\boxed{\n\\lambda\\;\\text{e}\\;B\n\\quad\\text{devem ser analisados conjuntamente}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-usar-árvores-simples-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-usar-árvores-simples-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que usar árvores simples?",
+    "text": "Por que usar árvores simples?\nUm caso extremo é o stump:\n\\[\n\\boxed{\\text{stump}=\\text{árvore com apenas um split}}\n\\]\n\n\n\n\n\n\nUm modelo base não precisa ser excelente sozinho.\nEle precisa fornecer uma correção útil quando combinado com as demais árvores."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#profundidade-da-árvore-complexidade-da-correção-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#profundidade-da-árvore-complexidade-da-correção-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Profundidade da árvore: complexidade da correção",
+    "text": "Profundidade da árvore: complexidade da correção\n\n\nÁrvores rasas\nCorreções mais simples e graduais.\n\\[\n\\text{menor complexidade por etapa}\n\\]\n\nÁrvores profundas\nCada árvore consegue aprender correções muito mais complexas.\n\\[\n\\text{maior risco de aprender ruído}\n\\]\n\n\n\n\n\n\n\nA complexidade do boosting depende conjuntamente de:\n\\[\n\\boxed{\n\\lambda,\\qquad B,\\qquad\n\\text{complexidade das árvores}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-a-ideia-que-deve-ficar-1",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-a-ideia-que-deve-ficar-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting: a ideia que deve ficar",
+    "text": "Boosting: a ideia que deve ficar\n\nperda quadrática \\(\\Rightarrow\\) resíduos;\nlog-loss \\(\\Rightarrow\\) pseudo-resíduos de classificação;\n\n\\(\\lambda\\) controla o tamanho de cada passo;\n\n\\(B\\) controla quantas correções são acumuladas;\na profundidade controla a complexidade de cada correção.\n\n\n\n\n\n\n\nBagging/RF: construir várias árvores e depois agregá-las.\nBoosting: construir cada nova árvore para melhorar o que já foi aprendido."
+  },
+  {
+    "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-classificação-veja-a-correção-acontecer",
+    "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-classificação-veja-a-correção-acontecer",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Boosting em classificação: veja a correção acontecer",
+    "text": "Boosting em classificação: veja a correção acontecer"
   }
 ]
