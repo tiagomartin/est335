@@ -2396,6 +2396,7 @@ mas observamos $y_i$.
 A diferença é
 
 $$
+\small
 \boxed{
 r_i^{(b)}
 =
@@ -2405,12 +2406,13 @@ $$
 
 :::: {.columns}
 
-::: {.column width="48%"}
+::: {.column width="50%"}
 ### $r_i^{(b)}>0$
 
-O modelo previu **abaixo** do observado.
+O modelo previu **abaixo** do observado
 
 $$
+\small
 y_i >
 \hat g^{(b-1)}(\mathbf{x}_i)
 $$
@@ -2418,12 +2420,13 @@ $$
 A previsão precisa **aumentar**.
 :::
 
-::: {.column width="48%"}
+::: {.column width="50%"}
 ### $r_i^{(b)}<0$
 
-O modelo previu **acima** do observado.
+O modelo previu **acima** do observado
 
 $$
+\small
 y_i <
 \hat g^{(b-1)}(\mathbf{x}_i)
 $$
@@ -2549,8 +2552,6 @@ Depois da atualização, calculamos **novos erros** e repetimos o processo.
 
 
 ::: {.callout-note appearance="simple"}
-Leia a figura da esquerda para a direita:
-
 **modelo atual $\rightarrow$ erros restantes $\rightarrow$ nova árvore $\rightarrow$ pequena correção $\rightarrow$ novo modelo**
 :::
 
@@ -2935,7 +2936,6 @@ Cada árvore sugere uma correção $\hat h_b(\mathbf{x})$.
 O *learning rate* determina **quanto dessa correção será incorporado**:
 
 $$
-\small
 \boxed{
 \hat g^{(b)}(\mathbf{x})
 =
@@ -2944,6 +2944,11 @@ $$
 \lambda\hat h_b(\mathbf{x})
 }
 $$
+
+
+
+## O papel do *learning rate* $\lambda$
+
 
 :::: {.columns}
 
@@ -3617,6 +3622,7 @@ $$
 Boosting constrói o modelo **sequencialmente**:
 
 $$
+\small
 \boxed{
 \text{modelo atual}
 \rightarrow
@@ -3809,6 +3815,7 @@ A mudança não está na ideia de "árvore". Está na **função de perda**, no 
 ## Fluxo de modelagem
 
 $$
+\small
 \boxed{
 \text{treino}
 \rightarrow

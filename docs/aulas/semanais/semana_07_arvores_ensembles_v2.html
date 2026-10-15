@@ -982,6 +982,7 @@ T_b(\mathbf{x}_i)
 </section><section id="boosting-em-regressão-quanto-ainda-falta-corrigir-1" class="slide level2"><h2>Boosting em regressão: quanto ainda falta corrigir?</h2>
 <p>A diferença é</p>
 <p><span class="math display">\[
+\small
 \boxed{
 r_i^{(b)}
 =
@@ -989,18 +990,20 @@ y_i-\hat g^{(b-1)}(\mathbf{x}_i)
 }
 \]</span></p>
 <div class="columns">
-<div class="column" style="width:48%;">
+<div class="column" style="width:50%;">
 <h3 id="r_ib0"><span class="math inline">\(r_i^{(b)}&gt;0\)</span></h3>
-<p>O modelo previu <strong>abaixo</strong> do observado.</p>
+<p>O modelo previu <strong>abaixo</strong> do observado</p>
 <p><span class="math display">\[
+\small
 y_i &gt;
 \hat g^{(b-1)}(\mathbf{x}_i)
 \]</span></p>
 <p>A previsão precisa <strong>aumentar</strong>.</p>
-</div><div class="column" style="width:48%;">
+</div><div class="column" style="width:50%;">
 <h3 id="r_ib0-1"><span class="math inline">\(r_i^{(b)}&lt;0\)</span></h3>
-<p>O modelo previu <strong>acima</strong> do observado.</p>
+<p>O modelo previu <strong>acima</strong> do observado</p>
 <p><span class="math display">\[
+\small
 y_i &lt;
 \hat g^{(b-1)}(\mathbf{x}_i)
 \]</span></p>
@@ -1119,7 +1122,6 @@ y_i-\hat g^{(b-1)}(\mathbf{x}_i)
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>Leia a figura da esquerda para a direita:</p>
 <p><strong>modelo atual <span class="math inline">\(\rightarrow\)</span> erros restantes <span class="math inline">\(\rightarrow\)</span> nova árvore <span class="math inline">\(\rightarrow\)</span> pequena correção <span class="math inline">\(\rightarrow\)</span> novo modelo</strong></p>
 </div>
 </div>
@@ -1479,7 +1481,6 @@ y_i-\hat p_i^{(b-1)}
 <p>Cada árvore sugere uma correção <span class="math inline">\(\hat h_b(\mathbf{x})\)</span>.</p>
 <p>O <em>learning rate</em> determina <strong>quanto dessa correção será incorporado</strong>:</p>
 <p><span class="math display">\[
-\small
 \boxed{
 \hat g^{(b)}(\mathbf{x})
 =
@@ -1488,6 +1489,8 @@ y_i-\hat p_i^{(b-1)}
 \lambda\hat h_b(\mathbf{x})
 }
 \]</span></p>
+</section><section id="o-papel-do-learning-rate-lambda-1" class="slide level2"><h2>O papel do <em>learning rate</em> <span class="math inline">\(\lambda\)</span>
+</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h4 id="lambda-pequeno">
@@ -1604,6 +1607,7 @@ B=100
 </section><section id="boosting-a-ideia-que-deve-ficar" class="slide level2"><h2>Boosting: a ideia que deve ficar</h2>
 <p>Boosting constrói o modelo <strong>sequencialmente</strong>:</p>
 <p><span class="math display">\[
+\small
 \boxed{
 \text{modelo atual}
 \rightarrow
@@ -1804,6 +1808,7 @@ r_i^{(b)}
 <li>maior sensibilidade à escolha dos hiperparâmetros</li>
 </ul></section><section id="fluxo-de-modelagem" class="slide level2"><h2>Fluxo de modelagem</h2>
 <p><span class="math display">\[
+\small
 \boxed{
 \text{treino}
 \rightarrow

@@ -13214,7 +13214,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-papel-do-learning-rate-lambda",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O papel do learning rate \\(\\lambda\\)\n",
-    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção \\(\\hat h_b(\\mathbf{x})\\).\nO learning rate determina quanto dessa correção será incorporado:\n\\[\n\\small\n\\boxed{\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n}\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\ncorreções menores;\naprendizado mais gradual;\nnormalmente exige mais árvores;\nmaior controle sobre o processo.\n\n\n\n\\(\\lambda\\) grande\n\ncorreções maiores;\naprendizado mais rápido;\npode exigir menos árvores;\npode sobreajustar mais cedo.\n\n\n\n\n\n\n\n\n\\(\\lambda\\) controla o tamanho do passo, não a direção da correção."
+    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção \\(\\hat h_b(\\mathbf{x})\\).\nO learning rate determina quanto dessa correção será incorporado:\n\\[\n\\boxed{\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-o-papel-do-learning-rate-lambda",
@@ -13277,7 +13277,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#fluxo-de-modelagem",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Fluxo de modelagem",
-    "text": "Fluxo de modelagem\n\\[\n\\boxed{\n\\text{treino}\n\\rightarrow\n\\text{reamostragem/validação}\n\\rightarrow\n\\text{ajuste de hiperparâmetros}\n\\rightarrow\n\\text{modelo final}\n\\rightarrow\n\\text{teste}\n}\n\\]\nExemplos de hiperparâmetros:\n\nárvore: profundidade, tamanho mínimo do nó, poda\nRandom Forest: \\(m_{\\text{try}}\\), tamanho mínimo do nó, número de árvores\nBoosting: \\(B\\), \\(\\lambda\\), profundidade\n\nO conjunto de teste permanece reservado para a avaliação final."
+    "text": "Fluxo de modelagem\n\\[\n\\small\n\\boxed{\n\\text{treino}\n\\rightarrow\n\\text{reamostragem/validação}\n\\rightarrow\n\\text{ajuste de hiperparâmetros}\n\\rightarrow\n\\text{modelo final}\n\\rightarrow\n\\text{teste}\n}\n\\]\nExemplos de hiperparâmetros:\n\nárvore: profundidade, tamanho mínimo do nó, poda\nRandom Forest: \\(m_{\\text{try}}\\), tamanho mínimo do nó, número de árvores\nBoosting: \\(B\\), \\(\\lambda\\), profundidade\n\nO conjunto de teste permanece reservado para a avaliação final."
   },
   {
     "objectID": "programacao/semana-7.html#slides",
@@ -13438,7 +13438,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-construção-sequencial-do-modelo",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Boosting: construção sequencial do modelo",
-    "text": "Boosting: construção sequencial do modelo\n\n\n\n\n\n\n\n\nLeia a figura da esquerda para a direita:\nmodelo atual \\(\\rightarrow\\) erros restantes \\(\\rightarrow\\) nova árvore \\(\\rightarrow\\) pequena correção \\(\\rightarrow\\) novo modelo"
+    "text": "Boosting: construção sequencial do modelo\n\n\n\n\n\n\n\n\nmodelo atual \\(\\rightarrow\\) erros restantes \\(\\rightarrow\\) nova árvore \\(\\rightarrow\\) pequena correção \\(\\rightarrow\\) novo modelo"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#por-que-os-resíduos-aparecem",
@@ -13508,7 +13508,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-a-ideia-que-deve-ficar",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Boosting: a ideia que deve ficar",
-    "text": "Boosting: a ideia que deve ficar\nBoosting constrói o modelo sequencialmente:\n\\[\n\\boxed{\n\\text{modelo atual}\n\\rightarrow\n\\text{avaliar a perda}\n\\rightarrow\n\\text{aprender uma correção}\n\\rightarrow\n\\text{atualizar}\n\\rightarrow\n\\text{repetir}\n}\n\\]\nNo Gradient Boosting, a correção é guiada por\n\\[\n\\boxed{\nr_i^{(b)}\n=\n-\n\\left.\n\\frac{\\partial L(y_i,g)}\n{\\partial g}\n\\right|_{g=\\hat g^{(b-1)}(\\mathbf{x}_i)}\n}\n\\]"
+    "text": "Boosting: a ideia que deve ficar\nBoosting constrói o modelo sequencialmente:\n\\[\n\\small\n\\boxed{\n\\text{modelo atual}\n\\rightarrow\n\\text{avaliar a perda}\n\\rightarrow\n\\text{aprender uma correção}\n\\rightarrow\n\\text{atualizar}\n\\rightarrow\n\\text{repetir}\n}\n\\]\nNo Gradient Boosting, a correção é guiada por\n\\[\n\\boxed{\nr_i^{(b)}\n=\n-\n\\left.\n\\frac{\\partial L(y_i,g)}\n{\\partial g}\n\\right|_{g=\\hat g^{(b-1)}(\\mathbf{x}_i)}\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-veja-o-modelo-aprender-1",
@@ -13529,7 +13529,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#o-papel-do-learning-rate-lambda-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "O papel do learning rate \\(\\lambda\\)\n",
-    "text": "O papel do learning rate \\(\\lambda\\)\n\nCada árvore sugere uma correção.\nO learning rate controla quanto dessa correção será incorporado:\n\\[\n\\hat g^{(b)}(\\mathbf{x})\n=\n\\hat g^{(b-1)}(\\mathbf{x})\n+\n\\lambda\\hat h_b(\\mathbf{x})\n\\]\n\n\n\n\\(\\lambda\\) pequeno\n\npassos menores\naprendizado mais gradual\nnormalmente exige mais árvores\ntende a oferecer maior controle\n\n\n\n\\(\\lambda\\) grande\n\npassos maiores\naprende mais rapidamente\npode precisar de menos árvores\npode sobreajustar mais cedo"
+    "text": "O papel do learning rate \\(\\lambda\\)\n\n\n\n\n\\(\\lambda\\) pequeno\n\ncorreções menores;\naprendizado mais gradual;\nnormalmente exige mais árvores;\nmaior controle sobre o processo.\n\n\n\n\\(\\lambda\\) grande\n\ncorreções maiores;\naprendizado mais rápido;\npode exigir menos árvores;\npode sobreajustar mais cedo.\n\n\n\n\n\n\n\n\n\\(\\lambda\\) controla o tamanho do passo, não a direção da correção."
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-modelo-atual-uma-correção-1",
@@ -13543,7 +13543,7 @@
     "href": "aulas/semanais/semana_07_arvores_ensembles_v2.html#boosting-em-regressão-quanto-ainda-falta-corrigir-1",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Boosting em regressão: quanto ainda falta corrigir?",
-    "text": "Boosting em regressão: quanto ainda falta corrigir?\nA diferença é\n\\[\n\\boxed{\nr_i^{(b)}\n=\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n}\n\\]\n\n\n\\(r_i^{(b)}&gt;0\\)\nO modelo previu abaixo do observado.\n\\[\ny_i &gt;\n\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nA previsão precisa aumentar.\n\n\\(r_i^{(b)}&lt;0\\)\nO modelo previu acima do observado.\n\\[\ny_i &lt;\n\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nA previsão precisa diminuir.\n\n\n\n\n\n\n\nO resíduo informa simultaneamente a direção e o tamanho da correção necessária."
+    "text": "Boosting em regressão: quanto ainda falta corrigir?\nA diferença é\n\\[\n\\small\n\\boxed{\nr_i^{(b)}\n=\ny_i-\\hat g^{(b-1)}(\\mathbf{x}_i)\n}\n\\]\n\n\n\\(r_i^{(b)}&gt;0\\)\nO modelo previu abaixo do observado\n\\[\n\\small\ny_i &gt;\n\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nA previsão precisa aumentar.\n\n\\(r_i^{(b)}&lt;0\\)\nO modelo previu acima do observado\n\\[\n\\small\ny_i &lt;\n\\hat g^{(b-1)}(\\mathbf{x}_i)\n\\]\nA previsão precisa diminuir.\n\n\n\n\n\n\n\nO resíduo informa simultaneamente a direção e o tamanho da correção necessária."
   },
   {
     "objectID": "aulas/semanais/semana_07_arvores_ensembles_v2.html#a-nova-árvore-aprende-o-que-ainda-falta-1",
