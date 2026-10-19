@@ -4,14 +4,14 @@
     "href": "programacao/semana-9.html",
     "title": "Semana 09",
     "section": "",
-    "text": "Análise Fatorial \n\n\nVer slides PDF\n\n\n\n\n\n  Análise da necessidade de cognição usando PCA \n Ver projeto PDF"
+    "text": "Modelos baseados em árvores \n\n\nVer slides"
   },
   {
     "objectID": "programacao/semana-9.html#slides",
     "href": "programacao/semana-9.html#slides",
     "title": "Semana 09",
     "section": "",
-    "text": "Análise Fatorial \n\n\nVer slides PDF\n\n\n\n\n\n  Análise da necessidade de cognição usando PCA \n Ver projeto PDF"
+    "text": "Modelos baseados em árvores \n\n\nVer slides"
   },
   {
     "objectID": "programacao/semana-9.html#projeto-análise-de-componentes-principais",
@@ -11220,7 +11220,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n8\nSeg, 12/10\nFeriado: Nossa Senhora Aparecida\n\n\n\n\n\n\n\n\n\n\nQua, 14/10\nNão haverá aula!\n\n\n\n\n\n\n\n\n\n9\nSeg, 19/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 21/10\nModelos baseados em árvores",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
