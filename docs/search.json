@@ -144,14 +144,14 @@
     "href": "programacao/semana-10.html",
     "title": "Semana 10",
     "section": "",
-    "text": "Análise Fatorial \n\n\nVer slides PDF"
+    "text": "Modelos baseados em árvores \n\n\nVer slides\n\n\n\n\n\n\n Classificação, Ensembles e Redes Neurais Artificiais \n\n\nVer material\n\n\n\n\n\n\n\n A3 — Desafio Supervisionado \n\n\nVer atividade\n\n\n\n\n\n\n\n\nInformações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 26/10/2026\nEntrega: 22/11/2026\nEntrega via Moodle"
   },
   {
     "objectID": "programacao/semana-10.html#slides",
     "href": "programacao/semana-10.html#slides",
     "title": "Semana 10",
     "section": "",
-    "text": "Análise Fatorial \n\n\nVer slides PDF"
+    "text": "Modelos baseados em árvores \n\n\nVer slides\n\n\n\n\n\n\n Classificação, Ensembles e Redes Neurais Artificiais \n\n\nVer material\n\n\n\n\n\n\n\n A3 — Desafio Supervisionado \n\n\nVer atividade\n\n\n\n\n\n\n\n\nInformações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 26/10/2026\nEntrega: 22/11/2026\nEntrega via Moodle"
   },
   {
     "objectID": "plano.html",
@@ -1386,7 +1386,7 @@
     "href": "index.html#avaliações",
     "title": "Métodos Estatísticos para Machine Learning",
     "section": "Avaliações",
-    "text": "Avaliações\n\n\n\n\n\n\nCritérios de Avaliação\n\n\n\nA nota final do semestre será computada da seguinte forma:\n\n\n\nAtividade\nLiberação\nEntrega\nPontos\n\n\n\n\nA1 – Generalização e Regularização\n16/09\n27/09\n20\n\n\nA2 – Métodos Locais e Kernels\n30/09\n11/10\n20\n\n\nA3 – Desafio Supervisionado\n21/10\n22/11\n20\n\n\nA4 – Estruturas e Padrões\n23/11\n06/12\n20\n\n\nA5 – Sistemas de Recomendação\n07/12\n16/12\n20\n\n\n\n\n\nVer todas as atividades\n\nExame Final: 21/12/26"
+    "text": "Avaliações\n\n\n\n\n\n\nCritérios de Avaliação\n\n\n\nA nota final do semestre será computada da seguinte forma:\n\n\n\nAtividade\nLiberação\nEntrega\nPontos\n\n\n\n\nA1 – Generalização e Regularização\n16/09\n27/09\n20\n\n\nA2 – Métodos Locais e Kernels\n30/09\n11/10\n20\n\n\nA3 – Desafio Supervisionado\n26/10\n22/11\n20\n\n\nA4 – Estruturas e Padrões\n23/11\n06/12\n20\n\n\nA5 – Sistemas de Recomendação\n07/12\n16/12\n20\n\n\n\n\n\nVer todas as atividades\n\nExame Final: 21/12/26"
   },
   {
     "objectID": "aulas.html",
@@ -5680,7 +5680,7 @@
     "href": "atividades.html",
     "title": "Atividades",
     "section": "",
-    "text": "Nesta página serão disponibilizadas as atividades avaliativas da disciplina.\n\n\n\n\nA1 — Generalização e Regularização\nValor: 20 pontos\nLiberação: 16/09/2026 · Entrega: 27/09/2026\nTreinamento, validação e teste; mínimos quadrados; regularização Ridge e Lasso; seleção de \\(\\lambda\\) por validação cruzada e avaliação da capacidade de generalização.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\n\n\nA2 — Métodos Locais e Kernels\nValor: 20 pontos\nLiberação: 30/09/2026 · Entrega: 11/10/2026\nKNN para regressão; seleção de \\(k\\) por validação cruzada; Nadaraya–Watson; seleção da largura de banda \\(h\\); comparação entre kernels; regressão polinomial local; Kernel Ridge e regularização em RKHS.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\nA3 — Desafio Supervisionado\nLiberação: 21/10/2026 · Entrega: 22/11/2026\nEm breve.\n\n\nA4 — Estruturas e Padrões\nLiberação: 23/11/2026 · Entrega: 06/12/2026\nEm breve.\n\n\nA5 — Sistemas de Recomendação\nLiberação: 07/12/2026 · Entrega: 16/12/2026\nEm breve.",
+    "text": "Nesta página serão disponibilizadas as atividades avaliativas da disciplina.\n\n\n\n\nA1 — Generalização e Regularização\nValor: 20 pontos\nLiberação: 16/09/2026 · Entrega: 27/09/2026\nTreinamento, validação e teste; mínimos quadrados; regularização Ridge e Lasso; seleção de \\(\\lambda\\) por validação cruzada e avaliação da capacidade de generalização.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\n\n\nA2 — Métodos Locais e Kernels\nValor: 20 pontos\nLiberação: 30/09/2026 · Entrega: 11/10/2026\nKNN para regressão; seleção de \\(k\\) por validação cruzada; Nadaraya–Watson; seleção da largura de banda \\(h\\); comparação entre kernels; regressão polinomial local; Kernel Ridge e regularização em RKHS.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\n\n\nA3 — Desafio Supervisionado\nValor: 20 pontos\nLiberação: 26/10/2026 · Entrega: 22/11/2026\nClassificação supervisionada; regressão logística; SVM com kernel RBF; árvores de classificação; Bagging, Random Forest e Gradient Boosting; Redes Neurais Artificiais (RNA/MLP); seleção de hiperparâmetros por validação cruzada e avaliação comparativa dos modelos.\n\n\nVer atividade\nMaterial de apoio\nDados\n\n\n\n\nA4 — Estruturas e Padrões\nLiberação: 23/11/2026 · Entrega: 06/12/2026\nEm breve.\n\n\nA5 — Sistemas de Recomendação\nLiberação: 07/12/2026 · Entrega: 16/12/2026\nEm breve.",
     "crumbs": [
       "Atividades"
     ]
@@ -11220,7 +11220,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n8\nSeg, 12/10\nFeriado: Nossa Senhora Aparecida\n\n\n\n\n\n\n\n\n\n\nQua, 14/10\nNão haverá aula!\n\n\n\n\n\n\n\n\n\n9\nSeg, 19/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 21/10\nModelos baseados em árvores",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n8\nSeg, 12/10\nFeriado: Nossa Senhora Aparecida\n\n\n\n\n\n\n\n\n\n\nQua, 14/10\nNão haverá aula!\n\n\n\n\n\n\n\n\n\n9\nSeg, 19/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 21/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n10\nSeg, 26/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 28/10\nRecesso Acadêmico: Dia do Servidor Público",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -11230,7 +11230,7 @@
     "href": "material.html",
     "title": "Material Complementar",
     "section": "",
-    "text": "Nesta página serão disponibilizados materiais complementares com aplicações práticas dos conteúdos estudados na disciplina.\n\n\n\nGeneralização e Regularização\nExemplo completo em R com separação treino/teste, validação cruzada, mínimos quadrados, Ridge, Lasso, seleção de \\(\\lambda\\) e avaliação final.\n\n\nVer material\n\n\n\n\nMétodos Locais e Kernels\nAplicação prática em R com KNN para regressão, seleção de \\(k\\) por validação cruzada, Nadaraya–Watson, escolha da largura de banda \\(h\\), comparação entre kernels, regressão polinomial local e Kernel Ridge/RKHS.\n\n\nVer material",
+    "text": "Nesta página serão disponibilizados materiais complementares com aplicações práticas dos conteúdos estudados na disciplina.\n\n\n\nGeneralização e Regularização\nExemplo completo em R com separação treino/teste, validação cruzada, mínimos quadrados, Ridge, Lasso, seleção de \\(\\lambda\\) e avaliação final.\n\n\nVer material\n\n\n\n\nMétodos Locais e Kernels\nAplicação prática em R com KNN para regressão, seleção de \\(k\\) por validação cruzada, Nadaraya–Watson, escolha da largura de banda \\(h\\), comparação entre kernels, regressão polinomial local e Kernel Ridge/RKHS.\n\n\nVer material\n\n\n\n\nClassificação, Ensembles e Redes Neurais Artificiais\nAplicação prática em R, com tidymodels, abordando regressão logística, SVM com kernel RBF, árvores de classificação, Bagging, Random Forest, Gradient Boosting e Redes Neurais Artificiais (RNA/MLP). Inclui separação treino/teste, validação cruzada, ajuste de hiperparâmetros, regularização, análise do treinamento da RNA e comparação dos modelos por ROC AUC, log-loss, acurácia, sensibilidade, especificidade e F1. Utiliza dados simulados independentes da base avaliativa.\n\n\nVer material",
     "crumbs": [
       "Material Complementar"
     ]
@@ -13642,5 +13642,222 @@
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Boosting em classificação: veja a correção acontecer",
     "text": "Boosting em classificação: veja a correção acontecer"
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html",
+    "href": "atividades/atividade_3_desafio_supervisionado.html",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "",
+    "text": "Informações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 26/10/2026\nEntrega: 22/11/2026"
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#objetivo",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#objetivo",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "1 Objetivo",
+    "text": "1 Objetivo\nInvestigar como a escolha da família de modelos, o controle da complexidade, a validação cruzada e a métrica de avaliação influenciam a generalização em classificação binária. O foco não é apenas obter a maior métrica, mas justificar as decisões de modelagem com fundamentos estatísticos.\nQuestão orientadora: um modelo mais flexível ou com melhor acurácia é necessariamente a melhor escolha para o problema?"
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#dados",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#dados",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "2 Dados",
+    "text": "2 Dados\nUtilize o arquivo dados_a3.csv, disponibilizado na página da atividade. Trata-se de uma base simulada, com resposta binária classe (0 ou 1) e preditores numéricos x1 a x10. A geração inclui relações não lineares, interações, redundância e variáveis pouco informativas. A função geradora não será fornecida e não precisa ser identificada.\nO arquivo contém uma linha por observação. Não há partição previamente definida: ela deve ser produzida pelo estudante de forma reprodutível."
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#regras-metodológicas",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#regras-metodológicas",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "3 Regras metodológicas",
+    "text": "3 Regras metodológicas\n\nDefina uma única partição estratificada treino/teste, reservando aproximadamente 25% para teste. Fixe e informe a semente aleatória.\nRealize toda seleção de variáveis, pré-processamento, escolha de hiperparâmetros e comparação preliminar apenas no treinamento, preferencialmente por validação cruzada estratificada com cinco partições (5-fold CV).\nAprenda padronizações, imputações e demais transformações dentro de cada reamostragem, evitando vazamento de informação.\nUse a mesma partição de teste para todos os modelos. Consulte o teste uma única vez, após a definição final dos procedimentos.\nÉ permitido utilizar R ou Python. Apresente o código necessário para reproduzir os resultados, tabelas e figuras."
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#parte-i-exploração-e-planejamento-2-pontos",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#parte-i-exploração-e-planejamento-2-pontos",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "4 Parte I — Exploração e planejamento (2 pontos)",
+    "text": "4 Parte I — Exploração e planejamento (2 pontos)\na) Descreva as variáveis, a proporção de classes e eventuais indícios de desbalanceamento. (0,75)\nb) Explore relações entre preditores, redundância e possíveis padrões não lineares. (0,75)\nc) Justifique a estratégia de particionamento e validação, incluindo os cuidados para evitar vazamento de dados. (0,50)"
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#parte-ii-regressão-logística-e-função-de-perda-2-pontos",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#parte-ii-regressão-logística-e-função-de-perda-2-pontos",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "5 Parte II — Regressão logística e função de perda (2 pontos)",
+    "text": "5 Parte II — Regressão logística e função de perda (2 pontos)\na) Ajuste uma regressão logística como modelo de referência. (0,75)\nb) Interprete a probabilidade estimada \\(\\\\hat p(\\\\mathbf x)\\) e explique a relação entre log-loss e estimação de probabilidades. (0,75)\nc) Explique por que acurácia e limiar de 0,5, isoladamente, podem ser insuficientes. (0,50)"
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#parte-iii-svm-e-árvore-de-classificação-3-pontos",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#parte-iii-svm-e-árvore-de-classificação-3-pontos",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "6 Parte III — SVM e árvore de classificação (3 pontos)",
+    "text": "6 Parte III — SVM e árvore de classificação (3 pontos)\na) Ajuste um SVM com kernel radial (RBF), selecionando \\(C\\) e o parâmetro de escala do kernel por validação cruzada. Explique os efeitos de ambos. (1,50)\nb) Ajuste uma árvore de classificação, controlando sua complexidade por poda ou parâmetros equivalentes. Interprete suas principais regras. (1,00)\nc) Compare como SVM e árvores controlam a flexibilidade do modelo. (0,50)"
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#parte-iv-bagging-random-forest-e-boosting-3-pontos",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#parte-iv-bagging-random-forest-e-boosting-3-pontos",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "7 Parte IV — Bagging, Random Forest e Boosting (3 pontos)",
+    "text": "7 Parte IV — Bagging, Random Forest e Boosting (3 pontos)\na) Ajuste Bagging e Random Forest. Explique a aleatorização das árvores e a diferença entre os métodos. (1,00)\nb) Ajuste Gradient Boosting com árvores. Selecione \\(B\\) (número de árvores), \\(\\\\lambda\\) (learning rate) e pelo menos um parâmetro de complexidade das árvores usando validação cruzada. (1,25)\nc) Relacione o caráter sequencial do boosting aos pseudo-resíduos e à função de perda. (0,75)"
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#parte-v-redes-neurais-artificiais-rna-4-pontos",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#parte-v-redes-neurais-artificiais-rna-4-pontos",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "8 Parte V — Redes neurais artificiais (RNA) (4 pontos)",
+    "text": "8 Parte V — Redes neurais artificiais (RNA) (4 pontos)\na) Ajuste uma rede neural artificial do tipo perceptron multicamadas (MLP) para classificação binária, com pelo menos uma camada oculta. Descreva sua arquitetura, a função de ativação nas camadas ocultas, a saída sigmoide e a função de perda utilizada. (1,00)\nb) Realize o pré-processamento adequado, incluindo padronização dos preditores aprendida exclusivamente no treinamento. Selecione por validação cruzada ao menos dois hiperparâmetros, sendo obrigatoriamente um relacionado à arquitetura (por exemplo, número de neurônios ou camadas) e outro à regularização ou ao treinamento (por exemplo, penalização L2, dropout ou learning rate). (1,25)\nc) Apresente e interprete o comportamento do treinamento por meio de uma curva de perda de treinamento e validação ao longo das épocas, ou diagnóstico equivalente obtido sem utilizar o conjunto de teste. Explique como identificou sinais de sobreajuste e como controlou esse problema (por exemplo, early stopping ou regularização). (1,00)\nd) Compare conceitualmente a RNA com a regressão logística e com o boosting: flexibilidade, interpretação e processo de otimização. (0,75)\n\n\n\n\n\n\nNote\n\n\n\nUma única camada oculta é suficiente. Não é necessário utilizar GPU nem redes profundas. São aceitas implementações em R ou Python, desde que o procedimento de validação seja reprodutível. Para o early stopping, utilize uma partição interna ao treinamento, nunca o conjunto de teste."
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#parte-vi-avaliação-comparativa-3-pontos",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#parte-vi-avaliação-comparativa-3-pontos",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "9 Parte VI — Avaliação comparativa (3 pontos)",
+    "text": "9 Parte VI — Avaliação comparativa (3 pontos)\na) Compare todos os modelos, incluindo a RNA, usando resultados de validação cruzada no treinamento. Informe pelo menos ROC AUC e log-loss para modelos que forneçam probabilidades válidas. Justifique a métrica prioritária. (1,00)\nb) Após concluir a seleção dos modelos, avalie-os na mesma partição de teste. Apresente matriz de confusão, acurácia, sensibilidade, especificidade, F1 e ROC AUC, além de log-loss quando aplicável. (1,25)\nc) Discuta o impacto do limiar de classificação e as diferenças entre métricas, sem ajustar o limiar com base no teste. (0,75)\nNota: escores de decisão não são automaticamente probabilidades. Se precisar calibrá-los, faça isso somente com dados de treinamento."
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#parte-vii-síntese-crítica-3-pontos",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#parte-vii-síntese-crítica-3-pontos",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "10 Parte VII — Síntese crítica (3 pontos)",
+    "text": "10 Parte VII — Síntese crítica (3 pontos)\na) Discuta as evidências de sobreajuste ou subajuste, considerando árvores, ensembles, SVM e RNA. (1,00)\nb) Compare interpretabilidade, complexidade computacional e capacidade de representar relações não lineares. (1,00)\nc) Recomende um modelo para o problema, justificando a escolha com as métricas, a estabilidade dos resultados e as limitações identificadas. (1,00)\nO modelo vencedor não precisa ser o mais complexo. A qualidade da argumentação estatística é mais importante do que pequenas diferenças numéricas entre métricas."
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#critérios-de-avaliação",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#critérios-de-avaliação",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "10.1 Critérios de avaliação",
+    "text": "10.1 Critérios de avaliação\n\n\n\nEtapa\nPontuação\n\n\n\n\nI — Exploração e planejamento\n2\n\n\nII — Regressão logística\n2\n\n\nIII — SVM e árvore\n3\n\n\nIV — Ensembles\n3\n\n\nV — Redes neurais artificiais (RNA)\n4\n\n\nVI — Avaliação comparativa\n3\n\n\nVII — Síntese crítica\n3\n\n\nTotal\n20\n\n\n\nSerão considerados a correção metodológica, a reprodutibilidade, a clareza dos gráficos e tabelas, a interpretação estatística e a qualidade da argumentação. Não será atribuído bônus por simplesmente obter a maior acurácia."
+  },
+  {
+    "objectID": "atividades/atividade_3_desafio_supervisionado.html#entrega",
+    "href": "atividades/atividade_3_desafio_supervisionado.html#entrega",
+    "title": "A3 — Desafio Supervisionado",
+    "section": "10.2 Entrega",
+    "text": "10.2 Entrega\nEnvie: (i) arquivo .qmd com código e análise; (ii) HTML renderizado; (iii) eventuais arquivos auxiliares indispensáveis. O relatório deve conter introdução breve, metodologia, resultados, discussão e conclusão. Informe as versões dos principais pacotes e a semente utilizada.\n\n\n\n\n\n\nWarning\n\n\n\nVazamento de dados: selecionar hiperparâmetros, escolher o limiar ou decidir entre modelos usando o conjunto de teste compromete a validade da avaliação. A apresentação de resultados de teste sem descrever o procedimento de validação não será considerada suficiente."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html",
+    "href": "material_complementar/material_complementar_a3_classificacao.html",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "",
+    "text": "Instale os pacotes apenas uma vez, no console:\ninstall.packages(c(\n  \"tidymodels\", \"rpart\", \"ranger\", \"kernlab\", \"xgboost\",\n  \"ipred\", \"nnet\", \"ggplot2\", \"dplyr\", \"tibble\"\n))\n\nlibrary(tidymodels)\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(tibble)\n\nset.seed(335)\ntidymodels_prefer()\n\nmetrica_cv &lt;- metric_set(roc_auc, mn_log_loss, accuracy)\n\nPara reproduzir o material, recomenda-se uma versão recente dos pacotes. Algumas combinações de parsnip e motores externos podem exigir atualizações."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#apresentação",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#apresentação",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "",
+    "text": "Este roteiro acompanha a A3 — Desafio Supervisionado (20 pontos). O exemplo é desenvolvido integralmente em R, com tidymodels, rpart, ranger, kernlab, xgboost, ipred e nnet.\nNão utilizamos a base avaliativa dados_a3.csv: os dados deste material são simulados separadamente. O propósito é ensinar o procedimento, e não antecipar os resultados da atividade.\n\n\n\n\n\n\nImportante\n\n\n\nRegra de ouro: a partição de teste só é utilizada depois da escolha de modelos e hiperparâmetros. Padronização e outros passos estimados com os dados devem ser ajustados dentro de cada reamostragem."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#preparação",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#preparação",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "1. Preparação",
+    "text": "1. Preparação\nInstale os pacotes apenas uma vez, no console:\ninstall.packages(c(\n  \"tidymodels\", \"rpart\", \"ranger\", \"kernlab\", \"xgboost\",\n  \"ipred\", \"nnet\", \"ggplot2\", \"dplyr\", \"tibble\"\n))\n\nlibrary(tidymodels)\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(tibble)\n\nset.seed(335)\ntidymodels_prefer()\n\nmetrica_cv &lt;- metric_set(roc_auc, mn_log_loss, accuracy)\n\nPara reproduzir o material, recomenda-se uma versão recente dos pacotes. Algumas combinações de parsnip e motores externos podem exigir atualizações."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#simulação-de-um-problema-de-classificação",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#simulação-de-um-problema-de-classificação",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "2. Simulação de um problema de classificação",
+    "text": "2. Simulação de um problema de classificação\nSimulamos cinco preditores, com efeitos lineares, interação, não linearidade e duas variáveis pouco informativas. A função logística gera probabilidades; as classes observadas são realizações de Bernoulli.\n\nset.seed(335)\nn &lt;- 700\ndados &lt;- tibble(\n  x1 = rnorm(n),\n  x2 = rnorm(n),\n  x3 = runif(n, -2, 2),\n  x4 = rnorm(n),\n  x5 = rnorm(n)\n) |&gt;\n  mutate(\n    escore = -0.5 + 1.5*x1 - 1.1*x2 +\n      0.9*x1*x2 + 0.7*sin(2*x3),\n    p_verdadeira = plogis(escore),\n    classe = factor(\n      rbinom(n, 1, p_verdadeira),\n      levels = c(0, 1),\n      labels = c(\"nao\", \"sim\")\n    )\n  ) |&gt;\n  select(-escore, -p_verdadeira)\n\nglimpse(dados)\n\nRows: 700\nColumns: 6\n$ x1     &lt;dbl&gt; -0.9968683, -0.4906339, -1.7339704, -0.4756294, 0.9548314, -0.9…\n$ x2     &lt;dbl&gt; 0.91363996, 0.97449116, 0.36577475, 0.45899673, 0.64098253, 0.6…\n$ x3     &lt;dbl&gt; -0.36870446, -1.44729884, 0.91764959, -0.89219918, -0.65105763,…\n$ x4     &lt;dbl&gt; -0.72413869, -0.48376888, -0.26029606, -1.49892417, 0.97545750,…\n$ x5     &lt;dbl&gt; -1.31921777, 0.22113822, -0.19856266, 0.95879470, 0.02795396, -…\n$ classe &lt;fct&gt; nao, nao, nao, nao, sim, nao, sim, nao, sim, nao, nao, nao, nao…\n\ndados |&gt; count(classe) |&gt; mutate(proporcao = n / sum(n))\n\n# A tibble: 2 × 3\n  classe     n proporcao\n  &lt;fct&gt;  &lt;int&gt;     &lt;dbl&gt;\n1 nao      385      0.55\n2 sim      315      0.45\n\n\n\ndados |&gt;\n  ggplot(aes(x = x1, fill = classe)) +\n  geom_density(alpha = 0.4) +\n  labs(title = \"Distribuição de x1 por classe\",\n       x = \"x1\", y = \"Densidade\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\nInterprete: diferenças de distribuição implicam separação perfeita? Como interações podem alterar a fronteira de decisão?"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#partição-treinoteste-e-validação-cruzada",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#partição-treinoteste-e-validação-cruzada",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "3. Partição treino/teste e validação cruzada",
+    "text": "3. Partição treino/teste e validação cruzada\n\nset.seed(335)\ndivisao &lt;- initial_split(dados, prop = 0.75, strata = classe)\ntreino &lt;- training(divisao)\nteste  &lt;- testing(divisao)\n\nset.seed(335)\nfolds &lt;- vfold_cv(treino, v = 5, strata = classe)\n\n# Receita comum: estimativas de centro/escala\n# são calculadas dentro de cada fold.\nrec_padrao &lt;- recipe(classe ~ ., data = treino) |&gt;\n  step_zv(all_predictors()) |&gt;\n  step_normalize(all_numeric_predictors())\n\nrec_arvores &lt;- recipe(classe ~ ., data = treino) |&gt;\n  step_zv(all_predictors())\n\nUma receita é preparada em cada partição de treino durante a validação cruzada. Evite aplicar scale(dados) antes de separar treino e teste."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#regressão-logística-referência",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#regressão-logística-referência",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "4. Regressão logística: referência",
+    "text": "4. Regressão logística: referência\nA probabilidade prevista é\n\\[\n\\hat p(\\mathbf{x}) =\n\\frac{1}{1+\\exp[-(\\hat\\beta_0+\\mathbf{x}^{\\mathsf T}\\hat{\\boldsymbol\\beta})]}.\n\\]\nA perda logística é\n\\[\nL(y,p)=-y\\log(p)-(1-y)\\log(1-p).\n\\]\n\nmod_log &lt;- logistic_reg() |&gt; set_engine(\"glm\") |&gt; set_mode(\"classification\")\nwf_log &lt;- workflow() |&gt; add_recipe(rec_padrao) |&gt; add_model(mod_log)\n\nres_log &lt;- fit_resamples(\n  wf_log, resamples = folds, metrics = metrica_cv,\n  control = control_resamples(save_pred = TRUE)\n)\ncollect_metrics(res_log)\n\n# A tibble: 3 × 6\n  .metric     .estimator  mean     n std_err .config        \n  &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1 accuracy    binary     0.718     5  0.0220 pre0_mod0_post0\n2 mn_log_loss binary     0.542     5  0.0209 pre0_mod0_post0\n3 roc_auc     binary     0.798     5  0.0179 pre0_mod0_post0"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#svm-radial-e-árvore-de-classificação",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#svm-radial-e-árvore-de-classificação",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "5. SVM radial e árvore de classificação",
+    "text": "5. SVM radial e árvore de classificação\nNo SVM, cost corresponde a \\(C\\); rbf_sigma controla a escala do kernel RBF. Na árvore, tree_depth limita a profundidade e min_n controla o tamanho mínimo de nó.\n\nmod_svm &lt;- svm_rbf(\n  cost = tune(),\n  rbf_sigma = tune()\n) |&gt;\n  set_engine(\"kernlab\") |&gt;\n  set_mode(\"classification\")\n\nwf_svm &lt;- workflow() |&gt;\n  add_recipe(rec_padrao) |&gt;\n  add_model(mod_svm)\n\ngrade_svm &lt;- grid_regular(\n  cost(range = c(-2, 2)),\n  rbf_sigma(range = c(-3, -1)),\n  levels = 3\n)\n\nset.seed(335)\nres_svm &lt;- tune_grid(\n  wf_svm, resamples = folds, grid = grade_svm,\n  metrics = metrica_cv\n)\nshow_best(res_svm, metric = \"roc_auc\")\n\n# A tibble: 5 × 8\n   cost rbf_sigma .metric .estimator  mean     n std_err .config        \n  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1  1         0.1  roc_auc binary     0.822     5  0.0172 pre0_mod6_post0\n2  4         0.1  roc_auc binary     0.820     5  0.0132 pre0_mod9_post0\n3  0.25      0.1  roc_auc binary     0.817     5  0.0171 pre0_mod3_post0\n4  4         0.01 roc_auc binary     0.812     5  0.0172 pre0_mod8_post0\n5  1         0.01 roc_auc binary     0.804     5  0.0171 pre0_mod5_post0\n\n\n\nmod_arv &lt;- decision_tree(\n  tree_depth = tune(),\n  min_n = tune()\n) |&gt;\n  set_engine(\"rpart\") |&gt;\n  set_mode(\"classification\")\n\nwf_arv &lt;- workflow() |&gt;\n  add_recipe(rec_arvores) |&gt;\n  add_model(mod_arv)\n\ngrade_arv &lt;- grid_regular(\n  tree_depth(range = c(2L, 6L)),\n  min_n(range = c(5L, 20L)),\n  levels = 3\n)\n\nset.seed(335)\nres_arv &lt;- tune_grid(\n  wf_arv, resamples = folds, grid = grade_arv,\n  metrics = metrica_cv\n)\nshow_best(res_arv, metric = \"roc_auc\")\n\n# A tibble: 5 × 8\n  tree_depth min_n .metric .estimator  mean     n std_err .config        \n       &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1          6    20 roc_auc binary     0.762     5  0.0319 pre0_mod9_post0\n2          6    12 roc_auc binary     0.756     5  0.0310 pre0_mod8_post0\n3          6     5 roc_auc binary     0.747     5  0.0292 pre0_mod7_post0\n4          4     5 roc_auc binary     0.741     5  0.0350 pre0_mod4_post0\n5          4    12 roc_auc binary     0.741     5  0.0350 pre0_mod5_post0\n\n\nDiscussão: \\(C\\) elevado reduz a tolerância a violações de margem; rbf_sigma controla a localidade da similaridade. Árvores profundas tendem a aumentar a flexibilidade e o risco de sobreajuste."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#bagging-e-random-forest",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#bagging-e-random-forest",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "6. Bagging e Random Forest",
+    "text": "6. Bagging e Random Forest\nNo bagging, cada árvore considera todos os preditores como candidatos às divisões. Na Random Forest, apenas um subconjunto aleatório é considerado em cada divisão.\n\np &lt;- ncol(treino) - 1L\n\nmod_bag &lt;- rand_forest(\n  mtry = p, trees = 150, min_n = 5\n) |&gt;\n  set_engine(\"ranger\", importance = \"impurity\",\n             replace = TRUE, sample.fraction = 1) |&gt;\n  set_mode(\"classification\")\n\nmod_rf &lt;- rand_forest(\n  mtry = max(1L, floor(sqrt(p))),\n  trees = 150, min_n = 5\n) |&gt;\n  set_engine(\"ranger\", importance = \"impurity\",\n             replace = TRUE, sample.fraction = 1) |&gt;\n  set_mode(\"classification\")\n\nwf_bag &lt;- workflow() |&gt;\n  add_recipe(rec_arvores) |&gt; add_model(mod_bag)\nwf_rf &lt;- workflow() |&gt;\n  add_recipe(rec_arvores) |&gt; add_model(mod_rf)\n\nset.seed(335)\nres_bag &lt;- fit_resamples(wf_bag, folds, metrics = metrica_cv)\nset.seed(335)\nres_rf &lt;- fit_resamples(wf_rf, folds, metrics = metrica_cv)\n\ncollect_metrics(res_bag)\n\n# A tibble: 3 × 6\n  .metric     .estimator  mean     n std_err .config        \n  &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1 accuracy    binary     0.725     5  0.0286 pre0_mod0_post0\n2 mn_log_loss binary     0.567     5  0.0433 pre0_mod0_post0\n3 roc_auc     binary     0.802     5  0.0252 pre0_mod0_post0\n\ncollect_metrics(res_rf)\n\n# A tibble: 3 × 6\n  .metric     .estimator  mean     n std_err .config        \n  &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1 accuracy    binary     0.733     5  0.0263 pre0_mod0_post0\n2 mn_log_loss binary     0.545     5  0.0330 pre0_mod0_post0\n3 roc_auc     binary     0.805     5  0.0236 pre0_mod0_post0\n\n\nAqui, ranger é usado para ambos os métodos, alterando mtry. Assim, a comparação mantém os demais componentes semelhantes."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#gradient-boosting",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#gradient-boosting",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "7. Gradient Boosting",
+    "text": "7. Gradient Boosting\nPara perda logística binária, os pseudo-resíduos são\n\\[\nr_i^{(b)} = y_i-\\hat p_i^{(b-1)}\n\\]\ne a atualização aditiva ocorre no escore:\n\\[\n\\hat g^{(b)}(\\mathbf{x}) =\n\\hat g^{(b-1)}(\\mathbf{x}) +\n\\lambda \\hat h_b(\\mathbf{x})\n\\]\nA probabilidade é obtida pela função logística, \\(\\hat p^{(b)}(\\mathbf{x})=\\sigma(\\hat g^{(b)}(\\mathbf{x}))\\).\n\nmod_boost &lt;- boost_tree(\n  trees = tune(),\n  learn_rate = tune(),\n  tree_depth = tune(),\n  min_n = 10,\n  loss_reduction = 0\n) |&gt;\n  set_engine(\"xgboost\", nthread = 1) |&gt;\n  set_mode(\"classification\")\n\nwf_boost &lt;- workflow() |&gt;\n  add_recipe(rec_arvores) |&gt; add_model(mod_boost)\n\ngrade_boost &lt;- tidyr::crossing(\n  trees = c(80L, 160L),\n  learn_rate = c(0.05, 0.15),\n  tree_depth = c(1L, 3L)\n)\n\nset.seed(335)\nres_boost &lt;- tune_grid(\n  wf_boost, resamples = folds, grid = grade_boost,\n  metrics = metrica_cv\n)\nshow_best(res_boost, metric = \"roc_auc\")\n\n# A tibble: 5 × 9\n  trees tree_depth learn_rate .metric .estimator  mean     n std_err .config    \n  &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;      \n1    80          3       0.05 roc_auc binary     0.835     5  0.0238 pre0_mod3_…\n2    80          1       0.15 roc_auc binary     0.829     5  0.0266 pre0_mod2_…\n3   160          1       0.05 roc_auc binary     0.828     5  0.0262 pre0_mod5_…\n4   160          3       0.05 roc_auc binary     0.826     5  0.0238 pre0_mod7_…\n5   160          1       0.15 roc_auc binary     0.825     5  0.0240 pre0_mod6_…\n\n\n\n\n\n\n\n\nNota\n\n\n\nO xgboost emprega um procedimento de otimização mais sofisticado do que a versão introdutória do gradient boosting por gradiente negativo. A expressão acima destaca o princípio didático das correções sequenciais."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#rede-neural-artificial-rna-mlp",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#rede-neural-artificial-rna-mlp",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "8. Rede neural artificial (RNA): MLP",
+    "text": "8. Rede neural artificial (RNA): MLP\nA RNA com uma camada oculta pode ser representada por\n\\[\n\\mathbf{z} = \\phi(W_1\\mathbf{x}+\\mathbf{b}_1),\n\\qquad\n\\hat p(\\mathbf{x})=\\sigma(W_2\\mathbf{z}+b_2)\n\\]\nO modelo nnet permite ajustar uma MLP com uma camada oculta, usando hidden_units e penalty (penalização L2). O motor nnet utiliza ativação logística nas unidades ocultas, em vez de ReLU.\n\nmod_rna &lt;- mlp(\n  hidden_units = tune(),\n  penalty = tune(),\n  epochs = 200\n) |&gt;\n  set_engine(\"nnet\", trace = FALSE, MaxNWts = 2000) |&gt;\n  set_mode(\"classification\")\n\nwf_rna &lt;- workflow() |&gt;\n  add_recipe(rec_padrao) |&gt; add_model(mod_rna)\n\ngrade_rna &lt;- tidyr::crossing(\n  hidden_units = c(4L, 8L, 16L),\n  penalty = c(0.001, 0.01)\n)\n\nset.seed(335)\nres_rna &lt;- tune_grid(\n  wf_rna, resamples = folds, grid = grade_rna,\n  metrics = metrica_cv\n)\nshow_best(res_rna, metric = \"roc_auc\")\n\n# A tibble: 5 × 8\n  hidden_units penalty .metric .estimator  mean     n std_err .config        \n         &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1            4   0.001 roc_auc binary     0.796     5  0.0139 pre0_mod1_post0\n2            8   0.01  roc_auc binary     0.795     5  0.0177 pre0_mod4_post0\n3            4   0.01  roc_auc binary     0.788     5  0.0126 pre0_mod2_post0\n4           16   0.001 roc_auc binary     0.752     5  0.0174 pre0_mod5_post0\n5            8   0.001 roc_auc binary     0.746     5  0.0135 pre0_mod3_post0\n\n\nPor que padronizar? Preditores em escalas diferentes podem dificultar a otimização numérica dos pesos da rede. A regularização controla o tamanho dos pesos, e a arquitetura controla a capacidade de representar relações não lineares.\n\n8.1. Curvas de perda: treinamento versus validação\nO pacote nnet não fornece, diretamente, um histórico separado de perda de validação por época. Para ilustrar o diagnóstico, usamos uma partição interna do treinamento e ajustamos modelos com diferentes limites de iteração (maxit).\n\n\n\n\n\n\nAviso\n\n\n\nO gráfico abaixo é uma curva diagnóstica por orçamento de iterações, e não o histórico de uma única trajetória de otimização. Cada ponto corresponde a um novo ajuste com o mesmo ponto de partida aleatório. Não o interprete como implementação de early stopping.\n\n\n\nset.seed(336)\ndiv_interna &lt;- initial_split(treino, prop = 0.8, strata = classe)\nsubtreino &lt;- training(div_interna)\nvalidacao &lt;- testing(div_interna)\n\n# Preparar a receita apenas no subtreino\nrec_interna &lt;- recipe(classe ~ ., data = subtreino) |&gt;\n  step_zv(all_predictors()) |&gt;\n  step_normalize(all_numeric_predictors())\n\nprep_interna &lt;- prep(rec_interna, training = subtreino)\nsub_prep &lt;- bake(prep_interna, new_data = subtreino)\nval_prep &lt;- bake(prep_interna, new_data = validacao)\n\nlogloss_binaria &lt;- function(verdade, prob) {\n  y &lt;- as.integer(verdade == \"sim\")\n  prob &lt;- pmin(pmax(prob, 1e-12), 1 - 1e-12)\n  -mean(y * log(prob) + (1-y) * log(1-prob))\n}\n\niteracoes &lt;- c(1, 5, 10, 20, 40, 80, 120, 200)\n\ncurva &lt;- purrr::map_dfr(iteracoes, function(k) {\n  # Mesmo estado inicial para facilitar a comparação.\n  set.seed(777)\n  ajuste &lt;- nnet::nnet(\n    classe ~ ., data = sub_prep,\n    size = 8, decay = 0.01, maxit = k,\n    trace = FALSE, MaxNWts = 2000\n  )\n\n  prob_tr &lt;- predict(ajuste, sub_prep, type = \"raw\")\n  prob_va &lt;- predict(ajuste, val_prep, type = \"raw\")\n\n  tibble(\n    iteracoes = k,\n    treinamento = logloss_binaria(sub_prep$classe, as.numeric(prob_tr)),\n    validacao = logloss_binaria(val_prep$classe, as.numeric(prob_va))\n  )\n})\n\ncurva |&gt;\n  tidyr::pivot_longer(\n    c(treinamento, validacao),\n    names_to = \"conjunto\", values_to = \"log_loss\"\n  ) |&gt;\n  ggplot(aes(iteracoes, log_loss, color = conjunto)) +\n  geom_line(linewidth = 1) +\n  geom_point(size = 2) +\n  labs(\n    title = \"RNA: diagnóstico de perda por orçamento de iterações\",\n    x = \"Máximo de iterações permitido\",\n    y = \"Log-loss\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nA divergência entre as perdas pode sugerir sobreajuste. Para implementar parada antecipada efetiva, é necessário controlar o treinamento iterativo e interrompê-lo segundo um critério definido em dados de validação internos. A penalização L2 é outra estratégia de regularização."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#comparação-durante-a-validação-cruzada",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#comparação-durante-a-validação-cruzada",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "9. Comparação durante a validação cruzada",
+    "text": "9. Comparação durante a validação cruzada\n\nextrair_auc &lt;- function(obj, nome) {\n  collect_metrics(obj) |&gt;\n    filter(.metric == \"roc_auc\") |&gt;\n    mutate(modelo = nome) |&gt;\n    select(modelo, mean, std_err)\n}\n\ntabela_cv &lt;- bind_rows(\n  extrair_auc(res_log, \"Logística\"),\n  extrair_auc(res_svm, \"SVM\"),\n  extrair_auc(res_arv, \"Árvore\"),\n  extrair_auc(res_bag, \"Bagging\"),\n  extrair_auc(res_rf, \"Random Forest\"),\n  extrair_auc(res_boost, \"Boosting\"),\n  extrair_auc(res_rna, \"RNA\")\n) |&gt;\n  arrange(desc(mean))\n\ntabela_cv\n\n# A tibble: 35 × 3\n   modelo    mean std_err\n   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;\n 1 Boosting 0.835  0.0238\n 2 Boosting 0.829  0.0266\n 3 Boosting 0.828  0.0262\n 4 Boosting 0.826  0.0238\n 5 Boosting 0.825  0.0240\n 6 Boosting 0.823  0.0226\n 7 SVM      0.822  0.0172\n 8 SVM      0.820  0.0132\n 9 Boosting 0.820  0.0234\n10 SVM      0.817  0.0171\n# ℹ 25 more rows\n\n\nAtenção: o melhor resultado de uma busca de hiperparâmetros pode ser otimista. Para estimar o desempenho do procedimento de seleção sem esse otimismo, considere validação cruzada aninhada. Aqui, a CV serve principalmente para escolher configurações antes da avaliação final."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#avaliação-final-mesmo-teste-para-todos",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#avaliação-final-mesmo-teste-para-todos",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "10. Avaliação final: mesmo teste para todos",
+    "text": "10. Avaliação final: mesmo teste para todos\nFinalizamos os modelos usando somente o treinamento e as escolhas realizadas na CV. O teste aparece pela primeira vez nesta seção.\n\nfinal_log &lt;- fit(wf_log, data = treino)\nfinal_svm &lt;- finalize_workflow(\n  wf_svm, select_best(res_svm, metric = \"roc_auc\")\n) |&gt; fit(data = treino)\nfinal_arv &lt;- finalize_workflow(\n  wf_arv, select_best(res_arv, metric = \"roc_auc\")\n) |&gt; fit(data = treino)\nfinal_bag &lt;- fit(wf_bag, data = treino)\nfinal_rf &lt;- fit(wf_rf, data = treino)\nfinal_boost &lt;- finalize_workflow(\n  wf_boost, select_best(res_boost, metric = \"roc_auc\")\n) |&gt; fit(data = treino)\nfinal_rna &lt;- finalize_workflow(\n  wf_rna, select_best(res_rna, metric = \"roc_auc\")\n) |&gt; fit(data = treino)\n\nmodelos_finais &lt;- list(\n  \"Logística\" = final_log,\n  \"SVM\" = final_svm,\n  \"Árvore\" = final_arv,\n  \"Bagging\" = final_bag,\n  \"Random Forest\" = final_rf,\n  \"Boosting\" = final_boost,\n  \"RNA\" = final_rna\n)\n\navaliar_teste &lt;- function(ajuste, nome) {\n  probs &lt;- predict(ajuste, new_data = teste, type = \"prob\")\n  preds &lt;- predict(ajuste, new_data = teste, type = \"class\")\n\n  dados_pred &lt;- bind_cols(\n    teste |&gt; select(classe), probs, preds\n  )\n\n  bind_rows(\n    roc_auc(dados_pred, truth = classe, .pred_sim,\n            event_level = \"second\"),\n    mn_log_loss(dados_pred, truth = classe, .pred_sim,\n                event_level = \"second\"),\n    accuracy(dados_pred, truth = classe, estimate = .pred_class),\n    sens(dados_pred, truth = classe, estimate = .pred_class,\n         event_level = \"second\"),\n    spec(dados_pred, truth = classe, estimate = .pred_class,\n         event_level = \"second\"),\n    f_meas(dados_pred, truth = classe, estimate = .pred_class,\n           event_level = \"second\")\n  ) |&gt;\n    mutate(modelo = nome)\n}\n\nmetricas_teste &lt;- purrr::imap_dfr(modelos_finais, avaliar_teste)\n\nmetricas_teste |&gt;\n  select(modelo, .metric, .estimate) |&gt;\n  tidyr::pivot_wider(names_from = .metric, values_from = .estimate)\n\n# A tibble: 7 × 7\n  modelo        roc_auc mn_log_loss accuracy  sens  spec f_meas\n  &lt;chr&gt;           &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;\n1 Logística       0.821       0.508    0.739 0.658 0.804  0.693\n2 SVM             0.817       0.517    0.727 0.658 0.784  0.684\n3 Árvore          0.748       0.570    0.744 0.620 0.845  0.685\n4 Bagging         0.828       0.515    0.75  0.684 0.804  0.711\n5 Random Forest   0.832       0.497    0.761 0.696 0.814  0.724\n6 Boosting        0.834       0.499    0.75  0.696 0.794  0.714\n7 RNA             0.771       0.586    0.676 0.519 0.804  0.590\n\n\n\npred_rna &lt;- bind_cols(\n  teste |&gt; select(classe),\n  predict(final_rna, new_data = teste, type = \"class\")\n)\n\nconf_mat(pred_rna, truth = classe, estimate = .pred_class) |&gt;\n  autoplot(type = \"heatmap\") +\n  labs(title = \"RNA: matriz de confusão no teste\")\n\n\n\n\n\n\n\n\nO limiar padrão de classificação é usado somente como referência. Caso queira escolher outro limiar, faça isso com os dados de treinamento, nunca otimizando diretamente no teste."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#como-interpretar-os-resultados",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#como-interpretar-os-resultados",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "11. Como interpretar os resultados?",
+    "text": "11. Como interpretar os resultados?\n\n\n\n\n\n\n\nMedida\nInterpretação\n\n\n\n\nAcurácia\nProporção total de classificações corretas\n\n\nSensibilidade\nProporção de positivos identificados\n\n\nEspecificidade\nProporção de negativos identificados\n\n\nF1\nMédia harmônica entre precisão e sensibilidade\n\n\nROC AUC\nCapacidade de ordenar positivos acima de negativos\n\n\nLog-loss\nQualidade das probabilidades atribuídas às classes observadas\n\n\n\nUma RNA pode ser flexível e ainda assim não superar modelos mais simples. O mesmo vale para ensembles. Compare discriminação, qualidade probabilística, estabilidade, custo computacional e interpretabilidade."
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#síntese-relações-com-a-a3",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#síntese-relações-com-a-a3",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "12. Síntese: relações com a A3",
+    "text": "12. Síntese: relações com a A3\nO estudante deverá ser capaz de:\n\nJustificar a separação treino/teste e o uso de validação cruzada estratificada.\nExplicar o papel de \\(C\\) e da escala do kernel no SVM.\nComparar árvore individual, bagging e Random Forest.\nRelacionar boosting a pseudo-resíduos e correções sequenciais.\nInterpretar arquitetura, penalização L2 e diagnóstico de treinamento da RNA.\nComparar modelos usando métricas apropriadas e um teste reservado.\nDefender a escolha final com argumentos estatísticos, não apenas com uma classificação numérica.\n\n\n\n\n\n\n\nDica\n\n\n\nPara publicar no site: salve este arquivo em material_complementar/material_complementar_a3_classificacao_R.qmd e renderize com:\nquarto render material_complementar/material_complementar_a3_classificacao_R.qmd --to html"
+  },
+  {
+    "objectID": "material_complementar/material_complementar_a3_classificacao.html#curvas-de-perda-treinamento-versus-validação",
+    "href": "material_complementar/material_complementar_a3_classificacao.html#curvas-de-perda-treinamento-versus-validação",
+    "title": "Aplicação prática: Classificação supervisionada em R",
+    "section": "8.1. Curvas de perda: treinamento versus validação",
+    "text": "8.1. Curvas de perda: treinamento versus validação\nO pacote nnet não fornece, diretamente, um histórico separado de perda de validação por época. Para ilustrar o diagnóstico, usamos uma partição interna do treinamento e ajustamos modelos com diferentes limites de iteração (maxit).\n\n\n\n\n\n\nAviso\n\n\n\nO gráfico abaixo é uma curva diagnóstica por orçamento de iterações, e não o histórico de uma única trajetória de otimização. Cada ponto corresponde a um novo ajuste com o mesmo ponto de partida aleatório. Não o interprete como implementação de early stopping.\n\n\n\nset.seed(336)\ndiv_interna &lt;- initial_split(treino, prop = 0.8, strata = classe)\nsubtreino &lt;- training(div_interna)\nvalidacao &lt;- testing(div_interna)\n\n# Preparar a receita apenas no subtreino\nrec_interna &lt;- recipe(classe ~ ., data = subtreino) |&gt;\n  step_zv(all_predictors()) |&gt;\n  step_normalize(all_numeric_predictors())\n\nprep_interna &lt;- prep(rec_interna, training = subtreino)\nsub_prep &lt;- bake(prep_interna, new_data = subtreino)\nval_prep &lt;- bake(prep_interna, new_data = validacao)\n\nlogloss_binaria &lt;- function(verdade, prob) {\n  y &lt;- as.integer(verdade == \"sim\")\n  prob &lt;- pmin(pmax(prob, 1e-12), 1 - 1e-12)\n  -mean(y * log(prob) + (1-y) * log(1-prob))\n}\n\niteracoes &lt;- c(1, 5, 10, 20, 40, 80, 120, 200)\n\ncurva &lt;- purrr::map_dfr(iteracoes, function(k) {\n  # Mesmo estado inicial para facilitar a comparação.\n  set.seed(777)\n  ajuste &lt;- nnet::nnet(\n    classe ~ ., data = sub_prep,\n    size = 8, decay = 0.01, maxit = k,\n    trace = FALSE, MaxNWts = 2000\n  )\n\n  prob_tr &lt;- predict(ajuste, sub_prep, type = \"raw\")\n  prob_va &lt;- predict(ajuste, val_prep, type = \"raw\")\n\n  tibble(\n    iteracoes = k,\n    treinamento = logloss_binaria(sub_prep$classe, as.numeric(prob_tr)),\n    validacao = logloss_binaria(val_prep$classe, as.numeric(prob_va))\n  )\n})\n\ncurva |&gt;\n  tidyr::pivot_longer(\n    c(treinamento, validacao),\n    names_to = \"conjunto\", values_to = \"log_loss\"\n  ) |&gt;\n  ggplot(aes(iteracoes, log_loss, color = conjunto)) +\n  geom_line(linewidth = 1) +\n  geom_point(size = 2) +\n  labs(\n    title = \"RNA: diagnóstico de perda por orçamento de iterações\",\n    x = \"Máximo de iterações permitido\",\n    y = \"Log-loss\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nA divergência entre as perdas pode sugerir sobreajuste. Para implementar parada antecipada efetiva, é necessário controlar o treinamento iterativo e interrompê-lo segundo um critério definido em dados de validação internos. A penalização L2 é outra estratégia de regularização."
+  },
+  {
+    "objectID": "programacao/semana-10.html#material-complementar",
+    "href": "programacao/semana-10.html#material-complementar",
+    "title": "Semana 10",
+    "section": "",
+    "text": "Classificação, Ensembles e Redes Neurais Artificiais \n\n\nVer material"
+  },
+  {
+    "objectID": "programacao/semana-10.html#atividade-avaliativa---a2",
+    "href": "programacao/semana-10.html#atividade-avaliativa---a2",
+    "title": "Semana 10",
+    "section": "",
+    "text": "A2 — Métodos Locais e Kernels \n\n\nVer atividade\n\n\n\n\n\n\n\n\nInformações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 26/10/2026\nEntrega: 22/11/2026\nEntrega via Moodle"
+  },
+  {
+    "objectID": "programacao/semana-10.html#atividade-avaliativa---a3",
+    "href": "programacao/semana-10.html#atividade-avaliativa---a3",
+    "title": "Semana 10",
+    "section": "",
+    "text": "A3 — Desafio Supervisionado \n\n\nVer atividade\n\n\n\n\n\n\n\n\nInformações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 26/10/2026\nEntrega: 22/11/2026\nEntrega via Moodle"
   }
 ]

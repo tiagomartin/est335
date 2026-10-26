@@ -99,11 +99,31 @@ KNN para regressão; seleção de $k$ por validação cruzada; Nadaraya–Watson
 
 ::: {.list-group-item}
 
+<div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+
+<div>
+
 ### A3 — Desafio Supervisionado
 
-**Liberação:** 21/10/2026 · **Entrega:** 22/11/2026
+**Valor:** 20 pontos  
+**Liberação:** 26/10/2026 · **Entrega:** 22/11/2026
 
-*Em breve.*
+Classificação supervisionada; regressão logística; SVM com kernel RBF; árvores de classificação; Bagging, Random Forest e Gradient Boosting; Redes Neurais Artificiais (RNA/MLP); seleção de hiperparâmetros por validação cruzada e avaliação comparativa dos modelos.
+
+</div>
+
+<div class="d-flex gap-2 flex-wrap">
+
+[Ver atividade](atividades/atividade_3_desafio_supervisionado.qmd){.btn .btn-est335-main .btn-sm}
+
+[Material de apoio](material_complementar/material_complementar_a3_classificacao.qmd){.btn .btn-est335-outline .btn-sm}
+
+[Dados](dados/dados_a3.csv){.btn .btn-est335-outline .btn-sm download="dados_a3.csv"}
+
+</div>
+
+</div>
+
 :::
 
 ::: {.list-group-item}

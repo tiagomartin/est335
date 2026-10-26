@@ -2,7 +2,7 @@
 title: "Semana 09"
 format:
   html:
-    theme: cosmo
+    fontsize: 1.2em
     include-in-header:
       text: |
         <style>

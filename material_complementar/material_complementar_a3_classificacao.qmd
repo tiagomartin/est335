@@ -1,0 +1,503 @@
+---
+title: "Aplicação prática: Classificação supervisionada em R"
+subtitle: "Material complementar — A3"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# 1. Preparação
+
+Instale os pacotes apenas uma vez, no console:
+
+```r
+install.packages(c(
+  "tidymodels", "rpart", "ranger", "kernlab", "xgboost",
+  "ipred", "nnet", "ggplot2", "dplyr", "tibble"
+))
+```
+
+```{r}
+#| label: setup
+library(tidymodels)
+library(ggplot2)
+library(dplyr)
+library(tibble)
+
+set.seed(335)
+tidymodels_prefer()
+
+metrica_cv <- metric_set(roc_auc, mn_log_loss, accuracy)
+```
+
+Para reproduzir o material, recomenda-se uma versão recente dos pacotes. Algumas combinações de `parsnip` e motores externos podem exigir atualizações.
+
+# 2. Simulação de um problema de classificação
+
+Simulamos cinco preditores, com efeitos lineares, interação, não linearidade e duas variáveis pouco informativas. A função logística gera probabilidades; as classes observadas são realizações de Bernoulli.
+
+```{r}
+set.seed(335)
+n <- 700
+dados <- tibble(
+  x1 = rnorm(n),
+  x2 = rnorm(n),
+  x3 = runif(n, -2, 2),
+  x4 = rnorm(n),
+  x5 = rnorm(n)
+) |>
+  mutate(
+    escore = -0.5 + 1.5*x1 - 1.1*x2 +
+      0.9*x1*x2 + 0.7*sin(2*x3),
+    p_verdadeira = plogis(escore),
+    classe = factor(
+      rbinom(n, 1, p_verdadeira),
+      levels = c(0, 1),
+      labels = c("nao", "sim")
+    )
+  ) |>
+  select(-escore, -p_verdadeira)
+
+glimpse(dados)
+dados |> count(classe) |> mutate(proporcao = n / sum(n))
+```
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4
+dados |>
+  ggplot(aes(x = x1, fill = classe)) +
+  geom_density(alpha = 0.4) +
+  labs(title = "Distribuição de x1 por classe",
+       x = "x1", y = "Densidade") +
+  theme_minimal()
+```
+
+**Interprete:** diferenças de distribuição implicam separação perfeita? Como interações podem alterar a fronteira de decisão?
+
+# 3. Partição treino/teste e validação cruzada
+
+```{r}
+set.seed(335)
+divisao <- initial_split(dados, prop = 0.75, strata = classe)
+treino <- training(divisao)
+teste  <- testing(divisao)
+
+set.seed(335)
+folds <- vfold_cv(treino, v = 5, strata = classe)
+
+# Receita comum: estimativas de centro/escala
+# são calculadas dentro de cada fold.
+rec_padrao <- recipe(classe ~ ., data = treino) |>
+  step_zv(all_predictors()) |>
+  step_normalize(all_numeric_predictors())
+
+rec_arvores <- recipe(classe ~ ., data = treino) |>
+  step_zv(all_predictors())
+```
+
+Uma receita é *preparada* em cada partição de treino durante a validação cruzada. Evite aplicar `scale(dados)` antes de separar treino e teste.
+
+# 4. Regressão logística: referência
+
+A probabilidade prevista é
+
+$$
+\hat p(\mathbf{x}) =
+\frac{1}{1+\exp[-(\hat\beta_0+\mathbf{x}^{\mathsf T}\hat{\boldsymbol\beta})]}.
+$$
+
+A perda logística é
+
+$$
+L(y,p)=-y\log(p)-(1-y)\log(1-p).
+$$
+
+```{r}
+mod_log <- logistic_reg() |> set_engine("glm") |> set_mode("classification")
+wf_log <- workflow() |> add_recipe(rec_padrao) |> add_model(mod_log)
+
+res_log <- fit_resamples(
+  wf_log, resamples = folds, metrics = metrica_cv,
+  control = control_resamples(save_pred = TRUE)
+)
+collect_metrics(res_log)
+```
+
+# 5. SVM radial e árvore de classificação
+
+No SVM, `cost` corresponde a $C$; `rbf_sigma` controla a escala do kernel RBF. Na árvore, `tree_depth` limita a profundidade e `min_n` controla o tamanho mínimo de nó.
+
+```{r}
+mod_svm <- svm_rbf(
+  cost = tune(),
+  rbf_sigma = tune()
+) |>
+  set_engine("kernlab") |>
+  set_mode("classification")
+
+wf_svm <- workflow() |>
+  add_recipe(rec_padrao) |>
+  add_model(mod_svm)
+
+grade_svm <- grid_regular(
+  cost(range = c(-2, 2)),
+  rbf_sigma(range = c(-3, -1)),
+  levels = 3
+)
+
+set.seed(335)
+res_svm <- tune_grid(
+  wf_svm, resamples = folds, grid = grade_svm,
+  metrics = metrica_cv
+)
+show_best(res_svm, metric = "roc_auc")
+```
+
+```{r}
+mod_arv <- decision_tree(
+  tree_depth = tune(),
+  min_n = tune()
+) |>
+  set_engine("rpart") |>
+  set_mode("classification")
+
+wf_arv <- workflow() |>
+  add_recipe(rec_arvores) |>
+  add_model(mod_arv)
+
+grade_arv <- grid_regular(
+  tree_depth(range = c(2L, 6L)),
+  min_n(range = c(5L, 20L)),
+  levels = 3
+)
+
+set.seed(335)
+res_arv <- tune_grid(
+  wf_arv, resamples = folds, grid = grade_arv,
+  metrics = metrica_cv
+)
+show_best(res_arv, metric = "roc_auc")
+```
+
+**Discussão:** $C$ elevado reduz a tolerância a violações de margem; `rbf_sigma` controla a localidade da similaridade. Árvores profundas tendem a aumentar a flexibilidade e o risco de sobreajuste.
+
+# 6. Bagging e Random Forest
+
+No **bagging**, cada árvore considera todos os preditores como candidatos às divisões. Na **Random Forest**, apenas um subconjunto aleatório é considerado em cada divisão.
+
+```{r}
+p <- ncol(treino) - 1L
+
+mod_bag <- rand_forest(
+  mtry = p, trees = 150, min_n = 5
+) |>
+  set_engine("ranger", importance = "impurity",
+             replace = TRUE, sample.fraction = 1) |>
+  set_mode("classification")
+
+mod_rf <- rand_forest(
+  mtry = max(1L, floor(sqrt(p))),
+  trees = 150, min_n = 5
+) |>
+  set_engine("ranger", importance = "impurity",
+             replace = TRUE, sample.fraction = 1) |>
+  set_mode("classification")
+
+wf_bag <- workflow() |>
+  add_recipe(rec_arvores) |> add_model(mod_bag)
+wf_rf <- workflow() |>
+  add_recipe(rec_arvores) |> add_model(mod_rf)
+
+set.seed(335)
+res_bag <- fit_resamples(wf_bag, folds, metrics = metrica_cv)
+set.seed(335)
+res_rf <- fit_resamples(wf_rf, folds, metrics = metrica_cv)
+
+collect_metrics(res_bag)
+collect_metrics(res_rf)
+```
+
+Aqui, `ranger` é usado para ambos os métodos, alterando `mtry`. Assim, a comparação mantém os demais componentes semelhantes.
+
+# 7. Gradient Boosting
+
+Para perda logística binária, os pseudo-resíduos são
+
+$$
+r_i^{(b)} = y_i-\hat p_i^{(b-1)}
+$$
+
+e a atualização aditiva ocorre no **escore**:
+
+$$
+\hat g^{(b)}(\mathbf{x}) =
+\hat g^{(b-1)}(\mathbf{x}) +
+\lambda \hat h_b(\mathbf{x})
+$$
+
+A probabilidade é obtida pela função logística, $\hat p^{(b)}(\mathbf{x})=\sigma(\hat g^{(b)}(\mathbf{x}))$.
+
+```{r}
+mod_boost <- boost_tree(
+  trees = tune(),
+  learn_rate = tune(),
+  tree_depth = tune(),
+  min_n = 10,
+  loss_reduction = 0
+) |>
+  set_engine("xgboost", nthread = 1) |>
+  set_mode("classification")
+
+wf_boost <- workflow() |>
+  add_recipe(rec_arvores) |> add_model(mod_boost)
+
+grade_boost <- tidyr::crossing(
+  trees = c(80L, 160L),
+  learn_rate = c(0.05, 0.15),
+  tree_depth = c(1L, 3L)
+)
+
+set.seed(335)
+res_boost <- tune_grid(
+  wf_boost, resamples = folds, grid = grade_boost,
+  metrics = metrica_cv
+)
+show_best(res_boost, metric = "roc_auc")
+```
+
+::: {.callout-note}
+O `xgboost` emprega um procedimento de otimização mais sofisticado do que a versão introdutória do gradient boosting por gradiente negativo. A expressão acima destaca o princípio didático das correções sequenciais.
+:::
+
+# 8. Rede neural artificial (RNA): MLP
+
+A RNA com uma camada oculta pode ser representada por
+
+$$
+\mathbf{z} = \phi(W_1\mathbf{x}+\mathbf{b}_1),
+\qquad
+\hat p(\mathbf{x})=\sigma(W_2\mathbf{z}+b_2)
+$$
+
+O modelo `nnet` permite ajustar uma **MLP com uma camada oculta**, usando `hidden_units` e `penalty` (penalização L2). O motor `nnet` utiliza ativação logística nas unidades ocultas, em vez de ReLU.
+
+```{r}
+mod_rna <- mlp(
+  hidden_units = tune(),
+  penalty = tune(),
+  epochs = 200
+) |>
+  set_engine("nnet", trace = FALSE, MaxNWts = 2000) |>
+  set_mode("classification")
+
+wf_rna <- workflow() |>
+  add_recipe(rec_padrao) |> add_model(mod_rna)
+
+grade_rna <- tidyr::crossing(
+  hidden_units = c(4L, 8L, 16L),
+  penalty = c(0.001, 0.01)
+)
+
+set.seed(335)
+res_rna <- tune_grid(
+  wf_rna, resamples = folds, grid = grade_rna,
+  metrics = metrica_cv
+)
+show_best(res_rna, metric = "roc_auc")
+```
+
+**Por que padronizar?** Preditores em escalas diferentes podem dificultar a otimização numérica dos pesos da rede. A regularização controla o tamanho dos pesos, e a arquitetura controla a capacidade de representar relações não lineares.
+
+## 8.1. Curvas de perda: treinamento versus validação
+
+O pacote `nnet` não fornece, diretamente, um histórico separado de perda de validação por época. Para ilustrar o diagnóstico, usamos uma **partição interna do treinamento** e ajustamos modelos com diferentes limites de iteração (`maxit`).
+
+::: {.callout-warning}
+O gráfico abaixo é uma **curva diagnóstica por orçamento de iterações**, e não o histórico de uma única trajetória de otimização. Cada ponto corresponde a um novo ajuste com o mesmo ponto de partida aleatório. Não o interprete como implementação de *early stopping*.
+:::
+
+```{r}
+set.seed(336)
+div_interna <- initial_split(treino, prop = 0.8, strata = classe)
+subtreino <- training(div_interna)
+validacao <- testing(div_interna)
+
+# Preparar a receita apenas no subtreino
+rec_interna <- recipe(classe ~ ., data = subtreino) |>
+  step_zv(all_predictors()) |>
+  step_normalize(all_numeric_predictors())
+
+prep_interna <- prep(rec_interna, training = subtreino)
+sub_prep <- bake(prep_interna, new_data = subtreino)
+val_prep <- bake(prep_interna, new_data = validacao)
+
+logloss_binaria <- function(verdade, prob) {
+  y <- as.integer(verdade == "sim")
+  prob <- pmin(pmax(prob, 1e-12), 1 - 1e-12)
+  -mean(y * log(prob) + (1-y) * log(1-prob))
+}
+
+iteracoes <- c(1, 5, 10, 20, 40, 80, 120, 200)
+
+curva <- purrr::map_dfr(iteracoes, function(k) {
+  # Mesmo estado inicial para facilitar a comparação.
+  set.seed(777)
+  ajuste <- nnet::nnet(
+    classe ~ ., data = sub_prep,
+    size = 8, decay = 0.01, maxit = k,
+    trace = FALSE, MaxNWts = 2000
+  )
+
+  prob_tr <- predict(ajuste, sub_prep, type = "raw")
+  prob_va <- predict(ajuste, val_prep, type = "raw")
+
+  tibble(
+    iteracoes = k,
+    treinamento = logloss_binaria(sub_prep$classe, as.numeric(prob_tr)),
+    validacao = logloss_binaria(val_prep$classe, as.numeric(prob_va))
+  )
+})
+
+curva |>
+  tidyr::pivot_longer(
+    c(treinamento, validacao),
+    names_to = "conjunto", values_to = "log_loss"
+  ) |>
+  ggplot(aes(iteracoes, log_loss, color = conjunto)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  labs(
+    title = "RNA: diagnóstico de perda por orçamento de iterações",
+    x = "Máximo de iterações permitido",
+    y = "Log-loss"
+  ) +
+  theme_minimal()
+```
+
+A divergência entre as perdas pode sugerir sobreajuste. Para implementar **parada antecipada efetiva**, é necessário controlar o treinamento iterativo e interrompê-lo segundo um critério definido em dados de validação internos. A penalização L2 é outra estratégia de regularização.
+
+# 9. Comparação durante a validação cruzada
+
+```{r}
+extrair_auc <- function(obj, nome) {
+  collect_metrics(obj) |>
+    filter(.metric == "roc_auc") |>
+    mutate(modelo = nome) |>
+    select(modelo, mean, std_err)
+}
+
+tabela_cv <- bind_rows(
+  extrair_auc(res_log, "Logística"),
+  extrair_auc(res_svm, "SVM"),
+  extrair_auc(res_arv, "Árvore"),
+  extrair_auc(res_bag, "Bagging"),
+  extrair_auc(res_rf, "Random Forest"),
+  extrair_auc(res_boost, "Boosting"),
+  extrair_auc(res_rna, "RNA")
+) |>
+  arrange(desc(mean))
+
+tabela_cv
+```
+
+**Atenção:** o melhor resultado de uma busca de hiperparâmetros pode ser otimista. Para estimar o desempenho do procedimento de seleção sem esse otimismo, considere validação cruzada aninhada. Aqui, a CV serve principalmente para escolher configurações antes da avaliação final.
+
+# 10. Avaliação final: mesmo teste para todos
+
+Finalizamos os modelos usando somente o treinamento e as escolhas realizadas na CV. O teste aparece pela primeira vez nesta seção.
+
+```{r}
+final_log <- fit(wf_log, data = treino)
+final_svm <- finalize_workflow(
+  wf_svm, select_best(res_svm, metric = "roc_auc")
+) |> fit(data = treino)
+final_arv <- finalize_workflow(
+  wf_arv, select_best(res_arv, metric = "roc_auc")
+) |> fit(data = treino)
+final_bag <- fit(wf_bag, data = treino)
+final_rf <- fit(wf_rf, data = treino)
+final_boost <- finalize_workflow(
+  wf_boost, select_best(res_boost, metric = "roc_auc")
+) |> fit(data = treino)
+final_rna <- finalize_workflow(
+  wf_rna, select_best(res_rna, metric = "roc_auc")
+) |> fit(data = treino)
+
+modelos_finais <- list(
+  "Logística" = final_log,
+  "SVM" = final_svm,
+  "Árvore" = final_arv,
+  "Bagging" = final_bag,
+  "Random Forest" = final_rf,
+  "Boosting" = final_boost,
+  "RNA" = final_rna
+)
+
+avaliar_teste <- function(ajuste, nome) {
+  probs <- predict(ajuste, new_data = teste, type = "prob")
+  preds <- predict(ajuste, new_data = teste, type = "class")
+
+  dados_pred <- bind_cols(
+    teste |> select(classe), probs, preds
+  )
+
+  bind_rows(
+    roc_auc(dados_pred, truth = classe, .pred_sim,
+            event_level = "second"),
+    mn_log_loss(dados_pred, truth = classe, .pred_sim,
+                event_level = "second"),
+    accuracy(dados_pred, truth = classe, estimate = .pred_class),
+    sens(dados_pred, truth = classe, estimate = .pred_class,
+         event_level = "second"),
+    spec(dados_pred, truth = classe, estimate = .pred_class,
+         event_level = "second"),
+    f_meas(dados_pred, truth = classe, estimate = .pred_class,
+           event_level = "second")
+  ) |>
+    mutate(modelo = nome)
+}
+
+metricas_teste <- purrr::imap_dfr(modelos_finais, avaliar_teste)
+
+metricas_teste |>
+  select(modelo, .metric, .estimate) |>
+  tidyr::pivot_wider(names_from = .metric, values_from = .estimate)
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+pred_rna <- bind_cols(
+  teste |> select(classe),
+  predict(final_rna, new_data = teste, type = "class")
+)
+
+conf_mat(pred_rna, truth = classe, estimate = .pred_class) |>
+  autoplot(type = "heatmap") +
+  labs(title = "RNA: matriz de confusão no teste")
+```
+
+O limiar padrão de classificação é usado somente como referência. Caso queira escolher outro limiar, faça isso com os dados de treinamento, **nunca otimizando diretamente no teste**.
+
+# 11. Como interpretar os resultados?
+
+| Medida | Interpretação |
+|---|---|
+| Acurácia | Proporção total de classificações corretas |
+| Sensibilidade | Proporção de positivos identificados |
+| Especificidade | Proporção de negativos identificados |
+| F1 | Média harmônica entre precisão e sensibilidade |
+| ROC AUC | Capacidade de ordenar positivos acima de negativos |
+| Log-loss | Qualidade das probabilidades atribuídas às classes observadas |
+
+Uma RNA pode ser flexível e ainda assim não superar modelos mais simples. O mesmo vale para ensembles. Compare **discriminação, qualidade probabilística, estabilidade, custo computacional e interpretabilidade**.
+

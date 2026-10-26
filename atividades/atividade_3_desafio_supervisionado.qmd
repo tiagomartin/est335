@@ -1,0 +1,129 @@
+---
+title: "A3 — Desafio Supervisionado"
+subtitle: "EST335 — Métodos Estatísticos para Machine Learning"
+page-layout: article
+toc: true
+toc-depth: 3
+number-sections: true
+comments: false
+---
+
+::: {.callout-important}
+## Informações da atividade
+
+**Valor:** 20 pontos  
+**Liberação:** 26/10/2026  
+**Entrega:** 22/11/2026  
+:::
+
+# Objetivo
+
+Investigar como a escolha da família de modelos, o controle da complexidade, a validação cruzada e a métrica de avaliação influenciam a generalização em **classificação binária**. O foco não é apenas obter a maior métrica, mas justificar as decisões de modelagem com fundamentos estatísticos.
+
+**Questão orientadora:** *um modelo mais flexível ou com melhor acurácia é necessariamente a melhor escolha para o problema?*
+
+# Dados
+
+[Baixar base de dados da A3](../dados/dados_a3.csv){.btn .btn-primary download="dados_a3.csv"}
+
+Utilize o arquivo [`dados_a3.csv`](../dados/dados_a3.csv), disponibilizado na página da atividade. Trata-se de uma **base simulada**, com resposta binária `classe` (`0` ou `1`) e preditores numéricos `x1` a `x10`. A geração inclui relações não lineares, interações, redundância e variáveis pouco informativas. **A função geradora não será fornecida e não precisa ser identificada.**
+
+O arquivo contém uma linha por observação. Não há partição previamente definida: ela deve ser produzida pelo estudante de forma reprodutível.
+
+# Regras gerais
+
+1. Defina uma única partição estratificada **treino/teste**, reservando aproximadamente **25%** para teste. Fixe e informe a semente aleatória.
+2. Realize toda seleção de variáveis, pré-processamento, escolha de hiperparâmetros e comparação preliminar **apenas no treinamento**, preferencialmente por validação cruzada estratificada com cinco partições (*5-fold CV*).
+3. Aprenda padronizações, imputações e demais transformações **dentro de cada reamostragem**, evitando vazamento de informação.
+4. Use a **mesma partição de teste** para todos os modelos. Consulte o teste **uma única vez**, após a definição final dos procedimentos.
+5. É permitido utilizar R ou Python. Apresente o código necessário para reproduzir os resultados, tabelas e figuras.
+
+# Parte I — Exploração e planejamento (2 pontos)
+
+a) Descreva as variáveis, a proporção de classes e eventuais indícios de desbalanceamento. **(0,75)**
+
+b) Explore relações entre preditores, redundância e possíveis padrões não lineares. **(0,75)**
+
+c) Justifique a estratégia de particionamento e validação, incluindo os cuidados para evitar vazamento de dados. **(0,50)**
+
+# Parte II — Regressão logística e função de perda (2 pontos)
+
+a) Ajuste uma **regressão logística** como modelo de referência. **(0,75)**
+
+b) Interprete a probabilidade estimada $\hat p(\mathbf x)$ e explique a relação entre *log-loss* e estimação de probabilidades. **(0,75)**
+
+c) Explique por que acurácia e limiar de 0,5, isoladamente, podem ser insuficientes. **(0,50)**
+
+# Parte III — SVM e árvore de classificação (3 pontos)
+
+a) Ajuste um **SVM com kernel radial (RBF)**, selecionando $C$ e o parâmetro de escala do kernel por validação cruzada. Explique os efeitos de ambos. **(1,50)**
+
+b) Ajuste uma **árvore de classificação**, controlando sua complexidade por poda ou parâmetros equivalentes. Interprete suas principais regras. **(1,00)**
+
+c) Compare como SVM e árvores controlam a flexibilidade do modelo. **(0,50)**
+
+# Parte IV — Bagging, Random Forest e Boosting (3 pontos)
+
+a) Ajuste **Bagging** e **Random Forest**. Explique a aleatorização das árvores e a diferença entre os métodos. **(1,00)**
+
+b) Ajuste **Gradient Boosting** com árvores. Selecione $B$ (número de árvores), $\lambda$ (*learning rate*) e pelo menos um parâmetro de complexidade das árvores usando validação cruzada. **(1,25)**
+
+c) Relacione o caráter sequencial do boosting aos pseudo-resíduos e à função de perda. **(0,75)**
+
+# Parte V — Redes neurais artificiais (RNA) (4 pontos)
+
+a) Ajuste uma **rede neural artificial do tipo perceptron multicamadas (MLP)** para classificação binária, com pelo menos uma camada oculta. Descreva sua arquitetura, a função de ativação nas camadas ocultas, a saída sigmoide e a função de perda utilizada. **(1,00)**
+
+b) Realize o pré-processamento adequado, incluindo **padronização dos preditores aprendida exclusivamente no treinamento**. Selecione por validação cruzada **ao menos dois hiperparâmetros**, sendo obrigatoriamente um relacionado à arquitetura (por exemplo, número de neurônios ou camadas) e outro à regularização ou ao treinamento (por exemplo, penalização L2, *dropout* ou *learning rate*). **(1,25)**
+
+c) Apresente e interprete o comportamento do treinamento por meio de uma **curva de perda de treinamento e validação** ao longo das épocas, ou diagnóstico equivalente obtido sem utilizar o conjunto de teste. Explique como identificou sinais de sobreajuste e como controlou esse problema (por exemplo, *early stopping* ou regularização). **(1,00)**
+
+d) Compare conceitualmente a RNA com a regressão logística e com o boosting: flexibilidade, interpretação e processo de otimização. **(0,75)**
+
+
+
+# Parte VI — Avaliação comparativa (3 pontos)
+
+a) Compare **todos os modelos** usando resultados de validação cruzada no treinamento. Informe pelo menos ROC AUC e *log-loss* para modelos que forneçam probabilidades válidas. Justifique a métrica prioritária. **(1,00)**
+
+b) Após concluir a seleção dos modelos, avalie-os na **mesma partição de teste**. Apresente matriz de confusão, acurácia, sensibilidade, especificidade, F1 e ROC AUC, além de *log-loss* quando aplicável. **(1,25)**
+
+c) Discuta o impacto do limiar de classificação e as diferenças entre métricas, sem ajustar o limiar com base no teste. **(0,75)**
+
+
+# Parte VII — Síntese crítica (3 pontos)
+
+a) Discuta as evidências de sobreajuste ou subajuste, considerando árvores, ensembles, SVM e RNA. **(1,00)**
+
+b) Compare interpretabilidade, complexidade computacional e capacidade de representar relações não lineares. **(1,00)**
+
+c) Recomende um modelo para o problema, justificando a escolha com as métricas, a estabilidade dos resultados e as limitações identificadas. **(1,00)**
+
+O modelo vencedor não precisa ser o mais complexo. A qualidade da argumentação estatística é mais importante do que pequenas diferenças numéricas entre métricas.
+
+## Critérios de avaliação
+
+| Etapa | Pontuação |
+|---|---:|
+| I — Exploração e planejamento | 2 |
+| II — Regressão logística | 2 |
+| III — SVM e árvore | 3 |
+| IV — Ensembles | 3 |
+| V — Redes neurais artificiais (RNA) | 4 |
+| VI — Avaliação comparativa | 3 |
+| VII — Síntese crítica | 3 |
+| **Total** | **20** |
+
+Serão considerados a correção metodológica, a reprodutibilidade, a clareza dos gráficos e tabelas, a interpretação estatística e a qualidade da argumentação. **Não será atribuído bônus por simplesmente obter a maior acurácia.**
+
+# O que deverá ser entregue
+
+Entregue **um único relatório reprodutível**, contendo:
+
+- nome e número de matrícula;
+- código utilizado;
+- resultados numéricos;
+- gráficos solicitados;
+- tabela comparativa final;
+- interpretação estatística de cada resultado;
+- resposta à questão orientadora.

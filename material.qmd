@@ -69,6 +69,23 @@ Aplicação prática em R com KNN para regressão, seleção de $k$ por validaç
 :::
 
 
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+
+### Classificação, Ensembles e Redes Neurais Artificiais
+
+Aplicação prática em **R**, com `tidymodels`, abordando regressão logística, SVM com kernel RBF, árvores de classificação, Bagging, Random Forest, Gradient Boosting e Redes Neurais Artificiais (RNA/MLP). Inclui separação treino/teste, validação cruzada, ajuste de hiperparâmetros, regularização, análise do treinamento da RNA e comparação dos modelos por ROC AUC, log-loss, acurácia, sensibilidade, especificidade e F1. Utiliza dados simulados independentes da base avaliativa.
+
+</div>
+
+<div>
+
+[Ver material](material_complementar/material_complementar_a3_classificacao.qmd){.btn .btn-est335-main .btn-sm}
+
+</div>
+
+:::
 
 
 :::
