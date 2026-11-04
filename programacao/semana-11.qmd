@@ -2,7 +2,7 @@
 title: "Semana 11"
 format:
   html:
-    theme: cosmo
+    fontsize: 1.2em
     include-in-header:
       text: |
         <style>
@@ -55,13 +55,13 @@ format:
 ::: {.list-group-item .d-flex .justify-content-between .align-items-center}
 
 <div>
-  <span class="fw-bold">{{< fa file-powerpoint size=lg >}} Análise Fatorial </span>
+  <span class="fw-bold">{{< fa file-powerpoint size=lg >}} Redes Neurais Artificiais </span>
 </div>
 
 <div class="d-flex align-items-center gap-3">
 
-[Ver slides](/aulas/analise_fatorial/fatorial.html#/title-slide){.btn .btn-est304-main .btn-sm}
-[PDF](/aulas/analise_fatorial/fatorial.pdf){.btn .btn-est304-outline .btn-sm}
+[Ver slides](/aulas/semanais/semana_09_redes_neurais.html#/title-slide){.btn .btn-est304-main .btn-sm}
+<!-- [PDF](/aulas/analise_fatorial/fatorial.pdf){.btn .btn-est304-outline .btn-sm} -->
 
 </div>
 

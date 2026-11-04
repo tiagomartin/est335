@@ -1393,7 +1393,7 @@
     "href": "aulas.html",
     "title": "Aulas",
     "section": "",
-    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides  \n\n\n Métodos Locais: KNN, Kernel e Regressão Local \n Ver slides  \n\n\n Kernels, RKHS, SVR e SVM \n Ver slides  \n\n\n Modelos baseados em árvores \n Ver slides",
+    "text": "Esta página contém aulas que serão apresentadas ao longo do semestre.\n\n\n Fundamentos do Aprendizado Estatístico \n Ver slides  \n\n\n Modelos Lineares: Regressão e Classificação \n Ver slides  \n\n\n Flexibilidade: Funções de Base, Polinômios, Splines e Séries \n Ver slides  \n\n\n Seleção de Variáveis e Regularização \n Ver slides  \n\n\n Métodos Locais: KNN, Kernel e Regressão Local \n Ver slides  \n\n\n Kernels, RKHS, SVR e SVM \n Ver slides  \n\n\n Modelos baseados em árvores \n Ver slides  \n\n\n Redes Neurais Artificiais \n Ver slides",
     "crumbs": [
       "Aulas"
     ]
@@ -11220,7 +11220,7 @@
     "href": "cronograma.html",
     "title": "Cronograma da Disciplina",
     "section": "",
-    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n8\nSeg, 12/10\nFeriado: Nossa Senhora Aparecida\n\n\n\n\n\n\n\n\n\n\nQua, 14/10\nNão haverá aula!\n\n\n\n\n\n\n\n\n\n9\nSeg, 19/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 21/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n10\nSeg, 26/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 28/10\nRecesso Acadêmico: Dia do Servidor Público",
+    "text": "Esta página contém um esboço dos tópicos, conteúdos e tarefas para o semestre. Este cronograma será atualizado conforme o semestre avança.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSemana\nData\nTópico\nArtigo\nSlides\nEC\nLE\nScript\nMC\nAtividade\n\n\n\n\n1\nSeg, 24/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 26/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n2\nSeg, 31/08\nFundamentos do Aprendizado Estatístico\n\n\n\n\n\n\n\n\n\n\nQua, 02/09\nModelos Lineares: Regressão e Classificação\n\n\n\n\n\n\n\n\n\n3\nSeg, 07/09\nFeriado: Independência do Brasil\n\n\n\n\n\n\n\n\n\n\nQua, 09/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n4\nSeg, 14/09\nFunções de Base, Polinômios, Splines e Séries\n\n\n\n\n\n\n\n\n\n\nQua, 16/09\nSeleção de Variáveis e Regularização\n\n\n\n\n\n\n\n\n\n5\nSeg, 21/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 23/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n6\nSeg, 28/09\nMétodos Locais: KNN, Kernel e Regressão Local\n\n\n\n\n\n\n\n\n\n\nQua, 30/09\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n7\nSeg, 05/10\nKernels, RKHS, SVR e SVM\n\n\n\n\n\n\n\n\n\n\nQua, 07/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n8\nSeg, 12/10\nFeriado: Nossa Senhora Aparecida\n\n\n\n\n\n\n\n\n\n\nQua, 14/10\nNão haverá aula!\n\n\n\n\n\n\n\n\n\n9\nSeg, 19/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 21/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n10\nSeg, 26/10\nModelos baseados em árvores\n\n\n\n\n\n\n\n\n\n\nQua, 28/10\nRecesso Acadêmico: Dia do Servidor Público\n\n\n\n\n\n\n\n\n\n11\nSeg, 02/11\nFeriado: Finados\n\n\n\n\n\n\n\n\n\n\nQua, 04/11\nRedes Neurais Artificiais",
     "crumbs": [
       "Cronograma da Disciplina"
     ]
@@ -11828,14 +11828,14 @@
     "href": "programacao/semana-11.html",
     "title": "Semana 11",
     "section": "",
-    "text": "Análise Fatorial \n\n\nVer slides PDF"
+    "text": "Redes Neurais Artificiais \n\n\nVer slides"
   },
   {
     "objectID": "programacao/semana-11.html#slides",
     "href": "programacao/semana-11.html#slides",
     "title": "Semana 11",
     "section": "",
-    "text": "Análise Fatorial \n\n\nVer slides PDF"
+    "text": "Redes Neurais Artificiais \n\n\nVer slides"
   },
   {
     "objectID": "programacao/semana-13.html",
@@ -13859,5 +13859,579 @@
     "title": "Semana 10",
     "section": "",
     "text": "A3 — Desafio Supervisionado \n\n\nVer atividade\n\n\n\n\n\n\n\n\nInformações da atividade\n\n\n\nValor: 20 pontos\nLiberação: 26/10/2026\nEntrega: 22/11/2026\nEntrega via Moodle"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#redes-neurais-artificiais",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#redes-neurais-artificiais",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Redes Neurais Artificiais",
+    "text": "Redes Neurais Artificiais\nRedes neurais são modelos que aproximam funções não lineares complexas.\nNo contexto de regressão, trata-se de um estimador não linear de \\(r(\\mathbf{x})\\) que pode ser representado graficamente por uma estrutura do tipo"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#redes-neurais-artificiais-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#redes-neurais-artificiais-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Redes Neurais Artificiais",
+    "text": "Redes Neurais Artificiais\nPara a rede apresentada,\nEntrada\n\\[\n\\mathbf{x} = (x_1, x_2, x_3)^t\n\\]\nCamada oculta\nUm dado neurônio \\(j\\) da camada oculta é calculado como\n\\[\nx_j^{1} = f\\left( \\beta_{0,j}^{(0)} + \\sum_{i=1}^{3} \\beta_{i,j}^{(0)} x_i^{0} \\right),\n\\quad \\text{com } x_i^{0} = x_i,\\; i=1,2,3.\n\\]\ne \\(f\\) é uma função definida pelo usuário, chamada de função de ativação."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#redes-neurais-artificiais-2",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#redes-neurais-artificiais-2",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Redes Neurais Artificiais",
+    "text": "Redes Neurais Artificiais\nSaída\nPara regressão, utilizamos uma ativação linear na camada de saída:\n\\[\n\\boxed{\ng_\\beta(\\mathbf{x})\n=\nx_1^2\n=\n\\beta_{0,1}^{(1)}\n+\n\\sum_{j=1}^{5}\n\\beta_{j,1}^{(1)}x_j^1\n}\n\\]\nAssim,\n\\[\n\\widehat y = g_\\beta(\\mathbf{x}) = x_1^2\n\\]\n\n\n\n\n\n\nNas camadas ocultas, a função de ativação introduz não linearidade.\nNa saída de uma rede para regressão, usamos tipicamente ativação linear."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#representação-de-cada-neurônio-da-rede",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#representação-de-cada-neurônio-da-rede",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Representação de cada neurônio da rede",
+    "text": "Representação de cada neurônio da rede"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#funções-de-ativação",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#funções-de-ativação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Funções de ativação",
+    "text": "Funções de ativação\n\n\n\n\n\n\n\nFunção\nDefinição\nObservação\n\n\n\nIdentidade\n\\(\\phi(z)=z\\)\nSaída para regressão\n\n\nSigmoide\n\\(\\phi(z)=\\dfrac{1}{1+e^{-z}}\\)\nSaída binária probabilística\n\n\nTanh\n\\(\\phi(z)=\\tanh(z)\\)\nValores em \\((-1,1)\\)\n\n\n\nReLU\n\\(\\phi(z)=\\max(0,z)\\)\nFrequente em camadas ocultas\n\n\nLeaky ReLU\n\\(\\phi(z)=\\max(\\alpha z,z)\\)\nMantém gradiente para \\(z&lt;0\\), com \\(0&lt;\\alpha&lt;1\\)\n\n\n\nSoftmax\n\\(\\phi_k(\\mathbf{z})=\\dfrac{e^{z_k}}{\\sum_{j=1}^{K}e^{z_j}}\\)\nProbabilidades para \\(K\\) classes\n\n\n\nObservações:\n\n\nLeaky ReLU: reduz o problema dos neurônios mortos (dying ReLU).\n\nSoftmax: atua sobre um vetor e produz probabilidades cuja soma é igual a 1.\n\nNão linearidade: sem funções de ativação não lineares entre as camadas, a composição de transformações afins continua afim."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#por-que-precisamos-de-funções-de-ativação",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#por-que-precisamos-de-funções-de-ativação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que precisamos de funções de ativação?",
+    "text": "Por que precisamos de funções de ativação?\n\n\nUm neurônio moderno calcula:\n\\[\nz=\\mathbf{w}^{\\mathsf T}\\mathbf{x}+b,\n\\qquad a=\\phi(z)\n\\]\nExemplos:\n\\[\n\\sigma(z)=\\frac{1}{1+e^{-z}},\\qquad\n\\operatorname{ReLU}(z)=\\max(0,z)\n\\]\n\nDiferenças importantes\n\nPesos e viés ajustáveis.\nAtivações não lineares.\nSaídas não necessariamente binárias.\nTreinamento via otimização."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#treinamento",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#treinamento",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Treinamento",
+    "text": "Treinamento\nTodos os pesos e vieses da rede são reunidos em \\(\\beta\\):\n\\[\n\\beta\n=\n\\left\\{\n\\beta_{i,j}^{(0)},\n\\beta_{j,1}^{(1)}\n\\right\\}\n\\]\nincluindo os termos de intercepto \\(\\beta_{0,j}^{(0)}\\) e \\(\\beta_{0,1}^{(1)}\\).\nO objetivo do treinamento é encontrar:\n\\[\n\\widehat\\beta\n=\n\\arg\\min_\\beta\n\\frac{1}{n}\n\\sum_{r=1}^{n}\nL\\left(y_r,g_\\beta(\\mathbf{x}_r)\\right)\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#gradiente-descendente",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#gradiente-descendente",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Gradiente descendente",
+    "text": "Gradiente descendente\nComo não temos uma solução analítica, os parâmetros são atualizados iterativamente.\n\\[\n\\boxed{\n\\beta^{(t+1)}\n=\n\\beta^{(t)}\n-\n\\eta\n\\nabla_\\beta J\\left(\\beta^{(t)}\\right)\n}\n\\]\nonde\n\\[\n\\nabla_\\beta J(\\beta)\n\\]\ncontém as derivadas de \\(J\\) em relação a todos os pesos e vieses da rede.\n\\(\\eta&gt;0\\) é a taxa de aprendizado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#o-que-precisamos-calcular",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#o-que-precisamos-calcular",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que precisamos calcular?",
+    "text": "O que precisamos calcular?\nPara atualizar os parâmetros, precisamos de derivadas como\n\\[\n\\frac{\\partial J}{\\partial \\beta_{i,j}^{(0)}}\n\\qquad\\text{e}\\qquad\n\\frac{\\partial J}{\\partial \\beta_{j,1}^{(1)}}\n\\]\nMas a saída da rede é uma composição de funções:\n\\[\n\\beta_{i,j}^{(0)}\n\\longrightarrow\nx_j^1\n\\longrightarrow\nx_1^2\n\\longrightarrow\nL\n\\]\n\n\n\n\n\n\nÉ aqui que entra o backpropagation."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#backpropagation",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#backpropagation",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Backpropagation",
+    "text": "Backpropagation\nBackpropagation calcula eficientemente os gradientes usando repetidamente a regra da cadeia.\nConsidere o peso \\(\\beta_{i,j}^{(0)}\\), que conecta a entrada \\(x_i^0\\) ao neurônio \\(x_j^1\\) da camada oculta."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#gradiente-na-camada-de-saída",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#gradiente-na-camada-de-saída",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Gradiente na camada de saída",
+    "text": "Gradiente na camada de saída\nComo\n\\[\nx_1^2\n=\n\\beta_{0,1}^{(1)}\n+\n\\sum_{j=1}^{5}\n\\beta_{j,1}^{(1)}x_j^1,\n\\]\ntemos\n\\[\n\\frac{\\partial x_1^2}\n{\\partial\\beta_{j,1}^{(1)}}\n=\nx_j^1\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#atualizando-os-pesos",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#atualizando-os-pesos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Atualizando os pesos",
+    "text": "Atualizando os pesos\nDepois que o backpropagation calcula os gradientes, o otimizador atualiza os parâmetros.\nPara a primeira camada:\n\\[\n\\boxed{\n\\beta_{i,j}^{(0)}\n\\leftarrow\n\\beta_{i,j}^{(0)}\n-\n\\eta\n\\frac{\\partial J}\n{\\partial\\beta_{i,j}^{(0)}}\n}\n\\]\nPara a camada de saída:\n\\[\n\\boxed{\n\\beta_{j,1}^{(1)}\n\\leftarrow\n\\beta_{j,1}^{(1)}\n-\n\\eta\n\\frac{\\partial J}\n{\\partial\\beta_{j,1}^{(1)}}\n}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#por-que-o-nome-backpropagation",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#por-que-o-nome-backpropagation",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que o nome Backpropagation?",
+    "text": "Por que o nome Backpropagation?\nOs gradientes são calculados da saída para a entrada\n\nO erro “volta” pela rede ajustando os pesos"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#regularização",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#regularização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regularização",
+    "text": "Regularização\nRedes flexíveis também podem sobreajustar.\nUma possibilidade é penalizar os pesos:\n\\[\n\\boxed{\nJ_\\lambda(\\beta)\n=\nJ(\\beta)\n+\n\\lambda\n\\sum_{\\ell}\n\\sum_{i,j}\n\\left(\\beta_{i,j}^{(\\ell)}\\right)^2\n}\n\\]\nOutros mecanismos comuns:\n\nearly stopping;\ndropout;\ncontrole do número de camadas;\ncontrole do número de neurônios."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#parâmetros-times-hiperparâmetros",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#parâmetros-times-hiperparâmetros",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Parâmetros \\(\\times\\) Hiperparâmetros",
+    "text": "Parâmetros \\(\\times\\) Hiperparâmetros\nParâmetros: aprendidos no treinamento\n\\[\n\\boxed{\n\\beta_{i,j}^{(\\ell)}\n}\n\\]\nPesos e vieses são estimados minimizando \\(J(\\beta)\\).\nHiperparâmetros: definidos externamente\n\\[\nH,\\quad L,\\quad \\eta,\\quad \\lambda,\n\\quad \\text{batch size},\\quad \\text{épocas}.\n\\]\nSua escolha deve ser baseada em validação, e não no erro de treinamento."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#rede-neural-aprendendo-uma-função-não-linear",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#rede-neural-aprendendo-uma-função-não-linear",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Rede neural aprendendo uma função não linear",
+    "text": "Rede neural aprendendo uma função não linear\nNeste exemplo, a RNA foi ajustada para aproximar a função\n\\[\nf(x)=12+4x-6x^2+x^3+\\sin(x)\n\\]\na partir de observações ruidosas.\nA curva verde mostra a predição da rede, enquanto a curva vermelha representa a função real."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#síntese",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#síntese",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Síntese",
+    "text": "Síntese\n\na função de ativação introduz não linearidade;\na camada oculta cria novas representações dos dados;\no backpropagation ajusta os pesos para reduzir o erro;\ncom isso, a rede consegue aproximar funções complexas."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#diferentes-fontes-de-flexibilidade",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#diferentes-fontes-de-flexibilidade",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Diferentes fontes de flexibilidade",
+    "text": "Diferentes fontes de flexibilidade\nSplines: funções de base.\nKNN/kernel/local: vizinhanças.\nÁrvores: partições.\nRandom Forest: média de árvores decorrelacionadas.\nBoosting: correções sequenciais.\nRedes neurais: composição de transformações não lineares."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#saída-binária",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#saída-binária",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Saída binária",
+    "text": "Saída binária\n\\[\n\\boxed{x_1^L=\\sigma(z_1^L)}\n\\] com \\(x_1^L=\\widehat P(Y=1\\mid X=x)\\)"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#cross-entropy",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#cross-entropy",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Cross-entropy",
+    "text": "Cross-entropy\n\\[\n\\boxed{L(y,\\widehat p)=-[y\\log(\\widehat p)+(1-y)\\log(1-\\widehat p)]}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#multiclasse-softmax",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#multiclasse-softmax",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Multiclasse: Softmax",
+    "text": "Multiclasse: Softmax\n\\[\n\\boxed{\\widehat p_k(\\mathbf x)=\\frac{\\exp(z_k^L)}{\\sum_r\\exp(z_r^L)}}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#objetivos-de-aprendizagem",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#objetivos-de-aprendizagem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Objetivos de aprendizagem",
+    "text": "Objetivos de aprendizagem\nAo final da aula, você deverá ser capaz de:\n\nInterpretar uma RNA como uma família paramétrica de funções.\nExplicar o papel de pesos, vieses, ativações e camadas.\nRelacionar a aprendizagem à minimização do risco empírico.\nDescrever a regra da cadeia utilizada no backpropagation.\nAjustar, selecionar e avaliar uma RNA com R, evitando vazamento de dados.\nComparar RNAs com regressão logística, GAM, splines e SVM."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#motivação-da-biologia-à-modelagem",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#motivação-da-biologia-à-modelagem",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Motivação: da biologia à modelagem",
+    "text": "Motivação: da biologia à modelagem"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#pergunta-orientadora",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#pergunta-orientadora",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Pergunta orientadora",
+    "text": "Pergunta orientadora\n\nComo a composição de transformações simples pode representar relações complexas entre preditores e resposta?\n\nIdeia-chave: estimar uma função \\(g_\\theta(\\mathbf{x})\\) flexível, cujos parâmetros \\(\\theta\\) são aprendidos a partir de dados."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#o-que-uma-rna-aprende",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#o-que-uma-rna-aprende",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que uma RNA aprende?",
+    "text": "O que uma RNA aprende?\nEm aprendizagem supervisionada, observamos \\((\\mathbf{x}_i,y_i)\\), \\(i=1,\\ldots,n\\).\n\\[\n\\widehat g = \\arg\\min_{g\\in\\mathcal G_{RNA}} \\frac1n\\sum_{i=1}^n L\\big(y_i,g(\\mathbf{x}_i)\\big)\n\\]\n\n\nArquitetura: define a classe de funções \\(\\mathcal G_{RNA}\\).\n\nPesos e vieses: determinam uma função específica.\n\nFunção de perda: traduz o objetivo estatístico.\n\nOtimizador: procura parâmetros com baixa perda."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#revisão-regressão-logística",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#revisão-regressão-logística",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Revisão: regressão logística",
+    "text": "Revisão: regressão logística\nPara classificação binária:\n\\[\nP(Y=1\\mid\\mathbf{x})=\\sigma(\\beta_0+\\boldsymbol\\beta^\\top\\mathbf{x}),\\qquad\n\\sigma(z)=\\frac{1}{1+e^{-z}}\n\\]\nA combinação dos preditores é linear no logito.\nQuestão: e se a fronteira de decisão não puder ser descrita por um hiperplano?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#neurônio-artificial",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#neurônio-artificial",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Neurônio artificial",
+    "text": "Neurônio artificial\n\\[\n\\underbrace{z}_{\\text{pré-ativação}}=\\sum_{j=1}^p w_jx_j+b,\n\\qquad\n\\underbrace{a}_{\\text{ativação}}=\\phi(z)\n\\]\n\n\n\\(x_j\\): entradas; \\(w_j\\): pesos; \\(b\\): viés (bias).\n\n\\(\\phi\\): função de ativação, geralmente não linear.\nUma unidade com ativação sigmoide lembra a regressão logística; a composição de camadas amplia a representação."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#visualizando-ativações",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#visualizando-ativações",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Visualizando ativações",
+    "text": "Visualizando ativações"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#rede-com-uma-camada-oculta",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#rede-com-uma-camada-oculta",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Rede com uma camada oculta",
+    "text": "Rede com uma camada oculta\n\\[\n\\mathbf{h}=\\phi\\left(W^{(1)}\\mathbf{x}+\\mathbf{b}^{(1)}\\right),\n\\qquad\n\\widehat y=\\psi\\left(W^{(2)}\\mathbf{h}+\\mathbf{b}^{(2)}\\right)\n\\]\n\n\n\\(W^{(1)}\\in\\mathbb R^{H\\times p}\\); \\(\\mathbf b^{(1)}\\in\\mathbb R^H\\)\n\n\n\\(W^{(2)}\\in\\mathbb R^{1\\times H}\\); \\(b^{(2)}\\in\\mathbb R\\)\n\n\n\\(\\psi\\) depende da tarefa: identidade ou sigmoide, por exemplo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#quantos-parâmetros",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#quantos-parâmetros",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Quantos parâmetros?",
+    "text": "Quantos parâmetros?\nPara \\(p\\) entradas, \\(H\\) neurônios ocultos e uma saída:\n\\[\n\\#\\theta=\\underbrace{pH+H}_{\\text{camada oculta}}+\n\\underbrace{H+1}_{\\text{saída}}=H(p+2)+1\n\\]\nExemplo: \\(p=10\\) e \\(H=20\\) implicam 241 parâmetros.\nAumentar \\(H\\) aumenta a capacidade de representação e também o custo de estimação."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#o-papel-da-profundidade",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#o-papel-da-profundidade",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O papel da profundidade",
+    "text": "O papel da profundidade\nCom \\(L\\) camadas ocultas:\n\\[\n\\mathbf h^{(\\ell)}=\\phi_\\ell\\left(W^{(\\ell)}\\mathbf h^{(\\ell-1)}+\\mathbf b^{(\\ell)}\\right),\n\\quad \\mathbf h^{(0)}=\\mathbf x\n\\]\nA rede constrói representações sucessivas dos dados.\nUma rede larga com uma camada oculta pode aproximar uma ampla classe de funções contínuas em conjuntos compactos, sob condições adequadas. Isso não garante aprendizagem, eficiência ou generalização com amostras finitas."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#regressão-e-classificação-o-que-muda",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#regressão-e-classificação-o-que-muda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Regressão e classificação: o que muda?",
+    "text": "Regressão e classificação: o que muda?\n\n\nElemento\nRegressão\nClassificação binária\n\n\n\nSaída\n\\(\\hat y\\in\\mathbb R\\)\n\\(\\hat p\\in(0,1)\\)\n\n\nAtivação final\nIdentidade\nSigmoide\n\n\nPerda comum\nMSE\nLog-loss (entropia cruzada)\n\n\nMétricas\nRMSE, MAE, \\(R^2\\)\n\nAUC, acurácia, F1, log-loss\n\n\n\nImportante:\n\nA mesma função pode ser utilizada como perda de treinamento e métrica de avaliação.\nNa classificação binária, a log-loss equivale à entropia cruzada binária.\nUma probabilidade estimada não é automaticamente bem calibrada."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#funções-de-perda",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#funções-de-perda",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Funções de perda",
+    "text": "Funções de perda\nErro quadrático médio:\n\\[L_{MSE}(\\theta)=\\frac1n\\sum_{i=1}^n (y_i-\\widehat y_i)^2\\]\nLog-Loss:\n\\[L_{LL}(\\theta)=-\\frac1n\\sum_{i=1}^n\\left[y_i\\log\\widehat p_i+(1-y_i)\\log(1-\\widehat p_i)\\right]\\]\nA escolha da perda deve refletir a tarefa e as propriedades desejadas da predição."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#risco-empírico-e-regularização",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#risco-empírico-e-regularização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Risco empírico e regularização",
+    "text": "Risco empírico e regularização\n\\[\n\\widehat\\theta=\\arg\\min_\\theta\\left\\{\n\\frac1n\\sum_{i=1}^n L\\big(y_i,f_\\theta(\\mathbf x_i)\\big)\n+\\lambda\\Omega(\\theta)\\right\\}\n\\]\nPara penalização \\(L_2\\):\n\\[\\Omega(\\theta)=\\sum_{w\\in\\mathcal W}w^2\\]\nA penalização é usualmente aplicada aos pesos, não necessariamente aos vieses. A convenção de escala de \\(\\lambda\\) varia entre implementações."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#conexão-com-ridge-e-splines",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#conexão-com-ridge-e-splines",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Conexão com ridge e splines",
+    "text": "Conexão com ridge e splines\n\n\nRidge: penaliza coeficientes de um modelo linear.\n\nSmoothing spline: penaliza a rugosidade da função estimada.\n\nRNA com weight decay: penaliza a magnitude dos pesos.\n\nEm todos os casos há um compromisso entre ajuste aos dados e complexidade efetiva.\nAs penalizações não são equivalentes: atuam em objetos e espaços funcionais diferentes."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#como-a-rede-aprende",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#como-a-rede-aprende",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como a rede aprende?",
+    "text": "Como a rede aprende?\nAtualização por gradiente descendente:\n\\[\n\\theta^{(t+1)}=\\theta^{(t)}-\\eta\\nabla_\\theta L(\\theta^{(t)})\n\\]\n\n\n\\(\\eta\\): taxa de aprendizagem (learning rate). \n\nA superfície de perda de RNAs geralmente é não convexa."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#exemplo-derivada-de-uma-unidade-sigmoide",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#exemplo-derivada-de-uma-unidade-sigmoide",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exemplo: derivada de uma unidade sigmoide",
+    "text": "Exemplo: derivada de uma unidade sigmoide\nConsidere \\(\\widehat p=\\sigma(wx+b)\\) e a perda para uma observação:\n\\[\\ell=-y\\log\\widehat p-(1-y)\\log(1-\\widehat p)\\]\nUsando a regra da cadeia:\n\\[\n\\frac{\\partial\\ell}{\\partial w}=(\\widehat p-y)x,\n\\qquad\n\\frac{\\partial\\ell}{\\partial b}=\\widehat p-y\n\\]\nInterpretação: o erro de predição é propagado para ajustar os parâmetros."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-ideia-central",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-ideia-central",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Backpropagation: ideia central",
+    "text": "Backpropagation: ideia central\nPara uma camada oculta:\n\\[\n\\delta^{(2)}=\\frac{\\partial\\ell}{\\partial z^{(2)}},\\qquad\n\\delta^{(1)}=\\big[(W^{(2)})^\\top\\delta^{(2)}\\big]\\odot\\phi'(z^{(1)})\n\\]\n\\[\n\\frac{\\partial\\ell}{\\partial W^{(\\ell)}}=\\delta^{(\\ell)}(h^{(\\ell-1)})^\\top\n\\]\nO backpropagation calcula gradientes eficientemente; não é, por si só, o algoritmo de atualização dos pesos."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#passos-do-treinamento",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#passos-do-treinamento",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Passos do treinamento",
+    "text": "Passos do treinamento\n\nInicializar pesos e vieses.\nFazer a passagem para frente (forward pass).\nCalcular a função de perda.\nCalcular gradientes por backpropagation.\nAtualizar parâmetros pelo otimizador.\nRepetir até um critério de parada.\n\nInicializações, taxa de aprendizagem e sementes podem afetar o resultado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#viés-variância-e-generalização",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#viés-variância-e-generalização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Viés, variância e generalização",
+    "text": "Viés, variância e generalização\n\n\n\nPouca capacidade: risco de subajuste (underfitting).\nMuita capacidade sem controle: risco de sobreajuste (overfitting).\nMais parâmetros não implicam necessariamente maior erro de teste.\nA generalização depende dos dados, da arquitetura, do treinamento e da regularização.\n\n\n\n\n\n\n\n\n\n\n\n\nDescida dupla (double descent): em alguns problemas, o erro de teste diminui, aumenta próximo ao limiar de interpolação e volta a diminuir em regimes superparametrizados."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#estratégias-de-controle",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#estratégias-de-controle",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estratégias de controle",
+    "text": "Estratégias de controle\n\n\nWeight decay: penalização \\(L_2\\) dos pesos.\n\nEarly stopping: interromper usando desempenho de validação.\n\nArquitetura: controlar largura e profundidade.\n\nPadronização: estabilizar escalas e otimização.\n\nValidação cruzada: selecionar hiperparâmetros.\n\nDropout também é comum, mas não será necessário para o experimento com uma rede pequena."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#protocolo-de-avaliação-sem-vazamento",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#protocolo-de-avaliação-sem-vazamento",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Protocolo de avaliação sem vazamento",
+    "text": "Protocolo de avaliação sem vazamento\nTreino / validação / teste\n\n\nTreino: estimar pesos e parâmetros de pré-processamento.\n\nValidação ou CV: escolher arquitetura e penalização.\n\nTeste: estimar desempenho final uma única vez, após a seleção.\n\nEm CV, a padronização precisa ser recalculada dentro de cada partição de treinamento."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#estudo-de-caso-classificação-não-linear",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#estudo-de-caso-classificação-não-linear",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estudo de caso: classificação não linear",
+    "text": "Estudo de caso: classificação não linear\nSimularemos duas classes cuja fronteira depende da distância à origem:\n\\[\nP(Y=1\\mid x_1,x_2)=\\sigma\\left(2.5(x_1^2+x_2^2-1.3)\\right)\n\\]\nO objetivo é comparar:\n\nRegressão logística linear em \\(x_1,x_2\\).\nRegressão logística com termos quadráticos.\nRNA com uma camada oculta."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#simulação-dos-dados",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#simulação-dos-dados",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Simulação dos dados",
+    "text": "Simulação dos dados\n\nset.seed(335)\nn &lt;- 800\nx1 &lt;- runif(n, -2, 2)\nx2 &lt;- runif(n, -2, 2)\nprob &lt;- plogis(2.5 * (x1^2 + x2^2 - 1.3))\ny &lt;- rbinom(n, 1, prob)\ndados &lt;- data.frame(x1, x2, y)\nidx_treino &lt;- sample(seq_len(n), size = floor(.75*n))\ntreino &lt;- dados[idx_treino, ]\nteste &lt;- dados[-idx_treino, ]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#visualização-do-problema",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#visualização-do-problema",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Visualização do problema",
+    "text": "Visualização do problema"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#modelos-de-referência",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#modelos-de-referência",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Modelos de referência",
+    "text": "Modelos de referência\n\nmod_linear &lt;- glm(y ~ x1 + x2, data=treino, family=binomial())\nmod_quad &lt;- glm(y ~ x1 + x2 + I(x1^2) + I(x2^2) + I(x1*x2),\n                data=treino, family=binomial())\n\nDiscussão: uma regressão logística com engenharia de atributos pode representar uma fronteira não linear no espaço original."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#rna-no-r-pacote-nnet",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#rna-no-r-pacote-nnet",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "RNA no R: pacote nnet\n",
+    "text": "RNA no R: pacote nnet\n\n\n# install.packages(\"nnet\")  # executar apenas se necessário\nlibrary(nnet)\nset.seed(335)\nmod_rna_demo &lt;- nnet(y ~ x1 + x2, data=treino,\n                     size=8, decay=.01,\n                     entropy=TRUE, linout=FALSE,\n                     maxit=500, trace=FALSE)\n\n\n\nsize: número de neurônios na camada oculta.\n\ndecay: penalização dos pesos (escala própria do nnet).\n\nentropy=TRUE: entropia cruzada para saída logística binária.\n\nmaxit: limite de iterações do otimizador."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#preparação-correta-para-validação-cruzada",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#preparação-correta-para-validação-cruzada",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Preparação correta para validação cruzada",
+    "text": "Preparação correta para validação cruzada\nPadronização é estimada em cada treino interno:\n\npadronizar &lt;- function(dtreino, dvalid) {\n  vars &lt;- c(\"x1\", \"x2\")\n  mu &lt;- sapply(dtreino[vars], mean)\n  sdv &lt;- sapply(dtreino[vars], sd)\n  sdv[sdv == 0] &lt;- 1\n  for (v in vars) {\n    dtreino[[v]] &lt;- (dtreino[[v]] - mu[v])/sdv[v]\n    dvalid[[v]] &lt;- (dvalid[[v]] - mu[v])/sdv[v]\n  }\n  list(treino=dtreino, valid=dvalid)\n}"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#validação-cruzada-grade-de-hiperparâmetros",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#validação-cruzada-grade-de-hiperparâmetros",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Validação cruzada: grade de hiperparâmetros",
+    "text": "Validação cruzada: grade de hiperparâmetros\n\nset.seed(335)\nK &lt;- 5\nfold &lt;- sample(rep(seq_len(K), length.out=nrow(treino)))\ngrade &lt;- expand.grid(size=c(2, 5, 10), decay=c(0, .001, .05))\nlogloss &lt;- function(y, p) {\n  p &lt;- pmin(pmax(as.numeric(p), 1e-8), 1-1e-8)\n  -mean(y*log(p)+(1-y)*log1p(-p))\n}\n\nA escolha dos hiperparâmetros será feita apenas com o conjunto de treinamento."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#validação-cruzada-execução",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#validação-cruzada-execução",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Validação cruzada: execução",
+    "text": "Validação cruzada: execução\n\nresultado &lt;- numeric(nrow(grade))\nfor (j in seq_len(nrow(grade))) {\n  perdas &lt;- numeric(K)\n  for (k in seq_len(K)) {\n    pp &lt;- padronizar(treino[fold != k, ], treino[fold == k, ])\n    set.seed(1000 + 100*j + k)\n    ajuste &lt;- nnet(y ~ x1 + x2, data=pp$treino,\n                   size=grade$size[j], decay=grade$decay[j],\n                   entropy=TRUE, maxit=400, trace=FALSE,\n                   MaxNWts=1000)\n    p &lt;- predict(ajuste, newdata=pp$valid, type=\"raw\")\n    perdas[k] &lt;- logloss(pp$valid$y, p)\n  }\n  resultado[j] &lt;- mean(perdas)\n}\ngrade$logloss_cv &lt;- resultado\ngrade &lt;- grade[order(grade$logloss_cv), ]\nhead(grade, 6)\n\n  size decay logloss_cv\n8    5 0.050  0.2552523\n9   10 0.050  0.2566146\n2    5 0.000  0.2637235\n5    5 0.001  0.2652314\n6   10 0.001  0.3212239\n7    2 0.050  0.4515107"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#visualização-da-seleção",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#visualização-da-seleção",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Visualização da seleção",
+    "text": "Visualização da seleção\n\ncores &lt;- c(\"#2266aa\", \"#b53b3b\", \"#19865a\")\nplot(range(grade$size)+c(-1,1), range(grade$logloss_cv), type=\"n\",\n     xlab=\"Neurônios ocultos\", ylab=\"Log-loss média na CV\")\nfor (j in seq_along(sort(unique(grade$decay)))) {\n  d &lt;- sort(unique(grade$decay))[j]\n  sub &lt;- grade[grade$decay==d, ]\n  sub &lt;- sub[order(sub$size), ]\n  lines(sub$size, sub$logloss_cv, type=\"b\", pch=19, col=cores[j], lwd=2)\n}\nlegend(\"topright\", paste(\"decay =\", sort(unique(grade$decay))),\n       col=cores, lty=1, pch=19, bty=\"n\")"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#ajuste-final-e-avaliação-no-teste",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#ajuste-final-e-avaliação-no-teste",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Ajuste final e avaliação no teste",
+    "text": "Ajuste final e avaliação no teste\n\nmelhor &lt;- grade[1, ]\npp &lt;- padronizar(treino, teste)\nset.seed(335)\nmod_rna &lt;- nnet(y ~ x1 + x2, data=pp$treino,\n                size=melhor$size, decay=melhor$decay,\n                entropy=TRUE, maxit=500, trace=FALSE)\np_rna &lt;- as.numeric(predict(mod_rna, pp$valid, type=\"raw\"))\np_lin &lt;- predict(mod_linear, teste, type=\"response\")\np_quad &lt;- predict(mod_quad, teste, type=\"response\")\ncomparacao &lt;- data.frame(\n  Modelo=c(\"Logística linear\", \"Logística quadrática\", \"RNA\"),\n  LogLoss=c(logloss(teste$y,p_lin), logloss(teste$y,p_quad),\n            logloss(teste$y,p_rna)),\n  Acuracia=c(mean((p_lin&gt;=.5)==teste$y),\n             mean((p_quad&gt;=.5)==teste$y),\n             mean((p_rna&gt;=.5)==teste$y)))\ncomparacao\n\n                Modelo   LogLoss Acuracia\n1     Logística linear 0.5999623    0.715\n2 Logística quadrática 0.2365543    0.895\n3                  RNA 0.2508191    0.895"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#como-interpretar-a-comparação",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#como-interpretar-a-comparação",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como interpretar a comparação?",
+    "text": "Como interpretar a comparação?\n\nA log-loss avalia a qualidade das probabilidades previstas.\nA acurácia depende do limiar de classificação escolhido.\nO modelo quadrático possui estrutura correta para este gerador de dados.\nA RNA aprende uma fronteira flexível sem fornecer explicitamente \\(x_1^2\\) e \\(x_2^2\\).\n\nNão se espera que a RNA sempre supere um modelo estatístico bem especificado."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#fronteiras-de-decisão-estimadas",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#fronteiras-de-decisão-estimadas",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Fronteiras de decisão estimadas",
+    "text": "Fronteiras de decisão estimadas\n\ngrid &lt;- expand.grid(x1=seq(-2,2,length.out=100),\n                    x2=seq(-2,2,length.out=100))\np1 &lt;- predict(mod_linear, grid, type=\"response\")\np2 &lt;- predict(mod_quad, grid, type=\"response\")\np3 &lt;- as.numeric(predict(mod_rna, padronizar(treino,grid)$valid,\n                         type=\"raw\"))\npar(mfrow=c(1,3), mar=c(3,3,3,1))\nfor (i in 1:3) {\n  ppred &lt;- list(p1,p2,p3)[[i]]\n  image(sort(unique(grid$x1)), sort(unique(grid$x2)),\n        matrix(ppred,100,100), col=hcl.colors(25,\"Blues\"),\n        xlab=\"x1\", ylab=\"x2\", main=c(\"Logística linear\", \"Quadrática\", \"RNA\")[i],\n        zlim=c(0,1))\n  contour(sort(unique(grid$x1)), sort(unique(grid$x2)),\n          matrix(ppred,100,100), levels=.5, add=TRUE, drawlabels=FALSE,\n          lwd=2, col=\"#b53b3b\")\n}"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#discussão-fronteiras-de-decisão",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#discussão-fronteiras-de-decisão",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Discussão: fronteiras de decisão",
+    "text": "Discussão: fronteiras de decisão\n\nA logística linear produz uma fronteira reta.\nA logística quadrática pode produzir uma fronteira curva.\nA RNA constrói uma aproximação não linear a partir de unidades ocultas.\n\nPergunta: a maior flexibilidade da RNA representa uma vantagem em qualquer cenário?\nNão! A flexibilidade é vantajosa quando a estrutura da relação entre as variáveis é suficientemente complexa para justificar um modelo mais expressivo."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#cuidados-práticos",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#cuidados-práticos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Cuidados práticos",
+    "text": "Cuidados práticos\n\nSeparar dados antes de transformar variáveis.\nAjustar a padronização apenas com dados de treinamento em cada partição.\nRepetir ajustes com diferentes sementes para avaliar estabilidade.\nInspecionar desempenho por subgrupos e possível desbalanceamento.\nAvaliar calibração quando probabilidades forem usadas em decisões.\nEvitar selecionar modelos com base no conjunto de teste."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#rna-versus-métodos-estudados",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#rna-versus-métodos-estudados",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "RNA versus métodos estudados",
+    "text": "RNA versus métodos estudados\n\n\nMétodo\nPrincipal mecanismo de flexibilidade\n\n\n\nRegressão polinomial\nTermos de base escolhidos\n\n\nSplines / GAM\nBases suaves e penalização\n\n\nÁrvores\nPartições do espaço preditor\n\n\nSVM com kernel\nSimilaridades em espaço de características\n\n\nRNA\nComposição de transformações aprendidas"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#interpretação-estatística",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#interpretação-estatística",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Interpretação estatística",
+    "text": "Interpretação estatística\nA RNA define uma função \\(g_\\theta\\), mas seus pesos individuais não possuem, em geral, interpretação marginal direta como os coeficientes de uma regressão linear.\nPossíveis ferramentas: curvas de dependência parcial, efeitos locais, análise de sensibilidade e explicações globais e locais. Sempre considerando dependência entre variáveis e limites de causalidade."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#exercício-em-sala-capacidade-e-regularização",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#exercício-em-sala-capacidade-e-regularização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Exercício em sala: capacidade e regularização",
+    "text": "Exercício em sala: capacidade e regularização\nAtividade em grupos (15–20 minutos):\n\nAmplie size para \\(\\{2,5,10,20\\}\\).\nCompare decay em \\(\\{0,0.001,0.05,0.2\\}\\).\nFaça seleção por CV, sem consultar o teste.\nCompare log-loss e acurácia no teste.\nExplique os resultados em termos de capacidade, regularização e variabilidade da otimização."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#questões-para-discussão",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#questões-para-discussão",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Questões para discussão",
+    "text": "Questões para discussão\n\nPor que uma rede sem ativações não lineares equivale a uma transformação afim?\nO que diferencia backpropagation de gradiente descendente?\nEm qual conjunto de dados se escolhe size e decay?\nPor que o modelo quadrático pode superar a RNA neste exemplo?\nO que muda ao substituir log-loss por acurácia como critério de seleção?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#síntese-da-aula",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#síntese-da-aula",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Síntese da aula",
+    "text": "Síntese da aula\nRNA = arquitetura + parâmetros + função de perda + algoritmo de treinamento + protocolo de validação.\nA questão estatística não é apenas ajustar uma função flexível, mas verificar se ela generaliza para novas observações."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#referências-recomendadas",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#referências-recomendadas",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Referências recomendadas",
+    "text": "Referências recomendadas\n\nJames, Witten, Hastie, Tibshirani e Taylor. An Introduction to Statistical Learning, 2ª ed., capítulo sobre deep learning.\nHastie, Tibshirani e Friedman. The Elements of Statistical Learning, seções sobre redes neurais.\nGoodfellow, Bengio e Courville. Deep Learning, capítulos 6–8.\nBishop e Bishop. Deep Learning: Foundations and Concepts.\nDocumentação R: ?nnet::nnet."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#encerramento",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#encerramento",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Encerramento",
+    "text": "Encerramento\n\nQuando vale a pena usar uma RNA em vez de um modelo estatístico mais simples?\n\nCritério orientador: evidência de melhor generalização, considerando interpretabilidade, custo computacional, estabilidade e objetivo da análise."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#por-que-estudar-redes-neurais-artificiais",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#por-que-estudar-redes-neurais-artificiais",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Por que estudar redes neurais artificiais?",
+    "text": "Por que estudar redes neurais artificiais?\nQuestão motivadora\nComo unidades de processamento relativamente simples, quando conectadas, conseguem representar relações complexas entre variáveis?\n\nModelos lineares combinam preditores diretamente.\nRNAs compõem transformações lineares e não lineares.\nOs parâmetros são estimados a partir dos dados."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#o-primeiro-modelo-mccullochpitts-1943",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#o-primeiro-modelo-mccullochpitts-1943",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O primeiro modelo: McCulloch–Pitts (1943)",
+    "text": "O primeiro modelo: McCulloch–Pitts (1943)"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#como-funciona-uma-unidade-de-limiar",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#como-funciona-uma-unidade-de-limiar",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como funciona uma unidade de limiar?",
+    "text": "Como funciona uma unidade de limiar?\nConsidere duas entradas binárias, com \\(w_1=w_2=1\\) e \\(\\theta=2\\):\n\\[\ny=\\mathbb{I}(x_1+x_2\\geq 2).\n\\]\n\n\n\\(x_1\\)\n\\(x_2\\)\n\\(z=x_1+x_2\\)\n\\(y\\)\n\n\n\n0\n0\n0\n0\n\n\n0\n1\n1\n0\n\n\n1\n0\n1\n0\n\n\n1\n1\n2\n1\n\n\n\nInterpretação: esta unidade implementa a operação lógica E (AND).\nPeça que a turma sugira um limiar para representar a operação OU (OR): com os mesmos pesos, theta=1."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#o-que-o-modelo-de-mccullochpitts-não-fazia",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#o-que-o-modelo-de-mccullochpitts-não-fazia",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "O que o modelo de McCulloch–Pitts não fazia?",
+    "text": "O que o modelo de McCulloch–Pitts não fazia?\n\n\nNão aprendia pesos a partir de exemplos: as conexões eram especificadas previamente.\nProduzia decisões discretas por meio de um limiar.\nNão oferecia, por si só, um procedimento de treinamento supervisionado.\n\nPergunta: e se pudéssemos estimar os pesos usando observações \\((\\mathbf{x}_i,y_i)\\)?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#perceptron-de-rosenblatt-1958",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#perceptron-de-rosenblatt-1958",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Perceptron de Rosenblatt (1958)",
+    "text": "Perceptron de Rosenblatt (1958)\nO perceptron introduz uma regra de atualização para os pesos de uma unidade classificadora:\n\\[\n\\widehat y=\\mathbb{I}(\\mathbf{w}^{\\mathsf T}\\mathbf{x}+b\\geq 0)\n\\]\nPara \\(y\\in\\{0,1\\}\\), uma forma da atualização é:\n\\[\n\\mathbf{w}\\leftarrow\\mathbf{w}+\\eta(y-\\widehat y)\\mathbf{x},\\qquad\nb\\leftarrow b+\\eta(y-\\widehat y)\n\\]\n\n\n\\(\\eta&gt;0\\): taxa de aprendizagem.\nA atualização depende do erro de classificação.\nUm único perceptron produz uma fronteira linear."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#de-um-neurônio-a-uma-rede-multicamadas",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#de-um-neurônio-a-uma-rede-multicamadas",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De um neurônio a uma rede multicamadas",
+    "text": "De um neurônio a uma rede multicamadas\nUma camada oculta:\n\\[\n\\mathbf{h}=\\phi(W_1\\mathbf{x}+\\mathbf{b}_1)\n\\]\n\\[\n\\widehat y=\\psi(W_2\\mathbf{h}+b_2)\n\\]\nA composição permite representar relações não lineares.\nAtenção: os nós da camada de entrada geralmente representam variáveis, e não neurônios de processamento."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#conexão-com-modelos-estatísticos-e-próxima-etapa",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#conexão-com-modelos-estatísticos-e-próxima-etapa",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Conexão com modelos estatísticos e próxima etapa",
+    "text": "Conexão com modelos estatísticos e próxima etapa\n\n\n\n\n\n\n\nModelo\nExpressão típica\nO que é estimado?\n\n\n\nRegressão linear\n\\(\\widehat y=\\mathbf{w}^{\\mathsf T}\\mathbf{x}+b\\)\nCoeficientes\n\n\nRegressão logística\n\\(\\widehat p=\\sigma(\\mathbf{w}^{\\mathsf T}\\mathbf{x}+b)\\)\nCoeficientes\n\n\nRNA com camada oculta\n\\(\\widehat y=\\psi(W_2\\phi(W_1\\mathbf{x}+\\mathbf{b}_1)+b_2)\\)\nPesos e vieses de todas as camadas\n\n\n\nPróxima pergunta: como estimar todos esses parâmetros minimizando uma função de perda?\n\\[\n\\widehat{\\boldsymbol\\theta}=\\arg\\min_{\\boldsymbol\\theta}\n\\frac1n\\sum_{i=1}^{n}L(y_i,f_{\\boldsymbol\\theta}(\\mathbf{x}_i)).\n\\]\nUse esta pergunta para introduzir gradiente descendente e backpropagation. Explique a ligação com risco empírico, regularização e generalização, já vistos na disciplina."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#questão-motivadora",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#questão-motivadora",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Questão motivadora",
+    "text": "Questão motivadora\nComo unidades de processamento relativamente simples, quando conectadas, conseguem representar relações complexas entre variáveis?\n\nModelos lineares combinam preditores diretamente.\nRNAs compõem transformações lineares e não lineares.\nOs parâmetros são estimados a partir dos dados."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#de-um-neurônio-a-uma-rede-multicamadas-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#de-um-neurônio-a-uma-rede-multicamadas-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "De um neurônio a uma rede multicamadas",
+    "text": "De um neurônio a uma rede multicamadas"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#conexão-com-modelos-estatísticos",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#conexão-com-modelos-estatísticos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Conexão com modelos estatísticos",
+    "text": "Conexão com modelos estatísticos\n\n\n\n\n\n\n\nModelo\nExpressão típica\nO que é estimado?\n\n\n\nRegressão linear\n\\(\\widehat y=\\mathbf{w}^{\\mathsf T}\\mathbf{x}+b\\)\nCoeficientes\n\n\nRegressão logística\n\\(\\widehat p=\\sigma(\\mathbf{w}^{\\mathsf T}\\mathbf{x}+b)\\)\nCoeficientes\n\n\nRNA com camada oculta\n\\(\\widehat y=\\psi(W_2\\phi(W_1\\mathbf{x}+\\mathbf{b}_1)+b_2)\\)\nPesos e vieses de todas as camadas\n\n\n\nPróxima pergunta: como estimar todos esses parâmetros minimizando uma função de perda?\n\\[\n\\widehat{\\boldsymbol\\theta}=\\arg\\min_{\\boldsymbol\\theta}\n\\frac1n\\sum_{i=1}^{n}L(y_i,g_{\\boldsymbol\\theta}(\\mathbf{x}_i))\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-funcionamento",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-funcionamento",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Backpropagation: funcionamento",
+    "text": "Backpropagation: funcionamento"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#viés-variância-e-generalização-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#viés-variância-e-generalização-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Viés, variância e generalização",
+    "text": "Viés, variância e generalização\n\nPouca capacidade: risco de subajuste.\nMuita capacidade sem controle: risco de sobreajuste.\nMais parâmetros não implicam necessariamente maior erro de teste; a relação depende de dados, treinamento e regularização.\nO desempenho deve ser estimado em observações não usadas no ajuste nem na seleção."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#descida-dupla-experimento-com-redes-neurais",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#descida-dupla-experimento-com-redes-neurais",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Descida dupla: experimento com redes neurais",
+    "text": "Descida dupla: experimento com redes neurais\nVariamos o número de neurônios ocultos \\(H\\) e comparamos o RMSE de treinamento e teste.\n\nDiscussão: o erro de teste necessariamente aumenta quando a rede passa a ter mais parâmetros do que observações?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#descida-dupla-mais-neurônios-significam-mais-sobreajuste",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#descida-dupla-mais-neurônios-significam-mais-sobreajuste",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Descida dupla: mais neurônios significam mais sobreajuste?",
+    "text": "Descida dupla: mais neurônios significam mais sobreajuste?\nMotivação: na abordagem clássica do compromisso viés-variância, esperamos que modelos excessivamente complexos apresentem maior erro de generalização.\nMas será que isso sempre acontece em redes neurais?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#descida-dupla-mais-neurônios-significam-mais-sobreajuste-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#descida-dupla-mais-neurônios-significam-mais-sobreajuste-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Descida dupla: mais neurônios significam mais sobreajuste?",
+    "text": "Descida dupla: mais neurônios significam mais sobreajuste?\nConsidere uma rede com uma camada oculta:\n\\[\n\\hat g_H(\\mathbf{x}) =\n\\beta_0 +\n\\sum_{j=1}^{H}\n\\beta_j \\tanh(\\mathbf{w}_j^\\top\\mathbf{x}+b_j)\n\\]\nNo experimento:\n\n\nLargura da rede: variamos o número de neurônios ocultos \\(H\\).\n\nCamada oculta: pesos e vieses gerados aleatoriamente e mantidos fixos.\n\nCamada de saída: coeficientes estimados por mínimos quadrados de norma mínima.\n\nAvaliação: comparamos o RMSE de treinamento e teste.\n\n\n\n\n\n\n\nQuestão central: uma rede com mais parâmetros treináveis do que observações pode apresentar menor erro de teste do que uma rede menor?"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#estratégias-de-controle-e-generalização",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#estratégias-de-controle-e-generalização",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estratégias de controle e generalização",
+    "text": "Estratégias de controle e generalização\n\n\nEstratégia\nObjetivo principal\n\n\n\nWeight decay (\\(L_2\\))\nPenalizar a magnitude dos pesos\n\n\nEarly stopping\nLimitar o treinamento usando validação\n\n\nDropout\nRegularizar por desativação aleatória de ativações\n\n\nArquitetura\nControlar largura e profundidade\n\n\nPadronização\nMelhorar a estabilidade da otimização\n\n\nValidação cruzada\nSelecionar hiperparâmetros"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#estratégias-de-controle-e-generalização-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#estratégias-de-controle-e-generalização-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Estratégias de controle e generalização",
+    "text": "Estratégias de controle e generalização\nConexão com a aprendizagem estatística:\n\n\nWeight decay é relacionado à regressão ridge.\n\nEarly stopping atua como regularização implícita.\nA validação cruzada permite comparar diferentes níveis de complexidade e regularização.\n\nImportante: controlar a generalização não significa necessariamente reduzir o número de parâmetros."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#visualização-da-seleção-output",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#visualização-da-seleção-output",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Visualização da seleção",
+    "text": "Visualização da seleção"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#fronteiras-de-decisão-estimadas-output",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#fronteiras-de-decisão-estimadas-output",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Fronteiras de decisão estimadas",
+    "text": "Fronteiras de decisão estimadas\n\n\n\n\n\n\npar(mfrow=c(1,1))"
   }
 ]
