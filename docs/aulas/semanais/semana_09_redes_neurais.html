@@ -540,7 +540,7 @@ P(Y=1\mid\mathbf{x})=\sigma(\beta_0+\boldsymbol\beta^\top\mathbf{x}),\qquad
 </section><section id="risco-empírico-e-regularização" class="slide level2"><h2>Risco empírico e regularização</h2>
 <p><span class="math display">\[
 \widehat\theta=\arg\min_\theta\left\{
-\frac1n\sum_{i=1}^n L\big(y_i,f_\theta(\mathbf x_i)\big)
+\frac1n\sum_{i=1}^n L\big(y_i,g_\theta(\mathbf x_i)\big)
 +\lambda\Omega(\theta)\right\}
 \]</span></p>
 <p>Para penalização <span class="math inline">\(L_2\)</span>:</p>
@@ -571,23 +571,102 @@ P(Y=1\mid\mathbf{x})=\sigma(\beta_0+\boldsymbol\beta^\top\mathbf{x}),\qquad
 <img data-src="../..\images/regressao/perdas_convexa_nao_convexa.png" style="width:100.0%" class="r-stretch"></section><section id="exemplo-derivada-de-uma-unidade-sigmoide" class="slide level2"><h2>Exemplo: derivada de uma unidade sigmoide</h2>
 <p>Considere <span class="math inline">\(\widehat p=\sigma(wx+b)\)</span> e a perda para uma observação:</p>
 <p><span class="math display">\[\ell=-y\log\widehat p-(1-y)\log(1-\widehat p)\]</span></p>
-<p>Usando a regra da cadeia:</p>
+<p>A perda depende de <span class="math inline">\(w\)</span> <strong>indiretamente</strong>, por meio de <span class="math inline">\(z\)</span> e <span class="math inline">\(\hat p\)</span>:</p>
 <p><span class="math display">\[
-\frac{\partial\ell}{\partial w}=(\widehat p-y)x,
+w \longrightarrow z \longrightarrow \hat p
+\longrightarrow \ell
+\]</span></p>
+<p>Pela <strong>regra da cadeia</strong>:</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial\ell}{\partial w}
+=
+\frac{\partial\ell}{\partial\hat p}
+\frac{\partial\hat p}{\partial z}
+\frac{\partial z}{\partial w}
+}
+\]</span></p>
+</section><section id="como-o-erro-chega-aos-pesos" class="slide level2"><h2>Como o erro chega aos pesos?</h2>
+<p>Para sigmoide com entropia cruzada binária:</p>
+<p><span class="math display">\[
+\frac{\partial\ell}{\partial w}
+=
+\underbrace{(\hat p-y)}_{\delta}
+\underbrace{x}_{\text{entrada}}, \qquad \frac{\partial\ell}{\partial b} =\hat p-y
+\]</span></p>
+<p><strong>Ideia central:</strong> o gradiente é calculado percorrendo as dependências da saída em direção aos parâmetros.</p>
+</section><section id="como-o-gradiente-chega-à-camada-oculta" class="slide level2"><h2>Como o gradiente chega à camada oculta?</h2>
+<p>Considere uma RNA com uma camada oculta e uma saída:</p>
+<p><span class="math display">\[
+\mathbf a^{(0)}=\mathbf x
+\]</span></p>
+<p><span class="math display">\[
+\mathbf z^{(1)}
+=W^{(1)}\mathbf x+\mathbf b^{(1)},
 \qquad
-\frac{\partial\ell}{\partial b}=\widehat p-y
+\mathbf a^{(1)}=\phi(\mathbf z^{(1)})
 \]</span></p>
-<p><strong>Interpretação:</strong> o erro de predição é propagado para ajustar os parâmetros.</p>
+<p><span class="math display">\[
+z^{(2)}=W^{(2)}\mathbf a^{(1)}+b^{(2)},
+\qquad
+\hat p=\sigma(z^{(2)})
+\]</span></p>
+<p><strong>1. Gradiente na saída:</strong></p>
+<p><span class="math display">\[
+\boxed{\delta^{(2)}=\hat p-y}
+\]</span></p>
+</section><section id="como-o-gradiente-chega-à-camada-oculta-1" class="slide level2"><h2>Como o gradiente chega à camada oculta?</h2>
+<p><strong>2. Retropropagação à camada oculta:</strong></p>
+<p><span class="math display">\[
+\boxed{
+\boldsymbol\delta^{(1)}
+=
+\left[(W^{(2)})^\top\delta^{(2)}\right]
+\odot\phi'(\mathbf z^{(1)})
+}
+\]</span></p>
+<p><strong>3. Gradientes dos pesos:</strong></p>
+<p><span class="math display">\[
+\frac{\partial\ell}{\partial W^{(1)}}
+=
+\boldsymbol\delta^{(1)}\mathbf x^\top,
+\qquad
+\frac{\partial\ell}{\partial W^{(2)}}
+=
+\delta^{(2)}(\mathbf a^{(1)})^\top
+\]</span></p>
 </section><section id="backpropagation-ideia-central" class="slide level2"><h2>Backpropagation: ideia central</h2>
-<p>Para uma camada oculta:</p>
+<p>Para uma rede com <span class="math inline">\(L\)</span> camadas parametrizadas:</p>
+<p><strong>Gradiente na saída:</strong></p>
 <p><span class="math display">\[
-\delta^{(2)}=\frac{\partial\ell}{\partial z^{(2)}},\qquad
-\delta^{(1)}=\big[(W^{(2)})^\top\delta^{(2)}\big]\odot\phi'(z^{(1)})
+\boldsymbol\delta^{(L)}
+=
+\frac{\partial\ell}{\partial\mathbf z^{(L)}}
 \]</span></p>
+<p><strong>Retropropagação para as camadas ocultas:</strong></p>
 <p><span class="math display">\[
-\frac{\partial\ell}{\partial W^{(\ell)}}=\delta^{(\ell)}(h^{(\ell-1)})^\top
+\boxed{
+\boldsymbol\delta^{(\ell)}
+=
+\left[(W^{(\ell+1)})^\top
+\boldsymbol\delta^{(\ell+1)}\right]
+\odot
+(\phi^{(\ell)})'(\mathbf z^{(\ell)})
+}
 \]</span></p>
-<p>O <em>backpropagation</em> calcula gradientes eficientemente; <strong>não é, por si só, o algoritmo de atualização</strong> dos pesos.</p>
+</section><section id="backpropagation-ideia-central-1" class="slide level2"><h2>Backpropagation: ideia central</h2>
+<p><strong>Gradientes dos parâmetros:</strong></p>
+<p><span class="math display">\[
+\frac{\partial\ell}{\partial W^{(\ell)}}
+=
+\boldsymbol\delta^{(\ell)}
+(\mathbf a^{(\ell-1)})^\top,
+\qquad
+\frac{\partial\ell}{\partial\mathbf b^{(\ell)}}
+=
+\boldsymbol\delta^{(\ell)}
+\]</span></p>
+<p><strong>Importante:</strong> backpropagation calcula os gradientes. O otimizador (SGD, Adam etc.) utiliza esses gradientes para atualizar os pesos e vieses.</p>
 </section><section id="passos-do-treinamento" class="slide level2"><h2>Passos do treinamento</h2>
 <ol type="1">
 <li>Inicializar pesos e vieses.</li>
@@ -692,17 +771,8 @@ P(Y=1\mid\mathbf{x})=\sigma(\beta_0+\boldsymbol\beta^\top\mathbf{x}),\qquad
 <td>Selecionar hiperparâmetros</td>
 </tr>
 </tbody>
-</table></section><section id="estratégias-de-controle-e-generalização-1" class="slide level2"><h2>Estratégias de controle e generalização</h2>
-<p><strong>Conexão com a aprendizagem estatística:</strong></p>
-<ul>
-<li>
-<em>Weight decay</em> é relacionado à <strong>regressão ridge</strong>.</li>
-<li>
-<em>Early stopping</em> atua como <strong>regularização implícita</strong>.</li>
-<li>A validação cruzada permite comparar diferentes níveis de complexidade e regularização.</li>
-</ul>
-<p><strong>Importante:</strong> controlar a generalização não significa necessariamente reduzir o número de parâmetros.</p>
-</section><section id="protocolo-de-avaliação-sem-vazamento" class="slide level2"><h2>Protocolo de avaliação sem vazamento</h2>
+</table>
+<!-- ## Estratégias de controle e generalização --><!-- **Conexão com a aprendizagem estatística:** --><!-- - *Weight decay* é relacionado à **regressão ridge**. --><!-- - *Early stopping* atua como **regularização implícita**. --><!-- - A validação cruzada permite comparar diferentes --><!--   níveis de complexidade e regularização. --><!-- **Importante:** controlar a generalização não significa --><!-- necessariamente reduzir o número de parâmetros. --></section><section id="protocolo-de-avaliação-sem-vazamento" class="slide level2"><h2>Protocolo de avaliação sem vazamento</h2>
 <p><strong>Treino / validação / teste</strong></p>
 <ul>
 <li>

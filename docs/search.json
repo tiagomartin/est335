@@ -14096,7 +14096,7 @@
     "href": "aulas/semanais/semana_09_redes_neurais.html#risco-empírico-e-regularização",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Risco empírico e regularização",
-    "text": "Risco empírico e regularização\n\\[\n\\widehat\\theta=\\arg\\min_\\theta\\left\\{\n\\frac1n\\sum_{i=1}^n L\\big(y_i,f_\\theta(\\mathbf x_i)\\big)\n+\\lambda\\Omega(\\theta)\\right\\}\n\\]\nPara penalização \\(L_2\\):\n\\[\\Omega(\\theta)=\\sum_{w\\in\\mathcal W}w^2\\]\nA penalização é usualmente aplicada aos pesos, não necessariamente aos vieses. A convenção de escala de \\(\\lambda\\) varia entre implementações."
+    "text": "Risco empírico e regularização\n\\[\n\\widehat\\theta=\\arg\\min_\\theta\\left\\{\n\\frac1n\\sum_{i=1}^n L\\big(y_i,g_\\theta(\\mathbf x_i)\\big)\n+\\lambda\\Omega(\\theta)\\right\\}\n\\]\nPara penalização \\(L_2\\):\n\\[\\Omega(\\theta)=\\sum_{w\\in\\mathcal W}w^2\\]\nA penalização é usualmente aplicada aos pesos, não necessariamente aos vieses. A convenção de escala de \\(\\lambda\\) varia entre implementações."
   },
   {
     "objectID": "aulas/semanais/semana_09_redes_neurais.html#conexão-com-ridge-e-splines",
@@ -14117,14 +14117,14 @@
     "href": "aulas/semanais/semana_09_redes_neurais.html#exemplo-derivada-de-uma-unidade-sigmoide",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Exemplo: derivada de uma unidade sigmoide",
-    "text": "Exemplo: derivada de uma unidade sigmoide\nConsidere \\(\\widehat p=\\sigma(wx+b)\\) e a perda para uma observação:\n\\[\\ell=-y\\log\\widehat p-(1-y)\\log(1-\\widehat p)\\]\nUsando a regra da cadeia:\n\\[\n\\frac{\\partial\\ell}{\\partial w}=(\\widehat p-y)x,\n\\qquad\n\\frac{\\partial\\ell}{\\partial b}=\\widehat p-y\n\\]\nInterpretação: o erro de predição é propagado para ajustar os parâmetros."
+    "text": "Exemplo: derivada de uma unidade sigmoide\nConsidere \\(\\widehat p=\\sigma(wx+b)\\) e a perda para uma observação:\n\\[\\ell=-y\\log\\widehat p-(1-y)\\log(1-\\widehat p)\\]\nA perda depende de \\(w\\) indiretamente, por meio de \\(z\\) e \\(\\hat p\\):\n\\[\nw \\longrightarrow z \\longrightarrow \\hat p\n\\longrightarrow \\ell\n\\]\nPela regra da cadeia:\n\\[\n\\boxed{\n\\frac{\\partial\\ell}{\\partial w}\n=\n\\frac{\\partial\\ell}{\\partial\\hat p}\n\\frac{\\partial\\hat p}{\\partial z}\n\\frac{\\partial z}{\\partial w}\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-ideia-central",
     "href": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-ideia-central",
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Backpropagation: ideia central",
-    "text": "Backpropagation: ideia central\nPara uma camada oculta:\n\\[\n\\delta^{(2)}=\\frac{\\partial\\ell}{\\partial z^{(2)}},\\qquad\n\\delta^{(1)}=\\big[(W^{(2)})^\\top\\delta^{(2)}\\big]\\odot\\phi'(z^{(1)})\n\\]\n\\[\n\\frac{\\partial\\ell}{\\partial W^{(\\ell)}}=\\delta^{(\\ell)}(h^{(\\ell-1)})^\\top\n\\]\nO backpropagation calcula gradientes eficientemente; não é, por si só, o algoritmo de atualização dos pesos."
+    "text": "Backpropagation: ideia central\nPara uma rede com \\(L\\) camadas parametrizadas:\nGradiente na saída:\n\\[\n\\boldsymbol\\delta^{(L)}\n=\n\\frac{\\partial\\ell}{\\partial\\mathbf z^{(L)}}\n\\]\nRetropropagação para as camadas ocultas:\n\\[\n\\boxed{\n\\boldsymbol\\delta^{(\\ell)}\n=\n\\left[(W^{(\\ell+1)})^\\top\n\\boldsymbol\\delta^{(\\ell+1)}\\right]\n\\odot\n(\\phi^{(\\ell)})'(\\mathbf z^{(\\ell)})\n}\n\\]"
   },
   {
     "objectID": "aulas/semanais/semana_09_redes_neurais.html#passos-do-treinamento",
@@ -14433,5 +14433,40 @@
     "title": "Parte I : Aprendizado Supervisionado",
     "section": "Fronteiras de decisão estimadas",
     "text": "Fronteiras de decisão estimadas\n\n\n\n\n\n\npar(mfrow=c(1,1))"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#como-o-erro-chega-aos-pesos",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#como-o-erro-chega-aos-pesos",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como o erro chega aos pesos?",
+    "text": "Como o erro chega aos pesos?\nPara sigmoide com entropia cruzada binária:\n\\[\n\\frac{\\partial\\ell}{\\partial w}\n=\n\\underbrace{(\\hat p-y)}_{\\delta}\n\\underbrace{x}_{\\text{entrada}}, \\qquad \\frac{\\partial\\ell}{\\partial b} =\\hat p-y\n\\]\nIdeia central: o gradiente é calculado percorrendo as dependências da saída em direção aos parâmetros."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#como-o-erro-chega-aos-pesos-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#como-o-erro-chega-aos-pesos-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como o erro chega aos pesos?",
+    "text": "Como o erro chega aos pesos?\nPara sigmoide com entropia cruzada binária:\n\\[\n\\frac{\\partial\\ell}{\\partial w}\n=\n\\underbrace{(\\hat p-y)}_{\\delta}\n\\underbrace{x}_{\\text{entrada}}\n\\]\nIdeia central: o gradiente é calculado percorrendo as dependências da saída em direção aos parâmetros."
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#como-o-gradiente-chega-à-camada-oculta",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#como-o-gradiente-chega-à-camada-oculta",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como o gradiente chega à camada oculta?",
+    "text": "Como o gradiente chega à camada oculta?\nConsidere uma RNA com uma camada oculta e uma saída:\n\\[\n\\mathbf a^{(0)}=\\mathbf x\n\\]\n\\[\n\\mathbf z^{(1)}\n=W^{(1)}\\mathbf x+\\mathbf b^{(1)},\n\\qquad\n\\mathbf a^{(1)}=\\phi(\\mathbf z^{(1)})\n\\]\n\\[\nz^{(2)}=W^{(2)}\\mathbf a^{(1)}+b^{(2)},\n\\qquad\n\\hat p=\\sigma(z^{(2)})\n\\]\n1. Gradiente na saída:\n\\[\n\\boxed{\\delta^{(2)}=\\hat p-y}\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#como-o-gradiente-chega-à-camada-oculta-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#como-o-gradiente-chega-à-camada-oculta-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Como o gradiente chega à camada oculta?",
+    "text": "Como o gradiente chega à camada oculta?\n2. Retropropagação à camada oculta:\n\\[\n\\boxed{\n\\boldsymbol\\delta^{(1)}\n=\n\\left[(W^{(2)})^\\top\\delta^{(2)}\\right]\n\\odot\\phi'(\\mathbf z^{(1)})\n}\n\\]\n3. Gradientes dos pesos:\n\\[\n\\frac{\\partial\\ell}{\\partial W^{(1)}}\n=\n\\boldsymbol\\delta^{(1)}\\mathbf x^\\top,\n\\qquad\n\\frac{\\partial\\ell}{\\partial W^{(2)}}\n=\n\\delta^{(2)}(\\mathbf a^{(1)})^\\top\n\\]"
+  },
+  {
+    "objectID": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-ideia-central-1",
+    "href": "aulas/semanais/semana_09_redes_neurais.html#backpropagation-ideia-central-1",
+    "title": "Parte I : Aprendizado Supervisionado",
+    "section": "Backpropagation: ideia central",
+    "text": "Backpropagation: ideia central\nGradientes dos parâmetros:\n\\[\n\\frac{\\partial\\ell}{\\partial W^{(\\ell)}}\n=\n\\boldsymbol\\delta^{(\\ell)}\n(\\mathbf a^{(\\ell-1)})^\\top,\n\\qquad\n\\frac{\\partial\\ell}{\\partial\\mathbf b^{(\\ell)}}\n=\n\\boldsymbol\\delta^{(\\ell)}\n\\]\nImportante: backpropagation calcula os gradientes. O otimizador (SGD, Adam etc.) utiliza esses gradientes para atualizar os pesos e vieses."
   }
 ]
