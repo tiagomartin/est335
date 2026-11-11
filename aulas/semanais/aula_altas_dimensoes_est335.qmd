@@ -1,0 +1,823 @@
+---
+title: "Parte I : Aprendizado Supervisionado"
+subtitle: "<span class='custom-subtitle'>Aprendizado em Alta Dimensão</span>"
+lang: pt-BR
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    theme: quartomonothemer.scss
+    slide-number: c/t
+    show-slide-number: all
+    chalkboard: true
+    incremental: false
+    self-contained: false
+  beamer:
+    aspectratio: 169
+    pdf-engine: xelatex
+    fontsize: 10pt
+    keep-tex: true
+incremental: false
+slide-level: 2
+fig-align: center
+fig-width: 10
+fig-height: 4.6
+fig-format: png
+fig-dpi: 160
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: false
+title-slide-attributes:
+  data-background-image: /images/back.png
+  data-background-size: cover
+  data-background-opacity: "0.3"
+---
+
+```{r}
+#| include: false
+azul <- "#003287"
+vermelho <- "#C83E3A"
+cinza <- "#646464"
+par_aula <- function(...) {
+  par(mar = c(4.2, 4.5, 1.5, 1), mgp = c(2.7, 0.8, 0),
+      las = 1, cex = 1.15, col.axis = cinza, col.lab = cinza, ...)
+}
+```
+
+## Onde estamos?
+
+Estudamos diferentes formas de estimar
+
+$$
+r(\mathbf x)=\mathbb E(Y\mid\mathbf X=\mathbf x)
+$$
+
+- KNN e regressão local utilizam **vizinhanças**.
+- Splines utilizam **funções de base**.
+- Árvores e ensembles utilizam **partições**.
+- Redes neurais aprendem **composições de transformações**.
+
+**Como esses métodos se comportam quando o número de variáveis aumenta?**
+
+::: {.notes}
+Abertura e motivação: 10 minutos, incluindo os quatro slides seguintes.
+Conectar a aula à diversidade de estimadores já vista na disciplina.
+:::
+
+## Dois estudos com $n=200$ e $p=1.000$
+
+::: columns
+::: {.column width="50%"}
+### Estudo A: sensores
+
+1.000 medições refletem principalmente **três condições de funcionamento**.
+
+Muitas variáveis compartilham informação.
+
+**Hipótese: redundância.**
+:::
+::: {.column width="50%"}
+### Estudo B: características moleculares
+
+A resposta depende de **cinco entre 1.000 variáveis**.
+
+A maioria das variáveis é desnecessária para a predição, dadas as relevantes.
+
+**Hipótese: esparsidade.**
+:::
+:::
+
+**Os estudos têm a mesma dificuldade apenas porque possuem os mesmos $n$ e $p$?**
+
+
+## Dimensões diferentes
+
+| Quantidade | Significado |
+|---|---|
+| $n$ | Número de observações |
+| $p$ | Número de variáveis observadas |
+| $d$ | Dimensão de uma representação dos dados |
+| $s$ | Número de variáveis ativas na função de regressão |
+| $m$ | Número de parâmetros do modelo |
+
+Podemos ter $d\ll p$, $s\ll p$ e, em uma RNA, $m\gg p$.
+
+**Essas quantidades descrevem aspectos diferentes do problema.**
+
+::: {.notes}
+A dimensão intrínseca da distribuição de X e a dimensão suficiente para prever Y
+podem diferir. Nesta aula, d denota a dimensão da representação indicada em cada exemplo.
+:::
+
+# Dimensionalidade e tamanho amostral
+
+## Uma região pequena em muitas dimensões
+
+Considere entradas uniformes em $[0,1]^p$.
+
+Uma região com comprimento $h$ em cada coordenada ocupa a fração
+
+$$
+\boxed{V=h^p}
+$$
+
+do volume total. Para $h=0{,}2$:
+
+$$
+p=1:\ 0{,}2,\qquad
+p=2:\ 0{,}04,\qquad
+p=5:\ 0{,}00032.
+$$
+
+**A mesma resolução por coordenada cobre uma fração cada vez menor dos dados.**
+
+::: {.notes}
+Bloco sobre dimensionalidade: cerca de 20 minutos.
+O hipercubo unitário tem volume total 1 em qualquer dimensão. O que decresce é
+a fração ocupada por uma região com lado fixo h menor que 1.
+Não dizer que o volume do hipercubo unitário cresce exponencialmente.
+:::
+
+## Quantas observações caem nessa região?
+
+Se $N_R$ conta as observações na região:
+
+$$
+N_R\sim\operatorname{Binomial}(n,h^p),
+\qquad \mathbb E(N_R)=nh^p.
+$$
+
+Para obter **$k$ observações em média**:
+
+$$
+\boxed{n=\frac{k}{h^p}.}
+$$
+
+Com $k=20$ e $h=0{,}2$, temos $n=20\times5^p$.
+
+Isso ilustra cobertura do espaço sob uniformidade, sem garantir uma contagem mínima.
+
+## A amostra cresce rapidamente
+
+| Dimensão $p$ | Fração $0{,}2^p$ | $n$ para 20 observações em média |
+|---:|---:|---:|
+| 1 | $0{,}2$ | 100 |
+| 2 | $0{,}04$ | 500 |
+| 3 | $0{,}008$ | 2.500 |
+| 5 | $0{,}00032$ | 62.500 |
+| 10 | $0{,}0000001024$ | 195.312.500 |
+
+**Esta conta não constitui uma recomendação amostral para qualquer modelo.**
+
+## Dimensão e cobertura do espaço
+
+```{r}
+#| fig-height: 4.3
+#| fig-alt: "O logaritmo decimal da amostra necessária cresce linearmente com p, indicando crescimento exponencial da amostra."
+par_aula()
+p <- 1:10
+plot(p, log10(20 * 5^p), type = "b", pch = 19, lwd = 3,
+     col = azul, xlab = "Número de variáveis (p)",
+     ylab = "log10 do tamanho amostral", xaxt = "n", ylim = c(2, 8.5))
+axis(1, at = p)
+abline(h = 2:8, col = "#E5E5E5", lty = 3)
+points(p, log10(20 * 5^p), pch = 19, col = azul)
+```
+
+Manter o mesmo tamanho de vizinhança em cada coordenada exige crescimento exponencial de $n$.
+
+::: {.notes}
+Cada unidade no eixo vertical representa multiplicar n por 10.
+Gráfico calculado da expressão geométrica, sem ajuste ou simulação.
+:::
+
+## O que acontece com o KNN?
+
+Para encontrar $k$ vizinhos com poucos dados:
+
+- Precisamos ampliar a região de busca.
+- Os vizinhos podem diferir em várias coordenadas.
+- Variáveis irrelevantes podem dominar a distância.
+
+$$
+d^2(\mathbf x,\mathbf x')=
+\underbrace{\sum_{j\in S}(x_j-x'_j)^2}_{\text{variáveis relevantes}}
++
+\underbrace{\sum_{j\notin S}(x_j-x'_j)^2}_{\text{demais variáveis}}.
+$$
+
+Padronizar evita dominância de escala, mas mantém as variáveis irrelevantes na distância.
+
+## Regressão local e splines multivariadas
+
+**Regressão local:** vizinhanças maiores podem aumentar o viés, enquanto regiões menores contêm poucos dados.
+
+**Bases tensoriais:** com $K$ funções por variável, uma construção completa usa
+
+$$
+\boxed{K^p\text{ funções de base}.}
+$$
+
+Com $K=5$ e $p=10$: $5^{10}=9.765.625$ funções.
+
+**Restrições como aditividade reduzem essa complexidade.**
+
+## Uma taxa que resume a dificuldade
+
+Para uma classe de funções com suavidade $\alpha$, sob condições usuais:
+
+$$
+\text{erro de estimação integrado}\asymp
+n^{-\frac{2\alpha}{2\alpha+p}}.
+$$
+
+Com $\alpha=2$:
+
+| Dimensão | Taxa |
+|---:|---:|
+| $p=1$ | $n^{-4/5}$ |
+| $p=4$ | $n^{-1/2}$ |
+| $p=20$ | $n^{-1/6}$ |
+
+O crescimento de $p$ reduz a velocidade de aprendizagem.
+
+::: {.notes}
+Taxa minimax típica para erro quadrático integrado sobre classes suaves,
+com hipóteses sobre suporte, desenho e ruído. Refere-se ao excesso de erro em
+relação à função verdadeira, não inclui o ruído irredutível de uma nova resposta.
+Fonte: Wasserman, notas Nonparametric Regression, referência ao final.
+:::
+
+# Redundância
+
+## Muitas medições, poucos fatores
+
+Suponha que as variáveis obedeçam a
+
+$$
+X_j=a_jZ+\eta_j,\qquad j=1,\ldots,p.
+$$
+
+- $Z$: fator compartilhado.
+- $a_j$: intensidade e direção da associação com o fator.
+- $\eta_j$: componente específico da medição.
+
+**Muitas variáveis podem medir aspectos de um mesmo fenômeno.**
+
+::: {.notes}
+Bloco sobre redundância: cerca de 15 minutos.
+Exemplo: dezenas de sensores medindo um estado térmico comum.
+Com ruído em todas as coordenadas, a distribuição pode ter suporte de dimensão p,
+ainda que a estrutura de sinal seja aproximadamente de baixa dimensão.
+:::
+
+## Redundância em um exemplo simulado
+
+```{r}
+#| fig-alt: "Duas medições de um fator comum produzem uma nuvem próxima de uma reta."
+set.seed(335)
+z <- rnorm(250)
+x1 <- z + rnorm(250, sd = 0.18)
+x2 <- z + rnorm(250, sd = 0.18)
+par_aula()
+plot(x1, x2, pch = 19, col = adjustcolor(azul, 0.45),
+     xlab = "Medição X1", ylab = "Medição X2", asp = 1)
+abline(0, 1, col = vermelho, lwd = 2)
+```
+
+As duas coordenadas contêm informação fortemente compartilhada.
+
+## Representação de baixa dimensão
+
+Uma generalização é
+
+$$
+\mathbf X=A\mathbf Z+\boldsymbol\eta,
+\qquad \mathbf Z\in\mathbb R^d,\quad d\ll p.
+$$
+
+Se a resposta depende principalmente desses fatores,
+
+$$
+Y=g(\mathbf Z)+\varepsilon,
+$$
+
+uma representação de dimensão $d$ pode simplificar a predição.
+
+**Precisamos preservar o sinal relacionado à resposta.**
+
+## ACP e regressão por componentes
+
+A ACP constrói combinações lineares:
+
+$$
+Z_k=\mathbf v_k^\top\mathbf X.
+$$
+
+Na regressão por componentes principais, utilizamos
+
+$$
+\widehat Y=\hat\beta_0+\sum_{k=1}^{d}\hat\gamma_kZ_k.
+$$
+
+- A ACP utiliza a variabilidade das entradas.
+- A escolha de $d$ para predição deve considerar o desempenho de validação.
+- Uma componente de pequena variância pode conter sinal importante.
+
+## Variância das entradas e sinal preditivo
+
+Considere variáveis independentes:
+
+$$
+X_1\sim N(0,100),\qquad X_2\sim N(0,1),
+$$
+
+$$
+Y=5X_2+\varepsilon.
+$$
+
+**Sem padronização**, a primeira componente populacional acompanha $X_1$.
+
+Entretanto, a resposta depende de $X_2$.
+
+**Explicar a variação de $\mathbf X$ não garante preservar a informação sobre $Y$.**
+
+::: {.notes}
+Padronizar altera este exemplo, mas a ACP continua sem utilizar Y.
+Evitar concluir que toda componente de alta variância é irrelevante.
+Fonte conceitual: notas de redução dimensional STATS 202, Stanford.
+:::
+
+## Métodos para explorar redundância
+
+| Método | Estratégia | Cuidado |
+|---|---|---|
+| PCR | Regressão em componentes da ACP | Pode descartar sinal preditivo |
+| PLS | Componentes que utilizam também $Y$ | Número de componentes exige validação |
+| Ridge | Contrai coeficientes e estabiliza o ajuste | Mantém todas as variáveis |
+| Modelo fatorial | Representa fatores compartilhados | Depende da adequação dos fatores |
+
+Com redundância, selecionar uma única variável de cada grupo pode perder informação útil das demais medições.
+
+# Esparsidade
+
+## Poucas variáveis determinam a resposta
+
+Considere $p=1.000$, mas
+
+$$
+Y=3X_2-2X_{17}+1{,}5X_{204}+\varepsilon.
+$$
+
+A função de regressão utiliza apenas $s=3$ variáveis.
+
+$$
+\boxed{s\ll p.}
+$$
+
+**O desafio inclui descobrir quais variáveis são relevantes.**
+
+::: {.notes}
+Bloco sobre esparsidade: cerca de 15 minutos.
+Aqui relevância significa participação na função condicional adotada no modelo.
+Uma variável fora do suporte ainda pode ter associação marginal com Y por correlação.
+:::
+
+## Esparsidade dos coeficientes
+
+```{r}
+#| fig-alt: "Três coeficientes são diferentes de zero entre cinquenta variáveis."
+beta <- numeric(50)
+beta[c(2, 17, 44)] <- c(3, -2, 1.5)
+par_aula()
+plot(seq_along(beta), beta, type = "h", lwd = 3, col = azul,
+     xlab = "Índice da variável", ylab = "Coeficiente verdadeiro",
+     ylim = c(-2.5, 3.5))
+abline(h = 0, col = cinza)
+points(which(beta != 0), beta[beta != 0], pch = 19, col = vermelho, cex = 1.4)
+```
+
+Ilustração com 50 variáveis: apenas três efeitos ativos.
+
+## Esparsidade do modelo e dos dados
+
+| Conceito | Significado | Exemplo |
+|---|---|---|
+| Modelo esparso | Poucos efeitos ativos | Cinco coeficientes não nulos |
+| Matriz esparsa | Muitas entradas iguais a zero | Contagens de palavras em documentos |
+
+Uma matriz densa pode gerar um problema de regressão esparsa.
+
+Uma matriz esparsa pode conter muitas variáveis relevantes.
+
+**As duas propriedades não são equivalentes.**
+
+## Lasso e seleção de variáveis
+
+O lasso estima
+
+$$
+\boxed{
+\hat{\boldsymbol\beta}=
+\arg\min_{\beta_0,\boldsymbol\beta}
+\left\{
+\frac{1}{2n}\sum_{i=1}^{n}
+(y_i-\beta_0-\mathbf x_i^\top\boldsymbol\beta)^2
++\lambda\|\boldsymbol\beta\|_1
+\right\}.
+}
+$$
+
+A penalização $L_1$ favorece coeficientes exatamente iguais a zero.
+
+- $\lambda$ controla a intensidade da regularização.
+- O intercepto fica fora da penalização.
+- A validação escolhe $\lambda$ para o objetivo preditivo.
+
+## Elastic net e variáveis correlacionadas
+
+O elastic net combina
+
+$$
+\lambda\left[
+\alpha\|\boldsymbol\beta\|_1
++\frac{1-\alpha}{2}\|\boldsymbol\beta\|_2^2
+\right].
+$$
+
+- $\alpha=1$: lasso.
+- $\alpha=0$: ridge.
+- $0<\alpha<1$: combinação das penalizações.
+
+Pode ser útil quando existem **grupos correlacionados e poucos grupos com sinal**.
+
+::: {.notes}
+A parte L2 favorece estabilidade e comportamento de agrupamento sob correlação.
+A seleção exata não é garantida. Ajustar alpha e lambda na validação.
+Fonte: Zou e Hastie (2005), Regularization and variable selection via the elastic net.
+:::
+
+## Esparsidade também pode ser não linear
+
+$$
+Y=\sin(X_2)+X_{17}^2+X_2X_{204}+\varepsilon.
+$$
+
+A função depende de poucas variáveis, mas inclui não linearidade e interação.
+
+**Lasso aplicado somente às entradas originais representa efeitos lineares.**
+
+Possibilidades:
+
+- Bases e interações com penalização.
+- Modelos aditivos esparsos, quando a aditividade for adequada.
+- Métodos capazes de representar interações, com controle de complexidade.
+
+# Comparação das estruturas
+
+## Resumir ou selecionar?
+
+| Aspecto | Redundância | Esparsidade |
+|---|---|---|
+| Estrutura | Informação compartilhada | Poucos efeitos relevantes |
+| Operação natural | Construir representações | Selecionar variáveis ou efeitos |
+| Exemplo | 100 medidas de três fatores | Cinco entre 1.000 variáveis |
+| Métodos associados | PCR, PLS, ridge | Lasso, elastic net |
+| Risco | Perder sinal ao resumir | Seleção instável ou incorreta |
+
+**As hipóteses podem coexistir.**
+
+::: {.notes}
+Comparação e tamanho amostral estruturado: cerca de 15 minutos.
+:::
+
+## Esparsidade depende da representação
+
+Considere entradas independentes e padronizadas e defina
+
+$$
+Z_1=\frac{X_1+\cdots+X_p}{\sqrt p},
+\qquad Y=2Z_1+\varepsilon.
+$$
+
+Na representação original:
+
+$$
+\beta_j=\frac{2}{\sqrt p},\qquad j=1,\ldots,p.
+$$
+
+Todos os coeficientes são diferentes de zero, embora a resposta dependa de **uma única combinação**.
+
+**Dimensão preditiva pequena pode coexistir com coeficientes densos.**
+
+## Redundância e esparsidade juntas
+
+Imagine 1.000 variáveis organizadas em 20 grupos correlacionados.
+
+Apenas dois grupos contêm informação necessária à função de regressão.
+
+- **Dentro dos grupos:** redundância.
+- **Entre os grupos:** esparsidade da estrutura relevante.
+
+Possibilidades: elastic net, group lasso com grupos conhecidos ou seleção seguida de representação.
+
+Toda etapa aprendida dos dados deve integrar a validação.
+
+## Alta dimensão na regressão linear
+
+$$
+\mathbf y=X\boldsymbol\beta+\boldsymbol\varepsilon.
+$$
+
+Se $p>n$, a matriz $X^\top X$ é singular e os coeficientes de mínimos quadrados não são únicos.
+
+Para coeficientes penalizados e $\lambda>0$, ridge utiliza
+
+$$
+\hat{\boldsymbol\beta}_{R}
+=(X^\top X+\lambda I)^{-1}X^\top\mathbf y.
+$$
+
+A regularização torna a solução identificável pelo critério e controla sua variabilidade.
+
+::: {.notes}
+A fórmula assume entradas e resposta centradas, ou tratamento separado do intercepto.
+Existência de uma solução única regularizada não garante boa predição.
+:::
+
+## Tamanho amostral em modelos esparsos
+
+Sob condições adequadas, limites de erro preditivo incluem termos da ordem
+
+$$
+\boxed{\sigma^2\frac{s\log p}{n}.}
+$$
+
+| Termo | Papel |
+|---|---|
+| $s$ | Quantidade de efeitos a estimar |
+| $\log p$ | Custo de procurar entre muitos candidatos |
+| $\sigma^2$ | Intensidade do ruído |
+| $n$ | Informação amostral disponível |
+
+**Esparsidade reduz a complexidade, mas exige condições sobre os preditores.**
+
+::: {.notes}
+Limite típico para erro quadrático de predição de regressão linear esparsa,
+com regularização calibrada, controle de caudas e condições de compatibilidade
+ou autovalores restritos. Não é fórmula universal nem garantia para suporte exato.
+Fonte: Gautier e Tsybakov, Regularity Properties for Sparse Regression.
+:::
+
+## O que a expressão não fornece?
+
+A ordem $s\log p$ não determina sozinha uma amostra recomendada.
+
+A exigência real também depende de:
+
+- Intensidade dos sinais e nível de ruído.
+- Correlação e geometria dos preditores.
+- Precisão desejada e objetivo da análise.
+- Capacidade de identificar a representação relevante.
+
+**Prever bem, estimar coeficientes e recuperar o suporte são objetivos distintos.**
+
+## A dimensão relevante também exige aprendizagem
+
+Se uma representação útil $\mathbf Z\in\mathbb R^d$ fosse conhecida, poderíamos modelar
+
+$$
+Y=g(\mathbf Z)+\varepsilon.
+$$
+
+Quando precisamos estimá-la, aparece um custo adicional.
+
+- Pouca amostra pode dificultar estimar componentes ou fatores.
+- A variância das entradas pode não acompanhar o sinal preditivo.
+- Uma representação de baixa dimensão não elimina ruído nem complexidade de $g$.
+
+**A redução de dimensão ajuda quando preserva informação útil e pode ser aprendida.**
+
+# Escolha dos métodos
+
+## Modelos lineares penalizados e componentes
+
+| Estrutura esperada | Referências para comparação |
+|---|---|
+| Muitos efeitos pequenos | Ridge |
+| Poucos efeitos lineares | Lasso |
+| Efeitos esparsos e preditores correlacionados | Elastic net |
+| Fatores de alta variância contêm o sinal | PCR |
+| Combinações lineares relacionadas a $Y$ | PLS |
+
+A escolha final depende da validação e da finalidade da análise.
+
+::: {.notes}
+Comparação de métodos: cerca de 15 minutos.
+Não apresentar a tabela como uma classificação absoluta de desempenho.
+:::
+
+## KNN, regressão local e GAM
+
+**KNN e regressão local**
+
+Dependem de uma distância informativa e de observações próximas.
+Seleção ou redução dimensional pode melhorar a representação.
+
+**GAM aditivo**
+
+$$
+r(\mathbf x)=\beta_0+\sum_{j=1}^{p}f_j(x_j).
+$$
+
+A aditividade evita estimar uma superfície multivariada geral.
+Com $p$ grande, penalizar e eventualmente selecionar funções continua necessário.
+
+## Árvores, random forest e boosting
+
+Árvores podem ignorar variáveis ao escolher divisões, mas muitas candidatas irrelevantes dificultam encontrar sinal.
+
+Na random forest, se há $s$ variáveis relevantes entre $p$, a probabilidade de pelo menos uma delas estar entre $q=\texttt{mtry}$ candidatas é
+
+$$
+\boxed{
+1-\frac{\binom{p-s}{q}}{\binom{p}{q}}.
+}
+$$
+
+O boosting pode concentrar o ajuste em variáveis úteis, mas também selecionar ruído ao longo das iterações.
+
+::: {.notes}
+Fórmula combinatória para amostragem uniforme sem reposição das candidatas.
+Convenção: binomial(p-s,q)=0 se q>p-s. Ter uma variável relevante como candidata
+não garante que ela será escolhida nem que a divisão será útil, sobretudo com interações.
+Poda/profundidade, tamanho de folha, mtry, taxa de aprendizagem e iterações são controles distintos.
+:::
+
+## Variáveis irrelevantes e candidatas na floresta
+
+```{r}
+#| fig-alt: "Com cinco variáveis relevantes e mtry igual a dez, a chance de incluir uma relevante cai à medida que p aumenta."
+pp <- 10:1000
+s <- 5
+q <- 10
+prob <- 1 - exp(lchoose(pp - s, q) - lchoose(pp, q))
+par_aula()
+plot(pp, prob, type = "l", lwd = 3, col = azul, ylim = c(0, 1),
+     xlab = "Número total de variáveis (p)",
+     ylab = "Probabilidade de incluir alguma relevante")
+abline(h = seq(0, 1, 0.2), col = "#E5E5E5", lty = 3)
+lines(pp, prob, lwd = 3, col = azul)
+```
+
+Cálculo com $s=5$ e $\texttt{mtry}=10$ fixos. O gráfico ilustra candidatas, sem medir erro preditivo.
+
+## Redes neurais em altas dimensões
+
+A primeira camada totalmente conectada calcula
+
+$$
+\mathbf a^{(1)}=\phi\left(W^{(1)}\mathbf x+\mathbf b^{(1)}\right).
+$$
+
+Com $H$ neurônios, ela contém
+
+$$
+\boxed{H(p+1)\text{ parâmetros}.}
+$$
+
+A rede pode aprender representações úteis, mas aumentar $p$ também aumenta os parâmetros.
+
+**Arquitetura, regularização e informação amostral continuam essenciais.**
+
+## Quando uma RNA pode aproveitar estrutura?
+
+- Representações intermediárias podem combinar entradas redundantes.
+- Arquiteturas adequadas podem explorar composição e regularidades.
+- Weight decay e early stopping controlam o ajuste.
+- Uma camada com $H<p$ cria uma representação menor, sem garantir preservar o sinal.
+
+Em dados tabulares com $p\gg n$, comparar a RNA com modelos penalizados é essencial.
+
+**Muitos parâmetros não fornecem, por si só, uma explicação para boa generalização.**
+
+::: {.notes}
+Resultados teóricos para redes explorando baixa dimensão intrínseca exigem
+hipóteses sobre a distribuição e a classe de funções. Evitar prometer que o treinamento
+vai encontrar automaticamente a representação desejada.
+Fonte: Zhang et al. (2023), Effective Minkowski Dimension of Deep Nonparametric Regression.
+:::
+
+## Classificação em altas dimensões
+
+As hipóteses estruturais também orientam a classificação.
+
+| Situação | Métodos a comparar |
+|---|---|
+| Efeitos aproximadamente lineares | Regressão logística penalizada |
+| Separação por combinação linear | SVM linear regularizada |
+| Fatores com informação preditiva | Componentes + classificador |
+| Não linearidade e interações | Ensembles ou RNA regularizada |
+
+Escolher métricas conforme o objetivo: log-loss, AUC, sensibilidade, calibração ou custo de decisão.
+
+# Avaliação e discussão
+
+## Validação sem vazamento de informação
+
+Em cada partição de treinamento da validação cruzada:
+
+1. Estimar imputação e padronização.
+2. Ajustar seleção, ACP ou outra representação.
+3. Treinar o modelo com os hiperparâmetros candidatos.
+4. Aplicar as transformações aprendidas à partição de validação.
+5. Avaliar as predições nas observações reservadas.
+
+O conjunto de teste participa apenas da avaliação final.
+
+::: {.notes}
+Encerramento e discussão: cerca de 10 minutos.
+Ajustar ACP no banco inteiro também utiliza informação da distribuição das entradas
+de validação/teste. Para estimar desempenho do pipeline de treinamento, mantê-la dentro
+das partições. Para dados dependentes, usar divisões temporais ou por grupos apropriadas.
+:::
+
+## Experimento para investigar as hipóteses
+
+| Cenário | Entradas | Função de regressão |
+|---|---|---|
+| Esparso | Preditores independentes | Cinco efeitos ativos |
+| Redundante | Medições de três fatores | Depende dos três fatores |
+| Misto | Grupos correlacionados | Depende de um grupo |
+
+Comparar ridge, lasso, elastic net, PCR e KNN.
+
+Variar $n\in\{100,300,1000\}$ e $p\in\{20,100,500\}$.
+
+**Manter controladas a variância do sinal e a variância do ruído ao variar $p$.**
+
+::: {.notes}
+Este slide propõe um experimento, não apresenta resultados empíricos.
+No cenário redundante, acrescentar sensores também pode melhorar a medição dos fatores.
+Separar esse ganho da simples inclusão de variáveis irrelevantes.
+Usar múltiplas repetições e conjuntos de teste independentes. Um método oráculo
+com variáveis/fatores verdadeiros pode servir como referência, identificado como tal.
+:::
+
+## O que avaliar no experimento?
+
+**Predição:** erro em teste e variabilidade entre repetições.
+
+**Seleção:** quantas variáveis ativas foram recuperadas e quantas irrelevantes entraram.
+
+**Estabilidade:** quanto o modelo ou a seleção muda entre amostras.
+
+**Custo computacional:** tempo de ajuste e escolha de hiperparâmetros.
+
+Um método pode prever bem mesmo quando a seleção de variáveis varia.
+
+## Discussão em sala
+
+1. Acrescentar sensores redundantes equivale a acrescentar variáveis irrelevantes?
+2. Quando ACP pode prejudicar o KNN ou a regressão?
+3. Uma resposta que depende de uma combinação densa satisfaz esparsidade nas entradas originais?
+4. Por que aumentar $n$ pode ajudar sem tornar uma variável irrelevante informativa?
+5. O melhor preditor precisa identificar exatamente as variáveis ativas?
+
+::: {.notes}
+Respostas esperadas:
+1. Não. Sensores redundantes podem melhorar a medição de fatores e alteram a geometria.
+2. Quando descarta direções preditivas ou mantém sobretudo variação irrelevante.
+3. Não, embora possa haver uma representação preditiva de dimensão baixa.
+4. Aumenta informação para estimar e validar, sem mudar a relevância populacional.
+5. Não. Correlação pode permitir previsões semelhantes com suportes diferentes.
+:::
+
+## Síntese
+
+**Redundância:** muitas entradas compartilham informação. Podemos buscar uma representação compacta.
+
+**Esparsidade:** poucos efeitos são necessários. Podemos buscar seleção de variáveis ou funções.
+
+**Tamanho amostral:** depende da estrutura, do ruído e da precisão desejada, além de $p$.
+
+**Escolha do método:** deve combinar hipóteses plausíveis e avaliação adequada.
+
+$$
+\boxed{\text{Mais dados e estrutura adequada tornam a aprendizagem viável.}}
+$$
+
+## Referências para aprofundamento
+
+- James, Witten, Hastie e Tibshirani (2021). *An Introduction to Statistical Learning*, 2ª ed. Capítulos 6, 7 e 10. [statlearning.com](https://www.statlearning.com/).
+- Hastie, Tibshirani e Friedman (2009). *The Elements of Statistical Learning*, 2ª ed. Capítulos 2, 3 e 18. [Livro](https://hastie.su.domains/ElemStatLearn/).
+- Zou e Hastie (2005). *Regularization and variable selection via the elastic net*. JRSS B, 67, 301–320. [Artigo](https://web.stanford.edu/~hastie/Papers/elasticnet.pdf).
+
+## Referências dos resultados teóricos
+
+- Wasserman. *Nonparametric Regression*. Notas de Statistical Machine Learning, Carnegie Mellon. [Notas](https://stat.cmu.edu/~larry/=sml/nonpar.pdf).
+- Gautier e Tsybakov (2016). *Regularity Properties for Sparse Regression*. [Artigo](https://pmc.ncbi.nlm.nih.gov/articles/mid/NIHMS750383/).
+- Zhang et al. (2023). *Effective Minkowski Dimension of Deep Nonparametric Regression: Function Approximation and Statistical Theories*. ICML, PMLR 202, 40911–40931. [Artigo](https://proceedings.mlr.press/v202/zhang23f.html).
+- Stanford, STATS 202. *Dimensionality reduction*. [Notas](https://web.stanford.edu/class/stats202/notes/Model-selection/Dimensionality-reduction.html).

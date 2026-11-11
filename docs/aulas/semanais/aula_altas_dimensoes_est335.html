@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.29">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+<meta property="og:title" content="Parte I : Aprendizado Supervisionado – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="Aprendizado em Alta Dimensão">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+  <p class="subtitle"><span class="custom-subtitle">Aprendizado em Alta Dimensão</span></p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="onde-estamos" class="slide level2">
+<h2>Onde estamos?</h2>
+<p>Estudamos diferentes formas de estimar</p>
+<p><span class="math display">\[
+r(\mathbf x)=\mathbb E(Y\mid\mathbf X=\mathbf x)
+\]</span></p>
+<ul>
+<li>KNN e regressão local utilizam <strong>vizinhanças</strong>.</li>
+<li>Splines utilizam <strong>funções de base</strong>.</li>
+<li>Árvores e ensembles utilizam <strong>partições</strong>.</li>
+<li>Redes neurais aprendem <strong>composições de transformações</strong>.</li>
+</ul>
+<p><strong>Como esses métodos se comportam quando o número de variáveis aumenta?</strong></p>
+<aside class="notes">
+<p>Abertura e motivação: 10 minutos, incluindo os quatro slides seguintes. Conectar a aula à diversidade de estimadores já vista na disciplina.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dois-estudos-com-n200-e-p1.000" class="slide level2">
+<h2>Dois estudos com <span class="math inline">\(n=200\)</span> e <span class="math inline">\(p=1.000\)</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="estudo-a-sensores">Estudo A: sensores</h3>
+<p>1.000 medições refletem principalmente <strong>três condições de funcionamento</strong>.</p>
+<p>Muitas variáveis compartilham informação.</p>
+<p><strong>Hipótese: redundância.</strong></p>
+</div><div class="column" style="width:50%;">
+<h3 id="estudo-b-características-moleculares">Estudo B: características moleculares</h3>
+<p>A resposta depende de <strong>cinco entre 1.000 variáveis</strong>.</p>
+<p>A maioria das variáveis é desnecessária para a predição, dadas as relevantes.</p>
+<p><strong>Hipótese: esparsidade.</strong></p>
+</div></div>
+<p><strong>Os estudos têm a mesma dificuldade apenas porque possuem os mesmos <span class="math inline">\(n\)</span> e <span class="math inline">\(p\)</span>?</strong></p>
+</section>
+<section id="dimensões-diferentes" class="slide level2">
+<h2>Dimensões diferentes</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Quantidade</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(n\)</span></td>
+<td>Número de observações</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p\)</span></td>
+<td>Número de variáveis observadas</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(d\)</span></td>
+<td>Dimensão de uma representação dos dados</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s\)</span></td>
+<td>Número de variáveis ativas na função de regressão</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(m\)</span></td>
+<td>Número de parâmetros do modelo</td>
+</tr>
+</tbody>
+</table>
+<p>Podemos ter <span class="math inline">\(d\ll p\)</span>, <span class="math inline">\(s\ll p\)</span> e, em uma RNA, <span class="math inline">\(m\gg p\)</span>.</p>
+<p><strong>Essas quantidades descrevem aspectos diferentes do problema.</strong></p>
+<aside class="notes">
+<p>A dimensão intrínseca da distribuição de X e a dimensão suficiente para prever Y podem diferir. Nesta aula, d denota a dimensão da representação indicada em cada exemplo.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section>
+<section id="dimensionalidade-e-tamanho-amostral" class="title-slide slide level1 center">
+<h1>Dimensionalidade e tamanho amostral</h1>
+
+</section>
+<section id="uma-região-pequena-em-muitas-dimensões" class="slide level2">
+<h2>Uma região pequena em muitas dimensões</h2>
+<p>Considere entradas uniformes em <span class="math inline">\([0,1]^p\)</span>.</p>
+<p>Uma região com comprimento <span class="math inline">\(h\)</span> em cada coordenada ocupa a fração</p>
+<p><span class="math display">\[
+\boxed{V=h^p}
+\]</span></p>
+<p>do volume total. Para <span class="math inline">\(h=0{,}2\)</span>:</p>
+<p><span class="math display">\[
+p=1:\ 0{,}2,\qquad
+p=2:\ 0{,}04,\qquad
+p=5:\ 0{,}00032.
+\]</span></p>
+<p><strong>A mesma resolução por coordenada cobre uma fração cada vez menor dos dados.</strong></p>
+<aside class="notes">
+<p>Bloco sobre dimensionalidade: cerca de 20 minutos. O hipercubo unitário tem volume total 1 em qualquer dimensão. O que decresce é a fração ocupada por uma região com lado fixo h menor que 1. Não dizer que o volume do hipercubo unitário cresce exponencialmente.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quantas-observações-caem-nessa-região" class="slide level2">
+<h2>Quantas observações caem nessa região?</h2>
+<p>Se <span class="math inline">\(N_R\)</span> conta as observações na região:</p>
+<p><span class="math display">\[
+N_R\sim\operatorname{Binomial}(n,h^p),
+\qquad \mathbb E(N_R)=nh^p.
+\]</span></p>
+<p>Para obter <strong><span class="math inline">\(k\)</span> observações em média</strong>:</p>
+<p><span class="math display">\[
+\boxed{n=\frac{k}{h^p}.}
+\]</span></p>
+<p>Com <span class="math inline">\(k=20\)</span> e <span class="math inline">\(h=0{,}2\)</span>, temos <span class="math inline">\(n=20\times5^p\)</span>.</p>
+<p>Isso ilustra cobertura do espaço sob uniformidade, sem garantir uma contagem mínima.</p>
+</section>
+<section id="a-amostra-cresce-rapidamente" class="slide level2">
+<h2>A amostra cresce rapidamente</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Dimensão <span class="math inline">\(p\)</span></th>
+<th style="text-align: right;">Fração <span class="math inline">\(0{,}2^p\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(n\)</span> para 20 observações em média</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}2\)</span></td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}04\)</span></td>
+<td style="text-align: right;">500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}008\)</span></td>
+<td style="text-align: right;">2.500</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}00032\)</span></td>
+<td style="text-align: right;">62.500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}0000001024\)</span></td>
+<td style="text-align: right;">195.312.500</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Esta conta não constitui uma recomendação amostral para qualquer modelo.</strong></p>
+</section>
+<section id="dimensão-e-cobertura-do-espaço" class="slide level2">
+<h2>Dimensão e cobertura do espaço</h2>
+
+<img data-src="aula_altas_dimensoes_est335_files/figure-revealjs/unnamed-chunk-2-1.png" alt="O logaritmo decimal da amostra necessária cresce linearmente com p, indicando crescimento exponencial da amostra." class="r-stretch"><p>Manter o mesmo tamanho de vizinhança em cada coordenada exige crescimento exponencial de <span class="math inline">\(n\)</span>.</p>
+<aside class="notes">
+<p>Cada unidade no eixo vertical representa multiplicar n por 10. Gráfico calculado da expressão geométrica, sem ajuste ou simulação.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="o-que-acontece-com-o-knn" class="slide level2">
+<h2>O que acontece com o KNN?</h2>
+<p>Para encontrar <span class="math inline">\(k\)</span> vizinhos com poucos dados:</p>
+<ul>
+<li>Precisamos ampliar a região de busca.</li>
+<li>Os vizinhos podem diferir em várias coordenadas.</li>
+<li>Variáveis irrelevantes podem dominar a distância.</li>
+</ul>
+<p><span class="math display">\[
+d^2(\mathbf x,\mathbf x')=
+\underbrace{\sum_{j\in S}(x_j-x'_j)^2}_{\text{variáveis relevantes}}
++
+\underbrace{\sum_{j\notin S}(x_j-x'_j)^2}_{\text{demais variáveis}}.
+\]</span></p>
+<p>Padronizar evita dominância de escala, mas mantém as variáveis irrelevantes na distância.</p>
+</section>
+<section id="regressão-local-e-splines-multivariadas" class="slide level2">
+<h2>Regressão local e splines multivariadas</h2>
+<p><strong>Regressão local:</strong> vizinhanças maiores podem aumentar o viés, enquanto regiões menores contêm poucos dados.</p>
+<p><strong>Bases tensoriais:</strong> com <span class="math inline">\(K\)</span> funções por variável, uma construção completa usa</p>
+<p><span class="math display">\[
+\boxed{K^p\text{ funções de base}.}
+\]</span></p>
+<p>Com <span class="math inline">\(K=5\)</span> e <span class="math inline">\(p=10\)</span>: <span class="math inline">\(5^{10}=9.765.625\)</span> funções.</p>
+<p><strong>Restrições como aditividade reduzem essa complexidade.</strong></p>
+</section>
+<section id="uma-taxa-que-resume-a-dificuldade" class="slide level2">
+<h2>Uma taxa que resume a dificuldade</h2>
+<p>Para uma classe de funções com suavidade <span class="math inline">\(\alpha\)</span>, sob condições usuais:</p>
+<p><span class="math display">\[
+\text{erro de estimação integrado}\asymp
+n^{-\frac{2\alpha}{2\alpha+p}}.
+\]</span></p>
+<p>Com <span class="math inline">\(\alpha=2\)</span>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Dimensão</th>
+<th style="text-align: right;">Taxa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(p=1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(n^{-4/5}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(p=4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(n^{-1/2}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(p=20\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(n^{-1/6}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>O crescimento de <span class="math inline">\(p\)</span> reduz a velocidade de aprendizagem.</p>
+<aside class="notes">
+<p>Taxa minimax típica para erro quadrático integrado sobre classes suaves, com hipóteses sobre suporte, desenho e ruído. Refere-se ao excesso de erro em relação à função verdadeira, não inclui o ruído irredutível de uma nova resposta. Fonte: Wasserman, notas Nonparametric Regression, referência ao final.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="redundância" class="title-slide slide level1 center">
+<h1>Redundância</h1>
+
+</section>
+<section id="muitas-medições-poucos-fatores" class="slide level2">
+<h2>Muitas medições, poucos fatores</h2>
+<p>Suponha que as variáveis obedeçam a</p>
+<p><span class="math display">\[
+X_j=a_jZ+\eta_j,\qquad j=1,\ldots,p.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(Z\)</span>: fator compartilhado.</li>
+<li><span class="math inline">\(a_j\)</span>: intensidade e direção da associação com o fator.</li>
+<li><span class="math inline">\(\eta_j\)</span>: componente específico da medição.</li>
+</ul>
+<p><strong>Muitas variáveis podem medir aspectos de um mesmo fenômeno.</strong></p>
+<aside class="notes">
+<p>Bloco sobre redundância: cerca de 15 minutos. Exemplo: dezenas de sensores medindo um estado térmico comum. Com ruído em todas as coordenadas, a distribuição pode ter suporte de dimensão p, ainda que a estrutura de sinal seja aproximadamente de baixa dimensão.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="redundância-em-um-exemplo-simulado" class="slide level2">
+<h2>Redundância em um exemplo simulado</h2>
+
+<img data-src="aula_altas_dimensoes_est335_files/figure-revealjs/unnamed-chunk-3-1.png" alt="Duas medições de um fator comum produzem uma nuvem próxima de uma reta." class="r-stretch"><p>As duas coordenadas contêm informação fortemente compartilhada.</p>
+</section>
+<section id="representação-de-baixa-dimensão" class="slide level2">
+<h2>Representação de baixa dimensão</h2>
+<p>Uma generalização é</p>
+<p><span class="math display">\[
+\mathbf X=A\mathbf Z+\boldsymbol\eta,
+\qquad \mathbf Z\in\mathbb R^d,\quad d\ll p.
+\]</span></p>
+<p>Se a resposta depende principalmente desses fatores,</p>
+<p><span class="math display">\[
+Y=g(\mathbf Z)+\varepsilon,
+\]</span></p>
+<p>uma representação de dimensão <span class="math inline">\(d\)</span> pode simplificar a predição.</p>
+<p><strong>Precisamos preservar o sinal relacionado à resposta.</strong></p>
+</section>
+<section id="acp-e-regressão-por-componentes" class="slide level2">
+<h2>ACP e regressão por componentes</h2>
+<p>A ACP constrói combinações lineares:</p>
+<p><span class="math display">\[
+Z_k=\mathbf v_k^\top\mathbf X.
+\]</span></p>
+<p>Na regressão por componentes principais, utilizamos</p>
+<p><span class="math display">\[
+\widehat Y=\hat\beta_0+\sum_{k=1}^{d}\hat\gamma_kZ_k.
+\]</span></p>
+<ul>
+<li>A ACP utiliza a variabilidade das entradas.</li>
+<li>A escolha de <span class="math inline">\(d\)</span> para predição deve considerar o desempenho de validação.</li>
+<li>Uma componente de pequena variância pode conter sinal importante.</li>
+</ul>
+</section>
+<section id="variância-das-entradas-e-sinal-preditivo" class="slide level2">
+<h2>Variância das entradas e sinal preditivo</h2>
+<p>Considere variáveis independentes:</p>
+<p><span class="math display">\[
+X_1\sim N(0,100),\qquad X_2\sim N(0,1),
+\]</span></p>
+<p><span class="math display">\[
+Y=5X_2+\varepsilon.
+\]</span></p>
+<p><strong>Sem padronização</strong>, a primeira componente populacional acompanha <span class="math inline">\(X_1\)</span>.</p>
+<p>Entretanto, a resposta depende de <span class="math inline">\(X_2\)</span>.</p>
+<p><strong>Explicar a variação de <span class="math inline">\(\mathbf X\)</span> não garante preservar a informação sobre <span class="math inline">\(Y\)</span>.</strong></p>
+<aside class="notes">
+<p>Padronizar altera este exemplo, mas a ACP continua sem utilizar Y. Evitar concluir que toda componente de alta variância é irrelevante. Fonte conceitual: notas de redução dimensional STATS 202, Stanford.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="métodos-para-explorar-redundância" class="slide level2">
+<h2>Métodos para explorar redundância</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Método</th>
+<th>Estratégia</th>
+<th>Cuidado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PCR</td>
+<td>Regressão em componentes da ACP</td>
+<td>Pode descartar sinal preditivo</td>
+</tr>
+<tr class="even">
+<td>PLS</td>
+<td>Componentes que utilizam também <span class="math inline">\(Y\)</span></td>
+<td>Número de componentes exige validação</td>
+</tr>
+<tr class="odd">
+<td>Ridge</td>
+<td>Contrai coeficientes e estabiliza o ajuste</td>
+<td>Mantém todas as variáveis</td>
+</tr>
+<tr class="even">
+<td>Modelo fatorial</td>
+<td>Representa fatores compartilhados</td>
+<td>Depende da adequação dos fatores</td>
+</tr>
+</tbody>
+</table>
+<p>Com redundância, selecionar uma única variável de cada grupo pode perder informação útil das demais medições.</p>
+</section></section>
+<section>
+<section id="esparsidade" class="title-slide slide level1 center">
+<h1>Esparsidade</h1>
+
+</section>
+<section id="poucas-variáveis-determinam-a-resposta" class="slide level2">
+<h2>Poucas variáveis determinam a resposta</h2>
+<p>Considere <span class="math inline">\(p=1.000\)</span>, mas</p>
+<p><span class="math display">\[
+Y=3X_2-2X_{17}+1{,}5X_{204}+\varepsilon.
+\]</span></p>
+<p>A função de regressão utiliza apenas <span class="math inline">\(s=3\)</span> variáveis.</p>
+<p><span class="math display">\[
+\boxed{s\ll p.}
+\]</span></p>
+<p><strong>O desafio inclui descobrir quais variáveis são relevantes.</strong></p>
+<aside class="notes">
+<p>Bloco sobre esparsidade: cerca de 15 minutos. Aqui relevância significa participação na função condicional adotada no modelo. Uma variável fora do suporte ainda pode ter associação marginal com Y por correlação.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="esparsidade-dos-coeficientes" class="slide level2">
+<h2>Esparsidade dos coeficientes</h2>
+
+<img data-src="aula_altas_dimensoes_est335_files/figure-revealjs/unnamed-chunk-4-1.png" alt="Três coeficientes são diferentes de zero entre cinquenta variáveis." class="r-stretch"><p>Ilustração com 50 variáveis: apenas três efeitos ativos.</p>
+</section>
+<section id="esparsidade-do-modelo-e-dos-dados" class="slide level2">
+<h2>Esparsidade do modelo e dos dados</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Conceito</th>
+<th>Significado</th>
+<th>Exemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Modelo esparso</td>
+<td>Poucos efeitos ativos</td>
+<td>Cinco coeficientes não nulos</td>
+</tr>
+<tr class="even">
+<td>Matriz esparsa</td>
+<td>Muitas entradas iguais a zero</td>
+<td>Contagens de palavras em documentos</td>
+</tr>
+</tbody>
+</table>
+<p>Uma matriz densa pode gerar um problema de regressão esparsa.</p>
+<p>Uma matriz esparsa pode conter muitas variáveis relevantes.</p>
+<p><strong>As duas propriedades não são equivalentes.</strong></p>
+</section>
+<section id="lasso-e-seleção-de-variáveis" class="slide level2">
+<h2>Lasso e seleção de variáveis</h2>
+<p>O lasso estima</p>
+<p><span class="math display">\[
+\boxed{
+\hat{\boldsymbol\beta}=
+\arg\min_{\beta_0,\boldsymbol\beta}
+\left\{
+\frac{1}{2n}\sum_{i=1}^{n}
+(y_i-\beta_0-\mathbf x_i^\top\boldsymbol\beta)^2
++\lambda\|\boldsymbol\beta\|_1
+\right\}.
+}
+\]</span></p>
+<p>A penalização <span class="math inline">\(L_1\)</span> favorece coeficientes exatamente iguais a zero.</p>
+<ul>
+<li><span class="math inline">\(\lambda\)</span> controla a intensidade da regularização.</li>
+<li>O intercepto fica fora da penalização.</li>
+<li>A validação escolhe <span class="math inline">\(\lambda\)</span> para o objetivo preditivo.</li>
+</ul>
+</section>
+<section id="elastic-net-e-variáveis-correlacionadas" class="slide level2">
+<h2>Elastic net e variáveis correlacionadas</h2>
+<p>O elastic net combina</p>
+<p><span class="math display">\[
+\lambda\left[
+\alpha\|\boldsymbol\beta\|_1
++\frac{1-\alpha}{2}\|\boldsymbol\beta\|_2^2
+\right].
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\alpha=1\)</span>: lasso.</li>
+<li><span class="math inline">\(\alpha=0\)</span>: ridge.</li>
+<li><span class="math inline">\(0&lt;\alpha&lt;1\)</span>: combinação das penalizações.</li>
+</ul>
+<p>Pode ser útil quando existem <strong>grupos correlacionados e poucos grupos com sinal</strong>.</p>
+<aside class="notes">
+<p>A parte L2 favorece estabilidade e comportamento de agrupamento sob correlação. A seleção exata não é garantida. Ajustar alpha e lambda na validação. Fonte: Zou e Hastie (2005), Regularization and variable selection via the elastic net.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="esparsidade-também-pode-ser-não-linear" class="slide level2">
+<h2>Esparsidade também pode ser não linear</h2>
+<p><span class="math display">\[
+Y=\sin(X_2)+X_{17}^2+X_2X_{204}+\varepsilon.
+\]</span></p>
+<p>A função depende de poucas variáveis, mas inclui não linearidade e interação.</p>
+<p><strong>Lasso aplicado somente às entradas originais representa efeitos lineares.</strong></p>
+<p>Possibilidades:</p>
+<ul>
+<li>Bases e interações com penalização.</li>
+<li>Modelos aditivos esparsos, quando a aditividade for adequada.</li>
+<li>Métodos capazes de representar interações, com controle de complexidade.</li>
+</ul>
+</section></section>
+<section>
+<section id="comparação-das-estruturas" class="title-slide slide level1 center">
+<h1>Comparação das estruturas</h1>
+
+</section>
+<section id="resumir-ou-selecionar" class="slide level2">
+<h2>Resumir ou selecionar?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspecto</th>
+<th>Redundância</th>
+<th>Esparsidade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Estrutura</td>
+<td>Informação compartilhada</td>
+<td>Poucos efeitos relevantes</td>
+</tr>
+<tr class="even">
+<td>Operação natural</td>
+<td>Construir representações</td>
+<td>Selecionar variáveis ou efeitos</td>
+</tr>
+<tr class="odd">
+<td>Exemplo</td>
+<td>100 medidas de três fatores</td>
+<td>Cinco entre 1.000 variáveis</td>
+</tr>
+<tr class="even">
+<td>Métodos associados</td>
+<td>PCR, PLS, ridge</td>
+<td>Lasso, elastic net</td>
+</tr>
+<tr class="odd">
+<td>Risco</td>
+<td>Perder sinal ao resumir</td>
+<td>Seleção instável ou incorreta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>As hipóteses podem coexistir.</strong></p>
+<aside class="notes">
+<p>Comparação e tamanho amostral estruturado: cerca de 15 minutos.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="esparsidade-depende-da-representação" class="slide level2">
+<h2>Esparsidade depende da representação</h2>
+<p>Considere entradas independentes e padronizadas e defina</p>
+<p><span class="math display">\[
+Z_1=\frac{X_1+\cdots+X_p}{\sqrt p},
+\qquad Y=2Z_1+\varepsilon.
+\]</span></p>
+<p>Na representação original:</p>
+<p><span class="math display">\[
+\beta_j=\frac{2}{\sqrt p},\qquad j=1,\ldots,p.
+\]</span></p>
+<p>Todos os coeficientes são diferentes de zero, embora a resposta dependa de <strong>uma única combinação</strong>.</p>
+<p><strong>Dimensão preditiva pequena pode coexistir com coeficientes densos.</strong></p>
+</section>
+<section id="redundância-e-esparsidade-juntas" class="slide level2">
+<h2>Redundância e esparsidade juntas</h2>
+<p>Imagine 1.000 variáveis organizadas em 20 grupos correlacionados.</p>
+<p>Apenas dois grupos contêm informação necessária à função de regressão.</p>
+<ul>
+<li><strong>Dentro dos grupos:</strong> redundância.</li>
+<li><strong>Entre os grupos:</strong> esparsidade da estrutura relevante.</li>
+</ul>
+<p>Possibilidades: elastic net, group lasso com grupos conhecidos ou seleção seguida de representação.</p>
+<p>Toda etapa aprendida dos dados deve integrar a validação.</p>
+</section>
+<section id="alta-dimensão-na-regressão-linear" class="slide level2">
+<h2>Alta dimensão na regressão linear</h2>
+<p><span class="math display">\[
+\mathbf y=X\boldsymbol\beta+\boldsymbol\varepsilon.
+\]</span></p>
+<p>Se <span class="math inline">\(p&gt;n\)</span>, a matriz <span class="math inline">\(X^\top X\)</span> é singular e os coeficientes de mínimos quadrados não são únicos.</p>
+<p>Para coeficientes penalizados e <span class="math inline">\(\lambda&gt;0\)</span>, ridge utiliza</p>
+<p><span class="math display">\[
+\hat{\boldsymbol\beta}_{R}
+=(X^\top X+\lambda I)^{-1}X^\top\mathbf y.
+\]</span></p>
+<p>A regularização torna a solução identificável pelo critério e controla sua variabilidade.</p>
+<aside class="notes">
+<p>A fórmula assume entradas e resposta centradas, ou tratamento separado do intercepto. Existência de uma solução única regularizada não garante boa predição.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tamanho-amostral-em-modelos-esparsos" class="slide level2">
+<h2>Tamanho amostral em modelos esparsos</h2>
+<p>Sob condições adequadas, limites de erro preditivo incluem termos da ordem</p>
+<p><span class="math display">\[
+\boxed{\sigma^2\frac{s\log p}{n}.}
+\]</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Termo</th>
+<th>Papel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s\)</span></td>
+<td>Quantidade de efeitos a estimar</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\log p\)</span></td>
+<td>Custo de procurar entre muitos candidatos</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\sigma^2\)</span></td>
+<td>Intensidade do ruído</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n\)</span></td>
+<td>Informação amostral disponível</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Esparsidade reduz a complexidade, mas exige condições sobre os preditores.</strong></p>
+<aside class="notes">
+<p>Limite típico para erro quadrático de predição de regressão linear esparsa, com regularização calibrada, controle de caudas e condições de compatibilidade ou autovalores restritos. Não é fórmula universal nem garantia para suporte exato. Fonte: Gautier e Tsybakov, Regularity Properties for Sparse Regression.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="o-que-a-expressão-não-fornece" class="slide level2">
+<h2>O que a expressão não fornece?</h2>
+<p>A ordem <span class="math inline">\(s\log p\)</span> não determina sozinha uma amostra recomendada.</p>
+<p>A exigência real também depende de:</p>
+<ul>
+<li>Intensidade dos sinais e nível de ruído.</li>
+<li>Correlação e geometria dos preditores.</li>
+<li>Precisão desejada e objetivo da análise.</li>
+<li>Capacidade de identificar a representação relevante.</li>
+</ul>
+<p><strong>Prever bem, estimar coeficientes e recuperar o suporte são objetivos distintos.</strong></p>
+</section>
+<section id="a-dimensão-relevante-também-exige-aprendizagem" class="slide level2">
+<h2>A dimensão relevante também exige aprendizagem</h2>
+<p>Se uma representação útil <span class="math inline">\(\mathbf Z\in\mathbb R^d\)</span> fosse conhecida, poderíamos modelar</p>
+<p><span class="math display">\[
+Y=g(\mathbf Z)+\varepsilon.
+\]</span></p>
+<p>Quando precisamos estimá-la, aparece um custo adicional.</p>
+<ul>
+<li>Pouca amostra pode dificultar estimar componentes ou fatores.</li>
+<li>A variância das entradas pode não acompanhar o sinal preditivo.</li>
+<li>Uma representação de baixa dimensão não elimina ruído nem complexidade de <span class="math inline">\(g\)</span>.</li>
+</ul>
+<p><strong>A redução de dimensão ajuda quando preserva informação útil e pode ser aprendida.</strong></p>
+</section></section>
+<section>
+<section id="escolha-dos-métodos" class="title-slide slide level1 center">
+<h1>Escolha dos métodos</h1>
+
+</section>
+<section id="modelos-lineares-penalizados-e-componentes" class="slide level2">
+<h2>Modelos lineares penalizados e componentes</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Estrutura esperada</th>
+<th>Referências para comparação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Muitos efeitos pequenos</td>
+<td>Ridge</td>
+</tr>
+<tr class="even">
+<td>Poucos efeitos lineares</td>
+<td>Lasso</td>
+</tr>
+<tr class="odd">
+<td>Efeitos esparsos e preditores correlacionados</td>
+<td>Elastic net</td>
+</tr>
+<tr class="even">
+<td>Fatores de alta variância contêm o sinal</td>
+<td>PCR</td>
+</tr>
+<tr class="odd">
+<td>Combinações lineares relacionadas a <span class="math inline">\(Y\)</span></td>
+<td>PLS</td>
+</tr>
+</tbody>
+</table>
+<p>A escolha final depende da validação e da finalidade da análise.</p>
+<aside class="notes">
+<p>Comparação de métodos: cerca de 15 minutos. Não apresentar a tabela como uma classificação absoluta de desempenho.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="knn-regressão-local-e-gam" class="slide level2">
+<h2>KNN, regressão local e GAM</h2>
+<p><strong>KNN e regressão local</strong></p>
+<p>Dependem de uma distância informativa e de observações próximas. Seleção ou redução dimensional pode melhorar a representação.</p>
+<p><strong>GAM aditivo</strong></p>
+<p><span class="math display">\[
+r(\mathbf x)=\beta_0+\sum_{j=1}^{p}f_j(x_j).
+\]</span></p>
+<p>A aditividade evita estimar uma superfície multivariada geral. Com <span class="math inline">\(p\)</span> grande, penalizar e eventualmente selecionar funções continua necessário.</p>
+</section>
+<section id="árvores-random-forest-e-boosting" class="slide level2">
+<h2>Árvores, random forest e boosting</h2>
+<p>Árvores podem ignorar variáveis ao escolher divisões, mas muitas candidatas irrelevantes dificultam encontrar sinal.</p>
+<p>Na random forest, se há <span class="math inline">\(s\)</span> variáveis relevantes entre <span class="math inline">\(p\)</span>, a probabilidade de pelo menos uma delas estar entre <span class="math inline">\(q=\texttt{mtry}\)</span> candidatas é</p>
+<p><span class="math display">\[
+\boxed{
+1-\frac{\binom{p-s}{q}}{\binom{p}{q}}.
+}
+\]</span></p>
+<p>O boosting pode concentrar o ajuste em variáveis úteis, mas também selecionar ruído ao longo das iterações.</p>
+<aside class="notes">
+<p>Fórmula combinatória para amostragem uniforme sem reposição das candidatas. Convenção: binomial(p-s,q)=0 se q&gt;p-s. Ter uma variável relevante como candidata não garante que ela será escolhida nem que a divisão será útil, sobretudo com interações. Poda/profundidade, tamanho de folha, mtry, taxa de aprendizagem e iterações são controles distintos.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="variáveis-irrelevantes-e-candidatas-na-floresta" class="slide level2">
+<h2>Variáveis irrelevantes e candidatas na floresta</h2>
+
+<img data-src="aula_altas_dimensoes_est335_files/figure-revealjs/unnamed-chunk-5-1.png" alt="Com cinco variáveis relevantes e mtry igual a dez, a chance de incluir uma relevante cai à medida que p aumenta." class="r-stretch"><p>Cálculo com <span class="math inline">\(s=5\)</span> e <span class="math inline">\(\texttt{mtry}=10\)</span> fixos. O gráfico ilustra candidatas, sem medir erro preditivo.</p>
+</section>
+<section id="redes-neurais-em-altas-dimensões" class="slide level2">
+<h2>Redes neurais em altas dimensões</h2>
+<p>A primeira camada totalmente conectada calcula</p>
+<p><span class="math display">\[
+\mathbf a^{(1)}=\phi\left(W^{(1)}\mathbf x+\mathbf b^{(1)}\right).
+\]</span></p>
+<p>Com <span class="math inline">\(H\)</span> neurônios, ela contém</p>
+<p><span class="math display">\[
+\boxed{H(p+1)\text{ parâmetros}.}
+\]</span></p>
+<p>A rede pode aprender representações úteis, mas aumentar <span class="math inline">\(p\)</span> também aumenta os parâmetros.</p>
+<p><strong>Arquitetura, regularização e informação amostral continuam essenciais.</strong></p>
+</section>
+<section id="quando-uma-rna-pode-aproveitar-estrutura" class="slide level2">
+<h2>Quando uma RNA pode aproveitar estrutura?</h2>
+<ul>
+<li>Representações intermediárias podem combinar entradas redundantes.</li>
+<li>Arquiteturas adequadas podem explorar composição e regularidades.</li>
+<li>Weight decay e early stopping controlam o ajuste.</li>
+<li>Uma camada com <span class="math inline">\(H&lt;p\)</span> cria uma representação menor, sem garantir preservar o sinal.</li>
+</ul>
+<p>Em dados tabulares com <span class="math inline">\(p\gg n\)</span>, comparar a RNA com modelos penalizados é essencial.</p>
+<p><strong>Muitos parâmetros não fornecem, por si só, uma explicação para boa generalização.</strong></p>
+<aside class="notes">
+<p>Resultados teóricos para redes explorando baixa dimensão intrínseca exigem hipóteses sobre a distribuição e a classe de funções. Evitar prometer que o treinamento vai encontrar automaticamente a representação desejada. Fonte: Zhang et al.&nbsp;(2023), Effective Minkowski Dimension of Deep Nonparametric Regression.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="classificação-em-altas-dimensões" class="slide level2">
+<h2>Classificação em altas dimensões</h2>
+<p>As hipóteses estruturais também orientam a classificação.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Situação</th>
+<th>Métodos a comparar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Efeitos aproximadamente lineares</td>
+<td>Regressão logística penalizada</td>
+</tr>
+<tr class="even">
+<td>Separação por combinação linear</td>
+<td>SVM linear regularizada</td>
+</tr>
+<tr class="odd">
+<td>Fatores com informação preditiva</td>
+<td>Componentes + classificador</td>
+</tr>
+<tr class="even">
+<td>Não linearidade e interações</td>
+<td>Ensembles ou RNA regularizada</td>
+</tr>
+</tbody>
+</table>
+<p>Escolher métricas conforme o objetivo: log-loss, AUC, sensibilidade, calibração ou custo de decisão.</p>
+</section></section>
+<section>
+<section id="avaliação-e-discussão" class="title-slide slide level1 center">
+<h1>Avaliação e discussão</h1>
+
+</section>
+<section id="validação-sem-vazamento-de-informação" class="slide level2">
+<h2>Validação sem vazamento de informação</h2>
+<p>Em cada partição de treinamento da validação cruzada:</p>
+<ol type="1">
+<li>Estimar imputação e padronização.</li>
+<li>Ajustar seleção, ACP ou outra representação.</li>
+<li>Treinar o modelo com os hiperparâmetros candidatos.</li>
+<li>Aplicar as transformações aprendidas à partição de validação.</li>
+<li>Avaliar as predições nas observações reservadas.</li>
+</ol>
+<p>O conjunto de teste participa apenas da avaliação final.</p>
+<aside class="notes">
+<p>Encerramento e discussão: cerca de 10 minutos. Ajustar ACP no banco inteiro também utiliza informação da distribuição das entradas de validação/teste. Para estimar desempenho do pipeline de treinamento, mantê-la dentro das partições. Para dados dependentes, usar divisões temporais ou por grupos apropriadas.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="experimento-para-investigar-as-hipóteses" class="slide level2">
+<h2>Experimento para investigar as hipóteses</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Cenário</th>
+<th>Entradas</th>
+<th>Função de regressão</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Esparso</td>
+<td>Preditores independentes</td>
+<td>Cinco efeitos ativos</td>
+</tr>
+<tr class="even">
+<td>Redundante</td>
+<td>Medições de três fatores</td>
+<td>Depende dos três fatores</td>
+</tr>
+<tr class="odd">
+<td>Misto</td>
+<td>Grupos correlacionados</td>
+<td>Depende de um grupo</td>
+</tr>
+</tbody>
+</table>
+<p>Comparar ridge, lasso, elastic net, PCR e KNN.</p>
+<p>Variar <span class="math inline">\(n\in\{100,300,1000\}\)</span> e <span class="math inline">\(p\in\{20,100,500\}\)</span>.</p>
+<p><strong>Manter controladas a variância do sinal e a variância do ruído ao variar <span class="math inline">\(p\)</span>.</strong></p>
+<aside class="notes">
+<p>Este slide propõe um experimento, não apresenta resultados empíricos. No cenário redundante, acrescentar sensores também pode melhorar a medição dos fatores. Separar esse ganho da simples inclusão de variáveis irrelevantes. Usar múltiplas repetições e conjuntos de teste independentes. Um método oráculo com variáveis/fatores verdadeiros pode servir como referência, identificado como tal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="o-que-avaliar-no-experimento" class="slide level2">
+<h2>O que avaliar no experimento?</h2>
+<p><strong>Predição:</strong> erro em teste e variabilidade entre repetições.</p>
+<p><strong>Seleção:</strong> quantas variáveis ativas foram recuperadas e quantas irrelevantes entraram.</p>
+<p><strong>Estabilidade:</strong> quanto o modelo ou a seleção muda entre amostras.</p>
+<p><strong>Custo computacional:</strong> tempo de ajuste e escolha de hiperparâmetros.</p>
+<p>Um método pode prever bem mesmo quando a seleção de variáveis varia.</p>
+</section>
+<section id="discussão-em-sala" class="slide level2">
+<h2>Discussão em sala</h2>
+<ol type="1">
+<li>Acrescentar sensores redundantes equivale a acrescentar variáveis irrelevantes?</li>
+<li>Quando ACP pode prejudicar o KNN ou a regressão?</li>
+<li>Uma resposta que depende de uma combinação densa satisfaz esparsidade nas entradas originais?</li>
+<li>Por que aumentar <span class="math inline">\(n\)</span> pode ajudar sem tornar uma variável irrelevante informativa?</li>
+<li>O melhor preditor precisa identificar exatamente as variáveis ativas?</li>
+</ol>
+<aside class="notes">
+<p>Respostas esperadas: 1. Não. Sensores redundantes podem melhorar a medição de fatores e alteram a geometria. 2. Quando descarta direções preditivas ou mantém sobretudo variação irrelevante. 3. Não, embora possa haver uma representação preditiva de dimensão baixa. 4. Aumenta informação para estimar e validar, sem mudar a relevância populacional. 5. Não. Correlação pode permitir previsões semelhantes com suportes diferentes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="síntese" class="slide level2">
+<h2>Síntese</h2>
+<p><strong>Redundância:</strong> muitas entradas compartilham informação. Podemos buscar uma representação compacta.</p>
+<p><strong>Esparsidade:</strong> poucos efeitos são necessários. Podemos buscar seleção de variáveis ou funções.</p>
+<p><strong>Tamanho amostral:</strong> depende da estrutura, do ruído e da precisão desejada, além de <span class="math inline">\(p\)</span>.</p>
+<p><strong>Escolha do método:</strong> deve combinar hipóteses plausíveis e avaliação adequada.</p>
+<p><span class="math display">\[
+\boxed{\text{Mais dados e estrutura adequada tornam a aprendizagem viável.}}
+\]</span></p>
+</section>
+<section id="referências-para-aprofundamento" class="slide level2">
+<h2>Referências para aprofundamento</h2>
+<ul>
+<li>James, Witten, Hastie e Tibshirani (2021). <em>An Introduction to Statistical Learning</em>, 2ª ed.&nbsp;Capítulos 6, 7 e 10. <a href="https://www.statlearning.com/">statlearning.com</a>.</li>
+<li>Hastie, Tibshirani e Friedman (2009). <em>The Elements of Statistical Learning</em>, 2ª ed.&nbsp;Capítulos 2, 3 e 18. <a href="https://hastie.su.domains/ElemStatLearn/">Livro</a>.</li>
+<li>Zou e Hastie (2005). <em>Regularization and variable selection via the elastic net</em>. JRSS B, 67, 301–320. <a href="https://web.stanford.edu/~hastie/Papers/elasticnet.pdf">Artigo</a>.</li>
+</ul>
+</section>
+<section id="referências-dos-resultados-teóricos" class="slide level2">
+<h2>Referências dos resultados teóricos</h2>
+<ul>
+<li>Wasserman. <em>Nonparametric Regression</em>. Notas de Statistical Machine Learning, Carnegie Mellon. <a href="https://stat.cmu.edu/~larry/=sml/nonpar.pdf">Notas</a>.</li>
+<li>Gautier e Tsybakov (2016). <em>Regularity Properties for Sparse Regression</em>. <a href="https://pmc.ncbi.nlm.nih.gov/articles/mid/NIHMS750383/">Artigo</a>.</li>
+<li>Zhang et al.&nbsp;(2023). <em>Effective Minkowski Dimension of Deep Nonparametric Regression: Function Approximation and Statistical Theories</em>. ICML, PMLR 202, 40911–40931. <a href="https://proceedings.mlr.press/v202/zhang23f.html">Artigo</a>.</li>
+<li>Stanford, STATS 202. <em>Dimensionality reduction</em>. <a href="https://web.stanford.edu/class/stats202/notes/Model-selection/Dimensionality-reduction.html">Notas</a>.</li>
+</ul>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiada");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiada");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
