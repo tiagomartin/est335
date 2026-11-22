@@ -1,0 +1,137 @@
+---
+title: "A4 - Estruturas e Padrões"
+subtitle: "EST335 — Métodos Estatísticos para Machine Learning"
+page-layout: article
+toc: true
+toc-depth: 3
+number-sections: true
+comments: false
+---
+
+::: {.callout-important}
+## Informações da atividade
+
+- **Valor:** 20 pontos
+- **Liberação:** 23/11/2026
+- **Entrega:** 06/12/2026
+:::
+
+# Objetivo
+
+Investigar como diferentes métodos de representação de dados preservam, transformam ou evidenciam estruturas multivariadas. A atividade prioriza a **interpretação estatística**, a justificativa das escolhas metodológicas e a comparação crítica dos resultados, não apenas a execução de algoritmos.
+
+Os métodos centrais são **PCA, Kernel PCA, projeções aleatórias, k-médias, agrupamento espectral e agrupamento hierárquico**. Um **autoencoder** poderá ser investigado como extensão opcional, sem substituir as análises obrigatórias.
+
+# Problema de investigação
+
+Uma equipe recebeu dados de sensores descritos por muitas variáveis. Suspeita-se que os registros apresentem padrões associados a fatores latentes, mas não se conhece previamente a melhor representação desses dados.
+
+Seu desafio é avaliar se a redução de dimensionalidade consegue evidenciar estruturas relevantes e se diferentes algoritmos de agrupamento conseguem identificá-las sem conhecer previamente os grupos. Discuta como a geometria dos dados influencia os resultados.
+
+## Base de dados da atividade
+
+
+```{r echo=FALSE}
+set.seed(3354)
+n <- 480
+p <- 24
+
+grupo <- factor(rep(c("A", "B", "C"), each = n / 3))
+angulo <- runif(n, 0, 2*pi)
+raio <- rep(c(1.0, 1.7, 2.5), each = n / 3) + rnorm(n, sd = 0.10)
+
+# Duas coordenadas estruturadas, com geometria não linear
+u <- raio * cos(angulo)
+v <- raio * sin(angulo)
+
+# Variáveis redundantes e ruído
+X <- matrix(NA_real_, nrow = n, ncol = p)
+X[, 1] <- u + rnorm(n, sd = 0.12)
+X[, 2] <- v + rnorm(n, sd = 0.12)
+for (j in 3:12) {
+  X[, j] <- sample(c(-1, 1), 1) *
+    (0.8*u + 0.5*v) + rnorm(n, sd = 0.25)
+}
+for (j in 13:18) {
+  X[, j] <- sample(c(-1, 1), 1) *
+    (0.4*u - 0.9*v) + rnorm(n, sd = 0.30)
+}
+for (j in 19:24) X[, j] <- rnorm(n)
+colnames(X) <- paste0("x", seq_len(p))
+
+dados_a4 <- data.frame(grupo = grupo, X, check.names = FALSE)
+write.csv(dados_a4, "../dados/dados_a4.csv")
+```
+
+[Baixar base de dados da A4](../dados/dados_a4.csv){.btn .btn-primary download="dados_a4.csv"}
+
+Utilize o arquivo [`dados_a4.csv`](../dados/dados_a4.csv), disponibilizado na página da atividade. A base é **simulada para fins didáticos**. A variável `grupo` é conhecida pelo gerador dos dados, mas deve ser tratada como informação externa, indisponível aos métodos não supervisionados durante o ajuste.
+
+
+# Questões e pontuação
+
+## Parte I - Diagnóstico dos dados (3 pontos)
+
+1. Descreva o número de observações e variáveis, apresente estatísticas descritivas e avalie a necessidade de padronização (**1 ponto**).
+2. Investigue correlações e possíveis redundâncias entre preditores. Apresente ao menos uma visualização adequada (**1 ponto**).
+3. Explique por que a presença de redundância e de uma estrutura não linear pode influenciar os métodos de redução de dimensionalidade (**1 ponto**).
+
+## Parte II - PCA linear (4 pontos)
+
+1. Ajuste a PCA utilizando **apenas os preditores** e justifique as decisões de centralização e padronização (**1 ponto**).
+2. Apresente a proporção de variância explicada e a variância acumulada; proponha dois critérios para escolher a dimensão reduzida (**1 ponto**).
+3. Visualize as duas primeiras componentes, usando `grupo` somente para colorir o gráfico após o ajuste (**1 ponto**).
+4. Interprete os resultados: a PCA evidencia os três grupos? Por que uma projeção linear pode não ser suficiente para determinada estrutura? (**1,5 ponto**).
+
+## Parte III - Kernel PCA (3 pontos)
+
+1. Ajuste uma Kernel PCA com kernel RBF, documentando a escolha de `sigma` e o número de componentes (**1 ponto**).
+2. Compare **pelo menos três valores de `sigma`** e duas combinações de componentes, sem utilizar `grupo` para selecionar os hiperparâmetros (**1 ponto**).
+3. Apresente gráficos e discuta como a transformação não linear modifica a representação. Distinga separação visual de garantia de separabilidade (**1,5 ponto**).
+
+**Orientação:** a Kernel PCA é não supervisionada. Não se deve afirmar que ela aprende a distinguir as classes. Caso use os grupos para interpretar os gráficos, declare explicitamente que isso ocorreu **após** o ajuste.
+
+## Parte IV - Projeções aleatórias (3 pontos)
+
+1. Implemente uma projeção gaussiana para `k = 2, 5, 10, 15`, utilizando elementos independentes com distribuição $N(0,1/k)$ (**1 ponto**).
+2. Para cada `k`, calcule as distâncias euclidianas quadráticas de todos os pares de observações (ou de uma amostra fixa de pares) antes e depois da projeção. Resuma a **distorção relativa**; trate separadamente pares de distância original nula, se existirem (**1 ponto**).
+3. Repita cada projeção com pelo menos 20 matrizes aleatórias independentes e represente a variabilidade dos resultados (**0,5 ponto**).
+4. Discuta a diferença entre preservação **em esperança** e preservação **com alta probabilidade**; explique o efeito de `k` (**0,5 ponto**).
+
+A distorção relativa de um par com distância quadrática original $d_{ij}^2>0$ pode ser definida por
+
+$$
+\delta_{ij}=\frac{\left|\|\mathbf z_i-\mathbf z_j\|^2-\|\mathbf x_i-\mathbf x_j\|^2\right|}{\|\mathbf x_i-\mathbf x_j\|^2}.
+$$
+
+## Parte V - Análise de agrupamento (5 pontos)
+
+Nesta parte, o objetivo é **descobrir grupos sem utilizar a variável `grupo` durante o ajuste ou a escolha dos hiperparâmetros**. A variável `grupo` poderá ser utilizada somente depois, para avaliar a concordância entre os agrupamentos encontrados e a estrutura conhecida da simulação.
+
+1. **K-médias (1,5 ponto).** Padronize os preditores e ajuste o algoritmo k-médias com diferentes números de grupos, incluindo $K=3$. Utilize múltiplas inicializações (`nstart`) e apresente um critério **não supervisionado** para discutir a escolha de $K$ (por exemplo, curva do cotovelo ou silhueta). Visualize os agrupamentos em uma representação bidimensional e explique a influência da geometria dos dados sobre o método.
+2. **Agrupamento hierárquico (1,5 ponto).** Calcule uma matriz de distâncias entre observações e compare pelo menos dois métodos de ligação (por exemplo, `complete` e `ward.D2`). Apresente dendrogramas, indique como obter uma partição com três grupos e discuta diferenças em relação ao k-médias. Justifique a métrica de distância e o método de ligação utilizados.
+3. **Agrupamento espectral (1 ponto).** Aplique um algoritmo espectral baseado em uma matriz de similaridades, com kernel RBF ou outra construção justificada. Investigue pelo menos dois valores de um parâmetro de similaridade, mantendo $K=3$ para a comparação. Explique por que o método pode ser apropriado para estruturas não convexas.
+4. **Comparação crítica (1 ponto).** Compare as três abordagens usando visualizações e pelo menos uma medida interna de qualidade de agrupamento. **Somente após a definição dos agrupamentos**, use `grupo` para construir tabelas de contingência e discutir a concordância externa. Explique por que uma concordância elevada não significa que os rótulos tenham sido utilizados no ajuste.
+
+::: {.callout-warning}
+## Cuidados metodológicos
+
+- **Não** utilize `grupo` para selecionar $K$, o kernel, seus parâmetros ou o método de ligação.
+- Os identificadores numéricos dos clusters são arbitrários: o cluster 1 não precisa corresponder ao grupo A.
+- A silhueta e outras medidas internas avaliam propriedades geométricas, não necessariamente a concordância com os grupos da simulação.
+- Para avaliar o efeito da representação, você pode repetir um método de agrupamento sobre componentes de PCA ou Kernel PCA, mas explicite qual espaço foi utilizado e mantenha comparações coerentes.
+:::
+
+## Parte VI - Síntese crítica (2 pontos)
+
+1. Construa uma tabela comparando **PCA, Kernel PCA, projeções aleatórias, k-médias, agrupamento hierárquico e agrupamento espectral** quanto a objetivo, hipóteses geométricas, parâmetros e limitações (**1 ponto**).
+2. Proponha um fluxo de análise que combine representação e agrupamento para dados multidimensionais. Justifique as escolhas e discuta uma limitação do experimento (**1 ponto**).
+
+# Extensão opcional - Autoencoder (3 pontos extras)
+
+Se desejar, implemente um autoencoder com gargalo de dimensão 2 ou 3 e compare a representação latente com a PCA. Explique a função de perda de reconstrução, o papel do encoder e do decoder, e por que baixo erro de reconstrução não implica separação entre grupos. **A extensão é facultativa e não altera o total de 20 pontos. Caso você opte por fazê-la, concorrerá a 3 pontos extras**
+
+# Critérios de avaliação
+
+Além da pontuação por questão, serão considerados a **reprodutibilidade**, a clareza dos gráficos, a correção conceitual e a qualidade das interpretações. Código sem análise não constitui resposta completa. A pontuação total é: diagnóstico (3), PCA (4), Kernel PCA (3), projeções aleatórias (3), agrupamento (5) e síntese (2). Resultados inesperados são aceitáveis quando investigados e discutidos com rigor.
+

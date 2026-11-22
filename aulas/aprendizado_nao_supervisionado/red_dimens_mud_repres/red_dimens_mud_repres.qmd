@@ -1,5 +1,5 @@
 ---
-title: "Parte III : Aprendizado não supervisionado"
+title: "Parte II : Aprendizado não supervisionado"
 subtitle: "<span class='custom-subtitle'>Redução de dimensionalidade e mudança de representação</span>"
 format: 
   revealjs:
@@ -34,426 +34,622 @@ execute:
   cache: true
 ---
 
-
-# Redução de Dimensionalidade
-
-## Podemos representar os mesmos dados utilizando menos informação?
+# Aprendizado não supervisionado
 
 
-Imagine uma base de dados contendo centenas ou milhares de variáveis.
+```{r}
+#| include: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
 
+azul <- "#263568"
+azul2 <- "#2C7FB8"
 
-::: columns
+tema_slide <- theme_minimal(base_size = 15) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"),
+        legend.position = "top")
 
-:::: {.column width="50%"}
-
-
-
-O objetivo da redução de dimensionalidade é construir uma nova representação que:
-
-- preserve a maior quantidade possível de informação;
-- elimine redundâncias;
-- facilite a visualização e a interpretação dos dados.
-
-::::
-
-:::: {.column width="50%"}
-
-![](/images/aprendNsuper/dimensionalidade.png){width=100%}
-
-::::
-
-:::
-
-## Podemos representar os mesmos dados utilizando menos informação?
-
-
-> **Ideia central:** substituir um conjunto de muitas variáveis por um número menor de componentes que preservem a estrutura essencial dos dados.
-
-
-## O que significa reduzir a dimensionalidade?
-
-Reduzir a dimensionalidade **não significa perder informação**, mas encontrar uma representação mais compacta dos dados.
-
-::: columns
-
-:::: {.column}
-
-### Antes
-
-- Muitas variáveis
-- Alta redundância
-- Difícil interpretação
-- Alto custo computacional
-
-::::
-
-:::: {.column}
-
-### Depois
-
-- Poucos componentes
-- Informação concentrada
-- Visualização facilitada
-- Modelos mais simples
-
-::::
-
-:::
-
-> O objetivo é representar os dados em um espaço de menor dimensão preservando, tanto quanto possível, sua estrutura original.
+set.seed(335)
+n <- 220
+z1 <- rnorm(n,sd=2.2)
+z2 <- rnorm(n,sd=.55)
+theta <- pi/5
+R <- matrix(c(cos(theta),-sin(theta),sin(theta),cos(theta)),2,2)
+X <- cbind(z1,z2) %*% t(R)
+dados_pca <- data.frame(x1=X[,1],x2=X[,2])
+pca_fit <- prcomp(dados_pca,center=TRUE,scale.=FALSE)
+centro <- colMeans(dados_pca)
+v1 <- pca_fit$rotation[,1]
+v2 <- pca_fit$rotation[,2]
+```
 
 
 
-## Por que reduzir a dimensionalidade?
+<!-- # Redução de Dimensionalidade -->
 
-A redução da dimensionalidade traz diversos benefícios para a análise de dados.<br><br>
-
-- 📊 Facilita a visualização de dados de alta dimensão.
-- ⚡ Reduz o custo computacional de armazenamento e processamento.
-- 📉 Elimina redundâncias entre variáveis.
-- 🔍 Atenua o efeito do ruído nos dados.
-- 🤖 Pode melhorar o desempenho de algoritmos de aprendizado de máquina.
-
-> Quanto maior o número de variáveis, maior tende a ser a complexidade da análise.
+<!-- ## Podemos representar os mesmos dados utilizando menos informação? -->
 
 
+<!-- Imagine uma base de dados contendo centenas ou milhares de variáveis. -->
 
-## A maldição da dimensionalidade
 
-À medida que o número de variáveis aumenta,
+<!-- ::: columns -->
 
-- o volume do espaço cresce exponencialmente;
-- os dados tornam-se cada vez mais esparsos;
-- distâncias entre observações tornam-se menos informativas;
-- aumenta a dificuldade para identificar padrões.
+<!-- :::: {.column width="50%"} -->
 
-<br>
 
-> Esse fenômeno é conhecido como **Maldição da Dimensionalidade** (*Curse of Dimensionality*).
 
+<!-- O objetivo da redução de dimensionalidade é construir uma nova representação que: -->
+
+<!-- - preserve a maior quantidade possível de informação; -->
+<!-- - elimine redundâncias; -->
+<!-- - facilite a visualização e a interpretação dos dados. -->
+
+<!-- :::: -->
+
+<!-- :::: {.column width="50%"} -->
+
+<!-- ![](/images/aprendNsuper/dimensionalidade.png){width=100%} -->
+
+<!-- :::: -->
+
+<!-- ::: -->
+
+<!-- ## Podemos representar os mesmos dados utilizando menos informação? -->
+
+
+<!-- > **Ideia central:** substituir um conjunto de muitas variáveis por um número menor de componentes que preservem a estrutura essencial dos dados. -->
+
+
+<!-- ## O que significa reduzir a dimensionalidade? -->
+
+<!-- Reduzir a dimensionalidade **não significa perder informação**, mas encontrar uma representação mais compacta dos dados. -->
+
+<!-- ::: columns -->
+
+<!-- :::: {.column} -->
+
+<!-- ### Antes -->
+
+<!-- - Muitas variáveis -->
+<!-- - Alta redundância -->
+<!-- - Difícil interpretação -->
+<!-- - Alto custo computacional -->
+
+<!-- :::: -->
+
+<!-- :::: {.column} -->
+
+<!-- ### Depois -->
+
+<!-- - Poucos componentes -->
+<!-- - Informação concentrada -->
+<!-- - Visualização facilitada -->
+<!-- - Modelos mais simples -->
+
+<!-- :::: -->
+
+<!-- ::: -->
+
+<!-- > O objetivo é representar os dados em um espaço de menor dimensão preservando, tanto quanto possível, sua estrutura original. -->
+
+
+
+<!-- ## Por que reduzir a dimensionalidade? -->
+
+<!-- A redução da dimensionalidade traz diversos benefícios para a análise de dados.<br><br> -->
+
+<!-- - 📊 Facilita a visualização de dados de alta dimensão. -->
+<!-- - ⚡ Reduz o custo computacional de armazenamento e processamento. -->
+<!-- - 📉 Elimina redundâncias entre variáveis. -->
+<!-- - 🔍 Atenua o efeito do ruído nos dados. -->
+<!-- - 🤖 Pode melhorar o desempenho de algoritmos de aprendizado de máquina. -->
+
+<!-- > Quanto maior o número de variáveis, maior tende a ser a complexidade da análise. -->
+
+
+
+<!-- ## A maldição da dimensionalidade -->
+
+<!-- À medida que o número de variáveis aumenta, -->
+
+<!-- - o volume do espaço cresce exponencialmente; -->
+<!-- - os dados tornam-se cada vez mais esparsos; -->
+<!-- - distâncias entre observações tornam-se menos informativas; -->
+<!-- - aumenta a dificuldade para identificar padrões. -->
+
+<!-- <br> -->
+
+<!-- > Esse fenômeno é conhecido como **Maldição da Dimensionalidade** (*Curse of Dimensionality*). -->
+
+
+<!-- --- -->
+
+<!-- ![](/images/aprendNsuper/mald_dimensionalidade.png){width=100%} -->
+
+
+<!-- ## Existem duas estratégias principais -->
+
+<!-- A redução da dimensionalidade pode ser realizada por duas abordagens distintas. -->
+
+<!-- | Estratégia | Ideia | -->
+<!-- |:-----------|:------| -->
+<!-- | **Mudança de representação** | Construir novas variáveis a partir das originais. | -->
+<!-- | **Seleção de variáveis** | Escolher apenas um subconjunto das variáveis existentes. | -->
+
+<!-- Nesta aula estudaremos principalmente os métodos baseados em **mudança de representação**. -->
+
+
+<!-- ## Qual é a ideia do PCA? -->
+
+<!-- ![](/images/aprendNsuper/pca.png){width=100%} -->
+
+
+<!-- ## Qual problema o PCA resolve? -->
+
+<!-- ![](/images/aprendNsuper/pca2.png){width=100%} -->
+
+
+
+<!-- ## Como o PCA resolve esse problema? -->
+
+<!-- ![](/images/aprendNsuper/pca3.png){width=100%} -->
+
+
+
+<!-- ## O que é uma componente principal? -->
+
+<!-- Uma componente principal é uma **combinação linear** das variáveis originais. -->
+
+<!-- $$ -->
+<!-- PC_j = -->
+<!-- a_{1j}X_1+ -->
+<!-- a_{2j}X_2+\cdots+ -->
+<!-- a_{pj}X_p -->
+<!-- $$ -->
+
+<!-- onde: -->
+
+<!-- - $a_{ij}$ são os pesos (loadings); -->
+<!-- - cada componente representa uma nova direção no espaço dos dados; -->
+<!-- - as componentes são ortogonais entre si. -->
+
+
+
+<!-- ## Objetivo do PCA -->
+
+<!-- Encontrar uma sequência de componentes ortogonais que: -->
+
+<!-- - expliquem a maior parte da variabilidade dos dados; -->
+<!-- - sejam não correlacionadas entre si; -->
+<!-- - utilizem o menor número possível de componentes. -->
+
+
+<!-- ## Primeira componente principal -->
+
+<!-- A primeira componente ($PC_1$) é a direção que maximiza a variância projetada dos dados. -->
+
+<!-- $$ -->
+<!-- PC_1 -->
+<!-- = -->
+<!-- \arg\max_{\|a\|=1} -->
+<!-- Var(Xa) -->
+<!-- $$ -->
+
+<!-- Ela representa a direção de maior variabilidade existente na base de dados. -->
+
+
+<!-- ## Segunda componente principal -->
+
+<!-- A segunda componente ($PC_2$): -->
+
+<!-- - maximiza a variabilidade remanescente; -->
+<!-- - é ortogonal à primeira componente. -->
+
+<!-- $$ -->
+<!-- PC_2 \perp PC_1 -->
+<!-- $$ -->
+
+<!-- Cada nova componente explica uma parcela cada vez menor da variabilidade. -->
+
+
+
+<!-- ## Variância da projeção -->
+
+<!-- Projetando os dados na direção $a$, -->
+
+<!-- $$ -->
+<!-- z=\mathbf a^\top \mathbf{x} -->
+<!-- $$ -->
+
+<!-- a variância projetada é -->
+
+<!-- $$ -->
+<!-- Var(z) -->
+<!-- = -->
+<!-- \mathbf a^\top \boldsymbol{S}\mathbf a, -->
+<!-- $$ -->
+
+<!-- onde $\boldsymbol{S}$ é a matriz de covariâncias amostral de $\mathbf{x}$. -->
+
+<!-- O PCA procura a direção que maximiza essa variância. -->
+
+
+<!-- ## Problema de otimização -->
+
+<!-- Encontrar -->
+
+<!-- $$ -->
+<!-- \max_{\mathbf a} \mathbf a^\top \boldsymbol{S} \mathbf a -->
+<!-- $$ -->
+
+<!-- sujeito a -->
+
+<!-- $$ -->
+<!-- \mathbf a^\top \mathbf a}=1 -->
+<!-- $$ -->
+
+<!-- A restrição impede que a variância seja aumentada apenas multiplicando o vetor por uma constante. -->
+
+<!-- ::: {.callout-important} -->
+<!-- ## importante -->
+<!-- O PCA é, portanto, um problema clássico de otimização com restrição. -->
+<!-- ::: -->
+
+
+<!-- ## Solução: multiplicadores de Lagrange -->
+
+
+
+<!-- Para incorporar a restrição, constrói-se a função Lagrangiana -->
+
+<!-- $$ -->
+<!-- \mathcal L(\mathbf a,\lambda) -->
+<!-- = -->
+<!-- \mathbf a^\top \boldsymbol{S}\mathbf a -->
+<!-- - -->
+<!-- \lambda -->
+<!-- (\mathbf a^\top\mathbf a-1) -->
+<!-- $$ -->
+
+<!-- Derivando em relação a $\mathbf a$, -->
+
+<!-- $$ -->
+<!-- \frac{\partial\mathcal L}{\partial\mathbf a} -->
+<!-- = -->
+<!-- 2\boldsymbol{S}\mathbf a -->
+<!-- - -->
+<!-- 2\lambda\mathbf a -->
+<!-- = -->
+<!-- 0 -->
+<!-- $$ -->
+
+<!-- Dividindo ambos os lados por $2$, -->
+
+<!-- $$ -->
+<!-- \boldsymbol{S}\mathbf a=\lambda\mathbf a -->
+<!-- $$ -->
+
+
+
+<!-- ## Surge um problema de autovalores -->
+
+<!-- A condição ótima obtida é -->
+
+<!-- $$ -->
+<!-- \boldsymbol{S}\mathbf a=\lambda\mathbf a, -->
+<!-- $$ -->
+
+<!-- que corresponde exatamente ao problema clássico de **autovalores e autovetores**. -->
+
+<!-- Assim, -->
+
+<!-- - $\mathbf a$ é um **autovetor** da matriz de covariâncias; -->
+<!-- - $\lambda$ é o **autovalor** associado. -->
+
+
+<!-- ## Surge um problema de autovalores -->
+
+
+<!-- O **primeiro componente principal** é o autovetor associado ao **maior autovalor**, pois essa direção maximiza a variância dos dados projetados.<br><br> -->
+
+<!-- ::: {.callout-tip} -->
+<!-- ## Observação -->
+<!-- Os componentes seguintes são obtidos pelos demais autovetores, sempre ortogonais entre si e ordenados pelos respectivos autovalores. -->
+<!-- ::: -->
+
+
+<!-- | Autovalor   | Componente | Variância explicada | -->
+<!-- | ----------- | ---------- | ------------------- | -->
+<!-- | $\lambda_1$ | PC1        | Maior               | -->
+<!-- | $\lambda_2$ | PC2        | Segunda maior       | -->
+<!-- | $\lambda_3$ | PC3        | ...                 | -->
+
+
+
+
+<!-- ## Interpretação alternativa do PCA -->
+
+<!-- Até agora interpretamos o PCA como um problema de -->
+
+<!-- - maximização da variância; -->
+<!-- - autovalores e autovetores da matriz de covariâncias. -->
+
+<!-- Existe, porém, outra interpretação igualmente importante. -->
+
+<!-- ::: {.callout-note} -->
+<!-- ## Nota -->
+<!-- O PCA também pode ser visto como um problema de representação geométrica, cujo objetivo é preservar ao máximo as distâncias entre as observações após a redução de dimensionalidade. -->
+<!-- ::: -->
+
+
+
+<!-- ## Interpretação alternativa do PCA -->
+
+
+<!-- ![](/images/aprendNsuper/pca_mds.png){width=100%} -->
+
+
+
+<!-- ## Escalonamento Multidimensional (MDS) -->
+
+<!-- O Escalonamento Multidimensional (MDS) procura representar um conjunto de objetos em um espaço de menor dimensão preservando suas distâncias originais. -->
+
+<!-- O problema consiste em encontrar coordenadas -->
+
+<!-- $$ -->
+<!-- z_1,\ldots,z_n -->
+<!-- $$ -->
+
+<!-- tais que -->
+
+<!-- $$ -->
+<!-- d(z_i,z_j)\approx d(x_i,x_j), -->
+<!-- $$ -->
+
+<!-- para todos os pares de observações. -->
+
+
+
+<!-- ## Escalonamento Multidimensional (MDS) -->
+
+
+<!-- > Enquanto o PCA utiliza diretamente as variáveis, o MDS utiliza apenas a matriz de distâncias entre as observações. -->
+
+
+
+<!-- Quando as distâncias utilizadas são as distâncias Euclidianas, -->
+
+<!-- $$ -->
+<!-- d_{ij} -->
+<!-- = -->
+<!-- \left\| -->
+<!-- x_i-x_j -->
+<!-- \right\|, -->
+<!-- $$ -->
+
+<!-- o Escalonamento Multidimensional Clássico produz exatamente a mesma representação obtida pelo PCA (desconsiderando rotações e reflexões). -->
+
+
+<!-- ## Escalonamento Multidimensional (MDS) -->
+
+<!-- Assim, -->
+
+<!-- - PCA maximiza a variância das projeções; -->
+<!-- - MDS preserva as distâncias entre observações; -->
+
+<!-- mas ambos conduzem às mesmas coordenadas quando as distâncias são Euclidianas. -->
+
+
+
+<!-- ## A conexão matemática -->
+
+<!-- A matriz de distâncias Euclidianas contém implicitamente a informação sobre a matriz de covariâncias. -->
+
+<!-- Após um procedimento denominado **centralização dupla**, obtém-se -->
+
+<!-- $$ -->
+<!-- B -->
+<!-- = -->
+<!-- -\frac12 -->
+<!-- JD^2J, -->
+<!-- $$ -->
+
+<!-- em que -->
+
+<!-- - $D$ é a matriz de distâncias; -->
+<!-- - $J=I-\frac1n\mathbf{11}^\top$ é a matriz de centralização. -->
+
+<!-- A matriz $B$ possui os mesmos autovetores utilizados pelo PCA. -->
+
+
+<!-- --- -->
+
+<!-- ![](/images/aprendNsuper/pca_mds2.png){width=100%} -->
+
+
+
+<!-- ## PCA × MDS -->
+
+<!-- | PCA | MDS | -->
+<!-- |------|------| -->
+<!-- | Utiliza a matriz de dados | Utiliza apenas a matriz de distâncias | -->
+<!-- | Requer variáveis quantitativas | Pode utilizar qualquer medida de dissimilaridade | -->
+<!-- | Maximiza a variância | Preserva distâncias | -->
+<!-- | Mais eficiente computacionalmente | Mais flexível | -->
+
+<!-- ::: {.callout-important} -->
+<!-- ## Importante -->
+<!-- O PCA pode ser interpretado como um caso particular do Escalonamento Multidimensional Clássico. -->
+<!-- ::: -->
+
+
+
+## Aprendizado não supervisionado
+
+Até agora, utilizamos uma resposta $Y$ para orientar o aprendizado
+
+Em aprendizado não supervisionado, observamos apenas
+
+$$
+\boxed{
+\mathbf x
+=
+(\mathbf X_1,\ldots,\mathbf X_p)^\top
+}
+$$
+
+e procuramos descobrir estrutura nos próprios dados
 
 ---
 
-![](/images/aprendNsuper/mald_dimensionalidade.png){width=100%}
+## O primeiro problema
 
+Quando $p$ é grande:
 
-## Existem duas estratégias principais
+- visualizar os dados torna-se difícil
+- distâncias podem perder poder discriminatório
+- variáveis podem conter informação redundante
+- modelos podem se tornar computacionalmente caros
+- a estrutura relevante pode viver em dimensão muito menor que $p$
 
-A redução da dimensionalidade pode ser realizada por duas abordagens distintas.
-
-| Estratégia | Ideia |
-|:-----------|:------|
-| **Mudança de representação** | Construir novas variáveis a partir das originais. |
-| **Seleção de variáveis** | Escolher apenas um subconjunto das variáveis existentes. |
-
-Nesta aula estudaremos principalmente os métodos baseados em **mudança de representação**.
-
-
-## Qual é a ideia do PCA?
-
-![](/images/aprendNsuper/pca.png){width=100%}
-
-
-## Qual problema o PCA resolve?
-
-![](/images/aprendNsuper/pca2.png){width=100%}
-
-
-
-## Como o PCA resolve esse problema?
-
-![](/images/aprendNsuper/pca3.png){width=100%}
-
-
-
-## O que é uma componente principal?
-
-Uma componente principal é uma **combinação linear** das variáveis originais.
-
-$$
-PC_j =
-a_{1j}X_1+
-a_{2j}X_2+\cdots+
-a_{pj}X_p
-$$
-
-onde:
-
-- $a_{ij}$ são os pesos (loadings);
-- cada componente representa uma nova direção no espaço dos dados;
-- as componentes são ortogonais entre si.
-
-
-
-## Objetivo do PCA
-
-Encontrar uma sequência de componentes ortogonais que:
-
-- expliquem a maior parte da variabilidade dos dados;
-- sejam não correlacionadas entre si;
-- utilizem o menor número possível de componentes.
-
-
-## Primeira componente principal
-
-A primeira componente ($PC_1$) é a direção que maximiza a variância projetada dos dados.
-
-$$
-PC_1
-=
-\arg\max_{\|a\|=1}
-Var(Xa)
-$$
-
-Ela representa a direção de maior variabilidade existente na base de dados.
-
-
-## Segunda componente principal
-
-A segunda componente ($PC_2$):
-
-- maximiza a variabilidade remanescente;
-- é ortogonal à primeira componente.
-
-$$
-PC_2 \perp PC_1
-$$
-
-Cada nova componente explica uma parcela cada vez menor da variabilidade.
-
-
-
-## Variância da projeção
-
-Projetando os dados na direção $a$,
-
-$$
-z=\mathbf a^\top \mathbf{x}
-$$
-
-a variância projetada é
-
-$$
-Var(z)
-=
-\mathbf a^\top \boldsymbol{S}\mathbf a,
-$$
-
-onde $\boldsymbol{S}$ é a matriz de covariâncias amostral de $\mathbf{x}$.
-
-O PCA procura a direção que maximiza essa variância.
-
-
-## Problema de otimização
-
-Encontrar
-
-$$
-\max_{\mathbf a} \mathbf a^\top \boldsymbol{S} \mathbf a
-$$
-
-sujeito a
-
-$$
-\mathbf a^\top \mathbf a}=1
-$$
-
-A restrição impede que a variância seja aumentada apenas multiplicando o vetor por uma constante.
-
-::: {.callout-important}
-## importante
-O PCA é, portanto, um problema clássico de otimização com restrição.
-:::
-
-
-## Solução: multiplicadores de Lagrange
-
-
-
-Para incorporar a restrição, constrói-se a função Lagrangiana
-
-$$
-\mathcal L(\mathbf a,\lambda)
-=
-\mathbf a^\top \boldsymbol{S}\mathbf a
--
-\lambda
-(\mathbf a^\top\mathbf a-1)
-$$
-
-Derivando em relação a $\mathbf a$,
-
-$$
-\frac{\partial\mathcal L}{\partial\mathbf a}
-=
-2\boldsymbol{S}\mathbf a
--
-2\lambda\mathbf a
-=
-0
-$$
-
-Dividindo ambos os lados por $2$,
-
-$$
-\boldsymbol{S}\mathbf a=\lambda\mathbf a
-$$
-
-
-
-## Surge um problema de autovalores
-
-A condição ótima obtida é
-
-$$
-\boldsymbol{S}\mathbf a=\lambda\mathbf a,
-$$
-
-que corresponde exatamente ao problema clássico de **autovalores e autovetores**.
-
-Assim,
-
-- $\mathbf a$ é um **autovetor** da matriz de covariâncias;
-- $\lambda$ é o **autovalor** associado.
-
-
-## Surge um problema de autovalores
-
-
-O **primeiro componente principal** é o autovetor associado ao **maior autovalor**, pois essa direção maximiza a variância dos dados projetados.<br><br>
-
-::: {.callout-tip}
-## Observação
-Os componentes seguintes são obtidos pelos demais autovetores, sempre ortogonais entre si e ordenados pelos respectivos autovalores.
-:::
-
-
-| Autovalor   | Componente | Variância explicada |
-| ----------- | ---------- | ------------------- |
-| $\lambda_1$ | PC1        | Maior               |
-| $\lambda_2$ | PC2        | Segunda maior       |
-| $\lambda_3$ | PC3        | ...                 |
-
-
-
-
-## Interpretação alternativa do PCA
-
-Até agora interpretamos o PCA como um problema de
-
-- maximização da variância;
-- autovalores e autovetores da matriz de covariâncias.
-
-Existe, porém, outra interpretação igualmente importante.
-
-::: {.callout-note}
-## Nota
-O PCA também pode ser visto como um problema de representação geométrica, cujo objetivo é preservar ao máximo as distâncias entre as observações após a redução de dimensionalidade.
-:::
-
-
-
-## Interpretação alternativa do PCA
-
-
-![](/images/aprendNsuper/pca_mds.png){width=100%}
-
-
-
-## Escalonamento Multidimensional (MDS)
-
-O Escalonamento Multidimensional (MDS) procura representar um conjunto de objetos em um espaço de menor dimensão preservando suas distâncias originais.
-
-O problema consiste em encontrar coordenadas
-
-$$
-z_1,\ldots,z_n
-$$
-
-tais que
-
-$$
-d(z_i,z_j)\approx d(x_i,x_j),
-$$
-
-para todos os pares de observações.
-
-
-
-## Escalonamento Multidimensional (MDS)
-
-
-> Enquanto o PCA utiliza diretamente as variáveis, o MDS utiliza apenas a matriz de distâncias entre as observações.
-
-
-
-Quando as distâncias utilizadas são as distâncias Euclidianas,
-
-$$
-d_{ij}
-=
-\left\|
-x_i-x_j
-\right\|,
-$$
-
-o Escalonamento Multidimensional Clássico produz exatamente a mesma representação obtida pelo PCA (desconsiderando rotações e reflexões).
-
-
-## Escalonamento Multidimensional (MDS)
-
-Assim,
-
-- PCA maximiza a variância das projeções;
-- MDS preserva as distâncias entre observações;
-
-mas ambos conduzem às mesmas coordenadas quando as distâncias são Euclidianas.
-
-
-
-## A conexão matemática
-
-A matriz de distâncias Euclidianas contém implicitamente a informação sobre a matriz de covariâncias.
-
-Após um procedimento denominado **centralização dupla**, obtém-se
-
-$$
-B
-=
--\frac12
-JD^2J,
-$$
-
-em que
-
-- $D$ é a matriz de distâncias;
-- $J=I-\frac1n\mathbf{11}^\top$ é a matriz de centralização.
-
-A matriz $B$ possui os mesmos autovetores utilizados pelo PCA.
-
+Isso motiva a **redução de dimensionalidade**
 
 ---
 
-![](/images/aprendNsuper/pca_mds2.png){width=100%}
+## Redução ou nova representação?
+
+Queremos transformar
+
+$$
+\mathbf x\in\mathbb R^p
+$$
+
+em
+
+$$
+\boxed{
+\mathbf z
+=
+T(\mathbf x)
+\in\mathbb R^q,
+\qquad q<p
+}
+$$
+
+preservando, tanto quanto possível, a estrutura relevante dos dados
 
 
+# Análise de Componentes Principais (PCA)
 
-## PCA × MDS
+## PCA como transformação
 
-| PCA | MDS |
-|------|------|
-| Utiliza a matriz de dados | Utiliza apenas a matriz de distâncias |
-| Requer variáveis quantitativas | Pode utilizar qualquer medida de dissimilaridade |
-| Maximiza a variância | Preserva distâncias |
-| Mais eficiente computacionalmente | Mais flexível |
+Considere dados centrados
 
-::: {.callout-important}
-## Importante
-O PCA pode ser interpretado como um caso particular do Escalonamento Multidimensional Clássico.
-:::
+$$
+\mathbf x_i\in\mathbb R^p
+$$
 
+e uma matriz
 
+$$
+W_q
+=
+[\mathbf w_1,\ldots,\mathbf w_q]
+$$
+
+formada pelos $q$ primeiros autovetores da matriz de covariâncias
+
+A nova representação é
+
+$$
+\boxed{
+\mathbf z_i
+=
+W_q^t\mathbf x_i
+}
+$$
+
+---
+
+## Critério da primeira componente
+
+A primeira direção resolve
+
+$$
+\boxed{
+\mathbf w_1
+=
+\arg\max_{\|\mathbf w\|=1}
+\operatorname{Var}
+(\mathbf w^t\mathbf X)
+}
+$$
+
+As demais componentes maximizam variância sob restrições de ortogonalidade
+
+---
+
+## Visualização geométrica
+
+```{r}
+#| fig-width: 7.3
+#| fig-height: 5.0
+#| out-width: 70%
+#| fig-align: center
+
+escala <- 4.2
+
+ggplot(dados_pca, aes(x1, x2)) +
+  geom_point(alpha = .55, color = azul2, size = 2) +
+  geom_segment(
+    x = centro[1] - escala * v1[1],
+    y = centro[2] - escala * v1[2],
+    xend = centro[1] + escala * v1[1],
+    yend = centro[2] + escala * v1[2],
+    linewidth = 1.15,
+    color = azul
+  ) +
+  geom_segment(
+    x = centro[1] - 2 * v2[1],
+    y = centro[2] - 2 * v2[2],
+    xend = centro[1] + 2 * v2[1],
+    yend = centro[2] + 2 * v2[2],
+    linewidth = .9,
+    linetype = "dashed",
+    color = azul
+  ) +
+  coord_equal() +
+  tema_slide +
+  labs(
+    title = "PCA procura direções de maior variabilidade",
+    x = expression(X[1]),
+    y = expression(X[2])
+  )
+```
+
+---
+
+## Reconstrução
+
+Se mantivermos apenas $q$ componentes, podemos reconstruir aproximadamente
+
+$$
+\boxed{
+\widehat{\mathbf x}_i
+=
+W_q\mathbf z_i
+=
+W_qW_q^t\mathbf x_i
+}
+$$
+
+para dados centrados
+
+A informação descartada aparece como erro de reconstrução
 
 
 # Aplicação: Compressão de Imagens
@@ -1150,10 +1346,10 @@ $$
 $$
 
 
-## O problema da transformação explícita
+<!-- ## O problema da transformação explícita -->
 
 
-![](/images/aprendNsuper/kpca_ideia.png){width=100%}
+<!-- ![](/images/aprendNsuper/kpca_ideia.png){width=100%} -->
 
 
 ## O problema da transformação explícita
@@ -1212,31 +1408,31 @@ K(\mathbf{x_i},\mathbf{x_j})
 $$
 
 
----
+<!-- --- -->
 
-![](/images/aprendNsuper/kt.png){width=100%}
+<!-- ![](/images/aprendNsuper/kt.png){width=100%} -->
 
 
-## A função Kernel
+<!-- ## A função Kernel -->
 
-Uma função kernel calcula diretamente o produto interno entre duas observações no espaço transformado.
+<!-- Uma função kernel calcula diretamente o produto interno entre duas observações no espaço transformado. -->
 
-$$
-K(\mathbf{x_i},\mathbf{x_j})
-=
-\phi(\mathbf{x_i})^\top
-\phi(\mathbf{x_j})
-$$
+<!-- $$ -->
+<!-- K(\mathbf{x_i},\mathbf{x_j}) -->
+<!-- = -->
+<!-- \phi(\mathbf{x_i})^\top -->
+<!-- \phi(\mathbf{x_j}) -->
+<!-- $$ -->
 
-Assim,
+<!-- Assim, -->
 
-- nunca é necessário calcular explicitamente $\phi(\mathbf{x})$;
-- todo o algoritmo trabalha apenas com a matriz Kernel.
+<!-- - nunca é necessário calcular explicitamente $\phi(\mathbf{x})$; -->
+<!-- - todo o algoritmo trabalha apenas com a matriz Kernel. -->
 
-::: {.callout-note}
-## Nota
-A matriz Kernel substitui a matriz de covariâncias utilizada no PCA tradicional.
-:::
+<!-- ::: {.callout-note} -->
+<!-- ## Nota -->
+<!-- A matriz Kernel substitui a matriz de covariâncias utilizada no PCA tradicional. -->
+<!-- ::: -->
 
 
 ## Fluxo do Kernel PCA
@@ -1302,203 +1498,88 @@ library(ggplot2)
 library(patchwork)
 
 set.seed(335)
-
-#--------------------------------------------------
-# 1. Simular dois círculos concêntricos
-#--------------------------------------------------
-
 n <- 500
+classe <- factor(rep(c('Interno','Externo'), each=n/2), levels=c('Externo','Interno'))
+angulo <- runif(n,0,2*pi)
+raio <- c(rnorm(n/2,1,.08),rnorm(n/2,2,.10))
+dados <- data.frame(x1=raio*cos(angulo),x2=raio*sin(angulo),classe=classe)
+X <- scale(dados[,c('x1','x2')])
 
-classe <- factor(
-  rep(c("Interno", "Externo"), each = n / 2),
-  levels = c("Externo", "Interno")
+pca <- prcomp(X,center=FALSE,scale.=FALSE)
+pca_coord <- data.frame(PC1=pca$x[,1],PC2=pca$x[,2],classe=classe)
+
+# Kernel PCA não supervisionada: usar mais componentes para identificar
+# qual delas representa a separação radial; rótulos apenas para visualização.
+kpca_fit <- kpca(as.matrix(X), kernel='rbfdot', kpar=list(sigma=0.35), features=10)
+K <- as.matrix(rotated(kpca_fit))
+
+# A diferença padronizada das médias serve APENAS para escolher um eixo didático.
+separacao <- vapply(seq_len(ncol(K)), function(j) {
+  a <- K[classe=='Interno',j]; b <- K[classe=='Externo',j]
+  abs(mean(a)-mean(b))/sqrt((var(a)+var(b))/2)
+}, numeric(1))
+j <- which.max(separacao)
+# Escolher um segundo eixo ortogonal, distinto do primeiro.
+j2 <- setdiff(seq_len(ncol(K)),j)[1]
+kpca_coord <- data.frame(KPC_radial=K[,j], KPC_aux=K[,j2], classe=classe)
+
+# Orientar o eixo radial para que a classe externa tenha maior escore.
+if (mean(kpca_coord$KPC_radial[classe=='Externo']) < mean(kpca_coord$KPC_radial[classe=='Interno'])) {
+  kpca_coord$KPC_radial <- -kpca_coord$KPC_radial
+}
+limiar <- mean(c(mean(kpca_coord$KPC_radial[classe=='Interno']),
+                 mean(kpca_coord$KPC_radial[classe=='Externo'])))
+
+cores <- c('Externo'='#E76F66','Interno'='#08AEB9')
+tema <- theme_minimal(base_size=14)+theme(
+  plot.title=element_text(face='bold',size=17),
+  plot.subtitle=element_text(size=11),
+  panel.grid.minor=element_blank(),
+  legend.position='bottom',
+  aspect.ratio=1
 )
+base <- function(df,x,y) ggplot(df,aes(x={{x}},y={{y}},color=classe))+
+  geom_point(alpha=.75,size=1.7)+scale_color_manual(values=cores)+
+  labs(color='Classe')+tema
 
-angulo <- runif(n, 0, 2 * pi)
+g1 <- base(dados,x1,x2)+coord_equal()+
+  labs(title='Dados originais',subtitle='Círculos concêntricos: fronteira radial',x=expression(X[1]),y=expression(X[2]))
+g2 <- base(pca_coord,PC1,PC2)+coord_equal()+
+  labs(title='PCA linear',subtitle='Projeção linear: círculos permanecem aninhados',x='PC1',y='PC2')
+g3 <- base(kpca_coord,KPC_radial,KPC_aux)+
+  geom_vline(xintercept=limiar,linetype='dashed',linewidth=.8,color='#172554')+
+  labs(title='Kernel PCA (RBF)',subtitle=paste0('Componente ',j,' evidencia a diferença radial'),
+       x=paste0('KPC',j,' (radial)'),y=paste0('KPC',j2))
 
-raio <- c(
-  rnorm(n / 2, mean = 1.0, sd = 0.08),
-  rnorm(n / 2, mean = 2.0, sd = 0.10)
-)
-
-dados <- data.frame(
-  x1 = raio * cos(angulo),
-  x2 = raio * sin(angulo),
-  classe = classe
-)
-
-# Padronização
-X <- scale(dados[, c("x1", "x2")])
-
-#--------------------------------------------------
-# 2. PCA linear
-#--------------------------------------------------
-
-pca_fit <- prcomp(
-  X,
-  center = FALSE,
-  scale. = FALSE
-)
-
-pca_coord <- data.frame(
-  PC1 = pca_fit$x[, 1],
-  PC2 = pca_fit$x[, 2],
-  classe = dados$classe
-)
-
-#--------------------------------------------------
-# 3. Kernel PCA com kernel RBF
-#--------------------------------------------------
-
-kpca_fit <- kpca(
-  ~ .,
-  data = as.data.frame(X),
-  kernel = "rbfdot",
-  kpar = list(sigma = 2),
-  features = 2
-)
-
-kpca_rot <- rotated(kpca_fit)
-
-kpca_coord <- data.frame(
-  KPC1 = kpca_rot[, 1],
-  KPC2 = kpca_rot[, 2],
-  classe = dados$classe
-)
-
-#--------------------------------------------------
-# 4. Tema comum
-#--------------------------------------------------
-
-tema_comum <- theme_minimal(base_size = 15) +
-  theme(
-    plot.title = element_text(
-      face = "bold",
-      hjust = 0
-    ),
-    plot.subtitle = element_text(
-      size = 11
-    ),
-    legend.position = "bottom",
-    legend.direction = "horizontal",
-    legend.title = element_text(face = "bold"),
-    panel.grid.minor = element_blank()
-  )
-
-#--------------------------------------------------
-# 5. Dados originais
-#--------------------------------------------------
-
-g_original <- ggplot(
-  dados,
-  aes(
-    x = x1,
-    y = x2,
-    color = classe
-  )
-) +
-  geom_point(
-    alpha = 0.75,
-    size = 2
-  ) +
-  coord_equal() +
-  labs(
-    title = "Dados originais",
-    subtitle = "Dois círculos concêntricos",
-    x = expression(X[1]),
-    y = expression(X[2]),
-    color = "Classe"
-  ) +
-  tema_comum
-
-#--------------------------------------------------
-# 6. PCA linear
-#--------------------------------------------------
-
-g_pca <- ggplot(
-  pca_coord,
-  aes(
-    x = PC1,
-    y = PC2,
-    color = classe
-  )
-) +
-  geom_point(
-    alpha = 0.75,
-    size = 2
-  ) +
-  coord_equal() +
-  labs(
-    title = "PCA linear",
-    subtitle = "A estrutura circular não é desenrolada",
-    x = "PC1",
-    y = "PC2",
-    color = "Classe"
-  ) +
-  tema_comum
-
-#--------------------------------------------------
-# 7. Kernel PCA
-#--------------------------------------------------
-
-g_kpca <- ggplot(
-  kpca_coord,
-  aes(
-    x = KPC1,
-    y = KPC2,
-    color = classe
-  )
-) +
-  geom_point(
-    alpha = 0.75,
-    size = 2
-  ) +
-  labs(
-    title = "Kernel PCA — RBF",
-    subtitle = "A estrutura não linear torna-se separável",
-    x = "KPC1",
-    y = "KPC2",
-    color = "Classe"
-  ) +
-  tema_comum
-
-#--------------------------------------------------
-# 8. Combinar os gráficos
-#--------------------------------------------------
-
-grafico_final <- (
-  g_original +
-  g_pca +
-  g_kpca
-) +
-  plot_layout(
-    guides = "collect",
-    widths = c(1, 1, 1)
-  ) +
-  plot_annotation(
-    theme = theme(
-      legend.position = "bottom",
-      legend.direction = "horizontal",
-      legend.justification = "center"
-    )
-  )
-
-grafico_final
+figura <- (g1+g2+g3)+plot_layout(guides='collect') &
+    theme(legend.position='bottom')
+print(figura)
+# ggsave('PCA_vs_KernelPCA_EST335.png',figura,width=16,height=6.2,dpi=220,bg='white')
 ```
 
 
----
+## PCA linear × Kernel PCA: interpretação
 
-### Interpretação
+**Dados originais:** as duas classes formam círculos concêntricos.
+A separação depende da distância ao centro e, portanto,
+**não pode ser realizada por uma reta**.
+
+**PCA linear:** transforma as variáveis por combinações lineares,
+preservando a estrutura concêntrica. Assim, as classes
+continuam sem separação linear.
+
+**Kernel PCA (RBF):** permite representar relações não lineares.
+Neste exemplo, a quarta componente (KPC4) evidencia a diferença entre as distâncias das observações ao centro dos círculos, permitindo uma separação **aproximadamente linear** no espaço transformado.
+
+::: {.callout-note appearance="simple"}
+
+**Conclusão:** transformações não lineares podem revelar
+estruturas que não são adequadamente representadas por
+projeções lineares.
+
+:::
 
 
-- Os **dados originais** apresentam uma estrutura **não linear**, formada por dois círculos concêntricos.
-
-- O **PCA linear** apenas realiza uma transformação linear (rotação e projeção), preservando a geometria circular dos dados. Assim, as classes permanecem **sobrepostas** e não podem ser separadas por componentes lineares.
-
-- O **Kernel PCA (RBF)** aplica uma transformação **não linear** implícita para um espaço de maior dimensionalidade, onde a estrutura circular é "desenrolada", tornando as classes muito mais separáveis.
-
-- **Conclusão:** quando os dados apresentam relações **não lineares**, o Kernel PCA consegue revelar padrões que o PCA tradicional não é capaz de capturar.
 
 
 # Projeções Aleatórias
@@ -1616,9 +1697,8 @@ A escolha da distribuição $f$ define o tipo de projeção aleatória utilizada
 A construção mais utilizada consiste em gerar cada elemento da matriz de projeção de forma independente segundo uma distribuição Normal.
 
 $$
-r_{ij}
-\sim
-N\!\left(0,\frac1k\right)
+r_{ij}\overset{\mathrm{iid}}{\sim}
+N\left(0,\frac{1}{k}\right)
 $$
 
 Equivalentemente,
@@ -1634,27 +1714,34 @@ z_{ij}\sim N(0,1)
 $$
 
 
-## Projeção Aleatória Gaussiana
+
+<!-- ## Projeção Aleatória Gaussiana -->
+
+<!-- A redução de dimensionalidade é realizada multiplicando -->
+<!-- os dados por uma matriz aleatória: -->
+
+<!-- $$ -->
+<!-- \boxed{\mathbf Z=\mathbf X\mathbf R} -->
+<!-- $$ -->
+
+<!-- em que $\mathbf X$ tem $p$ variáveis e $\mathbf Z$ tem -->
+<!-- $k<p$ dimensões. -->
 
 
-Assim, a projeção reduzida é obtida por
+<!-- ::: {.callout-note appearance="simple"} -->
 
-$$
-\boxed{
-\boldsymbol Z=\boldsymbol X\boldsymbol R
-}
-$$
+<!-- **Propriedades dos elementos de $\mathbf R$:** -->
 
-::: {.callout-note}
+<!-- - Média igual a zero; -->
+<!-- - Variância igual a $1/k$; -->
+<!-- - Independência entre os elementos. -->
 
-### Características
+<!-- **Consequência:** as distâncias entre observações são -->
+<!-- preservadas em média e podem ser aproximadamente -->
+<!-- preservadas após a redução dimensional. -->
 
-- média igual a zero;
-- variância igual a $\frac1k$;
-- elementos independentes;
-- preservação aproximada da geometria dos dados.
+<!-- ::: -->
 
-:::
 
 
 
@@ -1666,61 +1753,59 @@ $$
 
 
 
+## Por que normalizar por $1/\sqrt{k}$?
 
-
-## Por que utilizar o fator $\frac1{\sqrt{k}}$?
-
-Considere uma componente projetada
-
-$$
-z_j
-=
-\boldsymbol r_j^\top\mathbf x
-=
-\sum_{i=1}^{p}
-r_{ij}x_i
-$$
-
-Como
+Na projeção aleatória gaussiana, cada elemento da matriz
+$\mathbf R$ é construído como:
 
 $$
-E(r_{ij})=0,
-\qquad
-Var(r_{ij})=\frac1k,
+r_{ij}=\frac{z_{ij}}{\sqrt{k}},
+\qquad z_{ij}\sim N(0,1)
 $$
 
-segue que
+**Objetivo:** preservar, em média, as distâncias quadráticas
+entre observações após a redução de $p$ para $k$ dimensões.
 
-$$
-Var(z_j)
-=
-\frac1k
-\sum_{i=1}^{p}
-x_i^2
-$$
-
-
-## Por que utilizar o fator $\frac1{\sqrt{k}}$?
-
-
-
-Somando as variâncias das $k$ componentes,
+Para duas observações $\mathbf x_i$ e $\mathbf x_j$:
 
 $$
 \boxed{
-E\!\left(
-\|\boldsymbol z\|^2
-\right)
+E_{\mathbf R}\left[
+\|\mathbf R^\top\mathbf x_i-
+\mathbf R^\top\mathbf x_j\|^2
+\right]
 =
-\|\mathbf x\|^2
+\|\mathbf x_i-\mathbf x_j\|^2
 }
 $$
 
-::: {.callout-important}
-## Importante
-O fator $\frac1{\sqrt{k}}$ garante que, **em média**, a energia do vetor seja preservada após a projeção.
+
+
+## Por que normalizar por $1/\sqrt{k}$?
+
+
+::: {.callout-note appearance="simple"}
+
+**Por que dividir por $\sqrt{k}$?**
+
+- **Sem normalização:** a distância quadrática projetada
+  teria esperança $k$ vezes maior que a original.
+- **Com normalização:** o fator $1/k$, resultante do
+  quadrado de $1/\sqrt{k}$, compensa a soma das
+  $k$ coordenadas projetadas.
+
+**Conclusão:** a normalização preserva as distâncias
+quadráticas **em esperança**, não exatamente em cada projeção.
 
 :::
+
+
+
+
+
+
+
+
 
 
 
@@ -1734,12 +1819,12 @@ $$
 \boxed{
 r_{ij}
 =
-\sqrt3
+\sqrt{\frac3{k}}
 \left\{
 \begin{array}{rl}
-+1,&\frac16\\
-0,&\frac23\\
--1,&\frac16
++1,& \text{com probabilidade }\frac16\\
+0,&\text{com probabilidade }\frac23\\
+-1,&\text{com probabilidade }\frac16
 \end{array}
 \right.
 }
@@ -1825,7 +1910,7 @@ Surge então uma pergunta natural:
 
 A resposta é dada pelo **Lema de Johnson–Lindenstrauss**, um dos resultados mais importantes da Geometria Computacional e da Aprendizagem de Máquina.
 
-> Em alta dimensão, projeções aleatórias preservam, com alta probabilidade, as distâncias entre as observações.
+> Em alta dimensão, projeções aleatórias preservam, com alta probabilidade, as distâncias entre as observações, desde que a dimensão projetada seja suficientemente grande.
 
 
 ---
@@ -1833,97 +1918,97 @@ A resposta é dada pelo **Lema de Johnson–Lindenstrauss**, um dos resultados m
 ![](/images/aprendNsuper/ljl.png){width=100%}
 
 
----
+<!-- --- -->
 
-## Lema de Johnson–Lindenstrauss
+<!-- ## Lema de Johnson–Lindenstrauss -->
 
-Considere um conjunto contendo $n$ observações em um espaço de alta dimensão.
+<!-- Considere um conjunto contendo $n$ observações em um espaço de alta dimensão. -->
 
-Existe uma projeção linear
+<!-- Existe uma projeção linear -->
 
-$$
-\boldsymbol R:\mathbb R^p\rightarrow\mathbb R^k,
-$$
+<!-- $$ -->
+<!-- \boldsymbol R:\mathbb R^p\rightarrow\mathbb R^k, -->
+<!-- $$ -->
 
-tal que
+<!-- tal que -->
 
-$$
-k=
-O\!\left(
-\frac{\log n}{\varepsilon^2}
-\right),
-$$
+<!-- $$ -->
+<!-- k= -->
+<!-- O\!\left( -->
+<!-- \frac{\log n}{\varepsilon^2} -->
+<!-- \right), -->
+<!-- $$ -->
 
-## Lema de Johnson–Lindenstrauss
-
-
-e, para quaisquer observações $\mathbf x_i$ e $\mathbf x_j$,
-
-$$
-\boxed{
-(1-\varepsilon)
-\|\mathbf x_i-\mathbf x_j\|^2
-\le
-\|
-\boldsymbol R\mathbf x_i-
-\boldsymbol R\mathbf x_j
-\|^2
-\le
-(1+\varepsilon)
-\|\mathbf x_i-\mathbf x_j\|^2
-}
-$$
-
-::: {.callout-note}
-## Nota
-As distâncias são preservadas com erro relativo máximo de aproximadamente $\varepsilon$.
-
-:::
+<!-- ## Lema de Johnson–Lindenstrauss -->
 
 
+<!-- e, para quaisquer observações $\mathbf x_i$ e $\mathbf x_j$, -->
+
+<!-- $$ -->
+<!-- \boxed{ -->
+<!-- (1-\varepsilon) -->
+<!-- \|\mathbf x_i-\mathbf x_j\|^2 -->
+<!-- \le -->
+<!-- \| -->
+<!-- \boldsymbol R\mathbf x_i- -->
+<!-- \boldsymbol R\mathbf x_j -->
+<!-- \|^2 -->
+<!-- \le -->
+<!-- (1+\varepsilon) -->
+<!-- \|\mathbf x_i-\mathbf x_j\|^2 -->
+<!-- } -->
+<!-- $$ -->
+
+<!-- ::: {.callout-note} -->
+<!-- ## Nota -->
+<!-- As distâncias são preservadas com erro relativo máximo de aproximadamente $\varepsilon$. -->
+
+<!-- ::: -->
 
 
-## Interpretando o resultado
-
-Observe que
-
-$$
-k=
-O\!\left(
-\frac{\log n}{\varepsilon^2}
-\right)
-$$
-
-depende apenas de
-
-- $n$: número de observações;
-
-- $\varepsilon$: erro admissível.
 
 
-## Interpretando o resultado
+<!-- ## Interpretando o resultado -->
+
+<!-- Observe que -->
+
+<!-- $$ -->
+<!-- k= -->
+<!-- O\!\left( -->
+<!-- \frac{\log n}{\varepsilon^2} -->
+<!-- \right) -->
+<!-- $$ -->
+
+<!-- depende apenas de -->
+
+<!-- - $n$: número de observações; -->
+
+<!-- - $\varepsilon$: erro admissível. -->
 
 
-**Não depende da dimensão original $p$.**
-
-::: {.callout-important}
-## Importante
-Mesmo quando
-
-$$
-p=10^5
-\quad\text{ou}\quad
-p=10^6,
-$$
-
-é possível reduzir os dados para algumas centenas de componentes preservando aproximadamente todas as distâncias.
-
-:::
+<!-- ## Interpretando o resultado -->
 
 
----
+<!-- **Não depende da dimensão original $p$.** -->
 
-![](/images/aprendNsuper/mostraK.png){width=100%}
+<!-- ::: {.callout-important} -->
+<!-- ## Importante -->
+<!-- Mesmo quando -->
+
+<!-- $$ -->
+<!-- p=10^5 -->
+<!-- \quad\text{ou}\quad -->
+<!-- p=10^6, -->
+<!-- $$ -->
+
+<!-- é possível reduzir os dados para algumas centenas de componentes preservando aproximadamente todas as distâncias. -->
+
+<!-- ::: -->
+
+
+<!-- --- -->
+
+<!-- ![](/images/aprendNsuper/mostraK.png){width=100%} -->
 
 
 
@@ -1965,7 +2050,7 @@ k
 \frac{4(9,21)}
 {0,02-0,00267}
 \approx
-2126.
+2126
 $$
 
 
@@ -2308,12 +2393,6 @@ O treinamento consiste em minimizar o erro entre a entrada original e sua recons
 
 ## Arquitetura Matemática
 
-Um Autoencoder é composto por duas funções:
-
-- **Encoder:** transforma os dados originais em uma representação latente.
-
-- **Decoder:** reconstrói os dados a partir dessa representação.
-
 A arquitetura pode ser representada por
 
 $$
@@ -2385,7 +2464,7 @@ $$
 \boxed{
 \boldsymbol z
 =
-\sigma
+\phi
 \left(
 W_e\mathbf x+b_e
 \right)
@@ -2396,7 +2475,7 @@ em que
 
 - $W_e$ é a matriz de pesos;
 - $b_e$ é o vetor de vieses;
-- $\sigma(\cdot)$ representa uma função de ativação.
+- $\phi(\cdot)$ representa uma função de ativação.
 
 ::: {.callout-tip}
 ## Observação
@@ -2418,15 +2497,15 @@ $$
 \boxed{
 \hat{\mathbf x}
 =
-g_\phi(\boldsymbol z)
+g_\gamma(\boldsymbol z)
 }
 $$
 
 onde
 
 - $\hat{\mathbf{x}}$ representa a reconstrução;
-- $g_\phi(\cdot)$ representa a rede Decoder;
-- $\phi$ corresponde aos parâmetros da reconstrução.
+- $g_\gamma(\cdot)$ representa a rede Decoder;
+- $\gamma$ corresponde aos parâmetros da reconstrução.
 
 
 ## O Decoder
@@ -2438,7 +2517,7 @@ $$
 \boxed{
 \hat{\mathbf x}
 =
-\sigma
+\phi
 \left(
 W_d\boldsymbol z+b_d
 \right)
@@ -2505,32 +2584,32 @@ Seu treinamento é totalmente **não supervisionado**, pois a própria entrada f
 
 
 
-## Interpretação Geométrica
+<!-- ## Interpretação Geométrica -->
 
-O Autoencoder aprende duas transformações sucessivas:
+<!-- O Autoencoder aprende duas transformações sucessivas: -->
 
-$$
-\boxed{
-\mathbf{x}
-\overset{\text{Encoder}}{\longrightarrow}
-\boldsymbol{z}
-\overset{\text{Decoder}}{\longrightarrow}
-\hat{\mathbf{x}}
-}
-$$
+<!-- $$ -->
+<!-- \boxed{ -->
+<!-- \mathbf{x} -->
+<!-- \overset{\text{Encoder}}{\longrightarrow} -->
+<!-- \boldsymbol{z} -->
+<!-- \overset{\text{Decoder}}{\longrightarrow} -->
+<!-- \hat{\mathbf{x}} -->
+<!-- } -->
+<!-- $$ -->
 
-Durante o treinamento,
+<!-- Durante o treinamento, -->
 
-- o **Encoder** aprende uma representação compacta dos dados;
-- o **Decoder** aprende como reconstruir os dados originais a partir dessa representação.
+<!-- - o **Encoder** aprende uma representação compacta dos dados; -->
+<!-- - o **Decoder** aprende como reconstruir os dados originais a partir dessa representação. -->
 
-O espaço intermediário $\boldsymbol z$ é denominado **espaço latente** (*latent space*).
+<!-- O espaço intermediário $\boldsymbol z$ é denominado **espaço latente** (*latent space*). -->
 
 
-::: {.callout-important}
-## Importante
-O espaço latente procura preservar apenas as características essenciais necessárias para reconstruir os dados.
-:::
+<!-- ::: {.callout-important} -->
+<!-- ## Importante -->
+<!-- O espaço latente procura preservar apenas as características essenciais necessárias para reconstruir os dados. -->
+<!-- ::: -->
 
 
 ---
@@ -2648,18 +2727,15 @@ Ele aprende uma transformação não linear entre dois espaços.
 
 
 
+
 ## R: Autoencoders
 
-
-### Gerando um conjunto de dados não linear
+::: {style="width: 100%; height: 700px;"}
 
 ```{r}
-#| eval: true
-#| echo: true
+#| echo: false
 #| warning: false
 #| message: false
-#| fig-width: 16
-#| fig-height: 8
 #| output-location: slide
 
 library(plotly)
@@ -2671,18 +2747,14 @@ n <- 1500
 
 t <- 1.5 * pi * (1 + 2 * runif(n))
 
-x <- t * cos(t)
-y <- runif(n, -10, 10)
-z <- t * sin(t)
-
 dados <- data.frame(
-  x = x,
-  y = y,
-  z = z,
+  x = t * cos(t),
+  y = runif(n, -10, 10),
+  z = t * sin(t),
   t = t
 )
 
-plot_ly(
+p <- plot_ly(
   data = dados,
   x = ~x,
   y = ~y,
@@ -2692,20 +2764,49 @@ plot_ly(
   type = "scatter3d",
   mode = "markers",
   marker = list(
-    size = 2,
-    opacity = 0.8
-  )
+    size = 2.5,
+    opacity = 0.85
+  ),
+  width = 1450,
+  height = 680
 ) |>
   layout(
-    title = "Swiss Roll — dados originais",
+    title = NULL,
+    autosize = FALSE,
+    margin = list(
+      l = 0,
+      r = 0,
+      b = 0,
+      t = 0
+    ),
     scene = list(
       xaxis = list(title = "X"),
       yaxis = list(title = "Y"),
       zaxis = list(title = "Z"),
-      aspectmode = "data"
+      aspectmode = "data",
+      domain = list(
+        x = c(0, 1),
+        y = c(0, 1)
+      ),
+      camera = list(
+        eye = list(
+          x = 1.5,
+          y = 1.4,
+          z = 0.8
+        )
+      )
     )
+  ) |>
+  config(
+    responsive = TRUE,
+    displaylogo = FALSE
   )
+
+p
 ```
+
+:::
+
 
 
 
@@ -2760,6 +2861,7 @@ subtitle="O Swiss Roll continua enrolado"
 
 ### Autoencoder
 
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -2812,6 +2914,8 @@ ggplot( latent, aes(z1,z2,color=t))+
 
 ### Reconstrução
 
+::: {style="width: 100%; height: 700px;"}
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -2862,7 +2966,7 @@ plot_ly(
     )
   )
 ```
-
+:::
 
 ## PCA × Autoencoder
 

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A4 - Estruturas e Padrões – EST335 - Métodos Estatísticos para Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e9f3ba5fbee03b112b18b9666ab66a2c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b09848b6287391c45069fed345a57cb2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="A4 - Estruturas e Padrões – EST335 - Métodos Estatísticos para Machine Learning">
+<meta property="og:description" content="EST335 — Métodos Estatísticos para Machine Learning">
+<meta property="og:site_name" content="EST335 - Métodos Estatísticos para Machine Learning">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">A4 - Estruturas e Padrões</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aulas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atividades.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Atividades</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../material.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Material Complementar</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../plano.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plano de Ensino</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cronograma.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma da Disciplina</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo"><span class="header-section-number">1</span> Objetivo</a></li>
+  <li><a href="#problema-de-investigação" id="toc-problema-de-investigação" class="nav-link" data-scroll-target="#problema-de-investigação"><span class="header-section-number">2</span> Problema de investigação</a>
+  <ul class="collapse">
+  <li><a href="#base-de-dados-da-atividade" id="toc-base-de-dados-da-atividade" class="nav-link" data-scroll-target="#base-de-dados-da-atividade"><span class="header-section-number">2.1</span> Base de dados da atividade</a></li>
+  </ul></li>
+  <li><a href="#questões-e-pontuação" id="toc-questões-e-pontuação" class="nav-link" data-scroll-target="#questões-e-pontuação"><span class="header-section-number">3</span> Questões e pontuação</a>
+  <ul class="collapse">
+  <li><a href="#parte-i---diagnóstico-dos-dados-3-pontos" id="toc-parte-i---diagnóstico-dos-dados-3-pontos" class="nav-link" data-scroll-target="#parte-i---diagnóstico-dos-dados-3-pontos"><span class="header-section-number">3.1</span> Parte I - Diagnóstico dos dados (3 pontos)</a></li>
+  <li><a href="#parte-ii---pca-linear-4-pontos" id="toc-parte-ii---pca-linear-4-pontos" class="nav-link" data-scroll-target="#parte-ii---pca-linear-4-pontos"><span class="header-section-number">3.2</span> Parte II - PCA linear (4 pontos)</a></li>
+  <li><a href="#parte-iii---kernel-pca-3-pontos" id="toc-parte-iii---kernel-pca-3-pontos" class="nav-link" data-scroll-target="#parte-iii---kernel-pca-3-pontos"><span class="header-section-number">3.3</span> Parte III - Kernel PCA (3 pontos)</a></li>
+  <li><a href="#parte-iv---projeções-aleatórias-3-pontos" id="toc-parte-iv---projeções-aleatórias-3-pontos" class="nav-link" data-scroll-target="#parte-iv---projeções-aleatórias-3-pontos"><span class="header-section-number">3.4</span> Parte IV - Projeções aleatórias (3 pontos)</a></li>
+  <li><a href="#parte-v---análise-de-agrupamento-5-pontos" id="toc-parte-v---análise-de-agrupamento-5-pontos" class="nav-link" data-scroll-target="#parte-v---análise-de-agrupamento-5-pontos"><span class="header-section-number">3.5</span> Parte V - Análise de agrupamento (5 pontos)</a></li>
+  <li><a href="#parte-vi---síntese-crítica-2-pontos" id="toc-parte-vi---síntese-crítica-2-pontos" class="nav-link" data-scroll-target="#parte-vi---síntese-crítica-2-pontos"><span class="header-section-number">3.6</span> Parte VI - Síntese crítica (2 pontos)</a></li>
+  </ul></li>
+  <li><a href="#extensão-opcional---autoencoder-3-pontos-extras" id="toc-extensão-opcional---autoencoder-3-pontos-extras" class="nav-link" data-scroll-target="#extensão-opcional---autoencoder-3-pontos-extras"><span class="header-section-number">4</span> Extensão opcional - Autoencoder (3 pontos extras)</a></li>
+  <li><a href="#critérios-de-avaliação" id="toc-critérios-de-avaliação" class="nav-link" data-scroll-target="#critérios-de-avaliação"><span class="header-section-number">5</span> Critérios de avaliação</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/atividades/atividade_a4_estruturas_padroes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">A4 - Estruturas e Padrões</h1>
+<p class="subtitle lead">EST335 — Métodos Estatísticos para Machine Learning</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Informações da atividade
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Valor:</strong> 20 pontos</li>
+<li><strong>Liberação:</strong> 23/11/2026</li>
+<li><strong>Entrega:</strong> 06/12/2026</li>
+</ul>
+</div>
+</div>
+<section id="objetivo" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Objetivo</h1>
+<p>Investigar como diferentes métodos de representação de dados preservam, transformam ou evidenciam estruturas multivariadas. A atividade prioriza a <strong>interpretação estatística</strong>, a justificativa das escolhas metodológicas e a comparação crítica dos resultados, não apenas a execução de algoritmos.</p>
+<p>Os métodos centrais são <strong>PCA, Kernel PCA, projeções aleatórias, k-médias, agrupamento espectral e agrupamento hierárquico</strong>. Um <strong>autoencoder</strong> poderá ser investigado como extensão opcional, sem substituir as análises obrigatórias.</p>
+</section>
+<section id="problema-de-investigação" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Problema de investigação</h1>
+<p>Uma equipe recebeu dados de sensores descritos por muitas variáveis. Suspeita-se que os registros apresentem padrões associados a fatores latentes, mas não se conhece previamente a melhor representação desses dados.</p>
+<p>Seu desafio é avaliar se a redução de dimensionalidade consegue evidenciar estruturas relevantes e se diferentes algoritmos de agrupamento conseguem identificá-las sem conhecer previamente os grupos. Discuta como a geometria dos dados influencia os resultados.</p>
+<section id="base-de-dados-da-atividade" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="base-de-dados-da-atividade"><span class="header-section-number">2.1</span> Base de dados da atividade</h2>
+<p><a href="../dados/dados_a4.csv" class="btn btn-primary" download="dados_a4.csv">Baixar base de dados da A4</a></p>
+<p>Utilize o arquivo <a href="../dados/dados_a4.csv"><code>dados_a4.csv</code></a>, disponibilizado na página da atividade. A base é <strong>simulada para fins didáticos</strong>. A variável <code>grupo</code> é conhecida pelo gerador dos dados, mas deve ser tratada como informação externa, indisponível aos métodos não supervisionados durante o ajuste.</p>
+</section>
+</section>
+<section id="questões-e-pontuação" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Questões e pontuação</h1>
+<section id="parte-i---diagnóstico-dos-dados-3-pontos" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="parte-i---diagnóstico-dos-dados-3-pontos"><span class="header-section-number">3.1</span> Parte I - Diagnóstico dos dados (3 pontos)</h2>
+<ol type="1">
+<li>Descreva o número de observações e variáveis, apresente estatísticas descritivas e avalie a necessidade de padronização (<strong>1 ponto</strong>).</li>
+<li>Investigue correlações e possíveis redundâncias entre preditores. Apresente ao menos uma visualização adequada (<strong>1 ponto</strong>).</li>
+<li>Explique por que a presença de redundância e de uma estrutura não linear pode influenciar os métodos de redução de dimensionalidade (<strong>1 ponto</strong>).</li>
+</ol>
+</section>
+<section id="parte-ii---pca-linear-4-pontos" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="parte-ii---pca-linear-4-pontos"><span class="header-section-number">3.2</span> Parte II - PCA linear (4 pontos)</h2>
+<ol type="1">
+<li>Ajuste a PCA utilizando <strong>apenas os preditores</strong> e justifique as decisões de centralização e padronização (<strong>1 ponto</strong>).</li>
+<li>Apresente a proporção de variância explicada e a variância acumulada; proponha dois critérios para escolher a dimensão reduzida (<strong>1 ponto</strong>).</li>
+<li>Visualize as duas primeiras componentes, usando <code>grupo</code> somente para colorir o gráfico após o ajuste (<strong>1 ponto</strong>).</li>
+<li>Interprete os resultados: a PCA evidencia os três grupos? Por que uma projeção linear pode não ser suficiente para determinada estrutura? (<strong>1,5 ponto</strong>).</li>
+</ol>
+</section>
+<section id="parte-iii---kernel-pca-3-pontos" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="parte-iii---kernel-pca-3-pontos"><span class="header-section-number">3.3</span> Parte III - Kernel PCA (3 pontos)</h2>
+<ol type="1">
+<li>Ajuste uma Kernel PCA com kernel RBF, documentando a escolha de <code>sigma</code> e o número de componentes (<strong>1 ponto</strong>).</li>
+<li>Compare <strong>pelo menos três valores de <code>sigma</code></strong> e duas combinações de componentes, sem utilizar <code>grupo</code> para selecionar os hiperparâmetros (<strong>1 ponto</strong>).</li>
+<li>Apresente gráficos e discuta como a transformação não linear modifica a representação. Distinga separação visual de garantia de separabilidade (<strong>1,5 ponto</strong>).</li>
+</ol>
+<p><strong>Orientação:</strong> a Kernel PCA é não supervisionada. Não se deve afirmar que ela aprende a distinguir as classes. Caso use os grupos para interpretar os gráficos, declare explicitamente que isso ocorreu <strong>após</strong> o ajuste.</p>
+</section>
+<section id="parte-iv---projeções-aleatórias-3-pontos" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="parte-iv---projeções-aleatórias-3-pontos"><span class="header-section-number">3.4</span> Parte IV - Projeções aleatórias (3 pontos)</h2>
+<ol type="1">
+<li>Implemente uma projeção gaussiana para <code>k = 2, 5, 10, 15</code>, utilizando elementos independentes com distribuição <span class="math inline">\(N(0,1/k)\)</span> (<strong>1 ponto</strong>).</li>
+<li>Para cada <code>k</code>, calcule as distâncias euclidianas quadráticas de todos os pares de observações (ou de uma amostra fixa de pares) antes e depois da projeção. Resuma a <strong>distorção relativa</strong>; trate separadamente pares de distância original nula, se existirem (<strong>1 ponto</strong>).</li>
+<li>Repita cada projeção com pelo menos 20 matrizes aleatórias independentes e represente a variabilidade dos resultados (<strong>0,5 ponto</strong>).</li>
+<li>Discuta a diferença entre preservação <strong>em esperança</strong> e preservação <strong>com alta probabilidade</strong>; explique o efeito de <code>k</code> (<strong>0,5 ponto</strong>).</li>
+</ol>
+<p>A distorção relativa de um par com distância quadrática original <span class="math inline">\(d_{ij}^2&gt;0\)</span> pode ser definida por</p>
+<p><span class="math display">\[
+\delta_{ij}=\frac{\left|\|\mathbf z_i-\mathbf z_j\|^2-\|\mathbf x_i-\mathbf x_j\|^2\right|}{\|\mathbf x_i-\mathbf x_j\|^2}.
+\]</span></p>
+</section>
+<section id="parte-v---análise-de-agrupamento-5-pontos" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="parte-v---análise-de-agrupamento-5-pontos"><span class="header-section-number">3.5</span> Parte V - Análise de agrupamento (5 pontos)</h2>
+<p>Nesta parte, o objetivo é <strong>descobrir grupos sem utilizar a variável <code>grupo</code> durante o ajuste ou a escolha dos hiperparâmetros</strong>. A variável <code>grupo</code> poderá ser utilizada somente depois, para avaliar a concordância entre os agrupamentos encontrados e a estrutura conhecida da simulação.</p>
+<ol type="1">
+<li><strong>K-médias (1,5 ponto).</strong> Padronize os preditores e ajuste o algoritmo k-médias com diferentes números de grupos, incluindo <span class="math inline">\(K=3\)</span>. Utilize múltiplas inicializações (<code>nstart</code>) e apresente um critério <strong>não supervisionado</strong> para discutir a escolha de <span class="math inline">\(K\)</span> (por exemplo, curva do cotovelo ou silhueta). Visualize os agrupamentos em uma representação bidimensional e explique a influência da geometria dos dados sobre o método.</li>
+<li><strong>Agrupamento hierárquico (1,5 ponto).</strong> Calcule uma matriz de distâncias entre observações e compare pelo menos dois métodos de ligação (por exemplo, <code>complete</code> e <code>ward.D2</code>). Apresente dendrogramas, indique como obter uma partição com três grupos e discuta diferenças em relação ao k-médias. Justifique a métrica de distância e o método de ligação utilizados.</li>
+<li><strong>Agrupamento espectral (1 ponto).</strong> Aplique um algoritmo espectral baseado em uma matriz de similaridades, com kernel RBF ou outra construção justificada. Investigue pelo menos dois valores de um parâmetro de similaridade, mantendo <span class="math inline">\(K=3\)</span> para a comparação. Explique por que o método pode ser apropriado para estruturas não convexas.</li>
+<li><strong>Comparação crítica (1 ponto).</strong> Compare as três abordagens usando visualizações e pelo menos uma medida interna de qualidade de agrupamento. <strong>Somente após a definição dos agrupamentos</strong>, use <code>grupo</code> para construir tabelas de contingência e discutir a concordância externa. Explique por que uma concordância elevada não significa que os rótulos tenham sido utilizados no ajuste.</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cuidados metodológicos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Não</strong> utilize <code>grupo</code> para selecionar <span class="math inline">\(K\)</span>, o kernel, seus parâmetros ou o método de ligação.</li>
+<li>Os identificadores numéricos dos clusters são arbitrários: o cluster 1 não precisa corresponder ao grupo A.</li>
+<li>A silhueta e outras medidas internas avaliam propriedades geométricas, não necessariamente a concordância com os grupos da simulação.</li>
+<li>Para avaliar o efeito da representação, você pode repetir um método de agrupamento sobre componentes de PCA ou Kernel PCA, mas explicite qual espaço foi utilizado e mantenha comparações coerentes.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="parte-vi---síntese-crítica-2-pontos" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="parte-vi---síntese-crítica-2-pontos"><span class="header-section-number">3.6</span> Parte VI - Síntese crítica (2 pontos)</h2>
+<ol type="1">
+<li>Construa uma tabela comparando <strong>PCA, Kernel PCA, projeções aleatórias, k-médias, agrupamento hierárquico e agrupamento espectral</strong> quanto a objetivo, hipóteses geométricas, parâmetros e limitações (<strong>1 ponto</strong>).</li>
+<li>Proponha um fluxo de análise que combine representação e agrupamento para dados multidimensionais. Justifique as escolhas e discuta uma limitação do experimento (<strong>1 ponto</strong>).</li>
+</ol>
+</section>
+</section>
+<section id="extensão-opcional---autoencoder-3-pontos-extras" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Extensão opcional - Autoencoder (3 pontos extras)</h1>
+<p>Se desejar, implemente um autoencoder com gargalo de dimensão 2 ou 3 e compare a representação latente com a PCA. Explique a função de perda de reconstrução, o papel do encoder e do decoder, e por que baixo erro de reconstrução não implica separação entre grupos. <strong>A extensão é facultativa e não altera o total de 20 pontos. Caso você opte por fazê-la, concorrerá a 3 pontos extras</strong></p>
+</section>
+<section id="critérios-de-avaliação" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Critérios de avaliação</h1>
+<p>Além da pontuação por questão, serão considerados a <strong>reprodutibilidade</strong>, a clareza dos gráficos, a correção conceitual e a qualidade das interpretações. Código sem análise não constitui resposta completa. A pontuação total é: diagnóstico (3), PCA (4), Kernel PCA (3), projeções aleatórias (3), agrupamento (5) e síntese (2). Resultados inesperados são aceitáveis quando investigados e discutidos com rigor.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("http:\/\/professortp\.com\.br\/est335\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Copyright 2026, Tiago Pereira</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tiagomartin/est335/edit/main/atividades/atividade_a4_estruturas_padroes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/tiagomartin/est335/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Página construída usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

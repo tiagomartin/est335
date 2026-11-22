@@ -53,8 +53,6 @@ v1 <- pca_fit$rotation[,1]
 v2 <- pca_fit$rotation[,2]
 ```
 
-# Semana 12
-
 ## Parte II — Aprendizado não supervisionado
 
 Até agora, utilizamos uma resposta $Y$ para orientar o aprendizado
@@ -63,9 +61,9 @@ Em aprendizado não supervisionado, observamos apenas
 
 $$
 \boxed{
-\mathbf X
+\mathbf x
 =
-(\mathbf X_1,\ldots,\mathbf X_p)
+(\mathbf X_1,\ldots,\mathbf X_p)^\top
 }
 $$
 
@@ -109,95 +107,8 @@ $$
 
 preservando, tanto quanto possível, a estrutura relevante dos dados
 
----
 
-## Conteúdo programático
-
-Nesta semana:
-
-$$
-\boxed{\text{PCA}}
-\rightarrow
-\boxed{\text{Kernel PCA}}
-\rightarrow
-\boxed{\text{Projeções Aleatórias}}
-\rightarrow
-\boxed{\text{Autoencoders}}
-$$
-
-PCA será tratada como **revisão breve**, pois sua fundamentação já foi estudada em Estatística Multivariada
-
----
-
-## Organização da semana
-
-:::: {.columns}
-
-::: {.column width="48%"}
-
-### Encontro 12.1
-
-**Representações lineares e kernels**
-
-- revisão de PCA
-- projeção e reconstrução
-- limitações da PCA
-- Kernel PCA
-- kernel trick
-- projeções aleatórias
-- preservação aproximada de distâncias
-
-:::
-
-::: {.column width="48%"}
-
-### Encontro 12.2
-
-**Autoencoders**
-
-- representação latente
-- encoder e decoder
-- função de reconstrução
-- treinamento
-- gargalo
-- relação com PCA
-- representações não lineares
-- limitações
-
-:::
-
-::::
-
----
-
-## Objetivos
-
-Ao final da semana, devemos ser capazes de:
-
-- distinguir redução de dimensionalidade de seleção de variáveis
-- interpretar PCA como projeção linear
-- compreender por que PCA pode falhar em estruturas não lineares
-- entender a construção da Kernel PCA
-- explicar a lógica das projeções aleatórias
-- formular matematicamente um autoencoder
-- comparar representações lineares e não lineares
-
-# Encontro 12.1 — PCA
-
-## PCA: conhecimento prévio
-
-Na EST014, já estudamos:
-
-- matriz de covariâncias e correlações
-- autovalores e autovetores
-- componentes principais
-- variância explicada
-- escores
-- escolha do número de componentes
-
-Aqui, o objetivo é reinterpretar PCA como um método de **representação para Machine Learning**
-
----
+# Análise de Componentes Principais (PCA)
 
 ## PCA como transformação
 
@@ -305,7 +216,7 @@ para dados centrados
 
 A informação descartada aparece como erro de reconstrução
 
----
+
 
 # Limitações da PCA
 
@@ -335,6 +246,11 @@ Uma projeção linear pode:
 - não revelar a geometria intrínseca
 
 Precisamos de representações mais flexíveis
+
+---
+
+
+
 
 # Kernel PCA
 

@@ -88,4 +88,23 @@ Aplicação prática em **R**, com `tidymodels`, abordando regressão logística
 :::
 
 
+
+::: {.list-group-item .d-flex .justify-content-between .align-items-center}
+
+<div>
+
+### Estruturas e Padrões
+
+Aplicação prática em **R** para investigação de estruturas multivariadas, incluindo **PCA, Kernel PCA e projeções aleatórias**, além de **análise de agrupamento por k-médias, métodos hierárquicos e agrupamento espectral**. Apresenta simulações, visualizações, comparação de métodos e interpretação dos resultados. 
+
+</div>
+
+<div>
+
+[Ver material](material_complementar/material_complementar_a4_estruturas_padroes.qmd){.btn .btn-est335-main .btn-sm}
+
+</div>
+
+:::
+
 :::

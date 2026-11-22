@@ -1,0 +1,410 @@
+---
+title: "Aplicação prática: estruturas e padrões"
+subtitle: "Material complementar - A4"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Objetivo
+
+Este material exemplifica, em **R**, como comparar PCA, Kernel PCA, projeções aleatórias e três abordagens de agrupamento (k-médias, hierárquico e espectral) na investigação de estruturas multivariadas. 
+
+O roteiro é:
+
+$$
+\text{dados} \longrightarrow \text{exploração} \longrightarrow \text{PCA} \longrightarrow \text{Kernel PCA} \longrightarrow \text{projeção aleatória} \longrightarrow \text{agrupamento} \longrightarrow \text{interpretação}
+$$
+
+# Pacotes
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(kernlab)
+library(patchwork)
+```
+
+# Base simulada: uma estrutura curva
+
+Simularemos duas coordenadas informativas sobre uma curva não linear e oito variáveis adicionais, algumas correlacionadas com as coordenadas originais e outras constituídas por ruído.
+
+```{r}
+set.seed(335)
+n <- 400
+t <- runif(n, -2.5, 2.5)
+
+x1 <- t + rnorm(n, sd = 0.12)
+x2 <- t^2 + rnorm(n, sd = 0.18)
+X <- cbind(
+  x1 = x1, x2 = x2,
+  x3 = x1 + rnorm(n, sd = 0.15),
+  x4 = -x1 + rnorm(n, sd = 0.20),
+  x5 = x2 + rnorm(n, sd = 0.20),
+  x6 = 0.7*x2 + rnorm(n, sd = 0.20),
+  x7 = rnorm(n), x8 = rnorm(n),
+  x9 = rnorm(n), x10 = rnorm(n)
+)
+
+# t é conhecido apenas por se tratar de uma simulação.
+# Não é utilizado para ajustar os métodos.
+X_pad <- scale(X)
+
+plot(ggplot(data.frame(x1, x2, t), aes(x1, x2, color = t)) +
+       geom_point(alpha = 0.7) +
+       scale_color_viridis_c() +
+       coord_equal() +
+       theme_minimal() +
+       labs(title = "Estrutura original: relação não linear"))
+```
+
+A forma parabólica indica que a estrutura pode ser descrita por uma coordenada latente, embora não esteja alinhada a uma reta no plano original.
+
+# Diagnóstico: redundância e escala
+
+```{r}
+cor_mat <- cor(X)
+cor_long <- as.data.frame(as.table(cor_mat))
+
+ggplot(cor_long, aes(Var1, Var2, fill = Freq)) +
+  geom_tile() +
+  coord_equal() +
+  scale_fill_gradient2(limits = c(-1, 1)) +
+  labs(x = NULL, y = NULL, fill = "Correlação",
+       title = "Redundância entre variáveis") +
+  theme_minimal()
+```
+
+Correlação elevada indica redundância **linear**, mas não resume todas as dependências possíveis. A padronização evita que variáveis com unidades maiores dominem as análises por escala.
+
+# PCA: representação linear
+
+A PCA procura direções ortogonais que maximizam a variância projetada. A transformação é linear, portanto não desenrola automaticamente uma variedade curva.
+
+```{r}
+pca <- prcomp(X_pad, center = FALSE, scale. = FALSE)
+var_exp <- pca$sdev^2 / sum(pca$sdev^2)
+
+p_var <- ggplot(data.frame(
+  componente = seq_along(var_exp),
+  acumulada = cumsum(var_exp)
+), aes(componente, acumulada)) +
+  geom_line() + geom_point() +
+  scale_y_continuous(limits = c(0, 1)) +
+  labs(title = "Variância acumulada na PCA",
+       x = "Número de componentes", y = "Proporção acumulada") +
+  theme_minimal()
+
+p_scores <- ggplot(data.frame(
+  PC1 = pca$x[, 1], PC2 = pca$x[, 2], t = t
+), aes(PC1, PC2, color = t)) +
+  geom_point(alpha = 0.7) +
+  scale_color_viridis_c() +
+  labs(title = "PCA: duas primeiras componentes") +
+  theme_minimal()
+
+p_var + p_scores
+```
+
+**Interpretação:** a variância explicada mede a informação retida segundo um critério quadrático linear; não mede diretamente preservação de vizinhanças nem capacidade de distinguir classes.
+
+# Kernel PCA: representação não linear
+
+O kernel RBF calcula similaridades que dependem da distância quadrática entre observações:
+
+$$
+K(\mathbf x_i,\mathbf x_j)=\exp\{-\sigma\|\mathbf x_i-\mathbf x_j\|^2\}
+$$
+
+O parâmetro `sigma` controla a escala de similaridade. Não existe valor universalmente ótimo; os resultados dependem dos dados e do objetivo da representação.
+
+```{r}
+plot_kpca <- function(sigma) {
+  ajuste <- kernlab::kpca(
+    ~ ., data = as.data.frame(X_pad),
+    kernel = "rbfdot", kpar = list(sigma = sigma),
+    features = 2
+  )
+  coord <- as.data.frame(kernlab::rotated(ajuste))
+  names(coord)[1:2] <- c("KPC1", "KPC2")
+  coord$t <- t
+  ggplot(coord, aes(KPC1, KPC2, color = t)) +
+    geom_point(alpha = 0.7, size = 1.5) +
+    scale_color_viridis_c() +
+    labs(title = paste0("Kernel PCA: sigma = ", sigma)) +
+    theme_minimal()
+}
+
+plot_kpca(0.05) + plot_kpca(0.3) + plot_kpca(1)
+```
+
+**Como interpretar:** compare a continuidade da representação e sua sensibilidade a `sigma`. A coloração por `t` é apenas um recurso de diagnóstico disponível porque conhecemos o mecanismo gerador da simulação. **O algoritmo não recebeu `t` no ajuste.**
+
+# Projeções aleatórias: outra finalidade
+
+Diferentemente da PCA, uma projeção aleatória não escolhe direções que maximizem a variância dos dados. Seu interesse principal é reduzir a dimensão com controle probabilístico da distorção das distâncias.
+
+Para $\mathbf R\in\mathbb R^{p\times k}$, utilizamos:
+
+$$
+\mathbf Z=\mathbf X\mathbf R, \qquad
+r_{ij}\overset{\mathrm{iid}}{\sim}N(0,1/k)
+$$
+
+Com essa normalização, para um par fixo de observações, a distância quadrática é preservada **em esperança** sobre as matrizes aleatórias.
+
+```{r}
+projetar <- function(X, k) {
+  R <- matrix(rnorm(ncol(X) * k, sd = 1/sqrt(k)),
+              nrow = ncol(X), ncol = k)
+  X %*% R
+}
+
+# Para evitar problemas de memória, avaliamos uma amostra fixa de pares.
+set.seed(335)
+pares <- cbind(
+  sample(seq_len(nrow(X_pad)), 1500, replace = TRUE),
+  sample(seq_len(nrow(X_pad)), 1500, replace = TRUE)
+)
+pares <- pares[pares[, 1] != pares[, 2], , drop = FALSE]
+
+dist2_pares <- function(M, pares) {
+  rowSums((M[pares[, 1], , drop = FALSE] -
+           M[pares[, 2], , drop = FALSE])^2)
+}
+
+d2_orig <- dist2_pares(X_pad, pares)
+stopifnot(all(d2_orig > 0))
+
+set.seed(335)
+resultados <- do.call(rbind, lapply(c(2, 4, 6, 8), function(k) {
+  do.call(rbind, lapply(seq_len(30), function(rep) {
+    Z <- projetar(X_pad, k)
+    d2_proj <- dist2_pares(Z, pares)
+    data.frame(k = k, repeticao = rep,
+               distorcao_mediana = median(abs(d2_proj - d2_orig) / d2_orig),
+               distorcao_maxima = max(abs(d2_proj - d2_orig) / d2_orig))
+  }))
+}))
+
+ggplot(resultados, aes(factor(k), distorcao_mediana)) +
+  geom_boxplot(fill = "#5B9BD5", alpha = 0.7) +
+  labs(title = "Distorção relativa em projeções independentes",
+       x = "Dimensão reduzida (k)",
+       y = "Mediana da distorção relativa") +
+  theme_minimal()
+```
+
+**Interpretação:** a variabilidade entre repetições é esperada. Aumentar `k` tende a melhorar a concentração das distâncias projetadas em torno das originais. Entretanto, uma projeção específica não garante distorção pequena para todos os pares.
+
+# Projeção esparsa de Achlioptas
+
+Uma alternativa usa elementos discretos com muitos zeros:
+
+$$
+r_{ij}=\sqrt{3/k}\begin{cases}
++1,&\text{com probabilidade }1/6,\\
+0,&\text{com probabilidade }2/3,\\
+-1,&\text{com probabilidade }1/6
+\end{cases}
+$$
+
+```{r}
+projetar_esparsa <- function(X, k) {
+  R <- matrix(
+    sample(c(-1, 0, 1), ncol(X)*k, replace = TRUE,
+           prob = c(1/6, 2/3, 1/6)),
+    nrow = ncol(X), ncol = k
+  ) * sqrt(3/k)
+  X %*% R
+}
+
+set.seed(335)
+Z_esparsa <- projetar_esparsa(X_pad, k = 5)
+dim(Z_esparsa)
+```
+
+A vantagem potencial é computacional: os zeros podem ser explorados por implementações eficientes de álgebra esparsa. A igualdade da distância quadrática **em esperança** permanece válida para essa normalização.
+
+# Análise de agrupamento: três perspectivas
+
+A redução de dimensionalidade **constrói novas coordenadas**. Já a análise de agrupamento procura **formar conjuntos de observações semelhantes**, sem usar rótulos conhecidos. Os dois objetivos podem ser combinados, mas não são equivalentes.
+
+Para comparar os métodos em uma geometria na qual a diferença entre eles seja visível, utilizaremos uma **segunda simulação independente**, com dois anéis concêntricos. 
+
+```{r}
+set.seed(3358)
+n_an <- 400
+anel <- rep(c("Interno", "Externo"), each = n_an/2)
+ang <- runif(n_an, 0, 2*pi)
+rad <- rep(c(1, 2.2), each = n_an/2) + rnorm(n_an, sd = 0.08)
+X_an <- cbind(x1 = rad*cos(ang), x2 = rad*sin(ang))
+X_an <- scale(X_an)
+
+dados_an <- data.frame(X_an, anel = anel)
+ggplot(dados_an, aes(x1, x2, color = anel)) +
+  geom_point(alpha = 0.7) + coord_equal() + theme_minimal() +
+  labs(title = "Estrutura simulada: dois anéis", color = "Grupo gerador")
+```
+
+A variável `anel` serve apenas para mostrar a estrutura conhecida da simulação. **Ela não entra nos algoritmos nem na escolha de seus parâmetros.**
+
+## K-médias: proximidade aos centróides
+
+O k-médias procura minimizar a soma de quadrados dentro dos grupos:
+
+$$
+\sum_{g=1}^{K}\sum_{i\in C_g}\|\mathbf x_i-\boldsymbol\mu_g\|^2
+$$
+
+Como cada observação é atribuída ao centróide mais próximo, o método tende a favorecer regiões convexas e pode dividir os anéis em setores, em vez de recuperar a estrutura radial.
+
+```{r}
+set.seed(335)
+km <- kmeans(X_an, centers = 2, nstart = 30)
+
+ggplot(data.frame(X_an, cluster = factor(km$cluster)),
+       aes(x1, x2, color = cluster)) +
+  geom_point(alpha = 0.75) + coord_equal() + theme_minimal() +
+  labs(title = "K-médias: partição por proximidade aos centróides")
+```
+
+Uma forma de investigar $K$ sem rótulos é o gráfico da soma de quadrados dentro dos grupos:
+
+```{r}
+set.seed(335)
+wss <- sapply(1:8, function(K) kmeans(X_an, centers = K, nstart = 20)$tot.withinss)
+plot(1:8, wss, type = "b", pch = 19,
+     xlab = "Número de clusters (K)", ylab = "Soma de quadrados interna",
+     main = "Curva do cotovelo")
+```
+
+A curva do cotovelo é uma **heurística**, não uma regra que garanta o número correto de grupos.
+
+## Agrupamento hierárquico: distâncias e ligações
+
+O agrupamento hierárquico aglomerativo começa com cada observação isolada e funde grupos sucessivamente. A sequência de fusões depende da métrica e do critério de ligação.
+
+```{r}
+d_an <- dist(X_an, method = "euclidean")
+hc_complete <- hclust(d_an, method = "complete")
+hc_ward <- hclust(d_an, method = "ward.D2")
+
+par(mfrow = c(1, 2))
+plot(hc_complete, labels = FALSE, main = "Ligação completa", xlab = "", sub = "")
+plot(hc_ward, labels = FALSE, main = "Ward.D2", xlab = "", sub = "")
+par(mfrow = c(1, 1))
+
+cl_hier <- cutree(hc_complete, k = 2)
+table(cl_hier)
+```
+
+O dendrograma descreve uma hierarquia de fusões; um corte em $K=2$ produz uma partição. **O agrupamento hierárquico convencional também não garante a recuperação de anéis**, especialmente com certas ligações.
+
+## Agrupamento espectral: similaridades e geometria não convexa
+
+O agrupamento espectral constrói uma representação a partir de similaridades entre observações. Com um kernel RBF, observações próximas recebem similaridades maiores:
+
+$$
+s(\mathbf x_i,\mathbf x_j)=\exp\{-\sigma\|\mathbf x_i-\mathbf x_j\|^2\}
+$$
+
+Em seguida, a estrutura espectral do grafo de similaridades orienta a formação dos grupos. O resultado depende da escala do kernel e da conectividade induzida pelas similaridades.
+
+```{r}
+set.seed(335)
+sp1 <- kernlab::specc(X_an, centers = 2,
+                      kernel = "rbfdot", kpar = list(sigma = 0.3))
+set.seed(335)
+sp2 <- kernlab::specc(X_an, centers = 2,
+                      kernel = "rbfdot", kpar = list(sigma = 1.0))
+
+res_sp <- rbind(
+  data.frame(X_an, sigma = "0,3", cluster = factor(as.integer(sp1))),
+  data.frame(X_an, sigma = "1,0", cluster = factor(as.integer(sp2)))
+)
+
+ggplot(res_sp, aes(x1, x2, color = cluster)) +
+  geom_point(alpha = 0.7) + coord_equal() +
+  facet_wrap(~sigma) + theme_minimal() +
+  labs(title = "Agrupamento espectral: sensibilidade ao kernel",
+       subtitle = "Duas escolhas ilustrativas de sigma")
+```
+
+**Interpretação:** o agrupamento espectral pode identificar conjuntos não convexos quando a matriz de similaridades representa adequadamente sua estrutura. Entretanto, isso **não é garantido para todo kernel ou parâmetro**.
+
+## Avaliação interna e comparação posterior com os grupos simulados
+
+A **silhueta média** resume, para cada observação, a relação entre a distância média ao próprio grupo e a distância ao grupo alternativo mais próximo. É uma medida interna, calculada sem conhecer `anel`.
+
+```{r}
+# O pacote cluster acompanha instalações usuais do R.
+library(cluster)
+
+sil_media <- function(rotulos, d) {
+  mean(cluster::silhouette(as.integer(factor(rotulos)), d)[, "sil_width"])
+}
+
+comparacao <- data.frame(
+  metodo = c("K-médias", "Hierárquico (complete)", "Espectral (sigma=0,3)"),
+  silhueta = c(
+    sil_media(km$cluster, d_an),
+    sil_media(cl_hier, d_an),
+    sil_media(as.integer(sp1), d_an)
+  )
+)
+print(comparacao)
+```
+
+A silhueta euclidiana pode favorecer partições compactas mesmo quando os grupos verdadeiros são não convexos. Portanto, **uma silhueta maior não significa necessariamente melhor recuperação dos anéis**.
+
+Agora, **somente depois do ajuste**, podemos usar os rótulos geradores para interpretar a concordância externa:
+
+```{r}
+cat("K-médias versus anéis:\n")
+print(table(Estimado = km$cluster, Gerador = anel))
+cat("Espectral versus anéis:\n")
+print(table(Estimado = as.integer(sp1), Gerador = anel))
+```
+
+Os números dos clusters são arbitrários: uma troca entre os nomes "1" e "2" não altera o agrupamento. Na A4, será necessário comparar os três métodos sobre a base da atividade, que tem **outra geometria** e **três grupos**.
+
+# Síntese comparativa
+
+| Método | Ideia principal | O que prioriza | Limitação relevante |
+|---|---|---|---|
+| PCA | Projeções lineares ajustadas aos dados | Variância projetada | Não captura diretamente geometria não linear |
+| Kernel PCA | Componentes em espaço de características definido por kernel | Estrutura de similaridades | Sensível ao kernel e a seus parâmetros |
+| Projeção aleatória | Projeções independentes dos dados | Preservação aproximada de distâncias | Resultado varia com a matriz e com `k` |
+| K-médias | Minimização da dispersão intragrupos | Grupos próximos a centróides | Sensível à inicialização e à geometria |
+| Hierárquico | Fusões sucessivas baseadas em distâncias | Organização em dendrograma | Sensível à métrica e à ligação |
+| Espectral | Estrutura de similaridades | Agrupamentos potencialmente não convexos | Sensível ao grafo/kernel e seus parâmetros |
+
+<!-- # Perguntas para reflexão -->
+
+<!-- 1. Uma projeção que preserva muita variância necessariamente preserva as distâncias entre todos os pares? -->
+<!-- 2. Se a Kernel PCA produz uma visualização aparentemente mais organizada, isso prova que ela será melhor para predição? -->
+<!-- 3. Por que não devemos escolher a matriz de projeção aleatória usando os rótulos de classe quando o objetivo é uma análise não supervisionada? -->
+<!-- 4. Qual é a diferença entre uma garantia em esperança e uma garantia com alta probabilidade? -->
+<!-- 5. Por que o k-médias pode dividir anéis concêntricos em setores? -->
+<!-- 6. Uma silhueta média maior implica necessariamente maior concordância com grupos externos? -->
+<!-- 7. Como a escolha da métrica e da similaridade altera os resultados dos métodos hierárquico e espectral? -->
+
+<!-- # Relação com a A4 -->
+
+<!-- Na atividade avaliativa, a base tem **outra geometria**, com grupos organizados radialmente, e será necessário justificar os procedimentos de redução de dimensionalidade **e de agrupamento** de maneira independente. Utilize este tutorial como referência para o fluxo de trabalho e a interpretação, não como gabarito. -->
+
+<!-- # Reprodutibilidade -->
+
+<!-- ```{r} -->
+<!-- sessionInfo() -->
+<!-- ``` -->
