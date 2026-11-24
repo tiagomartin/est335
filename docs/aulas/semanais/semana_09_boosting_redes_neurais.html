@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Boosting e Redes Neurais</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="boosting" class="title-slide slide level1 center"><h1>Boosting</h1>
+</section>
+<section>
+<section id="boosting" class="title-slide slide level1 center">
+<h1>Boosting</h1>
 
-</section><section id="de-bagging-para-boosting" class="slide level2"><h2>De Bagging para Boosting</h2>
+</section>
+<section id="de-bagging-para-boosting" class="slide level2">
+<h2>De Bagging para Boosting</h2>
 <p>Bagging: <span class="math display">\[
 \widehat g_{bag}(x)=\frac1B\sum_{b=1}^B\widehat g_b(x)
 \]</span></p>
@@ -147,20 +159,22 @@
 F_0\rightarrow F_1\rightarrow\cdots\rightarrow F_M
 \]</span></p>
 <p>Cada novo modelo procura corrigir o modelo atual.</p>
-</section><section id="modelo-aditivo" class="slide level2"><h2>Modelo aditivo</h2>
+</section>
+<section id="modelo-aditivo" class="slide level2">
+<h2>Modelo aditivo</h2>
 <p><span class="math display">\[
 \boxed{
 F_M(x)=F_0(x)+\sum_{m=1}^{M}\lambda h_m(x)
 }
 \]</span></p>
 <ul>
-<li>
-<span class="math inline">\(h_m\)</span>: aprendiz fraco;</li>
-<li>
-<span class="math inline">\(\lambda\)</span>: learning rate;</li>
-<li>
-<span class="math inline">\(M\)</span>: número de iterações.</li>
-</ul></section><section id="começando-pela-perda-quadrática" class="slide level2"><h2>Começando pela perda quadrática</h2>
+<li><span class="math inline">\(h_m\)</span>: aprendiz fraco;</li>
+<li><span class="math inline">\(\lambda\)</span>: learning rate;</li>
+<li><span class="math inline">\(M\)</span>: número de iterações.</li>
+</ul>
+</section>
+<section id="começando-pela-perda-quadrática" class="slide level2">
+<h2>Começando pela perda quadrática</h2>
 <p><span class="math display">\[
 L(y,F(x))=\frac12[y-F(x)]^2
 \]</span></p>
@@ -169,7 +183,9 @@ F_0=\arg\min_c\sum_i\frac12(y_i-c)^2,
 \]</span> portanto: <span class="math display">\[
 \boxed{F_0(x)=\bar y}
 \]</span></p>
-</section><section id="corrigindo-o-modelo-atual" class="slide level2"><h2>Corrigindo o modelo atual</h2>
+</section>
+<section id="corrigindo-o-modelo-atual" class="slide level2">
+<h2>Corrigindo o modelo atual</h2>
 <p>No passo <span class="math inline">\(m\)</span>: <span class="math display">\[
 r_{im}=y_i-F_{m-1}(x_i)
 \]</span></p>
@@ -178,14 +194,18 @@ r_{im}=y_i-F_{m-1}(x_i)
 F_m(x)=F_{m-1}(x)+\lambda h_m(x)
 }
 \]</span></p>
-</section><section id="por-que-resíduos" class="slide level2"><h2>Por que resíduos?</h2>
+</section>
+<section id="por-que-resíduos" class="slide level2">
+<h2>Por que resíduos?</h2>
 <p>Para: <span class="math display">\[
 L_i(F)=\frac12[y_i-F(x_i)]^2,
 \]</span></p>
 <p>temos: <span class="math display">\[
 \frac{\partial L_i}{\partial F(x_i)}=F(x_i)-y_i
 \]</span></p>
-</section><section id="gradient-boosting" class="slide level2"><h2>Gradient Boosting</h2>
+</section>
+<section id="gradient-boosting" class="slide level2">
+<h2>Gradient Boosting</h2>
 <p>Para uma perda diferenciável: <span class="math display">\[
 r_{im}
 =
@@ -199,7 +219,9 @@ r_{im}
 <p><span class="math display">\[
 \boxed{\text{Boosting = descida do gradiente no espaço de funções}}
 \]</span></p>
-</section><section id="learning-rate" class="slide level2"><h2>Learning rate</h2>
+</section>
+<section id="learning-rate" class="slide level2">
+<h2>Learning rate</h2>
 <p><span class="math display">\[
 F_m=F_{m-1}+\lambda h_m
 \]</span></p>
@@ -209,14 +231,24 @@ F_m=F_{m-1}+\lambda h_m
 \text{passos menores e aprendizado mais gradual}
 \]</span></p>
 <p>Valores menores de <span class="math inline">\(\lambda\)</span> normalmente exigem mais árvores.</p>
-</section><section id="controles-de-complexidade" class="slide level2"><h2>Controles de complexidade</h2>
+</section>
+<section id="controles-de-complexidade" class="slide level2">
+<h2>Controles de complexidade</h2>
 <p>Os principais são: <span class="math display">\[
 \boxed{M,\quad \lambda,\quad \text{profundidade das árvores}}
 \]</span></p>
 <p>Eles devem ser selecionados por validação.</p>
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/boosting2.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2">
-<img data-src="semana_09_boosting_redes_neurais_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section><section id="boosting-e-estimadores-fracos" class="slide level2"><h2>Boosting e Estimadores Fracos</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/regressao/boosting2.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section class="slide level2">
+
+
+<img data-src="semana_09_boosting_redes_neurais_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="boosting-e-estimadores-fracos" class="slide level2">
+<h2>Boosting e Estimadores Fracos</h2>
 <p>O <em>boosting</em> não é restrito ao uso de árvores.</p>
 <p>Podemos usar qualquer modelo como base, desde que seja um <strong>estimador fraco</strong>.</p>
 <p><br></p>
@@ -227,7 +259,9 @@ F_m=F_{m-1}+\lambda h_m
 <li>pequeno viés de ajuste</li>
 </ul>
 <p><strong>Exemplos:</strong> árvores rasas (<em>stumps</em>), regressão linear simples, modelos com poucos parâmetros</p>
-</section><section id="por-que-usar-modelos-fracos" class="slide level2"><h2>Por que usar modelos fracos?</h2>
+</section>
+<section id="por-que-usar-modelos-fracos" class="slide level2">
+<h2>Por que usar modelos fracos?</h2>
 <ul>
 <li>evitam overfitting em cada etapa</li>
 <li>permitem correções graduais</li>
@@ -235,19 +269,26 @@ F_m=F_{m-1}+\lambda h_m
 </ul>
 <p>Se você usar modelos muito complexos (ex: árvores profundas):</p>
 <p>👉 boosting pode superajustar rapidamente</p>
-</section><section class="slide level2">
-<img data-src="semana_09_boosting_redes_neurais_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section><section id="bagging-rf-boosting" class="slide level2"><h2>Bagging × RF × Boosting</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="semana_09_boosting_redes_neurais_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="bagging-rf-boosting" class="slide level2">
+<h2>Bagging × RF × Boosting</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Método</th>
 <th>Construção</th>
 <th>Ideia central</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Bagging</td>
@@ -265,15 +306,25 @@ F_m=F_{m-1}+\lambda h_m
 <td>corrigir erros sucessivamente</td>
 </tr>
 </tbody>
-</table></section><section id="boosting-em-classificação" class="slide level2"><h2>Boosting em classificação</h2>
+</table>
+</section>
+<section id="boosting-em-classificação" class="slide level2">
+<h2>Boosting em classificação</h2>
 <p>O procedimento sequencial permanece; muda a função de perda adequada à classificação</p>
-</section></section><section><section id="redes-neurais" class="title-slide slide level1 center"><h1>Redes Neurais</h1>
+</section></section>
+<section>
+<section id="redes-neurais" class="title-slide slide level1 center">
+<h1>Redes Neurais</h1>
 
-</section><section id="redes-neurais-artificiais" class="slide level2"><h2>Redes Neurais Artificiais</h2>
+</section>
+<section id="redes-neurais-artificiais" class="slide level2">
+<h2>Redes Neurais Artificiais</h2>
 <p>Redes neurais são modelos que aproximam funções não lineares complexas.</p>
 <p>No contexto de regressão, trata-se de um estimador não linear de <span class="math inline">\(r(\mathbf{x})\)</span> que pode ser representado graficamente por uma estrutura do tipo</p>
 
-<img data-src="../..\images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="redes-neurais-artificiais-1" class="slide level2"><h2>Redes Neurais Artificiais</h2>
+<img data-src="../../images/regressao/rna.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="redes-neurais-artificiais-1" class="slide level2">
+<h2>Redes Neurais Artificiais</h2>
 <p>Para a rede apresentada,</p>
 <h4 id="entrada">Entrada</h4>
 <p><span class="math display">\[
@@ -286,7 +337,9 @@ x_j^{1} = f\left( \beta_{0,j}^{(0)} + \sum_{i=1}^{3} \beta_{i,j}^{(0)} x_i^{0} \
 \quad \text{com } x_i^{0} = x_i,\; i=1,2,3.
 \]</span></p>
 <p>e <span class="math inline">\(f\)</span> é uma função definida pelo usuário, chamada de <strong>função de ativação.</strong></p>
-</section><section id="redes-neurais-artificiais-2" class="slide level2"><h2>Redes Neurais Artificiais</h2>
+</section>
+<section id="redes-neurais-artificiais-2" class="slide level2">
+<h2>Redes Neurais Artificiais</h2>
 <h4 id="saída">Saída</h4>
 <p>Para regressão, utilizamos uma <strong>ativação linear</strong> na camada de saída:</p>
 <p><span class="math display">\[
@@ -316,9 +369,13 @@ Na saída de uma rede para regressão, usamos tipicamente <strong>ativação lin
 </div>
 </div>
 </div>
-</section><section id="representação-de-cada-neurônio-da-rede" class="slide level2"><h2>Representação de cada neurônio da rede</h2>
+</section>
+<section id="representação-de-cada-neurônio-da-rede" class="slide level2">
+<h2>Representação de cada neurônio da rede</h2>
 
-<img data-src="../..\images/regressao/neuronioMP2.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="funções-de-ativação" class="slide level2"><h2>Funções de Ativação</h2>
+<img data-src="../../images/regressao/neuronioMP2.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="funções-de-ativação" class="slide level2">
+<h2>Funções de Ativação</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h4 id="clássicas">Clássicas</h4>
@@ -348,8 +405,13 @@ z, &amp; z\geq0
 \]</span></p></li>
 </ul>
 </div></div>
-</section><section class="slide level2">
-<img data-src="semana_09_boosting_redes_neurais_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section><section id="por-que-precisamos-de-funções-de-ativação" class="slide level2"><h2>Por que precisamos de funções de ativação?</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="semana_09_boosting_redes_neurais_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="por-que-precisamos-de-funções-de-ativação" class="slide level2">
+<h2>Por que precisamos de funções de ativação?</h2>
 <p>Sem <span class="math inline">\(f(\cdot)\)</span>:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \text{combinação linear}
@@ -359,7 +421,9 @@ g(\mathbf{x}) = \text{combinação linear}
 g(\mathbf{x}) = \text{função não linear}
 \]</span></p>
 <p>A função de ativação é o que dá poder às redes neurais.</p>
-</section><section id="treinamento" class="slide level2"><h2>Treinamento</h2>
+</section>
+<section id="treinamento" class="slide level2">
+<h2>Treinamento</h2>
 <p>Todos os pesos e vieses da rede são reunidos em <span class="math inline">\(\beta\)</span>:</p>
 <p><span class="math display">\[
 \beta
@@ -379,7 +443,9 @@ g(\mathbf{x}) = \text{função não linear}
 \sum_{r=1}^{n}
 L\left(y_r,g_\beta(\mathbf{x}_r)\right)
 \]</span></p>
-</section><section id="gradiente-descendente" class="slide level2"><h2>Gradiente descendente</h2>
+</section>
+<section id="gradiente-descendente" class="slide level2">
+<h2>Gradiente descendente</h2>
 <p>Como não temos uma solução analítica, os parâmetros são atualizados iterativamente.</p>
 <p><span class="math display">\[
 \boxed{
@@ -397,7 +463,9 @@ L\left(y_r,g_\beta(\mathbf{x}_r)\right)
 \]</span></p>
 <p>contém as derivadas de <span class="math inline">\(J\)</span> em relação a <strong>todos os pesos e vieses da rede</strong>.</p>
 <p><span class="math inline">\(\eta&gt;0\)</span> é a <strong>taxa de aprendizado</strong>.</p>
-</section><section id="o-que-precisamos-calcular" class="slide level2"><h2>O que precisamos calcular?</h2>
+</section>
+<section id="o-que-precisamos-calcular" class="slide level2">
+<h2>O que precisamos calcular?</h2>
 <p>Para atualizar os parâmetros, precisamos de derivadas como</p>
 <p><span class="math display">\[
 \frac{\partial J}{\partial \beta_{i,j}^{(0)}}
@@ -424,10 +492,14 @@ L
 </div>
 </div>
 </div>
-</section><section id="backpropagation" class="slide level2"><h2>Backpropagation</h2>
+</section>
+<section id="backpropagation" class="slide level2">
+<h2>Backpropagation</h2>
 <p>Backpropagation calcula eficientemente os gradientes usando repetidamente a <strong>regra da cadeia</strong>.</p>
 <p>Considere o peso <span class="math inline">\(\beta_{i,j}^{(0)}\)</span>, que conecta a entrada <span class="math inline">\(x_i^0\)</span> ao neurônio <span class="math inline">\(x_j^1\)</span> da camada oculta.</p>
-</section><section id="gradiente-na-camada-de-saída" class="slide level2"><h2>Gradiente na camada de saída</h2>
+</section>
+<section id="gradiente-na-camada-de-saída" class="slide level2">
+<h2>Gradiente na camada de saída</h2>
 <p>Como</p>
 <p><span class="math display">\[
 x_1^2
@@ -444,7 +516,9 @@ x_1^2
 =
 x_j^1
 \]</span></p>
-</section><section id="atualizando-os-pesos" class="slide level2"><h2>Atualizando os pesos</h2>
+</section>
+<section id="atualizando-os-pesos" class="slide level2">
+<h2>Atualizando os pesos</h2>
 <p>Depois que o backpropagation calcula os gradientes, o otimizador atualiza os parâmetros.</p>
 <p>Para a primeira camada:</p>
 <p><span class="math display">\[
@@ -470,11 +544,15 @@ x_j^1
 {\partial\beta_{j,1}^{(1)}}
 }
 \]</span></p>
-</section><section id="por-que-o-nome-backpropagation" class="slide level2"><h2>Por que o nome Backpropagation?</h2>
+</section>
+<section id="por-que-o-nome-backpropagation" class="slide level2">
+<h2>Por que o nome Backpropagation?</h2>
 <p>Os gradientes são calculados da saída para a entrada</p>
 
-<img data-src="../..\images/regressao/backpropagation.gif" class="quarto-figure quarto-figure-center r-stretch"><p>O erro “volta” pela rede ajustando os pesos</p>
-</section><section id="regularização" class="slide level2"><h2>Regularização</h2>
+<img data-src="../../images/regressao/backpropagation.gif" class="quarto-figure quarto-figure-center r-stretch"><p>O erro “volta” pela rede ajustando os pesos</p>
+</section>
+<section id="regularização" class="slide level2">
+<h2>Regularização</h2>
 <p>Redes flexíveis também podem sobreajustar.</p>
 <p>Uma possibilidade é penalizar os pesos:</p>
 <p><span class="math display">\[
@@ -495,7 +573,10 @@ J(\beta)
 <li>dropout;</li>
 <li>controle do número de camadas;</li>
 <li>controle do número de neurônios.</li>
-</ul></section><section id="parâmetros-times-hiperparâmetros" class="slide level2"><h2>Parâmetros <span class="math inline">\(\times\)</span> Hiperparâmetros</h2>
+</ul>
+</section>
+<section id="parâmetros-times-hiperparâmetros" class="slide level2">
+<h2>Parâmetros <span class="math inline">\(\times\)</span> Hiperparâmetros</h2>
 <h4 id="parâmetros-aprendidos-no-treinamento">Parâmetros: aprendidos no treinamento</h4>
 <p><span class="math display">\[
 \boxed{
@@ -509,53 +590,89 @@ H,\quad L,\quad \eta,\quad \lambda,
 \quad \text{batch size},\quad \text{épocas}.
 \]</span></p>
 <p>Sua escolha deve ser baseada em <strong>validação</strong>, e não no erro de treinamento.</p>
-</section><section id="rede-neural-aprendendo-uma-função-não-linear" class="slide level2"><h2>Rede neural aprendendo uma função não linear</h2>
+</section>
+<section id="rede-neural-aprendendo-uma-função-não-linear" class="slide level2">
+<h2>Rede neural aprendendo uma função não linear</h2>
 <p>Neste exemplo, a RNA foi ajustada para aproximar a função</p>
 <p><span class="math display">\[
 f(x)=12+4x-6x^2+x^3+\sin(x)
 \]</span></p>
 <p>a partir de observações ruidosas.</p>
 <p>A curva verde mostra a predição da rede, enquanto a curva vermelha representa a função real.</p>
-</section><section id="síntese" class="slide level2"><h2>Síntese</h2>
+</section>
+<section id="síntese" class="slide level2">
+<h2>Síntese</h2>
 <ul>
 <li>a função de ativação introduz não linearidade;</li>
 <li>a camada oculta cria novas representações dos dados;</li>
 <li>o backpropagation ajusta os pesos para reduzir o erro;</li>
 <li>com isso, a rede consegue aproximar funções complexas.</li>
-</ul></section></section><section><section id="integração" class="title-slide slide level1 center"><h1>Integração</h1>
+</ul>
+</section></section>
+<section>
+<section id="integração" class="title-slide slide level1 center">
+<h1>Integração</h1>
 
-</section><section id="diferentes-fontes-de-flexibilidade" class="slide level2"><h2>Diferentes fontes de flexibilidade</h2>
+</section>
+<section id="diferentes-fontes-de-flexibilidade" class="slide level2">
+<h2>Diferentes fontes de flexibilidade</h2>
 <p><strong>Splines:</strong> funções de base.</p>
 <p><strong>KNN/kernel/local:</strong> vizinhanças.</p>
 <p><strong>Árvores:</strong> partições.</p>
 <p><strong>Random Forest:</strong> média de árvores decorrelacionadas.</p>
 <p><strong>Boosting:</strong> correções sequenciais.</p>
 <p><strong>Redes neurais:</strong> composição de transformações não lineares.</p>
-</section></section><section><section id="redes-neurais-para-classificação" class="title-slide slide level1 center"><h1>Redes neurais para classificação</h1>
+</section></section>
+<section>
+<section id="redes-neurais-para-classificação" class="title-slide slide level1 center">
+<h1>Redes neurais para classificação</h1>
 
-</section><section id="saída-binária" class="slide level2"><h2>Saída binária</h2>
+</section>
+<section id="saída-binária" class="slide level2">
+<h2>Saída binária</h2>
 <p><span class="math display">\[
 \boxed{x_1^L=\sigma(z_1^L)}
 \]</span> com <span class="math inline">\(x_1^L=\widehat P(Y=1\mid X=x)\)</span></p>
-</section><section id="cross-entropy" class="slide level2"><h2>Cross-entropy</h2>
+</section>
+<section id="cross-entropy" class="slide level2">
+<h2>Cross-entropy</h2>
 <p><span class="math display">\[
 \boxed{L(y,\widehat p)=-[y\log(\widehat p)+(1-y)\log(1-\widehat p)]}
 \]</span></p>
-</section><section id="multiclasse-softmax" class="slide level2"><h2>Multiclasse: Softmax</h2>
+</section>
+<section id="multiclasse-softmax" class="slide level2">
+<h2>Multiclasse: Softmax</h2>
 <p><span class="math display">\[
 \boxed{\widehat p_k(\mathbf x)=\frac{\exp(z_k^L)}{\sum_r\exp(z_r^L)}}
 \]</span></p>
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 9</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -722,7 +839,7 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -747,42 +864,84 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -830,13 +989,14 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -949,6 +1109,6 @@ f(x)=12+4x-6x^2+x^3+\sin(x)
         }
       });
       </script>
-
+    
 
 </body></html>

@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Aprendizado Não Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Aprendizado Não Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,21 +136,25 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte II : Aprendizado Não Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte II : Aprendizado Não Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Sistemas de Recomendação: Filtragem Colaborativa</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="sistemas-de-recomendação" class="title-slide slide level1 center"><h1>Sistemas de Recomendação</h1>
+</section>
+<section>
+<section id="sistemas-de-recomendação" class="title-slide slide level1 center">
+<h1>Sistemas de Recomendação</h1>
 
-</section><section id="um-novo-tipo-de-problema" class="slide level2"><h2>Um novo tipo de problema</h2>
+</section>
+<section id="um-novo-tipo-de-problema" class="slide level2">
+<h2>Um novo tipo de problema</h2>
 <p>Considere:</p>
 <ul>
-<li>usuários <span class="math inline">\(u=1,\ldots,U\)</span>
-</li>
-<li>itens <span class="math inline">\(i=1,\ldots,I\)</span>
-</li>
+<li>usuários <span class="math inline">\(u=1,\ldots,U\)</span></li>
+<li>itens <span class="math inline">\(i=1,\ldots,I\)</span></li>
 <li>interações entre usuários e itens</li>
 </ul>
 <p>Queremos predizer quais itens podem ser relevantes para cada usuário</p>
@@ -157,9 +167,17 @@
 \text{recomendação}
 }
 \]</span></p>
-</section><section class="slide level2"></section></section><section><section id="matriz-usuárioitem" class="title-slide slide level1 center"><h1>Matriz usuário–item</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="avaliações-explícitas" class="slide level2"><h2>Avaliações explícitas</h2>
+</section></section>
+<section>
+<section id="matriz-usuárioitem" class="title-slide slide level1 center">
+<h1>Matriz usuário–item</h1>
+
+</section>
+<section id="avaliações-explícitas" class="slide level2">
+<h2>Avaliações explícitas</h2>
 <p>Podemos organizar ratings em</p>
 <p><span class="math display">\[
 \boxed{
@@ -172,16 +190,20 @@ r_{ui}
 =
 \text{avaliação do usuário }u\text{ para o item }i
 \]</span></p>
-</section><section id="uma-matriz-incompleta" class="slide level2"><h2>Uma matriz incompleta</h2>
+</section>
+<section id="uma-matriz-incompleta" class="slide level2">
+<h2>Uma matriz incompleta</h2>
 <p>Exemplo:</p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Usuário</th>
 <th style="text-align: right;">Filme A</th>
 <th style="text-align: right;">Filme B</th>
 <th style="text-align: right;">Filme C</th>
 <th style="text-align: right;">Filme D</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(u_1\)</span></td>
@@ -219,7 +241,9 @@ r_{ui}
 \]</span></p>
 <p>não são simplesmente valores ausentes convencionais</p>
 <p>São pares usuário–item ainda não observados</p>
-</section><section id="o-objetivo" class="slide level2"><h2>O objetivo</h2>
+</section>
+<section id="o-objetivo" class="slide level2">
+<h2>O objetivo</h2>
 <p>Para pares não observados,</p>
 <p><span class="math display">\[
 (u,i)\notin\Omega
@@ -231,9 +255,17 @@ r_{ui}
 }
 \]</span></p>
 <p>ou produzir diretamente uma ordenação dos itens</p>
-</section><section class="slide level2"></section></section><section><section id="filtragem-colaborativa" class="title-slide slide level1 center"><h1>Filtragem colaborativa</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="a-ideia-central" class="slide level2"><h2>A ideia central</h2>
+</section></section>
+<section>
+<section id="filtragem-colaborativa" class="title-slide slide level1 center">
+<h1>Filtragem colaborativa</h1>
+
+</section>
+<section id="a-ideia-central" class="slide level2">
+<h2>A ideia central</h2>
 <p>Utilizamos padrões de interação de vários usuários</p>
 <p>Não precisamos necessariamente conhecer características do item ou do usuário</p>
 <p><span class="math display">\[
@@ -242,15 +274,21 @@ r_{ui}
 }
 \]</span></p>
 <p>A estrutura das interações fornece informação para recomendar</p>
-</section><section class="slide level2"></section></section><section><section id="user-based-collaborative-filtering" class="title-slide slide level1 center"><h1>User-based Collaborative Filtering</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="intuição" class="slide level2"><h2>Intuição</h2>
+</section></section>
+<section>
+<section id="user-based-collaborative-filtering" class="title-slide slide level1 center">
+<h1>User-based Collaborative Filtering</h1>
+
+</section>
+<section id="intuição" class="slide level2">
+<h2>Intuição</h2>
 <p>Para recomendar ao usuário <span class="math inline">\(u\)</span>:</p>
 <ol type="1">
-<li>encontramos usuários semelhantes a <span class="math inline">\(u\)</span>
-</li>
-<li>observamos como esses usuários avaliaram o item <span class="math inline">\(i\)</span>
-</li>
+<li>encontramos usuários semelhantes a <span class="math inline">\(u\)</span></li>
+<li>observamos como esses usuários avaliaram o item <span class="math inline">\(i\)</span></li>
 <li>combinamos suas avaliações</li>
 </ol>
 <p><span class="math display">\[
@@ -260,7 +298,9 @@ r_{ui}
 \text{preferências parecidas}
 }
 \]</span></p>
-</section><section id="similaridade-entre-usuários" class="slide level2"><h2>Similaridade entre usuários</h2>
+</section>
+<section id="similaridade-entre-usuários" class="slide level2">
+<h2>Similaridade entre usuários</h2>
 <p>Uma possibilidade é a correlação entre ratings observados em comum</p>
 <p>Também podemos utilizar similaridade de cosseno</p>
 <p><span class="math display">\[
@@ -276,7 +316,9 @@ s(u,v)
 }
 \]</span></p>
 <p>com os devidos cuidados sobre quais avaliações entram no cálculo</p>
-</section><section id="predição-user-based" class="slide level2"><h2>Predição user-based</h2>
+</section>
+<section id="predição-user-based" class="slide level2">
+<h2>Predição user-based</h2>
 <p>Uma forma centrada pela média é</p>
 <p><span class="math display">\[
 \boxed{
@@ -296,7 +338,9 @@ s(u,v)
 }
 }
 \]</span></p>
-</section><section id="interpretando-os-termos" class="slide level2"><h2>Interpretando os termos</h2>
+</section>
+<section id="interpretando-os-termos" class="slide level2">
+<h2>Interpretando os termos</h2>
 <p><span class="math display">\[
 \bar r_u
 \]</span></p>
@@ -309,9 +353,17 @@ s(u,v)
 r_{vi}-\bar r_v
 \]</span></p>
 <p>quanto o usuário vizinho gostou do item relativamente ao seu padrão habitual</p>
-</section><section class="slide level2"></section></section><section><section id="item-based-collaborative-filtering" class="title-slide slide level1 center"><h1>Item-based Collaborative Filtering</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="mudando-a-perspectiva" class="slide level2"><h2>Mudando a perspectiva</h2>
+</section></section>
+<section>
+<section id="item-based-collaborative-filtering" class="title-slide slide level1 center">
+<h1>Item-based Collaborative Filtering</h1>
+
+</section>
+<section id="mudando-a-perspectiva" class="slide level2">
+<h2>Mudando a perspectiva</h2>
 <p>Agora buscamos itens semelhantes ao item <span class="math inline">\(i\)</span></p>
 <p>Para predizer a preferência de <span class="math inline">\(u\)</span> por <span class="math inline">\(i\)</span>, usamos avaliações que <span class="math inline">\(u\)</span> já forneceu a itens semelhantes</p>
 <p><span class="math display">\[
@@ -321,7 +373,9 @@ r_{vi}-\bar r_v
 \text{avaliações relacionadas}
 }
 \]</span></p>
-</section><section id="predição-item-based" class="slide level2"><h2>Predição item-based</h2>
+</section>
+<section id="predição-item-based" class="slide level2">
+<h2>Predição item-based</h2>
 <p>Uma forma simples é</p>
 <p><span class="math display">\[
 \boxed{
@@ -339,18 +393,26 @@ s(i,j)r_{uj}
 }
 \]</span></p>
 <p>onde <span class="math inline">\(N_k(i)\)</span> contém itens semelhantes a <span class="math inline">\(i\)</span> avaliados pelo usuário <span class="math inline">\(u\)</span></p>
-</section><section class="slide level2"></section></section><section><section id="user-based-item-based" class="title-slide slide level1 center"><h1>User-based × Item-based</h1>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="user-based-item-based" class="title-slide slide level1 center">
+<h1>User-based × Item-based</h1>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th></th>
 <th>User-based</th>
 <th>Item-based</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>vizinhança</td>
@@ -378,35 +440,71 @@ s(i,j)r_{uj}
 <td><span class="math inline">\(k\)</span></td>
 </tr>
 </tbody>
-</table></section><section class="slide level2"></section></section><section><section id="limitações-dos-métodos-de-vizinhança" class="title-slide slide level1 center"><h1>Limitações dos métodos de vizinhança</h1>
+</table>
+</section>
+<section class="slide level2">
 
-</section><section id="esparsidade" class="slide level2"><h2>Esparsidade</h2>
+</section></section>
+<section>
+<section id="limitações-dos-métodos-de-vizinhança" class="title-slide slide level1 center">
+<h1>Limitações dos métodos de vizinhança</h1>
+
+</section>
+<section id="esparsidade" class="slide level2">
+<h2>Esparsidade</h2>
 <p>Dois usuários podem ter poucos itens avaliados em comum</p>
-</section><section id="escalabilidade" class="slide level2"><h2>Escalabilidade</h2>
+</section>
+<section id="escalabilidade" class="slide level2">
+<h2>Escalabilidade</h2>
 <p>Calcular muitas similaridades pode ser caro</p>
-</section><section id="cold-start" class="slide level2"><h2>Cold start</h2>
+</section>
+<section id="cold-start" class="slide level2">
+<h2>Cold start</h2>
 <p>Novos usuários ou novos itens possuem pouca informação</p>
 <p>Essas limitações motivam representações latentes</p>
-</section></section><section><section id="avaliação-e-validação" class="title-slide slide level1 center"><h1>Avaliação e validação</h1>
+</section></section>
+<section>
+<section id="avaliação-e-validação" class="title-slide slide level1 center">
+<h1>Avaliação e validação</h1>
 
-</section><section id="o-hiperparâmetro-k" class="slide level2"><h2>O hiperparâmetro <span class="math inline">\(k\)</span>
-</h2>
+</section>
+<section id="o-hiperparâmetro-k" class="slide level2">
+<h2>O hiperparâmetro <span class="math inline">\(k\)</span></h2>
 <p>A escolha do número de vizinhos deve ser feita por validação</p>
-</section><section id="separação-das-interações" class="slide level2"><h2>Separação das interações</h2>
+</section>
+<section id="separação-das-interações" class="slide level2">
+<h2>Separação das interações</h2>
 <p><span class="math display">\[
 \boxed{\text{treino}\rightarrow\text{validação}\rightarrow\text{teste}}
 \]</span> Quando o objetivo é prever interações futuras, uma divisão temporal pode ser apropriada</p>
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 15</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -573,7 +671,7 @@ s(i,j)r_{uj}
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -598,42 +696,84 @@ s(i,j)r_{uj}
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -681,13 +821,14 @@ s(i,j)r_{uj}
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -800,6 +941,6 @@ s(i,j)r_{uj}
         }
       });
       </script>
-
+    
 
 </body></html>

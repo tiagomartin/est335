@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,17 +136,22 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Seleção de Variáveis e Regularização</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section id="de-onde-partimos" class="slide level2"><h2>De onde partimos?</h2>
+</section>
+<section id="de-onde-partimos" class="slide level2">
+<h2>De onde partimos?</h2>
 <p>Até agora, aumentamos a flexibilidade para representar relações mais complexas. Com muitas covariáveis surgem duas perguntas:</p>
 <p><span class="math display">\[\boxed{\text{Quais variáveis devem entrar no modelo?}}\]</span></p>
 <p><span class="math display">\[\boxed{\text{Devemos permitir coeficientes de qualquer magnitude?}}\]</span></p>
-</section><section id="duas-estratégias" class="slide level2"><h2>Duas estratégias</h2>
+</section>
+<section id="duas-estratégias" class="slide level2">
+<h2>Duas estratégias</h2>
 <div class="columns">
 <div class="column" style="width:47%;">
 <h3 id="seleção-de-variáveis">Seleção de variáveis</h3>
@@ -149,21 +160,34 @@
 <h3 id="regularização">Regularização</h3>
 <p>Restringir os coeficientes. <span class="math display">\[RSS\longrightarrow RSS+\lambda P(\beta)\]</span></p>
 </div></div>
-</section><section><section id="seleção-de-variáveis-1" class="title-slide slide level1 center"><h1>Seleção de variáveis</h1>
+</section>
+<section>
+<section id="seleção-de-variáveis-1" class="title-slide slide level1 center">
+<h1>Seleção de variáveis</h1>
 
-</section><section id="o-modelo-completo-é-sempre-melhor" class="slide level2"><h2>O modelo completo é sempre melhor?</h2>
+</section>
+<section id="o-modelo-completo-é-sempre-melhor" class="slide level2">
+<h2>O modelo completo é sempre melhor?</h2>
 <p><span class="math display">\[Y=\beta_0+\beta_1X_1+\cdots+\beta_pX_p+\varepsilon\]</span></p>
 <p>Adicionar uma covariável nunca aumenta o RSS de treinamento. Portanto, <span class="math inline">\(RSS_{treino}\)</span> sozinho não decide quantas variáveis manter.</p>
-</section><section id="por-que-selecionar" class="slide level2"><h2>Por que selecionar?</h2>
+</section>
+<section id="por-que-selecionar" class="slide level2">
+<h2>Por que selecionar?</h2>
 <p>Um modelo menor pode ter menor variância, maior interpretabilidade e melhor desempenho fora da amostra. Retirar variáveis demais, porém, aumenta o viés.</p>
 <p><span class="math display">\[\boxed{\text{Seleção também é um problema de viés × variância}}\]</span></p>
-</section><section id="busca-pelo-melhor-subconjunto" class="slide level2"><h2>Busca pelo melhor subconjunto</h2>
+</section>
+<section id="busca-pelo-melhor-subconjunto" class="slide level2">
+<h2>Busca pelo melhor subconjunto</h2>
 <p>Para cada tamanho <span class="math inline">\(k\)</span>, avaliamos todos os modelos com exatamente <span class="math inline">\(k\)</span> covariáveis.</p>
 <p><span class="math display">\[\binom pk\]</span></p>
 <p>No total existem <span class="math inline">\(2^p\)</span> subconjuntos possíveis.</p>
-</section><section id="o-crescimento-é-rápido" class="slide level2"><h2>O crescimento é rápido</h2>
+</section>
+<section id="o-crescimento-é-rápido" class="slide level2">
+<h2>O crescimento é rápido</h2>
 
-<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section><section id="best-subset-algoritmo-conceitual" class="slide level2"><h2>Best Subset: algoritmo conceitual</h2>
+<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
+<section id="best-subset-algoritmo-conceitual" class="slide level2">
+<h2>Best Subset: algoritmo conceitual</h2>
 <p>Para <span class="math inline">\(k=0,1,\ldots,p\)</span>:</p>
 <ol type="1">
 <li>ajustar todos os modelos com <span class="math inline">\(k\)</span> covariáveis;</li>
@@ -171,22 +195,33 @@
 <li>comparar os vencedores entre os diferentes <span class="math inline">\(k\)</span>.</li>
 </ol>
 <p>A busca exaustiva produz um candidato ótimo para cada tamanho, mas pode ser computacionalmente cara.</p>
-</section><section id="como-escolher-k" class="slide level2"><h2>Como escolher <span class="math inline">\(k\)</span>?</h2>
+</section>
+<section id="como-escolher-k" class="slide level2">
+<h2>Como escolher <span class="math inline">\(k\)</span>?</h2>
 <p>O menor RSS de treinamento favoreceria sempre o maior modelo.</p>
 <p>Podemos usar validação cruzada ou critérios penalizados como <span class="math inline">\(C_p\)</span>, AIC, BIC e <span class="math inline">\(R^2_{aj}\)</span>.</p>
 <p>Na aula principal, priorizaremos:</p>
 <p><span class="math display">\[\boxed{\text{validação cruzada}}\]</span></p>
-</section><section id="seleção-é-diferente-de-estimação" class="slide level2"><h2>Seleção é diferente de estimação</h2>
+</section>
+<section id="seleção-é-diferente-de-estimação" class="slide level2">
+<h2>Seleção é diferente de estimação</h2>
 <p>Há duas perguntas:</p>
 <p><span class="math display">\[\boxed{\text{Quais variáveis?}}\qquad\boxed{\text{Quais coeficientes?}}\]</span></p>
 <p>No Best Subset, primeiro escolhemos a estrutura e depois estimamos os coeficientes por MQO.</p>
-</section></section><section><section id="regressão-stepwise" class="title-slide slide level1 center"><h1>Regressão Stepwise</h1>
+</section></section>
+<section>
+<section id="regressão-stepwise" class="title-slide slide level1 center">
+<h1>Regressão Stepwise</h1>
 
-</section><section id="por-que-stepwise" class="slide level2"><h2>Por que Stepwise?</h2>
+</section>
+<section id="por-que-stepwise" class="slide level2">
+<h2>Por que Stepwise?</h2>
 <p>Se <span class="math inline">\(2^p\)</span> modelos são muitos, pesquisamos apenas uma pequena parte do espaço.</p>
 <p><span class="math display">\[\boxed{\text{Stepwise = busca sequencial}}\]</span></p>
 <p>É mais econômico, mas não garante o melhor subconjunto global.</p>
-</section><section id="forward-stepwise" class="slide level2"><h2>Forward Stepwise</h2>
+</section>
+<section id="forward-stepwise" class="slide level2">
+<h2>Forward Stepwise</h2>
 <p>Começamos com o modelo sem covariáveis, <span class="math inline">\(\mathcal M_0\)</span>.</p>
 <p>A cada etapa:</p>
 <ol type="1">
@@ -195,58 +230,92 @@
 <li>repetimos.</li>
 </ol>
 <p><span class="math display">\[\mathcal M_0\subset\mathcal M_1\subset\cdots\subset\mathcal M_p\]</span></p>
-</section><section id="backward-stepwise" class="slide level2"><h2>Backward Stepwise</h2>
+</section>
+<section id="backward-stepwise" class="slide level2">
+<h2>Backward Stepwise</h2>
 <p>Começamos com o modelo completo, <span class="math inline">\(\mathcal M_p\)</span>.</p>
 <p>A cada etapa removemos a variável cuja retirada produz o melhor modelo seguinte:</p>
 <p><span class="math display">\[\mathcal M_p\supset\mathcal M_{p-1}\supset\cdots\]</span></p>
-</section><section id="best-subset-stepwise" class="slide level2"><h2>Best Subset × Stepwise</h2>
+</section>
+<section id="best-subset-stepwise" class="slide level2">
+<h2>Best Subset × Stepwise</h2>
 
-<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section><section id="uma-ressalva-importante" class="slide level2"><h2>Uma ressalva importante</h2>
+<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
+<section id="uma-ressalva-importante" class="slide level2">
+<h2>Uma ressalva importante</h2>
 <p>Stepwise é uma heurística. Uma variável descartada ou não escolhida em uma etapa pode participar de uma combinação melhor posteriormente.</p>
 <p><span class="math display">\[\boxed{\text{Eficiência computacional vem ao custo de uma busca incompleta}}\]</span></p>
-</section></section><section><section id="da-seleção-à-regularização" class="title-slide slide level1 center"><h1>Da seleção à regularização</h1>
+</section></section>
+<section>
+<section id="da-seleção-à-regularização" class="title-slide slide level1 center">
+<h1>Da seleção à regularização</h1>
 
-</section><section id="uma-estratégia-diferente" class="slide level2"><h2>Uma estratégia diferente</h2>
+</section>
+<section id="uma-estratégia-diferente" class="slide level2">
+<h2>Uma estratégia diferente</h2>
 <p>Best Subset e Stepwise trabalham essencialmente com decisões discretas:</p>
 <p><span class="math display">\[\beta_j=0\quad\text{ou}\quad\beta_j\neq0\]</span></p>
 <p>Regularização controla continuamente a magnitude:</p>
 <p><span class="math display">\[|\beta_j|\downarrow\]</span></p>
-</section><section id="por-que-regularizar" class="slide level2"><h2>Por que regularizar?</h2>
+</section>
+<section id="por-que-regularizar" class="slide level2">
+<h2>Por que regularizar?</h2>
 <ul>
 <li>muitas covariáveis;</li>
 <li>forte correlação entre preditores;</li>
-<li>
-<span class="math inline">\(p\)</span> grande relativamente a <span class="math inline">\(n\)</span>;</li>
+<li><span class="math inline">\(p\)</span> grande relativamente a <span class="math inline">\(n\)</span>;</li>
 <li>coeficientes instáveis;</li>
 <li>foco em predição.</li>
-</ul></section><section id="preditores-correlacionados" class="slide level2"><h2>Preditores correlacionados</h2>
+</ul>
+</section>
+<section id="preditores-correlacionados" class="slide level2">
+<h2>Preditores correlacionados</h2>
 
-<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"></section><section id="princípio-da-regularização" class="slide level2"><h2>Princípio da regularização</h2>
+<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"></section>
+<section id="princípio-da-regularização" class="slide level2">
+<h2>Princípio da regularização</h2>
 <p><span class="math display">\[\boxed{\widehat{\boldsymbol\beta}=\arg\min_{\boldsymbol\beta}\{RSS(\boldsymbol\beta)+\lambda P(\boldsymbol\beta)\}}\]</span></p>
 <p>Equilibramos ajuste aos dados e complexidade.</p>
-</section></section><section><section id="uma-formulação-geral" class="title-slide slide level1 center"><h1>Uma formulação geral</h1>
+</section></section>
+<section>
+<section id="uma-formulação-geral" class="title-slide slide level1 center">
+<h1>Uma formulação geral</h1>
 
-</section><section id="perda-penalização" class="slide level2"><h2>Perda + penalização</h2>
+</section>
+<section id="perda-penalização" class="slide level2">
+<h2>Perda + penalização</h2>
 <p><span class="math display">\[
 \boxed{\widehat\beta=\arg\min_\beta\{\mathcal L(\beta)+\lambda P(\beta)\}}
 \]</span> A função de perda muda entre regressão e classificação; a lógica de regularização permanece</p>
-</section></section><section><section id="ridge-e-lasso" class="title-slide slide level1 center"><h1>Ridge e Lasso</h1>
+</section></section>
+<section>
+<section id="ridge-e-lasso" class="title-slide slide level1 center">
+<h1>Ridge e Lasso</h1>
 
-</section><section id="regressão-ridge" class="slide level2"><h2>Regressão Ridge</h2>
+</section>
+<section id="regressão-ridge" class="slide level2">
+<h2>Regressão Ridge</h2>
 <p><span class="math display">\[\boxed{\widehat{\boldsymbol\beta}^{R}=\arg\min_{\boldsymbol\beta}\left[RSS+\lambda\sum_{j=1}^{p}\beta_j^2\right]}\]</span></p>
 <p>O intercepto normalmente não é penalizado.</p>
-</section><section id="o-papel-de-lambda" class="slide level2"><h2>O papel de <span class="math inline">\(\lambda\)</span>
-</h2>
+</section>
+<section id="o-papel-de-lambda" class="slide level2">
+<h2>O papel de <span class="math inline">\(\lambda\)</span></h2>
 <p><span class="math display">\[\lambda=0\Rightarrow\text{MQO}\]</span> <span class="math display">\[\lambda\uparrow\Rightarrow\text{maior shrinkage}\]</span> <span class="math display">\[\lambda\to\infty\Rightarrow\beta_j\to0\]</span></p>
 <p><span class="math display">\[\boxed{\lambda=\text{hiperparâmetro de regularização}}\]</span></p>
-</section><section id="trajetórias-ridge" class="slide level2"><h2>Trajetórias Ridge</h2>
+</section>
+<section id="trajetórias-ridge" class="slide level2">
+<h2>Trajetórias Ridge</h2>
 
-<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="o-que-ridge-faz" class="slide level2"><h2>O que Ridge faz?</h2>
+<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="o-que-ridge-faz" class="slide level2">
+<h2>O que Ridge faz?</h2>
 <p><span class="math display">\[|\widehat\beta_j^R|\downarrow\]</span></p>
 <p>mas, em geral,</p>
 <p><span class="math display">\[\widehat\beta_j^R\neq0\]</span></p>
 <p>Ridge encolhe coeficientes, mas não produz seleção esparsa.</p>
-</section><section id="viés-em-troca-de-variância" class="slide level2"><h2>Viés em troca de variância</h2>
+</section>
+<section id="viés-em-troca-de-variância" class="slide level2">
+<h2>Viés em troca de variância</h2>
 <p><span class="math display">\[\boxed{Bias^2\uparrow\quad+\quad Var\downarrow\quad\Rightarrow\quad R_{teste}\text{ pode diminuir}}\]</span></p>
 <p><br></p>
 <div class="callout callout-note callout-style-simple">
@@ -259,9 +328,13 @@
 </div>
 </div>
 </div>
-</section><section id="regressão-lasso" class="slide level2"><h2>Regressão Lasso</h2>
+</section>
+<section id="regressão-lasso" class="slide level2">
+<h2>Regressão Lasso</h2>
 <p><span class="math display">\[\boxed{\widehat{\boldsymbol\beta}^{L}=\arg\min_{\boldsymbol\beta}\left[RSS+\lambda\sum_{j=1}^{p}|\beta_j|\right]}\]</span></p>
-</section><section id="lasso-pode-selecionar-variáveis" class="slide level2"><h2>Lasso pode selecionar variáveis</h2>
+</section>
+<section id="lasso-pode-selecionar-variáveis" class="slide level2">
+<h2>Lasso pode selecionar variáveis</h2>
 <p>Para valores adequados de <span class="math inline">\(\lambda\)</span>,</p>
 <p><span class="math display">\[\widehat\beta_j^L=0\]</span></p>
 <p>para algumas covariáveis.</p>
@@ -277,14 +350,20 @@
 </div>
 </div>
 </div>
-</section><section id="trajetórias-lasso" class="slide level2"><h2>Trajetórias Lasso</h2>
+</section>
+<section id="trajetórias-lasso" class="slide level2">
+<h2>Trajetórias Lasso</h2>
 
-<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="quatro-filosofias" class="slide level2"><h2>Quatro filosofias</h2>
+<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="quatro-filosofias" class="slide level2">
+<h2>Quatro filosofias</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Método</th>
 <th>Estratégia</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Best Subset</td>
@@ -303,7 +382,10 @@
 <td>encolher e potencialmente zerar coeficientes</td>
 </tr>
 </tbody>
-</table></section><section id="por-que-padronizar" class="slide level2"><h2>Por que padronizar?</h2>
+</table>
+</section>
+<section id="por-que-padronizar" class="slide level2">
+<h2>Por que padronizar?</h2>
 <p><span class="math display">\[x_j^*=\frac{x_j-\bar x_j}{s_j}\]</span></p>
 <p>A penalização atua sobre os coeficientes; escalas muito diferentes tornam a comparação inadequada.<br><br></p>
 <div class="callout callout-warning callout-style-simple">
@@ -316,13 +398,20 @@
 </div>
 </div>
 </div>
-</section></section><section><section id="escolhendo-a-complexidade" class="title-slide slide level1 center"><h1>Escolhendo a complexidade</h1>
+</section></section>
+<section>
+<section id="escolhendo-a-complexidade" class="title-slide slide level1 center">
+<h1>Escolhendo a complexidade</h1>
 
-</section><section id="o-mesmo-problema-em-quatro-métodos" class="slide level2"><h2>O mesmo problema em quatro métodos</h2>
+</section>
+<section id="o-mesmo-problema-em-quatro-métodos" class="slide level2">
+<h2>O mesmo problema em quatro métodos</h2>
 <p>Best Subset / Stepwise: <span class="math display">\[k=\text{tamanho do modelo}.\]</span></p>
 <p>Ridge / Lasso: <span class="math display">\[\lambda=\text{intensidade da penalização}.\]</span></p>
 <p><span class="math display">\[\boxed{\text{A complexidade deve ser escolhida fora da amostra de ajuste}}\]</span></p>
-</section><section id="validação-cruzada" class="slide level2"><h2>Validação cruzada</h2>
+</section>
+<section id="validação-cruzada" class="slide level2">
+<h2>Validação cruzada</h2>
 <p>Para cada candidato:</p>
 <ol type="1">
 <li>ajustar no treinamento do fold;</li>
@@ -331,18 +420,28 @@
 <li>repetir;</li>
 <li>calcular o erro médio;</li>
 <li>selecionar a complexidade.</li>
-</ol></section><section id="curva-de-cv-ridge" class="slide level2"><h2>Curva de CV: Ridge</h2>
+</ol>
+</section>
+<section id="curva-de-cv-ridge" class="slide level2">
+<h2>Curva de CV: Ridge</h2>
 
-<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="lambda_min-e-lambda_1se" class="slide level2"><h2>
-<span class="math inline">\(\lambda_{min}\)</span> e <span class="math inline">\(\lambda_{1se}\)</span>
-</h2>
+<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="lambda_min-e-lambda_1se" class="slide level2">
+<h2><span class="math inline">\(\lambda_{min}\)</span> e <span class="math inline">\(\lambda_{1se}\)</span></h2>
 <p><span class="math display">\[\lambda_{min}=\arg\min_\lambda\widehat R_{CV}(\lambda)\]</span></p>
 <p>A regra de um erro-padrão favorece uma solução mais regularizada cujo desempenho ainda é compatível com o mínimo.</p>
-</section><section id="lasso-selecionado-por-cv" class="slide level2"><h2>Lasso selecionado por CV</h2>
+</section>
+<section id="lasso-selecionado-por-cv" class="slide level2">
+<h2>Lasso selecionado por CV</h2>
 
-<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section></section><section><section id="comparação-final" class="title-slide slide level1 center"><h1>Comparação final</h1>
+<img data-src="semana_04_selecao_regularizacao_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section></section>
+<section>
+<section id="comparação-final" class="title-slide slide level1 center">
+<h1>Comparação final</h1>
 
-</section><section id="selecionar-ou-encolher" class="slide level2"><h2>Selecionar ou encolher?</h2>
+</section>
+<section id="selecionar-ou-encolher" class="slide level2">
+<h2>Selecionar ou encolher?</h2>
 <div class="columns">
 <div class="column" style="width:47%;">
 <h3 id="seleção-discreta">Seleção discreta</h3>
@@ -351,21 +450,29 @@
 <h3 id="shrinkage">Shrinkage</h3>
 <p>Ridge / Lasso <span class="math display">\[|\beta_j|\downarrow\]</span> Controle contínuo da complexidade; especialmente útil em alta dimensão.</p>
 </div></div>
-</section><section id="preditores-correlacionados-1" class="slide level2"><h2>Preditores correlacionados</h2>
+</section>
+<section id="preditores-correlacionados-1" class="slide level2">
+<h2>Preditores correlacionados</h2>
 <ul>
 <li>Ridge tende a distribuir o efeito entre variáveis correlacionadas;</li>
 <li>Lasso pode selecionar algumas e zerar outras;</li>
 <li>Stepwise também pode ser instável quando variáveis são muito semelhantes.</li>
 </ul>
 <p><span class="math display">\[\boxed{\text{Correlação torna a seleção de variáveis menos estável}}\]</span></p>
-</section><section id="o-teste-continua-intocado" class="slide level2"><h2>O teste continua intocado</h2>
+</section>
+<section id="o-teste-continua-intocado" class="slide level2">
+<h2>O teste continua intocado</h2>
 <p><span class="math display">\[\boxed{\mathcal D_{treino}}\rightarrow\boxed{\text{seleção/tuning por CV}}\rightarrow\boxed{\text{modelo final}}\rightarrow\boxed{\mathcal D_{teste}}\]</span></p>
-</section><section id="síntese" class="slide level2"><h2>Síntese</h2>
+</section>
+<section id="síntese" class="slide level2">
+<h2>Síntese</h2>
 <p>Best Subset: busca exaustiva.</p>
 <p>Stepwise: busca sequencial.</p>
 <p>Ridge: <span class="math inline">\(P(\beta)=\sum_j\beta_j^2\)</span></p>
 <p>Lasso: <span class="math inline">\(P(\beta)=\sum_j|\beta_j|\)</span></p>
-</section><section id="quatro-ideias-para-levar" class="slide level2"><h2>Quatro ideias para levar</h2>
+</section>
+<section id="quatro-ideias-para-levar" class="slide level2">
+<h2>Quatro ideias para levar</h2>
 <ol type="1">
 <li>Mais variáveis não significam melhor generalização.</li>
 <li>Best Subset e Stepwise controlam complexidade por <strong>seleção</strong>.</li>
@@ -375,14 +482,31 @@
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 4</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -549,7 +673,7 @@
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -574,42 +698,84 @@
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -657,13 +823,14 @@
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -776,6 +943,6 @@
         }
       });
       </script>
-
+    
 
 </body></html>

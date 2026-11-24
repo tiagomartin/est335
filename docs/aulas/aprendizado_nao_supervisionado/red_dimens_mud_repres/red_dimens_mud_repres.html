@@ -6,9 +6,9 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-e21500bb30e7ce080c64316834ee3be8.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.19">
 <title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Aprendizado não supervisionado</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,10 +16,16 @@
 <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
 <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
 <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -94,7 +100,7 @@
     code span.vs { color: #008000; } /* VerbatimString */
     code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
+<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
 <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
 <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
 <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -543,10 +549,10 @@ W_qW_q^t\mathbf x_i
 </blockquote>
 </section><section id="por-que-comprimir-uma-imagem-1" class="slide level2"><h2>Por que comprimir uma imagem?</h2>
 
-<img data-src="../../..\images/aprendNsuper/compressao_motivacao.png" style="width:100.0%" class="r-stretch"></section><section id="uma-imagem-é-apenas-uma-matriz" class="slide level2"><h2>Uma imagem é apenas uma matriz</h2>
+<img data-src="../../../images/aprendNsuper/compressao_motivacao.png" style="width:100.0%" class="r-stretch"></section><section id="uma-imagem-é-apenas-uma-matriz" class="slide level2"><h2>Uma imagem é apenas uma matriz</h2>
 <div class="columns">
 <div class="column" style="width:45%;">
-<p><img data-src="../../..\images/aprendNsuper/imagem_original.png" style="width:100.0%"></p>
+<p><img data-src="../../../images/aprendNsuper/imagem_original.png" style="width:100.0%"></p>
 <center>
 <p>Imagem Original</p>
 </center>
@@ -609,7 +615,7 @@ W_qW_q^t\mathbf x_i
 </blockquote>
 </section><section id="ideia-intuitiva-da-svd" class="slide level2"><h2>Ideia intuitiva da SVD</h2>
 
-<img data-src="../../..\images/aprendNsuper/svd_intuitiva.png" style="width:100.0%" class="r-stretch"></section><section id="ideia-intuitiva-da-svd-1" class="slide level2"><h2>Ideia intuitiva da SVD</h2>
+<img data-src="../../../images/aprendNsuper/svd_intuitiva.png" style="width:100.0%" class="r-stretch"></section><section id="ideia-intuitiva-da-svd-1" class="slide level2"><h2>Ideia intuitiva da SVD</h2>
 <p>Uma imagem pode ser vista como a <strong>soma de padrões simples</strong>.</p>
 <p>Cada componente da SVD representa:</p>
 <ul>
@@ -644,7 +650,7 @@ W_qW_q^t\mathbf x_i
 <p><strong>Os valores singulares são ordenados do maior para o menor, indicando quanto cada componente contribui para reconstruir a imagem.</strong></p>
 </blockquote>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/svd.png" style="width:100.0%" class="r-stretch"></section><section id="nem-todos-os-componentes-são-igualmente-importantes" class="slide level2"><h2>Nem todos os componentes são igualmente importantes</h2>
+<img data-src="../../../images/aprendNsuper/svd.png" style="width:100.0%" class="r-stretch"></section><section id="nem-todos-os-componentes-são-igualmente-importantes" class="slide level2"><h2>Nem todos os componentes são igualmente importantes</h2>
 <p>Os valores singulares estão ordenados <span class="math inline">\(\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r\)</span> e indicam a contribuição de cada componente para reconstruir a imagem.</p>
 <p>Consequentemente,</p>
 <ul>
@@ -656,7 +662,7 @@ W_qW_q^t\mathbf x_i
 <p><strong>A ideia da compressão é manter apenas os componentes mais importantes.</strong></p>
 </blockquote>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/valor_sing_imp.png" style="width:100.0%" class="r-stretch"></section><section id="reconstrução-utilizando-apenas-k-componentes" class="slide level2"><h2>Reconstrução utilizando apenas <span class="math inline">\(k\)</span> componentes</h2>
+<img data-src="../../../images/aprendNsuper/valor_sing_imp.png" style="width:100.0%" class="r-stretch"></section><section id="reconstrução-utilizando-apenas-k-componentes" class="slide level2"><h2>Reconstrução utilizando apenas <span class="math inline">\(k\)</span> componentes</h2>
 <p>A imagem comprimida é obtida utilizando apenas os <strong><span class="math inline">\(k\)</span> maiores valores singulares</strong>.</p>
 <p><span class="math display">\[
 \boldsymbol{A}_k = \boldsymbol{U}_k \boldsymbol{D}_k \boldsymbol{V}_k^\top
@@ -679,9 +685,9 @@ k &lt; r,
 <p><strong>Quanto maior o valor de <span class="math inline">\(k\)</span>, maior a qualidade da reconstrução e menor a taxa de compressão.</strong></p>
 </blockquote>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/img_recons.png" style="width:100.0%" class="r-stretch"></section><section id="efeito-do-número-de-componentes-na-reconstrução" class="slide level2"><h2>Efeito do número de componentes na reconstrução</h2>
+<img data-src="../../../images/aprendNsuper/img_recons.png" style="width:100.0%" class="r-stretch"></section><section id="efeito-do-número-de-componentes-na-reconstrução" class="slide level2"><h2>Efeito do número de componentes na reconstrução</h2>
 
-<img data-src="../../..\images/aprendNsuper/comparacao_k.png" style="width:100.0%" class="r-stretch"></section><section id="efeito-do-número-de-componentes-na-reconstrução-1" class="slide level2"><h2>Efeito do número de componentes na reconstrução</h2>
+<img data-src="../../../images/aprendNsuper/comparacao_k.png" style="width:100.0%" class="r-stretch"></section><section id="efeito-do-número-de-componentes-na-reconstrução-1" class="slide level2"><h2>Efeito do número de componentes na reconstrução</h2>
 <p>À medida que o número de componentes (<span class="math inline">\(k\)</span>) aumenta, a imagem reconstruída torna-se mais próxima da original.<br><br></p>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -732,152 +738,152 @@ v_i^\top,
 </blockquote>
 </section><section id="r-compressão-de-imagens" class="slide level2"><h2>R: Compressão de imagens</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(png)</span>
-<span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-4"><a></a><span class="co"># 1. Leitura da imagem</span></span>
-<span id="cb1-5"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-6"><a></a></span>
-<span id="cb1-7"><a></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">"imagem_original.png"</span>)</span>
-<span id="cb1-8"><a></a></span>
-<span id="cb1-9"><a></a><span class="co"># Remover o canal alfa, caso exista</span></span>
-<span id="cb1-10"><a></a><span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">dim</span>(img)) <span class="sc">==</span> <span class="dv">3</span> <span class="sc">&amp;&amp;</span> <span class="fu">dim</span>(img)[<span class="dv">3</span>] <span class="sc">==</span> <span class="dv">4</span>) {</span>
-<span id="cb1-11"><a></a>  img <span class="ot">&lt;-</span> img[, , <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb1-12"><a></a>}</span>
-<span id="cb1-13"><a></a></span>
-<span id="cb1-14"><a></a><span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">dim</span>(img)) <span class="sc">!=</span> <span class="dv">3</span> <span class="sc">||</span> <span class="fu">dim</span>(img)[<span class="dv">3</span>] <span class="sc">!=</span> <span class="dv">3</span>) {</span>
-<span id="cb1-15"><a></a>  <span class="fu">stop</span>(<span class="st">"A imagem deve possuir três canais RGB."</span>)</span>
-<span id="cb1-16"><a></a>}</span>
-<span id="cb1-17"><a></a></span>
-<span id="cb1-18"><a></a>n_linhas  <span class="ot">&lt;-</span> <span class="fu">dim</span>(img)[<span class="dv">1</span>]</span>
-<span id="cb1-19"><a></a>n_colunas <span class="ot">&lt;-</span> <span class="fu">dim</span>(img)[<span class="dv">2</span>]</span>
-<span id="cb1-20"><a></a></span>
-<span id="cb1-21"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-22"><a></a><span class="co"># 2. SVD dos canais RGB</span></span>
-<span id="cb1-23"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-24"><a></a></span>
-<span id="cb1-25"><a></a>svd_r <span class="ot">&lt;-</span> <span class="fu">svd</span>(img[, , <span class="dv">1</span>])</span>
-<span id="cb1-26"><a></a>svd_g <span class="ot">&lt;-</span> <span class="fu">svd</span>(img[, , <span class="dv">2</span>])</span>
-<span id="cb1-27"><a></a>svd_b <span class="ot">&lt;-</span> <span class="fu">svd</span>(img[, , <span class="dv">3</span>])</span>
-<span id="cb1-28"><a></a></span>
-<span id="cb1-29"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-30"><a></a><span class="co"># 3. Reconstrução de um canal</span></span>
-<span id="cb1-31"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-32"><a></a></span>
-<span id="cb1-33"><a></a>reconstruir_canal <span class="ot">&lt;-</span> <span class="cf">function</span>(svd_obj, k) {</span>
-<span id="cb1-34"><a></a></span>
-<span id="cb1-35"><a></a>  k <span class="ot">&lt;-</span> <span class="fu">min</span>(k, <span class="fu">length</span>(svd_obj<span class="sc">$</span>d))</span>
-<span id="cb1-36"><a></a></span>
-<span id="cb1-37"><a></a>  U_k <span class="ot">&lt;-</span> svd_obj<span class="sc">$</span>u[, <span class="dv">1</span><span class="sc">:</span>k, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb1-38"><a></a>  V_k <span class="ot">&lt;-</span> svd_obj<span class="sc">$</span>v[, <span class="dv">1</span><span class="sc">:</span>k, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb1-39"><a></a>  d_k <span class="ot">&lt;-</span> svd_obj<span class="sc">$</span>d[<span class="dv">1</span><span class="sc">:</span>k]</span>
-<span id="cb1-40"><a></a></span>
-<span id="cb1-41"><a></a>  <span class="co"># U_k %*% diag(d_k) %*% t(V_k)</span></span>
-<span id="cb1-42"><a></a>  <span class="fu">sweep</span>(U_k, <span class="dv">2</span>, d_k, <span class="at">FUN =</span> <span class="st">"*"</span>) <span class="sc">%*%</span> <span class="fu">t</span>(V_k)</span>
-<span id="cb1-43"><a></a>}</span>
-<span id="cb1-44"><a></a></span>
-<span id="cb1-45"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-46"><a></a><span class="co"># 4. Reconstrução da imagem RGB</span></span>
-<span id="cb1-47"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-48"><a></a></span>
-<span id="cb1-49"><a></a>reconstruir_imagem <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
-<span id="cb1-50"><a></a></span>
-<span id="cb1-51"><a></a>  img_k <span class="ot">&lt;-</span> <span class="fu">array</span>(</span>
-<span id="cb1-52"><a></a>    <span class="at">data =</span> <span class="dv">0</span>,</span>
-<span id="cb1-53"><a></a>    <span class="at">dim =</span> <span class="fu">c</span>(n_linhas, n_colunas, <span class="dv">3</span>)</span>
-<span id="cb1-54"><a></a>  )</span>
-<span id="cb1-55"><a></a></span>
-<span id="cb1-56"><a></a>  img_k[, , <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">reconstruir_canal</span>(svd_r, k)</span>
-<span id="cb1-57"><a></a>  img_k[, , <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">reconstruir_canal</span>(svd_g, k)</span>
-<span id="cb1-58"><a></a>  img_k[, , <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">reconstruir_canal</span>(svd_b, k)</span>
-<span id="cb1-59"><a></a></span>
-<span id="cb1-60"><a></a>  <span class="co"># Garantir intensidades RGB no intervalo [0,1]</span></span>
-<span id="cb1-61"><a></a>  img_k[img_k <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb1-62"><a></a>  img_k[img_k <span class="sc">&gt;</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb1-63"><a></a></span>
-<span id="cb1-64"><a></a>  img_k</span>
-<span id="cb1-65"><a></a>}</span>
-<span id="cb1-66"><a></a></span>
-<span id="cb1-67"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-68"><a></a><span class="co"># 5. Razão teórica aproximada de compressão</span></span>
-<span id="cb1-69"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-70"><a></a></span>
-<span id="cb1-71"><a></a>razao_compressao <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
-<span id="cb1-72"><a></a></span>
-<span id="cb1-73"><a></a>  armazenamento_original <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> n_linhas <span class="sc">*</span> n_colunas</span>
-<span id="cb1-74"><a></a></span>
-<span id="cb1-75"><a></a>  armazenamento_svd <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> k <span class="sc">*</span> (</span>
-<span id="cb1-76"><a></a>    n_linhas <span class="sc">+</span> n_colunas <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb1-77"><a></a>  )</span>
-<span id="cb1-78"><a></a></span>
-<span id="cb1-79"><a></a>  armazenamento_original <span class="sc">/</span> armazenamento_svd</span>
-<span id="cb1-80"><a></a>}</span>
-<span id="cb1-81"><a></a></span>
-<span id="cb1-82"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-83"><a></a><span class="co"># 6. Função para desenhar corretamente a imagem</span></span>
-<span id="cb1-84"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-85"><a></a></span>
-<span id="cb1-86"><a></a>mostrar_imagem <span class="ot">&lt;-</span> <span class="cf">function</span>(imagem, titulo) {</span>
-<span id="cb1-87"><a></a></span>
-<span id="cb1-88"><a></a>  <span class="fu">plot.new</span>()</span>
-<span id="cb1-89"><a></a></span>
-<span id="cb1-90"><a></a>  <span class="co"># Região gráfica em coordenadas de 0 a 1</span></span>
-<span id="cb1-91"><a></a>  <span class="fu">plot.window</span>(</span>
-<span id="cb1-92"><a></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb1-93"><a></a>    <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb1-94"><a></a>    <span class="at">asp =</span> n_colunas <span class="sc">/</span> n_linhas</span>
-<span id="cb1-95"><a></a>  )</span>
-<span id="cb1-96"><a></a></span>
-<span id="cb1-97"><a></a>  <span class="fu">rasterImage</span>(</span>
-<span id="cb1-98"><a></a>    <span class="at">image =</span> <span class="fu">as.raster</span>(imagem),</span>
-<span id="cb1-99"><a></a>    <span class="at">xleft =</span> <span class="dv">0</span>,</span>
-<span id="cb1-100"><a></a>    <span class="at">ybottom =</span> <span class="dv">0</span>,</span>
-<span id="cb1-101"><a></a>    <span class="at">xright =</span> <span class="dv">1</span>,</span>
-<span id="cb1-102"><a></a>    <span class="at">ytop =</span> <span class="dv">1</span>,</span>
-<span id="cb1-103"><a></a>    <span class="at">interpolate =</span> <span class="cn">TRUE</span></span>
-<span id="cb1-104"><a></a>  )</span>
-<span id="cb1-105"><a></a></span>
-<span id="cb1-106"><a></a>  <span class="fu">title</span>(</span>
-<span id="cb1-107"><a></a>    <span class="at">main =</span> titulo,</span>
-<span id="cb1-108"><a></a>    <span class="at">line =</span> <span class="fl">0.5</span>,</span>
-<span id="cb1-109"><a></a>    <span class="at">cex.main =</span> <span class="dv">1</span></span>
-<span id="cb1-110"><a></a>  )</span>
-<span id="cb1-111"><a></a>}</span>
-<span id="cb1-112"><a></a></span>
-<span id="cb1-113"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-114"><a></a><span class="co"># 7. Comparação visual</span></span>
-<span id="cb1-115"><a></a><span class="co"># --------------------------------------------------</span></span>
-<span id="cb1-116"><a></a></span>
-<span id="cb1-117"><a></a>ks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>)</span>
-<span id="cb1-118"><a></a></span>
-<span id="cb1-119"><a></a><span class="co"># Remover valores incompatíveis com o tamanho da imagem</span></span>
-<span id="cb1-120"><a></a>ks <span class="ot">&lt;-</span> ks[ks <span class="sc">&lt;=</span> <span class="fu">min</span>(n_linhas, n_colunas)]</span>
-<span id="cb1-121"><a></a></span>
-<span id="cb1-122"><a></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(</span>
-<span id="cb1-123"><a></a>  <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>),</span>
-<span id="cb1-124"><a></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">3</span>, <span class="fl">0.5</span>),</span>
-<span id="cb1-125"><a></a>  <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb1-126"><a></a>)</span>
-<span id="cb1-127"><a></a></span>
-<span id="cb1-128"><a></a><span class="fu">mostrar_imagem</span>(</span>
-<span id="cb1-129"><a></a>  <span class="at">imagem =</span> img,</span>
-<span id="cb1-130"><a></a>  <span class="at">titulo =</span> <span class="st">"Original"</span></span>
-<span id="cb1-131"><a></a>)</span>
-<span id="cb1-132"><a></a></span>
-<span id="cb1-133"><a></a><span class="cf">for</span> (k <span class="cf">in</span> ks) {</span>
-<span id="cb1-134"><a></a></span>
-<span id="cb1-135"><a></a>  img_k <span class="ot">&lt;-</span> <span class="fu">reconstruir_imagem</span>(k)</span>
-<span id="cb1-136"><a></a></span>
-<span id="cb1-137"><a></a>  <span class="fu">mostrar_imagem</span>(</span>
-<span id="cb1-138"><a></a>    <span class="at">imagem =</span> img_k,</span>
-<span id="cb1-139"><a></a>    <span class="at">titulo =</span> <span class="fu">paste0</span>(</span>
-<span id="cb1-140"><a></a>      <span class="st">"k = "</span>, k,</span>
-<span id="cb1-141"><a></a>      <span class="st">"</span><span class="sc">\n</span><span class="st">Compressão ≈ "</span>,</span>
-<span id="cb1-142"><a></a>      <span class="fu">round</span>(<span class="fu">razao_compressao</span>(k), <span class="dv">1</span>),</span>
-<span id="cb1-143"><a></a>      <span class="st">"x"</span></span>
-<span id="cb1-144"><a></a>    )</span>
-<span id="cb1-145"><a></a>  )</span>
-<span id="cb1-146"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="fu">library</span>(png)</span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="co"># 1. Leitura da imagem</span></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-6"><a aria-label="6"></a></span>
+<span id="cb1-7"><a aria-label="7"></a>img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">"imagem_original.png"</span>)</span>
+<span id="cb1-8"><a aria-label="8"></a></span>
+<span id="cb1-9"><a aria-label="9"></a><span class="co"># Remover o canal alfa, caso exista</span></span>
+<span id="cb1-10"><a aria-label="10"></a><span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">dim</span>(img)) <span class="sc">==</span> <span class="dv">3</span> <span class="sc">&amp;&amp;</span> <span class="fu">dim</span>(img)[<span class="dv">3</span>] <span class="sc">==</span> <span class="dv">4</span>) {</span>
+<span id="cb1-11"><a aria-label="11"></a>  img <span class="ot">&lt;-</span> img[, , <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb1-12"><a aria-label="12"></a>}</span>
+<span id="cb1-13"><a aria-label="13"></a></span>
+<span id="cb1-14"><a aria-label="14"></a><span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">dim</span>(img)) <span class="sc">!=</span> <span class="dv">3</span> <span class="sc">||</span> <span class="fu">dim</span>(img)[<span class="dv">3</span>] <span class="sc">!=</span> <span class="dv">3</span>) {</span>
+<span id="cb1-15"><a aria-label="15"></a>  <span class="fu">stop</span>(<span class="st">"A imagem deve possuir três canais RGB."</span>)</span>
+<span id="cb1-16"><a aria-label="16"></a>}</span>
+<span id="cb1-17"><a aria-label="17"></a></span>
+<span id="cb1-18"><a aria-label="18"></a>n_linhas  <span class="ot">&lt;-</span> <span class="fu">dim</span>(img)[<span class="dv">1</span>]</span>
+<span id="cb1-19"><a aria-label="19"></a>n_colunas <span class="ot">&lt;-</span> <span class="fu">dim</span>(img)[<span class="dv">2</span>]</span>
+<span id="cb1-20"><a aria-label="20"></a></span>
+<span id="cb1-21"><a aria-label="21"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-22"><a aria-label="22"></a><span class="co"># 2. SVD dos canais RGB</span></span>
+<span id="cb1-23"><a aria-label="23"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-24"><a aria-label="24"></a></span>
+<span id="cb1-25"><a aria-label="25"></a>svd_r <span class="ot">&lt;-</span> <span class="fu">svd</span>(img[, , <span class="dv">1</span>])</span>
+<span id="cb1-26"><a aria-label="26"></a>svd_g <span class="ot">&lt;-</span> <span class="fu">svd</span>(img[, , <span class="dv">2</span>])</span>
+<span id="cb1-27"><a aria-label="27"></a>svd_b <span class="ot">&lt;-</span> <span class="fu">svd</span>(img[, , <span class="dv">3</span>])</span>
+<span id="cb1-28"><a aria-label="28"></a></span>
+<span id="cb1-29"><a aria-label="29"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-30"><a aria-label="30"></a><span class="co"># 3. Reconstrução de um canal</span></span>
+<span id="cb1-31"><a aria-label="31"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-32"><a aria-label="32"></a></span>
+<span id="cb1-33"><a aria-label="33"></a>reconstruir_canal <span class="ot">&lt;-</span> <span class="cf">function</span>(svd_obj, k) {</span>
+<span id="cb1-34"><a aria-label="34"></a></span>
+<span id="cb1-35"><a aria-label="35"></a>  k <span class="ot">&lt;-</span> <span class="fu">min</span>(k, <span class="fu">length</span>(svd_obj<span class="sc">$</span>d))</span>
+<span id="cb1-36"><a aria-label="36"></a></span>
+<span id="cb1-37"><a aria-label="37"></a>  U_k <span class="ot">&lt;-</span> svd_obj<span class="sc">$</span>u[, <span class="dv">1</span><span class="sc">:</span>k, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb1-38"><a aria-label="38"></a>  V_k <span class="ot">&lt;-</span> svd_obj<span class="sc">$</span>v[, <span class="dv">1</span><span class="sc">:</span>k, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb1-39"><a aria-label="39"></a>  d_k <span class="ot">&lt;-</span> svd_obj<span class="sc">$</span>d[<span class="dv">1</span><span class="sc">:</span>k]</span>
+<span id="cb1-40"><a aria-label="40"></a></span>
+<span id="cb1-41"><a aria-label="41"></a>  <span class="co"># U_k %*% diag(d_k) %*% t(V_k)</span></span>
+<span id="cb1-42"><a aria-label="42"></a>  <span class="fu">sweep</span>(U_k, <span class="dv">2</span>, d_k, <span class="at">FUN =</span> <span class="st">"*"</span>) <span class="sc">%*%</span> <span class="fu">t</span>(V_k)</span>
+<span id="cb1-43"><a aria-label="43"></a>}</span>
+<span id="cb1-44"><a aria-label="44"></a></span>
+<span id="cb1-45"><a aria-label="45"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-46"><a aria-label="46"></a><span class="co"># 4. Reconstrução da imagem RGB</span></span>
+<span id="cb1-47"><a aria-label="47"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-48"><a aria-label="48"></a></span>
+<span id="cb1-49"><a aria-label="49"></a>reconstruir_imagem <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
+<span id="cb1-50"><a aria-label="50"></a></span>
+<span id="cb1-51"><a aria-label="51"></a>  img_k <span class="ot">&lt;-</span> <span class="fu">array</span>(</span>
+<span id="cb1-52"><a aria-label="52"></a>    <span class="at">data =</span> <span class="dv">0</span>,</span>
+<span id="cb1-53"><a aria-label="53"></a>    <span class="at">dim =</span> <span class="fu">c</span>(n_linhas, n_colunas, <span class="dv">3</span>)</span>
+<span id="cb1-54"><a aria-label="54"></a>  )</span>
+<span id="cb1-55"><a aria-label="55"></a></span>
+<span id="cb1-56"><a aria-label="56"></a>  img_k[, , <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">reconstruir_canal</span>(svd_r, k)</span>
+<span id="cb1-57"><a aria-label="57"></a>  img_k[, , <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">reconstruir_canal</span>(svd_g, k)</span>
+<span id="cb1-58"><a aria-label="58"></a>  img_k[, , <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">reconstruir_canal</span>(svd_b, k)</span>
+<span id="cb1-59"><a aria-label="59"></a></span>
+<span id="cb1-60"><a aria-label="60"></a>  <span class="co"># Garantir intensidades RGB no intervalo [0,1]</span></span>
+<span id="cb1-61"><a aria-label="61"></a>  img_k[img_k <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-62"><a aria-label="62"></a>  img_k[img_k <span class="sc">&gt;</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-63"><a aria-label="63"></a></span>
+<span id="cb1-64"><a aria-label="64"></a>  img_k</span>
+<span id="cb1-65"><a aria-label="65"></a>}</span>
+<span id="cb1-66"><a aria-label="66"></a></span>
+<span id="cb1-67"><a aria-label="67"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-68"><a aria-label="68"></a><span class="co"># 5. Razão teórica aproximada de compressão</span></span>
+<span id="cb1-69"><a aria-label="69"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-70"><a aria-label="70"></a></span>
+<span id="cb1-71"><a aria-label="71"></a>razao_compressao <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
+<span id="cb1-72"><a aria-label="72"></a></span>
+<span id="cb1-73"><a aria-label="73"></a>  armazenamento_original <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> n_linhas <span class="sc">*</span> n_colunas</span>
+<span id="cb1-74"><a aria-label="74"></a></span>
+<span id="cb1-75"><a aria-label="75"></a>  armazenamento_svd <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> k <span class="sc">*</span> (</span>
+<span id="cb1-76"><a aria-label="76"></a>    n_linhas <span class="sc">+</span> n_colunas <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1-77"><a aria-label="77"></a>  )</span>
+<span id="cb1-78"><a aria-label="78"></a></span>
+<span id="cb1-79"><a aria-label="79"></a>  armazenamento_original <span class="sc">/</span> armazenamento_svd</span>
+<span id="cb1-80"><a aria-label="80"></a>}</span>
+<span id="cb1-81"><a aria-label="81"></a></span>
+<span id="cb1-82"><a aria-label="82"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-83"><a aria-label="83"></a><span class="co"># 6. Função para desenhar corretamente a imagem</span></span>
+<span id="cb1-84"><a aria-label="84"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-85"><a aria-label="85"></a></span>
+<span id="cb1-86"><a aria-label="86"></a>mostrar_imagem <span class="ot">&lt;-</span> <span class="cf">function</span>(imagem, titulo) {</span>
+<span id="cb1-87"><a aria-label="87"></a></span>
+<span id="cb1-88"><a aria-label="88"></a>  <span class="fu">plot.new</span>()</span>
+<span id="cb1-89"><a aria-label="89"></a></span>
+<span id="cb1-90"><a aria-label="90"></a>  <span class="co"># Região gráfica em coordenadas de 0 a 1</span></span>
+<span id="cb1-91"><a aria-label="91"></a>  <span class="fu">plot.window</span>(</span>
+<span id="cb1-92"><a aria-label="92"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb1-93"><a aria-label="93"></a>    <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb1-94"><a aria-label="94"></a>    <span class="at">asp =</span> n_colunas <span class="sc">/</span> n_linhas</span>
+<span id="cb1-95"><a aria-label="95"></a>  )</span>
+<span id="cb1-96"><a aria-label="96"></a></span>
+<span id="cb1-97"><a aria-label="97"></a>  <span class="fu">rasterImage</span>(</span>
+<span id="cb1-98"><a aria-label="98"></a>    <span class="at">image =</span> <span class="fu">as.raster</span>(imagem),</span>
+<span id="cb1-99"><a aria-label="99"></a>    <span class="at">xleft =</span> <span class="dv">0</span>,</span>
+<span id="cb1-100"><a aria-label="100"></a>    <span class="at">ybottom =</span> <span class="dv">0</span>,</span>
+<span id="cb1-101"><a aria-label="101"></a>    <span class="at">xright =</span> <span class="dv">1</span>,</span>
+<span id="cb1-102"><a aria-label="102"></a>    <span class="at">ytop =</span> <span class="dv">1</span>,</span>
+<span id="cb1-103"><a aria-label="103"></a>    <span class="at">interpolate =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-104"><a aria-label="104"></a>  )</span>
+<span id="cb1-105"><a aria-label="105"></a></span>
+<span id="cb1-106"><a aria-label="106"></a>  <span class="fu">title</span>(</span>
+<span id="cb1-107"><a aria-label="107"></a>    <span class="at">main =</span> titulo,</span>
+<span id="cb1-108"><a aria-label="108"></a>    <span class="at">line =</span> <span class="fl">0.5</span>,</span>
+<span id="cb1-109"><a aria-label="109"></a>    <span class="at">cex.main =</span> <span class="dv">1</span></span>
+<span id="cb1-110"><a aria-label="110"></a>  )</span>
+<span id="cb1-111"><a aria-label="111"></a>}</span>
+<span id="cb1-112"><a aria-label="112"></a></span>
+<span id="cb1-113"><a aria-label="113"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-114"><a aria-label="114"></a><span class="co"># 7. Comparação visual</span></span>
+<span id="cb1-115"><a aria-label="115"></a><span class="co"># --------------------------------------------------</span></span>
+<span id="cb1-116"><a aria-label="116"></a></span>
+<span id="cb1-117"><a aria-label="117"></a>ks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>)</span>
+<span id="cb1-118"><a aria-label="118"></a></span>
+<span id="cb1-119"><a aria-label="119"></a><span class="co"># Remover valores incompatíveis com o tamanho da imagem</span></span>
+<span id="cb1-120"><a aria-label="120"></a>ks <span class="ot">&lt;-</span> ks[ks <span class="sc">&lt;=</span> <span class="fu">min</span>(n_linhas, n_colunas)]</span>
+<span id="cb1-121"><a aria-label="121"></a></span>
+<span id="cb1-122"><a aria-label="122"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(</span>
+<span id="cb1-123"><a aria-label="123"></a>  <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb1-124"><a aria-label="124"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">3</span>, <span class="fl">0.5</span>),</span>
+<span id="cb1-125"><a aria-label="125"></a>  <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb1-126"><a aria-label="126"></a>)</span>
+<span id="cb1-127"><a aria-label="127"></a></span>
+<span id="cb1-128"><a aria-label="128"></a><span class="fu">mostrar_imagem</span>(</span>
+<span id="cb1-129"><a aria-label="129"></a>  <span class="at">imagem =</span> img,</span>
+<span id="cb1-130"><a aria-label="130"></a>  <span class="at">titulo =</span> <span class="st">"Original"</span></span>
+<span id="cb1-131"><a aria-label="131"></a>)</span>
+<span id="cb1-132"><a aria-label="132"></a></span>
+<span id="cb1-133"><a aria-label="133"></a><span class="cf">for</span> (k <span class="cf">in</span> ks) {</span>
+<span id="cb1-134"><a aria-label="134"></a></span>
+<span id="cb1-135"><a aria-label="135"></a>  img_k <span class="ot">&lt;-</span> <span class="fu">reconstruir_imagem</span>(k)</span>
+<span id="cb1-136"><a aria-label="136"></a></span>
+<span id="cb1-137"><a aria-label="137"></a>  <span class="fu">mostrar_imagem</span>(</span>
+<span id="cb1-138"><a aria-label="138"></a>    <span class="at">imagem =</span> img_k,</span>
+<span id="cb1-139"><a aria-label="139"></a>    <span class="at">titulo =</span> <span class="fu">paste0</span>(</span>
+<span id="cb1-140"><a aria-label="140"></a>      <span class="st">"k = "</span>, k,</span>
+<span id="cb1-141"><a aria-label="141"></a>      <span class="st">"</span><span class="sc">\n</span><span class="st">Compressão ≈ "</span>,</span>
+<span id="cb1-142"><a aria-label="142"></a>      <span class="fu">round</span>(<span class="fu">razao_compressao</span>(k), <span class="dv">1</span>),</span>
+<span id="cb1-143"><a aria-label="143"></a>      <span class="st">"x"</span></span>
+<span id="cb1-144"><a aria-label="144"></a>    )</span>
+<span id="cb1-145"><a aria-label="145"></a>  )</span>
+<span id="cb1-146"><a aria-label="146"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="r-compressão-de-imagens-output" class="slide level2 output-location-slide"><h2>R: Compressão de imagens</h2><div class="cell output-location-slide">
@@ -887,106 +893,106 @@ v_i^\top,
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">par</span>(op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></section><section id="r-energia-acumulada" class="slide level2"><h2>R: Energia acumulada</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co"># Energia acumulada em cada canal RGB</span></span>
-<span id="cb3-2"><a></a>energia_r <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(svd_r<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(svd_r<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-3"><a></a>energia_g <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(svd_g<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(svd_g<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-4"><a></a>energia_b <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(svd_b<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(svd_b<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-5"><a></a></span>
-<span id="cb3-6"><a></a><span class="co"># Média da proporção acumulada nos três canais</span></span>
-<span id="cb3-7"><a></a>energia_media <span class="ot">&lt;-</span> (</span>
-<span id="cb3-8"><a></a>  energia_r <span class="sc">+</span></span>
-<span id="cb3-9"><a></a>  energia_g <span class="sc">+</span></span>
-<span id="cb3-10"><a></a>  energia_b</span>
-<span id="cb3-11"><a></a>) <span class="sc">/</span> <span class="dv">3</span></span>
-<span id="cb3-12"><a></a></span>
-<span id="cb3-13"><a></a><span class="co"># Valores mínimos de k para preservar 90%, 95% e 99%</span></span>
-<span id="cb3-14"><a></a>niveis <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.90</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
-<span id="cb3-15"><a></a></span>
-<span id="cb3-16"><a></a>ks_niveis <span class="ot">&lt;-</span> <span class="fu">sapply</span>(</span>
-<span id="cb3-17"><a></a>  niveis,</span>
-<span id="cb3-18"><a></a>  <span class="cf">function</span>(nivel) {</span>
-<span id="cb3-19"><a></a>    <span class="fu">which</span>(energia_media <span class="sc">&gt;=</span> nivel)[<span class="dv">1</span>]</span>
-<span id="cb3-20"><a></a>  }</span>
-<span id="cb3-21"><a></a>)</span>
-<span id="cb3-22"><a></a></span>
-<span id="cb3-23"><a></a><span class="fu">names</span>(ks_niveis) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"90%"</span>, <span class="st">"95%"</span>, <span class="st">"99%"</span>)</span>
-<span id="cb3-24"><a></a></span>
-<span id="cb3-25"><a></a><span class="co"># Limites do eixo horizontal</span></span>
-<span id="cb3-26"><a></a>k_max_grafico <span class="ot">&lt;-</span> <span class="fu">length</span>(energia_media)</span>
-<span id="cb3-27"><a></a></span>
-<span id="cb3-28"><a></a><span class="co"># Gráfico da informação acumulada</span></span>
-<span id="cb3-29"><a></a><span class="fu">plot</span>(</span>
-<span id="cb3-30"><a></a>  <span class="at">x =</span> <span class="fu">seq_along</span>(energia_media),</span>
-<span id="cb3-31"><a></a>  <span class="at">y =</span> energia_media,</span>
-<span id="cb3-32"><a></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb3-33"><a></a>  <span class="at">lwd =</span> <span class="fl">2.5</span>,</span>
-<span id="cb3-34"><a></a>  <span class="at">xlab =</span> <span class="st">"Número de componentes (k)"</span>,</span>
-<span id="cb3-35"><a></a>  <span class="at">ylab =</span> <span class="st">"Proporção acumulada da informação"</span>,</span>
-<span id="cb3-36"><a></a>  <span class="at">main =</span> <span class="st">"Informação preservada pela reconstrução SVD"</span>,</span>
-<span id="cb3-37"><a></a>  <span class="at">ylim =</span> <span class="fu">c</span>(</span>
-<span id="cb3-38"><a></a>    <span class="fu">max</span>(<span class="dv">0</span>, <span class="fu">min</span>(energia_media) <span class="sc">-</span> <span class="fl">0.03</span>),</span>
-<span id="cb3-39"><a></a>    <span class="fl">1.01</span></span>
-<span id="cb3-40"><a></a>  ),</span>
-<span id="cb3-41"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>, k_max_grafico)</span>
-<span id="cb3-42"><a></a>)</span>
-<span id="cb3-43"><a></a></span>
-<span id="cb3-44"><a></a><span class="co"># Linhas horizontais de referência</span></span>
-<span id="cb3-45"><a></a><span class="fu">abline</span>(</span>
-<span id="cb3-46"><a></a>  <span class="at">h =</span> niveis,</span>
-<span id="cb3-47"><a></a>  <span class="at">lty =</span> <span class="dv">2</span>,</span>
-<span id="cb3-48"><a></a>  <span class="at">col =</span> <span class="st">"gray60"</span></span>
-<span id="cb3-49"><a></a>)</span>
-<span id="cb3-50"><a></a></span>
-<span id="cb3-51"><a></a><span class="co"># Linhas verticais nos valores de k</span></span>
-<span id="cb3-52"><a></a><span class="fu">abline</span>(</span>
-<span id="cb3-53"><a></a>  <span class="at">v =</span> ks_niveis,</span>
-<span id="cb3-54"><a></a>  <span class="at">lty =</span> <span class="dv">3</span>,</span>
-<span id="cb3-55"><a></a>  <span class="at">col =</span> <span class="st">"gray40"</span></span>
-<span id="cb3-56"><a></a>)</span>
-<span id="cb3-57"><a></a></span>
-<span id="cb3-58"><a></a><span class="co"># Pontos destacados</span></span>
-<span id="cb3-59"><a></a><span class="fu">points</span>(</span>
-<span id="cb3-60"><a></a>  <span class="at">x =</span> ks_niveis,</span>
-<span id="cb3-61"><a></a>  <span class="at">y =</span> niveis,</span>
-<span id="cb3-62"><a></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
-<span id="cb3-63"><a></a>  <span class="at">cex =</span> <span class="fl">1.3</span></span>
-<span id="cb3-64"><a></a>)</span>
-<span id="cb3-65"><a></a></span>
-<span id="cb3-66"><a></a><span class="co"># Rótulos dos pontos</span></span>
-<span id="cb3-67"><a></a>offsets <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.012</span>, <span class="fl">0.012</span>, <span class="sc">-</span><span class="fl">0.018</span>)</span>
-<span id="cb3-68"><a></a></span>
-<span id="cb3-69"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(niveis)) {</span>
-<span id="cb3-70"><a></a></span>
-<span id="cb3-71"><a></a>  posicao <span class="ot">&lt;-</span> <span class="cf">if</span> (i <span class="sc">==</span> <span class="fu">length</span>(niveis)) <span class="dv">1</span> <span class="cf">else</span> <span class="dv">3</span></span>
-<span id="cb3-72"><a></a></span>
-<span id="cb3-73"><a></a>  <span class="fu">text</span>(</span>
-<span id="cb3-74"><a></a>    <span class="at">x =</span> ks_niveis[i],</span>
-<span id="cb3-75"><a></a>    <span class="at">y =</span> niveis[i] <span class="sc">+</span> offsets[i],</span>
-<span id="cb3-76"><a></a>    <span class="at">labels =</span> <span class="fu">paste0</span>(</span>
-<span id="cb3-77"><a></a>      <span class="st">"k = "</span>, ks_niveis[i],</span>
-<span id="cb3-78"><a></a>      <span class="st">"  ("</span>, niveis[i] <span class="sc">*</span> <span class="dv">100</span>, <span class="st">"%)"</span></span>
-<span id="cb3-79"><a></a>    ),</span>
-<span id="cb3-80"><a></a>    <span class="at">pos =</span> posicao,</span>
-<span id="cb3-81"><a></a>    <span class="at">cex =</span> <span class="fl">0.85</span>,</span>
-<span id="cb3-82"><a></a>    <span class="at">font =</span> <span class="dv">2</span></span>
-<span id="cb3-83"><a></a>  )</span>
-<span id="cb3-84"><a></a>}</span>
-<span id="cb3-85"><a></a></span>
-<span id="cb3-86"><a></a><span class="co"># Legenda</span></span>
-<span id="cb3-87"><a></a><span class="fu">legend</span>(</span>
-<span id="cb3-88"><a></a>  <span class="st">"bottomright"</span>,</span>
-<span id="cb3-89"><a></a>  <span class="at">legend =</span> <span class="fu">paste0</span>(</span>
-<span id="cb3-90"><a></a>    <span class="fu">names</span>(ks_niveis),</span>
-<span id="cb3-91"><a></a>    <span class="st">" da informação: k = "</span>,</span>
-<span id="cb3-92"><a></a>    ks_niveis</span>
-<span id="cb3-93"><a></a>  ),</span>
-<span id="cb3-94"><a></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
-<span id="cb3-95"><a></a>  <span class="at">bty =</span> <span class="st">"n"</span>,</span>
-<span id="cb3-96"><a></a>  <span class="at">cex =</span> <span class="fl">0.9</span></span>
-<span id="cb3-97"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="co"># Energia acumulada em cada canal RGB</span></span>
+<span id="cb3-2"><a aria-label="2"></a>energia_r <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(svd_r<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(svd_r<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-3"><a aria-label="3"></a>energia_g <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(svd_g<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(svd_g<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-4"><a aria-label="4"></a>energia_b <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(svd_b<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(svd_b<span class="sc">$</span>d<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-5"><a aria-label="5"></a></span>
+<span id="cb3-6"><a aria-label="6"></a><span class="co"># Média da proporção acumulada nos três canais</span></span>
+<span id="cb3-7"><a aria-label="7"></a>energia_media <span class="ot">&lt;-</span> (</span>
+<span id="cb3-8"><a aria-label="8"></a>  energia_r <span class="sc">+</span></span>
+<span id="cb3-9"><a aria-label="9"></a>  energia_g <span class="sc">+</span></span>
+<span id="cb3-10"><a aria-label="10"></a>  energia_b</span>
+<span id="cb3-11"><a aria-label="11"></a>) <span class="sc">/</span> <span class="dv">3</span></span>
+<span id="cb3-12"><a aria-label="12"></a></span>
+<span id="cb3-13"><a aria-label="13"></a><span class="co"># Valores mínimos de k para preservar 90%, 95% e 99%</span></span>
+<span id="cb3-14"><a aria-label="14"></a>niveis <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.90</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
+<span id="cb3-15"><a aria-label="15"></a></span>
+<span id="cb3-16"><a aria-label="16"></a>ks_niveis <span class="ot">&lt;-</span> <span class="fu">sapply</span>(</span>
+<span id="cb3-17"><a aria-label="17"></a>  niveis,</span>
+<span id="cb3-18"><a aria-label="18"></a>  <span class="cf">function</span>(nivel) {</span>
+<span id="cb3-19"><a aria-label="19"></a>    <span class="fu">which</span>(energia_media <span class="sc">&gt;=</span> nivel)[<span class="dv">1</span>]</span>
+<span id="cb3-20"><a aria-label="20"></a>  }</span>
+<span id="cb3-21"><a aria-label="21"></a>)</span>
+<span id="cb3-22"><a aria-label="22"></a></span>
+<span id="cb3-23"><a aria-label="23"></a><span class="fu">names</span>(ks_niveis) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"90%"</span>, <span class="st">"95%"</span>, <span class="st">"99%"</span>)</span>
+<span id="cb3-24"><a aria-label="24"></a></span>
+<span id="cb3-25"><a aria-label="25"></a><span class="co"># Limites do eixo horizontal</span></span>
+<span id="cb3-26"><a aria-label="26"></a>k_max_grafico <span class="ot">&lt;-</span> <span class="fu">length</span>(energia_media)</span>
+<span id="cb3-27"><a aria-label="27"></a></span>
+<span id="cb3-28"><a aria-label="28"></a><span class="co"># Gráfico da informação acumulada</span></span>
+<span id="cb3-29"><a aria-label="29"></a><span class="fu">plot</span>(</span>
+<span id="cb3-30"><a aria-label="30"></a>  <span class="at">x =</span> <span class="fu">seq_along</span>(energia_media),</span>
+<span id="cb3-31"><a aria-label="31"></a>  <span class="at">y =</span> energia_media,</span>
+<span id="cb3-32"><a aria-label="32"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb3-33"><a aria-label="33"></a>  <span class="at">lwd =</span> <span class="fl">2.5</span>,</span>
+<span id="cb3-34"><a aria-label="34"></a>  <span class="at">xlab =</span> <span class="st">"Número de componentes (k)"</span>,</span>
+<span id="cb3-35"><a aria-label="35"></a>  <span class="at">ylab =</span> <span class="st">"Proporção acumulada da informação"</span>,</span>
+<span id="cb3-36"><a aria-label="36"></a>  <span class="at">main =</span> <span class="st">"Informação preservada pela reconstrução SVD"</span>,</span>
+<span id="cb3-37"><a aria-label="37"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(</span>
+<span id="cb3-38"><a aria-label="38"></a>    <span class="fu">max</span>(<span class="dv">0</span>, <span class="fu">min</span>(energia_media) <span class="sc">-</span> <span class="fl">0.03</span>),</span>
+<span id="cb3-39"><a aria-label="39"></a>    <span class="fl">1.01</span></span>
+<span id="cb3-40"><a aria-label="40"></a>  ),</span>
+<span id="cb3-41"><a aria-label="41"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>, k_max_grafico)</span>
+<span id="cb3-42"><a aria-label="42"></a>)</span>
+<span id="cb3-43"><a aria-label="43"></a></span>
+<span id="cb3-44"><a aria-label="44"></a><span class="co"># Linhas horizontais de referência</span></span>
+<span id="cb3-45"><a aria-label="45"></a><span class="fu">abline</span>(</span>
+<span id="cb3-46"><a aria-label="46"></a>  <span class="at">h =</span> niveis,</span>
+<span id="cb3-47"><a aria-label="47"></a>  <span class="at">lty =</span> <span class="dv">2</span>,</span>
+<span id="cb3-48"><a aria-label="48"></a>  <span class="at">col =</span> <span class="st">"gray60"</span></span>
+<span id="cb3-49"><a aria-label="49"></a>)</span>
+<span id="cb3-50"><a aria-label="50"></a></span>
+<span id="cb3-51"><a aria-label="51"></a><span class="co"># Linhas verticais nos valores de k</span></span>
+<span id="cb3-52"><a aria-label="52"></a><span class="fu">abline</span>(</span>
+<span id="cb3-53"><a aria-label="53"></a>  <span class="at">v =</span> ks_niveis,</span>
+<span id="cb3-54"><a aria-label="54"></a>  <span class="at">lty =</span> <span class="dv">3</span>,</span>
+<span id="cb3-55"><a aria-label="55"></a>  <span class="at">col =</span> <span class="st">"gray40"</span></span>
+<span id="cb3-56"><a aria-label="56"></a>)</span>
+<span id="cb3-57"><a aria-label="57"></a></span>
+<span id="cb3-58"><a aria-label="58"></a><span class="co"># Pontos destacados</span></span>
+<span id="cb3-59"><a aria-label="59"></a><span class="fu">points</span>(</span>
+<span id="cb3-60"><a aria-label="60"></a>  <span class="at">x =</span> ks_niveis,</span>
+<span id="cb3-61"><a aria-label="61"></a>  <span class="at">y =</span> niveis,</span>
+<span id="cb3-62"><a aria-label="62"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb3-63"><a aria-label="63"></a>  <span class="at">cex =</span> <span class="fl">1.3</span></span>
+<span id="cb3-64"><a aria-label="64"></a>)</span>
+<span id="cb3-65"><a aria-label="65"></a></span>
+<span id="cb3-66"><a aria-label="66"></a><span class="co"># Rótulos dos pontos</span></span>
+<span id="cb3-67"><a aria-label="67"></a>offsets <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.012</span>, <span class="fl">0.012</span>, <span class="sc">-</span><span class="fl">0.018</span>)</span>
+<span id="cb3-68"><a aria-label="68"></a></span>
+<span id="cb3-69"><a aria-label="69"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(niveis)) {</span>
+<span id="cb3-70"><a aria-label="70"></a></span>
+<span id="cb3-71"><a aria-label="71"></a>  posicao <span class="ot">&lt;-</span> <span class="cf">if</span> (i <span class="sc">==</span> <span class="fu">length</span>(niveis)) <span class="dv">1</span> <span class="cf">else</span> <span class="dv">3</span></span>
+<span id="cb3-72"><a aria-label="72"></a></span>
+<span id="cb3-73"><a aria-label="73"></a>  <span class="fu">text</span>(</span>
+<span id="cb3-74"><a aria-label="74"></a>    <span class="at">x =</span> ks_niveis[i],</span>
+<span id="cb3-75"><a aria-label="75"></a>    <span class="at">y =</span> niveis[i] <span class="sc">+</span> offsets[i],</span>
+<span id="cb3-76"><a aria-label="76"></a>    <span class="at">labels =</span> <span class="fu">paste0</span>(</span>
+<span id="cb3-77"><a aria-label="77"></a>      <span class="st">"k = "</span>, ks_niveis[i],</span>
+<span id="cb3-78"><a aria-label="78"></a>      <span class="st">"  ("</span>, niveis[i] <span class="sc">*</span> <span class="dv">100</span>, <span class="st">"%)"</span></span>
+<span id="cb3-79"><a aria-label="79"></a>    ),</span>
+<span id="cb3-80"><a aria-label="80"></a>    <span class="at">pos =</span> posicao,</span>
+<span id="cb3-81"><a aria-label="81"></a>    <span class="at">cex =</span> <span class="fl">0.85</span>,</span>
+<span id="cb3-82"><a aria-label="82"></a>    <span class="at">font =</span> <span class="dv">2</span></span>
+<span id="cb3-83"><a aria-label="83"></a>  )</span>
+<span id="cb3-84"><a aria-label="84"></a>}</span>
+<span id="cb3-85"><a aria-label="85"></a></span>
+<span id="cb3-86"><a aria-label="86"></a><span class="co"># Legenda</span></span>
+<span id="cb3-87"><a aria-label="87"></a><span class="fu">legend</span>(</span>
+<span id="cb3-88"><a aria-label="88"></a>  <span class="st">"bottomright"</span>,</span>
+<span id="cb3-89"><a aria-label="89"></a>  <span class="at">legend =</span> <span class="fu">paste0</span>(</span>
+<span id="cb3-90"><a aria-label="90"></a>    <span class="fu">names</span>(ks_niveis),</span>
+<span id="cb3-91"><a aria-label="91"></a>    <span class="st">" da informação: k = "</span>,</span>
+<span id="cb3-92"><a aria-label="92"></a>    ks_niveis</span>
+<span id="cb3-93"><a aria-label="93"></a>  ),</span>
+<span id="cb3-94"><a aria-label="94"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb3-95"><a aria-label="95"></a>  <span class="at">bty =</span> <span class="st">"n"</span>,</span>
+<span id="cb3-96"><a aria-label="96"></a>  <span class="at">cex =</span> <span class="fl">0.9</span></span>
+<span id="cb3-97"><a aria-label="97"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="r-energia-acumulada-output" class="slide level2 output-location-slide"><h2>R: Energia acumulada</h2><div class="cell output-location-slide">
@@ -996,8 +1002,8 @@ v_i^\top,
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="co"># Exibir os valores encontrados</span></span>
-<span id="cb4-2"><a></a>ks_niveis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="co"># Exibir os valores encontrados</span></span>
+<span id="cb4-2"><a aria-label="2"></a>ks_niveis</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>90% 95% 99% 
   2   7  45 </code></pre>
@@ -1027,7 +1033,7 @@ v_i^\top,
 
 </section><section id="quando-o-pca-não-é-suficiente" class="slide level2"><h2>Quando o PCA não é suficiente?</h2>
 
-<img data-src="../../..\images/aprendNsuper/falha_pca.png" style="width:100.0%" class="r-stretch"></section><section id="o-pca-é-uma-transformação-linear" class="slide level2"><h2>O PCA é uma transformação linear</h2>
+<img data-src="../../../images/aprendNsuper/falha_pca.png" style="width:100.0%" class="r-stretch"></section><section id="o-pca-é-uma-transformação-linear" class="slide level2"><h2>O PCA é uma transformação linear</h2>
 <ul>
 <li><p>Procura direções de máxima variância.</p></li>
 <li><p>As novas variáveis são combinações lineares das variáveis originais.</p></li>
@@ -1049,7 +1055,7 @@ v_i^\top,
 </div>
 </section><section id="exemplo-o-que-acontece-com-o-swiss-roll" class="slide level2"><h2>Exemplo: o que acontece com o Swiss Roll?</h2>
 
-<img data-src="../../..\images/aprendNsuper/swissroll_pca.png" style="width:100.0%" class="r-stretch"><div class="callout callout-note callout-titled callout-style-default">
+<img data-src="../../../images/aprendNsuper/swissroll_pca.png" style="width:100.0%" class="r-stretch"><div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
@@ -1064,7 +1070,7 @@ v_i^\top,
 </div>
 </section><section id="a-ideia-do-kernel-pca" class="slide level2"><h2>A ideia do Kernel PCA</h2>
 
-<img data-src="../../..\images/aprendNsuper/kpca_ideia.png" style="width:100.0%" class="r-stretch"></section><section id="a-ideia-do-kernel-pca-1" class="slide level2"><h2>A ideia do Kernel PCA</h2>
+<img data-src="../../../images/aprendNsuper/kpca_ideia.png" style="width:100.0%" class="r-stretch"></section><section id="a-ideia-do-kernel-pca-1" class="slide level2"><h2>A ideia do Kernel PCA</h2>
 <p>Em vez de aplicar o PCA diretamente aos dados originais,</p>
 <ul>
 <li><p>primeiro transformamos os dados para um espaço de maior dimensão;</p></li>
@@ -1142,7 +1148,7 @@ K(\mathbf{x_i},\mathbf{x_j})
 <!-- ::: -->
 </section><section id="fluxo-do-kernel-pca" class="slide level2"><h2>Fluxo do Kernel PCA</h2>
 
-<img data-src="../../..\images/aprendNsuper/fluxo_kernel_pca.png" style="width:100.0%" class="r-stretch"><div class="callout callout-note callout-titled callout-style-default">
+<img data-src="../../../images/aprendNsuper/fluxo_kernel_pca.png" style="width:100.0%" class="r-stretch"><div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
@@ -1188,67 +1194,67 @@ K(\mathbf{x_i},\mathbf{x_j})
 </div>
 </section><section id="r-pca-kernel-pca" class="slide level2"><h2>R: PCA × Kernel PCA</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">library</span>(kernlab)</span>
-<span id="cb6-2"><a></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-3"><a></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb6-4"><a></a></span>
-<span id="cb6-5"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb6-6"><a></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb6-7"><a></a>classe <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">'Interno'</span>,<span class="st">'Externo'</span>), <span class="at">each=</span>n<span class="sc">/</span><span class="dv">2</span>), <span class="at">levels=</span><span class="fu">c</span>(<span class="st">'Externo'</span>,<span class="st">'Interno'</span>))</span>
-<span id="cb6-8"><a></a>angulo <span class="ot">&lt;-</span> <span class="fu">runif</span>(n,<span class="dv">0</span>,<span class="dv">2</span><span class="sc">*</span>pi)</span>
-<span id="cb6-9"><a></a>raio <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(n<span class="sc">/</span><span class="dv">2</span>,<span class="dv">1</span>,.<span class="dv">08</span>),<span class="fu">rnorm</span>(n<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">10</span>))</span>
-<span id="cb6-10"><a></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1=</span>raio<span class="sc">*</span><span class="fu">cos</span>(angulo),<span class="at">x2=</span>raio<span class="sc">*</span><span class="fu">sin</span>(angulo),<span class="at">classe=</span>classe)</span>
-<span id="cb6-11"><a></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[,<span class="fu">c</span>(<span class="st">'x1'</span>,<span class="st">'x2'</span>)])</span>
-<span id="cb6-12"><a></a></span>
-<span id="cb6-13"><a></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(X,<span class="at">center=</span><span class="cn">FALSE</span>,<span class="at">scale.=</span><span class="cn">FALSE</span>)</span>
-<span id="cb6-14"><a></a>pca_coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">PC1=</span>pca<span class="sc">$</span>x[,<span class="dv">1</span>],<span class="at">PC2=</span>pca<span class="sc">$</span>x[,<span class="dv">2</span>],<span class="at">classe=</span>classe)</span>
-<span id="cb6-15"><a></a></span>
-<span id="cb6-16"><a></a><span class="co"># Kernel PCA não supervisionada: usar mais componentes para identificar</span></span>
-<span id="cb6-17"><a></a><span class="co"># qual delas representa a separação radial; rótulos apenas para visualização.</span></span>
-<span id="cb6-18"><a></a>kpca_fit <span class="ot">&lt;-</span> <span class="fu">kpca</span>(<span class="fu">as.matrix</span>(X), <span class="at">kernel=</span><span class="st">'rbfdot'</span>, <span class="at">kpar=</span><span class="fu">list</span>(<span class="at">sigma=</span><span class="fl">0.35</span>), <span class="at">features=</span><span class="dv">10</span>)</span>
-<span id="cb6-19"><a></a>K <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">rotated</span>(kpca_fit))</span>
-<span id="cb6-20"><a></a></span>
-<span id="cb6-21"><a></a><span class="co"># A diferença padronizada das médias serve APENAS para escolher um eixo didático.</span></span>
-<span id="cb6-22"><a></a>separacao <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">seq_len</span>(<span class="fu">ncol</span>(K)), <span class="cf">function</span>(j) {</span>
-<span id="cb6-23"><a></a>  a <span class="ot">&lt;-</span> K[classe<span class="sc">==</span><span class="st">'Interno'</span>,j]; b <span class="ot">&lt;-</span> K[classe<span class="sc">==</span><span class="st">'Externo'</span>,j]</span>
-<span id="cb6-24"><a></a>  <span class="fu">abs</span>(<span class="fu">mean</span>(a)<span class="sc">-</span><span class="fu">mean</span>(b))<span class="sc">/</span><span class="fu">sqrt</span>((<span class="fu">var</span>(a)<span class="sc">+</span><span class="fu">var</span>(b))<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb6-25"><a></a>}, <span class="fu">numeric</span>(<span class="dv">1</span>))</span>
-<span id="cb6-26"><a></a>j <span class="ot">&lt;-</span> <span class="fu">which.max</span>(separacao)</span>
-<span id="cb6-27"><a></a><span class="co"># Escolher um segundo eixo ortogonal, distinto do primeiro.</span></span>
-<span id="cb6-28"><a></a>j2 <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">seq_len</span>(<span class="fu">ncol</span>(K)),j)[<span class="dv">1</span>]</span>
-<span id="cb6-29"><a></a>kpca_coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">KPC_radial=</span>K[,j], <span class="at">KPC_aux=</span>K[,j2], <span class="at">classe=</span>classe)</span>
-<span id="cb6-30"><a></a></span>
-<span id="cb6-31"><a></a><span class="co"># Orientar o eixo radial para que a classe externa tenha maior escore.</span></span>
-<span id="cb6-32"><a></a><span class="cf">if</span> (<span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Externo'</span>]) <span class="sc">&lt;</span> <span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Interno'</span>])) {</span>
-<span id="cb6-33"><a></a>  kpca_coord<span class="sc">$</span>KPC_radial <span class="ot">&lt;-</span> <span class="sc">-</span>kpca_coord<span class="sc">$</span>KPC_radial</span>
-<span id="cb6-34"><a></a>}</span>
-<span id="cb6-35"><a></a>limiar <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">c</span>(<span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Interno'</span>]),</span>
-<span id="cb6-36"><a></a>                 <span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Externo'</span>])))</span>
-<span id="cb6-37"><a></a></span>
-<span id="cb6-38"><a></a>cores <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Externo'</span><span class="ot">=</span><span class="st">'#E76F66'</span>,<span class="st">'Interno'</span><span class="ot">=</span><span class="st">'#08AEB9'</span>)</span>
-<span id="cb6-39"><a></a>tema <span class="ot">&lt;-</span> <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">14</span>)<span class="sc">+</span><span class="fu">theme</span>(</span>
-<span id="cb6-40"><a></a>  <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">'bold'</span>,<span class="at">size=</span><span class="dv">17</span>),</span>
-<span id="cb6-41"><a></a>  <span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>),</span>
-<span id="cb6-42"><a></a>  <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb6-43"><a></a>  <span class="at">legend.position=</span><span class="st">'bottom'</span>,</span>
-<span id="cb6-44"><a></a>  <span class="at">aspect.ratio=</span><span class="dv">1</span></span>
-<span id="cb6-45"><a></a>)</span>
-<span id="cb6-46"><a></a>base <span class="ot">&lt;-</span> <span class="cf">function</span>(df,x,y) <span class="fu">ggplot</span>(df,<span class="fu">aes</span>(<span class="at">x=</span>{{x}},<span class="at">y=</span>{{y}},<span class="at">color=</span>classe))<span class="sc">+</span></span>
-<span id="cb6-47"><a></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span>.<span class="dv">75</span>,<span class="at">size=</span><span class="fl">1.7</span>)<span class="sc">+</span><span class="fu">scale_color_manual</span>(<span class="at">values=</span>cores)<span class="sc">+</span></span>
-<span id="cb6-48"><a></a>  <span class="fu">labs</span>(<span class="at">color=</span><span class="st">'Classe'</span>)<span class="sc">+</span>tema</span>
-<span id="cb6-49"><a></a></span>
-<span id="cb6-50"><a></a>g1 <span class="ot">&lt;-</span> <span class="fu">base</span>(dados,x1,x2)<span class="sc">+</span><span class="fu">coord_equal</span>()<span class="sc">+</span></span>
-<span id="cb6-51"><a></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">'Dados originais'</span>,<span class="at">subtitle=</span><span class="st">'Círculos concêntricos: fronteira radial'</span>,<span class="at">x=</span><span class="fu">expression</span>(X[<span class="dv">1</span>]),<span class="at">y=</span><span class="fu">expression</span>(X[<span class="dv">2</span>]))</span>
-<span id="cb6-52"><a></a>g2 <span class="ot">&lt;-</span> <span class="fu">base</span>(pca_coord,PC1,PC2)<span class="sc">+</span><span class="fu">coord_equal</span>()<span class="sc">+</span></span>
-<span id="cb6-53"><a></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">'PCA linear'</span>,<span class="at">subtitle=</span><span class="st">'Projeção linear: círculos permanecem aninhados'</span>,<span class="at">x=</span><span class="st">'PC1'</span>,<span class="at">y=</span><span class="st">'PC2'</span>)</span>
-<span id="cb6-54"><a></a>g3 <span class="ot">&lt;-</span> <span class="fu">base</span>(kpca_coord,KPC_radial,KPC_aux)<span class="sc">+</span></span>
-<span id="cb6-55"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>limiar,<span class="at">linetype=</span><span class="st">'dashed'</span>,<span class="at">linewidth=</span>.<span class="dv">8</span>,<span class="at">color=</span><span class="st">'#172554'</span>)<span class="sc">+</span></span>
-<span id="cb6-56"><a></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">'Kernel PCA (RBF)'</span>,<span class="at">subtitle=</span><span class="fu">paste0</span>(<span class="st">'Componente '</span>,j,<span class="st">' evidencia a diferença radial'</span>),</span>
-<span id="cb6-57"><a></a>       <span class="at">x=</span><span class="fu">paste0</span>(<span class="st">'KPC'</span>,j,<span class="st">' (radial)'</span>),<span class="at">y=</span><span class="fu">paste0</span>(<span class="st">'KPC'</span>,j2))</span>
-<span id="cb6-58"><a></a></span>
-<span id="cb6-59"><a></a>figura <span class="ot">&lt;-</span> (g1<span class="sc">+</span>g2<span class="sc">+</span>g3)<span class="sc">+</span><span class="fu">plot_layout</span>(<span class="at">guides=</span><span class="st">'collect'</span>) <span class="sc">&amp;</span></span>
-<span id="cb6-60"><a></a>    <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">'bottom'</span>)</span>
-<span id="cb6-61"><a></a><span class="fu">print</span>(figura)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="fu">library</span>(kernlab)</span>
+<span id="cb6-2"><a aria-label="2"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb6-3"><a aria-label="3"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb6-4"><a aria-label="4"></a></span>
+<span id="cb6-5"><a aria-label="5"></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb6-6"><a aria-label="6"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb6-7"><a aria-label="7"></a>classe <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">'Interno'</span>,<span class="st">'Externo'</span>), <span class="at">each=</span>n<span class="sc">/</span><span class="dv">2</span>), <span class="at">levels=</span><span class="fu">c</span>(<span class="st">'Externo'</span>,<span class="st">'Interno'</span>))</span>
+<span id="cb6-8"><a aria-label="8"></a>angulo <span class="ot">&lt;-</span> <span class="fu">runif</span>(n,<span class="dv">0</span>,<span class="dv">2</span><span class="sc">*</span>pi)</span>
+<span id="cb6-9"><a aria-label="9"></a>raio <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(n<span class="sc">/</span><span class="dv">2</span>,<span class="dv">1</span>,.<span class="dv">08</span>),<span class="fu">rnorm</span>(n<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">10</span>))</span>
+<span id="cb6-10"><a aria-label="10"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1=</span>raio<span class="sc">*</span><span class="fu">cos</span>(angulo),<span class="at">x2=</span>raio<span class="sc">*</span><span class="fu">sin</span>(angulo),<span class="at">classe=</span>classe)</span>
+<span id="cb6-11"><a aria-label="11"></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[,<span class="fu">c</span>(<span class="st">'x1'</span>,<span class="st">'x2'</span>)])</span>
+<span id="cb6-12"><a aria-label="12"></a></span>
+<span id="cb6-13"><a aria-label="13"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(X,<span class="at">center=</span><span class="cn">FALSE</span>,<span class="at">scale.=</span><span class="cn">FALSE</span>)</span>
+<span id="cb6-14"><a aria-label="14"></a>pca_coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">PC1=</span>pca<span class="sc">$</span>x[,<span class="dv">1</span>],<span class="at">PC2=</span>pca<span class="sc">$</span>x[,<span class="dv">2</span>],<span class="at">classe=</span>classe)</span>
+<span id="cb6-15"><a aria-label="15"></a></span>
+<span id="cb6-16"><a aria-label="16"></a><span class="co"># Kernel PCA não supervisionada: usar mais componentes para identificar</span></span>
+<span id="cb6-17"><a aria-label="17"></a><span class="co"># qual delas representa a separação radial; rótulos apenas para visualização.</span></span>
+<span id="cb6-18"><a aria-label="18"></a>kpca_fit <span class="ot">&lt;-</span> <span class="fu">kpca</span>(<span class="fu">as.matrix</span>(X), <span class="at">kernel=</span><span class="st">'rbfdot'</span>, <span class="at">kpar=</span><span class="fu">list</span>(<span class="at">sigma=</span><span class="fl">0.35</span>), <span class="at">features=</span><span class="dv">10</span>)</span>
+<span id="cb6-19"><a aria-label="19"></a>K <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">rotated</span>(kpca_fit))</span>
+<span id="cb6-20"><a aria-label="20"></a></span>
+<span id="cb6-21"><a aria-label="21"></a><span class="co"># A diferença padronizada das médias serve APENAS para escolher um eixo didático.</span></span>
+<span id="cb6-22"><a aria-label="22"></a>separacao <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">seq_len</span>(<span class="fu">ncol</span>(K)), <span class="cf">function</span>(j) {</span>
+<span id="cb6-23"><a aria-label="23"></a>  a <span class="ot">&lt;-</span> K[classe<span class="sc">==</span><span class="st">'Interno'</span>,j]; b <span class="ot">&lt;-</span> K[classe<span class="sc">==</span><span class="st">'Externo'</span>,j]</span>
+<span id="cb6-24"><a aria-label="24"></a>  <span class="fu">abs</span>(<span class="fu">mean</span>(a)<span class="sc">-</span><span class="fu">mean</span>(b))<span class="sc">/</span><span class="fu">sqrt</span>((<span class="fu">var</span>(a)<span class="sc">+</span><span class="fu">var</span>(b))<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb6-25"><a aria-label="25"></a>}, <span class="fu">numeric</span>(<span class="dv">1</span>))</span>
+<span id="cb6-26"><a aria-label="26"></a>j <span class="ot">&lt;-</span> <span class="fu">which.max</span>(separacao)</span>
+<span id="cb6-27"><a aria-label="27"></a><span class="co"># Escolher um segundo eixo ortogonal, distinto do primeiro.</span></span>
+<span id="cb6-28"><a aria-label="28"></a>j2 <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">seq_len</span>(<span class="fu">ncol</span>(K)),j)[<span class="dv">1</span>]</span>
+<span id="cb6-29"><a aria-label="29"></a>kpca_coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">KPC_radial=</span>K[,j], <span class="at">KPC_aux=</span>K[,j2], <span class="at">classe=</span>classe)</span>
+<span id="cb6-30"><a aria-label="30"></a></span>
+<span id="cb6-31"><a aria-label="31"></a><span class="co"># Orientar o eixo radial para que a classe externa tenha maior escore.</span></span>
+<span id="cb6-32"><a aria-label="32"></a><span class="cf">if</span> (<span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Externo'</span>]) <span class="sc">&lt;</span> <span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Interno'</span>])) {</span>
+<span id="cb6-33"><a aria-label="33"></a>  kpca_coord<span class="sc">$</span>KPC_radial <span class="ot">&lt;-</span> <span class="sc">-</span>kpca_coord<span class="sc">$</span>KPC_radial</span>
+<span id="cb6-34"><a aria-label="34"></a>}</span>
+<span id="cb6-35"><a aria-label="35"></a>limiar <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">c</span>(<span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Interno'</span>]),</span>
+<span id="cb6-36"><a aria-label="36"></a>                 <span class="fu">mean</span>(kpca_coord<span class="sc">$</span>KPC_radial[classe<span class="sc">==</span><span class="st">'Externo'</span>])))</span>
+<span id="cb6-37"><a aria-label="37"></a></span>
+<span id="cb6-38"><a aria-label="38"></a>cores <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Externo'</span><span class="ot">=</span><span class="st">'#E76F66'</span>,<span class="st">'Interno'</span><span class="ot">=</span><span class="st">'#08AEB9'</span>)</span>
+<span id="cb6-39"><a aria-label="39"></a>tema <span class="ot">&lt;-</span> <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">14</span>)<span class="sc">+</span><span class="fu">theme</span>(</span>
+<span id="cb6-40"><a aria-label="40"></a>  <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">'bold'</span>,<span class="at">size=</span><span class="dv">17</span>),</span>
+<span id="cb6-41"><a aria-label="41"></a>  <span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>),</span>
+<span id="cb6-42"><a aria-label="42"></a>  <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb6-43"><a aria-label="43"></a>  <span class="at">legend.position=</span><span class="st">'bottom'</span>,</span>
+<span id="cb6-44"><a aria-label="44"></a>  <span class="at">aspect.ratio=</span><span class="dv">1</span></span>
+<span id="cb6-45"><a aria-label="45"></a>)</span>
+<span id="cb6-46"><a aria-label="46"></a>base <span class="ot">&lt;-</span> <span class="cf">function</span>(df,x,y) <span class="fu">ggplot</span>(df,<span class="fu">aes</span>(<span class="at">x=</span>{{x}},<span class="at">y=</span>{{y}},<span class="at">color=</span>classe))<span class="sc">+</span></span>
+<span id="cb6-47"><a aria-label="47"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span>.<span class="dv">75</span>,<span class="at">size=</span><span class="fl">1.7</span>)<span class="sc">+</span><span class="fu">scale_color_manual</span>(<span class="at">values=</span>cores)<span class="sc">+</span></span>
+<span id="cb6-48"><a aria-label="48"></a>  <span class="fu">labs</span>(<span class="at">color=</span><span class="st">'Classe'</span>)<span class="sc">+</span>tema</span>
+<span id="cb6-49"><a aria-label="49"></a></span>
+<span id="cb6-50"><a aria-label="50"></a>g1 <span class="ot">&lt;-</span> <span class="fu">base</span>(dados,x1,x2)<span class="sc">+</span><span class="fu">coord_equal</span>()<span class="sc">+</span></span>
+<span id="cb6-51"><a aria-label="51"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">'Dados originais'</span>,<span class="at">subtitle=</span><span class="st">'Círculos concêntricos: fronteira radial'</span>,<span class="at">x=</span><span class="fu">expression</span>(X[<span class="dv">1</span>]),<span class="at">y=</span><span class="fu">expression</span>(X[<span class="dv">2</span>]))</span>
+<span id="cb6-52"><a aria-label="52"></a>g2 <span class="ot">&lt;-</span> <span class="fu">base</span>(pca_coord,PC1,PC2)<span class="sc">+</span><span class="fu">coord_equal</span>()<span class="sc">+</span></span>
+<span id="cb6-53"><a aria-label="53"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">'PCA linear'</span>,<span class="at">subtitle=</span><span class="st">'Projeção linear: círculos permanecem aninhados'</span>,<span class="at">x=</span><span class="st">'PC1'</span>,<span class="at">y=</span><span class="st">'PC2'</span>)</span>
+<span id="cb6-54"><a aria-label="54"></a>g3 <span class="ot">&lt;-</span> <span class="fu">base</span>(kpca_coord,KPC_radial,KPC_aux)<span class="sc">+</span></span>
+<span id="cb6-55"><a aria-label="55"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>limiar,<span class="at">linetype=</span><span class="st">'dashed'</span>,<span class="at">linewidth=</span>.<span class="dv">8</span>,<span class="at">color=</span><span class="st">'#172554'</span>)<span class="sc">+</span></span>
+<span id="cb6-56"><a aria-label="56"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">'Kernel PCA (RBF)'</span>,<span class="at">subtitle=</span><span class="fu">paste0</span>(<span class="st">'Componente '</span>,j,<span class="st">' evidencia a diferença radial'</span>),</span>
+<span id="cb6-57"><a aria-label="57"></a>       <span class="at">x=</span><span class="fu">paste0</span>(<span class="st">'KPC'</span>,j,<span class="st">' (radial)'</span>),<span class="at">y=</span><span class="fu">paste0</span>(<span class="st">'KPC'</span>,j2))</span>
+<span id="cb6-58"><a aria-label="58"></a></span>
+<span id="cb6-59"><a aria-label="59"></a>figura <span class="ot">&lt;-</span> (g1<span class="sc">+</span>g2<span class="sc">+</span>g3)<span class="sc">+</span><span class="fu">plot_layout</span>(<span class="at">guides=</span><span class="st">'collect'</span>) <span class="sc">&amp;</span></span>
+<span id="cb6-60"><a aria-label="60"></a>    <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">'bottom'</span>)</span>
+<span id="cb6-61"><a aria-label="61"></a><span class="fu">print</span>(figura)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="r-pca-kernel-pca-output" class="slide level2 output-location-slide"><h2>R: PCA × Kernel PCA</h2><div class="cell output-location-slide">
@@ -1258,7 +1264,7 @@ K(\mathbf{x_i},\mathbf{x_j})
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co"># ggsave('PCA_vs_KernelPCA_EST335.png',figura,width=16,height=6.2,dpi=220,bg='white')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="co"># ggsave('PCA_vs_KernelPCA_EST335.png',figura,width=16,height=6.2,dpi=220,bg='white')</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></section><section id="pca-linear-kernel-pca-interpretação" class="slide level2"><h2>PCA linear × Kernel PCA: interpretação</h2>
 <p><strong>Dados originais:</strong> as duas classes formam círculos concêntricos. A separação depende da distância ao centro e, portanto, <strong>não pode ser realizada por uma reta</strong>.</p>
 <p><strong>PCA linear:</strong> transforma as variáveis por combinações lineares, preservando a estrutura concêntrica. Assim, as classes continuam sem separação linear.</p>
@@ -1288,7 +1294,7 @@ K(\mathbf{x_i},\mathbf{x_j})
 </blockquote>
 </section><section id="ideia-intuitiva" class="slide level2"><h2>Ideia Intuitiva</h2>
 
-<img data-src="../../..\images/aprendNsuper/int_pa.png" style="width:100.0%" class="r-stretch"></section><section id="ideia-intuitiva-1" class="slide level2"><h2>Ideia intuitiva</h2>
+<img data-src="../../../images/aprendNsuper/int_pa.png" style="width:100.0%" class="r-stretch"></section><section id="ideia-intuitiva-1" class="slide level2"><h2>Ideia intuitiva</h2>
 <p>Ao contrário do PCA,</p>
 <ul>
 <li>não procuramos a direção que maximiza a variância;</li>
@@ -1386,7 +1392,7 @@ z_{ij}\sim N(0,1)
 <!-- preservadas após a redução dimensional. -->
 <!-- ::: -->
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/pa.png" style="width:100.0%" class="r-stretch"></section><section id="por-que-normalizar-por-1sqrtk" class="slide level2"><h2>Por que normalizar por <span class="math inline">\(1/\sqrt{k}\)</span>?</h2>
+<img data-src="../../../images/aprendNsuper/pa.png" style="width:100.0%" class="r-stretch"></section><section id="por-que-normalizar-por-1sqrtk" class="slide level2"><h2>Por que normalizar por <span class="math inline">\(1/\sqrt{k}\)</span>?</h2>
 <p>Na projeção aleatória gaussiana, cada elemento da matriz <span class="math inline">\(\mathbf R\)</span> é construído como:</p>
 <p><span class="math display">\[
 r_{ij}=\frac{z_{ij}}{\sqrt{k}},
@@ -1459,7 +1465,7 @@ r_{ij}
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/paesp.png" style="width:100.0%" class="r-stretch"></section><section id="interpretação-geométrica" class="slide level2"><h2>Interpretação geométrica</h2>
+<img data-src="../../../images/aprendNsuper/paesp.png" style="width:100.0%" class="r-stretch"></section><section id="interpretação-geométrica" class="slide level2"><h2>Interpretação geométrica</h2>
 <p>Cada componente reduzida é dada por</p>
 <p><span class="math display">\[
 \boxed{
@@ -1491,7 +1497,7 @@ z_j
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/paesp2.png" style="width:100.0%" class="r-stretch"></section><section id="por-que-as-projeções-aleatórias-funcionam" class="slide level2"><h2>Por que as Projeções Aleatórias funcionam?</h2>
+<img data-src="../../../images/aprendNsuper/paesp2.png" style="width:100.0%" class="r-stretch"></section><section id="por-que-as-projeções-aleatórias-funcionam" class="slide level2"><h2>Por que as Projeções Aleatórias funcionam?</h2>
 <p>Até aqui vimos que a redução de dimensionalidade é obtida utilizando uma matriz completamente aleatória.</p>
 <p>Surge então uma pergunta natural:</p>
 <div class="callout callout-important callout-titled callout-style-default">
@@ -1571,7 +1577,7 @@ z_j
 <!-- ::: -->
 <!-- --- -->
 <!-- ![](/images/aprendNsuper/mostraK.png){width=100%} -->
-<img data-src="../../..\images/aprendNsuper/ljl.png" style="width:100.0%" class="r-stretch"></section><section id="exemplo-quantas-dimensões-são-suficientes" class="slide level2"><h2>Exemplo: Quantas dimensões são suficientes?</h2>
+<img data-src="../../../images/aprendNsuper/ljl.png" style="width:100.0%" class="r-stretch"></section><section id="exemplo-quantas-dimensões-são-suficientes" class="slide level2"><h2>Exemplo: Quantas dimensões são suficientes?</h2>
 <p>Considere um conjunto contendo</p>
 <p><span class="math display">\[
 n=10\,000
@@ -1686,83 +1692,83 @@ k
 <p><strong>Exemplos:</strong> KNN, clusterização, recuperação de informação, processamento de textos, embeddings, busca aproximada por vizinhos mais próximos (ANN)</p>
 </section><section id="r-projeções-aleatórias" class="slide level2"><h2>R: Projeções Aleatórias</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb8-2"><a></a></span>
-<span id="cb8-3"><a></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
-<span id="cb8-4"><a></a></span>
-<span id="cb8-5"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-6"><a></a><span class="co"># Dados simulados</span></span>
-<span id="cb8-7"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-8"><a></a></span>
-<span id="cb8-9"><a></a>n <span class="ot">&lt;-</span> <span class="dv">300</span>      <span class="co"># observações</span></span>
-<span id="cb8-10"><a></a>p <span class="ot">&lt;-</span> <span class="dv">500</span>      <span class="co"># dimensão original</span></span>
-<span id="cb8-11"><a></a>k <span class="ot">&lt;-</span> <span class="dv">50</span>       <span class="co"># dimensão reduzida</span></span>
-<span id="cb8-12"><a></a></span>
-<span id="cb8-13"><a></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb8-14"><a></a>  <span class="fu">rnorm</span>(n <span class="sc">*</span> p),</span>
-<span id="cb8-15"><a></a>  <span class="at">nrow =</span> n,</span>
-<span id="cb8-16"><a></a>  <span class="at">ncol =</span> p</span>
-<span id="cb8-17"><a></a>)</span>
-<span id="cb8-18"><a></a></span>
-<span id="cb8-19"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-20"><a></a><span class="co"># Distâncias originais</span></span>
-<span id="cb8-21"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-22"><a></a></span>
-<span id="cb8-23"><a></a>D_original <span class="ot">&lt;-</span> <span class="fu">dist</span>(X)</span>
-<span id="cb8-24"><a></a></span>
-<span id="cb8-25"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-26"><a></a><span class="co"># Matriz de projeção gaussiana</span></span>
-<span id="cb8-27"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-28"><a></a></span>
-<span id="cb8-29"><a></a>R <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb8-30"><a></a>  <span class="fu">rnorm</span>(p <span class="sc">*</span> k, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
-<span id="cb8-31"><a></a>  <span class="at">nrow =</span> p,</span>
-<span id="cb8-32"><a></a>  <span class="at">ncol =</span> k</span>
-<span id="cb8-33"><a></a>)</span>
-<span id="cb8-34"><a></a></span>
-<span id="cb8-35"><a></a>R <span class="ot">&lt;-</span> R <span class="sc">/</span> <span class="fu">sqrt</span>(k)</span>
-<span id="cb8-36"><a></a></span>
-<span id="cb8-37"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-38"><a></a><span class="co"># Projeção aleatória</span></span>
-<span id="cb8-39"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-40"><a></a></span>
-<span id="cb8-41"><a></a>Z <span class="ot">&lt;-</span> X <span class="sc">%*%</span> R</span>
-<span id="cb8-42"><a></a></span>
-<span id="cb8-43"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-44"><a></a><span class="co"># Distâncias projetadas</span></span>
-<span id="cb8-45"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-46"><a></a></span>
-<span id="cb8-47"><a></a>D_proj <span class="ot">&lt;-</span> <span class="fu">dist</span>(Z)</span>
-<span id="cb8-48"><a></a></span>
-<span id="cb8-49"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-50"><a></a><span class="co"># Comparação</span></span>
-<span id="cb8-51"><a></a><span class="co">#--------------------------------------------------</span></span>
-<span id="cb8-52"><a></a></span>
-<span id="cb8-53"><a></a>comparacao <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb8-54"><a></a>  <span class="at">original =</span> <span class="fu">as.vector</span>(D_original),</span>
-<span id="cb8-55"><a></a>  <span class="at">projetada =</span> <span class="fu">as.vector</span>(D_proj)</span>
-<span id="cb8-56"><a></a>)</span>
-<span id="cb8-57"><a></a></span>
-<span id="cb8-58"><a></a><span class="fu">ggplot</span>(</span>
-<span id="cb8-59"><a></a>  comparacao,</span>
-<span id="cb8-60"><a></a>  <span class="fu">aes</span>(original, projetada)</span>
-<span id="cb8-61"><a></a>) <span class="sc">+</span></span>
-<span id="cb8-62"><a></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb8-63"><a></a>    <span class="at">alpha =</span> <span class="fl">0.20</span>,</span>
-<span id="cb8-64"><a></a>    <span class="at">size =</span> <span class="fl">1.3</span></span>
-<span id="cb8-65"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb8-66"><a></a>  <span class="fu">geom_abline</span>(</span>
-<span id="cb8-67"><a></a>    <span class="at">intercept =</span> <span class="dv">0</span>,</span>
-<span id="cb8-68"><a></a>    <span class="at">slope =</span> <span class="dv">1</span>,</span>
-<span id="cb8-69"><a></a>    <span class="at">colour =</span> <span class="st">"red"</span>,</span>
-<span id="cb8-70"><a></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb8-71"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb8-72"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb8-73"><a></a>    <span class="at">title =</span> <span class="st">"Preservação das distâncias após Projeção Aleatória"</span>,</span>
-<span id="cb8-74"><a></a>    <span class="at">x =</span> <span class="st">"Distância original"</span>,</span>
-<span id="cb8-75"><a></a>    <span class="at">y =</span> <span class="st">"Distância projetada"</span></span>
-<span id="cb8-76"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb8-77"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a aria-label="2"></a></span>
+<span id="cb8-3"><a aria-label="3"></a><span class="fu">set.seed</span>(<span class="dv">335</span>)</span>
+<span id="cb8-4"><a aria-label="4"></a></span>
+<span id="cb8-5"><a aria-label="5"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-6"><a aria-label="6"></a><span class="co"># Dados simulados</span></span>
+<span id="cb8-7"><a aria-label="7"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-8"><a aria-label="8"></a></span>
+<span id="cb8-9"><a aria-label="9"></a>n <span class="ot">&lt;-</span> <span class="dv">300</span>      <span class="co"># observações</span></span>
+<span id="cb8-10"><a aria-label="10"></a>p <span class="ot">&lt;-</span> <span class="dv">500</span>      <span class="co"># dimensão original</span></span>
+<span id="cb8-11"><a aria-label="11"></a>k <span class="ot">&lt;-</span> <span class="dv">50</span>       <span class="co"># dimensão reduzida</span></span>
+<span id="cb8-12"><a aria-label="12"></a></span>
+<span id="cb8-13"><a aria-label="13"></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb8-14"><a aria-label="14"></a>  <span class="fu">rnorm</span>(n <span class="sc">*</span> p),</span>
+<span id="cb8-15"><a aria-label="15"></a>  <span class="at">nrow =</span> n,</span>
+<span id="cb8-16"><a aria-label="16"></a>  <span class="at">ncol =</span> p</span>
+<span id="cb8-17"><a aria-label="17"></a>)</span>
+<span id="cb8-18"><a aria-label="18"></a></span>
+<span id="cb8-19"><a aria-label="19"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-20"><a aria-label="20"></a><span class="co"># Distâncias originais</span></span>
+<span id="cb8-21"><a aria-label="21"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-22"><a aria-label="22"></a></span>
+<span id="cb8-23"><a aria-label="23"></a>D_original <span class="ot">&lt;-</span> <span class="fu">dist</span>(X)</span>
+<span id="cb8-24"><a aria-label="24"></a></span>
+<span id="cb8-25"><a aria-label="25"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-26"><a aria-label="26"></a><span class="co"># Matriz de projeção gaussiana</span></span>
+<span id="cb8-27"><a aria-label="27"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-28"><a aria-label="28"></a></span>
+<span id="cb8-29"><a aria-label="29"></a>R <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb8-30"><a aria-label="30"></a>  <span class="fu">rnorm</span>(p <span class="sc">*</span> k, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb8-31"><a aria-label="31"></a>  <span class="at">nrow =</span> p,</span>
+<span id="cb8-32"><a aria-label="32"></a>  <span class="at">ncol =</span> k</span>
+<span id="cb8-33"><a aria-label="33"></a>)</span>
+<span id="cb8-34"><a aria-label="34"></a></span>
+<span id="cb8-35"><a aria-label="35"></a>R <span class="ot">&lt;-</span> R <span class="sc">/</span> <span class="fu">sqrt</span>(k)</span>
+<span id="cb8-36"><a aria-label="36"></a></span>
+<span id="cb8-37"><a aria-label="37"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-38"><a aria-label="38"></a><span class="co"># Projeção aleatória</span></span>
+<span id="cb8-39"><a aria-label="39"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-40"><a aria-label="40"></a></span>
+<span id="cb8-41"><a aria-label="41"></a>Z <span class="ot">&lt;-</span> X <span class="sc">%*%</span> R</span>
+<span id="cb8-42"><a aria-label="42"></a></span>
+<span id="cb8-43"><a aria-label="43"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-44"><a aria-label="44"></a><span class="co"># Distâncias projetadas</span></span>
+<span id="cb8-45"><a aria-label="45"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-46"><a aria-label="46"></a></span>
+<span id="cb8-47"><a aria-label="47"></a>D_proj <span class="ot">&lt;-</span> <span class="fu">dist</span>(Z)</span>
+<span id="cb8-48"><a aria-label="48"></a></span>
+<span id="cb8-49"><a aria-label="49"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-50"><a aria-label="50"></a><span class="co"># Comparação</span></span>
+<span id="cb8-51"><a aria-label="51"></a><span class="co">#--------------------------------------------------</span></span>
+<span id="cb8-52"><a aria-label="52"></a></span>
+<span id="cb8-53"><a aria-label="53"></a>comparacao <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb8-54"><a aria-label="54"></a>  <span class="at">original =</span> <span class="fu">as.vector</span>(D_original),</span>
+<span id="cb8-55"><a aria-label="55"></a>  <span class="at">projetada =</span> <span class="fu">as.vector</span>(D_proj)</span>
+<span id="cb8-56"><a aria-label="56"></a>)</span>
+<span id="cb8-57"><a aria-label="57"></a></span>
+<span id="cb8-58"><a aria-label="58"></a><span class="fu">ggplot</span>(</span>
+<span id="cb8-59"><a aria-label="59"></a>  comparacao,</span>
+<span id="cb8-60"><a aria-label="60"></a>  <span class="fu">aes</span>(original, projetada)</span>
+<span id="cb8-61"><a aria-label="61"></a>) <span class="sc">+</span></span>
+<span id="cb8-62"><a aria-label="62"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb8-63"><a aria-label="63"></a>    <span class="at">alpha =</span> <span class="fl">0.20</span>,</span>
+<span id="cb8-64"><a aria-label="64"></a>    <span class="at">size =</span> <span class="fl">1.3</span></span>
+<span id="cb8-65"><a aria-label="65"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-66"><a aria-label="66"></a>  <span class="fu">geom_abline</span>(</span>
+<span id="cb8-67"><a aria-label="67"></a>    <span class="at">intercept =</span> <span class="dv">0</span>,</span>
+<span id="cb8-68"><a aria-label="68"></a>    <span class="at">slope =</span> <span class="dv">1</span>,</span>
+<span id="cb8-69"><a aria-label="69"></a>    <span class="at">colour =</span> <span class="st">"red"</span>,</span>
+<span id="cb8-70"><a aria-label="70"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb8-71"><a aria-label="71"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-72"><a aria-label="72"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-73"><a aria-label="73"></a>    <span class="at">title =</span> <span class="st">"Preservação das distâncias após Projeção Aleatória"</span>,</span>
+<span id="cb8-74"><a aria-label="74"></a>    <span class="at">x =</span> <span class="st">"Distância original"</span>,</span>
+<span id="cb8-75"><a aria-label="75"></a>    <span class="at">y =</span> <span class="st">"Distância projetada"</span></span>
+<span id="cb8-76"><a aria-label="76"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-77"><a aria-label="77"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="r-projeções-aleatórias-output" class="slide level2 output-location-slide"><h2>R: Projeções Aleatórias</h2><div class="cell output-location-slide">
@@ -1774,69 +1780,69 @@ k
 </div>
 </div></section><section id="r-projeções-aleatórias-1" class="slide level2"><h2>R: Projeções Aleatórias</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">cor</span>(</span>
-<span id="cb9-2"><a></a>  comparacao<span class="sc">$</span>original,</span>
-<span id="cb9-3"><a></a>  comparacao<span class="sc">$</span>projetada</span>
-<span id="cb9-4"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="fu">cor</span>(</span>
+<span id="cb9-2"><a aria-label="2"></a>  comparacao<span class="sc">$</span>original,</span>
+<span id="cb9-3"><a aria-label="3"></a>  comparacao<span class="sc">$</span>projetada</span>
+<span id="cb9-4"><a aria-label="4"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2911465</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(</span>
-<span id="cb11-2"><a></a>  <span class="fu">mean</span>(</span>
-<span id="cb11-3"><a></a>    (comparacao<span class="sc">$</span>original <span class="sc">-</span></span>
-<span id="cb11-4"><a></a>       comparacao<span class="sc">$</span>projetada)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb11-5"><a></a>  )</span>
-<span id="cb11-6"><a></a>)</span>
-<span id="cb11-7"><a></a></span>
-<span id="cb11-8"><a></a>rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(</span>
+<span id="cb11-2"><a aria-label="2"></a>  <span class="fu">mean</span>(</span>
+<span id="cb11-3"><a aria-label="3"></a>    (comparacao<span class="sc">$</span>original <span class="sc">-</span></span>
+<span id="cb11-4"><a aria-label="4"></a>       comparacao<span class="sc">$</span>projetada)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb11-5"><a aria-label="5"></a>  )</span>
+<span id="cb11-6"><a aria-label="6"></a>)</span>
+<span id="cb11-7"><a aria-label="7"></a></span>
+<span id="cb11-8"><a aria-label="8"></a>rmse</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.159009</code></pre>
 </div>
 </div>
 </section><section id="r-projeções-aleatórias-2" class="slide level2"><h2>R: Projeções Aleatórias</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>ks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>,<span class="dv">500</span>)</span>
-<span id="cb13-2"><a></a></span>
-<span id="cb13-3"><a></a>resultado <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb13-4"><a></a></span>
-<span id="cb13-5"><a></a><span class="cf">for</span>(k <span class="cf">in</span> ks){</span>
-<span id="cb13-6"><a></a></span>
-<span id="cb13-7"><a></a>  R <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb13-8"><a></a>    <span class="fu">rnorm</span>(p<span class="sc">*</span>k),</span>
-<span id="cb13-9"><a></a>    p,</span>
-<span id="cb13-10"><a></a>    k</span>
-<span id="cb13-11"><a></a>  )<span class="sc">/</span><span class="fu">sqrt</span>(k)</span>
-<span id="cb13-12"><a></a></span>
-<span id="cb13-13"><a></a>  Z <span class="ot">&lt;-</span> X <span class="sc">%*%</span> R</span>
-<span id="cb13-14"><a></a></span>
-<span id="cb13-15"><a></a>  D_proj <span class="ot">&lt;-</span> <span class="fu">dist</span>(Z)</span>
-<span id="cb13-16"><a></a></span>
-<span id="cb13-17"><a></a>  resultado <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb13-18"><a></a>    resultado,</span>
-<span id="cb13-19"><a></a>    <span class="fu">data.frame</span>(</span>
-<span id="cb13-20"><a></a>      <span class="at">k =</span> k,</span>
-<span id="cb13-21"><a></a>      <span class="at">correlacao =</span> <span class="fu">cor</span>(</span>
-<span id="cb13-22"><a></a>        <span class="fu">as.vector</span>(D_original),</span>
-<span id="cb13-23"><a></a>        <span class="fu">as.vector</span>(D_proj)</span>
-<span id="cb13-24"><a></a>      )</span>
-<span id="cb13-25"><a></a>    )</span>
-<span id="cb13-26"><a></a>  )</span>
-<span id="cb13-27"><a></a></span>
-<span id="cb13-28"><a></a>}</span>
-<span id="cb13-29"><a></a></span>
-<span id="cb13-30"><a></a><span class="fu">ggplot</span>(</span>
-<span id="cb13-31"><a></a>  resultado,</span>
-<span id="cb13-32"><a></a>  <span class="fu">aes</span>(k, correlacao)</span>
-<span id="cb13-33"><a></a>)<span class="sc">+</span></span>
-<span id="cb13-34"><a></a><span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb13-35"><a></a><span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>)<span class="sc">+</span></span>
-<span id="cb13-36"><a></a><span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb13-37"><a></a><span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">15</span>)<span class="sc">+</span></span>
-<span id="cb13-38"><a></a><span class="fu">labs</span>(</span>
-<span id="cb13-39"><a></a><span class="at">title=</span><span class="st">"Efeito da dimensão reduzida"</span>,</span>
-<span id="cb13-40"><a></a><span class="at">x=</span><span class="st">"Número de componentes"</span>,</span>
-<span id="cb13-41"><a></a><span class="at">y=</span><span class="st">"Correlação entre distâncias"</span></span>
-<span id="cb13-42"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a>ks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>,<span class="dv">500</span>)</span>
+<span id="cb13-2"><a aria-label="2"></a></span>
+<span id="cb13-3"><a aria-label="3"></a>resultado <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb13-4"><a aria-label="4"></a></span>
+<span id="cb13-5"><a aria-label="5"></a><span class="cf">for</span>(k <span class="cf">in</span> ks){</span>
+<span id="cb13-6"><a aria-label="6"></a></span>
+<span id="cb13-7"><a aria-label="7"></a>  R <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb13-8"><a aria-label="8"></a>    <span class="fu">rnorm</span>(p<span class="sc">*</span>k),</span>
+<span id="cb13-9"><a aria-label="9"></a>    p,</span>
+<span id="cb13-10"><a aria-label="10"></a>    k</span>
+<span id="cb13-11"><a aria-label="11"></a>  )<span class="sc">/</span><span class="fu">sqrt</span>(k)</span>
+<span id="cb13-12"><a aria-label="12"></a></span>
+<span id="cb13-13"><a aria-label="13"></a>  Z <span class="ot">&lt;-</span> X <span class="sc">%*%</span> R</span>
+<span id="cb13-14"><a aria-label="14"></a></span>
+<span id="cb13-15"><a aria-label="15"></a>  D_proj <span class="ot">&lt;-</span> <span class="fu">dist</span>(Z)</span>
+<span id="cb13-16"><a aria-label="16"></a></span>
+<span id="cb13-17"><a aria-label="17"></a>  resultado <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb13-18"><a aria-label="18"></a>    resultado,</span>
+<span id="cb13-19"><a aria-label="19"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb13-20"><a aria-label="20"></a>      <span class="at">k =</span> k,</span>
+<span id="cb13-21"><a aria-label="21"></a>      <span class="at">correlacao =</span> <span class="fu">cor</span>(</span>
+<span id="cb13-22"><a aria-label="22"></a>        <span class="fu">as.vector</span>(D_original),</span>
+<span id="cb13-23"><a aria-label="23"></a>        <span class="fu">as.vector</span>(D_proj)</span>
+<span id="cb13-24"><a aria-label="24"></a>      )</span>
+<span id="cb13-25"><a aria-label="25"></a>    )</span>
+<span id="cb13-26"><a aria-label="26"></a>  )</span>
+<span id="cb13-27"><a aria-label="27"></a></span>
+<span id="cb13-28"><a aria-label="28"></a>}</span>
+<span id="cb13-29"><a aria-label="29"></a></span>
+<span id="cb13-30"><a aria-label="30"></a><span class="fu">ggplot</span>(</span>
+<span id="cb13-31"><a aria-label="31"></a>  resultado,</span>
+<span id="cb13-32"><a aria-label="32"></a>  <span class="fu">aes</span>(k, correlacao)</span>
+<span id="cb13-33"><a aria-label="33"></a>)<span class="sc">+</span></span>
+<span id="cb13-34"><a aria-label="34"></a><span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb13-35"><a aria-label="35"></a><span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb13-36"><a aria-label="36"></a><span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb13-37"><a aria-label="37"></a><span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">15</span>)<span class="sc">+</span></span>
+<span id="cb13-38"><a aria-label="38"></a><span class="fu">labs</span>(</span>
+<span id="cb13-39"><a aria-label="39"></a><span class="at">title=</span><span class="st">"Efeito da dimensão reduzida"</span>,</span>
+<span id="cb13-40"><a aria-label="40"></a><span class="at">x=</span><span class="st">"Número de componentes"</span>,</span>
+<span id="cb13-41"><a aria-label="41"></a><span class="at">y=</span><span class="st">"Correlação entre distâncias"</span></span>
+<span id="cb13-42"><a aria-label="42"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="r-projeções-aleatórias-2-output" class="slide level2 output-location-slide"><h2>R: Projeções Aleatórias</h2><div class="cell output-location-slide">
@@ -1878,7 +1884,7 @@ k
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/autoencoder.png" style="width:100.0%" class="r-stretch"></section><section id="o-papel-do-gargalo-bottleneck" class="slide level2"><h2>O papel do gargalo (bottleneck)</h2>
+<img data-src="../../../images/aprendNsuper/autoencoder.png" style="width:100.0%" class="r-stretch"></section><section id="o-papel-do-gargalo-bottleneck" class="slide level2"><h2>O papel do gargalo (bottleneck)</h2>
 <p>Considere uma rede neural cujo objetivo seja reconstruir a própria entrada.</p>
 <p>Se a rede possuir capacidade suficiente, ela poderá simplesmente aprender a copiar os dados:</p>
 <p><span class="math display">\[
@@ -1909,7 +1915,7 @@ k
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/papel_gargalo.png" style="width:100.0%" class="r-stretch"></section><section id="ideia-geral" class="slide level2"><h2>Ideia geral</h2>
+<img data-src="../../../images/aprendNsuper/papel_gargalo.png" style="width:100.0%" class="r-stretch"></section><section id="ideia-geral" class="slide level2"><h2>Ideia geral</h2>
 <p>Um Autoencoder é composto por duas partes:</p>
 <ul>
 <li>
@@ -1932,7 +1938,7 @@ k
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/autoencoder2.png" style="width:100.0%" class="r-stretch"></section><section id="arquitetura-matemática" class="slide level2"><h2>Arquitetura Matemática</h2>
+<img data-src="../../../images/aprendNsuper/autoencoder2.png" style="width:100.0%" class="r-stretch"></section><section id="arquitetura-matemática" class="slide level2"><h2>Arquitetura Matemática</h2>
 <p>A arquitetura pode ser representada por</p>
 <p><span class="math display">\[
 \boxed{
@@ -2118,7 +2124,7 @@ L
 <!-- O espaço latente procura preservar apenas as características essenciais necessárias para reconstruir os dados. -->
 <!-- ::: -->
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/autoencoder3.png" style="width:100.0%" class="r-stretch"></section><section id="pca-autoencoder" class="slide level2"><h2>PCA × Autoencoder</h2>
+<img data-src="../../../images/aprendNsuper/autoencoder3.png" style="width:100.0%" class="r-stretch"></section><section id="pca-autoencoder" class="slide level2"><h2>PCA × Autoencoder</h2>
 <table class="caption-top">
 <thead><tr class="header">
 <th style="text-align: left;">PCA</th>
@@ -2162,7 +2168,7 @@ L
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/autoencoder4.png" style="width:100.0%" class="r-stretch"></section><section id="o-que-representa-o-espaço-latente" class="slide level2"><h2>O que representa o espaço latente?</h2>
+<img data-src="../../../images/aprendNsuper/autoencoder4.png" style="width:100.0%" class="r-stretch"></section><section id="o-que-representa-o-espaço-latente" class="slide level2"><h2>O que representa o espaço latente?</h2>
 <p>Cada observação é representada por um novo vetor</p>
 <p><span class="math display">\[
 \boxed{\boldsymbol z = f_\theta(\mathbf x)}
@@ -2189,7 +2195,7 @@ L
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/autoencoder5.png" style="width:100.0%" class="r-stretch"></section><section id="aprendendo-um-manifold" class="slide level2"><h2>Aprendendo um manifold</h2>
+<img data-src="../../../images/aprendNsuper/autoencoder5.png" style="width:100.0%" class="r-stretch"></section><section id="aprendendo-um-manifold" class="slide level2"><h2>Aprendendo um manifold</h2>
 <p>Considere dados distribuídos sobre uma variedade não linear (<em>manifold</em>). Durante o treinamento, o Encoder aprende uma transformação</p>
 <p><span class="math display">\[
 \mathbf x
@@ -2217,7 +2223,7 @@ L
 </div>
 </div>
 </section><section class="slide level2">
-<img data-src="../../..\images/aprendNsuper/autoencoder6.png" style="width:100.0%" class="r-stretch"></section><section id="r-autoencoders" class="slide level2"><h2>R: Autoencoders</h2>
+<img data-src="../../../images/aprendNsuper/autoencoder6.png" style="width:100.0%" class="r-stretch"></section><section id="r-autoencoders" class="slide level2"><h2>R: Autoencoders</h2>
 <div style="width: 100%; height: 700px;">
 <div class="cell">
 <div class="cell-output-display">
@@ -2229,34 +2235,34 @@ L
 </section><section id="r-autoencoders-1" class="slide level2"><h2>R: Autoencoders</h2>
 <h3 id="pca">PCA</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb14-2"><a></a></span>
-<span id="cb14-3"><a></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb14-4"><a></a></span>
-<span id="cb14-5"><a></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(X)</span>
-<span id="cb14-6"><a></a></span>
-<span id="cb14-7"><a></a>coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb14-8"><a></a><span class="at">PC1=</span>pca<span class="sc">$</span>x[,<span class="dv">1</span>],</span>
-<span id="cb14-9"><a></a><span class="at">PC2=</span>pca<span class="sc">$</span>x[,<span class="dv">2</span>],</span>
-<span id="cb14-10"><a></a><span class="at">t=</span>dados<span class="sc">$</span>t</span>
-<span id="cb14-11"><a></a>)</span>
-<span id="cb14-12"><a></a></span>
-<span id="cb14-13"><a></a><span class="fu">ggplot</span>(</span>
-<span id="cb14-14"><a></a>coord,</span>
-<span id="cb14-15"><a></a><span class="fu">aes</span>(</span>
-<span id="cb14-16"><a></a>PC1,</span>
-<span id="cb14-17"><a></a>PC2,</span>
-<span id="cb14-18"><a></a><span class="at">color=</span>t</span>
-<span id="cb14-19"><a></a>)</span>
-<span id="cb14-20"><a></a>)<span class="sc">+</span></span>
-<span id="cb14-21"><a></a><span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb14-22"><a></a><span class="fu">coord_equal</span>()<span class="sc">+</span></span>
-<span id="cb14-23"><a></a><span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
-<span id="cb14-24"><a></a><span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">18</span>)<span class="sc">+</span></span>
-<span id="cb14-25"><a></a><span class="fu">labs</span>(</span>
-<span id="cb14-26"><a></a><span class="at">title=</span><span class="st">"PCA"</span>,</span>
-<span id="cb14-27"><a></a><span class="at">subtitle=</span><span class="st">"O Swiss Roll continua enrolado"</span></span>
-<span id="cb14-28"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-2"><a aria-label="2"></a></span>
+<span id="cb14-3"><a aria-label="3"></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb14-4"><a aria-label="4"></a></span>
+<span id="cb14-5"><a aria-label="5"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(X)</span>
+<span id="cb14-6"><a aria-label="6"></a></span>
+<span id="cb14-7"><a aria-label="7"></a>coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-8"><a aria-label="8"></a><span class="at">PC1=</span>pca<span class="sc">$</span>x[,<span class="dv">1</span>],</span>
+<span id="cb14-9"><a aria-label="9"></a><span class="at">PC2=</span>pca<span class="sc">$</span>x[,<span class="dv">2</span>],</span>
+<span id="cb14-10"><a aria-label="10"></a><span class="at">t=</span>dados<span class="sc">$</span>t</span>
+<span id="cb14-11"><a aria-label="11"></a>)</span>
+<span id="cb14-12"><a aria-label="12"></a></span>
+<span id="cb14-13"><a aria-label="13"></a><span class="fu">ggplot</span>(</span>
+<span id="cb14-14"><a aria-label="14"></a>coord,</span>
+<span id="cb14-15"><a aria-label="15"></a><span class="fu">aes</span>(</span>
+<span id="cb14-16"><a aria-label="16"></a>PC1,</span>
+<span id="cb14-17"><a aria-label="17"></a>PC2,</span>
+<span id="cb14-18"><a aria-label="18"></a><span class="at">color=</span>t</span>
+<span id="cb14-19"><a aria-label="19"></a>)</span>
+<span id="cb14-20"><a aria-label="20"></a>)<span class="sc">+</span></span>
+<span id="cb14-21"><a aria-label="21"></a><span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb14-22"><a aria-label="22"></a><span class="fu">coord_equal</span>()<span class="sc">+</span></span>
+<span id="cb14-23"><a aria-label="23"></a><span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
+<span id="cb14-24"><a aria-label="24"></a><span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">18</span>)<span class="sc">+</span></span>
+<span id="cb14-25"><a aria-label="25"></a><span class="fu">labs</span>(</span>
+<span id="cb14-26"><a aria-label="26"></a><span class="at">title=</span><span class="st">"PCA"</span>,</span>
+<span id="cb14-27"><a aria-label="27"></a><span class="at">subtitle=</span><span class="st">"O Swiss Roll continua enrolado"</span></span>
+<span id="cb14-28"><a aria-label="28"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="r-autoencoders-1-output" class="slide level2 output-location-slide"><h2>R: Autoencoders</h2><div class="cell output-location-slide">
@@ -2269,41 +2275,41 @@ L
 </div></section><section id="r-autoencoders-2" class="slide level2"><h2>R: Autoencoders</h2>
 <h3 id="autoencoder">Autoencoder</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a><span class="fu">library</span>(keras)</span>
-<span id="cb15-2"><a></a></span>
-<span id="cb15-3"><a></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(<span class="fu">as.matrix</span>(dados[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span>
-<span id="cb15-4"><a></a></span>
-<span id="cb15-5"><a></a>entrada <span class="ot">&lt;-</span> <span class="fu">layer_input</span>(<span class="at">shape=</span><span class="dv">3</span>)</span>
-<span id="cb15-6"><a></a></span>
-<span id="cb15-7"><a></a>encoder <span class="ot">&lt;-</span> entrada <span class="sc">|&gt;</span></span>
-<span id="cb15-8"><a></a><span class="fu">layer_dense</span>(<span class="dv">32</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-9"><a></a><span class="fu">layer_dense</span>(<span class="dv">16</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-10"><a></a><span class="fu">layer_dense</span>(<span class="dv">2</span>,<span class="at">activation=</span><span class="st">"linear"</span>,<span class="at">name=</span><span class="st">"latent"</span>)</span>
-<span id="cb15-11"><a></a></span>
-<span id="cb15-12"><a></a>decoder <span class="ot">&lt;-</span> encoder <span class="sc">|&gt;</span></span>
-<span id="cb15-13"><a></a><span class="fu">layer_dense</span>(<span class="dv">16</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-14"><a></a><span class="fu">layer_dense</span>(<span class="dv">32</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-15"><a></a><span class="fu">layer_dense</span>(<span class="dv">3</span>)</span>
-<span id="cb15-16"><a></a></span>
-<span id="cb15-17"><a></a>modelo <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(entrada,decoder)</span>
-<span id="cb15-18"><a></a>modelo <span class="sc">|&gt;</span></span>
-<span id="cb15-19"><a></a><span class="fu">compile</span>(<span class="at">optimizer=</span><span class="st">"adam"</span>, <span class="at">loss=</span><span class="st">"mse"</span>)</span>
-<span id="cb15-20"><a></a></span>
-<span id="cb15-21"><a></a>modelo <span class="sc">|&gt;</span> <span class="fu">fit</span>(X, X, <span class="at">epochs=</span><span class="dv">150</span>, <span class="at">batch_size=</span><span class="dv">64</span>, <span class="at">verbose=</span><span class="dv">0</span>)</span>
-<span id="cb15-22"><a></a></span>
-<span id="cb15-23"><a></a>encoder_model <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">inputs=</span>entrada, <span class="at">outputs=</span><span class="fu">get_layer</span>(modelo,</span>
-<span id="cb15-24"><a></a><span class="st">"latent"</span>)<span class="sc">$</span>output)</span>
-<span id="cb15-25"><a></a></span>
-<span id="cb15-26"><a></a>latent <span class="ot">&lt;-</span> <span class="fu">predict</span>( encoder_model, X)</span>
-<span id="cb15-27"><a></a></span>
-<span id="cb15-28"><a></a>latent <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">z1=</span>latent[,<span class="dv">1</span>], <span class="at">z2=</span>latent[,<span class="dv">2</span>], <span class="at">t=</span>dados<span class="sc">$</span>t)</span>
-<span id="cb15-29"><a></a></span>
-<span id="cb15-30"><a></a><span class="fu">ggplot</span>( latent, <span class="fu">aes</span>(z1,z2,<span class="at">color=</span>t))<span class="sc">+</span></span>
-<span id="cb15-31"><a></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb15-32"><a></a>  <span class="fu">coord_equal</span>()<span class="sc">+</span></span>
-<span id="cb15-33"><a></a>  <span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
-<span id="cb15-34"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">18</span>)<span class="sc">+</span></span>
-<span id="cb15-35"><a></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Espaço Latente Aprendido"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb15-2"><a aria-label="2"></a></span>
+<span id="cb15-3"><a aria-label="3"></a>X <span class="ot">&lt;-</span> <span class="fu">scale</span>(<span class="fu">as.matrix</span>(dados[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span>
+<span id="cb15-4"><a aria-label="4"></a></span>
+<span id="cb15-5"><a aria-label="5"></a>entrada <span class="ot">&lt;-</span> <span class="fu">layer_input</span>(<span class="at">shape=</span><span class="dv">3</span>)</span>
+<span id="cb15-6"><a aria-label="6"></a></span>
+<span id="cb15-7"><a aria-label="7"></a>encoder <span class="ot">&lt;-</span> entrada <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a aria-label="8"></a><span class="fu">layer_dense</span>(<span class="dv">32</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-9"><a aria-label="9"></a><span class="fu">layer_dense</span>(<span class="dv">16</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-10"><a aria-label="10"></a><span class="fu">layer_dense</span>(<span class="dv">2</span>,<span class="at">activation=</span><span class="st">"linear"</span>,<span class="at">name=</span><span class="st">"latent"</span>)</span>
+<span id="cb15-11"><a aria-label="11"></a></span>
+<span id="cb15-12"><a aria-label="12"></a>decoder <span class="ot">&lt;-</span> encoder <span class="sc">|&gt;</span></span>
+<span id="cb15-13"><a aria-label="13"></a><span class="fu">layer_dense</span>(<span class="dv">16</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-14"><a aria-label="14"></a><span class="fu">layer_dense</span>(<span class="dv">32</span>, <span class="at">activation=</span><span class="st">"relu"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-15"><a aria-label="15"></a><span class="fu">layer_dense</span>(<span class="dv">3</span>)</span>
+<span id="cb15-16"><a aria-label="16"></a></span>
+<span id="cb15-17"><a aria-label="17"></a>modelo <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(entrada,decoder)</span>
+<span id="cb15-18"><a aria-label="18"></a>modelo <span class="sc">|&gt;</span></span>
+<span id="cb15-19"><a aria-label="19"></a><span class="fu">compile</span>(<span class="at">optimizer=</span><span class="st">"adam"</span>, <span class="at">loss=</span><span class="st">"mse"</span>)</span>
+<span id="cb15-20"><a aria-label="20"></a></span>
+<span id="cb15-21"><a aria-label="21"></a>modelo <span class="sc">|&gt;</span> <span class="fu">fit</span>(X, X, <span class="at">epochs=</span><span class="dv">150</span>, <span class="at">batch_size=</span><span class="dv">64</span>, <span class="at">verbose=</span><span class="dv">0</span>)</span>
+<span id="cb15-22"><a aria-label="22"></a></span>
+<span id="cb15-23"><a aria-label="23"></a>encoder_model <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">inputs=</span>entrada, <span class="at">outputs=</span><span class="fu">get_layer</span>(modelo,</span>
+<span id="cb15-24"><a aria-label="24"></a><span class="st">"latent"</span>)<span class="sc">$</span>output)</span>
+<span id="cb15-25"><a aria-label="25"></a></span>
+<span id="cb15-26"><a aria-label="26"></a>latent <span class="ot">&lt;-</span> <span class="fu">predict</span>( encoder_model, X)</span>
+<span id="cb15-27"><a aria-label="27"></a></span>
+<span id="cb15-28"><a aria-label="28"></a>latent <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">z1=</span>latent[,<span class="dv">1</span>], <span class="at">z2=</span>latent[,<span class="dv">2</span>], <span class="at">t=</span>dados<span class="sc">$</span>t)</span>
+<span id="cb15-29"><a aria-label="29"></a></span>
+<span id="cb15-30"><a aria-label="30"></a><span class="fu">ggplot</span>( latent, <span class="fu">aes</span>(z1,z2,<span class="at">color=</span>t))<span class="sc">+</span></span>
+<span id="cb15-31"><a aria-label="31"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb15-32"><a aria-label="32"></a>  <span class="fu">coord_equal</span>()<span class="sc">+</span></span>
+<span id="cb15-33"><a aria-label="33"></a>  <span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
+<span id="cb15-34"><a aria-label="34"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">18</span>)<span class="sc">+</span></span>
+<span id="cb15-35"><a aria-label="35"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Espaço Latente Aprendido"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="r-autoencoders-2-output" class="slide level2 output-location-slide"><h2>R: Autoencoders</h2><div class="cell output-location-slide">
@@ -2317,45 +2323,45 @@ L
 <h3 id="reconstrução-1">Reconstrução</h3>
 <div style="width: 100%; height: 700px;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="fu">library</span>(plotly)</span>
-<span id="cb16-2"><a></a><span class="fu">library</span>(viridisLite)</span>
-<span id="cb16-3"><a></a></span>
-<span id="cb16-4"><a></a>Xrec <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
-<span id="cb16-5"><a></a>  modelo,</span>
-<span id="cb16-6"><a></a>  X,</span>
-<span id="cb16-7"><a></a>  <span class="at">verbose =</span> <span class="dv">0</span></span>
-<span id="cb16-8"><a></a>)</span>
-<span id="cb16-9"><a></a></span>
-<span id="cb16-10"><a></a>rec <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb16-11"><a></a>  <span class="at">x =</span> Xrec[, <span class="dv">1</span>],</span>
-<span id="cb16-12"><a></a>  <span class="at">y =</span> Xrec[, <span class="dv">2</span>],</span>
-<span id="cb16-13"><a></a>  <span class="at">z =</span> Xrec[, <span class="dv">3</span>],</span>
-<span id="cb16-14"><a></a>  <span class="at">t =</span> dados<span class="sc">$</span>t</span>
-<span id="cb16-15"><a></a>)</span>
-<span id="cb16-16"><a></a></span>
-<span id="cb16-17"><a></a><span class="fu">plot_ly</span>(</span>
-<span id="cb16-18"><a></a>  <span class="at">data =</span> rec,</span>
-<span id="cb16-19"><a></a>  <span class="at">x =</span> <span class="sc">~</span>x,</span>
-<span id="cb16-20"><a></a>  <span class="at">y =</span> <span class="sc">~</span>y,</span>
-<span id="cb16-21"><a></a>  <span class="at">z =</span> <span class="sc">~</span>z,</span>
-<span id="cb16-22"><a></a>  <span class="at">color =</span> <span class="sc">~</span>t,</span>
-<span id="cb16-23"><a></a>  <span class="at">colors =</span> viridisLite<span class="sc">::</span><span class="fu">viridis</span>(<span class="dv">256</span>),</span>
-<span id="cb16-24"><a></a>  <span class="at">type =</span> <span class="st">"scatter3d"</span>,</span>
-<span id="cb16-25"><a></a>  <span class="at">mode =</span> <span class="st">"markers"</span>,</span>
-<span id="cb16-26"><a></a>  <span class="at">marker =</span> <span class="fu">list</span>(</span>
-<span id="cb16-27"><a></a>    <span class="at">size =</span> <span class="dv">2</span>,</span>
-<span id="cb16-28"><a></a>    <span class="at">opacity =</span> <span class="fl">0.8</span></span>
-<span id="cb16-29"><a></a>  )</span>
-<span id="cb16-30"><a></a>) <span class="sc">|&gt;</span></span>
-<span id="cb16-31"><a></a>  <span class="fu">layout</span>(</span>
-<span id="cb16-32"><a></a>    <span class="at">title =</span> <span class="st">"Swiss Roll reconstruído pelo Autoencoder"</span>,</span>
-<span id="cb16-33"><a></a>    <span class="at">scene =</span> <span class="fu">list</span>(</span>
-<span id="cb16-34"><a></a>      <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"X"</span>),</span>
-<span id="cb16-35"><a></a>      <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Y"</span>),</span>
-<span id="cb16-36"><a></a>      <span class="at">zaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Z"</span>),</span>
-<span id="cb16-37"><a></a>      <span class="at">aspectmode =</span> <span class="st">"data"</span></span>
-<span id="cb16-38"><a></a>    )</span>
-<span id="cb16-39"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb16-2"><a aria-label="2"></a><span class="fu">library</span>(viridisLite)</span>
+<span id="cb16-3"><a aria-label="3"></a></span>
+<span id="cb16-4"><a aria-label="4"></a>Xrec <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb16-5"><a aria-label="5"></a>  modelo,</span>
+<span id="cb16-6"><a aria-label="6"></a>  X,</span>
+<span id="cb16-7"><a aria-label="7"></a>  <span class="at">verbose =</span> <span class="dv">0</span></span>
+<span id="cb16-8"><a aria-label="8"></a>)</span>
+<span id="cb16-9"><a aria-label="9"></a></span>
+<span id="cb16-10"><a aria-label="10"></a>rec <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-11"><a aria-label="11"></a>  <span class="at">x =</span> Xrec[, <span class="dv">1</span>],</span>
+<span id="cb16-12"><a aria-label="12"></a>  <span class="at">y =</span> Xrec[, <span class="dv">2</span>],</span>
+<span id="cb16-13"><a aria-label="13"></a>  <span class="at">z =</span> Xrec[, <span class="dv">3</span>],</span>
+<span id="cb16-14"><a aria-label="14"></a>  <span class="at">t =</span> dados<span class="sc">$</span>t</span>
+<span id="cb16-15"><a aria-label="15"></a>)</span>
+<span id="cb16-16"><a aria-label="16"></a></span>
+<span id="cb16-17"><a aria-label="17"></a><span class="fu">plot_ly</span>(</span>
+<span id="cb16-18"><a aria-label="18"></a>  <span class="at">data =</span> rec,</span>
+<span id="cb16-19"><a aria-label="19"></a>  <span class="at">x =</span> <span class="sc">~</span>x,</span>
+<span id="cb16-20"><a aria-label="20"></a>  <span class="at">y =</span> <span class="sc">~</span>y,</span>
+<span id="cb16-21"><a aria-label="21"></a>  <span class="at">z =</span> <span class="sc">~</span>z,</span>
+<span id="cb16-22"><a aria-label="22"></a>  <span class="at">color =</span> <span class="sc">~</span>t,</span>
+<span id="cb16-23"><a aria-label="23"></a>  <span class="at">colors =</span> viridisLite<span class="sc">::</span><span class="fu">viridis</span>(<span class="dv">256</span>),</span>
+<span id="cb16-24"><a aria-label="24"></a>  <span class="at">type =</span> <span class="st">"scatter3d"</span>,</span>
+<span id="cb16-25"><a aria-label="25"></a>  <span class="at">mode =</span> <span class="st">"markers"</span>,</span>
+<span id="cb16-26"><a aria-label="26"></a>  <span class="at">marker =</span> <span class="fu">list</span>(</span>
+<span id="cb16-27"><a aria-label="27"></a>    <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb16-28"><a aria-label="28"></a>    <span class="at">opacity =</span> <span class="fl">0.8</span></span>
+<span id="cb16-29"><a aria-label="29"></a>  )</span>
+<span id="cb16-30"><a aria-label="30"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb16-31"><a aria-label="31"></a>  <span class="fu">layout</span>(</span>
+<span id="cb16-32"><a aria-label="32"></a>    <span class="at">title =</span> <span class="st">"Swiss Roll reconstruído pelo Autoencoder"</span>,</span>
+<span id="cb16-33"><a aria-label="33"></a>    <span class="at">scene =</span> <span class="fu">list</span>(</span>
+<span id="cb16-34"><a aria-label="34"></a>      <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"X"</span>),</span>
+<span id="cb16-35"><a aria-label="35"></a>      <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Y"</span>),</span>
+<span id="cb16-36"><a aria-label="36"></a>      <span class="at">zaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Z"</span>),</span>
+<span id="cb16-37"><a aria-label="37"></a>      <span class="at">aspectmode =</span> <span class="st">"data"</span></span>
+<span id="cb16-38"><a aria-label="38"></a>    )</span>
+<span id="cb16-39"><a aria-label="39"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </div>
@@ -2574,7 +2580,7 @@ L
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -2682,13 +2688,14 @@ L
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

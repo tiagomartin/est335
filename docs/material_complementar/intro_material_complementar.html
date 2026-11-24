@@ -6,20 +6,26 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e21500bb30e7ce080c64316834ee3be8.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Regressão</h1>
+<section id="title-slide" data-background-image="../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Regressão</h1>
   <p class="subtitle"><span class="custom-subtitle">Material complementar: Fundamentos do Aprendizado Estatístico</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="como-usar-este-material" class="title-slide slide level1 center"><h1>Como usar este material</h1>
+</section>
+<section>
+<section id="como-usar-este-material" class="title-slide slide level1 center">
+<h1>Como usar este material</h1>
 
-</section><section id="material-complementar" class="slide level2"><h2>Material complementar</h2>
+</section>
+<section id="material-complementar" class="slide level2">
+<h2>Material complementar</h2>
 <p>Este conjunto de slides aprofunda tópicos apresentados em <strong>Fundamentos do Aprendizado Estatístico</strong>.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -172,9 +184,14 @@
 </div>
 </div>
 </div>
-</section></section><section><section id="perspectiva-histórica-e-exemplos-adicionais" class="title-slide slide level1 center"><h1>1. Perspectiva histórica e exemplos adicionais</h1>
+</section></section>
+<section>
+<section id="perspectiva-histórica-e-exemplos-adicionais" class="title-slide slide level1 center">
+<h1>1. Perspectiva histórica e exemplos adicionais</h1>
 
-</section><section id="de-onde-vem-a-ideia-de-machine-learning" class="slide level2"><h2>De onde vem a ideia de <em>Machine Learning</em>?</h2>
+</section>
+<section id="de-onde-vem-a-ideia-de-machine-learning" class="slide level2">
+<h2>De onde vem a ideia de <em>Machine Learning</em>?</h2>
 <p>Em uma formulação histórica, Arthur Samuel descreveu aprendizado de máquina como a possibilidade de computadores aprenderem padrões de comportamento <strong>sem que todas as regras fossem programadas explicitamente</strong>.</p>
 <p>Décadas depois, Mitchell organizou a ideia em três componentes:</p>
 <p><span class="math display">\[
@@ -183,7 +200,9 @@
 \boxed{P=\text{medida de desempenho}}
 \]</span></p>
 <p>Um programa aprende com a experiência <span class="math inline">\(E\)</span> em relação a uma tarefa <span class="math inline">\(T\)</span> quando seu desempenho, medido por <span class="math inline">\(P\)</span>, melhora com a experiência.</p>
-</section><section id="a-leitura-estatística" class="slide level2"><h2>A leitura estatística</h2>
+</section>
+<section id="a-leitura-estatística" class="slide level2">
+<h2>A leitura estatística</h2>
 <p>Na aprendizagem supervisionada, a experiência é uma amostra</p>
 <p><span class="math display">\[
 \mathcal D_n=\{(X_1,Y_1),\ldots,(X_n,Y_n)\}
@@ -197,13 +216,13 @@
 \boxed{\text{aprender}}\quad\Longrightarrow\quad
 \boxed{\text{generalizar além da amostra observada}}
 \]</span></p>
-</section><section id="exemplo-reconhecimento-de-dígitos" class="slide level2"><h2>Exemplo: reconhecimento de dígitos</h2>
+</section>
+<section id="exemplo-reconhecimento-de-dígitos" class="slide level2">
+<h2>Exemplo: reconhecimento de dígitos</h2>
 <p>Considere imagens de dígitos manuscritos.</p>
 <ul>
-<li>
-<span class="math inline">\(X\)</span>: intensidades dos pixels da imagem;</li>
-<li>
-<span class="math inline">\(Y\in\{0,1,\ldots,9\}\)</span>: dígito representado;</li>
+<li><span class="math inline">\(X\)</span>: intensidades dos pixels da imagem;</li>
+<li><span class="math inline">\(Y\in\{0,1,\ldots,9\}\)</span>: dígito representado;</li>
 <li>tarefa: classificar uma nova imagem;</li>
 <li>experiência: imagens previamente rotuladas;</li>
 <li>desempenho: proporção de classificações corretas em novas imagens.</li>
@@ -218,9 +237,13 @@
 </div>
 </div>
 </div>
-</section><section id="exemplo-dígitos-manuscritos-mnist" class="slide level2"><h2>Exemplo: dígitos manuscritos (MNIST)</h2>
+</section>
+<section id="exemplo-dígitos-manuscritos-mnist" class="slide level2">
+<h2>Exemplo: dígitos manuscritos (MNIST)</h2>
 
-<img data-src="intro_material_complementar_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"></section><section id="exemplo-redshift-de-galáxias" class="slide level2"><h2>Exemplo: <em>redshift</em> de galáxias</h2>
+<img data-src="intro_material_complementar_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"></section>
+<section id="exemplo-redshift-de-galáxias" class="slide level2">
+<h2>Exemplo: <em>redshift</em> de galáxias</h2>
 <p>Uma imagem ou espectro pode conter milhares de medidas, enquanto a resposta de interesse pode ser uma única quantidade contínua.</p>
 <p><span class="math display">\[
 X=\text{informação observada da galáxia},
@@ -241,8 +264,13 @@ Y=\textit{redshift}
 </div>
 </div>
 </div>
-</section><section class="slide level2">
-<img data-src="..\images/regressao/redshift.png" width="1000" class="r-stretch"></section><section id="exemplo-isomap-face" class="slide level2"><h2>Exemplo: Isomap Face</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../images/regressao/redshift.png" width="1000" class="r-stretch"></section>
+<section id="exemplo-isomap-face" class="slide level2">
+<h2>Exemplo: Isomap Face</h2>
 <p>Cada observação é uma imagem de uma face e a resposta indica a direção para a qual a pessoa está olhando.</p>
 <p><span class="math display">\[
 X=\text{pixels da imagem},
@@ -260,8 +288,13 @@ Y=\text{direção do olhar}
 </div>
 </div>
 </div>
-</section><section class="slide level2">
-<img data-src="..\images/regressao/isomap_face.png" width="1000" class="r-stretch"></section><section id="exemplo-yearpredictionmsd" class="slide level2"><h2>Exemplo: YearPredictionMSD</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../images/regressao/isomap_face.png" width="1000" class="r-stretch"></section>
+<section id="exemplo-yearpredictionmsd" class="slide level2">
+<h2>Exemplo: YearPredictionMSD</h2>
 <p>No <a href="https://archive.ics.uci.edu/dataset/203/yearpredictionmsd"><strong>Million Song Dataset</strong></a>, características de áudio são usadas para prever o ano de lançamento de uma música.</p>
 <p><span class="math display">\[
 X=(\text{timbre, energia, características acústicas,}\ldots),
@@ -271,12 +304,16 @@ Y=\text{ano de lançamento}
 \]</span></p>
 <p>O mesmo problema permite dois objetivos:</p>
 <ol type="1">
-<li>
-<strong>predição:</strong> estimar o ano de uma nova música;</li>
-<li>
-<strong>interpretação:</strong> investigar como características musicais se relacionam com o período de lançamento.</li>
-</ol></section><section class="slide level2">
-<img data-src="..\images/regressao/tipos_musica.png" class="quarto-figure quarto-figure-center r-stretch" style="width:40.0%"></section><section id="uma-estrutura-comum" class="slide level2"><h2>Uma estrutura comum</h2>
+<li><strong>predição:</strong> estimar o ano de uma nova música;</li>
+<li><strong>interpretação:</strong> investigar como características musicais se relacionam com o período de lançamento.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../images/regressao/tipos_musica.png" class="quarto-figure quarto-figure-center r-stretch" style="width:40.0%"></section>
+<section id="uma-estrutura-comum" class="slide level2">
+<h2>Uma estrutura comum</h2>
 <p>Apesar de muito diferentes, os exemplos compartilham a mesma estrutura:</p>
 <table class="caption-top">
 <colgroup>
@@ -285,12 +322,14 @@ Y=\text{ano de lançamento}
 <col style="width: 25%">
 <col style="width: 25%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Problema</th>
 <th><span class="math inline">\(X\)</span></th>
 <th><span class="math inline">\(Y\)</span></th>
 <th>Objetivo</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>PIB × vida</td>
@@ -327,9 +366,14 @@ Y=\text{ano de lançamento}
 <p><span class="math display">\[
 \boxed{\text{Dados}}\rightarrow\boxed{\text{algoritmo}}\rightarrow\boxed{\widehat g}\rightarrow\boxed{\text{generalização}}
 \]</span></p>
-</section></section><section><section id="aprofundamento-sobre-risco" class="title-slide slide level1 center"><h1>2. Aprofundamento sobre risco</h1>
+</section></section>
+<section>
+<section id="aprofundamento-sobre-risco" class="title-slide slide level1 center">
+<h1>2. Aprofundamento sobre risco</h1>
 
-</section><section id="o-modelo-aprendido-é-aleatório" class="slide level2"><h2>O modelo aprendido é aleatório</h2>
+</section>
+<section id="o-modelo-aprendido-é-aleatório" class="slide level2">
+<h2>O modelo aprendido é aleatório</h2>
 <p>O procedimento de aprendizagem é uma função da amostra:</p>
 <p><span class="math display">\[
 \mathcal A:\mathcal D_n\longmapsto \widehat g_{\mathcal D_n}
@@ -343,7 +387,9 @@ Y=\text{ano de lançamento}
 \widehat g_1,\widehat g_2,\ldots
 \]</span></p>
 <p>Duas fontes de aleatoriedade aparecem: <strong>a nova observação</strong> e <strong>a amostra usada para construir o modelo</strong>.</p>
-</section><section id="risco-condicional-à-amostra" class="slide level2"><h2>Risco condicional à amostra</h2>
+</section>
+<section id="risco-condicional-à-amostra" class="slide level2">
+<h2>Risco condicional à amostra</h2>
 <p>Depois de observar <span class="math inline">\(\mathcal D_n\)</span>, o modelo <span class="math inline">\(\widehat g_{\mathcal D_n}\)</span> está fixado.</p>
 <p>Sob perda quadrática, seu risco é</p>
 <p><span class="math display">\[
@@ -357,7 +403,9 @@ E\left[(Y-\widehat g_{\mathcal D_n}(X))^2\mid\mathcal D_n\right]
 <blockquote>
 <p>Pergunta: quão bem este modelo específico generaliza?</p>
 </blockquote>
-</section><section id="risco-esperado-do-procedimento" class="slide level2"><h2>Risco esperado do procedimento</h2>
+</section>
+<section id="risco-esperado-do-procedimento" class="slide level2">
+<h2>Risco esperado do procedimento</h2>
 <p>Antes de observarmos a amostra, <span class="math inline">\(\widehat g_{\mathcal D_n}\)</span> também é aleatório.</p>
 <p>Podemos então considerar</p>
 <p><span class="math display">\[
@@ -369,7 +417,9 @@ E_{\mathcal D_n}\left[R(\widehat g\mid\mathcal D_n)\right]
 <blockquote>
 <p>Pergunta: se repetíssemos o experimento muitas vezes, qual seria o desempenho médio do algoritmo?</p>
 </blockquote>
-</section><section id="dois-níveis-de-avaliação" class="slide level2"><h2>Dois níveis de avaliação</h2>
+</section>
+<section id="dois-níveis-de-avaliação" class="slide level2">
+<h2>Dois níveis de avaliação</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="modelo-ajustado">Modelo ajustado</h3>
@@ -394,7 +444,9 @@ E_{\mathcal D_n}[R(\widehat g\mid\mathcal D_n)]
 </div>
 </div>
 </div>
-</section><section id="decomposição-do-risco-quadrático" class="slide level2"><h2>Decomposição do risco quadrático</h2>
+</section>
+<section id="decomposição-do-risco-quadrático" class="slide level2">
+<h2>Decomposição do risco quadrático</h2>
 <p>Defina</p>
 <p><span class="math display">\[
 r(x)=E(Y\mid X=x)
@@ -407,7 +459,9 @@ Y-g(X)=\{Y-r(X)\}+\{r(X)-g(X)\}
 <p><span class="math display">\[
 E[Y-r(X)\mid X]=0
 \]</span></p>
-</section><section id="resultado-da-decomposição" class="slide level2"><h2>Resultado da decomposição</h2>
+</section>
+<section id="resultado-da-decomposição" class="slide level2">
+<h2>Resultado da decomposição</h2>
 <p>Assim,</p>
 <p><span class="math display">\[
 \boxed{
@@ -432,7 +486,9 @@ E[\operatorname{Var}(Y\mid X)]
 \]</span></p>
 <p>Permanece mesmo para <span class="math inline">\(g=r\)</span>.</p>
 </div></div>
-</section><section id="por-que-a-média-condicional-aparece" class="slide level2"><h2>Por que a média condicional aparece?</h2>
+</section>
+<section id="por-que-a-média-condicional-aparece" class="slide level2">
+<h2>Por que a média condicional aparece?</h2>
 <p>Para um <span class="math inline">\(x\)</span> fixo, considere</p>
 <p><span class="math display">\[
 E[(Y-a)^2\mid X=x]
@@ -457,12 +513,16 @@ E[(Y-a)^2\mid X=x]
 </div>
 </div>
 </div>
-</section><section id="a-perda-determina-o-alvo" class="slide level2"><h2>A perda determina o alvo</h2>
+</section>
+<section id="a-perda-determina-o-alvo" class="slide level2">
+<h2>A perda determina o alvo</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Função de perda</th>
 <th>Alvo ótimo</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\((Y-a)^2\)</span></td>
@@ -470,8 +530,7 @@ E[(Y-a)^2\mid X=x]
 </tr>
 <tr class="even">
 <td><span class="math inline">\(|Y-a|\)</span></td>
-<td>mediana de <span class="math inline">\(Y\mid X=x\)</span>
-</td>
+<td>mediana de <span class="math inline">\(Y\mid X=x\)</span></td>
 </tr>
 <tr class="odd">
 <td>perda 0–1</td>
@@ -484,9 +543,14 @@ E[(Y-a)^2\mid X=x]
 \boxed{\text{escolher a perda}}\quad\Longrightarrow\quad
 \boxed{\text{definir o que significa prever bem}}
 \]</span></p>
-</section></section><section><section id="validação-cruzada-em-maior-detalhe" class="title-slide slide level1 center"><h1>3. Validação cruzada em maior detalhe</h1>
+</section></section>
+<section>
+<section id="validação-cruzada-em-maior-detalhe" class="title-slide slide level1 center">
+<h1>3. Validação cruzada em maior detalhe</h1>
 
-</section><section id="por-que-não-usar-apenas-o-erro-de-treino" class="slide level2"><h2>Por que não usar apenas o erro de treino?</h2>
+</section>
+<section id="por-que-não-usar-apenas-o-erro-de-treino" class="slide level2">
+<h2>Por que não usar apenas o erro de treino?</h2>
 <p>Se <span class="math inline">\(\mathcal G_1\subset\mathcal G_2\subset\cdots\)</span> são classes cada vez mais flexíveis,</p>
 <p><span class="math display">\[
 \widehat R_{\text{treino}}(\widehat g)
@@ -507,7 +571,9 @@ R(\widehat g)
 </div>
 </div>
 </div>
-</section><section id="holdout" class="slide level2"><h2>Holdout</h2>
+</section>
+<section id="holdout" class="slide level2">
+<h2>Holdout</h2>
 <p>Dividimos os dados em duas partes independentes:</p>
 <p><span class="math display">\[
 \mathcal D=\mathcal D_{\text{treino}}\cup\mathcal D_{\text{val}}
@@ -521,22 +587,26 @@ L(Y_i,\widehat g(X_i))
 \]</span></p>
 <p>Vantagem: simples.<br>
 Limitação: o resultado pode depender bastante de <strong>uma única divisão aleatória</strong>.</p>
-</section><section id="k-fold-cross-validation" class="slide level2"><h2>
-<span class="math inline">\(k\)</span>-fold cross-validation</h2>
+</section>
+<section id="k-fold-cross-validation" class="slide level2">
+<h2><span class="math inline">\(k\)</span>-fold cross-validation</h2>
 <p>Particione os dados em <span class="math inline">\(k\)</span> grupos aproximadamente iguais:</p>
 <p><span class="math display">\[
 \mathcal D=F_1\cup\cdots\cup F_k
 \]</span></p>
 <p>Na iteração <span class="math inline">\(j\)</span>:</p>
 <ul>
-<li>
-<span class="math inline">\(F_j\)</span> é usado para validação;</li>
+<li><span class="math inline">\(F_j\)</span> é usado para validação;</li>
 <li>os outros <span class="math inline">\(k-1\)</span> folds são usados para treinamento.</li>
 </ul>
 <p>Cada observação é usada <strong>uma vez para validação</strong> e <strong><span class="math inline">\(k-1\)</span> vezes para treinamento</strong>.</p>
-</section><section id="visualização-correta-dos-folds" class="slide level2"><h2>Visualização correta dos folds</h2>
+</section>
+<section id="visualização-correta-dos-folds" class="slide level2">
+<h2>Visualização correta dos folds</h2>
 
-<img data-src="intro_material_complementar_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="estimativa-por-validação-cruzada" class="slide level2"><h2>Estimativa por validação cruzada</h2>
+<img data-src="intro_material_complementar_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="estimativa-por-validação-cruzada" class="slide level2">
+<h2>Estimativa por validação cruzada</h2>
 <p>Se <span class="math inline">\(\widehat g_{-j}\)</span> é o modelo ajustado sem o fold <span class="math inline">\(F_j\)</span>,</p>
 <p><span class="math display">\[
 \boxed{
@@ -554,7 +624,9 @@ L(Y_i,\widehat g_{-j}(X_i))
 =
 (Y_i-\widehat g_{-j}(X_i))^2
 \]</span></p>
-</section><section id="loocv" class="slide level2"><h2>LOOCV</h2>
+</section>
+<section id="loocv" class="slide level2">
+<h2>LOOCV</h2>
 <p>O <em>leave-one-out cross-validation</em> é o caso limite</p>
 <p><span class="math display">\[
 k=n
@@ -571,7 +643,9 @@ k=n
 \frac1n\sum_{i=1}^n
 L(Y_i,\widehat g_{-i}(X_i))
 \]</span></p>
-</section><section id="loocv-vantagem-e-limitação" class="slide level2"><h2>LOOCV: vantagem e limitação</h2>
+</section>
+<section id="loocv-vantagem-e-limitação" class="slide level2">
+<h2>LOOCV: vantagem e limitação</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="vantagem">Vantagem</h3>
@@ -589,14 +663,18 @@ n-1\text{ observações}
 <li>nem sempre produz menor variabilidade que <span class="math inline">\(k\)</span>-fold.</li>
 </ul>
 </div></div>
-</section><section id="holdout-k-fold-e-loocv" class="slide level2"><h2>Holdout, <span class="math inline">\(k\)</span>-fold e LOOCV</h2>
+</section>
+<section id="holdout-k-fold-e-loocv" class="slide level2">
+<h2>Holdout, <span class="math inline">\(k\)</span>-fold e LOOCV</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Estratégia</th>
 <th style="text-align: right;">Nº de ajustes</th>
 <th style="text-align: right;">Dados por ajuste</th>
 <th>Comentário</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Holdout</td>
@@ -634,7 +712,9 @@ n-1\text{ observações}
 </div>
 </div>
 </div>
-</section><section id="cv-para-escolher-hiperparâmetros" class="slide level2"><h2>CV para escolher hiperparâmetros</h2>
+</section>
+<section id="cv-para-escolher-hiperparâmetros" class="slide level2">
+<h2>CV para escolher hiperparâmetros</h2>
 <p>Para cada valor candidato <span class="math inline">\(\theta\)</span>:</p>
 <p><span class="math display">\[
 \theta_1,\theta_2,\ldots,\theta_M,
@@ -650,7 +730,9 @@ n-1\text{ observações}
 }
 \]</span></p>
 <p>Depois, reajustamos o modelo com <span class="math inline">\(\widehat\theta\)</span> usando todos os dados de treino/validação.</p>
-</section><section id="por-que-ainda-precisamos-de-teste" class="slide level2"><h2>Por que ainda precisamos de teste?</h2>
+</section>
+<section id="por-que-ainda-precisamos-de-teste" class="slide level2">
+<h2>Por que ainda precisamos de teste?</h2>
 <p>Ao escolher</p>
 <p><span class="math display">\[
 \widehat\theta
@@ -663,9 +745,14 @@ n-1\text{ observações}
 \boxed{\text{Teste}}\neq\boxed{\text{Validação}}
 \]</span></p>
 <p>O teste deve permanecer isolado até a <strong>avaliação final</strong>.</p>
-</section></section><section><section id="incerteza-na-avaliação-final" class="title-slide slide level1 center"><h1>4. Incerteza na avaliação final</h1>
+</section></section>
+<section>
+<section id="incerteza-na-avaliação-final" class="title-slide slide level1 center">
+<h1>4. Incerteza na avaliação final</h1>
 
-</section><section id="o-erro-de-teste-também-é-uma-estimativa" class="slide level2"><h2>O erro de teste também é uma estimativa</h2>
+</section>
+<section id="o-erro-de-teste-também-é-uma-estimativa" class="slide level2">
+<h2>O erro de teste também é uma estimativa</h2>
 <p>Considere um conjunto de teste independente</p>
 <p><span class="math display">\[
 (\widetilde X_1,\widetilde Y_1),\ldots,
@@ -681,7 +768,9 @@ n-1\text{ observações}
 }
 \]</span></p>
 <p>Mesmo sem <em>data leakage</em>, <span class="math inline">\(\widehat R_{teste}\)</span> possui <strong>incerteza amostral</strong>.</p>
-</section><section id="erro-padrão-do-risco-estimado" class="slide level2"><h2>Erro-padrão do risco estimado</h2>
+</section>
+<section id="erro-padrão-do-risco-estimado" class="slide level2">
+<h2>Erro-padrão do risco estimado</h2>
 <p>Se as observações de teste são i.i.d.,</p>
 <p><span class="math display">\[
 \operatorname{Var}(\widehat R_{teste})
@@ -697,7 +786,9 @@ SE(\widehat R_{teste})
 }
 \]</span></p>
 <p>Portanto, a precisão melhora aproximadamente com <span class="math inline">\(1/\sqrt m\)</span>.</p>
-</section><section id="intervalo-de-confiança-aproximado" class="slide level2"><h2>Intervalo de confiança aproximado</h2>
+</section>
+<section id="intervalo-de-confiança-aproximado" class="slide level2">
+<h2>Intervalo de confiança aproximado</h2>
 <p>Pelo Teorema Central do Limite, para <span class="math inline">\(m\)</span> suficientemente grande,</p>
 <p><span class="math display">\[
 \widehat R_{teste}
@@ -722,7 +813,9 @@ N\left(R(\widehat g),\frac{\sigma_W^2}{m}\right)
 </div>
 </div>
 </div>
-</section><section id="tamanho-do-conjunto-de-teste" class="slide level2"><h2>Tamanho do conjunto de teste</h2>
+</section>
+<section id="tamanho-do-conjunto-de-teste" class="slide level2">
+<h2>Tamanho do conjunto de teste</h2>
 <p>A semi-amplitude aproximada do IC é</p>
 <p><span class="math display">\[
 E=z_{1-\alpha/2}\frac{\sigma_W}{\sqrt m}
@@ -736,7 +829,9 @@ m\approx
 \right)^2
 }
 \]</span></p>
-</section><section id="tamanho-do-conjunto-de-teste-1" class="slide level2"><h2>Tamanho do conjunto de teste</h2>
+</section>
+<section id="tamanho-do-conjunto-de-teste-1" class="slide level2">
+<h2>Tamanho do conjunto de teste</h2>
 <p>Isso revela um compromisso:</p>
 <p><span class="math display">\[
 \text{mais teste}\Rightarrow\text{avaliação mais precisa},
@@ -745,14 +840,21 @@ m\approx
 <p><span class="math display">\[
 \text{mais teste}\Rightarrow\text{menos dados para aprender o modelo}.
 \]</span></p>
-</section><section id="simulação-precisão-tamanho-do-teste" class="slide level2"><h2>Simulação: precisão × tamanho do teste</h2>
+</section>
+<section id="simulação-precisão-tamanho-do-teste" class="slide level2">
+<h2>Simulação: precisão × tamanho do teste</h2>
 
 <img data-src="intro_material_complementar_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:75.0%"><p><span class="math display">\[
 SE\propto \frac{1}{\sqrt m}
 \]</span></p>
-</section></section><section><section id="seleção-de-modelos-sem-validação-explícita" class="title-slide slide level1 center"><h1>5. Seleção de modelos sem validação explícita</h1>
+</section></section>
+<section>
+<section id="seleção-de-modelos-sem-validação-explícita" class="title-slide slide level1 center">
+<h1>5. Seleção de modelos sem validação explícita</h1>
 
-</section><section id="outra-estratégia-penalizar-a-complexidade" class="slide level2"><h2>Outra estratégia: penalizar a complexidade</h2>
+</section>
+<section id="outra-estratégia-penalizar-a-complexidade" class="slide level2">
+<h2>Outra estratégia: penalizar a complexidade</h2>
 <p>Em vez de reservar observações para validação, podemos combinar ajuste e complexidade em um único critério:</p>
 <p><span class="math display">\[
 \boxed{
@@ -764,7 +866,9 @@ SE\propto \frac{1}{\sqrt m}
 }.
 \]</span></p>
 <p>A ideia é impedir que a melhora do ajuste dentro da amostra favoreça indefinidamente modelos mais complexos.</p>
-</section><section id="verossimilhança-e-complexidade" class="slide level2"><h2>Verossimilhança e complexidade</h2>
+</section>
+<section id="verossimilhança-e-complexidade" class="slide level2">
+<h2>Verossimilhança e complexidade</h2>
 <p>Considere modelos paramétricos com log-verossimilhança maximizada</p>
 <p><span class="math display">\[
 \ell(\widehat\theta)
@@ -774,7 +878,9 @@ SE\propto \frac{1}{\sqrt m}
 <p><span class="math display">\[
 \text{ajuste melhor}\quad\leftrightarrow\quad\text{modelo mais complexo}.
 \]</span></p>
-</section><section id="aic" class="slide level2"><h2>AIC</h2>
+</section>
+<section id="aic" class="slide level2">
+<h2>AIC</h2>
 <p>O Critério de Informação de Akaike é</p>
 <p><span class="math display">\[
 \boxed{
@@ -782,10 +888,8 @@ AIC=-2\ell(\widehat\theta)+2d
 }
 \]</span></p>
 <ul>
-<li>
-<span class="math inline">\(-2\ell(\widehat\theta)\)</span> recompensa qualidade do ajuste;</li>
-<li>
-<span class="math inline">\(2d\)</span> penaliza complexidade.</li>
+<li><span class="math inline">\(-2\ell(\widehat\theta)\)</span> recompensa qualidade do ajuste;</li>
+<li><span class="math inline">\(2d\)</span> penaliza complexidade.</li>
 </ul>
 <p>Seleciona-se, entre os modelos candidatos, aquele com <strong>menor AIC</strong>.<br><br></p>
 <div class="callout callout-note callout-style-simple">
@@ -798,7 +902,9 @@ AIC=-2\ell(\widehat\theta)+2d
 </div>
 </div>
 </div>
-</section><section id="bic" class="slide level2"><h2>BIC</h2>
+</section>
+<section id="bic" class="slide level2">
+<h2>BIC</h2>
 <p>O Critério de Informação Bayesiano é</p>
 <p><span class="math display">\[
 \boxed{
@@ -810,13 +916,17 @@ BIC=-2\ell(\widehat\theta)+d\log n
 \log n&gt;2
 \]</span></p>
 <p>para <span class="math inline">\(n&gt;e^2\)</span>, o BIC frequentemente penaliza a complexidade mais fortemente que o AIC em amostras moderadas ou grandes.</p>
-</section><section id="aic-bic" class="slide level2"><h2>AIC × BIC</h2>
+</section>
+<section id="aic-bic" class="slide level2">
+<h2>AIC × BIC</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Aspecto</th>
 <th>AIC</th>
 <th>BIC</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Penalização</td>
@@ -836,8 +946,7 @@ BIC=-2\ell(\widehat\theta)+d\log n
 <tr class="even">
 <td>Seleção</td>
 <td>menor AIC</td>
-<td>menor BIC<br><br>
-</td>
+<td>menor BIC<br><br></td>
 </tr>
 </tbody>
 </table>
@@ -851,7 +960,9 @@ BIC=-2\ell(\widehat\theta)+d\log n
 </div>
 </div>
 </div>
-</section><section id="validação-cruzada-critérios-de-informação" class="slide level2"><h2>Validação cruzada × critérios de informação</h2>
+</section>
+<section id="validação-cruzada-critérios-de-informação" class="slide level2">
+<h2>Validação cruzada × critérios de informação</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="validação-cruzada">Validação cruzada</h3>
@@ -870,9 +981,14 @@ BIC=-2\ell(\widehat\theta)+d\log n
 <li>dependem mais da estrutura probabilística assumida.</li>
 </ul>
 </div></div>
-</section></section><section><section id="consistência-e-tamanho-amostral" class="title-slide slide level1 center"><h1>6. Consistência e tamanho amostral</h1>
+</section></section>
+<section>
+<section id="consistência-e-tamanho-amostral" class="title-slide slide level1 center">
+<h1>6. Consistência e tamanho amostral</h1>
 
-</section><section id="risco-empírico" class="slide level2"><h2>Risco empírico</h2>
+</section>
+<section id="risco-empírico" class="slide level2">
+<h2>Risco empírico</h2>
 <p>Para uma função fixa <span class="math inline">\(g\)</span>, definimos</p>
 <p><span class="math display">\[
 \widehat R_n(g)
@@ -887,7 +1003,9 @@ R(g)=E[L(Y,g(X))]
 <blockquote>
 <p>Quando <span class="math inline">\(\widehat R_n(g)\)</span> é uma boa aproximação de <span class="math inline">\(R(g)\)</span>?</p>
 </blockquote>
-</section><section id="lei-dos-grandes-números" class="slide level2"><h2>Lei dos Grandes Números</h2>
+</section>
+<section id="lei-dos-grandes-números" class="slide level2">
+<h2>Lei dos Grandes Números</h2>
 <p>Sob condições usuais e para <span class="math inline">\(g\)</span> fixo,</p>
 <p><span class="math display">\[
 \boxed{
@@ -910,7 +1028,9 @@ L(Y_1,g(X_1)),\ldots,L(Y_n,g(X_n))
 </div>
 </div>
 </div>
-</section><section id="o-detalhe-g-também-foi-aprendido" class="slide level2"><h2>O detalhe: <span class="math inline">\(g\)</span> também foi aprendido</h2>
+</section>
+<section id="o-detalhe-g-também-foi-aprendido" class="slide level2">
+<h2>O detalhe: <span class="math inline">\(g\)</span> também foi aprendido</h2>
 <p>Se escolhemos</p>
 <p><span class="math display">\[
 \widehat g
@@ -924,7 +1044,9 @@ L(Y_1,g(X_1)),\ldots,L(Y_n,g(X_n))
 \]</span></p>
 <p>tende a ser <strong>otimista</strong> como estimativa do erro de generalização.</p>
 <p>Essa é uma das razões fundamentais para validação e teste independentes.</p>
-</section><section id="complexidade-da-classe-também-importa" class="slide level2"><h2>Complexidade da classe também importa</h2>
+</section>
+<section id="complexidade-da-classe-também-importa" class="slide level2">
+<h2>Complexidade da classe também importa</h2>
 <p>A consistência da seleção não depende apenas de</p>
 <p><span class="math display">\[
 n\rightarrow\infty,
@@ -938,9 +1060,14 @@ n\rightarrow\infty,
 \boxed{\text{controle de complexidade}}
 \]</span></p>
 <p>são duas peças do mesmo problema de generalização.</p>
-</section></section><section><section id="síntese" class="title-slide slide level1 center"><h1>Síntese</h1>
+</section></section>
+<section>
+<section id="síntese" class="title-slide slide level1 center">
+<h1>Síntese</h1>
 
-</section><section id="o-que-este-material-acrescenta" class="slide level2"><h2>O que este material acrescenta?</h2>
+</section>
+<section id="o-que-este-material-acrescenta" class="slide level2">
+<h2>O que este material acrescenta?</h2>
 <div class="columns">
 <div class="column" style="width:25%;">
 <h3 id="risco">Risco</h3>
@@ -970,7 +1097,9 @@ CV
 AIC/BIC.
 \]</span></p>
 </div></div>
-</section><section id="a-mensagem-central-permanece" class="slide level2"><h2>A mensagem central permanece</h2>
+</section>
+<section id="a-mensagem-central-permanece" class="slide level2">
+<h2>A mensagem central permanece</h2>
 <p><br></p>
 <div class="callout callout-tip callout-style-simple">
 <div class="callout-body">
@@ -992,9 +1121,14 @@ AIC/BIC.
 \longrightarrow
 \text{teste}
 \]</span></p>
-</section></section><section><section id="referências" class="title-slide slide level1 center" data-visibility="uncounted"><h1>Referências</h1>
+</section></section>
+<section>
+<section id="referências" class="title-slide slide level1 center" data-visibility="uncounted">
+<h1>Referências</h1>
 
-</section><section id="leituras-recomendadas" class="slide level2"><h2>Leituras recomendadas</h2>
+</section>
+<section id="leituras-recomendadas" class="slide level2">
+<h2>Leituras recomendadas</h2>
 <ul>
 <li>Breiman, L. (2001). <em>Statistical Modeling: The Two Cultures</em>. Statistical Science, 16(3), 199–231.</li>
 <li>Hastie, T.; Tibshirani, R.; Friedman, J. <em>The Elements of Statistical Learning</em>.</li>
@@ -1015,14 +1149,31 @@ AIC/BIC.
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>Material complementar — EST335</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../site_libs/revealjs/plugin/search/search.js"></script><script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -1189,7 +1340,7 @@ AIC/BIC.
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1214,42 +1365,84 @@ AIC/BIC.
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1297,13 +1490,14 @@ AIC/BIC.
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1416,6 +1610,6 @@ AIC/BIC.
         }
       });
       </script>
-
+    
 
 </body></html>

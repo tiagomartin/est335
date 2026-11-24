@@ -1,0 +1,1226 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  10pt,
+  ignorenonframetext,
+  aspectratio=169,
+  brazilian,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+\ifLuaTeX
+\usepackage[bidi=basic,shorthands=off]{babel}
+\else
+\usepackage[bidi=default,shorthands=off]{babel}
+\fi
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Índice}
+\else
+  \newcommand\contentsname{Índice}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Lista de Figuras}
+\else
+  \newcommand\listfigurename{Lista de Figuras}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Lista de Tabelas}
+\else
+  \newcommand\listtablename{Lista de Tabelas}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figura}
+\else
+  \newcommand\figurename{Figura}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Tabela}
+\else
+  \newcommand\tablename{Tabela}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listagem}
+\newcommand*\listoflistings{\listof{codelisting}{Lista de Listagens}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Parte I : Aprendizado Supervisionado},
+  pdflang={pt-BR},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{\texorpdfstring{Parte I : Aprendizado
+Supervisionado}{Parte I : Aprendizado Supervisionado}}
+\subtitle{\texorpdfstring{{Aprendizado em Alta
+Dimensão}}{Aprendizado em Alta Dimensão}}
+\author{}
+\date{}
+
+\begin{document}
+\frame{\titlepage}
+
+
+\begin{frame}{Onde estamos?}
+\protect\phantomsection\label{onde-estamos}
+Estudamos diferentes formas de estimar
+
+\[
+r(\mathbf x)=\mathbb E(Y\mid\mathbf X=\mathbf x)
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  KNN e regressão local utilizam \textbf{vizinhanças}.
+\item
+  Splines utilizam \textbf{funções de base}.
+\item
+  Árvores e ensembles utilizam \textbf{partições}.
+\item
+  Redes neurais aprendem \textbf{composições de transformações}.
+\end{itemize}
+
+\textbf{Como esses métodos se comportam quando o número de variáveis
+aumenta?}
+
+\note{Abertura e motivação: 10 minutos, incluindo os quatro slides
+seguintes. Conectar a aula à diversidade de estimadores já vista na
+disciplina.}
+\end{frame}
+
+\begin{frame}{Dois estudos com \(n=200\) e \(p=1.000\)}
+\protect\phantomsection\label{dois-estudos-com-n200-e-p1.000}
+\begin{columns}[T]
+\begin{column}{0.5\linewidth}
+\begin{block}{Estudo A: sensores}
+\protect\phantomsection\label{estudo-a-sensores}
+1.000 medições refletem principalmente \textbf{três condições de
+funcionamento}.
+
+Muitas variáveis compartilham informação.
+
+\textbf{Hipótese: redundância.}
+\end{block}
+\end{column}
+
+\begin{column}{0.5\linewidth}
+\begin{block}{Estudo B: características moleculares}
+\protect\phantomsection\label{estudo-b-caracteruxedsticas-moleculares}
+A resposta depende de \textbf{cinco entre 1.000 variáveis}.
+
+A maioria das variáveis é desnecessária para a predição, dadas as
+relevantes.
+
+\textbf{Hipótese: esparsidade.}
+\end{block}
+\end{column}
+\end{columns}
+
+\textbf{Os estudos têm a mesma dificuldade apenas porque possuem os
+mesmos \(n\) e \(p\)?}
+\end{frame}
+
+\begin{frame}{Dimensões diferentes}
+\protect\phantomsection\label{dimensuxf5es-diferentes}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Quantidade & Significado \\
+\midrule\noalign{}
+\endhead
+\(n\) & Número de observações \\
+\(p\) & Número de variáveis observadas \\
+\(d\) & Dimensão de uma representação dos dados \\
+\(s\) & Número de variáveis ativas na função de regressão \\
+\(m\) & Número de parâmetros do modelo \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Podemos ter \(d\ll p\), \(s\ll p\) e, em uma RNA, \(m\gg p\).
+
+\textbf{Essas quantidades descrevem aspectos diferentes do problema.}
+
+\note{A dimensão intrínseca da distribuição de X e a dimensão suficiente
+para prever Y podem diferir. Nesta aula, d denota a dimensão da
+representação indicada em cada exemplo.}
+\end{frame}
+
+\section{Dimensionalidade e tamanho
+amostral}\label{dimensionalidade-e-tamanho-amostral}
+
+\begin{frame}{Uma região pequena em muitas dimensões}
+\protect\phantomsection\label{uma-regiuxe3o-pequena-em-muitas-dimensuxf5es}
+Considere entradas uniformes em \([0,1]^p\).
+
+Uma região com comprimento \(h\) em cada coordenada ocupa a fração
+
+\[
+\boxed{V=h^p}
+\]
+
+do volume total. Para \(h=0{,}2\):
+
+\[
+p=1:\ 0{,}2,\qquad
+p=2:\ 0{,}04,\qquad
+p=5:\ 0{,}00032.
+\]
+
+\textbf{A mesma resolução por coordenada cobre uma fração cada vez menor
+dos dados.}
+
+\note{Bloco sobre dimensionalidade: cerca de 20 minutos. O hipercubo
+unitário tem volume total 1 em qualquer dimensão. O que decresce é a
+fração ocupada por uma região com lado fixo h menor que 1. Não dizer que
+o volume do hipercubo unitário cresce exponencialmente.}
+\end{frame}
+
+\begin{frame}{Quantas observações caem nessa região?}
+\protect\phantomsection\label{quantas-observauxe7uxf5es-caem-nessa-regiuxe3o}
+Se \(N_R\) conta as observações na região:
+
+\[
+N_R\sim\operatorname{Binomial}(n,h^p),
+\qquad \mathbb E(N_R)=nh^p.
+\]
+
+Para obter \textbf{\(k\) observações em média}:
+
+\[
+\boxed{n=\frac{k}{h^p}.}
+\]
+
+Com \(k=20\) e \(h=0{,}2\), temos \(n=20\times5^p\).
+
+Isso ilustra cobertura do espaço sob uniformidade, sem garantir uma
+contagem mínima.
+\end{frame}
+
+\begin{frame}{A amostra cresce rapidamente}
+\protect\phantomsection\label{a-amostra-cresce-rapidamente}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}rrr@{}}
+\toprule\noalign{}
+Dimensão \(p\) & Fração \(0{,}2^p\) & \(n\) para 20 observações em
+média \\
+\midrule\noalign{}
+\endhead
+1 & \(0{,}2\) & 100 \\
+2 & \(0{,}04\) & 500 \\
+3 & \(0{,}008\) & 2.500 \\
+5 & \(0{,}00032\) & 62.500 \\
+10 & \(0{,}0000001024\) & 195.312.500 \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{Esta conta não constitui uma recomendação amostral para qualquer
+modelo.}
+\end{frame}
+
+\begin{frame}{Dimensão e cobertura do espaço}
+\protect\phantomsection\label{dimensuxe3o-e-cobertura-do-espauxe7o}
+\pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_files/figure-beamer/unnamed-chunk-2-1.png}}
+
+Manter o mesmo tamanho de vizinhança em cada coordenada exige
+crescimento exponencial de \(n\).
+
+\note{Cada unidade no eixo vertical representa multiplicar n por 10.
+Gráfico calculado da expressão geométrica, sem ajuste ou simulação.}
+\end{frame}
+
+\begin{frame}{O que acontece com o KNN?}
+\protect\phantomsection\label{o-que-acontece-com-o-knn}
+Para encontrar \(k\) vizinhos com poucos dados:
+
+\begin{itemize}
+\tightlist
+\item
+  Precisamos ampliar a região de busca.
+\item
+  Os vizinhos podem diferir em várias coordenadas.
+\item
+  Variáveis irrelevantes podem dominar a distância.
+\end{itemize}
+
+\[
+d^2(\mathbf x,\mathbf x')=
+\underbrace{\sum_{j\in S}(x_j-x'_j)^2}_{\text{variáveis relevantes}}
++
+\underbrace{\sum_{j\notin S}(x_j-x'_j)^2}_{\text{demais variáveis}}.
+\]
+
+Padronizar evita dominância de escala, mas mantém as variáveis
+irrelevantes na distância.
+\end{frame}
+
+\begin{frame}{Regressão local e splines multivariadas}
+\protect\phantomsection\label{regressuxe3o-local-e-splines-multivariadas}
+\textbf{Regressão local:} vizinhanças maiores podem aumentar o viés,
+enquanto regiões menores contêm poucos dados.
+
+\textbf{Bases tensoriais:} com \(K\) funções por variável, uma
+construção completa usa
+
+\[
+\boxed{K^p\text{ funções de base}.}
+\]
+
+Com \(K=5\) e \(p=10\): \(5^{10}=9.765.625\) funções.
+
+\textbf{Restrições como aditividade reduzem essa complexidade.}
+\end{frame}
+
+\begin{frame}{Uma taxa que resume a dificuldade}
+\protect\phantomsection\label{uma-taxa-que-resume-a-dificuldade}
+Para uma classe de funções com suavidade \(\alpha\), sob condições
+usuais:
+
+\[
+\text{erro de estimação integrado}\asymp
+n^{-\frac{2\alpha}{2\alpha+p}}.
+\]
+
+Com \(\alpha=2\):
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}rr@{}}
+\toprule\noalign{}
+Dimensão & Taxa \\
+\midrule\noalign{}
+\endhead
+\(p=1\) & \(n^{-4/5}\) \\
+\(p=4\) & \(n^{-1/2}\) \\
+\(p=20\) & \(n^{-1/6}\) \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+O crescimento de \(p\) reduz a velocidade de aprendizagem.
+
+\note{Taxa minimax típica para erro quadrático integrado sobre classes
+suaves, com hipóteses sobre suporte, desenho e ruído. Refere-se ao
+excesso de erro em relação à função verdadeira, não inclui o ruído
+irredutível de uma nova resposta. Fonte: Wasserman, notas Nonparametric
+Regression, referência ao final.}
+\end{frame}
+
+\section{Redundância}\label{redunduxe2ncia}
+
+\begin{frame}{Muitas medições, poucos fatores}
+\protect\phantomsection\label{muitas-mediuxe7uxf5es-poucos-fatores}
+Suponha que as variáveis obedeçam a
+
+\[
+X_j=a_jZ+\eta_j,\qquad j=1,\ldots,p.
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(Z\): fator compartilhado.
+\item
+  \(a_j\): intensidade e direção da associação com o fator.
+\item
+  \(\eta_j\): componente específico da medição.
+\end{itemize}
+
+\textbf{Muitas variáveis podem medir aspectos de um mesmo fenômeno.}
+
+\note{Bloco sobre redundância: cerca de 15 minutos. Exemplo: dezenas de
+sensores medindo um estado térmico comum. Com ruído em todas as
+coordenadas, a distribuição pode ter suporte de dimensão p, ainda que a
+estrutura de sinal seja aproximadamente de baixa dimensão.}
+\end{frame}
+
+\begin{frame}{Redundância em um exemplo simulado}
+\protect\phantomsection\label{redunduxe2ncia-em-um-exemplo-simulado}
+\pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_files/figure-beamer/unnamed-chunk-3-1.png}}
+
+As duas coordenadas contêm informação fortemente compartilhada.
+\end{frame}
+
+\begin{frame}{Representação de baixa dimensão}
+\protect\phantomsection\label{representauxe7uxe3o-de-baixa-dimensuxe3o}
+Uma generalização é
+
+\[
+\mathbf X=A\mathbf Z+\boldsymbol\eta,
+\qquad \mathbf Z\in\mathbb R^d,\quad d\ll p.
+\]
+
+Se a resposta depende principalmente desses fatores,
+
+\[
+Y=g(\mathbf Z)+\varepsilon,
+\]
+
+uma representação de dimensão \(d\) pode simplificar a predição.
+
+\textbf{Precisamos preservar o sinal relacionado à resposta.}
+\end{frame}
+
+\begin{frame}{ACP e regressão por componentes}
+\protect\phantomsection\label{acp-e-regressuxe3o-por-componentes}
+A ACP constrói combinações lineares:
+
+\[
+Z_k=\mathbf v_k^\top\mathbf X.
+\]
+
+Na regressão por componentes principais, utilizamos
+
+\[
+\widehat Y=\hat\beta_0+\sum_{k=1}^{d}\hat\gamma_kZ_k.
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  A ACP utiliza a variabilidade das entradas.
+\item
+  A escolha de \(d\) para predição deve considerar o desempenho de
+  validação.
+\item
+  Uma componente de pequena variância pode conter sinal importante.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variância das entradas e sinal preditivo}
+\protect\phantomsection\label{variuxe2ncia-das-entradas-e-sinal-preditivo}
+Considere variáveis independentes:
+
+\[
+X_1\sim N(0,100),\qquad X_2\sim N(0,1),
+\]
+
+\[
+Y=5X_2+\varepsilon.
+\]
+
+\textbf{Sem padronização}, a primeira componente populacional acompanha
+\(X_1\).
+
+Entretanto, a resposta depende de \(X_2\).
+
+\textbf{Explicar a variação de \(\mathbf X\) não garante preservar a
+informação sobre \(Y\).}
+
+\note{Padronizar altera este exemplo, mas a ACP continua sem utilizar Y.
+Evitar concluir que toda componente de alta variância é irrelevante.
+Fonte conceitual: notas de redução dimensional STATS 202, Stanford.}
+\end{frame}
+
+\begin{frame}{Métodos para explorar redundância}
+\protect\phantomsection\label{muxe9todos-para-explorar-redunduxe2ncia}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Método
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Estratégia
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cuidado
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+PCR & Regressão em componentes da ACP & Pode descartar sinal
+preditivo \\
+PLS & Componentes que utilizam também \(Y\) & Número de componentes
+exige validação \\
+Ridge & Contrai coeficientes e estabiliza o ajuste & Mantém todas as
+variáveis \\
+Modelo fatorial & Representa fatores compartilhados & Depende da
+adequação dos fatores \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Com redundância, selecionar uma única variável de cada grupo pode perder
+informação útil das demais medições.
+\end{frame}
+
+\section{Esparsidade}\label{esparsidade}
+
+\begin{frame}{Poucas variáveis determinam a resposta}
+\protect\phantomsection\label{poucas-variuxe1veis-determinam-a-resposta}
+Considere \(p=1.000\), mas
+
+\[
+Y=3X_2-2X_{17}+1{,}5X_{204}+\varepsilon.
+\]
+
+A função de regressão utiliza apenas \(s=3\) variáveis.
+
+\[
+\boxed{s\ll p.}
+\]
+
+\textbf{O desafio inclui descobrir quais variáveis são relevantes.}
+
+\note{Bloco sobre esparsidade: cerca de 15 minutos. Aqui relevância
+significa participação na função condicional adotada no modelo. Uma
+variável fora do suporte ainda pode ter associação marginal com Y por
+correlação.}
+\end{frame}
+
+\begin{frame}{Esparsidade dos coeficientes}
+\protect\phantomsection\label{esparsidade-dos-coeficientes}
+\pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_files/figure-beamer/unnamed-chunk-4-1.png}}
+
+Ilustração com 50 variáveis: apenas três efeitos ativos.
+\end{frame}
+
+\begin{frame}{Esparsidade do modelo e dos dados}
+\protect\phantomsection\label{esparsidade-do-modelo-e-dos-dados}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Conceito
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Significado
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemplo
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Modelo esparso & Poucos efeitos ativos & Cinco coeficientes não nulos \\
+Matriz esparsa & Muitas entradas iguais a zero & Contagens de palavras
+em documentos \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Uma matriz densa pode gerar um problema de regressão esparsa.
+
+Uma matriz esparsa pode conter muitas variáveis relevantes.
+
+\textbf{As duas propriedades não são equivalentes.}
+\end{frame}
+
+\begin{frame}{Lasso e seleção de variáveis}
+\protect\phantomsection\label{lasso-e-seleuxe7uxe3o-de-variuxe1veis}
+O lasso estima
+
+\[
+\boxed{
+\hat{\boldsymbol\beta}=
+\arg\min_{\beta_0,\boldsymbol\beta}
+\left\{
+\frac{1}{2n}\sum_{i=1}^{n}
+(y_i-\beta_0-\mathbf x_i^\top\boldsymbol\beta)^2
++\lambda\|\boldsymbol\beta\|_1
+\right\}.
+}
+\]
+
+A penalização \(L_1\) favorece coeficientes exatamente iguais a zero.
+
+\begin{itemize}
+\tightlist
+\item
+  \(\lambda\) controla a intensidade da regularização.
+\item
+  O intercepto fica fora da penalização.
+\item
+  A validação escolhe \(\lambda\) para o objetivo preditivo.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Elastic net e variáveis correlacionadas}
+\protect\phantomsection\label{elastic-net-e-variuxe1veis-correlacionadas}
+O elastic net combina
+
+\[
+\lambda\left[
+\alpha\|\boldsymbol\beta\|_1
++\frac{1-\alpha}{2}\|\boldsymbol\beta\|_2^2
+\right].
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(\alpha=1\): lasso.
+\item
+  \(\alpha=0\): ridge.
+\item
+  \(0<\alpha<1\): combinação das penalizações.
+\end{itemize}
+
+Pode ser útil quando existem \textbf{grupos correlacionados e poucos
+grupos com sinal}.
+
+\note{A parte L2 favorece estabilidade e comportamento de agrupamento
+sob correlação. A seleção exata não é garantida. Ajustar alpha e lambda
+na validação. Fonte: Zou e Hastie (2005), Regularization and variable
+selection via the elastic net.}
+\end{frame}
+
+\begin{frame}{Esparsidade também pode ser não linear}
+\protect\phantomsection\label{esparsidade-tambuxe9m-pode-ser-nuxe3o-linear}
+\[
+Y=\sin(X_2)+X_{17}^2+X_2X_{204}+\varepsilon.
+\]
+
+A função depende de poucas variáveis, mas inclui não linearidade e
+interação.
+
+\textbf{Lasso aplicado somente às entradas originais representa efeitos
+lineares.}
+
+Possibilidades:
+
+\begin{itemize}
+\tightlist
+\item
+  Bases e interações com penalização.
+\item
+  Modelos aditivos esparsos, quando a aditividade for adequada.
+\item
+  Métodos capazes de representar interações, com controle de
+  complexidade.
+\end{itemize}
+\end{frame}
+
+\section{Comparação das
+estruturas}\label{comparauxe7uxe3o-das-estruturas}
+
+\begin{frame}{Resumir ou selecionar?}
+\protect\phantomsection\label{resumir-ou-selecionar}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Aspecto
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Redundância
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Esparsidade
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Estrutura & Informação compartilhada & Poucos efeitos relevantes \\
+Operação natural & Construir representações & Selecionar variáveis ou
+efeitos \\
+Exemplo & 100 medidas de três fatores & Cinco entre 1.000 variáveis \\
+Métodos associados & PCR, PLS, ridge & Lasso, elastic net \\
+Risco & Perder sinal ao resumir & Seleção instável ou incorreta \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{As hipóteses podem coexistir.}
+
+\note{Comparação e tamanho amostral estruturado: cerca de 15 minutos.}
+\end{frame}
+
+\begin{frame}{Esparsidade depende da representação}
+\protect\phantomsection\label{esparsidade-depende-da-representauxe7uxe3o}
+Considere entradas independentes e padronizadas e defina
+
+\[
+Z_1=\frac{X_1+\cdots+X_p}{\sqrt p},
+\qquad Y=2Z_1+\varepsilon.
+\]
+
+Na representação original:
+
+\[
+\beta_j=\frac{2}{\sqrt p},\qquad j=1,\ldots,p.
+\]
+
+Todos os coeficientes são diferentes de zero, embora a resposta dependa
+de \textbf{uma única combinação}.
+
+\textbf{Dimensão preditiva pequena pode coexistir com coeficientes
+densos.}
+\end{frame}
+
+\begin{frame}{Redundância e esparsidade juntas}
+\protect\phantomsection\label{redunduxe2ncia-e-esparsidade-juntas}
+Imagine 1.000 variáveis organizadas em 20 grupos correlacionados.
+
+Apenas dois grupos contêm informação necessária à função de regressão.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Dentro dos grupos:} redundância.
+\item
+  \textbf{Entre os grupos:} esparsidade da estrutura relevante.
+\end{itemize}
+
+Possibilidades: elastic net, group lasso com grupos conhecidos ou
+seleção seguida de representação.
+
+Toda etapa aprendida dos dados deve integrar a validação.
+\end{frame}
+
+\begin{frame}{Alta dimensão na regressão linear}
+\protect\phantomsection\label{alta-dimensuxe3o-na-regressuxe3o-linear}
+\[
+\mathbf y=X\boldsymbol\beta+\boldsymbol\varepsilon.
+\]
+
+Se \(p>n\), a matriz \(X^\top X\) é singular e os coeficientes de
+mínimos quadrados não são únicos.
+
+Para coeficientes penalizados e \(\lambda>0\), ridge utiliza
+
+\[
+\hat{\boldsymbol\beta}_{R}
+=(X^\top X+\lambda I)^{-1}X^\top\mathbf y.
+\]
+
+A regularização torna a solução identificável pelo critério e controla
+sua variabilidade.
+
+\note{A fórmula assume entradas e resposta centradas, ou tratamento
+separado do intercepto. Existência de uma solução única regularizada não
+garante boa predição.}
+\end{frame}
+
+\begin{frame}{Tamanho amostral em modelos esparsos}
+\protect\phantomsection\label{tamanho-amostral-em-modelos-esparsos}
+Sob condições adequadas, limites de erro preditivo incluem termos da
+ordem
+
+\[
+\boxed{\sigma^2\frac{s\log p}{n}.}
+\]
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Termo & Papel \\
+\midrule\noalign{}
+\endhead
+\(s\) & Quantidade de efeitos a estimar \\
+\(\log p\) & Custo de procurar entre muitos candidatos \\
+\(\sigma^2\) & Intensidade do ruído \\
+\(n\) & Informação amostral disponível \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{Esparsidade reduz a complexidade, mas exige condições sobre os
+preditores.}
+
+\note{Limite típico para erro quadrático de predição de regressão linear
+esparsa, com regularização calibrada, controle de caudas e condições de
+compatibilidade ou autovalores restritos. Não é fórmula universal nem
+garantia para suporte exato. Fonte: Gautier e Tsybakov, Regularity
+Properties for Sparse Regression.}
+\end{frame}
+
+\begin{frame}{O que a expressão não fornece?}
+\protect\phantomsection\label{o-que-a-expressuxe3o-nuxe3o-fornece}
+A ordem \(s\log p\) não determina sozinha uma amostra recomendada.
+
+A exigência real também depende de:
+
+\begin{itemize}
+\tightlist
+\item
+  Intensidade dos sinais e nível de ruído.
+\item
+  Correlação e geometria dos preditores.
+\item
+  Precisão desejada e objetivo da análise.
+\item
+  Capacidade de identificar a representação relevante.
+\end{itemize}
+
+\textbf{Prever bem, estimar coeficientes e recuperar o suporte são
+objetivos distintos.}
+\end{frame}
+
+\begin{frame}{A dimensão relevante também exige aprendizagem}
+\protect\phantomsection\label{a-dimensuxe3o-relevante-tambuxe9m-exige-aprendizagem}
+Se uma representação útil \(\mathbf Z\in\mathbb R^d\) fosse conhecida,
+poderíamos modelar
+
+\[
+Y=g(\mathbf Z)+\varepsilon.
+\]
+
+Quando precisamos estimá-la, aparece um custo adicional.
+
+\begin{itemize}
+\tightlist
+\item
+  Pouca amostra pode dificultar estimar componentes ou fatores.
+\item
+  A variância das entradas pode não acompanhar o sinal preditivo.
+\item
+  Uma representação de baixa dimensão não elimina ruído nem complexidade
+  de \(g\).
+\end{itemize}
+
+\textbf{A redução de dimensão ajuda quando preserva informação útil e
+pode ser aprendida.}
+\end{frame}
+
+\section{Escolha dos métodos}\label{escolha-dos-muxe9todos}
+
+\begin{frame}{Modelos lineares penalizados e componentes}
+\protect\phantomsection\label{modelos-lineares-penalizados-e-componentes}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Estrutura esperada & Referências para comparação \\
+\midrule\noalign{}
+\endhead
+Muitos efeitos pequenos & Ridge \\
+Poucos efeitos lineares & Lasso \\
+Efeitos esparsos e preditores correlacionados & Elastic net \\
+Fatores de alta variância contêm o sinal & PCR \\
+Combinações lineares relacionadas a \(Y\) & PLS \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+A escolha final depende da validação e da finalidade da análise.
+
+\note{Comparação de métodos: cerca de 15 minutos. Não apresentar a
+tabela como uma classificação absoluta de desempenho.}
+\end{frame}
+
+\begin{frame}{KNN, regressão local e GAM}
+\protect\phantomsection\label{knn-regressuxe3o-local-e-gam}
+\textbf{KNN e regressão local}
+
+Dependem de uma distância informativa e de observações próximas. Seleção
+ou redução dimensional pode melhorar a representação.
+
+\textbf{GAM aditivo}
+
+\[
+r(\mathbf x)=\beta_0+\sum_{j=1}^{p}f_j(x_j).
+\]
+
+A aditividade evita estimar uma superfície multivariada geral. Com \(p\)
+grande, penalizar e eventualmente selecionar funções continua
+necessário.
+\end{frame}
+
+\begin{frame}{Árvores, random forest e boosting}
+\protect\phantomsection\label{uxe1rvores-random-forest-e-boosting}
+Árvores podem ignorar variáveis ao escolher divisões, mas muitas
+candidatas irrelevantes dificultam encontrar sinal.
+
+Na random forest, se há \(s\) variáveis relevantes entre \(p\), a
+probabilidade de pelo menos uma delas estar entre \(q=\texttt{mtry}\)
+candidatas é
+
+\[
+\boxed{
+1-\frac{\binom{p-s}{q}}{\binom{p}{q}}.
+}
+\]
+
+O boosting pode concentrar o ajuste em variáveis úteis, mas também
+selecionar ruído ao longo das iterações.
+
+\note{Fórmula combinatória para amostragem uniforme sem reposição das
+candidatas. Convenção: binomial(p-s,q)=0 se q\textgreater p-s. Ter uma
+variável relevante como candidata não garante que ela será escolhida nem
+que a divisão será útil, sobretudo com interações. Poda/profundidade,
+tamanho de folha, mtry, taxa de aprendizagem e iterações são controles
+distintos.}
+\end{frame}
+
+\begin{frame}{Variáveis irrelevantes e candidatas na floresta}
+\protect\phantomsection\label{variuxe1veis-irrelevantes-e-candidatas-na-floresta}
+\pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_files/figure-beamer/unnamed-chunk-5-1.png}}
+
+Cálculo com \(s=5\) e \(\texttt{mtry}=10\) fixos. O gráfico ilustra
+candidatas, sem medir erro preditivo.
+\end{frame}
+
+\begin{frame}{Redes neurais em altas dimensões}
+\protect\phantomsection\label{redes-neurais-em-altas-dimensuxf5es}
+A primeira camada totalmente conectada calcula
+
+\[
+\mathbf a^{(1)}=\phi\left(W^{(1)}\mathbf x+\mathbf b^{(1)}\right).
+\]
+
+Com \(H\) neurônios, ela contém
+
+\[
+\boxed{H(p+1)\text{ parâmetros}.}
+\]
+
+A rede pode aprender representações úteis, mas aumentar \(p\) também
+aumenta os parâmetros.
+
+\textbf{Arquitetura, regularização e informação amostral continuam
+essenciais.}
+\end{frame}
+
+\begin{frame}{Quando uma RNA pode aproveitar estrutura?}
+\protect\phantomsection\label{quando-uma-rna-pode-aproveitar-estrutura}
+\begin{itemize}
+\tightlist
+\item
+  Representações intermediárias podem combinar entradas redundantes.
+\item
+  Arquiteturas adequadas podem explorar composição e regularidades.
+\item
+  Weight decay e early stopping controlam o ajuste.
+\item
+  Uma camada com \(H<p\) cria uma representação menor, sem garantir
+  preservar o sinal.
+\end{itemize}
+
+Em dados tabulares com \(p\gg n\), comparar a RNA com modelos
+penalizados é essencial.
+
+\textbf{Muitos parâmetros não fornecem, por si só, uma explicação para
+boa generalização.}
+
+\note{Resultados teóricos para redes explorando baixa dimensão
+intrínseca exigem hipóteses sobre a distribuição e a classe de funções.
+Evitar prometer que o treinamento vai encontrar automaticamente a
+representação desejada. Fonte: Zhang et al.~(2023), Effective Minkowski
+Dimension of Deep Nonparametric Regression.}
+\end{frame}
+
+\begin{frame}{Classificação em altas dimensões}
+\protect\phantomsection\label{classificauxe7uxe3o-em-altas-dimensuxf5es}
+As hipóteses estruturais também orientam a classificação.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Situação & Métodos a comparar \\
+\midrule\noalign{}
+\endhead
+Efeitos aproximadamente lineares & Regressão logística penalizada \\
+Separação por combinação linear & SVM linear regularizada \\
+Fatores com informação preditiva & Componentes + classificador \\
+Não linearidade e interações & Ensembles ou RNA regularizada \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Escolher métricas conforme o objetivo: log-loss, AUC, sensibilidade,
+calibração ou custo de decisão.
+\end{frame}
+
+\section{Avaliação e discussão}\label{avaliauxe7uxe3o-e-discussuxe3o}
+
+\begin{frame}{Validação sem vazamento de informação}
+\protect\phantomsection\label{validauxe7uxe3o-sem-vazamento-de-informauxe7uxe3o}
+Em cada partição de treinamento da validação cruzada:
+
+\begin{enumerate}
+\tightlist
+\item
+  Estimar imputação e padronização.
+\item
+  Ajustar seleção, ACP ou outra representação.
+\item
+  Treinar o modelo com os hiperparâmetros candidatos.
+\item
+  Aplicar as transformações aprendidas à partição de validação.
+\item
+  Avaliar as predições nas observações reservadas.
+\end{enumerate}
+
+O conjunto de teste participa apenas da avaliação final.
+
+\note{Encerramento e discussão: cerca de 10 minutos. Ajustar ACP no
+banco inteiro também utiliza informação da distribuição das entradas de
+validação/teste. Para estimar desempenho do pipeline de treinamento,
+mantê-la dentro das partições. Para dados dependentes, usar divisões
+temporais ou por grupos apropriadas.}
+\end{frame}
+
+\begin{frame}{Experimento para investigar as hipóteses}
+\protect\phantomsection\label{experimento-para-investigar-as-hipuxf3teses}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Cenário & Entradas & Função de regressão \\
+\midrule\noalign{}
+\endhead
+Esparso & Preditores independentes & Cinco efeitos ativos \\
+Redundante & Medições de três fatores & Depende dos três fatores \\
+Misto & Grupos correlacionados & Depende de um grupo \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Comparar ridge, lasso, elastic net, PCR e KNN.
+
+Variar \(n\in\{100,300,1000\}\) e \(p\in\{20,100,500\}\).
+
+\textbf{Manter controladas a variância do sinal e a variância do ruído
+ao variar \(p\).}
+
+\note{Este slide propõe um experimento, não apresenta resultados
+empíricos. No cenário redundante, acrescentar sensores também pode
+melhorar a medição dos fatores. Separar esse ganho da simples inclusão
+de variáveis irrelevantes. Usar múltiplas repetições e conjuntos de
+teste independentes. Um método oráculo com variáveis/fatores verdadeiros
+pode servir como referência, identificado como tal.}
+\end{frame}
+
+\begin{frame}{O que avaliar no experimento?}
+\protect\phantomsection\label{o-que-avaliar-no-experimento}
+\textbf{Predição:} erro em teste e variabilidade entre repetições.
+
+\textbf{Seleção:} quantas variáveis ativas foram recuperadas e quantas
+irrelevantes entraram.
+
+\textbf{Estabilidade:} quanto o modelo ou a seleção muda entre amostras.
+
+\textbf{Custo computacional:} tempo de ajuste e escolha de
+hiperparâmetros.
+
+Um método pode prever bem mesmo quando a seleção de variáveis varia.
+\end{frame}
+
+\begin{frame}{Discussão em sala}
+\protect\phantomsection\label{discussuxe3o-em-sala}
+\begin{enumerate}
+\tightlist
+\item
+  Acrescentar sensores redundantes equivale a acrescentar variáveis
+  irrelevantes?
+\item
+  Quando ACP pode prejudicar o KNN ou a regressão?
+\item
+  Uma resposta que depende de uma combinação densa satisfaz esparsidade
+  nas entradas originais?
+\item
+  Por que aumentar \(n\) pode ajudar sem tornar uma variável irrelevante
+  informativa?
+\item
+  O melhor preditor precisa identificar exatamente as variáveis ativas?
+\end{enumerate}
+
+\note{Respostas esperadas: 1. Não. Sensores redundantes podem melhorar a
+medição de fatores e alteram a geometria. 2. Quando descarta direções
+preditivas ou mantém sobretudo variação irrelevante. 3. Não, embora
+possa haver uma representação preditiva de dimensão baixa. 4. Aumenta
+informação para estimar e validar, sem mudar a relevância populacional.
+5. Não. Correlação pode permitir previsões semelhantes com suportes
+diferentes.}
+\end{frame}
+
+\begin{frame}{Síntese}
+\protect\phantomsection\label{suxedntese}
+\textbf{Redundância:} muitas entradas compartilham informação. Podemos
+buscar uma representação compacta.
+
+\textbf{Esparsidade:} poucos efeitos são necessários. Podemos buscar
+seleção de variáveis ou funções.
+
+\textbf{Tamanho amostral:} depende da estrutura, do ruído e da precisão
+desejada, além de \(p\).
+
+\textbf{Escolha do método:} deve combinar hipóteses plausíveis e
+avaliação adequada.
+
+\[
+\boxed{\text{Mais dados e estrutura adequada tornam a aprendizagem viável.}}
+\]
+\end{frame}
+
+\begin{frame}{Referências para aprofundamento}
+\protect\phantomsection\label{referuxeancias-para-aprofundamento}
+\begin{itemize}
+\tightlist
+\item
+  James, Witten, Hastie e Tibshirani (2021). \emph{An Introduction to
+  Statistical Learning}, 2ª ed.~Capítulos 6, 7 e 10.
+  \href{https://www.statlearning.com/}{statlearning.com}.
+\item
+  Hastie, Tibshirani e Friedman (2009). \emph{The Elements of
+  Statistical Learning}, 2ª ed.~Capítulos 2, 3 e 18.
+  \href{https://hastie.su.domains/ElemStatLearn/}{Livro}.
+\item
+  Zou e Hastie (2005). \emph{Regularization and variable selection via
+  the elastic net}. JRSS B, 67, 301--320.
+  \href{https://web.stanford.edu/~hastie/Papers/elasticnet.pdf}{Artigo}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Referências dos resultados teóricos}
+\protect\phantomsection\label{referuxeancias-dos-resultados-teuxf3ricos}
+\begin{itemize}
+\tightlist
+\item
+  Wasserman. \emph{Nonparametric Regression}. Notas de Statistical
+  Machine Learning, Carnegie Mellon.
+  \href{https://stat.cmu.edu/~larry/=sml/nonpar.pdf}{Notas}.
+\item
+  Gautier e Tsybakov (2016). \emph{Regularity Properties for Sparse
+  Regression}.
+  \href{https://pmc.ncbi.nlm.nih.gov/articles/mid/NIHMS750383/}{Artigo}.
+\item
+  Zhang et al.~(2023). \emph{Effective Minkowski Dimension of Deep
+  Nonparametric Regression: Function Approximation and Statistical
+  Theories}. ICML, PMLR 202, 40911--40931.
+  \href{https://proceedings.mlr.press/v202/zhang23f.html}{Artigo}.
+\item
+  Stanford, STATS 202. \emph{Dimensionality reduction}.
+  \href{https://web.stanford.edu/class/stats202/notes/Model-selection/Dimensionality-reduction.html}{Notas}.
+\end{itemize}
+\end{frame}
+
+
+
+
+\end{document}

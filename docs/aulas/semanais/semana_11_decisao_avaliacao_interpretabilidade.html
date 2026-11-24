@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Decisão, Avaliação e Interpretabilidade</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="semana-11" class="title-slide slide level1 center"><h1>Semana 11</h1>
+</section>
+<section>
+<section id="semana-11" class="title-slide slide level1 center">
+<h1>Semana 11</h1>
 
-</section><section id="fechamento-do-aprendizado-supervisionado" class="slide level2"><h2>Fechamento do aprendizado supervisionado</h2>
+</section>
+<section id="fechamento-do-aprendizado-supervisionado" class="slide level2">
+<h2>Fechamento do aprendizado supervisionado</h2>
 <p>Até aqui aprendemos a construir modelos</p>
 <p>Agora precisamos distinguir quatro etapas:</p>
 <p><span class="math display">\[
@@ -152,7 +164,9 @@
 \text{interpretar}
 }
 \]</span></p>
-</section><section id="organização-da-semana" class="slide level2"><h2>Organização da semana</h2>
+</section>
+<section id="organização-da-semana" class="slide level2">
+<h2>Organização da semana</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="encontro-11.1">Encontro 11.1</h3>
@@ -175,9 +189,14 @@
 <li>limitações das explicações</li>
 </ul>
 </div></div>
-</section></section><section><section id="encontro-11.1-decisão-e-avaliação" class="title-slide slide level1 center"><h1>Encontro 11.1 — Decisão e avaliação</h1>
+</section></section>
+<section>
+<section id="encontro-11.1-decisão-e-avaliação" class="title-slide slide level1 center">
+<h1>Encontro 11.1 — Decisão e avaliação</h1>
 
-</section><section id="regra-de-bayes" class="slide level2"><h2>Regra de Bayes</h2>
+</section>
+<section id="regra-de-bayes" class="slide level2">
+<h2>Regra de Bayes</h2>
 <p>Para classificação binária, defina</p>
 <p><span class="math display">\[
 \eta(\mathbf x)
@@ -192,7 +211,9 @@ g^*(\mathbf x)
 I\left\{\eta(\mathbf x)&gt;\frac12\right\}
 }
 \]</span></p>
-</section><section id="a-regra-ótima-ainda-pode-errar" class="slide level2"><h2>A regra ótima ainda pode errar</h2>
+</section>
+<section id="a-regra-ótima-ainda-pode-errar" class="slide level2">
+<h2>A regra ótima ainda pode errar</h2>
 <p>Em um ponto <span class="math inline">\(\mathbf x\)</span>, o menor risco possível é</p>
 <p><span class="math display">\[
 \boxed{
@@ -210,7 +231,9 @@ E[R^*(\mathbf X)]
 }
 \]</span></p>
 <p>é o erro de Bayes</p>
-</section><section id="probabilidade-e-decisão" class="slide level2"><h2>Probabilidade e decisão</h2>
+</section>
+<section id="probabilidade-e-decisão" class="slide level2">
+<h2>Probabilidade e decisão</h2>
 <p>Um modelo pode produzir</p>
 <p><span class="math display">\[
 \widehat\eta(\mathbf x)
@@ -224,16 +247,23 @@ I\{\widehat\eta(\mathbf x)&gt;c\}
 }
 \]</span></p>
 <p>Alterar <span class="math inline">\(c\)</span> modifica a decisão, não as probabilidades estimadas</p>
-</section></section><section><section id="perdas-assimétricas" class="title-slide slide level1 center"><h1>Perdas assimétricas</h1>
+</section></section>
+<section>
+<section id="perdas-assimétricas" class="title-slide slide level1 center">
+<h1>Perdas assimétricas</h1>
 
-</section><section id="quando-os-erros-têm-custos-diferentes" class="slide level2"><h2>Quando os erros têm custos diferentes</h2>
+</section>
+<section id="quando-os-erros-têm-custos-diferentes" class="slide level2">
+<h2>Quando os erros têm custos diferentes</h2>
 <p>Considere</p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Verdadeiro</th>
 <th style="text-align: right;">Decidir 0</th>
 <th style="text-align: right;">Decidir 1</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(Y=0\)</span></td>
@@ -259,7 +289,9 @@ R(0\mid\mathbf x)
 =
 C_{FN}\eta(\mathbf x)
 \]</span></p>
-</section><section id="cutoff-ótimo" class="slide level2"><h2>Cutoff ótimo</h2>
+</section>
+<section id="cutoff-ótimo" class="slide level2">
+<h2>Cutoff ótimo</h2>
 <p>Escolhemos classe 1 quando</p>
 <p><span class="math display">\[
 C_{FP}[1-\eta(\mathbf x)]
@@ -277,7 +309,9 @@ c^*
 {C_{FP}+C_{FN}}
 }
 \]</span></p>
-</section><section id="como-os-custos-deslocam-o-cutoff" class="slide level2"><h2>Como os custos deslocam o cutoff?</h2>
+</section>
+<section id="como-os-custos-deslocam-o-cutoff" class="slide level2">
+<h2>Como os custos deslocam o cutoff?</h2>
 <p>Se</p>
 <p><span class="math display">\[
 C_{FN}&gt;C_{FP}
@@ -296,15 +330,22 @@ C_{FP}&gt;C_{FN}
 c^*&gt;0.5
 \]</span></p>
 <p>e exigimos mais evidência para predizer a classe positiva</p>
-</section></section><section><section id="métricas-e-cutoff" class="title-slide slide level1 center"><h1>Métricas e cutoff</h1>
+</section></section>
+<section>
+<section id="métricas-e-cutoff" class="title-slide slide level1 center">
+<h1>Métricas e cutoff</h1>
 
-</section><section id="matriz-de-confusão" class="slide level2"><h2>Matriz de confusão</h2>
+</section>
+<section id="matriz-de-confusão" class="slide level2">
+<h2>Matriz de confusão</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th></th>
 <th style="text-align: right;">Predito 1</th>
 <th style="text-align: right;">Predito 0</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><strong>Verdadeiro 1</strong></td>
@@ -319,7 +360,9 @@ c^*&gt;0.5
 </tbody>
 </table>
 <p>As métricas resumem tipos distintos de erro</p>
-</section><section id="sensibilidade-e-especificidade" class="slide level2"><h2>Sensibilidade e especificidade</h2>
+</section>
+<section id="sensibilidade-e-especificidade" class="slide level2">
+<h2>Sensibilidade e especificidade</h2>
 <p><span class="math display">\[
 \boxed{
 Sensibilidade
@@ -335,8 +378,9 @@ Especificidade
 }
 \]</span></p>
 <p>Ao reduzir o cutoff, em geral aumentamos sensibilidade e reduzimos especificidade</p>
-</section><section id="precisão-e-f_1" class="slide level2"><h2>Precisão e <span class="math inline">\(F_1\)</span>
-</h2>
+</section>
+<section id="precisão-e-f_1" class="slide level2">
+<h2>Precisão e <span class="math inline">\(F_1\)</span></h2>
 <p><span class="math display">\[
 \boxed{
 Precisão
@@ -353,9 +397,14 @@ F_1
 }
 \]</span></p>
 <p>As métricas respondem a perguntas diferentes</p>
-</section></section><section><section id="curva-roc" class="title-slide slide level1 center"><h1>Curva ROC</h1>
+</section></section>
+<section>
+<section id="curva-roc" class="title-slide slide level1 center">
+<h1>Curva ROC</h1>
 
-</section><section id="variando-o-cutoff" class="slide level2"><h2>Variando o cutoff</h2>
+</section>
+<section id="variando-o-cutoff" class="slide level2">
+<h2>Variando o cutoff</h2>
 <p>Para cada <span class="math inline">\(c\)</span> calculamos</p>
 <p><span class="math display">\[
 TPR(c)=Sensibilidade(c)
@@ -372,8 +421,13 @@ FPR(c)
 TPR(c)
 }
 \]</span></p>
-</section><section class="slide level2">
-<img data-src="semana_11_decisao_avaliacao_interpretabilidade_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"></section><section id="auc" class="slide level2"><h2>AUC</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="semana_11_decisao_avaliacao_interpretabilidade_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"></section>
+<section id="auc" class="slide level2">
+<h2>AUC</h2>
 <p>A área sob a curva ROC é</p>
 <p><span class="math display">\[
 \boxed{
@@ -391,9 +445,14 @@ P(S_1&gt;S_0)
 }
 \]</span></p>
 <p>A AUC mede capacidade de ordenação, não escolhe o cutoff operacional</p>
-</section></section><section><section id="classes-desbalanceadas" class="title-slide slide level1 center"><h1>Classes desbalanceadas</h1>
+</section></section>
+<section>
+<section id="classes-desbalanceadas" class="title-slide slide level1 center">
+<h1>Classes desbalanceadas</h1>
 
-</section><section id="acurácia-pode-enganar" class="slide level2"><h2>Acurácia pode enganar</h2>
+</section>
+<section id="acurácia-pode-enganar" class="slide level2">
+<h2>Acurácia pode enganar</h2>
 <p>Se</p>
 <p><span class="math display">\[
 P(Y=1)=0.02
@@ -406,7 +465,9 @@ Accuracy=98\%
 <p><span class="math display">\[
 Sensibilidade=0
 \]</span></p>
-</section><section id="balanced-accuracy" class="slide level2"><h2>Balanced Accuracy</h2>
+</section>
+<section id="balanced-accuracy" class="slide level2">
+<h2>Balanced Accuracy</h2>
 <p><span class="math display">\[
 \boxed{
 Balanced\ Accuracy
@@ -415,7 +476,9 @@ Balanced\ Accuracy
 }
 \]</span></p>
 <p>A métrica atribui peso igual ao desempenho nas duas classes</p>
-</section><section id="curva-precisionrecall" class="slide level2"><h2>Curva Precision–Recall</h2>
+</section>
+<section id="curva-precisionrecall" class="slide level2">
+<h2>Curva Precision–Recall</h2>
 <p>Ao variar o cutoff, obtemos</p>
 <p><span class="math display">\[
 \left(
@@ -423,8 +486,13 @@ Recall(c),Precision(c)
 \right)
 \]</span></p>
 <p>Em problemas fortemente desbalanceados, essa curva evidencia diretamente o comportamento na classe positiva</p>
-</section><section class="slide level2">
-<img data-src="semana_11_decisao_avaliacao_interpretabilidade_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"></section><section id="três-níveis-de-intervenção" class="slide level2"><h2>Três níveis de intervenção</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="semana_11_decisao_avaliacao_interpretabilidade_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"></section>
+<section id="três-níveis-de-intervenção" class="slide level2">
+<h2>Três níveis de intervenção</h2>
 <p>Podemos atuar sobre:</p>
 <p><span class="math display">\[
 \boxed{
@@ -441,16 +509,23 @@ Recall(c),Precision(c)
 <li>cutoff altera a decisão final</li>
 </ul>
 <p>Essas intervenções não são equivalentes</p>
-</section><section id="reamostragem-sem-vazamento" class="slide level2"><h2>Reamostragem sem vazamento</h2>
+</section>
+<section id="reamostragem-sem-vazamento" class="slide level2">
+<h2>Reamostragem sem vazamento</h2>
 <p>Se utilizarmos oversampling, undersampling ou SMOTE dentro de validação cruzada, a reamostragem deve ocorrer apenas no conjunto de treino de cada fold</p>
 <p><span class="math display">\[
 \boxed{
 \text{reamostrar dentro do fold de treino}
 }
 \]</span></p>
-</section></section><section><section id="combinação-de-classificadores" class="title-slide slide level1 center"><h1>Combinação de classificadores</h1>
+</section></section>
+<section>
+<section id="combinação-de-classificadores" class="title-slide slide level1 center">
+<h1>Combinação de classificadores</h1>
 
-</section><section id="hard-voting" class="slide level2"><h2>Hard voting</h2>
+</section>
+<section id="hard-voting" class="slide level2">
+<h2>Hard voting</h2>
 <p>Se</p>
 <p><span class="math display">\[
 g_1(\mathbf x),\ldots,g_M(\mathbf x)
@@ -464,7 +539,9 @@ g_{ens}(\mathbf x)
 \{g_1(\mathbf x),\ldots,g_M(\mathbf x)\}
 }
 \]</span></p>
-</section><section id="soft-voting" class="slide level2"><h2>Soft voting</h2>
+</section>
+<section id="soft-voting" class="slide level2">
+<h2>Soft voting</h2>
 <p>Se os classificadores produzem probabilidades,</p>
 <p><span class="math display">\[
 \boxed{
@@ -482,9 +559,14 @@ g_{ens}(\mathbf x)
 \arg\max_k\overline p_k(\mathbf x)
 \]</span></p>
 <p>A combinação também deve ser definida usando treino e validação</p>
-</section></section><section><section id="encontro-11.2-interpretabilidade" class="title-slide slide level1 center"><h1>Encontro 11.2 — Interpretabilidade</h1>
+</section></section>
+<section>
+<section id="encontro-11.2-interpretabilidade" class="title-slide slide level1 center">
+<h1>Encontro 11.2 — Interpretabilidade</h1>
 
-</section><section id="por-que-interpretar-um-modelo" class="slide level2"><h2>Por que interpretar um modelo?</h2>
+</section>
+<section id="por-que-interpretar-um-modelo" class="slide level2">
+<h2>Por que interpretar um modelo?</h2>
 <p>Depois de selecionar um modelo com bom desempenho, podemos perguntar:</p>
 <ul>
 <li>como as predições mudam com as covariáveis?</li>
@@ -500,7 +582,9 @@ g_{ens}(\mathbf x)
 \text{causalidade}
 }
 \]</span></p>
-</section><section id="global-local" class="slide level2"><h2>Global × local</h2>
+</section>
+<section id="global-local" class="slide level2">
+<h2>Global × local</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="global">Global</h3>
@@ -515,9 +599,14 @@ g_{ens}(\mathbf x)
 \widehat g(\mathbf x^*)
 \]</span></p>
 </div></div>
-</section></section><section><section id="pdp" class="title-slide slide level1 center"><h1>PDP</h1>
+</section></section>
+<section>
+<section id="pdp" class="title-slide slide level1 center">
+<h1>PDP</h1>
 
-</section><section id="dependência-parcial" class="slide level2"><h2>Dependência parcial</h2>
+</section>
+<section id="dependência-parcial" class="slide level2">
+<h2>Dependência parcial</h2>
 <p>Para a covariável <span class="math inline">\(X_j\)</span>,</p>
 <p><span class="math display">\[
 \boxed{
@@ -529,7 +618,9 @@ g_{ens}(\mathbf x)
 }
 \]</span></p>
 <p>O PDP descreve a predição média do modelo quando fixamos <span class="math inline">\(X_j=x\)</span></p>
-</section><section id="o-que-o-pdp-descreve" class="slide level2"><h2>O que o PDP descreve?</h2>
+</section>
+<section id="o-que-o-pdp-descreve" class="slide level2">
+<h2>O que o PDP descreve?</h2>
 <p>Se</p>
 <p><span class="math display">\[
 \widehat h_j(x)
@@ -542,9 +633,14 @@ g_{ens}(\mathbf x)
 }
 \]</span></p>
 <p>e não um efeito causal</p>
-</section></section><section><section id="ice" class="title-slide slide level1 center"><h1>ICE</h1>
+</section></section>
+<section>
+<section id="ice" class="title-slide slide level1 center">
+<h1>ICE</h1>
 
-</section><section id="curvas-individuais" class="slide level2"><h2>Curvas individuais</h2>
+</section>
+<section id="curvas-individuais" class="slide level2">
+<h2>Curvas individuais</h2>
 <p>Para a observação <span class="math inline">\(i\)</span>,</p>
 <p><span class="math display">\[
 \boxed{
@@ -554,7 +650,9 @@ g_{ens}(\mathbf x)
 }
 \]</span></p>
 <p>Traçamos uma curva para cada observação em vez de calcular imediatamente a média</p>
-</section><section id="relação-pdpice" class="slide level2"><h2>Relação PDP–ICE</h2>
+</section>
+<section id="relação-pdpice" class="slide level2">
+<h2>Relação PDP–ICE</h2>
 <p><span class="math display">\[
 \boxed{
 \widehat h_j(x)
@@ -572,19 +670,28 @@ PDP
 \text{média das curvas ICE}
 }
 \]</span></p>
-</section><section id="o-que-ice-acrescenta" class="slide level2"><h2>O que ICE acrescenta?</h2>
+</section>
+<section id="o-que-ice-acrescenta" class="slide level2">
+<h2>O que ICE acrescenta?</h2>
 <p>Curvas aproximadamente paralelas sugerem comportamento homogêneo</p>
 <p>Curvas com formas distintas podem revelar heterogeneidade e interações no modelo</p>
-</section><section id="uma-limitação-do-pdp" class="slide level2"><h2>Uma limitação do PDP</h2>
+</section>
+<section id="uma-limitação-do-pdp" class="slide level2">
+<h2>Uma limitação do PDP</h2>
 <p>Com covariáveis fortemente dependentes, fixar <span class="math inline">\(X_j=x\)</span> pode criar combinações pouco representadas pelos dados</p>
 <p><span class="math display">\[
 \boxed{
 \text{PDP pode consultar o modelo em regiões de baixo suporte}
 }
 \]</span></p>
-</section></section><section><section id="lime" class="title-slide slide level1 center"><h1>LIME</h1>
+</section></section>
+<section>
+<section id="lime" class="title-slide slide level1 center">
+<h1>LIME</h1>
 
-</section><section id="a-pergunta-local" class="slide level2"><h2>A pergunta local</h2>
+</section>
+<section id="a-pergunta-local" class="slide level2">
+<h2>A pergunta local</h2>
 <p>Para uma observação</p>
 <p><span class="math display">\[
 \mathbf x^*
@@ -594,7 +701,9 @@ PDP
 \widehat g(\mathbf x^*)
 \]</span></p>
 <p>A ideia é aproximar localmente o modelo complexo por um modelo interpretável</p>
-</section><section id="passos" class="slide level2"><h2>Passos</h2>
+</section>
+<section id="passos" class="slide level2">
+<h2>Passos</h2>
 <p><span class="math display">\[
 \boxed{
 \mathbf x^*
@@ -609,7 +718,9 @@ PDP
 }
 \]</span></p>
 <p>As observações mais próximas de <span class="math inline">\(\mathbf x^*\)</span> recebem maior peso</p>
-</section><section id="formulação-geral" class="slide level2"><h2>Formulação geral</h2>
+</section>
+<section id="formulação-geral" class="slide level2">
+<h2>Formulação geral</h2>
 <p><span class="math display">\[
 \boxed{
 q^*
@@ -624,18 +735,22 @@ q^*
 \]</span></p>
 <p>O primeiro termo mede fidelidade local</p>
 <p>O segundo controla a complexidade da explicação</p>
-</section><section id="comparando-as-ferramentas" class="slide level2"><h2>Comparando as ferramentas</h2>
+</section>
+<section id="comparando-as-ferramentas" class="slide level2">
+<h2>Comparando as ferramentas</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Método</th>
 <th>Escopo</th>
 <th>Pergunta</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>PDP</td>
@@ -653,7 +768,10 @@ q^*
 <td>por que esta observação recebeu esta predição?</td>
 </tr>
 </tbody>
-</table></section><section id="síntese" class="slide level2"><h2>Síntese</h2>
+</table>
+</section>
+<section id="síntese" class="slide level2">
+<h2>Síntese</h2>
 <p><span class="math display">\[
 \boxed{
 \text{predizer}
@@ -669,14 +787,31 @@ q^*
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 11</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -843,7 +978,7 @@ q^*
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -868,42 +1003,84 @@ q^*
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -951,13 +1128,14 @@ q^*
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1070,6 +1248,6 @@ q^*
         }
       });
       </script>
-
+    
 
 </body></html>

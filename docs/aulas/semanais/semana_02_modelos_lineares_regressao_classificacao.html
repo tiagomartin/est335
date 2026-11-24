@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -94,14 +100,14 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -196,13 +202,16 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Modelos Lineares: Regressão e Classificação</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section id="onde-estamos" class="slide level2"><h2>Onde estamos?</h2>
+</section>
+<section id="onde-estamos" class="slide level2">
+<h2>Onde estamos?</h2>
 <p>Na Semana 1, formulamos o problema de aprendizado de forma geral. Para regressão,</p>
 <p><span class="math display">\[
 \mathcal D_n
@@ -222,9 +231,14 @@ r(x)=E(Y\mid X=x)
 </div>
 </div>
 </div>
-</section><section><section id="modelo-e-treinamento" class="title-slide slide level1 center"><h1>Modelo e treinamento</h1>
+</section>
+<section>
+<section id="modelo-e-treinamento" class="title-slide slide level1 center">
+<h1>Modelo e treinamento</h1>
 
-</section><section id="a-pergunta-central" class="slide level2"><h2>A pergunta central</h2>
+</section>
+<section id="a-pergunta-central" class="slide level2">
+<h2>A pergunta central</h2>
 <p>Temos uma função de regressão desconhecida:</p>
 <p><span class="math display">\[
 r(x)=E(Y\mid X=x)
@@ -234,7 +248,9 @@ r(x)=E(Y\mid X=x)
 \boxed{g(x)=\beta_0+\beta_1x?}
 \]</span></p>
 <p>Essa escolha define uma <strong>classe de modelos</strong>.</p>
-</section><section id="a-classe-de-modelos-lineares" class="slide level2"><h2>A classe de modelos lineares</h2>
+</section>
+<section id="a-classe-de-modelos-lineares" class="slide level2">
+<h2>A classe de modelos lineares</h2>
 <p>No caso de uma única covariável:</p>
 <p><span class="math display">\[
 \mathcal G_{\text{linear}}
@@ -246,7 +262,9 @@ g(x)=\beta_0+\beta_1x:
 \]</span></p>
 <p>Os dados não escolhem a classe.</p>
 <p><strong>Nós escolhemos a classe; o treinamento escolhe os parâmetros.</strong></p>
-</section><section id="do-pipeline-ao-modelo-linear" class="slide level2"><h2>Do pipeline ao modelo linear</h2>
+</section>
+<section id="do-pipeline-ao-modelo-linear" class="slide level2">
+<h2>Do pipeline ao modelo linear</h2>
 <p><span class="math display">\[
 \boxed{\text{Dados}}
 \rightarrow
@@ -260,15 +278,21 @@ g(x)=\beta_0+\beta_1x:
 <p><span class="math display">\[
 \widehat\beta_0,\widehat\beta_1
 \]</span></p>
-</section><section id="exemplo-condutor-pib-expectativa-de-vida" class="slide level2"><h2>Exemplo condutor: PIB × expectativa de vida</h2>
+</section>
+<section id="exemplo-condutor-pib-expectativa-de-vida" class="slide level2">
+<h2>Exemplo condutor: PIB × expectativa de vida</h2>
 
-<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="uma-reta-candidata" class="slide level2"><h2>Uma reta candidata</h2>
+<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="uma-reta-candidata" class="slide level2">
+<h2>Uma reta candidata</h2>
 
 <img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Pergunta:</p>
 <p><span class="math display">\[
 \boxed{\text{Como escolher a melhor reta?}}
 \]</span></p>
-</section><section id="erro-de-uma-observação" class="slide level2"><h2>Erro de uma observação</h2>
+</section>
+<section id="erro-de-uma-observação" class="slide level2">
+<h2>Erro de uma observação</h2>
 <p>Para a observação <span class="math inline">\(i\)</span>:</p>
 <p><span class="math display">\[
 \widehat y_i=g(x_i)
@@ -278,7 +302,9 @@ g(x)=\beta_0+\beta_1x:
 e_i=y_i-\widehat y_i
 \]</span></p>
 <p>O treinamento precisa transformar esses erros em um único critério.</p>
-</section><section id="perda-quadrática" class="slide level2"><h2>Perda quadrática</h2>
+</section>
+<section id="perda-quadrática" class="slide level2">
+<h2>Perda quadrática</h2>
 <p>Sabemos que:</p>
 <p><span class="math display">\[
 L(y,\widehat y)=(y-\widehat y)^2
@@ -292,7 +318,9 @@ RSS(\beta_0,\beta_1)
 y_i-(\beta_0+\beta_1x_i)
 \right]^2
 \]</span></p>
-</section><section id="mínimos-quadrados" class="slide level2"><h2>Mínimos quadrados</h2>
+</section>
+<section id="mínimos-quadrados" class="slide level2">
+<h2>Mínimos quadrados</h2>
 <p>O treinamento resolve</p>
 <p><span class="math display">\[
 \boxed{
@@ -307,24 +335,30 @@ y_i-(\beta_0+\beta_1x_i)
 \]</span></p>
 <p>Não estamos apenas “traçando uma reta”.</p>
 <p>Estamos resolvendo um <strong>problema de otimização</strong>.</p>
-</section><section id="várias-retas-diferentes-perdas" class="slide level2"><h2>Várias retas, diferentes perdas</h2>
+</section>
+<section id="várias-retas-diferentes-perdas" class="slide level2">
+<h2>Várias retas, diferentes perdas</h2>
 
 <img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><p>A reta de MQO é aquela que minimiza a soma dos erros quadráticos.</p>
-</section><section id="ajustando-o-modelo-em-r" class="slide level2"><h2>Ajustando o modelo em R</h2>
+</section>
+<section id="ajustando-o-modelo-em-r" class="slide level2">
+<h2>Ajustando o modelo em R</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>modelo_linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb1-2"><a></a>  vida <span class="sc">~</span> pib,</span>
-<span id="cb1-3"><a></a>  <span class="at">data =</span> df_pib</span>
-<span id="cb1-4"><a></a>)</span>
-<span id="cb1-5"><a></a></span>
-<span id="cb1-6"><a></a><span class="fu">coef</span>(modelo_linear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>modelo_linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb1-2"><a aria-label="2"></a>  vida <span class="sc">~</span> pib,</span>
+<span id="cb1-3"><a aria-label="3"></a>  <span class="at">data =</span> df_pib</span>
+<span id="cb1-4"><a aria-label="4"></a>)</span>
+<span id="cb1-5"><a aria-label="5"></a></span>
+<span id="cb1-6"><a aria-label="6"></a><span class="fu">coef</span>(modelo_linear)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept)          pib 
 6.935727e+01 6.186213e-04 </code></pre>
 </div>
 </div>
 <p>O algoritmo estima os parâmetros a partir da amostra.</p>
-</section><section id="modelo-estimado" class="slide level2"><h2>Modelo estimado</h2>
+</section>
+<section id="modelo-estimado" class="slide level2">
+<h2>Modelo estimado</h2>
 <p>Escrevemos</p>
 <p><span class="math display">\[
 \widehat g(x)
@@ -332,17 +366,16 @@ y_i-(\beta_0+\beta_1x_i)
 \widehat\beta_0+\widehat\beta_1x
 \]</span></p>
 
-<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="interpretando-os-coeficientes" class="slide level2"><h2>Interpretando os coeficientes</h2>
+<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="interpretando-os-coeficientes" class="slide level2">
+<h2>Interpretando os coeficientes</h2>
 <p>Para</p>
 <p><span class="math display">\[
 \widehat g(x)=\widehat\beta_0+\widehat\beta_1x,
 \]</span></p>
 <ul>
-<li>
-<span class="math inline">\(\widehat\beta_0\)</span>: valor previsto quando <span class="math inline">\(x=0\)</span>;</li>
-<li>
-<span class="math inline">\(\widehat\beta_1\)</span>: variação média prevista em <span class="math inline">\(Y\)</span> para uma unidade adicional de <span class="math inline">\(X\)</span>.<br><br>
-</li>
+<li><span class="math inline">\(\widehat\beta_0\)</span>: valor previsto quando <span class="math inline">\(x=0\)</span>;</li>
+<li><span class="math inline">\(\widehat\beta_1\)</span>: variação média prevista em <span class="math inline">\(Y\)</span> para uma unidade adicional de <span class="math inline">\(X\)</span>.<br><br></li>
 </ul>
 <div class="callout callout-warning callout-style-simple">
 <div class="callout-body">
@@ -354,7 +387,9 @@ y_i-(\beta_0+\beta_1x_i)
 </div>
 </div>
 </div>
-</section><section id="predição" class="slide level2"><h2>Predição</h2>
+</section>
+<section id="predição" class="slide level2">
+<h2>Predição</h2>
 <p>Para uma nova observação <span class="math inline">\(x_0\)</span>:</p>
 <p><span class="math display">\[
 \widehat y_0
@@ -364,7 +399,9 @@ y_i-(\beta_0+\beta_1x_i)
 \widehat\beta_0+\widehat\beta_1x_0
 \]</span></p>
 <p>O modelo transforma <strong>covariáveis</strong> em <strong>predições</strong>.</p>
-</section><section id="valores-ajustados-e-resíduos" class="slide level2"><h2>Valores ajustados e resíduos</h2>
+</section>
+<section id="valores-ajustados-e-resíduos" class="slide level2">
+<h2>Valores ajustados e resíduos</h2>
 <p><span class="math display">\[
 \widehat y_i=\widehat g(x_i)
 \]</span></p>
@@ -375,10 +412,14 @@ e_i=y_i-\widehat y_i
 <p><span class="math display">\[
 \boxed{y_i=\widehat y_i+e_i}
 \]</span></p>
-</section><section id="visualizando-os-resíduos" class="slide level2"><h2>Visualizando os resíduos</h2>
+</section>
+<section id="visualizando-os-resíduos" class="slide level2">
+<h2>Visualizando os resíduos</h2>
 
 <img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>As linhas verticais representam os resíduos.</p>
-</section><section id="regressão-linear-múltipla" class="slide level2"><h2>Regressão linear múltipla</h2>
+</section>
+<section id="regressão-linear-múltipla" class="slide level2">
+<h2>Regressão linear múltipla</h2>
 <p>Com <span class="math inline">\(p\)</span> covariáveis:</p>
 <p><span class="math display">\[
 g(\mathbf x)
@@ -393,7 +434,9 @@ g(\mathbf x)
 \beta_0+\sum_{j=1}^{p}\beta_jx_j
 \]</span></p>
 <p>A ideia não muda: escolhemos os coeficientes que minimizam a perda na amostra.</p>
-</section><section id="forma-matricial" class="slide level2"><h2>Forma matricial</h2>
+</section>
+<section id="forma-matricial" class="slide level2">
+<h2>Forma matricial</h2>
 <p><span class="math display">\[
 \mathbf y
 =
@@ -406,7 +449,9 @@ g(\mathbf x)
 (\mathbf X^\top\mathbf X)^{-1}
 \mathbf X^\top\mathbf y
 \]</span><br><br></p>
-</section><section id="síntese" class="slide level2"><h2>Síntese</h2>
+</section>
+<section id="síntese" class="slide level2">
+<h2>Síntese</h2>
 <p><span class="math display">\[
 \boxed{
 \text{Classe linear}
@@ -423,9 +468,14 @@ g(\mathbf x)
 \widehat g(x)
 \]</span></p>
 <p>que poderá ser utilizada para novas observações.</p>
-</section></section><section><section id="predição-e-generalização" class="title-slide slide level1 center"><h1>Predição e generalização</h1>
+</section></section>
+<section>
+<section id="predição-e-generalização" class="title-slide slide level1 center">
+<h1>Predição e generalização</h1>
 
-</section><section id="a-pergunta-muda" class="slide level2"><h2>A pergunta muda</h2>
+</section>
+<section id="a-pergunta-muda" class="slide level2">
+<h2>A pergunta muda</h2>
 <p>No treinamento perguntamos:</p>
 <blockquote>
 <p>Qual reta minimiza o erro nos dados observados?</p>
@@ -435,7 +485,9 @@ g(\mathbf x)
 <p><strong>Essa reta funcionará bem em dados que ainda não vimos?</strong></p>
 </blockquote>
 <p>Essa é uma pergunta sobre <strong>generalização</strong>.</p>
-</section><section id="erro-quadrático-médio-de-treinamento" class="slide level2"><h2>Erro quadrático médio de treinamento</h2>
+</section>
+<section id="erro-quadrático-médio-de-treinamento" class="slide level2">
+<h2>Erro quadrático médio de treinamento</h2>
 <p><span class="math display">\[
 MSE_{\text{treino}}
 =
@@ -450,7 +502,9 @@ RMSE_{\text{treino}}
 \sqrt{MSE_{\text{treino}}}
 \]</span></p>
 <p>Quanto menor, melhor o ajuste <strong>à amostra utilizada no treinamento</strong>.</p>
-</section><section id="rmse-interpretação" class="slide level2"><h2>RMSE: interpretação</h2>
+</section>
+<section id="rmse-interpretação" class="slide level2">
+<h2>RMSE: interpretação</h2>
 <p><span class="math display">\[
 RMSE
 =
@@ -475,7 +529,9 @@ RMSE
 </div>
 </div>
 </div>
-</section><section id="o-coeficiente-de-determinação" class="slide level2"><h2>O coeficiente de determinação</h2>
+</section>
+<section id="o-coeficiente-de-determinação" class="slide level2">
+<h2>O coeficiente de determinação</h2>
 <p><span class="math display">\[
 R^2
 =
@@ -487,8 +543,9 @@ R^2
 }
 \]</span></p>
 <p>Interpretação usual: fração da variabilidade de <span class="math inline">\(Y\)</span> explicada pelo modelo <strong>na amostra avaliada</strong>.</p>
-</section><section id="r2-não-é-generalização" class="slide level2"><h2>
-<span class="math inline">\(R^2\)</span> não é generalização</h2>
+</section>
+<section id="r2-não-é-generalização" class="slide level2">
+<h2><span class="math inline">\(R^2\)</span> não é generalização</h2>
 <p>Um modelo pode apresentar</p>
 <p><span class="math display">\[
 R^2_{\text{treino}}\uparrow
@@ -502,10 +559,14 @@ R^2\text{ alto no treino}
 \text{boa predição fora da amostra}
 }
 \]</span></p>
-</section><section id="o-modelo-linear-parece-adequado" class="slide level2"><h2>O modelo linear parece adequado?</h2>
+</section>
+<section id="o-modelo-linear-parece-adequado" class="slide level2">
+<h2>O modelo linear parece adequado?</h2>
 <p>Voltemos aos resíduos.</p>
 
-<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="um-padrão-nos-resíduos" class="slide level2"><h2>Um padrão nos resíduos</h2>
+<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="um-padrão-nos-resíduos" class="slide level2">
+<h2>Um padrão nos resíduos</h2>
 <p>Se o modelo capturasse adequadamente a estrutura média,</p>
 <p><span class="math display">\[
 E(e\mid X=x)\approx 0
@@ -517,7 +578,9 @@ r(x)
 \beta_0+\beta_1x
 \]</span></p>
 <p>O problema pode estar na <strong>classe de modelos escolhida</strong>.</p>
-</section><section id="linearidade-é-uma-hipótese-sobre-a-função" class="slide level2"><h2>Linearidade é uma hipótese sobre a função</h2>
+</section>
+<section id="linearidade-é-uma-hipótese-sobre-a-função" class="slide level2">
+<h2>Linearidade é uma hipótese sobre a função</h2>
 <p>A regressão linear não afirma que os pontos precisam formar uma reta perfeita.</p>
 <p>Ela supõe que a média condicional pode ser representada por</p>
 <p><span class="math display">\[
@@ -526,7 +589,9 @@ E(Y\mid X=x)
 \beta_0+\beta_1x
 \]</span></p>
 <p>O ruído continua existindo ao redor dessa função.</p>
-</section><section id="transformação-simples" class="slide level2"><h2>Transformação simples</h2>
+</section>
+<section id="transformação-simples" class="slide level2">
+<h2>Transformação simples</h2>
 <p>Como os dados foram gerados com relação aproximadamente logarítmica, podemos considerar</p>
 <p><span class="math display">\[
 g(x)
@@ -534,7 +599,9 @@ g(x)
 \beta_0+\beta_1\log(x)
 \]</span></p>
 
-<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="ainda-é-um-modelo-linear" class="slide level2"><h2>Ainda é um modelo linear?</h2>
+<img data-src="semana_02_modelos_lineares_regressao_classificacao_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="ainda-é-um-modelo-linear" class="slide level2">
+<h2>Ainda é um modelo linear?</h2>
 <p>Sim! Ele é linear <strong>nos parâmetros</strong>:</p>
 <p><span class="math display">\[
 g(x)
@@ -546,24 +613,26 @@ g(x)
 \beta_0,\beta_1
 \]</span></p>
 <p>continuam entrando linearmente no modelo.</p>
-</section><section id="comparando-duas-classes" class="slide level2"><h2>Comparando duas classes</h2>
+</section>
+<section id="comparando-duas-classes" class="slide level2">
+<h2>Comparando duas classes</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="linear-em-x">Linear em <span class="math inline">\(x\)</span>
-</h3>
+<h3 id="linear-em-x">Linear em <span class="math inline">\(x\)</span></h3>
 <p><span class="math display">\[
 g_1(x)=\beta_0+\beta_1x
 \]</span></p>
 <p>Mais simples, porém incapaz de representar a curvatura observada.</p>
 </div><div class="column" style="width:48%;">
-<h3 id="linear-em-logx">Linear em <span class="math inline">\(\log(x)\)</span>
-</h3>
+<h3 id="linear-em-logx">Linear em <span class="math inline">\(\log(x)\)</span></h3>
 <p><span class="math display">\[
 g_2(x)=\beta_0+\beta_1\log(x)
 \]</span></p>
 <p>Introduz uma transformação escolhida pelo analista.</p>
 </div></div>
-</section><section id="mas-e-se-não-conhecermos-a-transformação" class="slide level2"><h2>Mas e se não conhecermos a transformação?</h2>
+</section>
+<section id="mas-e-se-não-conhecermos-a-transformação" class="slide level2">
+<h2>Mas e se não conhecermos a transformação?</h2>
 <p>Podemos ampliar sistematicamente a classe:</p>
 <p><span class="math display">\[
 g(x)
@@ -578,15 +647,25 @@ g(x)
 <p><span class="math display">\[
 \boxed{\text{Qual grau }p\text{ devemos escolher?}}
 \]</span></p>
-</section></section><section><section id="classificação-probabilística" class="title-slide slide level1 center"><h1>Classificação probabilística</h1>
+</section></section>
+<section>
+<section id="classificação-probabilística" class="title-slide slide level1 center">
+<h1>Classificação probabilística</h1>
 
-</section><section id="probabilidade-posterior" class="slide level2"><h2>Probabilidade posterior</h2>
+</section>
+<section id="probabilidade-posterior" class="slide level2">
+<h2>Probabilidade posterior</h2>
 <p><span class="math display">\[
 \boxed{\eta(\mathbf x)=P(Y=1\mid\mathbf X=\mathbf x)}
 \]</span></p>
-</section></section><section><section id="regressão-logística-como-plug-in" class="title-slide slide level1 center"><h1>Regressão logística como plug-in</h1>
+</section></section>
+<section>
+<section id="regressão-logística-como-plug-in" class="title-slide slide level1 center">
+<h1>Regressão logística como plug-in</h1>
 
-</section><section id="modelando-a-probabilidade" class="slide level2"><h2>Modelando a probabilidade</h2>
+</section>
+<section id="modelando-a-probabilidade" class="slide level2">
+<h2>Modelando a probabilidade</h2>
 <p>A regressão logística assume</p>
 <p><span class="math display">\[
 \boxed{
@@ -607,7 +686,9 @@ g(x)
 \beta_0+\mathbf x^t\boldsymbol\beta
 }
 \]</span></p>
-</section><section id="depois-do-ajuste" class="slide level2"><h2>Depois do ajuste</h2>
+</section>
+<section id="depois-do-ajuste" class="slide level2">
+<h2>Depois do ajuste</h2>
 <p>Estimamos</p>
 <p><span class="math display">\[
 \widehat{\boldsymbol\beta}
@@ -623,7 +704,9 @@ g(x)
 }
 \]</span></p>
 <p>A classificação é então produzida por um cutoff</p>
-</section><section id="fronteira-de-decisão-logística" class="slide level2"><h2>Fronteira de decisão logística</h2>
+</section>
+<section id="fronteira-de-decisão-logística" class="slide level2">
+<h2>Fronteira de decisão logística</h2>
 <p>Com cutoff <span class="math inline">\(0.5\)</span>:</p>
 <p><span class="math display">\[
 \widehat\eta(\mathbf x)&gt;0.5
@@ -638,7 +721,9 @@ g(x)
 }
 \]</span></p>
 <p>Portanto, a regressão logística produz uma fronteira linear no espaço original das covariáveis</p>
-</section><section id="o-ponto-principal-nesta-disciplina" class="slide level2"><h2>O ponto principal nesta disciplina</h2>
+</section>
+<section id="o-ponto-principal-nesta-disciplina" class="slide level2">
+<h2>O ponto principal nesta disciplina</h2>
 <p>Não precisamos reestudar toda a teoria de modelos lineares generalizados</p>
 <p>Aqui, regressão logística é importante porque ilustra claramente:</p>
 <p><span class="math display">\[
@@ -648,16 +733,20 @@ g(x)
 \text{aplicar regra de decisão}
 }
 \]</span></p>
-</section><section id="regressão-e-classificação-lado-a-lado" class="slide level2"><h2>Regressão e classificação lado a lado</h2>
+</section>
+<section id="regressão-e-classificação-lado-a-lado" class="slide level2">
+<h2>Regressão e classificação lado a lado</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Regressão</th>
 <th>Classificação</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(E(Y\mid X)=\beta_0+X^t\beta\)</span></td>
@@ -668,21 +757,41 @@ g(x)
 <td>probabilidade</td>
 </tr>
 </tbody>
-</table></section><section id="probabilidade-e-decisão" class="slide level2"><h2>Probabilidade e decisão</h2>
+</table>
+</section>
+<section id="probabilidade-e-decisão" class="slide level2">
+<h2>Probabilidade e decisão</h2>
 <p><span class="math display">\[
 \boxed{\widehat g_c(\mathbf x)=I\{\widehat\eta(\mathbf x)&gt;c\}}
 \]</span></p>
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 2</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -849,7 +958,7 @@ g(x)
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -874,42 +983,84 @@ g(x)
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -957,13 +1108,14 @@ g(x)
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1076,6 +1228,6 @@ g(x)
         }
       });
       </script>
-
+    
 
 </body></html>

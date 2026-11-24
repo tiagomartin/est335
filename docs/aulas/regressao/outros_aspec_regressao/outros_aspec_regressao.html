@@ -6,20 +6,26 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-e21500bb30e7ce080c64316834ee3be8.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-f35c6fa489fa4065b3325810bf2042cd.css">
-<link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-5a66df48f022fd54edc1aa47fde9d080.css">
+  <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,19 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Regressão</h1>
+<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Regressão</h1>
   <p class="subtitle"><span class="custom-subtitle">Outros Aspectos de Regressão</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section id="interpretabilidade-em-machine-learning" class="slide level2"><h2>Interpretabilidade em Machine Learning</h2>
+</section>
+<section id="interpretabilidade-em-machine-learning" class="slide level2">
+<h2>Interpretabilidade em Machine Learning</h2>
 <h3 id="por-que-isso-importa">💡 Por que isso importa?</h3>
 <ul>
 <li>Bons modelos preditivos nem sempre são fáceis de entender<br>
 </li>
-<li>Modelos interpretáveis geram <strong>mais confiança</strong><br><br>
-</li>
+<li>Modelos interpretáveis geram <strong>mais confiança</strong><br><br></li>
 </ul>
 <h3 id="o-que-ganhamos">🔍 O que ganhamos?</h3>
 <ul>
@@ -153,16 +161,21 @@
 <li>avaliar desempenho em novos dados<br>
 </li>
 <li>detectar possíveis vieses</li>
-</ul></section><section class="slide level2"><h3 id="trade-off-importante">⚖️ Trade-off importante</h3>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="trade-off-importante">⚖️ Trade-off importante</h3>
 <ul>
 <li>modelos simples → mais interpretáveis<br>
 </li>
-<li>modelos complexos → mais difíceis de explicar<br><br>
-</li>
+<li>modelos complexos → mais difíceis de explicar<br><br></li>
 </ul>
 <h3 id="objetivo">🚀 Objetivo</h3>
 <p><strong>Tornar modelos complexos compreensíveis</strong></p>
-</section><section id="modelos-quem-é-fácil-de-interpretar" class="slide level2"><h2>Modelos: quem é fácil de interpretar?</h2>
+</section>
+<section id="modelos-quem-é-fácil-de-interpretar" class="slide level2">
+<h2>Modelos: quem é fácil de interpretar?</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="mais-interpretáveis">🟢 Mais interpretáveis</h3>
@@ -189,7 +202,10 @@
 </li>
 <li>PDP (<em>Partial Dependence Plot</em>)</li>
 <li>ICE (<em>Individual Conditional Expectation</em>)</li>
-</ul></section><section id="explainableml-lime" class="slide level2"><h2>ExplainableML — LIME</h2>
+</ul>
+</section>
+<section id="explainableml-lime" class="slide level2">
+<h2>ExplainableML — LIME</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="pergunta-do-lime">🎯 Pergunta do LIME</h3>
@@ -203,39 +219,35 @@
 </div><div class="column" style="width:50%;">
 <h3 id="estratégia">Estratégia</h3>
 <ol type="1">
-<li>escolhe uma observação <span class="math inline">\(x^*\)</span>
-</li>
-<li>cria perturbações próximas de <span class="math inline">\(x^*\)</span>
-</li>
+<li>escolhe uma observação <span class="math inline">\(x^*\)</span></li>
+<li>cria perturbações próximas de <span class="math inline">\(x^*\)</span></li>
 <li>consulta o modelo original</li>
 <li>ajusta um modelo simples local</li>
 </ol>
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure><p><img data-src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-1-1.png"></p>
+<figure>
+<p><img data-src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-1-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
-</section><section id="exemplo-previsão-de-gastos-de-clientes" class="slide level2"><h2>Exemplo: previsão de gastos de clientes</h2>
+</section>
+<section id="exemplo-previsão-de-gastos-de-clientes" class="slide level2">
+<h2>Exemplo: previsão de gastos de clientes</h2>
 <h3 id="cenário">🏢 Cenário</h3>
 <p>Uma empresa de <strong>serviços digitais</strong> deseja prever o gasto futuro do cliente, antes de lançar campanhas promocionais.<br><br></p>
 <div class="columns">
 <div class="column" style="width:58%;">
 <h3 id="variáveis-disponíveis">📦 Variáveis disponíveis</h3>
 <ul>
-<li>💰 <strong>Renda mensal</strong>
-</li>
-<li>👤 <strong>Idade</strong>
-</li>
-<li>📱 <strong>Tempo de uso do aplicativo</strong>
-</li>
-<li>🛒 <strong>Histórico de compras</strong>
-</li>
-<li>🏷️ <strong>Categoria do cliente</strong>
-</li>
+<li>💰 <strong>Renda mensal</strong></li>
+<li>👤 <strong>Idade</strong></li>
+<li>📱 <strong>Tempo de uso do aplicativo</strong></li>
+<li>🛒 <strong>Histórico de compras</strong></li>
+<li>🏷️ <strong>Categoria do cliente</strong></li>
 </ul>
 </div><div class="column" style="width:42%;">
 <h3 id="objetivo-1">🎯 Objetivo</h3>
@@ -244,12 +256,17 @@
 <p><strong>Quanto este cliente provavelmente gastará nos próximos meses?</strong></p>
 </blockquote>
 </div></div>
-</section><section class="slide level2"><h3 id="por-que-o-modelo-previu-esse-valor-para-este-cliente">Por que o modelo previu esse valor para este cliente?</h3>
+</section>
+<section class="slide level2">
+
+<h3 id="por-que-o-modelo-previu-esse-valor-para-este-cliente">Por que o modelo previu esse valor para este cliente?</h3>
 
 <img data-src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-2-1.png" class="r-stretch"><p align="center">
 💡 LIME transforma uma “caixa-preta” em decisões explicáveis cliente a cliente.
 </p>
-</section><section id="de-explicações-locais-para-explicações-globais" class="slide level2"><h2>De explicações locais para explicações globais</h2>
+</section>
+<section id="de-explicações-locais-para-explicações-globais" class="slide level2">
+<h2>De explicações locais para explicações globais</h2>
 <div class="columns">
 <div class="column" style="width:45%;">
 <h3 id="lime">👤 LIME</h3>
@@ -270,7 +287,9 @@
 ✔ relações não lineares<br>
 ✔ efeitos médios e individuais</p>
 </div></div>
-</section><section id="intuição-matemática" class="slide level2"><h2>Intuição matemática</h2>
+</section>
+<section id="intuição-matemática" class="slide level2">
+<h2>Intuição matemática</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="pdp">🌎 PDP</h3>
@@ -291,13 +310,19 @@ g(x_{j,1},...,x_i,...,x_{j,d})
 </div></div>
 <p><br></p>
 <p><span class="body-text-m teal-text center">PDP = média das curvas ICE</span></p>
-</section><section id="exemplo-previsão-de-gastos-de-clientes-1" class="slide level2"><h2>Exemplo: previsão de gastos de clientes</h2>
+</section>
+<section id="exemplo-previsão-de-gastos-de-clientes-1" class="slide level2">
+<h2>Exemplo: previsão de gastos de clientes</h2>
 
 <img data-src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-3-1.png" class="r-stretch"><p><span class="teal-text center">Clientes com maior renda tendem a apresentar maior potencial de consumo</span></p>
-</section><section id="exemplo-previsão-de-gastos-de-clientes-2" class="slide level2"><h2>Exemplo: previsão de gastos de clientes</h2>
+</section>
+<section id="exemplo-previsão-de-gastos-de-clientes-2" class="slide level2">
+<h2>Exemplo: previsão de gastos de clientes</h2>
 
 <img data-src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-4-1.png" class="r-stretch"><p><span class="teal-text center">Em média, a idade isoladamente não altera drasticamente o gasto previsto</span></p>
-</section><section id="shap-values" class="slide level2"><h2>SHAP Values</h2>
+</section>
+<section id="shap-values" class="slide level2">
+<h2>SHAP Values</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>LIME responde:</p>
@@ -318,18 +343,17 @@ g(x_{j,1},...,x_i,...,x_{j,d})
 <p>✔ consistente matematicamente</p>
 <p>✔ baseado em teoria dos jogos</p>
 </div></div>
-</section><section id="como-o-shap-funciona" class="slide level2"><h2>Como o SHAP funciona?</h2>
+</section>
+<section id="como-o-shap-funciona" class="slide level2">
+<h2>Como o SHAP funciona?</h2>
 <p><span class="math display">\[
 g(x)=
 \phi_0+\phi_1+\phi_2+\cdots+\phi_p
 \]</span></p>
 <p>onde:</p>
 <ul>
-<li>
-<span class="math inline">\(\phi_0\)</span> → predição média do modelo</li>
-<li>
-<span class="math inline">\(\phi_i\)</span> → contribuição da variável <span class="math inline">\(i\)</span>
-</li>
+<li><span class="math inline">\(\phi_0\)</span> → predição média do modelo</li>
+<li><span class="math inline">\(\phi_i\)</span> → contribuição da variável <span class="math inline">\(i\)</span></li>
 </ul>
 <h3 id="interpretação">Interpretação</h3>
 <div class="columns">
@@ -341,14 +365,21 @@ g(x)=
 <p>→ reduz a predição</p>
 </div></div>
 <p><span class="teal-text center">A soma das contribuições recupera exatamente a predição</span></p>
-</section><section id="teoria-dos-jogos-cooperativos" class="slide level2"><h2>Teoria dos jogos cooperativos</h2>
+</section>
+<section id="teoria-dos-jogos-cooperativos" class="slide level2">
+<h2>Teoria dos jogos cooperativos</h2>
 <h3 id="ideia">🎲 Ideia</h3>
 <p>Cada variável é um “jogador”. O modelo final é o “prêmio”.</p>
 <p><span class="teal-text center">Quanto cada jogador contribuiu para o resultado?</span></p>
 <p>👉 SHAP calcula a contribuição média de cada variável em todas as coalizões possíveis.</p>
-</section><section id="exemplo-previsão-de-gastos-de-clientes-3" class="slide level2"><h2>Exemplo: previsão de gastos de clientes</h2>
+</section>
+<section id="exemplo-previsão-de-gastos-de-clientes-3" class="slide level2">
+<h2>Exemplo: previsão de gastos de clientes</h2>
 
-<img data-src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-5-1.png" class="r-stretch"></section><section class="slide level2"><h3 id="principais-insights">💡 Principais insights</h3>
+<img data-src="outros_aspec_regressao_files/figure-revealjs/unnamed-chunk-5-1.png" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3 id="principais-insights">💡 Principais insights</h3>
 <p>✔ histórico de compras é o fator dominante</p>
 <p>✔ renda exerce efeito positivo e não linear</p>
 <p>✔ clientes de maior renda aumentam a predição</p>
@@ -357,14 +388,31 @@ g(x)=
 
 
 </section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -531,7 +579,7 @@ g(x)=
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -556,42 +604,84 @@ g(x)=
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -639,13 +729,14 @@ g(x)=
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -758,6 +849,6 @@ g(x)=
         }
       });
       </script>
-
+    
 
 </body></html>

@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,13 +136,16 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Aprendizado em Alta Dimensão</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section id="onde-estamos" class="slide level2"><h2>Onde estamos?</h2>
+</section>
+<section id="onde-estamos" class="slide level2">
+<h2>Onde estamos?</h2>
 <p>Nas semanas anteriores, construímos estimadores flexíveis para</p>
 <p><span class="math display">\[
 r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
@@ -148,21 +157,25 @@ r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
 <li>partições</li>
 <li>ensembles</li>
 <li>composições não lineares</li>
-</ul></section><section id="métodos-não-paramétricos-em-altas-dimensões" class="slide level2"><h2>Métodos Não Paramétricos em Altas Dimensões</h2>
+</ul>
+</section>
+<section id="métodos-não-paramétricos-em-altas-dimensões" class="slide level2">
+<h2>Métodos Não Paramétricos em Altas Dimensões</h2>
 <ul>
 <li>Métodos não paramétricos são mais flexíveis</li>
 <li>Porém:
 <ul>
 <li>exigem mais dados</li>
 <li>sofrem em altas dimensões</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <p>Agora surge uma nova pergunta:</p>
 <blockquote>
 <p>Como a dimensão afeta o desempenho dos modelos?</p>
 </blockquote>
-</section><section id="o-problema-da-dimensão" class="slide level2"><h2>O Problema da Dimensão</h2>
+</section>
+<section id="o-problema-da-dimensão" class="slide level2">
+<h2>O Problema da Dimensão</h2>
 <p>Suponha:</p>
 <ul>
 <li><span class="math inline">\(X = (X_1, X_2, ..., X_p)\)</span></li>
@@ -173,7 +186,9 @@ r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
 <li>os dados ficam “espalhados”</li>
 </ul>
 <p>➡️ Dificuldade de aprendizado aumenta</p>
-</section><section id="maldição-da-dimensionalidade" class="slide level2"><h2>Maldição da Dimensionalidade</h2>
+</section>
+<section id="maldição-da-dimensionalidade" class="slide level2">
+<h2>Maldição da Dimensionalidade</h2>
 <p>(Bellman, 1966)</p>
 <p>Problema:</p>
 <ul>
@@ -183,8 +198,14 @@ r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
 <p>Consequência:</p>
 <p>➡️ Precisamos de MUITO mais dados</p>
 <!-- ## {background-image="/images/regressao/slide2.png" background-size="contain" background-position="center" background-repeat="no-repeat"} -->
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/slide2.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2"><p>Note que,<br><br></p>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/regressao/slide2.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section class="slide level2">
+
+<p>Note que,<br><br></p>
 <div class="columns">
 <div class="column" style="width:33%;">
 <h3 id="d">🔵 1D</h3>
@@ -229,11 +250,12 @@ r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
 </div>
 </div>
 </div>
-</section><section id="consequência-da-alta-dimensionalidade" class="slide level2"><h2>Consequência da alta dimensionalidade</h2>
+</section>
+<section id="consequência-da-alta-dimensionalidade" class="slide level2">
+<h2>Consequência da alta dimensionalidade</h2>
 <h3 id="problema">⚠️ Problema</h3>
 <ul>
-<li>Estimar uma função de regressão em alta dimensão é <strong>muito difícil</strong>
-</li>
+<li>Estimar uma função de regressão em alta dimensão é <strong>muito difícil</strong></li>
 <li>O erro não diminui facilmente, mesmo com mais dados</li>
 </ul>
 <blockquote>
@@ -242,9 +264,15 @@ r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
 <p><span class="math display">\[
 \text{Erro} \sim n^{-\frac{\alpha}{\alpha + p}}  \Rightarrow n \sim \left(\frac{1}{\delta}\right)^{\frac{\alpha + p}{\alpha}}
 \]</span> <span class="math display">\[\delta: \text{erro máximo desejável}\]</span></p>
-</section><section class="slide level2"><h3 id="crescimento-do-tamanho-da-amostra-com-a-dimensão">Crescimento do tamanho da amostra com a dimensão</h3>
+</section>
+<section class="slide level2">
 
-<img data-src="semana_10_alta_dimensionalidade_files/figure-revealjs/unnamed-chunk-2-1.png" width="1152" class="r-stretch"></section><section class="slide level2"><h3 id="impacto-da-dimensionalidade">Impacto da dimensionalidade</h3>
+<h3 id="crescimento-do-tamanho-da-amostra-com-a-dimensão">Crescimento do tamanho da amostra com a dimensão</h3>
+
+<img data-src="semana_10_alta_dimensionalidade_files/figure-revealjs/unnamed-chunk-2-1.png" width="1152" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3 id="impacto-da-dimensionalidade">Impacto da dimensionalidade</h3>
 <p>Por exemplo, qual o impacto de se dobrar a dimensionalidade dos dados de <span class="math inline">\(p=4\)</span> para <span class="math inline">\(p=8\)</span>?</p>
 <p>Temos que</p>
 <p><span class="math display">\[\small n(p) \sim \left(\frac{1}{\delta}\right)^{\frac{\alpha + p}{\alpha}}\]</span> Se <span class="math inline">\(\delta = 0,2\)</span> e <span class="math inline">\(\alpha = 2\)</span>:</p>
@@ -254,22 +282,26 @@ r(\mathbf x)=E[Y\mid \mathbf X=\mathbf x]
 <blockquote>
 <p>Dobrar a dimensão (de 4 para 8) pode exigir 25 vezes mais dados.</p>
 </blockquote>
-</section><section class="slide level2">
-<img data-src="semana_10_alta_dimensionalidade_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section><section class="slide level2"><h3 id="como-resolver">🔑 Como resolver?</h3>
+</section>
+<section class="slide level2">
+
+
+<img data-src="semana_10_alta_dimensionalidade_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3 id="como-resolver">🔑 Como resolver?</h3>
 <p>Precisamos assumir duas suposições nos dados:</p>
 <ul>
-<li>
-<strong>Esparsidade</strong> → poucas variáveis realmente importam<br>
+<li><strong>Esparsidade</strong> → poucas variáveis realmente importam<br>
 </li>
-<li>
-<strong>Redundância</strong> → variáveis carregam informação semelhante<br><br>
-</li>
+<li><strong>Redundância</strong> → variáveis carregam informação semelhante<br><br></li>
 </ul>
 <p>O problema não é só o modelo…<br>
 ➡️ é a <strong>dimensionalidade efetiva dos dados</strong></p>
-</section><section id="esparsidade" class="slide level2"><h2>Esparsidade</h2>
-<h3 id="modelo-depende-de-apenas-alguns-x_is">📐 Modelo depende de apenas alguns <span class="math inline">\(x_i's\)</span>
-</h3>
+</section>
+<section id="esparsidade" class="slide level2">
+<h2>Esparsidade</h2>
+<h3 id="modelo-depende-de-apenas-alguns-x_is">📐 Modelo depende de apenas alguns <span class="math inline">\(x_i's\)</span></h3>
 <p><span class="math display">\[
 r(x) = r\big((x_i)_{i \in S}\big)
 \]</span></p>
@@ -278,16 +310,14 @@ r(x) = r\big((x_i)_{i \in S}\big)
 <div class="column" style="width:50%;">
 <h3 id="alta-dimensão-aparente">🔴 Alta dimensão aparente</h3>
 <ul>
-<li>
-<span class="math inline">\(p = 1000\)</span> variáveis<br>
+<li><span class="math inline">\(p = 1000\)</span> variáveis<br>
 </li>
 <li>difícil de estimar</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <h3 id="dimensão-efetiva">🟢 Dimensão efetiva</h3>
 <ul>
-<li>
-<span class="math inline">\(|S| = 5\)</span> variáveis relevantes<br>
+<li><span class="math inline">\(|S| = 5\)</span> variáveis relevantes<br>
 </li>
 <li>problema tratável</li>
 </ul>
@@ -295,7 +325,10 @@ r(x) = r\big((x_i)_{i \in S}\big)
 <blockquote>
 <p>Quando existe esparsidade, o número de variáveis relevantes pode ser muito menor que <span class="math inline">\(p\)</span>.</p>
 </blockquote>
-</section><section class="slide level2"><h3 id="como-aplicar-a-suposição-de-esparsidade">Como aplicar a suposição de esparsidade?</h3>
+</section>
+<section class="slide level2">
+
+<h3 id="como-aplicar-a-suposição-de-esparsidade">Como aplicar a suposição de esparsidade?</h3>
 <h4 id="ideia-central">🎯 Ideia central</h4>
 <p>Poucas variáveis realmente importam<br><br></p>
 <h4 id="estratégias">🔧 Estratégias</h4>
@@ -305,21 +338,20 @@ r(x) = r\big((x_i)_{i \in S}\big)
 <li><p>entre outras…</p></li>
 </ul>
 <p><span class="body-text-m teal-text center">Alta dimensão aparente → baixa dimensão efetiva</span></p>
-</section><section id="redundância" class="slide level2"><h2>Redundância</h2>
+</section>
+<section id="redundância" class="slide level2">
+<h2>Redundância</h2>
 <h3 id="intuição">📊 Intuição</h3>
 <ul>
-<li>
-<span class="math inline">\(X_1 = \cdots = X_p\)</span> → informação totalmente redundante<br>
+<li><span class="math inline">\(X_1 = \cdots = X_p\)</span> → informação totalmente redundante<br>
 </li>
-<li>variáveis altamente correlacionadas → informação parcialmente redundante<br><br>
-</li>
+<li>variáveis altamente correlacionadas → informação parcialmente redundante<br><br></li>
 </ul>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="alta-dimensão-aparente-1">🔴 Alta dimensão aparente</h3>
 <ul>
-<li>
-<span class="math inline">\(p = 100\)</span> variáveis<br>
+<li><span class="math inline">\(p = 100\)</span> variáveis<br>
 </li>
 <li>parecem independentes</li>
 </ul>
@@ -334,31 +366,29 @@ r(x) = r\big((x_i)_{i \in S}\big)
 <p><span class="math display">\[
 \mathbf{x} \in \mathbb{R}^p \quad \text{mas vive em um espaço de dimensão menor}
 \]</span></p>
-</section><section class="slide level2"><h3 id="como-aplicar-a-suposição-de-redundância">Como aplicar a suposição de redundância?</h3>
+</section>
+<section class="slide level2">
+
+<h3 id="como-aplicar-a-suposição-de-redundância">Como aplicar a suposição de redundância?</h3>
 <h4 id="ideia-central-1">🎯 Ideia central</h4>
 <p>Variáveis carregam informação repetida<br><br></p>
 <h4 id="estratégias-1">🔧 Estratégias</h4>
 <ul>
 <li>análise de correlação<br>
 </li>
-<li>
-<strong>PCA:</strong> captura redundância <strong>linear</strong>
+<li><strong>PCA:</strong> captura redundância <strong>linear</strong></li>
+<li><strong>UMAP / t-SNE:</strong> capturam redundância <strong>não linear</strong>: preservam estrutura local, revelam padrões escondidos<br>
 </li>
-<li>
-<strong>UMAP / t-SNE:</strong> capturam redundância <strong>não linear</strong>: preservam estrutura local, revelam padrões escondidos<br>
-</li>
-<li>
-<strong>Autoencoders:</strong> aprendem uma representação de baixa dimensão dos dados, através de redes neurais<br>
-</li>
+<li><strong>Autoencoders:</strong> aprendem uma representação de baixa dimensão dos dados, através de redes neurais<br></li>
 </ul>
 <p><span class="body-text-m teal-text center">Alta dimensão observada → baixa dimensão intrínseca</span></p>
-</section><section id="knn-e-regressão-linear-local-em-alta-dimensão" class="slide level2"><h2>KNN e Regressão Linear Local em Alta Dimensão</h2>
+</section>
+<section id="knn-e-regressão-linear-local-em-alta-dimensão" class="slide level2">
+<h2>KNN e Regressão Linear Local em Alta Dimensão</h2>
 <h3 id="ideia-chave">💡 Ideia chave</h3>
 <ul>
-<li>Dados podem viver em uma <strong>dimensão intrínseca baixa</strong>
-</li>
-<li>Mesmo que o espaço seja de alta dimensão <span class="math inline">\(p\)</span><br><br>
-</li>
+<li>Dados podem viver em uma <strong>dimensão intrínseca baixa</strong></li>
+<li>Mesmo que o espaço seja de alta dimensão <span class="math inline">\(p\)</span><br><br></li>
 </ul>
 <h3 id="o-que-isso-implica">🔍 O que isso implica?</h3>
 <p>👉 Métodos baseados em vizinhança:</p>
@@ -367,15 +397,17 @@ r(x) = r\big((x_i)_{i \in S}\big)
 <li><strong>Regressão linear local</strong></li>
 </ul>
 <p>✔ se adaptam automaticamente à estrutura dos dados</p>
-</section><section class="slide level2"><h3 id="resultado-importante">⚡ Resultado importante</h3>
+</section>
+<section class="slide level2">
+
+<h3 id="resultado-importante">⚡ Resultado importante</h3>
 <p>A taxa de convergência de ambos é igual a</p>
 <p><span class="math display">\[
 \text{Erro} \sim n^{-\frac{4}{4+u}}
 \]</span></p>
 <p>e depende de:</p>
 <ul>
-<li>
-<span class="math inline">\(u\)</span> = dimensão intrínseca<br>
+<li><span class="math inline">\(u\)</span> = dimensão intrínseca<br>
 </li>
 <li>não de <span class="math inline">\(p\)</span> = dimensão observada</li>
 </ul>
@@ -383,17 +415,28 @@ r(x) = r\big((x_i)_{i \in S}\big)
 <p>Se <span class="math inline">\(u \ll d\)</span>, podemos escapar da maldição da dimensionalidade</p>
 </blockquote>
 <p><span class="body-text-m teal-text center"><strong>A estrutura dos dados é mais importante que o número de variáveis</strong></span></p>
-</section><section><section id="métodos-já-estudados-em-alta-dimensão" class="title-slide slide level1 center"><h1>Métodos já estudados em alta dimensão</h1>
+</section>
+<section>
+<section id="métodos-já-estudados-em-alta-dimensão" class="title-slide slide level1 center">
+<h1>Métodos já estudados em alta dimensão</h1>
 
-</section><section id="knn-e-métodos-locais" class="slide level2"><h2>KNN e métodos locais</h2>
+</section>
+<section id="knn-e-métodos-locais" class="slide level2">
+<h2>KNN e métodos locais</h2>
 <p><span class="math display">\[
 p\uparrow\Rightarrow\text{dados localmente mais esparsos}
 \]</span></p>
-</section><section id="regularização-e-esparsidade" class="slide level2"><h2>Regularização e esparsidade</h2>
+</section>
+<section id="regularização-e-esparsidade" class="slide level2">
+<h2>Regularização e esparsidade</h2>
 <p>Lasso pode explorar estrutura esparsa quando poucas covariáveis são relevantes</p>
-</section><section id="random-forest" class="slide level2"><h2>Random Forest</h2>
+</section>
+<section id="random-forest" class="slide level2">
+<h2>Random Forest</h2>
 <p>Pode ser relativamente robusta quando variáveis informativas são identificáveis, mas muitas variáveis irrelevantes ainda podem degradar o desempenho</p>
-</section><section id="três-quantidades-diferentes" class="slide level2"><h2>Três quantidades diferentes</h2>
+</section>
+<section id="três-quantidades-diferentes" class="slide level2">
+<h2>Três quantidades diferentes</h2>
 <p><span class="math display">\[
 \boxed{p=\text{dimensão observada}}
 \]</span> <span class="math display">\[
@@ -404,14 +447,31 @@ p\uparrow\Rightarrow\text{dados localmente mais esparsos}
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 10</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -578,7 +638,7 @@ p\uparrow\Rightarrow\text{dados localmente mais esparsos}
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -603,42 +663,84 @@ p\uparrow\Rightarrow\text{dados localmente mais esparsos}
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -686,13 +788,14 @@ p\uparrow\Rightarrow\text{dados localmente mais esparsos}
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -805,6 +908,6 @@ p\uparrow\Rightarrow\text{dados localmente mais esparsos}
         }
       });
       </script>
-
+    
 
 </body></html>

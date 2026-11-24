@@ -6,20 +6,26 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e21500bb30e7ce080c64316834ee3be8.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Regressão</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Regressão</h1>
+<section id="title-slide" data-background-image="../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Regressão</h1>
   <p class="subtitle"><span class="custom-subtitle">Material complementar: Regressão Linear</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="como-usar-este-material" class="title-slide slide level1 center"><h1>Como usar este material</h1>
+</section>
+<section>
+<section id="como-usar-este-material" class="title-slide slide level1 center">
+<h1>Como usar este material</h1>
 
-</section><section id="material-complementar-regressão-linear" class="slide level2"><h2>Material complementar: Regressão Linear</h2>
+</section>
+<section id="material-complementar-regressão-linear" class="slide level2">
+<h2>Material complementar: Regressão Linear</h2>
 <p>Este conjunto aprofunda aspectos matemáticos e inferenciais da regressão linear que não precisam ocupar o núcleo das aulas regulares.<br><br></p>
 <div class="callout callout-note callout-style-simple">
 <div class="callout-body">
@@ -150,9 +162,14 @@
 </div>
 </div>
 </div>
-</section></section><section><section id="mínimos-quadrados-na-regressão-simples" class="title-slide slide level1 center"><h1>1. Mínimos quadrados na regressão simples</h1>
+</section></section>
+<section>
+<section id="mínimos-quadrados-na-regressão-simples" class="title-slide slide level1 center">
+<h1>1. Mínimos quadrados na regressão simples</h1>
 
-</section><section id="o-problema" class="slide level2"><h2>O problema</h2>
+</section>
+<section id="o-problema" class="slide level2">
+<h2>O problema</h2>
 <p>Considere</p>
 <p><span class="math display">\[
 Y_i=\beta_0+\beta_1X_i+\varepsilon_i
@@ -164,7 +181,9 @@ S(\beta_0,\beta_1)
 \sum_{i=1}^n
 (y_i-\beta_0-\beta_1x_i)^2
 \]</span></p>
-</section><section id="condições-de-primeira-ordem" class="slide level2"><h2>Condições de primeira ordem</h2>
+</section>
+<section id="condições-de-primeira-ordem" class="slide level2">
+<h2>Condições de primeira ordem</h2>
 <p>Derivando em relação a <span class="math inline">\(\beta_0\)</span>:</p>
 <p><span class="math display">\[
 \frac{\partial S}{\partial\beta_0}
@@ -179,7 +198,9 @@ S(\beta_0,\beta_1)
 -2\sum_{i=1}^n
 x_i(y_i-\beta_0-\beta_1x_i)=0
 \]</span></p>
-</section><section id="equações-normais" class="slide level2"><h2>Equações normais</h2>
+</section>
+<section id="equações-normais" class="slide level2">
+<h2>Equações normais</h2>
 <p>As condições anteriores produzem</p>
 <p><span class="math display">\[
 \sum_i y_i
@@ -194,7 +215,9 @@ n\widehat\beta_0+
 \widehat\beta_0\sum_i x_i+
 \widehat\beta_1\sum_i x_i^2
 \]</span></p>
-</section><section id="solução" class="slide level2"><h2>Solução</h2>
+</section>
+<section id="solução" class="slide level2">
+<h2>Solução</h2>
 <p><span class="math display">\[
 \boxed{
 \widehat\beta_1
@@ -218,9 +241,14 @@ n\widehat\beta_0+
 <p><span class="math display">\[
 (\bar x,\bar y)
 \]</span></p>
-</section></section><section><section id="forma-matricial" class="title-slide slide level1 center"><h1>2. Forma matricial</h1>
+</section></section>
+<section>
+<section id="forma-matricial" class="title-slide slide level1 center">
+<h1>2. Forma matricial</h1>
 
-</section><section id="modelo-linear-múltiplo" class="slide level2"><h2>Modelo linear múltiplo</h2>
+</section>
+<section id="modelo-linear-múltiplo" class="slide level2">
+<h2>Modelo linear múltiplo</h2>
 <p><span class="math display">\[
 \mathbf y
 =
@@ -237,7 +265,9 @@ n\widehat\beta_0+
 1 &amp; x_{n1} &amp; \cdots &amp; x_{np}
 \end{bmatrix}
 \]</span></p>
-</section><section id="critério-de-mínimos-quadrados" class="slide level2"><h2>Critério de mínimos quadrados</h2>
+</section>
+<section id="critério-de-mínimos-quadrados" class="slide level2">
+<h2>Critério de mínimos quadrados</h2>
 <p><span class="math display">\[
 S(\boldsymbol\beta)
 =
@@ -254,7 +284,9 @@ S(\boldsymbol\beta)
 +
 \boldsymbol\beta^\top\mathbf X^\top\mathbf X\boldsymbol\beta
 \]</span></p>
-</section><section id="gradiente" class="slide level2"><h2>Gradiente</h2>
+</section>
+<section id="gradiente" class="slide level2">
+<h2>Gradiente</h2>
 <p><span class="math display">\[
 \nabla_{\boldsymbol\beta}S
 =
@@ -268,7 +300,9 @@ S(\boldsymbol\beta)
 =
 \mathbf X^\top\mathbf y
 \]</span></p>
-</section><section id="solução-matricial" class="slide level2"><h2>Solução matricial</h2>
+</section>
+<section id="solução-matricial" class="slide level2">
+<h2>Solução matricial</h2>
 <p>Se <span class="math inline">\(\mathbf X^\top\mathbf X\)</span> for inversível:</p>
 <p><span class="math display">\[
 \boxed{
@@ -288,9 +322,14 @@ S(\boldsymbol\beta)
 </div>
 </div>
 </div>
-</section></section><section><section id="interpretação-geométrica" class="title-slide slide level1 center"><h1>3. Interpretação geométrica</h1>
+</section></section>
+<section>
+<section id="interpretação-geométrica" class="title-slide slide level1 center">
+<h1>3. Interpretação geométrica</h1>
 
-</section><section id="projeção" class="slide level2"><h2>Projeção</h2>
+</section>
+<section id="projeção" class="slide level2">
+<h2>Projeção</h2>
 <p>Os valores ajustados podem ser escritos como</p>
 <p><span class="math display">\[
 \widehat{\mathbf y}
@@ -307,7 +346,9 @@ S(\boldsymbol\beta)
 \mathbf y
 \]</span></p>
 <p><span class="math inline">\(\mathbf H\)</span> é a <strong>matriz chapéu</strong>.</p>
-</section><section id="ortogonalidade-dos-resíduos" class="slide level2"><h2>Ortogonalidade dos resíduos</h2>
+</section>
+<section id="ortogonalidade-dos-resíduos" class="slide level2">
+<h2>Ortogonalidade dos resíduos</h2>
 <p><span class="math display">\[
 \mathbf e
 =
@@ -320,9 +361,14 @@ S(\boldsymbol\beta)
 }
 \]</span></p>
 <p>Portanto, os resíduos são ortogonais ao espaço gerado pelas colunas de <span class="math inline">\(\mathbf X\)</span>.</p>
-</section></section><section><section id="propriedades-sob-o-modelo-clássico" class="title-slide slide level1 center"><h1>4. Propriedades sob o modelo clássico</h1>
+</section></section>
+<section>
+<section id="propriedades-sob-o-modelo-clássico" class="title-slide slide level1 center">
+<h1>4. Propriedades sob o modelo clássico</h1>
 
-</section><section id="hipóteses-básicas" class="slide level2"><h2>Hipóteses básicas</h2>
+</section>
+<section id="hipóteses-básicas" class="slide level2">
+<h2>Hipóteses básicas</h2>
 <p>Uma formulação clássica utiliza</p>
 <p><span class="math display">\[
 E(\boldsymbol\varepsilon\mid\mathbf X)=0
@@ -339,7 +385,9 @@ E(\widehat{\boldsymbol\beta}\mid\mathbf X)
 =
 \boldsymbol\beta
 \]</span></p>
-</section><section id="variância-do-estimador" class="slide level2"><h2>Variância do estimador</h2>
+</section>
+<section id="variância-do-estimador" class="slide level2">
+<h2>Variância do estimador</h2>
 <p><span class="math display">\[
 \operatorname{Var}
 (\widehat{\boldsymbol\beta}\mid\mathbf X)
@@ -348,7 +396,9 @@ E(\widehat{\boldsymbol\beta}\mid\mathbf X)
 (\mathbf X^\top\mathbf X)^{-1}
 \]</span></p>
 <p>Isso conecta a geometria das covariáveis à incerteza dos coeficientes.</p>
-</section><section id="gaussmarkov" class="slide level2"><h2>Gauss–Markov</h2>
+</section>
+<section id="gaussmarkov" class="slide level2">
+<h2>Gauss–Markov</h2>
 <p>Sob as hipóteses usuais, o estimador de mínimos quadrados é BLUE:</p>
 <blockquote>
 <p><strong>Best Linear Unbiased Estimator</strong></p>
@@ -364,9 +414,14 @@ E(\widehat{\boldsymbol\beta}\mid\mathbf X)
 </div>
 </div>
 </div>
-</section></section><section><section id="inferência-clássica" class="title-slide slide level1 center"><h1>5. Inferência clássica</h1>
+</section></section>
+<section>
+<section id="inferência-clássica" class="title-slide slide level1 center">
+<h1>5. Inferência clássica</h1>
 
-</section><section id="estimando-a-variância-do-erro" class="slide level2"><h2>Estimando a variância do erro</h2>
+</section>
+<section id="estimando-a-variância-do-erro" class="slide level2">
+<h2>Estimando a variância do erro</h2>
 <p><span class="math display">\[
 \widehat\sigma^2
 =
@@ -377,7 +432,9 @@ n-p-1
 }
 \]</span></p>
 <p>Sob normalidade dos erros, podemos construir testes e intervalos de confiança para os coeficientes.</p>
-</section><section id="erro-padrão-de-um-coeficiente" class="slide level2"><h2>Erro-padrão de um coeficiente</h2>
+</section>
+<section id="erro-padrão-de-um-coeficiente" class="slide level2">
+<h2>Erro-padrão de um coeficiente</h2>
 <p>A matriz</p>
 <p><span class="math display">\[
 \widehat\sigma^2
@@ -392,7 +449,9 @@ SE(\widehat\beta_j)
 \widehat{\operatorname{Var}}(\widehat\beta_j)
 }
 \]</span></p>
-</section><section id="teste-t" class="slide level2"><h2>Teste t</h2>
+</section>
+<section id="teste-t" class="slide level2">
+<h2>Teste t</h2>
 <p>Para</p>
 <p><span class="math display">\[
 H_0:\beta_j=0,
@@ -417,15 +476,22 @@ SE(\widehat\beta_j)
 </div>
 </div>
 </div>
-</section></section><section><section id="intervalo-de-confiança-intervalo-de-predição" class="title-slide slide level1 center"><h1>6. Intervalo de confiança × intervalo de predição</h1>
+</section></section>
+<section>
+<section id="intervalo-de-confiança-intervalo-de-predição" class="title-slide slide level1 center">
+<h1>6. Intervalo de confiança × intervalo de predição</h1>
 
-</section><section id="média-condicional" class="slide level2"><h2>Média condicional</h2>
+</section>
+<section id="média-condicional" class="slide level2">
+<h2>Média condicional</h2>
 <p>Para um ponto <span class="math inline">\(x_0\)</span>, podemos estimar</p>
 <p><span class="math display">\[
 E(Y\mid X=x_0)
 \]</span></p>
 <p>O intervalo de confiança representa incerteza sobre a <strong>média condicional</strong>.</p>
-</section><section id="nova-observação" class="slide level2"><h2>Nova observação</h2>
+</section>
+<section id="nova-observação" class="slide level2">
+<h2>Nova observação</h2>
 <p>Para prever um novo <span class="math inline">\(Y_0\)</span> em <span class="math inline">\(x_0\)</span>, precisamos considerar também o ruído individual:</p>
 <p><span class="math display">\[
 Y_0=r(x_0)+\varepsilon_0
@@ -439,9 +505,14 @@ Y_0=r(x_0)+\varepsilon_0
 }
 \]</span></p>
 <p>em termos de largura.</p>
-</section></section><section><section id="diagnóstico-clássico" class="title-slide slide level1 center"><h1>7. Diagnóstico clássico</h1>
+</section></section>
+<section>
+<section id="diagnóstico-clássico" class="title-slide slide level1 center">
+<h1>7. Diagnóstico clássico</h1>
 
-</section><section id="o-que-os-resíduos-podem-revelar" class="slide level2"><h2>O que os resíduos podem revelar?</h2>
+</section>
+<section id="o-que-os-resíduos-podem-revelar" class="slide level2">
+<h2>O que os resíduos podem revelar?</h2>
 <p>Gráficos de resíduos podem indicar:</p>
 <ul>
 <li>não linearidade;</li>
@@ -451,7 +522,9 @@ Y_0=r(x_0)+\varepsilon_0
 <li>dependência.</li>
 </ul>
 <p>Esses diagnósticos investigam se a estrutura escolhida é compatível com os dados.</p>
-</section><section id="ponto-de-partida" class="slide level2"><h2>Ponto de partida</h2>
+</section>
+<section id="ponto-de-partida" class="slide level2">
+<h2>Ponto de partida</h2>
 <p>Continuaremos usando o exemplo</p>
 <p><span class="math display">\[
 \text{PIB per capita}\longrightarrow\text{Expectativa de vida}.
@@ -461,24 +534,31 @@ Y_0=r(x_0)+\varepsilon_0
 Y=40+15\log(X/1000)+\varepsilon,
 \qquad \varepsilon\sim N(0,3^2).
 \]</span></p>
-</section><section id="não-linearidade" class="slide level2"><h2>Não linearidade</h2>
+</section>
+<section id="não-linearidade" class="slide level2">
+<h2>Não linearidade</h2>
 <h3 id="o-que-esperamos-dos-resíduos">O que esperamos dos resíduos?</h3>
 <p>Se a estrutura média estiver adequadamente representada,</p>
 <p><span class="math display">\[
 E(e\mid X=x)\approx0
 \]</span> Um padrão sistemático sugere que parte da relação entre <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> ainda não foi aprendida.</p>
-</section><section id="diagnóstico-não-linearidade" class="slide level2"><h2>Diagnóstico: não linearidade</h2>
+</section>
+<section id="diagnóstico-não-linearidade" class="slide level2">
+<h2>Diagnóstico: não linearidade</h2>
 
 <img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><p><span class="math display">\[
 \boxed{E(e\mid X)\neq0\Rightarrow\text{a forma funcional pode ser inadequada}}
 \]</span></p>
-</section><section id="modelo-e-resíduos-lado-a-lado" class="slide level2"><h2>Modelo e resíduos lado a lado</h2>
+</section>
+<section id="modelo-e-resíduos-lado-a-lado" class="slide level2">
+<h2>Modelo e resíduos lado a lado</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure><p><img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-3-1.png" style="width:100.0%"></p>
+<figure>
+<p><img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-3-1.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -487,13 +567,16 @@ E(e\mid X=x)\approx0
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure><p><img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-4-1.png" style="width:100.0%"></p>
+<figure>
+<p><img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-4-1.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
-</section><section id="variância-não-constante" class="slide level2"><h2>Variância não constante</h2>
+</section>
+<section id="variância-não-constante" class="slide level2">
+<h2>Variância não constante</h2>
 <h3 id="homocedasticidade-heterocedasticidade">Homocedasticidade × heterocedasticidade</h3>
 <p>No modelo clássico, frequentemente supomos</p>
 <p><span class="math display">\[
@@ -501,12 +584,16 @@ E(e\mid X=x)\approx0
 \]</span></p>
 <p>Na <strong>heterocedasticidade</strong>, a dispersão dos erros depende de <span class="math inline">\(x\)</span>.</p>
 <p>Para isolar o fenômeno, manteremos a mesma relação média e faremos apenas a variância aumentar com o PIB.</p>
-</section><section id="diagnóstico-formato-de-funil" class="slide level2"><h2>Diagnóstico: formato de funil</h2>
+</section>
+<section id="diagnóstico-formato-de-funil" class="slide level2">
+<h2>Diagnóstico: formato de funil</h2>
 
 <img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><p><span class="math display">\[
 \boxed{\operatorname{Var}(\varepsilon\mid X=x)\neq\sigma^2}
 \]</span></p>
-</section><section id="não-linearidade-e-heterocedasticidade-são-diferentes" class="slide level2"><h2>Não linearidade e heterocedasticidade são diferentes</h2>
+</section>
+<section id="não-linearidade-e-heterocedasticidade-são-diferentes" class="slide level2">
+<h2>Não linearidade e heterocedasticidade são diferentes</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="não-linearidade-1">Não linearidade</h3>
@@ -523,7 +610,9 @@ E(Y\mid X=x)
 \]</span></p>
 <p>A dispersão muda ao longo de <span class="math inline">\(X\)</span>.</p>
 </div></div>
-</section><section id="observações-atípicas" class="slide level2"><h2>Observações atípicas</h2>
+</section>
+<section id="observações-atípicas" class="slide level2">
+<h2>Observações atípicas</h2>
 <h3 id="o-que-é-um-outlier-em-resposta">O que é um outlier em resposta?</h3>
 <p>Uma observação pode apresentar um valor de <span class="math inline">\(Y\)</span> muito incomum para seu valor de <span class="math inline">\(X\)</span>.</p>
 <p>No gráfico de resíduos isso aparece como</p>
@@ -531,12 +620,16 @@ E(Y\mid X=x)
 |e_i|\ \text{muito grande}.
 \]</span></p>
 <p>Isso não significa, necessariamente, que a observação altere fortemente o modelo.</p>
-</section><section id="diagnóstico-observação-atípica" class="slide level2"><h2>Diagnóstico: observação atípica</h2>
+</section>
+<section id="diagnóstico-observação-atípica" class="slide level2">
+<h2>Diagnóstico: observação atípica</h2>
 
 <img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><p><span class="math display">\[
 \boxed{\text{outlier}\neq\text{ponto influente}}
 \]</span></p>
-</section><section id="alavancagem-e-influência" class="slide level2"><h2>Alavancagem e influência</h2>
+</section>
+<section id="alavancagem-e-influência" class="slide level2">
+<h2>Alavancagem e influência</h2>
 <h3 id="alta-alavancagem">Alta alavancagem</h3>
 <p>Na regressão simples, uma observação tem alta alavancagem quando seu valor de <span class="math inline">\(X\)</span> está muito distante da região onde se concentram os demais valores.</p>
 <p>Mas:</p>
@@ -544,19 +637,24 @@ E(Y\mid X=x)
 \boxed{\text{alta alavancagem}\not\Rightarrow\text{influência}}
 \]</span></p>
 <p>A pergunta sobre influência é: <strong>quanto o ajuste muda por causa daquela observação?</strong></p>
-</section><section id="diagnóstico-ponto-influente" class="slide level2"><h2>Diagnóstico: ponto influente</h2>
+</section>
+<section id="diagnóstico-ponto-influente" class="slide level2">
+<h2>Diagnóstico: ponto influente</h2>
 
-<img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section><section id="três-conceitos-diferentes" class="slide level2"><h2>Três conceitos diferentes</h2>
+<img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="três-conceitos-diferentes" class="slide level2">
+<h2>Três conceitos diferentes</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Conceito</th>
 <th>Característica principal</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><strong>Outlier</strong></td>
-<td>resposta incomum dado <span class="math inline">\(X\)</span>
-</td>
+<td>resposta incomum dado <span class="math inline">\(X\)</span></td>
 </tr>
 <tr class="even">
 <td><strong>Alta alavancagem</strong></td>
@@ -571,7 +669,9 @@ E(Y\mid X=x)
 <p><span class="math display">\[
 \boxed{\text{outlier}\neq\text{alta alavancagem}\neq\text{influência}}
 \]</span></p>
-</section><section id="dependência" class="slide level2"><h2>Dependência</h2>
+</section>
+<section id="dependência" class="slide level2">
+<h2>Dependência</h2>
 <h3 id="independência-dos-erros">Independência dos erros</h3>
 <p>Em muitas formulações supomos</p>
 <p><span class="math display">\[
@@ -579,25 +679,33 @@ E(Y\mid X=x)
 \]</span></p>
 <p>Isso pode falhar em séries temporais, dados espaciais, medidas repetidas ou dados agrupados.</p>
 <p>Para ilustrar, manteremos a mesma relação PIB–expectativa de vida e introduziremos autocorrelação nos erros.</p>
-</section><section id="erros-autocorrelacionados" class="slide level2"><h2>Erros autocorrelacionados</h2>
+</section>
+<section id="erros-autocorrelacionados" class="slide level2">
+<h2>Erros autocorrelacionados</h2>
 <p>Geraremos</p>
 <p><span class="math display">\[
 \varepsilon_t=0.85\varepsilon_{t-1}+u_t
 \]</span></p>
 <p>Assim, erros próximos tendem a apresentar comportamento semelhante.</p>
 <p>O gráfico apropriado agora é o resíduo <strong>na ordem das observações</strong>.</p>
-</section><section id="diagnóstico-dependência" class="slide level2"><h2>Diagnóstico: dependência</h2>
+</section>
+<section id="diagnóstico-dependência" class="slide level2">
+<h2>Diagnóstico: dependência</h2>
 
 <img data-src="met_param_material_complementar_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><p><span class="math display">\[
 \boxed{\operatorname{Cov}(\varepsilon_i,\varepsilon_j)\neq0}
 \]</span></p>
-</section><section id="resumindo" class="slide level2"><h2>Resumindo</h2>
+</section>
+<section id="resumindo" class="slide level2">
+<h2>Resumindo</h2>
 <h3 id="cinco-padrões-cinco-perguntas">Cinco padrões, cinco perguntas</h3>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Padrão observado</th>
 <th>Pergunta diagnóstica</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><strong>Curvatura</strong></td>
@@ -620,7 +728,10 @@ E(Y\mid X=x)
 <td>os erros são independentes?</td>
 </tr>
 </tbody>
-</table></section><section id="diagnóstico-generalização" class="slide level2"><h2>Diagnóstico × generalização</h2>
+</table>
+</section>
+<section id="diagnóstico-generalização" class="slide level2">
+<h2>Diagnóstico × generalização</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="diagnóstico">Diagnóstico</h3>
@@ -635,7 +746,9 @@ E(Y\mid X=x)
 </blockquote>
 <p>Usa validação/teste para estimar o desempenho preditivo.</p>
 </div></div>
-</section><section id="diagnóstico-generalização-1" class="slide level2"><h2>Diagnóstico × generalização</h2>
+</section>
+<section id="diagnóstico-generalização-1" class="slide level2">
+<h2>Diagnóstico × generalização</h2>
 <p>O gráfico de resíduos compara o comportamento observado com o que esperaríamos se o modelo fosse adequado.</p>
 <p><span class="math display">\[
 \boxed{
@@ -652,9 +765,14 @@ E(Y\mid X=x)
 \text{boa generalização}
 }
 \]</span></p>
-</section></section><section><section id="multicolinearidade" class="title-slide slide level1 center"><h1>8. Multicolinearidade</h1>
+</section></section>
+<section>
+<section id="multicolinearidade" class="title-slide slide level1 center">
+<h1>8. Multicolinearidade</h1>
 
-</section><section id="covariáveis-fortemente-relacionadas" class="slide level2"><h2>Covariáveis fortemente relacionadas</h2>
+</section>
+<section id="covariáveis-fortemente-relacionadas" class="slide level2">
+<h2>Covariáveis fortemente relacionadas</h2>
 <p>Quando colunas de <span class="math inline">\(\mathbf X\)</span> são quase linearmente dependentes,</p>
 <p><span class="math display">\[
 \mathbf X^\top\mathbf X
@@ -665,7 +783,10 @@ E(Y\mid X=x)
 <li>coeficientes instáveis;</li>
 <li>erros-padrão elevados;</li>
 <li>grande sensibilidade a pequenas mudanças na amostra.</li>
-</ul></section><section id="por-que-isso-será-importante-depois" class="slide level2"><h2>Por que isso será importante depois?</h2>
+</ul>
+</section>
+<section id="por-que-isso-será-importante-depois" class="slide level2">
+<h2>Por que isso será importante depois?</h2>
 <p>A regularização modifica o problema de otimização.</p>
 <p>No Ridge:</p>
 <p><span class="math display">\[
@@ -676,9 +797,14 @@ RSS+
 \right\}
 \]</span></p>
 <p>Esse tema será retomado no momento apropriado da disciplina.</p>
-</section></section><section><section id="fechamento" class="title-slide slide level1 center"><h1>9. Fechamento</h1>
+</section></section>
+<section>
+<section id="fechamento" class="title-slide slide level1 center">
+<h1>9. Fechamento</h1>
 
-</section><section id="duas-perspectivas-complementares" class="slide level2"><h2>Duas perspectivas complementares</h2>
+</section>
+<section id="duas-perspectivas-complementares" class="slide level2">
+<h2>Duas perspectivas complementares</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="regressão-clássica">Regressão clássica</h3>
@@ -707,7 +833,9 @@ RSS+
 <li>predição.</li>
 </ul>
 </div></div>
-</section><section id="ideia-final" class="slide level2"><h2>Ideia final</h2>
+</section>
+<section id="ideia-final" class="slide level2">
+<h2>Ideia final</h2>
 <p>As duas perspectivas não são concorrentes.</p>
 <p><span class="math display">\[
 \boxed{
@@ -720,14 +848,31 @@ RSS+
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>Material complementar — EST335</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../site_libs/revealjs/plugin/search/search.js"></script><script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -894,7 +1039,7 @@ RSS+
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -919,42 +1064,84 @@ RSS+
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1002,13 +1189,14 @@ RSS+
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1121,6 +1309,6 @@ RSS+
         }
       });
       </script>
-
+    
 
 </body></html>

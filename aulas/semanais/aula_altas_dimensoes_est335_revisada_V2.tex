@@ -1,0 +1,1032 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  10pt,
+  ignorenonframetext,
+  aspectratio=169,
+  brazilian,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+\ifLuaTeX
+\usepackage[bidi=basic,shorthands=off]{babel}
+\else
+\usepackage[bidi=default,shorthands=off]{babel}
+\fi
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Índice}
+\else
+  \newcommand\contentsname{Índice}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Lista de Figuras}
+\else
+  \newcommand\listfigurename{Lista de Figuras}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Lista de Tabelas}
+\else
+  \newcommand\listtablename{Lista de Tabelas}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figura}
+\else
+  \newcommand\figurename{Figura}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Tabela}
+\else
+  \newcommand\tablename{Tabela}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listagem}
+\newcommand*\listoflistings{\listof{codelisting}{Lista de Listagens}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Parte I : Aprendizado Supervisionado},
+  pdflang={pt-BR},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{\texorpdfstring{Parte I : Aprendizado
+Supervisionado}{Parte I : Aprendizado Supervisionado}}
+\subtitle{\texorpdfstring{Alta Dimensão, Decisão, Avaliação e
+Interpretabilidade}{Alta Dimensão, Decisão, Avaliação e Interpretabilidade}}
+\author{}
+\date{}
+
+\begin{document}
+\frame{\titlepage}
+
+
+\begin{frame}
+\end{frame}
+
+\begin{frame}{Alta dimensionalidade: qual é o problema?}
+\protect\phantomsection\label{alta-dimensionalidade-qual-uxe9-o-problema}
+Queremos aprender a relação
+
+\[
+Y=f(\mathbf X)+\varepsilon,\qquad \mathbf X\in\mathbb R^p,
+\quad \mathbb E(\varepsilon\mid\mathbf X)=0,
+\]
+
+utilizando \(n\) observações e \(p\) variáveis de entrada.
+
+Com muitas entradas, precisamos de dados suficientes para distinguir o
+sinal do ruído. A dificuldade pode aparecer mesmo quando \(p<n\).
+
+\textbf{Percurso:} estimar em alta dimensão, explorar estrutura e
+regularização, decidir com custos, avaliar e interpretar o modelo.
+\end{frame}
+
+\begin{frame}{A maldição da dimensionalidade}
+\protect\phantomsection\label{a-maldiuxe7uxe3o-da-dimensionalidade}
+Imagine observações uniformes em \([0,1]^p\). Uma região com comprimento
+\(h\) em cada coordenada ocupa a fração \(h^p\) do volume.
+
+Para manter \(k\) observações \textbf{em média} nessa região:
+
+\[
+\boxed{nh^p=k\quad\Longrightarrow\quad n=\frac{k}{h^p}.}
+\]
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrrr@{}}
+\toprule\noalign{}
+Com \(h=0{,}2\) e \(k=20\) & \(p=1\) & \(p=3\) & \(p=5\) \\
+\midrule\noalign{}
+\endhead
+Amostra necessária, em média & 100 & 2.500 & 62.500 \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Manter vizinhanças pequenas exige muito mais dados. Isso afeta
+especialmente KNN e regressão local.
+
+\textbf{Esta conta ilustra cobertura do espaço sob uniformidade. Não é
+uma regra geral de tamanho amostral.}
+\end{frame}
+
+\begin{frame}{O que é uma taxa de convergência?}
+\protect\phantomsection\label{o-que-uxe9-uma-taxa-de-converguxeancia}
+O risco de estimação pode ser medido por
+
+\[
+R_n=\mathbb E[(\hat f_n(\mathbf X)-f(\mathbf X))^2],
+\]
+
+com esperança sobre o treinamento e uma nova entrada. Ele não inclui o
+ruído irredutível da resposta.
+
+\textbf{Como ilustração}, se \(R_n\approx Cn^{-a}\), então
+\(R_{4n}/R_n\approx4^{-a}\). \(C\) é uma constante de escala, \(a\) é o
+expoente e 4 é o fator de aumento da amostra.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}rrr@{}}
+\toprule\noalign{}
+Expoente & Erro relativo & Redução ilustrativa \\
+\midrule\noalign{}
+\endhead
+\(a=1\) & \(0{,}25\) & 75\% \\
+\(a=1/2\) & \(0{,}50\) & 50\% \\
+\(a=1/6\) & \(0{,}79\) & 21\% \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+O modelo de potência não é universal. Uma relação de ordem
+\(R_n\asymp n^{-a}\), sozinha, não garante esses percentuais.
+\end{frame}
+
+\begin{frame}{Taxas de convergência e dimensionalidade}
+\protect\phantomsection\label{taxas-de-converguxeancia-e-dimensionalidade}
+Para classes gerais de funções suaves em \(p\) dimensões, uma taxa
+minimax típica do erro quadrático integrado é
+
+\[
+\boxed{R_n^*\asymp n^{-\frac{2\alpha}{2\alpha+p}}.}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(\alpha\): suavidade da função. Valores maiores impõem maior
+  regularidade.
+\item
+  \(R_n^*\): melhor risco possível no pior caso da classe considerada.
+\item
+  \(\asymp\): mesma ordem, desconsiderando constantes multiplicativas.
+\end{itemize}
+
+\textbf{Aumentar \(p\) reduz o expoente e torna a aprendizagem mais
+lenta.}
+
+A taxa exige condições sobre a classe de funções, o desenho e o ruído.
+Mede estimação de \(f\), sem incluir o ruído irredutível de uma nova
+resposta.
+
+\note{Formalmente, R\_n\^{}*=inf\_\{estimadores\} sup\_\{f em F\_alpha\}
+E{[}(f\_estimado(X)-f(X))²{]}, com esperança sobre treinamento e nova
+entrada. Taxa minimax usual sob condições de regularidade, dimensão fixa
+e classe suave. Fonte: Wasserman, Nonparametric Regression.}
+\end{frame}
+
+\begin{frame}{Quanto ganhamos aumentando a amostra?}
+\protect\phantomsection\label{quanto-ganhamos-aumentando-a-amostra}
+Fixando suavidade \(\alpha=2\), a taxa é \(n^{-4/(4+p)}\).
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}rrr@{}}
+\toprule\noalign{}
+Dimensão \(p\) & Taxa & Fator do termo principal com \(4n\) \\
+\midrule\noalign{}
+\endhead
+1 & \(n^{-4/5}\) & \(0{,}33\) \\
+4 & \(n^{-1/2}\) & \(0{,}50\) \\
+10 & \(n^{-2/7}\) & \(0{,}67\) \\
+20 & \(n^{-1/6}\) & \(0{,}79\) \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Em uma dimensão, o termo cai para cerca de 33\% do valor anterior. Em 20
+dimensões, permanece em cerca de 79\%.
+
+\textbf{Para reduzir esse termo à metade em \(p=20\), seria necessário
+multiplicar \(n\) por \(2^6=64\).} São comparações da taxa dentro de
+cada cenário, sem considerar diferenças nas constantes.
+\end{frame}
+
+\begin{frame}{A redução do erro fica mais lenta}
+\protect\phantomsection\label{a-reduuxe7uxe3o-do-erro-fica-mais-lenta}
+\pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_revisada_V2_files/figure-beamer/unnamed-chunk-1-1.png}}
+
+Todas as curvas começam em 1 para comparar \textbf{velocidades de
+redução}, não níveis absolutos de erro. São curvas teóricas com
+\(\alpha=2\), sem resultados de ajuste a dados.
+\end{frame}
+
+\begin{frame}{Como tornar o problema mais simples?}
+\protect\phantomsection\label{como-tornar-o-problema-mais-simples}
+A taxa anterior considera uma classe ampla de funções em \(p\)
+dimensões.
+
+Podemos explorar hipóteses que reduzam a complexidade relevante:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Hipótese
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ideia
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+O que procuramos
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Esparsidade & Poucas entradas são necessárias à função de regressão &
+Selecionar efeitos relevantes \\
+Redundância & Muitas entradas carregam informação compartilhada &
+Combinar ou representar informação comum \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{Ter muitas variáveis observadas não implica que a resposta
+dependa de todas de forma independente e complexa.}
+\end{frame}
+
+\begin{frame}{Esparsidade: poucos efeitos ativos}
+\protect\phantomsection\label{esparsidade-poucos-efeitos-ativos}
+Suponha \(p=1.000\), mas
+
+\[
+Y=3X_2-2X_{17}+1{,}5X_{204}+\varepsilon.
+\]
+
+A função de regressão utiliza apenas \(s=3\) entradas: \(s\ll p\).
+
+Se soubéssemos quais são, o ajuste seria muito mais simples. Como não
+sabemos, precisamos encontrá-las entre as 1.000 candidatas.
+
+\textbf{Lasso pode explorar esparsidade dos coeficientes.} A hipótese
+também pode ocorrer em funções não lineares, mas lasso nas entradas
+originais representa apenas efeitos lineares.
+
+Esparsidade do modelo significa poucos efeitos ativos, sem exigir muitos
+zeros na matriz de dados.
+\end{frame}
+
+\begin{frame}{Redundância: muitas medições do mesmo fenômeno}
+\protect\phantomsection\label{redunduxe2ncia-muitas-mediuxe7uxf5es-do-mesmo-fenuxf4meno}
+Imagine 100 sensores que medem uma condição térmica comum:
+
+\[
+X_j=a_jZ+\eta_j,\qquad j=1,\ldots,100.
+\]
+
+\(Z\) é a condição compartilhada, \(a_j\) é a sensibilidade do sensor e
+\(\eta_j\) é o ruído específico da medição.
+
+As entradas podem ser fortemente correlacionadas. Se \(Y\) depende
+principalmente de \(Z\), a informação preditiva está associada a uma
+estrutura simples.
+
+\textbf{Ridge pode estabilizar o uso conjunto dessas medições.} Uma RNA
+pode aprender combinações, mas precisa de dados e controle de
+complexidade.
+
+Com ruído em todos os sensores, a estrutura de baixa dimensão é
+aproximada. Remover medições também pode eliminar informação útil.
+\end{frame}
+
+\begin{frame}{Esparsidade e redundância são diferentes}
+\protect\phantomsection\label{esparsidade-e-redunduxe2ncia-suxe3o-diferentes}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Aspecto
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Esparsidade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Redundância
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Estrutura & Poucos efeitos necessários & Informação compartilhada \\
+Exemplo & Três entre 1.000 entradas & 100 sensores de um fator \\
+Estratégia & Selecionar ou contrair efeitos & Estabilizar ou combinar
+medições \\
+Cuidado & Achar quais efeitos importam & Preservar o sinal para \(Y\) \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+As duas hipóteses podem coexistir: muitos grupos de entradas
+semelhantes, mas apenas alguns grupos relacionados à resposta.
+
+\textbf{Uma combinação preditiva de dimensão um pode usar todas as
+entradas. Dimensão pequena não exige coeficientes esparsos na
+representação original.}
+\end{frame}
+
+\begin{frame}{Estrutura e tamanho da amostra}
+\protect\phantomsection\label{estrutura-e-tamanho-da-amostra}
+Na regressão linear esparsa, sob condições adequadas, limites de erro
+preditivo incluem termos da ordem
+
+\[
+\boxed{\sigma^2\frac{s\log p}{n}.}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(s\): quantidade de efeitos ativos.
+\item
+  \(\log p\): custo de procurar efeitos entre muitos candidatos.
+\item
+  \(\sigma^2\): variância do ruído.
+\end{itemize}
+
+Isso ajuda a entender por que aprender com \(p>n\) pode ser viável.
+
+\textbf{A expressão não determina uma amostra mínima universal.}
+Correlação, intensidade do sinal e precisão desejada também importam.
+Prever bem e identificar exatamente as entradas ativas são objetivos
+diferentes.
+
+\note{Limite típico para regressão linear esparsa com regularização
+calibrada, controle de caudas e condições de compatibilidade/autovalores
+restritos. Não é uma taxa para qualquer função não linear esparsa.
+Fonte: Gautier e Tsybakov.}
+\end{frame}
+
+\begin{frame}{Ridge: estabilidade com muitas entradas}
+\protect\phantomsection\label{ridge-estabilidade-com-muitas-entradas}
+Ridge minimiza o erro de ajuste acrescido de uma penalização quadrática:
+
+\[
+\sum_{i=1}^{n}(y_i-\beta_0-\mathbf x_i^\top\boldsymbol\beta)^2
++\lambda\sum_{j=1}^{p}\beta_j^2.
+\]
+
+\textbf{Quando considerar:} entradas correlacionadas ou sinal
+distribuído por muitos efeitos pequenos.
+
+Para \(\lambda>0\), o critério produz coeficientes únicos mesmo com
+\(p>n\), no ajuste com intercepto separado.
+
+A penalização estabiliza o ajuste, mas geralmente mantém todos os
+coeficientes. Uma solução única não garante boa predição: \(\lambda\)
+precisa ser escolhido por validação.
+\end{frame}
+
+\begin{frame}{Lasso: regularização com seleção}
+\protect\phantomsection\label{lasso-regularizauxe7uxe3o-com-seleuxe7uxe3o}
+Lasso substitui a penalização quadrática pela soma dos valores
+absolutos:
+
+\[
+\sum_{i=1}^{n}(y_i-\beta_0-\mathbf x_i^\top\boldsymbol\beta)^2
++\lambda\sum_{j=1}^{p}|\beta_j|.
+\]
+
+\textbf{Quando considerar:} poucos efeitos aproximadamente lineares na
+representação utilizada.
+
+O critério favorece coeficientes exatamente iguais a zero, podendo
+reduzir o conjunto de entradas utilizadas.
+
+Com entradas fortemente correlacionadas, a escolha de variáveis pode
+mudar entre amostras. \textbf{Selecionar uma variável não prova que ela
+seja a única portadora do sinal.}
+\end{frame}
+
+\begin{frame}{SVM linear: classificação com regularização}
+\protect\phantomsection\label{svm-linear-classificauxe7uxe3o-com-regularizauxe7uxe3o}
+A SVM linear utiliza uma função de decisão
+
+\[
+g(\mathbf x)=\mathbf w^\top\mathbf x+b
+\]
+
+com controle da magnitude de \(\mathbf w\) e penalização das violações
+da margem.
+
+\textbf{Quando considerar:} classificação com muitas entradas e uma
+fronteira linear plausível, inclusive em problemas com \(p>n\).
+
+O parâmetro \(C\) equilibra regularização e violações da margem. Deve
+ser escolhido por validação, com padronização quando apropriada.
+
+Um kernel não linear pode ampliar a flexibilidade, mas distâncias pouco
+informativas não passam a ser úteis apenas pelo uso do kernel.
+\end{frame}
+
+\begin{frame}{RNA: possibilidade de aprender representações}
+\protect\phantomsection\label{rna-possibilidade-de-aprender-representauxe7uxf5es}
+Uma camada oculta calcula
+
+\[
+\mathbf a^{(1)}=\phi(W^{(1)}\mathbf x+\mathbf b^{(1)}).
+\]
+
+Ela pode combinar entradas redundantes e representar relações não
+lineares.
+
+\textbf{Quando considerar:} estrutura não linear que possa ser aprendida
+com os dados disponíveis, arquitetura adequada e regularização.
+
+\begin{itemize}
+\tightlist
+\item
+  Com \(H\) neurônios, a primeira camada já possui \(H(p+1)\)
+  parâmetros.
+\item
+  Weight decay penaliza pesos. Early stopping controla a duração do
+  ajuste pela validação.
+\end{itemize}
+
+\textbf{Uma RNA não é automaticamente uma boa escolha para \(p\gg n\).}
+Com amostra pequena, ridge e lasso são referências importantes para
+comparação.
+\end{frame}
+
+\begin{frame}{Qual método considerar primeiro?}
+\protect\phantomsection\label{qual-muxe9todo-considerar-primeiro}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Situação
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Método estudado a considerar
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Muitas entradas correlacionadas ou muitos efeitos pequenos & Ridge \\
+Poucos efeitos lineares relevantes & Lasso \\
+Classificação com fronteira aproximadamente linear & SVM linear
+regularizada \\
+Relações não lineares e dados suficientes para aprendê-las & RNA
+regularizada \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+A tabela orienta comparações, sem definir um vencedor universal.
+
+\textbf{Procedimento essencial:} estimar padronização, seleção e
+hiperparâmetros dentro do treinamento/validação. Reservar o teste para a
+avaliação final.
+\end{frame}
+
+\begin{frame}{Da estimação à decisão}
+\protect\phantomsection\label{da-estimauxe7uxe3o-uxe0-decisuxe3o}
+Em alta dimensão, regularizamos para aprender com os dados disponíveis.
+Depois do ajuste, ainda precisamos responder:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Etapa & Pergunta \\
+\midrule\noalign{}
+\endhead
+Predizer & Qual resposta ou probabilidade o modelo estima? \\
+Decidir & Que ação tomar diante dessa predição? \\
+Avaliar & Como o procedimento funciona em dados novos? \\
+Interpretar & Como o modelo produz suas predições? \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{Bom ajuste, boa decisão e boa explicação são propriedades
+diferentes.}
+\end{frame}
+
+\begin{frame}{Probabilidade, cutoff e regra de Bayes}
+\protect\phantomsection\label{probabilidade-cutoff-e-regra-de-bayes}
+Na classificação binária, defina
+\(\eta(\mathbf x)=P(Y=1\mid\mathbf X=\mathbf x)\).
+
+Com custos iguais para os dois tipos de erro, a regra de Bayes escolhe
+
+\[
+g^*(\mathbf x)=I\{\eta(\mathbf x)>0{,}5\}.
+\]
+
+Na prática, substituímos \(\eta\) pela probabilidade estimada
+\(\hat\eta\) e escolhemos um cutoff \(c\):
+
+\[
+\hat g_c(\mathbf x)=I\{\hat\eta(\mathbf x)>c\}.
+\]
+
+Mudar \(c\) altera as classes previstas, sem alterar as probabilidades
+do modelo. Mesmo a regra ótima erra quando as classes se sobrepõem:
+
+\[
+R_{\mathrm{Bayes}}=\mathbb E[\min\{\eta(\mathbf X),1-\eta(\mathbf X)\}].
+\]
+\end{frame}
+
+\begin{frame}{Custos diferentes produzem decisões diferentes}
+\protect\phantomsection\label{custos-diferentes-produzem-decisuxf5es-diferentes}
+Sejam \(C_{FP}\) o custo do falso positivo e \(C_{FN}\) o custo do falso
+negativo. Acertos têm custo zero.
+
+\[
+R(1\mid\mathbf x)=C_{FP}[1-\eta(\mathbf x)],
+\qquad R(0\mid\mathbf x)=C_{FN}\eta(\mathbf x).
+\]
+
+Escolher a ação de menor risco equivale a decidir 1 quando
+
+\[
+\boxed{\eta(\mathbf x)>c^*=\frac{C_{FP}}{C_{FP}+C_{FN}}.}
+\]
+
+\textbf{Exemplo:} \(C_{FP}=1\) e \(C_{FN}=9\) dão \(c^*=0{,}10\). Uma
+probabilidade de 0,20 já justifica a decisão positiva.
+
+A regra pressupõe probabilidades populacionais adequadas e custos
+constantes. Aplicá-la a \(\hat\eta\) requer atenção à calibração,
+especialmente após reamostragem ou ponderação de classes.
+\end{frame}
+
+\begin{frame}{Matriz de confusão e perguntas das métricas}
+\protect\phantomsection\label{matriz-de-confusuxe3o-e-perguntas-das-muxe9tricas}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+Classe observada & Predito 1 & Predito 0 \\
+\midrule\noalign{}
+\endhead
+1 & Verdadeiro positivo (VP) & Falso negativo (FN) \\
+0 & Falso positivo (FP) & Verdadeiro negativo (VN) \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Métrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Expressão
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pergunta
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Sensibilidade ou recall & \(VP/(VP+FN)\) & Quantos positivos
+encontramos? \\
+Especificidade & \(VN/(VN+FP)\) & Quantos negativos reconhecemos? \\
+Precisão & \(VP/(VP+FP)\) & Quantos alertas estão corretos? \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Reduzir o cutoff aumenta ou mantém a sensibilidade e reduz ou mantém a
+especificidade, no mesmo conjunto de escores. Precisão depende também da
+prevalência.
+\end{frame}
+
+\begin{frame}{Desbalanceamento: acurácia pode esconder falhas}
+\protect\phantomsection\label{desbalanceamento-acuruxe1cia-pode-esconder-falhas}
+Se apenas 2\% das observações pertencem à classe 1, prever sempre 0
+produz \textbf{98\% de acurácia}, mas \textbf{sensibilidade zero}.
+
+Duas outras medidas são
+
+\[
+\operatorname{Balanced\ Accuracy}
+=\frac{\operatorname{Sensibilidade}+\operatorname{Especificidade}}{2},
+\]
+
+\[
+F_1=\frac{2VP}{2VP+FP+FN}.
+\]
+
+A primeira dá peso igual ao desempenho nas duas classes. A segunda
+combina precisão e recall, sem usar diretamente os verdadeiros
+negativos.
+
+\textbf{A métrica deve refletir o objetivo. Nenhuma dessas medidas
+representa automaticamente o custo real da decisão.}
+\end{frame}
+
+\begin{frame}{ROC, AUC e Precision--Recall}
+\protect\phantomsection\label{roc-auc-e-precisionrecall}
+Ao variar o cutoff, obtemos:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Curva & Eixo horizontal & Eixo vertical \\
+\midrule\noalign{}
+\endhead
+ROC & \(FPR=1-\text{especificidade}\) & \(TPR=\text{sensibilidade}\) \\
+Precision--Recall & Recall & Precisão \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+A AUC-ROC mede ordenação:
+
+\[
+\operatorname{AUC}=P(S_1>S_0)+\tfrac12P(S_1=S_0),
+\]
+
+com escores de observações positivas e negativas independentes. A
+parcela final trata empates.
+
+\textbf{AUC não avalia calibração nem determina cutoff.} Em classes
+raras, a curva PR evidencia a proporção de alertas corretos e depende da
+prevalência.
+\end{frame}
+
+\begin{frame}{As duas curvas do mesmo classificador}
+\protect\phantomsection\label{as-duas-curvas-do-mesmo-classificador}
+\pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_revisada_V2_files/figure-beamer/unnamed-chunk-2-1.png}}
+
+Escores simulados com 35\% de positivos. A linha horizontal em PR marca
+essa prevalência. As curvas descrevem ordenação, sem garantir que os
+escores sejam probabilidades calibradas.
+\end{frame}
+
+\begin{frame}{Três intervenções que precisam de validação}
+\protect\phantomsection\label{truxeas-intervenuxe7uxf5es-que-precisam-de-validauxe7uxe3o}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Intervenção
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+O que modifica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemplos
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Dados de treinamento & Composição da amostra & Oversampling,
+undersampling, SMOTE \\
+Função objetivo & Peso dos erros no ajuste & Pesos de classes e
+custos \\
+Decisão final & Conversão do escore em ação & Alteração do cutoff \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+Reamostrar não equivale a mudar apenas o cutoff. Pode alterar o modelo e
+a interpretação de suas probabilidades.
+
+\textbf{Dentro de cada divisão de validação:} ajustar seleção,
+padronização e eventual reamostragem apenas no treino. Escolher
+hiperparâmetros e cutoff usando treino/validação. Preservar o teste e
+sua distribuição para a avaliação final.
+\end{frame}
+
+\begin{frame}{Combinação de classificadores}
+\protect\phantomsection\label{combinauxe7uxe3o-de-classificadores}
+\textbf{Hard voting:} combinar as classes previstas por maioria, com
+regra de desempate definida.
+
+\[
+g_{\mathrm{ens}}(\mathbf x)=\operatorname{moda}\{g_1(\mathbf x),\ldots,g_M(\mathbf x)\}.
+\]
+
+\textbf{Soft voting:} combinar probabilidades de classes na mesma
+escala:
+
+\[
+\bar p_k(\mathbf x)=\sum_{m=1}^{M}w_m\hat p_{mk}(\mathbf x),
+\quad w_m\geq0,\quad \sum_mw_m=1.
+\]
+
+A combinação pode ajudar quando os erros dos modelos diferem. Pesos e
+escolha de componentes pertencem à validação. Fazer a média não garante
+calibração nem melhor desempenho.
+
+Com custos iguais, escolher a maior probabilidade é natural. Com custos
+assimétricos, aplicar a regra de decisão correspondente.
+\end{frame}
+
+\begin{frame}{Interpretar em alta dimensão}
+\protect\phantomsection\label{interpretar-em-alta-dimensuxe3o}
+\textbf{Interpretação global:} descrever o comportamento geral do
+modelo.
+
+\textbf{Interpretação local:} compreender uma predição específica.
+
+Em alta dimensão, três cuidados são centrais:
+
+\begin{itemize}
+\tightlist
+\item
+  Entradas redundantes podem substituir umas às outras no ajuste.
+\item
+  Um modelo esparso é compacto, mas a seleção pode variar entre
+  amostras.
+\item
+  Explicar a predição de um modelo não identifica um efeito causal.
+\end{itemize}
+
+Nos próximos slides, \(\hat g\) representa a saída numérica que queremos
+explicar: resposta prevista, escore ou probabilidade de uma classe
+especificada.
+\end{frame}
+
+\begin{frame}{PDP: comportamento médio do modelo}
+\protect\phantomsection\label{pdp-comportamento-muxe9dio-do-modelo}
+Para estudar a entrada \(X_j\), substituímos seu valor por \(t\) em
+todas as observações e calculamos a média das predições:
+
+\[
+\boxed{\hat h_j(t)=\frac1N\sum_{i=1}^{N}\hat g(t,\mathbf x_{i,-j}).}
+\]
+
+\(\mathbf x_{i,-j}\) contém as demais entradas da observação \(i\).
+\(N\) é o tamanho da base usada como referência para a explicação.
+
+\textbf{Leitura:} se o PDP cresce, as predições médias do modelo
+aumentam nas combinações consultadas.
+
+Isso não é, em geral, \(\mathbb E(Y\mid X_j=t)\) nem um efeito causal.
+Com entradas dependentes, pode consultar combinações pouco representadas
+nos dados.
+\end{frame}
+
+\begin{frame}{ICE: comportamento por observação}
+\protect\phantomsection\label{ice-comportamento-por-observauxe7uxe3o}
+Em vez de calcular primeiro a média, traçamos uma curva para cada
+observação:
+
+\[
+\hat h_{j,i}(t)=\hat g(t,\mathbf x_{i,-j}).
+\]
+
+A média dessas curvas, na mesma base de referência, é o PDP:
+
+\[
+\boxed{\hat h_j(t)=\frac1N\sum_{i=1}^{N}\hat h_{j,i}(t).}
+\]
+
+Curvas com inclinações ou formas diferentes mostram heterogeneidade no
+comportamento do modelo e podem revelar interações.
+
+\textbf{ICE também pode criar combinações pouco plausíveis quando
+alteramos uma entrada e mantemos as correlacionadas fixas.}
+\end{frame}
+
+\begin{frame}{A média pode esconder heterogeneidade}
+\protect\phantomsection\label{a-muxe9dia-pode-esconder-heterogeneidade}
+\pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_revisada_V2_files/figure-beamer/unnamed-chunk-3-1.png}}
+
+Modelo ilustrativo \(\hat g(x_1,x_2)=x_1x_2\), sem ajuste a dados. O PDP
+horizontal esconde a interação: o sentido da variação depende de
+\(x_2\).
+\end{frame}
+
+\begin{frame}{LIME: aproximação local da predição}
+\protect\phantomsection\label{lime-aproximauxe7uxe3o-local-da-prediuxe7uxe3o}
+Para explicar a saída em \(\mathbf x^*\), o LIME:
+
+\begin{enumerate}
+\tightlist
+\item
+  Gera perturbações na vizinhança da observação.
+\item
+  Consulta o modelo original nessas entradas.
+\item
+  Ajusta um modelo simples, dando maior peso às perturbações próximas.
+\end{enumerate}
+
+\[
+q^*=\arg\min_{q\in\mathcal G}
+\{\mathcal L(\hat g,q,\pi_{\mathbf x^*})+\Omega(q)\}.
+\]
+
+\(\mathcal L\) mede fidelidade local, \(\pi_{\mathbf x^*}\) define os
+pesos e \(\Omega\) penaliza a complexidade da explicação.
+
+\textbf{A explicação descreve uma aproximação do modelo perto de um
+ponto.} Ela depende da vizinhança, da geração de perturbações e da
+representação utilizada.
+\end{frame}
+
+\begin{frame}{Redundância e explicações pouco confiáveis}
+\protect\phantomsection\label{redunduxe2ncia-e-explicauxe7uxf5es-pouco-confiuxe1veis}
+Imagine entradas quase equivalentes, como duas medições do mesmo sensor.
+
+\textbf{PDP e ICE:} variar uma mantendo a outra fixa pode gerar
+situações fora da região observada.
+
+\textbf{LIME:} perturbar as duas independentemente pode criar vizinhos
+artificiais. Muitos preditores também tornam a noção de proximidade
+menos informativa.
+
+\textbf{Lasso:} selecionar uma medição e descartar outra não prova que
+apenas a selecionada tenha importância substantiva.
+
+Antes de interpretar, examine suporte dos dados, estabilidade e
+fidelidade. Uma explicação convincente não substitui desempenho fora da
+amostra.
+\end{frame}
+
+\begin{frame}{Síntese integrada}
+\protect\phantomsection\label{suxedntese-integrada}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Etapa
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pergunta central
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Estimar em alta dimensão & Que estrutura reduz a complexidade
+relevante? \\
+Decidir & Que ação minimiza o custo esperado? \\
+Avaliar & Que métricas representam o objetivo em dados novos? \\
+Interpretar & A explicação é fiel e usa combinações plausíveis? \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+\textbf{Esparsidade e redundância afetam todo o processo:} a estimação,
+a estabilidade das variáveis selecionadas e a confiabilidade das
+explicações.
+
+O objetivo é obter predições úteis, decisões justificadas e explicações
+compatíveis com o que os dados permitem concluir.
+\end{frame}
+
+\begin{frame}{Referências}
+\protect\phantomsection\label{referuxeancias}
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.professortp.com.br/est335/aulas.html}{Aulas da
+  EST335}: regularização, métodos locais, SVM e redes neurais.
+\item
+  Material de apoio: \emph{Decisão, Avaliação e Interpretabilidade},
+  EST335, arquivo fornecido para esta aula.
+\item
+  James et al.~(2021). \emph{An Introduction to Statistical Learning},
+  2ª ed.~\href{https://www.statlearning.com/}{Livro}.
+\item
+  Wasserman. \emph{Nonparametric Regression}. Notas de Statistical
+  Machine Learning.
+  \href{https://stat.cmu.edu/~larry/=sml/nonpar.pdf}{Notas}.
+\item
+  Gautier e Tsybakov (2016). \emph{Regularity Properties for Sparse
+  Regression}.
+  \href{https://pmc.ncbi.nlm.nih.gov/articles/mid/NIHMS750383/}{Artigo}.
+\end{itemize}
+\end{frame}
+
+
+
+
+\end{document}

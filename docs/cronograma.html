@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Cronograma da Disciplina – EST335 - Métodos Estatísticos para Machine Learning</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -36,14 +42,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9b668d6fb622ccd276b6fe5e1fe056ac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-37c0162c860952b1e30e9bc5791bd7d6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-9b668d6fb622ccd276b6fe5e1fe056ac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-23d889f42478094173483eab23bff1ab.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-948e1d81cc9f514adb7f10a0e6181104.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-23d889f42478094173483eab23bff1ab.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -234,6 +240,7 @@ ul.task-list li input[type="checkbox"] {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
@@ -265,7 +272,8 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="./index.html" class="sidebar-logo-link">
-      <img src="./images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main">
     <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
@@ -386,7 +394,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 24/08</td>
 <td>Fundamentos do Aprendizado Estatístico</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide" aria-label="Fundamentos do Aprendizado Estatístico" title="Fundamentos do Aprendizado Estatístico"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide" aria-label="Fundamentos do Aprendizado Estatístico" title="Fundamentos do Aprendizado Estatístico"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -398,7 +406,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 26/08</td>
 <td>Fundamentos do Aprendizado Estatístico</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide" aria-label="Fundamentos do Aprendizado Estatístico" title="Fundamentos do Aprendizado Estatístico"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/title-slide" aria-label="Fundamentos do Aprendizado Estatístico" title="Fundamentos do Aprendizado Estatístico"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -410,7 +418,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 31/08</td>
 <td>Fundamentos do Aprendizado Estatístico</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/o-modelo-estimado-depende-dos-dados-1" aria-label="Fundamentos do Aprendizado Estatístico" title="Fundamentos do Aprendizado Estatístico"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_01_fundamentos_aprendizado_supervisionado.html#/o-modelo-estimado-depende-dos-dados-1" aria-label="Fundamentos do Aprendizado Estatístico" title="Fundamentos do Aprendizado Estatístico"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -422,7 +430,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 02/09</td>
 <td>Modelos Lineares: Regressão e Classificação</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#/title-slide" aria-label="Modelos Lineares: Regressão e Classificação" title="Modelos Lineares: Regressão e Classificação"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_02_modelos_lineares_regressao_classificacao.html#/title-slide" aria-label="Modelos Lineares: Regressão e Classificação" title="Modelos Lineares: Regressão e Classificação"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -446,7 +454,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 09/09</td>
 <td>Funções de Base, Polinômios, Splines e Séries</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide" aria-label="Funções de Base, Polinômios, Splines e Séries" title="Funções de Base, Polinômios, Splines e Séries"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_03_funcoes_base_splines_series.html#/title-slide" aria-label="Funções de Base, Polinômios, Splines e Séries" title="Funções de Base, Polinômios, Splines e Séries"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -458,7 +466,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 14/09</td>
 <td>Funções de Base, Polinômios, Splines e Séries</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_03_funcoes_base_splines_series.html#/outra-estratégia-penalizar-a-rugosidade" aria-label="Funções de Base, Polinômios, Splines e Séries" title="Funções de Base, Polinômios, Splines e Séries"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_03_funcoes_base_splines_series.html#/outra-estratégia-penalizar-a-rugosidade" aria-label="Funções de Base, Polinômios, Splines e Séries" title="Funções de Base, Polinômios, Splines e Séries"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -470,19 +478,19 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 16/09</td>
 <td>Seleção de Variáveis e Regularização</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_04_selecao_regularizacao_v2.html#/title-slide" aria-label="Seleção de Variáveis e Regularização" title="Seleção de Variáveis e Regularização"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_04_selecao_regularizacao_v2.html#/title-slide" aria-label="Seleção de Variáveis e Regularização" title="Seleção de Variáveis e Regularização"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\material_complementar/regularizacao_pratica.html" aria-label="Material Complementar A1" title="Material Complementar A1"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
-<td style="text-align: center;"><a href=".\atividades/atividade_1_generalizacao_regularizacao.html" aria-label="Atividade Avaliativa - A1" title="Atividade Avaliativa - A1"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
+<td style="text-align: center;"><a href="./material_complementar/regularizacao_pratica.html" aria-label="Material Complementar A1" title="Material Complementar A1"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
+<td style="text-align: center;"><a href="./atividades/atividade_1_generalizacao_regularizacao.html" aria-label="Atividade Avaliativa - A1" title="Atividade Avaliativa - A1"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><a href="programacao/semana-5.html">5</a></td>
 <td>Seg, 21/09</td>
 <td>Métodos Locais: KNN, Kernel e Regressão Local</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/title-slide" aria-label="KNN, Kernel e Regressão Local" title="KNN, Kernel e Regressão Local"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/title-slide" aria-label="KNN, Kernel e Regressão Local" title="KNN, Kernel e Regressão Local"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -494,7 +502,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 23/09</td>
 <td>Métodos Locais: KNN, Kernel e Regressão Local</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/title-slide" aria-label="KNN, Kernel e Regressão Local" title="KNN, Kernel e Regressão Local"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/title-slide" aria-label="KNN, Kernel e Regressão Local" title="KNN, Kernel e Regressão Local"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -506,7 +514,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 28/09</td>
 <td>Métodos Locais: KNN, Kernel e Regressão Local</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/regressão-polinomial-local" aria-label="KNN, Kernel e Regressão Local" title="KNN, Kernel e Regressão Local"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_05_metodos_locais_knn_kernel.html#/regressão-polinomial-local" aria-label="KNN, Kernel e Regressão Local" title="KNN, Kernel e Regressão Local"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -518,19 +526,19 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 30/09</td>
 <td>Kernels, RKHS, SVR e SVM</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#/support-vector-machines-e-regression" aria-label="Kernels, RKHS, SVR e SVM" title="Kernels, RKHS, SVR e SVM"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#/support-vector-machines-e-regression" aria-label="Kernels, RKHS, SVR e SVM" title="Kernels, RKHS, SVR e SVM"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\material_complementar/material_complementar_a2_metodos_locais.html" aria-label="Material Complementar A2" title="Material Complementar A2"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
-<td style="text-align: center;"><a href=".\atividades/atividade_2_metodos_locais_kernels.html" aria-label="Atividade Avaliativa - A2" title="Atividade Avaliativa - A2"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
+<td style="text-align: center;"><a href="./material_complementar/material_complementar_a2_metodos_locais.html" aria-label="Material Complementar A2" title="Material Complementar A2"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
+<td style="text-align: center;"><a href="./atividades/atividade_2_metodos_locais_kernels.html" aria-label="Atividade Avaliativa - A2" title="Atividade Avaliativa - A2"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><a href="programacao/semana-7.html">7</a></td>
 <td>Seg, 05/10</td>
 <td>Kernels, RKHS, SVR e SVM</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#/interpretando-a-hinge-loss" aria-label="Kernels, RKHS, SVR e SVM" title="Kernels, RKHS, SVR e SVM"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_06_kernels_rkhs_svr_svm_v3.html#/interpretando-a-hinge-loss" aria-label="Kernels, RKHS, SVR e SVM" title="Kernels, RKHS, SVR e SVM"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -542,7 +550,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 07/10</td>
 <td>Modelos baseados em árvores</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_07_arvores_ensembles_v2.html#/title-slide" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_07_arvores_ensembles_v2.html#/title-slide" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -578,7 +586,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 19/10</td>
 <td>Modelos baseados em árvores</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_07_arvores_ensembles_v2.html#/random-forest" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_07_arvores_ensembles_v2.html#/random-forest" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -590,7 +598,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 21/10</td>
 <td>Modelos baseados em árvores</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_07_arvores_ensembles_v2.html#/title-slide" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_07_arvores_ensembles_v2.html#/title-slide" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -602,12 +610,12 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 26/10</td>
 <td>Modelos baseados em árvores</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_07_arvores_ensembles_v2.html#/e-na-classificação" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_07_arvores_ensembles_v2.html#/e-na-classificação" aria-label="Modelos baseados em árvores" title="Modelos baseados em árvores"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\material_complementar/material_complementar_a3_classificacao.html" aria-label="Material Complementar A3" title="Material Complementar A3"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
-<td style="text-align: center;"><a href=".\atividades/atividade_3_desafio_supervisionado.html" aria-label="Atividade Avaliativa - A3" title="Atividade Avaliativa - A3"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
+<td style="text-align: center;"><a href="./material_complementar/material_complementar_a3_classificacao.html" aria-label="Material Complementar A3" title="Material Complementar A3"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
+<td style="text-align: center;"><a href="./atividades/atividade_3_desafio_supervisionado.html" aria-label="Atividade Avaliativa - A3" title="Atividade Avaliativa - A3"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
@@ -638,7 +646,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 04/11</td>
 <td>Redes Neurais Artificiais</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_09_redes_neurais.html#/title-slide" aria-label="Redes Neurais Artificiais" title="Redes Neurais Artificiais"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_09_redes_neurais.html#/title-slide" aria-label="Redes Neurais Artificiais" title="Redes Neurais Artificiais"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -650,7 +658,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 09/11</td>
 <td>Redes Neurais Artificiais</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/semana_09_redes_neurais.html#/regressão-e-classificação-o-que-muda" aria-label="Redes Neurais Artificiais" title="Redes Neurais Artificiais"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/semana_09_redes_neurais.html#/regressão-e-classificação-o-que-muda" aria-label="Redes Neurais Artificiais" title="Redes Neurais Artificiais"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -662,7 +670,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 11/11</td>
 <td>Aprendizado em Alta Dimensão</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/aula_altas_dimensoes_est335_revisada.html#/title-slide" aria-label="Aprendizado em Alta Dimensão" title="Aprendizado em Alta Dimensão"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/aula_altas_dimensoes_est335_revisada.html#/title-slide" aria-label="Aprendizado em Alta Dimensão" title="Aprendizado em Alta Dimensão"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -674,7 +682,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 16/11</td>
 <td>Decisão, Avaliação e Interpretabilidade</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/aula_decisao_avaliacao_interpretabilidade.html#/title-slide" aria-label="Decisão, Avaliação e Interpretabilidade" title="Decisão, Avaliação e Interpretabilidade"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/aula_decisao_avaliacao_interpretabilidade.html#/title-slide" aria-label="Decisão, Avaliação e Interpretabilidade" title="Decisão, Avaliação e Interpretabilidade"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -686,7 +694,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Qua, 18/11</td>
 <td>Decisão, Avaliação e Interpretabilidade</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/semanais/aula_decisao_avaliacao_interpretabilidade.html#/title-slide" aria-label="Decisão, Avaliação e Interpretabilidade" title="Decisão, Avaliação e Interpretabilidade"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/semanais/aula_decisao_avaliacao_interpretabilidade.html#/title-slide" aria-label="Decisão, Avaliação e Interpretabilidade" title="Decisão, Avaliação e Interpretabilidade"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -698,19 +706,19 @@ ul.task-list li input[type="checkbox"] {
 <td>Seg, 23/11</td>
 <td>Redução de dimensionalidade e mudança de representação</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#/title-slide" aria-label="Redução de dimensionalidade e mudança de representação" title="Redução de dimensionalidade e mudança de representação"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#/title-slide" aria-label="Redução de dimensionalidade e mudança de representação" title="Redução de dimensionalidade e mudança de representação"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\material_complementar/material_complementar_a4_estruturas_padroes.html" aria-label="Material Complementar A4" title="Material Complementar A4"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
-<td style="text-align: center;"><a href=".\atividades/atividade_a4_estruturas_padroes.html" aria-label="Atividade Avaliativa - A4" title="Atividade Avaliativa - A4"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
+<td style="text-align: center;"><a href="./material_complementar/material_complementar_a4_estruturas_padroes.html" aria-label="Material Complementar A4" title="Material Complementar A4"><i class="fa-solid fa-folder fa-2xl" aria-label="folder"></i></a></td>
+<td style="text-align: center;"><a href="./atividades/atividade_a4_estruturas_padroes.html" aria-label="Atividade Avaliativa - A4" title="Atividade Avaliativa - A4"><i class="fa-solid fa-list-check fa-2xl" aria-label="list-check"></i></a></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
 <td>Qua, 25/11</td>
 <td>Redução de dimensionalidade e mudança de representação</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"><a href=".\aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#/title-slide" aria-label="Redução de dimensionalidade e mudança de representação" title="Redução de dimensionalidade e mudança de representação"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
+<td style="text-align: center;"><a href="./aulas/aprendizado_nao_supervisionado/red_dimens_mud_repres/red_dimens_mud_repres.html#/autoencoders" aria-label="Redução de dimensionalidade e mudança de representação" title="Redução de dimensionalidade e mudança de representação"><i class="fa-solid fa-file-powerpoint fa-2xl" aria-label="file-powerpoint"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -788,13 +796,14 @@ ul.task-list li input[type="checkbox"] {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

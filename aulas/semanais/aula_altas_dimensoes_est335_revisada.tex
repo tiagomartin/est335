@@ -83,6 +83,7 @@
 
 
 \usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 \usepackage{caption}
 % Make caption package work with longtable
@@ -108,13 +109,13 @@
 
 
 \ifLuaTeX
-\usepackage[bidi=basic]{babel}
+\usepackage[bidi=basic,shorthands=off]{babel}
 \else
-\usepackage[bidi=default]{babel}
+\usepackage[bidi=default,shorthands=off]{babel}
 \fi
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
 
 
 \setlength{\emergencystretch}{3em} % prevent overfull lines
@@ -172,6 +173,10 @@
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
 \hypersetup{
   pdftitle={Parte I : Aprendizado Supervisionado},
   pdflang={pt-BR},
@@ -179,9 +184,10 @@
   pdfcreator={LaTeX via pandoc}}
 
 
-
-\title{Parte I : Aprendizado Supervisionado}
-\subtitle{{Aprendizado em Alta Dimensão}}
+\title{\texorpdfstring{Parte I : Aprendizado
+Supervisionado}{Parte I : Aprendizado Supervisionado}}
+\subtitle{\texorpdfstring{{Aprendizado em Alta
+Dimensão}}{Aprendizado em Alta Dimensão}}
 \author{}
 \date{}
 
@@ -190,7 +196,7 @@
 
 
 \begin{frame}{Onde estamos?}
-\phantomsection\label{onde-estamos}
+\protect\phantomsection\label{onde-estamos}
 Estudamos diferentes formas de estimar
 
 \[
@@ -214,7 +220,7 @@ aumenta?}
 \end{frame}
 
 \begin{frame}{Alta dimensionalidade: qual é o problema?}
-\phantomsection\label{alta-dimensionalidade-qual-uxe9-o-problema}
+\protect\phantomsection\label{alta-dimensionalidade-qual-uxe9-o-problema}
 Queremos aprender a relação
 
 \[
@@ -233,7 +239,7 @@ aproveitá-las?
 \end{frame}
 
 \begin{frame}{A maldição da dimensionalidade}
-\phantomsection\label{a-maldiuxe7uxe3o-da-dimensionalidade}
+\protect\phantomsection\label{a-maldiuxe7uxe3o-da-dimensionalidade}
 Imagine observações uniformes em \([0,1]^p\). Uma região com comprimento
 \(h\) em cada coordenada ocupa a fração \(h^p\) do volume.
 
@@ -241,7 +247,7 @@ Imagine observações uniformes em \([0,1]^p\). Uma região com comprimento
 \end{frame}
 
 \begin{frame}{A maldição da dimensionalidade}
-\phantomsection\label{a-maldiuxe7uxe3o-da-dimensionalidade-1}
+\protect\phantomsection\label{a-maldiuxe7uxe3o-da-dimensionalidade-1}
 Para manter \(k\) observações \textbf{em média} nessa região:
 
 \[
@@ -250,6 +256,7 @@ Para manter \(k\) observações \textbf{em média} nessa região:
 
 Por exemplo,
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}lrrr@{}}
 \toprule\noalign{}
 Com \(h=0{,}1\) e \(k=20\) & \(p=1\) & \(p=3\) & \(p=5\) \\
@@ -258,10 +265,11 @@ Com \(h=0{,}1\) e \(k=20\) & \(p=1\) & \(p=3\) & \(p=5\) \\
 Amostra necessária, em média & 200 & 20.000 & 2.000.000 \\
 \bottomrule\noalign{}
 \end{longtable}
+}
 \end{frame}
 
 \begin{frame}{A maldição da dimensionalidade}
-\phantomsection\label{a-maldiuxe7uxe3o-da-dimensionalidade-2}
+\protect\phantomsection\label{a-maldiuxe7uxe3o-da-dimensionalidade-2}
 Manter vizinhanças pequenas exige muito mais dados. Isso afeta
 especialmente KNN e regressão local.
 
@@ -270,7 +278,7 @@ uma regra geral de tamanho amostral.}
 \end{frame}
 
 \begin{frame}{Taxa de convergência}
-\phantomsection\label{taxa-de-converguxeancia}
+\protect\phantomsection\label{taxa-de-converguxeancia}
 A \textbf{taxa de convergência} descreve a velocidade com que o risco de
 estimação diminui à medida que aumentamos o tamanho da amostra \(n\).
 
@@ -290,7 +298,7 @@ treinamento e uma nova entrada \(\mathbf X\).
 \end{frame}
 
 \begin{frame}{Taxa de convergência}
-\phantomsection\label{taxa-de-converguxeancia-1}
+\protect\phantomsection\label{taxa-de-converguxeancia-1}
 Uma forma comum de descrever a taxa de convergência de um estimador, é
 dada por
 
@@ -303,7 +311,8 @@ do erro por \(4^{-a}\).
 \end{frame}
 
 \begin{frame}{Taxa de convergência}
-\phantomsection\label{taxa-de-converguxeancia-2}
+\protect\phantomsection\label{taxa-de-converguxeancia-2}
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}ccc@{}}
 \toprule\noalign{}
 Expoente & Erro relativo & Redução do erro \\
@@ -314,13 +323,14 @@ Expoente & Erro relativo & Redução do erro \\
 \(a=1/6\) & \(0{,}79\) & \textbf{21\%} \\
 \bottomrule\noalign{}
 \end{longtable}
+}
 
 \textbf{Interpretação:} quanto menor o expoente \(a\), mais lentamente o
 erro diminui com a inclusão de novas observações.
 \end{frame}
 
 \begin{frame}{Taxas de convergência e dimensionalidade}
-\phantomsection\label{taxas-de-converguxeancia-e-dimensionalidade}
+\protect\phantomsection\label{taxas-de-converguxeancia-e-dimensionalidade}
 Para classes gerais de funções suaves em \(p\) dimensões, uma taxa
 minimax típica do erro quadrático integrado é
 
@@ -353,9 +363,10 @@ e classe suave. Fonte: Wasserman, Nonparametric Regression.}
 \end{frame}
 
 \begin{frame}{Quanto ganhamos aumentando a amostra?}
-\phantomsection\label{quanto-ganhamos-aumentando-a-amostra}
+\protect\phantomsection\label{quanto-ganhamos-aumentando-a-amostra}
 Fixando suavidade \(\alpha=2\), a taxa é \(n^{-4/(4+p)}\).
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}rrr@{}}
 \toprule\noalign{}
 Dimensão \(p\) & Taxa & Fator do termo principal com \(4n\) \\
@@ -367,6 +378,7 @@ Dimensão \(p\) & Taxa & Fator do termo principal com \(4n\) \\
 20 & \(n^{-1/6}\) & \(0{,}79\) \\
 \bottomrule\noalign{}
 \end{longtable}
+}
 
 Em uma dimensão, o termo cai para cerca de 33\% do valor anterior. Em 20
 dimensões, permanece em cerca de 79\%.
@@ -376,7 +388,7 @@ multiplicar \(n\) por \(2^6=64\).}
 \end{frame}
 
 \begin{frame}{A redução do erro fica mais lenta}
-\phantomsection\label{a-reduuxe7uxe3o-do-erro-fica-mais-lenta}
+\protect\phantomsection\label{a-reduuxe7uxe3o-do-erro-fica-mais-lenta}
 \pandocbounded{\includegraphics[keepaspectratio]{aula_altas_dimensoes_est335_revisada_files/figure-beamer/unnamed-chunk-1-1.png}}
 
 Todas as curvas começam em 1 para comparar \textbf{velocidades de
@@ -385,12 +397,13 @@ redução}, não níveis absolutos de erro. São curvas teóricas com
 \end{frame}
 
 \begin{frame}{Como tornar o problema mais simples?}
-\phantomsection\label{como-tornar-o-problema-mais-simples}
+\protect\phantomsection\label{como-tornar-o-problema-mais-simples}
 A taxa anterior considera uma classe ampla de funções em \(p\)
 dimensões.
 
 Podemos explorar hipóteses que reduzam a complexidade relevante:
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
@@ -411,13 +424,14 @@ Redundância & Muitas entradas carregam informação compartilhada &
 Combinar ou representar informação comum \\
 \bottomrule\noalign{}
 \end{longtable}
+}
 
 \textbf{Ter muitas variáveis observadas não implica que a resposta
 dependa de todas de forma independente e complexa.}
 \end{frame}
 
 \begin{frame}{Esparsidade: poucos efeitos ativos}
-\phantomsection\label{esparsidade-poucos-efeitos-ativos}
+\protect\phantomsection\label{esparsidade-poucos-efeitos-ativos}
 Suponha \(p=1.000\), mas
 
 \[
@@ -433,7 +447,7 @@ sabemos, precisamos encontrá-las entre as 1.000 candidatas.
 \end{frame}
 
 \begin{frame}{Redundância: muitas medições do mesmo fenômeno}
-\phantomsection\label{redunduxe2ncia-muitas-mediuxe7uxf5es-do-mesmo-fenuxf4meno}
+\protect\phantomsection\label{redunduxe2ncia-muitas-mediuxe7uxf5es-do-mesmo-fenuxf4meno}
 Imagine 100 sensores que medem uma condição térmica comum:
 
 \[
@@ -454,7 +468,7 @@ estrutura simples.
 dimensionalidade}\label{muxe9todos-mais-adequados-uxe0-alta-dimensionalidade}
 
 \begin{frame}{Ridge: estabilidade com muitas entradas}
-\phantomsection\label{ridge-estabilidade-com-muitas-entradas}
+\protect\phantomsection\label{ridge-estabilidade-com-muitas-entradas}
 Ridge minimiza o erro de ajuste acrescido de uma penalização quadrática:
 
 \[
@@ -474,7 +488,7 @@ precisa ser escolhido por validação.
 \end{frame}
 
 \begin{frame}{Lasso: regularização com seleção}
-\phantomsection\label{lasso-regularizauxe7uxe3o-com-seleuxe7uxe3o}
+\protect\phantomsection\label{lasso-regularizauxe7uxe3o-com-seleuxe7uxe3o}
 Lasso substitui a penalização quadrática pela soma dos valores
 absolutos:
 
@@ -495,7 +509,7 @@ seja a única portadora do sinal.}
 \end{frame}
 
 \begin{frame}{SVM linear: classificação com regularização}
-\phantomsection\label{svm-linear-classificauxe7uxe3o-com-regularizauxe7uxe3o}
+\protect\phantomsection\label{svm-linear-classificauxe7uxe3o-com-regularizauxe7uxe3o}
 A SVM linear utiliza uma função de decisão
 
 \[
@@ -513,7 +527,7 @@ informativas não passam a ser úteis apenas pelo uso do kernel.
 \end{frame}
 
 \begin{frame}{RNA: possibilidade de aprender representações}
-\phantomsection\label{rna-possibilidade-de-aprender-representauxe7uxf5es}
+\protect\phantomsection\label{rna-possibilidade-de-aprender-representauxe7uxf5es}
 Uma camada oculta calcula
 
 \[
@@ -542,7 +556,8 @@ comparação.
 \end{frame}
 
 \begin{frame}{Qual método considerar primeiro?}
-\phantomsection\label{qual-muxe9todo-considerar-primeiro}
+\protect\phantomsection\label{qual-muxe9todo-considerar-primeiro}
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -562,6 +577,7 @@ Relações não lineares e dados suficientes para aprendê-las & RNA
 regularizada \\
 \bottomrule\noalign{}
 \end{longtable}
+}
 
 A tabela orienta comparações, sem definir um vencedor universal.
 

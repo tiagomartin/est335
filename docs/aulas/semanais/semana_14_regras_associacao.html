@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Aprendizado Não Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Aprendizado Não Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -47,14 +53,14 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -149,15 +155,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte II : Aprendizado Não Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte II : Aprendizado Não Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Regras de Associação</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="regras-de-associação" class="title-slide slide level1 center"><h1>Regras de Associação</h1>
+</section>
+<section>
+<section id="regras-de-associação" class="title-slide slide level1 center">
+<h1>Regras de Associação</h1>
 
-</section><section id="dados-transacionais" class="slide level2"><h2>Dados transacionais</h2>
+</section>
+<section id="dados-transacionais" class="slide level2">
+<h2>Dados transacionais</h2>
 <p>Considere um conjunto de itens</p>
 <p><span class="math display">\[
 \mathcal I
@@ -171,13 +183,17 @@ T_r\subseteq\mathcal I
 }
 \]</span></p>
 <p>que informa quais itens ocorreram conjuntamente</p>
-</section><section id="exemplo" class="slide level2"><h2>Exemplo</h2>
+</section>
+<section id="exemplo" class="slide level2">
+<h2>Exemplo</h2>
 <p>Considere as transações:</p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Transação</th>
 <th>Itens</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(T_1\)</span></td>
@@ -203,7 +219,9 @@ T_r\subseteq\mathcal I
 </table>
 <p>Uma transação não é necessariamente um vetor quantitativo convencional</p>
 <p>Ela representa um <strong>conjunto de itens</strong></p>
-</section><section id="representação-binária" class="slide level2"><h2>Representação binária</h2>
+</section>
+<section id="representação-binária" class="slide level2">
+<h2>Representação binária</h2>
 <p>Também podemos escrever</p>
 <p><span class="math display">\[
 x_{rj}
@@ -215,12 +233,14 @@ x_{rj}
 \]</span></p>
 <p>obtendo uma matriz transação–item</p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th></th>
 <th style="text-align: right;">pão</th>
 <th style="text-align: right;">leite</th>
 <th style="text-align: right;">café</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(T_1\)</span></td>
@@ -253,9 +273,18 @@ x_{rj}
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
-</table></section><section class="slide level2"></section></section><section><section id="itemsets" class="title-slide slide level1 center"><h1>Itemsets</h1>
+</table>
+</section>
+<section class="slide level2">
 
-</section><section id="conjuntos-de-itens" class="slide level2"><h2>Conjuntos de itens</h2>
+</section></section>
+<section>
+<section id="itemsets" class="title-slide slide level1 center">
+<h1>Itemsets</h1>
+
+</section>
+<section id="conjuntos-de-itens" class="slide level2">
+<h2>Conjuntos de itens</h2>
 <p>Um <strong>itemset</strong> é qualquer subconjunto</p>
 <p><span class="math display">\[
 \boxed{
@@ -267,9 +296,17 @@ X\subseteq\mathcal I
 X=\{\text{pão},\text{leite}\}
 \]</span></p>
 <p>O primeiro problema é descobrir quais itemsets aparecem com frequência suficiente nos dados</p>
-</section><section class="slide level2"></section></section><section><section id="regras-de-associação-1" class="title-slide slide level1 center"><h1>Regras de Associação</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="definição" class="slide level2"><h2>Definição</h2>
+</section></section>
+<section>
+<section id="regras-de-associação-1" class="title-slide slide level1 center">
+<h1>Regras de Associação</h1>
+
+</section>
+<section id="definição" class="slide level2">
+<h2>Definição</h2>
 <p>Uma regra tem a forma</p>
 <p><span class="math display">\[
 \boxed{
@@ -285,7 +322,9 @@ Y\subseteq\mathcal I,
 X\cap Y=\varnothing
 \]</span></p>
 <p><span class="math inline">\(X\)</span> é o <strong>antecedente</strong> e <span class="math inline">\(Y\)</span> o <strong>consequente</strong></p>
-</section><section id="uma-regra-não-é-causal" class="slide level2"><h2>Uma regra não é causal</h2>
+</section>
+<section id="uma-regra-não-é-causal" class="slide level2">
+<h2>Uma regra não é causal</h2>
 <p>A regra</p>
 <p><span class="math display">\[
 \{\text{pão}\}
@@ -301,9 +340,14 @@ X\cap Y=\varnothing
 \text{causalidade}
 }
 \]</span></p>
-</section></section><section><section id="suporte" class="title-slide slide level1 center"><h1>Suporte</h1>
+</section></section>
+<section>
+<section id="suporte" class="title-slide slide level1 center">
+<h1>Suporte</h1>
 
-</section><section id="frequência-conjunta" class="slide level2"><h2>Frequência conjunta</h2>
+</section>
+<section id="frequência-conjunta" class="slide level2">
+<h2>Frequência conjunta</h2>
 <p>O suporte de um itemset <span class="math inline">\(X\)</span> é</p>
 <p><span class="math display">\[
 \boxed{
@@ -322,7 +366,9 @@ P(X)
 }{n}
 }
 \]</span></p>
-</section><section id="suporte-de-uma-regra" class="slide level2"><h2>Suporte de uma regra</h2>
+</section>
+<section id="suporte-de-uma-regra" class="slide level2">
+<h2>Suporte de uma regra</h2>
 <p>Para</p>
 <p><span class="math display">\[
 X\Rightarrow Y
@@ -336,7 +382,9 @@ P(X\cap Y)
 }
 \]</span></p>
 <p>Ele mede com que frequência antecedente e consequente aparecem conjuntamente</p>
-</section><section id="exemplo-1" class="slide level2"><h2>Exemplo</h2>
+</section>
+<section id="exemplo-1" class="slide level2">
+<h2>Exemplo</h2>
 <p>Na base anterior,</p>
 <p><span class="math display">\[
 X=\{\text{pão}\}
@@ -359,9 +407,14 @@ support(X\Rightarrow Y)
 0.60
 }
 \]</span></p>
-</section></section><section><section id="confiança" class="title-slide slide level1 center"><h1>Confiança</h1>
+</section></section>
+<section>
+<section id="confiança" class="title-slide slide level1 center">
+<h1>Confiança</h1>
 
-</section><section id="uma-probabilidade-condicional" class="slide level2"><h2>Uma probabilidade condicional</h2>
+</section>
+<section id="uma-probabilidade-condicional" class="slide level2">
+<h2>Uma probabilidade condicional</h2>
 <p>A confiança é</p>
 <p><span class="math display">\[
 \boxed{
@@ -378,7 +431,9 @@ confidence(X\Rightarrow Y)
 \frac{P(X\cap Y)}{P(X)}
 }
 \]</span></p>
-</section><section id="exemplo-2" class="slide level2"><h2>Exemplo</h2>
+</section>
+<section id="exemplo-2" class="slide level2">
+<h2>Exemplo</h2>
 <p>Pão aparece em quatro das cinco transações</p>
 <p><span class="math display">\[
 support(X)=\frac45
@@ -400,16 +455,23 @@ confidence(
 0.75
 }
 \]</span></p>
-</section><section id="interpretação" class="slide level2"><h2>Interpretação</h2>
+</section>
+<section id="interpretação" class="slide level2">
+<h2>Interpretação</h2>
 <p>Entre as transações que contêm pão,</p>
 <p><span class="math display">\[
 75\%
 \]</span></p>
 <p>também contêm leite</p>
 <p>Mas isso ainda não nos diz se a associação é realmente surpreendente</p>
-</section></section><section><section id="o-problema-da-confiança" class="title-slide slide level1 center"><h1>O problema da confiança</h1>
+</section></section>
+<section>
+<section id="o-problema-da-confiança" class="title-slide slide level1 center">
+<h1>O problema da confiança</h1>
 
-</section><section id="consequentes-muito-frequentes" class="slide level2"><h2>Consequentes muito frequentes</h2>
+</section>
+<section id="consequentes-muito-frequentes" class="slide level2">
+<h2>Consequentes muito frequentes</h2>
 <p>Suponha que</p>
 <p><span class="math display">\[
 P(Y)=0.90
@@ -424,9 +486,14 @@ confidence(X\Rightarrow Y)=0.92
 \]</span></p>
 <p>Mas <span class="math inline">\(Y\)</span> já ocorre em <span class="math inline">\(90\%\)</span> das transações</p>
 <p>O ganho proporcionado por conhecer <span class="math inline">\(X\)</span> é pequeno</p>
-</section></section><section><section id="lift" class="title-slide slide level1 center"><h1>Lift</h1>
+</section></section>
+<section>
+<section id="lift" class="title-slide slide level1 center">
+<h1>Lift</h1>
 
-</section><section id="comparando-com-a-frequência-marginal" class="slide level2"><h2>Comparando com a frequência marginal</h2>
+</section>
+<section id="comparando-com-a-frequência-marginal" class="slide level2">
+<h2>Comparando com a frequência marginal</h2>
 <p>Definimos</p>
 <p><span class="math display">\[
 \boxed{
@@ -444,14 +511,18 @@ lift(X\Rightarrow Y)
 {P(X)P(Y)}
 }
 \]</span></p>
-</section><section id="interpretação-1" class="slide level2"><h2>Interpretação</h2>
+</section>
+<section id="interpretação-1" class="slide level2">
+<h2>Interpretação</h2>
 <h3 id="lift1"><span class="math inline">\(lift&gt;1\)</span></h3>
 <p><span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> aparecem juntos <strong>mais frequentemente</strong> que o esperado sob independência</p>
 <h3 id="lift1-1"><span class="math inline">\(lift=1\)</span></h3>
 <p>não há associação segundo essa medida</p>
 <h3 id="lift1-2"><span class="math inline">\(lift&lt;1\)</span></h3>
 <p>a ocorrência conjunta é <strong>menos frequente</strong> que o esperado sob independência</p>
-</section><section id="relação-com-independência" class="slide level2"><h2>Relação com independência</h2>
+</section>
+<section id="relação-com-independência" class="slide level2">
+<h2>Relação com independência</h2>
 <p>Se <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> são independentes,</p>
 <p><span class="math display">\[
 P(X\cap Y)
@@ -465,7 +536,9 @@ lift(X\Rightarrow Y)=1
 }
 \]</span></p>
 <p>Essa relação fornece uma interpretação estatística direta para o lift</p>
-</section><section id="exemplo-3" class="slide level2"><h2>Exemplo</h2>
+</section>
+<section id="exemplo-3" class="slide level2">
+<h2>Exemplo</h2>
 <p>Na base,</p>
 <p><span class="math display">\[
 P(\text{leite})=\frac45
@@ -485,32 +558,49 @@ lift
 }
 \]</span></p>
 <p>Apesar da confiança de <span class="math inline">\(75\%\)</span>, a associação não é positiva segundo o lift</p>
-</section><section class="slide level2"></section></section><section><section id="três-perguntas-diferentes" class="title-slide slide level1 center"><h1>Três perguntas diferentes</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="suporte-1" class="slide level2"><h2>Suporte</h2>
+</section></section>
+<section>
+<section id="três-perguntas-diferentes" class="title-slide slide level1 center">
+<h1>Três perguntas diferentes</h1>
+
+</section>
+<section id="suporte-1" class="slide level2">
+<h2>Suporte</h2>
 <blockquote>
 <p>A combinação ocorre com frequência?</p>
 </blockquote>
 <p><span class="math display">\[
 support(X\Rightarrow Y)
 \]</span></p>
-</section><section id="confiança-1" class="slide level2"><h2>Confiança</h2>
+</section>
+<section id="confiança-1" class="slide level2">
+<h2>Confiança</h2>
 <blockquote>
 <p>Quando <span class="math inline">\(X\)</span> ocorre, com que frequência <span class="math inline">\(Y\)</span> também ocorre?</p>
 </blockquote>
 <p><span class="math display">\[
 confidence(X\Rightarrow Y)
 \]</span></p>
-</section><section id="lift-1" class="slide level2"><h2>Lift</h2>
+</section>
+<section id="lift-1" class="slide level2">
+<h2>Lift</h2>
 <blockquote>
 <p>A presença de <span class="math inline">\(X\)</span> aumenta a frequência relativa de <span class="math inline">\(Y\)</span>?</p>
 </blockquote>
 <p><span class="math display">\[
 lift(X\Rightarrow Y)
 \]</span></p>
-</section></section><section><section id="o-problema-computacional" class="title-slide slide level1 center"><h1>O problema computacional</h1>
+</section></section>
+<section>
+<section id="o-problema-computacional" class="title-slide slide level1 center">
+<h1>O problema computacional</h1>
 
-</section><section id="quantos-itemsets-existem" class="slide level2"><h2>Quantos itemsets existem?</h2>
+</section>
+<section id="quantos-itemsets-existem" class="slide level2">
+<h2>Quantos itemsets existem?</h2>
 <p>Com <span class="math inline">\(p\)</span> itens, existem</p>
 <p><span class="math display">\[
 \boxed{
@@ -520,9 +610,14 @@ lift(X\Rightarrow Y)
 <p>itemsets não vazios possíveis</p>
 <p>Para <span class="math inline">\(p\)</span> grande, enumerar todas as combinações torna-se inviável</p>
 <p>Precisamos eliminar candidatos sem avaliá-los completamente</p>
-</section></section><section><section id="itemsets-frequentes" class="title-slide slide level1 center"><h1>Itemsets frequentes</h1>
+</section></section>
+<section>
+<section id="itemsets-frequentes" class="title-slide slide level1 center">
+<h1>Itemsets frequentes</h1>
 
-</section><section id="definição-1" class="slide level2"><h2>Definição</h2>
+</section>
+<section id="definição-1" class="slide level2">
+<h2>Definição</h2>
 <p>Escolha um suporte mínimo</p>
 <p><span class="math display">\[
 s_{\min}
@@ -534,9 +629,14 @@ support(X)\geq s_{\min}
 }
 \]</span></p>
 <p>A busca pelas regras começa pela identificação desses conjuntos</p>
-</section></section><section><section id="princípio-apriori" class="title-slide slide level1 center"><h1>Princípio Apriori</h1>
+</section></section>
+<section>
+<section id="princípio-apriori" class="title-slide slide level1 center">
+<h1>Princípio Apriori</h1>
 
-</section><section id="propriedade-fundamental" class="slide level2"><h2>Propriedade fundamental</h2>
+</section>
+<section id="propriedade-fundamental" class="slide level2">
+<h2>Propriedade fundamental</h2>
 <p>Se um itemset é frequente, todos os seus subconjuntos também são frequentes</p>
 <p><span class="math display">\[
 \boxed{
@@ -547,7 +647,9 @@ A\text{ frequente}
 \forall A\subset X
 }
 \]</span></p>
-</section><section id="forma-contrapositiva" class="slide level2"><h2>Forma contrapositiva</h2>
+</section>
+<section id="forma-contrapositiva" class="slide level2">
+<h2>Forma contrapositiva</h2>
 <p>Mais útil computacionalmente:</p>
 <p><span class="math display">\[
 \boxed{
@@ -559,9 +661,17 @@ X\text{ não frequente}
 }
 \]</span></p>
 <p>Se um conjunto já é raro, não precisamos examinar seus supersets</p>
-</section><section class="slide level2"></section></section><section><section id="algoritmo-apriori" class="title-slide slide level1 center"><h1>Algoritmo Apriori</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="ideia-geral" class="slide level2"><h2>Ideia geral</h2>
+</section></section>
+<section>
+<section id="algoritmo-apriori" class="title-slide slide level1 center">
+<h1>Algoritmo Apriori</h1>
+
+</section>
+<section id="ideia-geral" class="slide level2">
+<h2>Ideia geral</h2>
 <h3 id="section">1</h3>
 <p>Encontrar itemsets frequentes de tamanho 1</p>
 <p><span class="math display">\[
@@ -573,7 +683,9 @@ L_1
 <p>Eliminar candidatos contendo subconjuntos infrequentes</p>
 <h3 id="section-3">4</h3>
 <p>Repetir para tamanhos maiores</p>
-</section><section id="fluxo" class="slide level2"><h2>Fluxo</h2>
+</section>
+<section id="fluxo" class="slide level2">
+<h2>Fluxo</h2>
 <p><span class="math display">\[
 \boxed{
 L_1
@@ -601,9 +713,17 @@ L_k
 =
 \text{itemsets frequentes de tamanho }k
 \]</span></p>
-</section><section class="slide level2"></section></section><section><section id="gerando-regras" class="title-slide slide level1 center"><h1>Gerando regras</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="depois-dos-itemsets-frequentes" class="slide level2"><h2>Depois dos itemsets frequentes</h2>
+</section></section>
+<section>
+<section id="gerando-regras" class="title-slide slide level1 center">
+<h1>Gerando regras</h1>
+
+</section>
+<section id="depois-dos-itemsets-frequentes" class="slide level2">
+<h2>Depois dos itemsets frequentes</h2>
 <p>Para um itemset frequente <span class="math inline">\(Z\)</span>, podemos dividi-lo em</p>
 <p><span class="math display">\[
 Z=X\cup Y
@@ -617,7 +737,9 @@ X\cap Y=\varnothing
 X\Rightarrow Y
 \]</span></p>
 <p>segundo suporte, confiança, lift e outros critérios de interesse</p>
-</section><section id="uma-regra-forte-deve-ser-interpretável" class="slide level2"><h2>Uma regra forte deve ser interpretável</h2>
+</section>
+<section id="uma-regra-forte-deve-ser-interpretável" class="slide level2">
+<h2>Uma regra forte deve ser interpretável</h2>
 <p>Valores elevados de métricas não bastam</p>
 <p>Uma regra pode ser:</p>
 <ul>
@@ -634,7 +756,9 @@ X\Rightarrow Y
 \text{interpretação substantiva}
 }
 \]</span></p>
-</section><section id="direção-da-regra" class="slide level2"><h2>Direção da regra</h2>
+</section>
+<section id="direção-da-regra" class="slide level2">
+<h2>Direção da regra</h2>
 <p>Embora</p>
 <p><span class="math display">\[
 support(X\Rightarrow Y)
@@ -656,9 +780,17 @@ confidence(Y\Rightarrow X)
 }
 \]</span></p>
 <p>A direção importa para a interpretação da confiança</p>
-</section><section class="slide level2"></section></section><section><section id="síntese-do-encontro-14.1" class="title-slide slide level1 center"><h1>Síntese do Encontro 14.1</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="medidas-fundamentais" class="slide level2"><h2>Medidas fundamentais</h2>
+</section></section>
+<section>
+<section id="síntese-do-encontro-14.1" class="title-slide slide level1 center">
+<h1>Síntese do Encontro 14.1</h1>
+
+</section>
+<section id="medidas-fundamentais" class="slide level2">
+<h2>Medidas fundamentais</h2>
 <p><span class="math display">\[
 \boxed{
 support(X\Rightarrow Y)
@@ -680,7 +812,9 @@ lift(X\Rightarrow Y)
 \frac{P(Y\mid X)}{P(Y)}
 }
 \]</span></p>
-</section><section id="ideia-computacional" class="slide level2"><h2>Ideia computacional</h2>
+</section>
+<section id="ideia-computacional" class="slide level2">
+<h2>Ideia computacional</h2>
 <p><span class="math display">\[
 \boxed{
 \text{Apriori}
@@ -689,9 +823,14 @@ lift(X\Rightarrow Y)
 }
 \]</span></p>
 <p>O objetivo não é apenas gerar muitas regras, mas encontrar associações frequentes, relevantes e interpretáveis</p>
-</section></section><section><section id="segundo-encontro-interpretação-e-aplicação" class="title-slide slide level1 center"><h1>Segundo encontro — interpretação e aplicação</h1>
+</section></section>
+<section>
+<section id="segundo-encontro-interpretação-e-aplicação" class="title-slide slide level1 center">
+<h1>Segundo encontro — interpretação e aplicação</h1>
 
-</section><section id="confiança-alta-não-basta" class="slide level2"><h2>Confiança alta não basta</h2>
+</section>
+<section id="confiança-alta-não-basta" class="slide level2">
+<h2>Confiança alta não basta</h2>
 <p>Uma regra pode apresentar alta confiança apenas porque o consequente é muito frequente</p>
 <p><span class="math display">\[
 \boxed{confidence(X\Rightarrow Y)}
@@ -700,7 +839,9 @@ lift(X\Rightarrow Y)
 <p><span class="math display">\[
 \boxed{lift(X\Rightarrow Y)}
 \]</span></p>
-</section><section id="síntese" class="slide level2 smaller scrollable"><h2>Síntese</h2>
+</section>
+<section id="síntese" class="slide level2 smaller scrollable">
+<h2>Síntese</h2>
 <p><span class="math display">\[
 \boxed{\text{suporte}\rightarrow\text{confiança}\rightarrow\text{lift}\rightarrow\text{interpretação}}
 \]</span> ## Referências {visibility=“uncounted”}</p>
@@ -710,14 +851,31 @@ lift(X\Rightarrow Y)
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 14</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -884,7 +1042,7 @@ lift(X\Rightarrow Y)
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -909,42 +1067,84 @@ lift(X\Rightarrow Y)
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -992,13 +1192,14 @@ lift(X\Rightarrow Y)
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1111,6 +1312,6 @@ lift(X\Rightarrow Y)
         }
       });
       </script>
-
+    
 
 </body></html>

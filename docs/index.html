@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Métodos Estatísticos para Machine Learning – EST335 - Métodos Estatísticos para Machine Learning</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -24,7 +30,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -55,14 +60,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9b668d6fb622ccd276b6fe5e1fe056ac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-37c0162c860952b1e30e9bc5791bd7d6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-9b668d6fb622ccd276b6fe5e1fe056ac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-23d889f42478094173483eab23bff1ab.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-948e1d81cc9f514adb7f10a0e6181104.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-23d889f42478094173483eab23bff1ab.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -254,6 +259,7 @@ div.csl-indent {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
@@ -285,7 +291,8 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="./index.html" class="sidebar-logo-link">
-      <img src="./images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main">
     <a href="https://github.com/tiagomartin/est335" title="github" class="quarto-navigation-tool px-1" aria-label="github"><i class="bi bi-github"></i></a>
@@ -427,7 +434,7 @@ div.csl-indent {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Critérios de Avaliação
+<span class="screen-reader-only">Note</span>Critérios de Avaliação
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -455,13 +462,13 @@ Critérios de Avaliação
 <td style="text-align: right;">20</td>
 </tr>
 <tr class="odd">
-<td><a href=".\atividades/atividade_3_desafio_supervisionado.html"><strong>A3 – Desafio Supervisionado</strong></a></td>
+<td><a href="./atividades/atividade_3_desafio_supervisionado.html"><strong>A3 – Desafio Supervisionado</strong></a></td>
 <td style="text-align: right;">26/10</td>
 <td style="text-align: right;"><strong>22/11</strong></td>
 <td style="text-align: right;">20</td>
 </tr>
 <tr class="even">
-<td><a href=".\atividades/atividade_a4_estruturas_padroes.html"><strong>A4 – Estruturas e Padrões</strong></a></td>
+<td><a href="./atividades/atividade_a4_estruturas_padroes.html"><strong>A4 – Estruturas e Padrões</strong></a></td>
 <td style="text-align: right;">23/11</td>
 <td style="text-align: right;"><strong>06/12</strong></td>
 <td style="text-align: right;">20</td>
@@ -489,7 +496,7 @@ Critérios de Avaliação
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referências Bibliográficas</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referências Bibliográficas</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-bishop2006pattern" class="csl-entry" role="listitem">
 Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. Springer.
 </div>
@@ -503,7 +510,7 @@ Györfi, László, Michael Kohler, Adam Krzyzak, and Harro Walk. 2002. <em>A Dis
 Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2009. <em>The Elements of Statistical Learning</em>. 2nd ed. Springer.
 </div>
 <div id="ref-izbicki2020aprendizado" class="csl-entry" role="listitem">
-Izbicki, Rafael, and Tiago M. Santos. 2020. <em>Aprendizado de Máquina: Uma Abordagem Estatística</em>. 1st ed. São Carlos, SP: Casa do Código.
+Izbicki, Rafael, and Tiago M. Santos. 2020. <em>Aprendizado de Máquina: Uma Abordagem Estatística</em>. 1st ed. Casa do Código.
 </div>
 <div id="ref-james2013introduction" class="csl-entry" role="listitem">
 James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2013. <em>An Introduction to Statistical Learning</em>. Springer.
@@ -518,7 +525,7 @@ Tan, Pang-Ning, Michael Steinbach, and Vipin Kumar. 2005. <em>Introduction to Da
 Wasserman, Larry. 2004. <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer.
 </div>
 <div id="ref-wasserman2005nonparametric" class="csl-entry" role="listitem">
-———. 2005. <em>All of Nonparametric Statistics</em>. Springer.
+Wasserman, Larry. 2005. <em>All of Nonparametric Statistics</em>. Springer.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -585,13 +592,14 @@ Wasserman, Larry. 2004. <em>All of Statistics: A Concise Course in Statistical I
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,13 +136,16 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Flexibilidade: Funções de Base, Polinômios, Splines e Séries</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section id="de-onde-partimos" class="slide level2"><h2>De onde partimos?</h2>
+</section>
+<section id="de-onde-partimos" class="slide level2">
+<h2>De onde partimos?</h2>
 <p>Nas últimas aulas, escolhemos</p>
 <p><span class="math display">\[
 \mathcal G_{\text{linear}}
@@ -148,7 +157,9 @@
 <p><span class="math display">\[
 \boxed{\text{uma reta pode ser simples demais para representar }r(x)}
 \]</span></p>
-</section><section id="para-onde-vamos" class="slide level2"><h2>Para onde vamos?</h2>
+</section>
+<section id="para-onde-vamos" class="slide level2">
+<h2>Para onde vamos?</h2>
 <p>Hoje vamos aumentar a <strong>flexibilidade</strong> dos modelos.<br><br></p>
 <div class="fragment" style="font-size: 80%;">
 <table class="caption-top">
@@ -157,11 +168,13 @@
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: left;">Modelo</th>
 <th style="text-align: left;">Ideia em uma frase</th>
 <th style="text-align: left;">Controle de complexidade</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Reta</td>
@@ -170,10 +183,8 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">Polinômio</td>
-<td style="text-align: left;">curva usando potências de <span class="math inline">\(x\)</span>
-</td>
-<td style="text-align: left;">grau <span class="math inline">\(p\)</span>
-</td>
+<td style="text-align: left;">curva usando potências de <span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">grau <span class="math inline">\(p\)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Spline</td>
@@ -188,13 +199,14 @@
 <tr class="odd">
 <td style="text-align: left;">Séries ortogonais</td>
 <td style="text-align: left;">soma de peças básicas independentes</td>
-<td style="text-align: left;">número de termos <span class="math inline">\(m\)</span>
-</td>
+<td style="text-align: left;">número de termos <span class="math inline">\(m\)</span></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section><section id="a-pergunta-desta-semana" class="slide level2"><h2>A pergunta desta semana</h2>
+</section>
+<section id="a-pergunta-desta-semana" class="slide level2">
+<h2>A pergunta desta semana</h2>
 <blockquote>
 <p>Como aumentar a flexibilidade do modelo usando representações mais ricas das covariáveis?</p>
 </blockquote>
@@ -208,12 +220,19 @@
 \rightarrow
 \boxed{\text{suavização}}
 \]</span></p>
-</section><section id="pib-expectativa-de-vida" class="slide level2"><h2>PIB × expectativa de vida</h2>
+</section>
+<section id="pib-expectativa-de-vida" class="slide level2">
+<h2>PIB × expectativa de vida</h2>
 <p>O mesmo problema ajustado por modelos de complexidade crescente</p>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section><section id="polinômios-e-funções-de-base" class="title-slide slide level1 center"><h1>Polinômios e funções de base</h1>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section>
+<section id="polinômios-e-funções-de-base" class="title-slide slide level1 center">
+<h1>Polinômios e funções de base</h1>
 
-</section><section id="além-da-reta" class="slide level2"><h2>Além da reta</h2>
+</section>
+<section id="além-da-reta" class="slide level2">
+<h2>Além da reta</h2>
 <p>Uma primeira extensão é</p>
 <p><span class="math display">\[
 g(x)
@@ -222,17 +241,21 @@ g(x)
 \]</span></p>
 <p>Para <span class="math inline">\(p=1\)</span>, recuperamos a reta.</p>
 <p>Para <span class="math inline">\(p&gt;1\)</span>, permitimos curvatura.</p>
-</section><section id="isso-ainda-é-regressão-linear" class="slide level2"><h2>Isso ainda é regressão linear?</h2>
+</section>
+<section id="isso-ainda-é-regressão-linear" class="slide level2">
+<h2>Isso ainda é regressão linear?</h2>
 <p><strong>Sim.</strong> O modelo é não linear em <span class="math inline">\(x\)</span>, mas continua <strong>linear nos parâmetros</strong>:</p>
 <p><span class="math display">\[g(x) = \beta_0 + \beta_1 b_1(x) + \cdots + \beta_d b_p(x), \qquad b_j(x) = x^j\]</span></p>
 <div class="fragment">
 <p><strong>Exemplo:</strong> ajustar <span class="math inline">\(g(x) = \beta_0 + \beta_1 x + \beta_2 x^2\)</span> é exatamente uma regressão linear com duas variáveis: as potências de <span class="math inline">\(x\)</span> são só <strong>colunas novas</strong> na sua tabela.</p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th><span class="math inline">\(x\)</span></th>
 <th><span class="math inline">\(x^2\)</span></th>
 <th><span class="math inline">\(y\)</span></th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
@@ -257,7 +280,9 @@ g(x)
 </tbody>
 </table>
 </div>
-</section><section id="funções-de-base" class="slide level2"><h2>Funções de base</h2>
+</section>
+<section id="funções-de-base" class="slide level2">
+<h2>Funções de base</h2>
 <p>A ideia geral é substituir <span class="math inline">\(x\)</span> por novas representações:</p>
 <p><span class="math display">\[
 x
@@ -281,15 +306,23 @@ g(x)=
 </div>
 </div>
 </div>
-</section><section id="pib-expectativa-de-vida-1" class="slide level2"><h2>PIB × expectativa de vida</h2>
+</section>
+<section id="pib-expectativa-de-vida-1" class="slide level2">
+<h2>PIB × expectativa de vida</h2>
 
 <img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><p>Vamos usar <span class="math inline">\(x=\log(PIB/1000)\)</span> para visualizar claramente o efeito da complexidade.</p>
-</section><section id="grau-1" class="slide level2"><h2>Grau 1</h2>
+</section>
+<section id="grau-1" class="slide level2">
+<h2>Grau 1</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="graus-1-4-e-12" class="slide level2"><h2>Graus 1, 4 e 12</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="graus-1-4-e-12" class="slide level2">
+<h2>Graus 1, 4 e 12</h2>
 
 <img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"><p>Aumentar o grau aumenta a <strong>flexibilidade da classe</strong>.</p>
-</section><section id="o-grau-é-um-hiperparâmetro" class="slide level2"><h2>O grau é um hiperparâmetro</h2>
+</section>
+<section id="o-grau-é-um-hiperparâmetro" class="slide level2">
+<h2>O grau é um hiperparâmetro</h2>
 <p>Em</p>
 <p><span class="math display">\[
 g_p(x)=\beta_0+\sum_{j=1}^{p}\beta_jx^j,
@@ -300,7 +333,9 @@ g_p(x)=\beta_0+\sum_{j=1}^{p}\beta_jx^j,
 \]</span></p>
 <p>são estimados durante o treinamento.</p>
 <p>O grau <span class="math inline">\(p\)</span> define a complexidade da classe antes do ajuste.</p>
-</section><section id="treinamento-seleção-de-complexidade" class="slide level2"><h2>Treinamento × seleção de complexidade</h2>
+</section>
+<section id="treinamento-seleção-de-complexidade" class="slide level2">
+<h2>Treinamento × seleção de complexidade</h2>
 <p>Para um grau fixado:</p>
 <p><span class="math display">\[
 \widehat{\boldsymbol\beta}_p
@@ -315,7 +350,9 @@ RSS_p(\boldsymbol\beta)
 \qquad\text{e}\qquad
 \boxed{\text{selecionar complexidade}}
 \]</span></p>
-</section><section id="erro-de-treinamento" class="slide level2"><h2>Erro de treinamento</h2>
+</section>
+<section id="erro-de-treinamento" class="slide level2">
+<h2>Erro de treinamento</h2>
 <p>À medida que ampliamos a classe de modelos,</p>
 <p><span class="math display">\[
 \mathcal G_1
@@ -329,9 +366,13 @@ RSS_p(\boldsymbol\beta)
 RSS_{p+1}\le RSS_p
 \]</span></p>
 <p>Isso parece ótimo…</p>
-</section><section id="mas-o-teste-pode-piorar" class="slide level2"><h2>…mas o teste pode piorar</h2>
+</section>
+<section id="mas-o-teste-pode-piorar" class="slide level2">
+<h2>…mas o teste pode piorar</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="a-mensagem-central" class="slide level2"><h2>A mensagem central</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="a-mensagem-central" class="slide level2">
+<h2>A mensagem central</h2>
 <p><span class="math display">\[
 \boxed{
 \text{mais flexível}
@@ -340,7 +381,9 @@ RSS_{p+1}\le RSS_p
 }
 \]</span></p>
 <p>A complexidade precisa ser escolhida com dados que não estejam sendo usados para estimar os coeficientes.</p>
-</section><section id="por-que-graus-muito-altos-são-problemáticos" class="slide level2"><h2>Por que graus muito altos são problemáticos?</h2>
+</section>
+<section id="por-que-graus-muito-altos-são-problemáticos" class="slide level2">
+<h2>Por que graus muito altos são problemáticos?</h2>
 <p>Polinômios são funções <strong>globais</strong>.</p>
 <p>Alterar um coeficiente pode modificar a curva em praticamente todo o domínio.</p>
 <p>Além disso, nas extremidades:</p>
@@ -348,34 +391,56 @@ RSS_{p+1}\le RSS_p
 <li>pequenas mudanças nos dados podem produzir grandes mudanças na curva;</li>
 <li>extrapolação pode se tornar extremamente instável;</li>
 <li>graus altos podem produzir <strong>oscilações artificiais</strong>.</li>
-</ul></section><section id="um-modelo-muito-flexível-em-diferentes-amostras" class="slide level2"><h2>Um modelo muito flexível em diferentes amostras</h2>
+</ul>
+</section>
+<section id="um-modelo-muito-flexível-em-diferentes-amostras" class="slide level2">
+<h2>Um modelo muito flexível em diferentes amostras</h2>
 
 <img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>A flexibilidade excessiva pode aumentar a <strong>variabilidade do estimador</strong>.</p>
-</section><section id="síntese" class="slide level2"><h2>Síntese</h2>
+</section>
+<section id="síntese" class="slide level2">
+<h2>Síntese</h2>
 <p>Pause e responda antes de seguir:<br><br></p>
-<details><summary>
+<details>
+<summary>
 Se eu aumentar o grau <span class="math inline">\(p\)</span> de um polinômio, o <strong>erro de treino</strong> tende a subir ou descer?
-</summary><p>
+</summary>
+<p>
 <em>descer</em>
 </p>
-</details><details><summary>
+</details>
+<details>
+<summary>
 E o <strong>erro de generalização</strong>?
-</summary><p>
+</summary>
+<p>
 <em>não necessariamente: pode até piorar</em>
 </p>
-</details><details><summary>
+</details>
+<details>
+<summary>
 O grau <span class="math inline">\(p\)</span> é estimado no treino ou escolhido antes?
-</summary><p>
+</summary>
+<p>
 <em>escolhido antes: é um hiperparâmetro</em>
 </p>
-</details><details><summary>
+</details>
+<details>
+<summary>
 Por que polinômios de grau alto são instáveis nas extremidades?
-</summary><p>
+</summary>
+<p>
 <em>são globais: mudanças locais afetam a curva inteira</em>
 </p>
-</details></section></section><section><section id="splines-e-suavização" class="title-slide slide level1 center"><h1>Splines e suavização</h1>
+</details>
+</section></section>
+<section>
+<section id="splines-e-suavização" class="title-slide slide level1 center">
+<h1>Splines e suavização</h1>
 
-</section><section id="uma-alternativa-aos-polinômios-globais" class="slide level2"><h2>Uma alternativa aos polinômios globais</h2>
+</section>
+<section id="uma-alternativa-aos-polinômios-globais" class="slide level2">
+<h2>Uma alternativa aos polinômios globais</h2>
 <p>Em vez de usar uma única função complexa em todo o domínio, podemos construir funções <strong>por partes</strong>.</p>
 <p>Ideia:</p>
 <p><span class="math display">\[
@@ -386,7 +451,9 @@ Por que polinômios de grau alto são instáveis nas extremidades?
 }
 \]</span></p>
 <p>Isso nos leva aos <strong>splines</strong>.</p>
-</section><section id="primeiro-uma-função-linear-por-partes" class="slide level2"><h2>Primeiro: uma função linear por partes</h2>
+</section>
+<section id="primeiro-uma-função-linear-por-partes" class="slide level2">
+<h2>Primeiro: uma função linear por partes</h2>
 <p>Escolha nós</p>
 <p><span class="math display">\[
 \xi_1,\xi_2,\ldots,\xi_K
@@ -406,7 +473,9 @@ g(x)=
 \beta_0+\beta_1x+
 \sum_{k=1}^K\gamma_k(x-\xi_k)_+
 \]</span></p>
-</section><section id="o-que-um-nó-faz" class="slide level2"><h2>O que um nó faz?</h2>
+</section>
+<section id="o-que-um-nó-faz" class="slide level2">
+<h2>O que um nó faz?</h2>
 <p>Um nó permite que a inclinação mude a partir de determinada região.</p>
 <p>Antes do nó:</p>
 <p><span class="math display">\[
@@ -417,9 +486,13 @@ g(x)=
 \text{inclinação}=\beta_1+\gamma_k
 \]</span></p>
 <p>Assim, ganhamos <strong>flexibilidade local</strong>.</p>
-</section><section id="spline-linear-com-nós" class="slide level2"><h2>Spline linear com nós</h2>
+</section>
+<section id="spline-linear-com-nós" class="slide level2">
+<h2>Spline linear com nós</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="limitação-do-spline-linear" class="slide level2"><h2>Limitação do spline linear</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="limitação-do-spline-linear" class="slide level2">
+<h2>Limitação do spline linear</h2>
 <p>Funções lineares por partes apresentam mudanças abruptas de inclinação.</p>
 <ul>
 <li><p>Cada linha vertical representa um nó.</p></li>
@@ -431,22 +504,30 @@ g(x)=
 g(\xi_k^-) = g(\xi_k^+),
 \]</span></p>
 <p>ou seja, a função é contínua.</p>
-</section><section id="limitação-do-spline-linear-1" class="slide level2"><h2>Limitação do spline linear</h2>
+</section>
+<section id="limitação-do-spline-linear-1" class="slide level2">
+<h2>Limitação do spline linear</h2>
 <p>No entanto,</p>
 <p><span class="math display">\[
 g'(\xi_k^-) \neq g'(\xi_k^+),
 \]</span></p>
 <p>o que implica mudanças abruptas na inclinação.</p>
-</section><section id="por-que-usar-splines-cúbicos" class="slide level2"><h2>Por que usar splines cúbicos?</h2>
+</section>
+<section id="por-que-usar-splines-cúbicos" class="slide level2">
+<h2>Por que usar splines cúbicos?</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section><section id="por-que-usar-splines-cúbicos-1" class="slide level2"><h2>Por que usar splines cúbicos?</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="por-que-usar-splines-cúbicos-1" class="slide level2">
+<h2>Por que usar splines cúbicos?</h2>
 <p>Em muitas aplicações, deseja-se que a função estimada varie de forma mais suave.</p>
 <p>Splines cúbicos usam polinômios de grau 3 em cada região e impõem suavidade nas junções.</p>
 <p>Tipicamente exigimos continuidade de:</p>
 <p><span class="math display">\[
 g(x),\qquad g'(x),\qquad g''(x)
 \]</span></p>
-</section><section id="splines-cúbicos" class="slide level2"><h2>Splines cúbicos</h2>
+</section>
+<section id="splines-cúbicos" class="slide level2">
+<h2>Splines cúbicos</h2>
 <p>Uma forma conveniente de escrever o spline cúbico é</p>
 <p><span class="math display">\[
 g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{k=1}^{K} \gamma_k (x - \xi_k)_+^3
@@ -461,15 +542,21 @@ g(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \sum_{k=1}^{K} \gamma_k
 \end{cases}
 \]</span></p>
 <p>Cada nó introduz uma modificação local na curvatura da função.</p>
-</section><section id="splines-cúbicos-1" class="slide level2"><h2>Splines cúbicos</h2>
+</section>
+<section id="splines-cúbicos-1" class="slide level2">
+<h2>Splines cúbicos</h2>
 <p>Dado <span class="math inline">\((x_i,y_i)\)</span>, estimamos</p>
 <p><span class="math display">\[
 \hat{\beta} = \arg\min \sum_{i=1}^n (y_i - g(x_i))^2
 \]</span></p>
 <p>O problema permanece linear nos parâmetros.</p>
-</section><section id="spline-cúbico" class="slide level2"><h2>Spline cúbico</h2>
+</section>
+<section id="spline-cúbico" class="slide level2">
+<h2>Spline cúbico</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="polinômio-spline" class="slide level2"><h2>Polinômio × spline</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="polinômio-spline" class="slide level2">
+<h2>Polinômio × spline</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="polinômio">Polinômio</h3>
@@ -492,7 +579,9 @@ g(x)=\sum_{k=1}^K\beta_kb_k(x)
 <li>geralmente mais estável.</li>
 </ul>
 </div></div>
-</section><section id="quantos-nós" class="slide level2"><h2>Quantos nós?</h2>
+</section>
+<section id="quantos-nós" class="slide level2">
+<h2>Quantos nós?</h2>
 <p>Mais nós:</p>
 <p><span class="math display">\[
 \Rightarrow
@@ -507,7 +596,9 @@ g(x)=\sum_{k=1}^K\beta_kb_k(x)
 <p><span class="math display">\[
 \boxed{\text{como controlar a complexidade?}}
 \]</span></p>
-</section><section id="outra-estratégia-penalizar-a-rugosidade" class="slide level2"><h2>Outra estratégia: penalizar a rugosidade</h2>
+</section>
+<section id="outra-estratégia-penalizar-a-rugosidade" class="slide level2">
+<h2>Outra estratégia: penalizar a rugosidade</h2>
 <p>Em vez de escolher poucos nós, podemos permitir uma função bastante flexível e penalizar curvas excessivamente irregulares.</p>
 <p>A ideia é buscar pela função <span class="math inline">\(g\)</span> que minimiza</p>
 <p><span class="math display">\[
@@ -521,7 +612,9 @@ g(x)=\sum_{k=1}^K\beta_kb_k(x)
 }
 \]</span></p>
 <p>Esse é o princípio do <strong>smoothing spline</strong>.</p>
-</section><section id="duas-forças-em-competição" class="slide level2"><h2>Duas forças em competição</h2>
+</section>
+<section id="duas-forças-em-competição" class="slide level2">
+<h2>Duas forças em competição</h2>
 <p><span class="math display">\[
 \underbrace{
 \sum_i(y_i-g(x_i))^2
@@ -539,12 +632,17 @@ g(x)=\sum_{k=1}^K\beta_kb_k(x)
 <li>Se <span class="math inline">\(\lambda \to \infty\)</span>, a penalização domina e a solução se aproxima de uma reta.</li>
 </ul>
 </div>
-</section><section id="o-papel-de-lambda" class="slide level2"><h2>O papel de <span class="math inline">\(\lambda\)</span>
-</h2>
+</section>
+<section id="o-papel-de-lambda" class="slide level2">
+<h2>O papel de <span class="math inline">\(\lambda\)</span></h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section><section id="smoothing-spline-duas-suavizações" class="slide level2"><h2>Smoothing spline: duas suavizações</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<section id="smoothing-spline-duas-suavizações" class="slide level2">
+<h2>Smoothing spline: duas suavizações</h2>
 
-<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="o-parâmetro-de-suavização-é-um-hiperparâmetro" class="slide level2"><h2>O parâmetro de suavização é um hiperparâmetro</h2>
+<img data-src="semana_03_funcoes_base_splines_series_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section>
+<section id="o-parâmetro-de-suavização-é-um-hiperparâmetro" class="slide level2">
+<h2>O parâmetro de suavização é um hiperparâmetro</h2>
 <p>Novamente:</p>
 <p><strong>Treinamento</strong></p>
 <p>estima os coeficientes que definem a curva.</p>
@@ -575,9 +673,14 @@ g(x)=\sum_{k=1}^K\beta_kb_k(x)
 <!--   <summary>Qual é a diferença entre spline e smoothing spline?</summary> -->
 <!--   <p> *spline: escolhe-se o número/posição dos nós; smoothing spline: curva livre + multa λ)*</p> -->
 <!-- </details> -->
-</section></section><section><section id="séries-ortogonais" class="title-slide slide level1 center"><h1>Séries ortogonais</h1>
+</section></section>
+<section>
+<section id="séries-ortogonais" class="title-slide slide level1 center">
+<h1>Séries ortogonais</h1>
 
-</section><section id="séries-ortogonais-1" class="slide level2"><h2>Séries ortogonais</h2>
+</section>
+<section id="séries-ortogonais-1" class="slide level2">
+<h2>Séries ortogonais</h2>
 <p>Outra estratégia para estimar uma função desconhecida é representá-la em uma base:</p>
 <p><span class="math display">\[
 f(x)=\sum_{j=1}^{\infty}\theta_j\phi_j(x)
@@ -589,7 +692,9 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 }
 \]</span></p>
 <p>e estimamos apenas os primeiros <span class="math inline">\(m\)</span> coeficientes.</p>
-</section><section id="o-que-significa-ortogonalidade" class="slide level2"><h2>O que significa ortogonalidade?</h2>
+</section>
+<section id="o-que-significa-ortogonalidade" class="slide level2">
+<h2>O que significa ortogonalidade?</h2>
 <p>As funções da base satisfazem, para um produto interno apropriado,</p>
 <p><span class="math display">\[
 \langle\phi_j,\phi_k\rangle=0,
@@ -597,7 +702,9 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 \]</span></p>
 <p>Isso reduz a interferência entre os componentes da representação.</p>
 <p>Exemplos incluem bases trigonométricas e famílias de polinômios ortogonais.</p>
-</section><section id="estimação-dos-coeficientes" class="slide level2"><h2>Estimação dos coeficientes</h2>
+</section>
+<section id="estimação-dos-coeficientes" class="slide level2">
+<h2>Estimação dos coeficientes</h2>
 <p>Em uma formulação simples,</p>
 <p><span class="math display">\[
 \widehat\theta_j
@@ -611,7 +718,9 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 \sum_{j=1}^{m}\widehat\theta_j\phi_j(x)
 \]</span></p>
 <p>O número de termos <span class="math inline">\(m\)</span> controla a complexidade.</p>
-</section><section id="viés-variância-reaparece" class="slide level2"><h2>Viés × variância reaparece</h2>
+</section>
+<section id="viés-variância-reaparece" class="slide level2">
+<h2>Viés × variância reaparece</h2>
 <p><span class="math display">\[
 m\text{ pequeno}
 \Rightarrow
@@ -628,7 +737,9 @@ Var\uparrow
 \]</span></p>
 <p>Portanto, <span class="math inline">\(m\)</span> é um <strong>hiperparâmetro</strong>.</p>
 <p>Ele não é aprendido dos dados como <span class="math inline">\(\widehat\theta_j\)</span>, é escolhido antes, por validação.</p>
-</section><section id="séries-splines" class="slide level2"><h2>Séries × splines</h2>
+</section>
+<section id="séries-splines" class="slide level2">
+<h2>Séries × splines</h2>
 <div class="columns">
 <div class="column" style="width:47%;">
 <h3 id="séries">Séries</h3>
@@ -643,7 +754,9 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 <p>Mudanças locais podem ter efeito mais localizado.</p>
 </div></div>
 <p>As duas estratégias são exemplos de <strong>expansões em funções de base</strong>.</p>
-</section><section id="uma-estrutura-comum" class="slide level2"><h2>Uma estrutura comum</h2>
+</section>
+<section id="uma-estrutura-comum" class="slide level2">
+<h2>Uma estrutura comum</h2>
 <p>Polinômios, splines, smoothing splines e LOESS (veremos adiante) parecem métodos diferentes.</p>
 <p>Mas todos respondem à mesma pergunta:</p>
 <p><span class="math display">\[
@@ -651,7 +764,9 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 \text{quanta flexibilidade devemos permitir a }\widehat g?
 }
 \]</span></p>
-</section><section id="escala-de-flexibilidade" class="slide level2"><h2>Escala de flexibilidade</h2>
+</section>
+<section id="escala-de-flexibilidade" class="slide level2">
+<h2>Escala de flexibilidade</h2>
 <p><span class="math display">\[
 \text{Reta}
 \longrightarrow
@@ -667,7 +782,10 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 <li>a variabilidade tende a aumentar;</li>
 <li>o erro de treino tende a cair;</li>
 <li>o erro de generalização <strong>não necessariamente</strong> cai.</li>
-</ul></section><section id="como-escolher-a-complexidade" class="slide level2"><h2>Como escolher a complexidade?</h2>
+</ul>
+</section>
+<section id="como-escolher-a-complexidade" class="slide level2">
+<h2>Como escolher a complexidade?</h2>
 <p>Não devemos escolher grau, número de nós ou suavização observando apenas o erro de treinamento.</p>
 <p>A lógica correta é</p>
 <p><span class="math display">\[
@@ -682,12 +800,16 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 }
 \]</span></p>
 <p>Essa lógica será usada repetidamente ao longo da disciplina.</p>
-</section><section id="comparação-dos-métodos" class="slide level2"><h2>Comparação dos métodos</h2>
+</section>
+<section id="comparação-dos-métodos" class="slide level2">
+<h2>Comparação dos métodos</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Método</th>
 <th>Controle principal de flexibilidade</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Regressão linear</td>
@@ -695,8 +817,7 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 </tr>
 <tr class="even">
 <td>Polinomial</td>
-<td>grau <span class="math inline">\(p\)</span>
-</td>
+<td>grau <span class="math inline">\(p\)</span></td>
 </tr>
 <tr class="odd">
 <td>Spline de regressão</td>
@@ -704,17 +825,17 @@ f_m(x)=\sum_{j=1}^{m}\theta_j\phi_j(x)
 </tr>
 <tr class="even">
 <td>Smoothing spline</td>
-<td>penalização <span class="math inline">\(\lambda\)</span>
-</td>
+<td>penalização <span class="math inline">\(\lambda\)</span></td>
 </tr>
 <tr class="odd">
 <td>LOESS</td>
-<td>
-<code>span</code> <em>(veremos adiante)</em>
-</td>
+<td><code>span</code> <em>(veremos adiante)</em></td>
 </tr>
 </tbody>
-</table></section><section id="síntese-1" class="slide level2"><h2>Síntese</h2>
+</table>
+</section>
+<section id="síntese-1" class="slide level2">
+<h2>Síntese</h2>
 <p>Ajustar</p>
 <p><span class="math display">\[
 \boxed{
@@ -723,18 +844,24 @@ g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
 \]</span></p>
 <p>é uma ideia <strong>extremamente poderosa</strong>.</p>
 <p>Mudando as funções de base e o controle de complexidade, obtemos diferentes famílias de modelos.</p>
-</section><section id="a-mesma-base-pode-alimentar-tarefas-diferentes" class="slide level2"><h2>A mesma base pode alimentar tarefas diferentes</h2>
+</section>
+<section id="a-mesma-base-pode-alimentar-tarefas-diferentes" class="slide level2">
+<h2>A mesma base pode alimentar tarefas diferentes</h2>
 <p>Observe que, o que fizemos, foi trocar o dado original por um vetor de representações:</p>
 <p><span class="math display">\[\boldsymbol\phi(x) = (\phi_1(x), \ldots, \phi_K(x))^t\]</span></p>
 <p>A representação pode ser utilizada tanto por um modelo de <strong>regressão</strong> quanto por um <strong>classificador probabilístico</strong>.</p>
 <p><span style="color:red"></span></p>
 <p><span class="math display">\[x \longrightarrow \boldsymbol\phi(x) \longrightarrow \begin{cases} \text{regressão (resposta contínua)} \\ \text{classificador (resposta categórica)} \end{cases}\]</span></p>
-</section><section id="a-mesma-base-pode-alimentar-tarefas-diferentes-1" class="slide level2"><h2>A mesma base pode alimentar tarefas diferentes</h2>
+</section>
+<section id="a-mesma-base-pode-alimentar-tarefas-diferentes-1" class="slide level2">
+<h2>A mesma base pode alimentar tarefas diferentes</h2>
 <blockquote>
 <p><strong>A transformação não sabe nem se importa com o que vem depois: ela é agnóstica ao modelo final.</strong></p>
 </blockquote>
 <p> A representação pode ser utilizada tanto por um modelo de regressão quanto por um classificador probabilístico</p>
-</section><section id="três-ideias-para-levar" class="slide level2"><h2>Três ideias para levar</h2>
+</section>
+<section id="três-ideias-para-levar" class="slide level2">
+<h2>Três ideias para levar</h2>
 <ol type="1">
 <li><strong>Não linear em <span class="math inline">\(x\)</span> não significa não linear nos parâmetros.</strong></li>
 <li>Flexibilidade resolve viés, mas pode aumentar variância.</li>
@@ -743,14 +870,31 @@ g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 3</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -917,7 +1061,7 @@ g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -942,42 +1086,84 @@ g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1025,13 +1211,14 @@ g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1144,6 +1331,6 @@ g(x)=\beta_0+\sum_{k=1}^{K}\beta_kb_k(x)
         }
       });
       </script>
-
+    
 
 </body></html>

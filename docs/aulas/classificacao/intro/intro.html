@@ -6,20 +6,26 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-9206d9c030161701b67a41faf3cec2af.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Classificação</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-e21500bb30e7ce080c64316834ee3be8.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Classificação</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte II : Classificação</h1>
+<section id="title-slide" data-background-image="../../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte II : Classificação</h1>
   <p class="subtitle"><span class="custom-subtitle">Introdução</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="introdução" class="title-slide slide level1 center"><h1>Introdução</h1>
+</section>
+<section>
+<section id="introdução" class="title-slide slide level1 center">
+<h1>Introdução</h1>
 
-</section><section id="regressão-vs-classificação" class="slide level2"><h2>Regressão vs Classificação</h2>
+</section>
+<section id="regressão-vs-classificação" class="slide level2">
+<h2>Regressão vs Classificação</h2>
 <p><span style="font-size:50px;">👉</span> O problema de classificação é um problema similar ao de predição em regressão.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -166,23 +178,25 @@ Y \in \mathbb{R}
 Y \in \{1,\dots,K\}
 \]</span></p>
 </div></div>
-</section><section id="formulação-do-problema" class="slide level2"><h2>Formulação do problema</h2>
+</section>
+<section id="formulação-do-problema" class="slide level2">
+<h2>Formulação do problema</h2>
 <p>Observamos:</p>
 <p><span class="math display">\[
 (X_1,Y_1),\dots,(X_n,Y_n)
 \]</span></p>
 <p>onde:</p>
 <ul>
-<li>
-<span class="math inline">\(X_i\)</span> → variáveis explicativas</li>
-<li>
-<span class="math inline">\(Y_i\)</span> → classe</li>
+<li><span class="math inline">\(X_i\)</span> → variáveis explicativas</li>
+<li><span class="math inline">\(Y_i\)</span> → classe</li>
 </ul>
 <p><strong>Objetivo:</strong> construir uma função <span class="math inline">\(g(\mathbf{x})\)</span> capaz de prever a classe de novas observações, isto é,</p>
 <p><span class="math display">\[
 g(\mathbf{x}_{n+1}) \approx y_{n+1}, \ldots, g(\mathbf{x}_{n+m}) \approx y_{n+m}
 \]</span></p>
-</section><section id="função-de-risco-em-classificação" class="slide level2"><h2>Função de risco em classificação</h2>
+</section>
+<section id="função-de-risco-em-classificação" class="slide level2">
+<h2>Função de risco em classificação</h2>
 <h3 id="regressão-1">Regressão</h3>
 <p><span class="math display">\[
 R(g)=\mathbb{E}[(Y-g(\mathbf{x}))^2]
@@ -193,7 +207,10 @@ R(g)= \mathbb{E}[ \mathbb{I}(Y\neq g(\mathbf{x}))] = P(Y\neq g(\mathbf{x}))
 \]</span></p>
 <p>ou seja, o risco de <span class="math inline">\(g\)</span> é agora a probabilidade de erro em um nova observação <span class="math inline">\((\mathbf{x},Y)\)</span>.</p>
 <p>Em outras palavras, uma função de perda mais adequada para o contexto de classificação é <span class="math inline">\(L(g(\mathbf{x}),Y) = \mathbb{I}(Y \neq g(\mathbf{x}))\)</span>, a chamada <strong>função de perda <span class="math inline">\(0-1\)</span></strong>.</p>
-</section><section class="slide level2"><p>No contexto de regressão, vimos que a função que minimiza <span class="math inline">\(E[(Y − g(\mathbf{x}))^2]\)</span> é dada pela função de regressão <span class="math inline">\(r(x) = E[Y|\mathbf{x} = x]\)</span>. <br><br></p>
+</section>
+<section class="slide level2">
+
+<p>No contexto de regressão, vimos que a função que minimiza <span class="math inline">\(E[(Y − g(\mathbf{x}))^2]\)</span> é dada pela função de regressão <span class="math inline">\(r(x) = E[Y|\mathbf{x} = x]\)</span>. <br><br></p>
 <h3 id="regra-ótima-de-bayes">Regra ótima de Bayes</h3>
 <p><strong>Teorema:</strong> Suponha que definimos o risco de uma função de predição <span class="math inline">\(g:\mathbb{R}^p \rightarrow \mathcal{C}\)</span> via perda <span class="math inline">\(0-1\)</span>:</p>
 <p><span class="math display">\[
@@ -205,7 +222,10 @@ g(x)=
 \arg\max_{d\in\mathcal{C}}
 P(Y=d\mid \mathbf{x})
 \]</span></p>
-</section><section class="slide level2"><p><strong>Demonstração:</strong> Para simplificar a demonstração do teorema, vamos assumir que <span class="math inline">\(Y\)</span> assume só dois valores, digamos, <span class="math inline">\(c_1\)</span> e <span class="math inline">\(c_2\)</span> (isto é, trata-se de um problema binário). Temos que</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Demonstração:</strong> Para simplificar a demonstração do teorema, vamos assumir que <span class="math inline">\(Y\)</span> assume só dois valores, digamos, <span class="math inline">\(c_1\)</span> e <span class="math inline">\(c_2\)</span> (isto é, trata-se de um problema binário). Temos que</p>
 <p><span class="math display">\[
 R(g)
 =
@@ -224,7 +244,10 @@ P(Y \neq g(\mathbf{x})\mid \mathbf{x})\,f(\mathbf{x})\,d\mathbf{x} \\
 \right]
 f(\mathbf{x})\,d\mathbf{x}
 \]</span></p>
-</section><section class="slide level2"><p>Assim, para cada <span class="math inline">\(\mathbf{x}\)</span> fixo, o termo interno da integral é minimizado quando se escolhe</p>
+</section>
+<section class="slide level2">
+
+<p>Assim, para cada <span class="math inline">\(\mathbf{x}\)</span> fixo, o termo interno da integral é minimizado quando se escolhe</p>
 <p><span class="math display">\[
 g(\mathbf{x})=c_1
 \quad \text{quando} \quad
@@ -241,16 +264,23 @@ g(x)=
 P(Y=d\mid \mathbf{x})
 \]</span></p>
 <p>Essa é chamada de <strong>classificador de Bayes</strong>.</p>
-</section><section class="slide level2"><p>Para o caso binário, o classificador de Bayes pode ser reescrito como</p>
+</section>
+<section class="slide level2">
+
+<p>Para o caso binário, o classificador de Bayes pode ser reescrito como</p>
 <p><span class="math display">\[
 g(\mathbf{x})=c_1
 \iff
 P(Y=c_1\mid \mathbf{x})\geq \frac{1}{2}
 \]</span></p>
-</section><section id="estimação-do-risco-e-seleção-de-modelos" class="slide level2"><h2>Estimação do Risco e Seleção de Modelos</h2>
+</section>
+<section id="estimação-do-risco-e-seleção-de-modelos" class="slide level2">
+<h2>Estimação do Risco e Seleção de Modelos</h2>
 <p>Da mesma maneira que em regressão, pode-se estimar o risco de um método de classificação utilizando-se <strong>data splitting</strong> ou <strong>validação cruzada</strong>.</p>
 
-<img data-src="../../..\images/classificacao/data_splitting.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="estimação-do-risco-e-seleção-de-modelos-1" class="slide level2"><h2>Estimação do Risco e Seleção de Modelos</h2>
+<img data-src="../../../images/classificacao/data_splitting.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="estimação-do-risco-e-seleção-de-modelos-1" class="slide level2">
+<h2>Estimação do Risco e Seleção de Modelos</h2>
 <p>Assim, <span class="math inline">\(\mathcal{D}=\mathcal{D}_{treino} \cup \mathcal{D}_{val} \cup \mathcal{D}_{teste}\)</span>. Utilizamos o <strong>conjunto de treinamento</strong> para <strong>estimar <span class="math inline">\(g\)</span></strong> e o <strong>conjunto de validação</strong> apenas para <strong>estimar <span class="math inline">\(R(g)\)</span></strong> via</p>
 <p><span class="math display">\[
 \widehat{R}_{val}(g)
@@ -260,7 +290,9 @@ P(Y=c_1\mid \mathbf{x})\geq \frac{1}{2}
 I(Y_i\neq g(\mathbf{x}_i)).
 \]</span></p>
 <p>isto é, avaliamos a <strong>proporção de erros</strong> no conjunto de validação.</p>
-</section><section id="estimação-do-risco-e-seleção-de-modelos-2" class="slide level2"><h2>Estimação do Risco e Seleção de Modelos</h2>
+</section>
+<section id="estimação-do-risco-e-seleção-de-modelos-2" class="slide level2">
+<h2>Estimação do Risco e Seleção de Modelos</h2>
 <h3 id="garantia-teórica-da-validação">Garantia teórica da validação</h3>
 <p>Sejam <span class="math inline">\(G = \{g_1,\cdots, g_N\}\)</span> uma classe de classificadores estimados com base em um conjunto de treinamento e,</p>
 <p><span class="math display">\[
@@ -271,9 +303,15 @@ g^*
 <p>o melhor modelo verdadeiro estimado.<br><br></p>
 <p>Seja <span class="math inline">\(\hat g=\arg\min_{g\in G}\hat R(g)\)</span>, o modelo escolhido via validação.</p>
 <p><strong>Resultado:</strong> Com alta probabilidade, <span class="math inline">\(R(\hat g)\approx R(g^*)\)</span>.</p>
-</section><section id="section" class="slide level2" data-background-image="../../../images/classificacao/selecao_modelos.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat"><h2></h2>
-</section><section id="section-1" class="slide level2" data-background-image="../../../images/classificacao/selecao_modelos_2.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat"><h2></h2>
-</section><section id="balanço-entre-viés-e-variância" class="slide level2"><h2>Balanço entre Viés e Variância</h2>
+</section>
+<section id="section" class="slide level2" data-background-image="../../../images/classificacao/selecao_modelos.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat">
+<h2></h2>
+</section>
+<section id="section-1" class="slide level2" data-background-image="../../../images/classificacao/selecao_modelos_2.png" data-background-size="contain" data-background-position="center" data-background-repeat="no-repeat">
+<h2></h2>
+</section>
+<section id="balanço-entre-viés-e-variância" class="slide level2">
+<h2>Balanço entre Viés e Variância</h2>
 <p>Assim como em regressão, em classificação também se enfrenta o paradigma do <strong>balanço entre viés e variância</strong>.<br><br></p>
 <h3 id="ideia-central">🎯 Ideia central</h3>
 <p>Seja <span class="math inline">\(G=\{g_1,\dots,g_N\}\)</span> uma classe de classificadores. Além disso, sejam o <strong>melhor risco</strong> (risco do oráculo) que pode ser obtido usando-se classificadores de <span class="math inline">\(G\)</span> dado por</p>
@@ -283,7 +321,10 @@ R_{or}
 \inf_{g\in G} R(g)
 \]</span></p>
 <p>e <span class="math inline">\(R_*\)</span> o <strong>risco do classificador de Bayes</strong>.</p>
-</section><section class="slide level2"><p>Para todo <span class="math inline">\(g \in G\)</span>,</p>
+</section>
+<section class="slide level2">
+
+<p>Para todo <span class="math inline">\(g \in G\)</span>,</p>
 <p><span class="math display">\[
 R(g)-R_* = T_1 + T_2
 \]</span></p>
@@ -295,7 +336,10 @@ T_1 = R(g)-R_{or}
 <p>✔ sensível aos dados de treino</p>
 <p>✔ cresce com modelos muito flexíveis</p>
 <p>✔ alto risco de overfitting</p>
-</section><section class="slide level2"><p>Além disso,</p>
+</section>
+<section class="slide level2">
+
+<p>Além disso,</p>
 <p><span class="math display">\[
 T_2 = R_{or}-R_*
 \]</span></p>
@@ -303,9 +347,13 @@ T_2 = R_{or}-R_*
 <p>✔ erro devido à simplicidade do modelo</p>
 <p>✔ alto em modelos muito rígidos</p>
 <p>✔ causa underfitting</p>
-</section><section id="trade-off" class="slide level2"><h2>Trade-off</h2>
+</section>
+<section id="trade-off" class="slide level2">
+<h2>Trade-off</h2>
 
-<img data-src="intro_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section><section id="outras-medidas-de-desempenho" class="slide level2"><h2>Outras medidas de desempenho</h2>
+<img data-src="intro_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
+<section id="outras-medidas-de-desempenho" class="slide level2">
+<h2>Outras medidas de desempenho</h2>
 <h3 id="problema-da-acurácia">Problema da acurácia</h3>
 <p>A taxa de erro</p>
 <p><span class="math display">\[
@@ -317,7 +365,10 @@ R(g)=P(Y\neq g(\mathbf{x}))
 <li>alta acurácia;</li>
 </ul>
 <p>e ainda assim possuir <strong>desempenho ruim na classe minoritária</strong>.</p>
-</section><section class="slide level2"><h3 id="exemplo-clássico">💡 Exemplo clássico</h3>
+</section>
+<section class="slide level2">
+
+<h3 id="exemplo-clássico">💡 Exemplo clássico</h3>
 <p>Considere que uma base de dados com 1000 pacientes, sendo</p>
 <ul>
 <li>990 saudáveis</li>
@@ -329,7 +380,10 @@ R(g)=P(Y\neq g(\mathbf{x}))
 <li>sensibilidade = 0</li>
 </ul>
 <p>⚠️ O modelo falha completamente em <strong>detectar pacientes doentes</strong>.</p>
-</section><section class="slide level2"><h3 id="matriz-de-confusão">Matriz de confusão</h3>
+</section>
+<section class="slide level2">
+
+<h3 id="matriz-de-confusão">Matriz de confusão</h3>
 <p><span class="math display">\[
 \begin{array}{c|cc}
 &amp; \textbf{Valor verdadeiro} &amp; \\
@@ -339,7 +393,9 @@ Y=0 &amp; \text{VN (verdadeiro negativo)} &amp; \text{FN (falso negativo)} \\
 Y=1 &amp; \text{FP (falso positivo)} &amp; \text{VP (verdadeiro positivo)}
 \end{array}
 \]</span></p>
-</section><section id="outras-medidas-de-desempenho-1" class="slide level2"><h2>Outras medidas de desempenho</h2>
+</section>
+<section id="outras-medidas-de-desempenho-1" class="slide level2">
+<h2>Outras medidas de desempenho</h2>
 <h3 id="sensibilidade-recall-capacidade-do-modelo-detectar-observações-positivas">Sensibilidade (Recall): Capacidade do modelo detectar observações positivas</h3>
 <p><span class="math display">\[
 S=\frac{VP}{VP+FN}
@@ -348,7 +404,9 @@ S=\frac{VP}{VP+FN}
 <p><span class="math display">\[
 E=\frac{VN}{VN+FP}
 \]</span></p>
-</section><section id="outras-medidas-de-desempenho-2" class="slide level2"><h2>Outras medidas de desempenho</h2>
+</section>
+<section id="outras-medidas-de-desempenho-2" class="slide level2">
+<h2>Outras medidas de desempenho</h2>
 <h3 id="precisão-precision-confiabilidade-das-predições-positivas">Precisão (Precision): Confiabilidade das predições positivas</h3>
 <p><span class="math display">\[
 VPP=\frac{VP}{VP+FP}
@@ -357,9 +415,10 @@ VPP=\frac{VP}{VP+FP}
 <p><span class="math display">\[
 VPN=\frac{VN}{VN+FN}
 \]</span></p>
-</section><section id="outras-medidas-de-desempenho-3" class="slide level2"><h2>Outras medidas de desempenho</h2>
-<h3 id="estatística-f_1">Estatística <span class="math inline">\(F_1\)</span>
-</h3>
+</section>
+<section id="outras-medidas-de-desempenho-3" class="slide level2">
+<h2>Outras medidas de desempenho</h2>
+<h3 id="estatística-f_1">Estatística <span class="math inline">\(F_1\)</span></h3>
 <p><span class="math display">\[
 F_1=
 \frac{2}{\frac{1}{S}+\frac{1}{VPP}}
@@ -368,7 +427,10 @@ F_1=
 <ul>
 <li>sensibilidade;</li>
 <li>precisão.</li>
-</ul></section><section id="interpretação-probabilística" class="slide level2"><h2>Interpretação probabilística</h2>
+</ul>
+</section>
+<section id="interpretação-probabilística" class="slide level2">
+<h2>Interpretação probabilística</h2>
 <p>As métricas derivadas da matriz de confusão estimam probabilidades populacionais. Por exemplo:<br><br></p>
 <h3 id="sensibilidade">Sensibilidade</h3>
 <p><span class="math display">\[
@@ -382,14 +444,31 @@ E \approx P(\hat g(X)=0 \mid Y=0)
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -556,7 +635,7 @@ E \approx P(\hat g(X)=0 \mid Y=0)
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -581,42 +660,84 @@ E \approx P(\hat g(X)=0 \mid Y=0)
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -664,13 +785,14 @@ E \approx P(\hat g(X)=0 \mid Y=0)
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -783,6 +905,6 @@ E \approx P(\hat g(X)=0 \mid Y=0)
         }
       });
       </script>
-
+    
 
 </body></html>

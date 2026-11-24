@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Modelos baseados em árvores</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="modelos-baseados-em-árvores" class="title-slide slide level1 center"><h1>Modelos baseados em árvores</h1>
+</section>
+<section>
+<section id="modelos-baseados-em-árvores" class="title-slide slide level1 center">
+<h1>Modelos baseados em árvores</h1>
 
-</section><section id="de-funções-suaves-para-regras" class="slide level2"><h2>De funções suaves para regras</h2>
+</section>
+<section id="de-funções-suaves-para-regras" class="slide level2">
+<h2>De funções suaves para regras</h2>
 <p>Até aqui, aproximamos <span class="math inline">\(g(\mathbf{x})\)</span> usando funções suaves:</p>
 <ul>
 <li>splines</li>
@@ -155,13 +167,17 @@
 \text{predizer dentro de cada região}
 }
 \]</span></p>
-</section><section id="de-funções-suaves-para-regras-1" class="slide level2"><h2>De funções suaves para regras</h2>
+</section>
+<section id="de-funções-suaves-para-regras-1" class="slide level2">
+<h2>De funções suaves para regras</h2>
 <p>A estrutura da árvore é praticamente a mesma em <strong>regressão</strong> e <strong>classificação</strong>.</p>
 <p>O que muda é:</p>
 <blockquote>
 <p><strong>o que significa “região homogênea”, o que guardamos nas folhas e como combinamos as árvores.</strong></p>
 </blockquote>
-</section><section id="antes-de-tudo-regressão-ou-classificação" class="slide level2"><h2>Antes de tudo: regressão ou classificação?</h2>
+</section>
+<section id="antes-de-tudo-regressão-ou-classificação" class="slide level2">
+<h2>Antes de tudo: regressão ou classificação?</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="regressão">Regressão</h3>
@@ -190,9 +206,11 @@ Y\in\{1,\ldots,K\}
 </ul>
 <p><strong>Folha:</strong> produz classe e/ou probabilidades.</p>
 </div></div>
-</section><section id="nós-ramos-folhas-e-regiões" class="slide level2"><h2>Nós, ramos, folhas e regiões</h2>
+</section>
+<section id="nós-ramos-folhas-e-regiões" class="slide level2">
+<h2>Nós, ramos, folhas e regiões</h2>
 
-<img data-src="../..\images/regressao/arvore_regioes_animada.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-note callout-style-simple">
+<img data-src="../../images/regressao/arvore_regioes_animada.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-note callout-style-simple">
 <div class="callout-body">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -202,7 +220,9 @@ Y\in\{1,\ldots,K\}
 </div>
 </div>
 </div>
-</section><section id="nós-ramos-folhas-e-regiões-1" class="slide level2"><h2>Nós, ramos, folhas e regiões</h2>
+</section>
+<section id="nós-ramos-folhas-e-regiões-1" class="slide level2">
+<h2>Nós, ramos, folhas e regiões</h2>
 <p>Da raiz até uma folha, fazemos uma sequência de perguntas do tipo</p>
 <p><span class="math display">\[
 X_j \leq s?
@@ -212,7 +232,9 @@ X_j \leq s?
 \boxed{\text{folha }m \Longleftrightarrow \text{região }\mathcal{R}_m}
 \]</span></p>
 <p>A árvore é simultaneamente um conjunto de <strong>regras</strong>, uma <strong>partição do espaço preditor</strong> e um modelo que associa uma previsão a cada região.</p>
-</section><section id="nós-ramos-folhas-e-regiões-2" class="slide level2"><h2>Nós, ramos, folhas e regiões</h2>
+</section>
+<section id="nós-ramos-folhas-e-regiões-2" class="slide level2">
+<h2>Nós, ramos, folhas e regiões</h2>
 <p>Uma árvore com <span class="math inline">\(M\)</span> folhas particiona o espaço em</p>
 <p><span class="math display">\[
 \mathcal{R}_1,\mathcal{R}_2,\ldots,\mathcal{R}_M.
@@ -231,13 +253,17 @@ X_j \leq s?
 \text{predição da folha }m
 }
 \]</span></p>
-</section><section id="nós-ramos-folhas-e-regiões-3" class="slide level2"><h2>Nós, ramos, folhas e regiões</h2>
+</section>
+<section id="nós-ramos-folhas-e-regiões-3" class="slide level2">
+<h2>Nós, ramos, folhas e regiões</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th></th>
 <th>Regressão</th>
 <th>Classificação</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Resposta</td>
@@ -246,10 +272,8 @@ X_j \leq s?
 </tr>
 <tr class="even">
 <td>Resumo da folha</td>
-<td>média <span class="math inline">\(\bar y_m\)</span>
-</td>
-<td>proporções <span class="math inline">\(\hat p_{mk}\)</span>
-</td>
+<td>média <span class="math inline">\(\bar y_m\)</span></td>
+<td>proporções <span class="math inline">\(\hat p_{mk}\)</span></td>
 </tr>
 <tr class="odd">
 <td>Predição</td>
@@ -262,7 +286,10 @@ X_j \leq s?
 <td>predominância de uma classe</td>
 </tr>
 </tbody>
-</table></section><section id="nós-ramos-folhas-e-regiões-4" class="slide level2"><h2>Nós, ramos, folhas e regiões</h2>
+</table>
+</section>
+<section id="nós-ramos-folhas-e-regiões-4" class="slide level2">
+<h2>Nós, ramos, folhas e regiões</h2>
 <p>Para regressão:</p>
 <p><span class="math display">\[
 \hat g(\mathbf{x})
@@ -276,7 +303,9 @@ X_j \leq s?
 \hat p_{mk},
 \qquad \mathbf{x}\in\mathcal{R}_m
 \]</span></p>
-</section><section id="a-pergunta-feita-em-cada-nó" class="slide level2"><h2>A pergunta feita em cada nó</h2>
+</section>
+<section id="a-pergunta-feita-em-cada-nó" class="slide level2">
+<h2>A pergunta feita em cada nó</h2>
 <p>Para cada variável <span class="math inline">\(X_j\)</span> e ponto de corte <span class="math inline">\(s\)</span>, testamos uma regra:</p>
 <p><span class="math display">\[
 X_j\leq s
@@ -293,7 +322,9 @@ X_j&gt;s.
 }
 \]</span></p>
 <p>O significado de homogeneidade depende do problema.</p>
-</section><section id="regressão-reduzir-o-erro-quadrático" class="slide level2"><h2>Regressão: reduzir o erro quadrático</h2>
+</section>
+<section id="regressão-reduzir-o-erro-quadrático" class="slide level2">
+<h2>Regressão: reduzir o erro quadrático</h2>
 <p>Em uma região <span class="math inline">\(\mathcal{R}_m\)</span>, a melhor constante sob perda quadrática é</p>
 <p><span class="math display">\[
 \bar y_m
@@ -308,7 +339,9 @@ RSS_m
 \sum_{i:\mathbf{x}_i\in\mathcal{R}_m}
 (y_i-\bar y_m)^2
 \]</span></p>
-</section><section id="regressão-reduzir-o-erro-quadrático-1" class="slide level2"><h2>Regressão: reduzir o erro quadrático</h2>
+</section>
+<section id="regressão-reduzir-o-erro-quadrático-1" class="slide level2">
+<h2>Regressão: reduzir o erro quadrático</h2>
 <p>Uma boa divisão produz:</p>
 <p><span class="math display">\[
 \boxed{
@@ -318,7 +351,9 @@ RSS_{\text{pai}}
 }
 \]</span></p>
 <p>Quanto maior a redução, melhor o <em>split</em>.</p>
-</section><section id="classificação-reduzir-a-mistura-de-classes" class="slide level2"><h2>Classificação: reduzir a mistura de classes</h2>
+</section>
+<section id="classificação-reduzir-a-mistura-de-classes" class="slide level2">
+<h2>Classificação: reduzir a mistura de classes</h2>
 <p>Se <span class="math inline">\(\hat p_{mk}\)</span> é a proporção da classe <span class="math inline">\(k\)</span> no nó <span class="math inline">\(m\)</span>, uma medida comum é o <strong>índice de Gini</strong>:</p>
 <p><span class="math display">\[
 G_m
@@ -326,11 +361,12 @@ G_m
 1-\sum_{k=1}^{K}\hat p_{mk}^{\,2}
 \]</span></p>
 <ul>
-<li>
-<span class="math inline">\(G_m=0\)</span>: nó puro</li>
-<li>
-<span class="math inline">\(G_m\)</span> maior: classes mais misturadas</li>
-</ul></section><section id="classificação-reduzir-a-mistura-de-classes-1" class="slide level2"><h2>Classificação: reduzir a mistura de classes</h2>
+<li><span class="math inline">\(G_m=0\)</span>: nó puro</li>
+<li><span class="math inline">\(G_m\)</span> maior: classes mais misturadas</li>
+</ul>
+</section>
+<section id="classificação-reduzir-a-mistura-de-classes-1" class="slide level2">
+<h2>Classificação: reduzir a mistura de classes</h2>
 <p>A árvore escolhe o <em>split</em> que reduz a impureza ponderada:</p>
 <p><span class="math display">\[
 \boxed{
@@ -352,13 +388,12 @@ H_m
 }
 \]</span></p>
 <p>onde <span class="math inline">\(\hat p_{mk}\)</span> é a proporção de observações da classe <span class="math inline">\(k\)</span> no nó <span class="math inline">\(m\)</span>.</p>
-</section><section id="classificação-reduzir-a-mistura-de-classes-2" class="slide level2"><h2>Classificação: reduzir a mistura de classes</h2>
+</section>
+<section id="classificação-reduzir-a-mistura-de-classes-2" class="slide level2">
+<h2>Classificação: reduzir a mistura de classes</h2>
 <ul>
-<li>
-<strong>Entropia baixa</strong> <span class="math inline">\(\rightarrow\)</span> nó mais puro</li>
-<li>
-<strong>Entropia alta</strong> <span class="math inline">\(\rightarrow\)</span> maior mistura entre as classes<br><br>
-</li>
+<li><strong>Entropia baixa</strong> <span class="math inline">\(\rightarrow\)</span> nó mais puro</li>
+<li><strong>Entropia alta</strong> <span class="math inline">\(\rightarrow\)</span> maior mistura entre as classes<br><br></li>
 </ul>
 <div class="callout callout-note callout-style-simple">
 <div class="callout-body">
@@ -370,7 +405,9 @@ H_m
 </div>
 </div>
 </div>
-</section><section id="mesma-árvore-critérios-diferentes" class="slide level2"><h2>Mesma árvore, critérios diferentes</h2>
+</section>
+<section id="mesma-árvore-critérios-diferentes" class="slide level2">
+<h2>Mesma árvore, critérios diferentes</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="regressão-1">Regressão</h3>
@@ -401,11 +438,17 @@ RSS
 (\hat p_{m1},\ldots,\hat p_{mK})
 \]</span></p>
 </div></div>
-</section><section id="exemplo-uma-árvore-de-regressão" class="slide level2"><h2>Exemplo: uma árvore de regressão</h2>
+</section>
+<section id="exemplo-uma-árvore-de-regressão" class="slide level2">
+<h2>Exemplo: uma árvore de regressão</h2>
 
-<img data-src="semana_07_arvores_ensembles_animacoes_files/figure-revealjs/unnamed-chunk-2-1.png" width="1056" class="r-stretch"></section><section id="exemplo-uma-árvore-de-classificação" class="slide level2"><h2>Exemplo: uma árvore de classificação</h2>
+<img data-src="semana_07_arvores_ensembles_animacoes_files/figure-revealjs/unnamed-chunk-2-1.png" width="1056" class="r-stretch"></section>
+<section id="exemplo-uma-árvore-de-classificação" class="slide level2">
+<h2>Exemplo: uma árvore de classificação</h2>
 
-<img data-src="semana_07_arvores_ensembles_animacoes_files/figure-revealjs/unnamed-chunk-3-1.png" width="1056" class="r-stretch"></section><section id="árvore-profunda-baixo-viés-alta-variância" class="slide level2"><h2>Árvore profunda: baixo viés, alta variância</h2>
+<img data-src="semana_07_arvores_ensembles_animacoes_files/figure-revealjs/unnamed-chunk-3-1.png" width="1056" class="r-stretch"></section>
+<section id="árvore-profunda-baixo-viés-alta-variância" class="slide level2">
+<h2>Árvore profunda: baixo viés, alta variância</h2>
 <p>Uma árvore pode continuar dividindo os dados até criar folhas muito pequenas.</p>
 <p>Isso reduz o erro de treinamento, mas pode produzir regras instáveis.</p>
 <p><span class="math display">\[
@@ -418,7 +461,9 @@ RSS
 }
 \]</span></p>
 <p>Pequenas mudanças na amostra podem gerar uma árvore bastante diferente.</p>
-</section><section id="poda-pruning" class="slide level2"><h2>Poda (pruning)</h2>
+</section>
+<section id="poda-pruning" class="slide level2">
+<h2>Poda (pruning)</h2>
 <p>Para regressão, uma forma de pensar na poda é:</p>
 <p><span class="math display">\[
 \boxed{
@@ -436,11 +481,12 @@ RSS
 \alpha|T|
 \]</span></p>
 <ul>
-<li>
-<span class="math inline">\(\alpha\)</span> pequeno <span class="math inline">\(\rightarrow\)</span> árvore maior</li>
-<li>
-<span class="math inline">\(\alpha\)</span> grande <span class="math inline">\(\rightarrow\)</span> árvore menor</li>
-</ul></section><section id="poda-pruning-1" class="slide level2"><h2>Poda (pruning)</h2>
+<li><span class="math inline">\(\alpha\)</span> pequeno <span class="math inline">\(\rightarrow\)</span> árvore maior</li>
+<li><span class="math inline">\(\alpha\)</span> grande <span class="math inline">\(\rightarrow\)</span> árvore menor</li>
+</ul>
+</section>
+<section id="poda-pruning-1" class="slide level2">
+<h2>Poda (pruning)</h2>
 <p>Na classificação, a mesma lógica é usada com uma medida apropriada de erro/impureza.<br><br></p>
 <div class="callout callout-tip callout-style-simple">
 <div class="callout-body">
@@ -452,7 +498,9 @@ RSS
 </div>
 </div>
 </div>
-</section><section id="o-problema-da-árvore-individual" class="slide level2"><h2>O problema da árvore individual</h2>
+</section>
+<section id="o-problema-da-árvore-individual" class="slide level2">
+<h2>O problema da árvore individual</h2>
 <p>Árvores são:</p>
 <ul>
 <li>interpretáveis</li>
@@ -464,7 +512,10 @@ RSS
 <li>instáveis</li>
 <li>sensíveis à amostra</li>
 <li>de alta variância</li>
-</ul></section><section id="por-que-combinar-árvores" class="slide level2"><h2>Por que combinar árvores?</h2>
+</ul>
+</section>
+<section id="por-que-combinar-árvores" class="slide level2">
+<h2>Por que combinar árvores?</h2>
 <p>Considere dois estimadores <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span>.</p>
 <p>Definimos o estimador combinado:</p>
 <p><span class="math display">\[
@@ -478,7 +529,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 + \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
 + \text{bias}^2
 \]</span></p>
-</section><section id="por-que-combinar-árvores-1" class="slide level2"><h2>Por que combinar árvores?</h2>
+</section>
+<section id="por-que-combinar-árvores-1" class="slide level2">
+<h2>Por que combinar árvores?</h2>
 <p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
 <ul>
 <li>não viesados<br>
@@ -500,13 +553,18 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \le
 \mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
 \]</span></p>
-</section><section id="por-que-combinar-árvores-2" class="slide level2"><h2>Por que combinar árvores?</h2>
+</section>
+<section id="por-que-combinar-árvores-2" class="slide level2">
+<h2>Por que combinar árvores?</h2>
 <p>Assim, combinar modelos:</p>
 <ul>
 <li>mantém o viés<br>
 </li>
 <li>reduz a variância</li>
-</ul></section><section id="três-maneiras-de-combinar-árvores" class="slide level2"><h2>Três maneiras de combinar árvores</h2>
+</ul>
+</section>
+<section id="três-maneiras-de-combinar-árvores" class="slide level2">
+<h2>Três maneiras de combinar árvores</h2>
 <p>Os ensembles respondem de formas diferentes:</p>
 <p><span class="math display">\[
 \boxed{\text{Bagging: construir em paralelo e agregar}}
@@ -521,11 +579,17 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 <ol type="1">
 <li><strong>Como cada nova árvore é construída?</strong></li>
 <li><strong>Como as árvores são combinadas?</strong></li>
-</ol></section></section><section><section id="bagging-bootstrap-aggregating" class="title-slide slide level1 center"><h1>Bagging (Bootstrap Aggregating)</h1>
+</ol>
+</section></section>
+<section>
+<section id="bagging-bootstrap-aggregating" class="title-slide slide level1 center">
+<h1>Bagging (Bootstrap Aggregating)</h1>
 <blockquote>
 <p>Média de vários modelos instáveis → modelo mais estável</p>
 </blockquote>
-</section><section id="bagging-bootstrap-aggregating-1" class="slide level2"><h2>Bagging = Bootstrap + Aggregating</h2>
+</section>
+<section id="bagging-bootstrap-aggregating-1" class="slide level2">
+<h2>Bagging = Bootstrap + Aggregating</h2>
 <p>Para <span class="math inline">\(b=1,\ldots,B\)</span>:</p>
 <ol type="1">
 <li>sorteie uma amostra <em>bootstrap</em>;</li>
@@ -543,8 +607,13 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 }
 \]</span></p>
 <p>As árvores são ajustadas <strong>em paralelo</strong>: uma não depende da anterior.</p>
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="como-agregamos" class="slide level2"><h2>Como agregamos?</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="como-agregamos" class="slide level2">
+<h2>Como agregamos?</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="regressão-2">Regressão</h3>
@@ -576,9 +645,11 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 }
 \]</span></p>
 </div></div>
-</section><section id="bagging-em-regressão-veja-a-estabilização" class="slide level2"><h2>Bagging em regressão: veja a estabilização</h2>
+</section>
+<section id="bagging-em-regressão-veja-a-estabilização" class="slide level2">
+<h2>Bagging em regressão: veja a estabilização</h2>
 
-<img data-src="../..\images/regressao/bagging_regressao.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-note callout-style-simple">
+<img data-src="../../images/regressao/bagging_regressao.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-note callout-style-simple">
 <div class="callout-body">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -588,7 +659,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 </div>
 </div>
 </div>
-</section><section id="por-que-a-média-ajuda" class="slide level2"><h2>Por que a média ajuda?</h2>
+</section>
+<section id="por-que-a-média-ajuda" class="slide level2">
+<h2>Por que a média ajuda?</h2>
 <p>Se cada árvore tem variância aproximadamente <span class="math inline">\(\sigma^2\)</span> e correlação média <span class="math inline">\(\rho\)</span>, então</p>
 <p><span class="math display">\[
 \boxed{
@@ -609,7 +682,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \text{não basta ter muitas árvores; é útil que elas sejam diferentes}
 }
 \]</span></p>
-</section><section id="bagging-em-classificação" class="slide level2"><h2>Bagging em classificação</h2>
+</section>
+<section id="bagging-em-classificação" class="slide level2">
+<h2>Bagging em classificação</h2>
 <p>O mecanismo é o mesmo:</p>
 <p><span class="math display">\[
 \text{bootstrap}
@@ -622,11 +697,13 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \]</span></p>
 <p>O que muda em relação à regressão?</p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Etapa</th>
 <th>Regressão</th>
 <th>Classificação</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>split</td>
@@ -640,16 +717,21 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 </tr>
 <tr class="odd">
 <td>agregação</td>
-<td>média de <span class="math inline">\(\hat y\)</span>
-</td>
+<td>média de <span class="math inline">\(\hat y\)</span></td>
 <td>média de probabilidades/voto</td>
 </tr>
 </tbody>
-</table></section></section><section><section id="random-forest" class="title-slide slide level1 center"><h1>Random Forest</h1>
+</table>
+</section></section>
+<section>
+<section id="random-forest" class="title-slide slide level1 center">
+<h1>Random Forest</h1>
 <blockquote>
 <p>Construir muitas árvores diferentes e combinar suas previsões</p>
 </blockquote>
-</section><section id="o-limite-do-bagging" class="slide level2"><h2>O limite do Bagging</h2>
+</section>
+<section id="o-limite-do-bagging" class="slide level2">
+<h2>O limite do Bagging</h2>
 <p>Mesmo com amostras <em>bootstrap</em> diferentes, árvores podem ficar muito parecidas.</p>
 <p>Por quê?</p>
 <p>Se uma variável é muito forte, ela tende a ser escolhida repetidamente perto da raiz.</p>
@@ -661,7 +743,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \Rightarrow
 \text{menor redução de variância}.
 \]</span></p>
-</section><section id="random-forest-descorrelacionar-as-árvores" class="slide level2"><h2>Random Forest: descorrelacionar as árvores</h2>
+</section>
+<section id="random-forest-descorrelacionar-as-árvores" class="slide level2">
+<h2>Random Forest: descorrelacionar as árvores</h2>
 <p>O Random Forest adiciona uma segunda fonte de aleatoriedade.</p>
 <p>Para cada árvore:</p>
 <ol type="1">
@@ -679,9 +763,11 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \text{subamostragem de variáveis em cada split}
 }
 \]</span></p>
-</section><section id="onde-bagging-e-random-forest-se-separam" class="slide level2"><h2>Onde Bagging e Random Forest se separam?</h2>
+</section>
+<section id="onde-bagging-e-random-forest-se-separam" class="slide level2">
+<h2>Onde Bagging e Random Forest se separam?</h2>
 
-<img data-src="../..\images/regressao/bagging_vs_random_forest_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><p>No <strong>Bagging</strong>, todas as <span class="math inline">\(p\)</span> variáveis podem disputar cada split.</p>
+<img data-src="../../images/regressao/bagging_vs_random_forest_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><p>No <strong>Bagging</strong>, todas as <span class="math inline">\(p\)</span> variáveis podem disputar cada split.</p>
 <p>No <strong>Random Forest</strong>, apenas <span class="math inline">\(m_{\text{try}}&lt;p\)</span> variáveis sorteadas podem disputar aquele split.</p>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
@@ -696,14 +782,21 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 </div>
 </div>
 </div>
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="bagging-versus-random-forest" class="slide level2"><h2>Bagging versus Random Forest</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="bagging-versus-random-forest" class="slide level2">
+<h2>Bagging versus Random Forest</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th></th>
 <th>Bagging</th>
 <th>Random Forest</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Bootstrap de observações</td>
@@ -731,7 +824,10 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 <td>voto/probabilidades</td>
 </tr>
 </tbody>
-</table></section><section id="bagging-versus-random-forest-1" class="slide level2"><h2>Bagging versus Random Forest</h2>
+</table>
+</section>
+<section id="bagging-versus-random-forest-1" class="slide level2">
+<h2>Bagging versus Random Forest</h2>
 <p>Se</p>
 <p><span class="math display">\[
 m_{\text{try}}=p,
@@ -747,7 +843,9 @@ m_{\text{try}}=p,
 </div>
 </div>
 </div>
-</section><section id="o-que-m_texttry-controla" class="slide level2"><h2>O que <span class="math inline">\(m_{\text{try}}\)</span> controla?</h2>
+</section>
+<section id="o-que-m_texttry-controla" class="slide level2">
+<h2>O que <span class="math inline">\(m_{\text{try}}\)</span> controla?</h2>
 <p><span class="math display">\[
 m_{\text{try}}
 =
@@ -767,7 +865,9 @@ m_{\text{try}}
 }
 \]</span></p>
 <p><span class="math inline">\(m_{\text{try}}\)</span> deve ser tratado como hiperparâmetro e pode ser ajustado por validação.</p>
-</section><section id="oob-validação-embutida-no-bootstrap" class="slide level2"><h2>OOB: validação “embutida” no bootstrap</h2>
+</section>
+<section id="oob-validação-embutida-no-bootstrap" class="slide level2">
+<h2>OOB: validação “embutida” no bootstrap</h2>
 <p>Em cada amostra <em>bootstrap</em>, algumas observações ficam de fora.</p>
 <p>Elas são chamadas de <strong>out-of-bag (OOB)</strong>.</p>
 <p>Para uma observação <span class="math inline">\(i\)</span>:</p>
@@ -775,7 +875,10 @@ m_{\text{try}}
 <li>use apenas árvores em que <span class="math inline">\(i\)</span> ficou fora do bootstrap;</li>
 <li>agregue suas previsões;</li>
 <li>compare com <span class="math inline">\(y_i\)</span>.</li>
-</ol></section><section id="oob-validação-embutida-no-bootstrap-1" class="slide level2"><h2>OOB: validação “embutida” no bootstrap</h2>
+</ol>
+</section>
+<section id="oob-validação-embutida-no-bootstrap-1" class="slide level2">
+<h2>OOB: validação “embutida” no bootstrap</h2>
 <p>Isso fornece uma estimativa de desempenho sem criar uma nova reamostragem interna.<br><br></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -790,12 +893,20 @@ m_{\text{try}}
 </div>
 </div>
 </div>
-</section><section class="slide level2">
-<img data-src="rf_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section></section><section><section id="boosting" class="title-slide slide level1 center"><h1>Boosting</h1>
+</section>
+<section class="slide level2">
+
+
+<img data-src="rf_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section></section>
+<section>
+<section id="boosting" class="title-slide slide level1 center">
+<h1>Boosting</h1>
 <blockquote>
 <p>Construir o modelo sequencialmente, fazendo cada nova árvore corrigir o modelo atual</p>
 </blockquote>
-</section><section id="a-mudança-fundamental" class="slide level2"><h2>A mudança fundamental</h2>
+</section>
+<section id="a-mudança-fundamental" class="slide level2">
+<h2>A mudança fundamental</h2>
 <p>Bagging e Random Forest constroem árvores aproximadamente <strong>em paralelo</strong>.</p>
 <p>Boosting constrói modelos <strong>sequencialmente</strong>:</p>
 <p><span class="math display">\[
@@ -816,7 +927,9 @@ F_0(\mathbf{x})
 \lambda\sum_{b=1}^{B}T_b(\mathbf{x})
 }
 \]</span></p>
-</section><section id="boosting-em-regressão-começando-pelo-erro-atual" class="slide level2"><h2>Boosting em regressão: começando pelo erro atual</h2>
+</section>
+<section id="boosting-em-regressão-começando-pelo-erro-atual" class="slide level2">
+<h2>Boosting em regressão: começando pelo erro atual</h2>
 <p>Com perda quadrática,</p>
 <p><span class="math display">\[
 L(y,F)=(y-F)^2,
@@ -840,9 +953,11 @@ F_{b-1}(\mathbf{x})
 +
 \lambda T_b(\mathbf{x}).
 \]</span></p>
-</section><section id="boosting-em-regressão-veja-o-modelo-aprender" class="slide level2"><h2>Boosting em regressão: veja o modelo aprender</h2>
+</section>
+<section id="boosting-em-regressão-veja-o-modelo-aprender" class="slide level2">
+<h2>Boosting em regressão: veja o modelo aprender</h2>
 
-<img data-src="../..\images/regressao/boosting_regressao.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-important callout-titled callout-style-default">
+<img data-src="../../images/regressao/boosting_regressao.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
@@ -855,7 +970,9 @@ F_{b-1}(\mathbf{x})
 </div>
 </div>
 </div>
-</section><section id="e-na-classificação" class="slide level2"><h2>E na classificação?</h2>
+</section>
+<section id="e-na-classificação" class="slide level2">
+<h2>E na classificação?</h2>
 <p>Aqui está uma diferença importante.</p>
 <p>Em classificação, não faz sentido usar simplesmente</p>
 <p><span class="math display">\[
@@ -874,7 +991,9 @@ y_i-\hat y_i
 \text{classificação: pseudo-resíduo depende da probabilidade e da log-loss}
 }
 \]</span></p>
-</section><section id="classificação-binária-uma-leitura-intuitiva" class="slide level2"><h2>Classificação binária: uma leitura intuitiva</h2>
+</section>
+<section id="classificação-binária-uma-leitura-intuitiva" class="slide level2">
+<h2>Classificação binária: uma leitura intuitiva</h2>
 <p>Se <span class="math inline">\(y_i\in\{0,1\}\)</span> e o modelo atual fornece</p>
 <p><span class="math display">\[
 \hat p_i=P(Y_i=1\mid\mathbf{x}_i),
@@ -887,12 +1006,14 @@ r_i^{(b)}=y_i-\hat p_i.
 \]</span></p>
 <p>Exemplos:</p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: right;"><span class="math inline">\(y_i\)</span></th>
 <th style="text-align: right;"><span class="math inline">\(\hat p_i\)</span></th>
 <th style="text-align: right;"><span class="math inline">\(y_i-\hat p_i\)</span></th>
 <th>leitura</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
@@ -933,9 +1054,11 @@ r_i^{(b)}=y_i-\hat p_i.
 </div>
 </div>
 </div>
-</section><section id="boosting-em-classificação-veja-a-correção" class="slide level2"><h2>Boosting em classificação: veja a correção</h2>
+</section>
+<section id="boosting-em-classificação-veja-a-correção" class="slide level2">
+<h2>Boosting em classificação: veja a correção</h2>
 
-<img data-src="../..\images/regressao/boosting_classificacao_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><p>À esquerda, o modelo acumulado atualiza <span class="math inline">\(\hat p=P(Y=1\mid X)\)</span>.</p>
+<img data-src="../../images/regressao/boosting_classificacao_animado.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><p>À esquerda, o modelo acumulado atualiza <span class="math inline">\(\hat p=P(Y=1\mid X)\)</span>.</p>
 <p>À direita, visualizamos o sinal de correção <span class="math inline">\(y_i-\hat p_i\)</span>.</p>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -950,8 +1073,9 @@ r_i^{(b)}=y_i-\hat p_i.
 </div>
 </div>
 </div>
-</section><section id="o-papel-do-learning-rate-lambda" class="slide level2"><h2>O papel do learning rate <span class="math inline">\(\lambda\)</span>
-</h2>
+</section>
+<section id="o-papel-do-learning-rate-lambda" class="slide level2">
+<h2>O papel do learning rate <span class="math inline">\(\lambda\)</span></h2>
 <p>Cada árvore sugere uma correção.</p>
 <p>O <em>learning rate</em> controla quanto dessa correção será incorporado:</p>
 <p><span class="math display">\[
@@ -963,8 +1087,7 @@ F_{b-1}
 \]</span></p>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="lambda-pequeno">
-<span class="math inline">\(\lambda\)</span> pequeno</h3>
+<h3 id="lambda-pequeno"><span class="math inline">\(\lambda\)</span> pequeno</h3>
 <ul>
 <li>passos menores</li>
 <li>aprendizado mais gradual</li>
@@ -972,8 +1095,7 @@ F_{b-1}
 <li>tende a oferecer maior controle</li>
 </ul>
 </div><div class="column" style="width:48%;">
-<h3 id="lambda-grande">
-<span class="math inline">\(\lambda\)</span> grande</h3>
+<h3 id="lambda-grande"><span class="math inline">\(\lambda\)</span> grande</h3>
 <ul>
 <li>passos maiores</li>
 <li>aprende mais rapidamente</li>
@@ -981,11 +1103,12 @@ F_{b-1}
 <li>pode sobreajustar mais cedo</li>
 </ul>
 </div></div>
-</section><section id="profundidade-das-árvores-no-boosting" class="slide level2"><h2>Profundidade das árvores no Boosting</h2>
+</section>
+<section id="profundidade-das-árvores-no-boosting" class="slide level2">
+<h2>Profundidade das árvores no Boosting</h2>
 <p>Árvores rasas são comuns porque cada árvore deve aprender <strong>uma correção</strong>, não resolver sozinha todo o problema.</p>
 <ul>
-<li>
-<em>stump</em> (profundidade 1): efeitos muito simples</li>
+<li><em>stump</em> (profundidade 1): efeitos muito simples</li>
 <li>profundidade 2–4: permite interações de baixa ordem</li>
 <li>árvores profundas: correções mais complexas e maior risco de overfitting</li>
 </ul>
@@ -1001,9 +1124,17 @@ B
 }
 \]</span></p>
 <p>Esses hiperparâmetros devem ser considerados conjuntamente.</p>
-</section><section class="slide level2"></section></section><section><section id="três-ensembles-três-mecanismos" class="title-slide slide level1 center"><h1>Três ensembles, três mecanismos</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="bagging-random-forest-e-boosting" class="slide level2"><h2>Bagging, Random Forest e Boosting</h2>
+</section></section>
+<section>
+<section id="três-ensembles-três-mecanismos" class="title-slide slide level1 center">
+<h1>Três ensembles, três mecanismos</h1>
+
+</section>
+<section id="bagging-random-forest-e-boosting" class="slide level2">
+<h2>Bagging, Random Forest e Boosting</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -1011,12 +1142,14 @@ B
 <col style="width: 25%">
 <col style="width: 25%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th></th>
 <th>Bagging</th>
 <th>Random Forest</th>
 <th>Boosting</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Construção</td>
@@ -1061,7 +1194,10 @@ B
 <td>escore/prob. aditivos</td>
 </tr>
 </tbody>
-</table></section><section id="o-que-permanece-igual-entre-regressão-e-classificação" class="slide level2"><h2>O que permanece igual entre regressão e classificação?</h2>
+</table>
+</section>
+<section id="o-que-permanece-igual-entre-regressão-e-classificação" class="slide level2">
+<h2>O que permanece igual entre regressão e classificação?</h2>
 <p>A estrutura geral:</p>
 <p><span class="math display">\[
 \boxed{
@@ -1074,19 +1210,21 @@ B
 \]</span></p>
 <p>e as ideias dos ensembles:</p>
 <ul>
-<li>Bagging: <strong>agregar</strong>
-</li>
-<li>Random Forest: <strong>agregar árvores menos correlacionadas</strong>
-</li>
-<li>Boosting: <strong>somar correções sequenciais</strong>
-</li>
-</ul></section><section id="o-que-muda-entre-regressão-e-classificação" class="slide level2"><h2>O que muda entre regressão e classificação?</h2>
+<li>Bagging: <strong>agregar</strong></li>
+<li>Random Forest: <strong>agregar árvores menos correlacionadas</strong></li>
+<li>Boosting: <strong>somar correções sequenciais</strong></li>
+</ul>
+</section>
+<section id="o-que-muda-entre-regressão-e-classificação" class="slide level2">
+<h2>O que muda entre regressão e classificação?</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Componente</th>
 <th>Regressão</th>
 <th>Classificação</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>alvo</td>
@@ -1133,9 +1271,17 @@ B
 </div>
 </div>
 </div>
-</section><section class="slide level2"></section></section><section><section id="como-escolher-na-prática" class="title-slide slide level1 center"><h1>Como escolher na prática?</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="uma-leitura-estatística" class="slide level2"><h2>Uma leitura estatística</h2>
+</section></section>
+<section>
+<section id="como-escolher-na-prática" class="title-slide slide level1 center">
+<h1>Como escolher na prática?</h1>
+
+</section>
+<section id="uma-leitura-estatística" class="slide level2">
+<h2>Uma leitura estatística</h2>
 <p><strong>Árvore individual</strong></p>
 <ul>
 <li>máxima interpretabilidade</li>
@@ -1157,7 +1303,10 @@ B
 <li>constrói modelo aditivo de forma sequencial</li>
 <li>frequentemente alto desempenho</li>
 <li>maior sensibilidade à escolha dos hiperparâmetros</li>
-</ul></section><section id="fluxo-de-modelagem" class="slide level2"><h2>Fluxo de modelagem</h2>
+</ul>
+</section>
+<section id="fluxo-de-modelagem" class="slide level2">
+<h2>Fluxo de modelagem</h2>
 <p><span class="math display">\[
 \boxed{
 \text{treino}
@@ -1178,9 +1327,17 @@ B
 <li>Boosting: <span class="math inline">\(B\)</span>, <span class="math inline">\(\lambda\)</span>, profundidade</li>
 </ul>
 <p>O conjunto de teste permanece reservado para a <strong>avaliação final</strong>.</p>
-</section><section class="slide level2"></section></section><section><section id="fechamento" class="title-slide slide level1 center"><h1>Fechamento</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="mapa-mental-da-semana-7" class="slide level2"><h2>Mapa mental da Semana 7</h2>
+</section></section>
+<section>
+<section id="fechamento" class="title-slide slide level1 center">
+<h1>Fechamento</h1>
+
+</section>
+<section id="mapa-mental-da-semana-7" class="slide level2">
+<h2>Mapa mental da Semana 7</h2>
 <p><span class="math display">\[
 \boxed{\text{Árvore}}
 \]</span></p>
@@ -1222,14 +1379,31 @@ B
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 7</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -1396,7 +1570,7 @@ B
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1421,42 +1595,84 @@ B
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1504,13 +1720,14 @@ B
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1623,6 +1840,6 @@ B
         }
       });
       </script>
-
+    
 
 </body></html>

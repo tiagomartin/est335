@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Kernels, RKHS, SVR e SVM</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="métodos-baseados-em-rkhs" class="title-slide slide level1 center"><h1>Métodos baseados em RKHS</h1>
+</section>
+<section>
+<section id="métodos-baseados-em-rkhs" class="title-slide slide level1 center">
+<h1>Métodos baseados em RKHS</h1>
 
-</section><section id="por-que-introduzir-outra-estrutura" class="slide level2"><h2>Por que introduzir outra estrutura?</h2>
+</section>
+<section id="por-que-introduzir-outra-estrutura" class="slide level2">
+<h2>Por que introduzir outra estrutura?</h2>
 <p>Até agora controlamos flexibilidade por:</p>
 <ul>
 <li>número de termos;</li>
@@ -147,7 +159,9 @@
 <li>tamanho da vizinhança.</li>
 </ul>
 <p>Outra possibilidade é penalizar diretamente a complexidade de uma função.</p>
-</section><section id="de-onde-vem-a-ideia" class="slide level2"><h2>De onde vem a ideia?</h2>
+</section>
+<section id="de-onde-vem-a-ideia" class="slide level2">
+<h2>De onde vem a ideia?</h2>
 <p>Considere o problema de regressão</p>
 <p><span class="math display">\[
 Y=g(X)+\varepsilon
@@ -170,7 +184,9 @@ g(x)=\beta_0+\beta_1x
 </div>
 </div>
 </div>
-</section><section id="da-estimação-de-parâmetros-à-estimação-de-funções" class="slide level2"><h2>Da estimação de parâmetros à estimação de funções</h2>
+</section>
+<section id="da-estimação-de-parâmetros-à-estimação-de-funções" class="slide level2">
+<h2>Da estimação de parâmetros à estimação de funções</h2>
 <p>Na regressão linear, procuramos um vetor de parâmetros:</p>
 <p><span class="math display">\[
 \boldsymbol\beta=(\beta_0,\beta_1,\ldots,\beta_p)^\top
@@ -185,7 +201,9 @@ g(x)=\beta_0+\beta_1x
 \qquad\Longrightarrow\qquad
 \text{RKHS: procurar }g
 \]</span></p>
-</section><section id="o-que-significa-rkhs" class="slide level2"><h2>O que significa RKHS?</h2>
+</section>
+<section id="o-que-significa-rkhs" class="slide level2">
+<h2>O que significa RKHS?</h2>
 <p><strong>RKHS</strong> = <em>Reproducing Kernel Hilbert Space</em></p>
 <p>Em português:</p>
 <blockquote>
@@ -195,7 +213,9 @@ g(x)=\beta_0+\beta_1x
 <p><span class="math display">\[
 \boxed{\text{um espaço estruturado de funções candidatas para }g}
 \]</span></p>
-</section><section id="o-que-significa-rkhs-1" class="slide level2"><h2>O que significa RKHS?</h2>
+</section>
+<section id="o-que-significa-rkhs-1" class="slide level2">
+<h2>O que significa RKHS?</h2>
 <p>Não precisamos, neste momento, aprofundar a definição formal de espaço de Hilbert.<br><br></p>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
@@ -210,7 +230,9 @@ g(x)=\beta_0+\beta_1x
 </div>
 </div>
 </div>
-</section><section id="onde-entra-o-kernel" class="slide level2"><h2>Onde entra o kernel?</h2>
+</section>
+<section id="onde-entra-o-kernel" class="slide level2">
+<h2>Onde entra o kernel?</h2>
 <p>Uma RKHS está associada a uma função kernel</p>
 <p><span class="math display">\[
 K(x,x')
@@ -221,7 +243,9 @@ K(x,x')
 K(x,x')=
 \exp\left\{-\frac{(x-x')^2}{2\sigma^2}\right\}
 \]</span></p>
-</section><section id="onde-entra-o-kernel-1" class="slide level2"><h2>Onde entra o kernel?</h2>
+</section>
+<section id="onde-entra-o-kernel-1" class="slide level2">
+<h2>Onde entra o kernel?</h2>
 <p>Intuitivamente:</p>
 <p><span class="math display">\[
 x\approx x' \Rightarrow K(x,x')\text{ grande}
@@ -229,10 +253,14 @@ x\approx x' \Rightarrow K(x,x')\text{ grande}
 <p><span class="math display">\[
 |x-x'|\text{ grande} \Rightarrow K(x,x')\text{ pequeno}
 \]</span></p>
-</section><section id="kernel-gaussiano-uma-visão-gráfica" class="slide level2"><h2>Kernel Gaussiano: uma visão gráfica</h2>
+</section>
+<section id="kernel-gaussiano-uma-visão-gráfica" class="slide level2">
+<h2>Kernel Gaussiano: uma visão gráfica</h2>
 
 <img data-src="semana_06_kernels_rkhs_svr_svm_v1_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Quanto mais distante <span class="math inline">\(x\)</span> está de <span class="math inline">\(x_0\)</span>, menor é a similaridade determinada pelo kernel.</p>
-</section><section id="construindo-uma-função-com-kernels" class="slide level2"><h2>Construindo uma função com kernels</h2>
+</section>
+<section id="construindo-uma-função-com-kernels" class="slide level2">
+<h2>Construindo uma função com kernels</h2>
 <p>Uma função em muitos métodos baseados em RKHS pode ser representada na forma</p>
 <p><span class="math display">\[
 \boxed{
@@ -244,7 +272,9 @@ g(x)=\sum_{i=1}^{n}\alpha_iK(x,x_i)
 g(x)=
 \alpha_1K(x,x_1)+\cdots+\alpha_nK(x,x_n)
 \]</span></p>
-</section><section id="construindo-uma-função-com-kernels-1" class="slide level2"><h2>Construindo uma função com kernels</h2>
+</section>
+<section id="construindo-uma-função-com-kernels-1" class="slide level2">
+<h2>Construindo uma função com kernels</h2>
 <p>Cada observação de treinamento contribui para a construção da função.<br><br></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -259,10 +289,14 @@ g(x)=
 </div>
 </div>
 </div>
-</section><section id="visualizando-a-construção" class="slide level2"><h2>Visualizando a construção</h2>
+</section>
+<section id="visualizando-a-construção" class="slide level2">
+<h2>Visualizando a construção</h2>
 
 <img data-src="semana_06_kernels_rkhs_svr_svm_v1_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>A curva final é uma combinação das funções kernel.</p>
-</section><section id="mas-isso-não-pode-ficar-complexo-demais" class="slide level2"><h2>Mas isso não pode ficar complexo demais?</h2>
+</section>
+<section id="mas-isso-não-pode-ficar-complexo-demais" class="slide level2">
+<h2>Mas isso não pode ficar complexo demais?</h2>
 <p>Se procurarmos apenas a função que minimiza</p>
 <p><span class="math display">\[
 \sum_{i=1}^{n}\left[y_i-g(x_i)\right]^2
@@ -273,13 +307,17 @@ g(x)=
 \quad\Longrightarrow\quad
 \text{overfitting}
 \]</span></p>
-</section><section id="mas-isso-não-pode-ficar-complexo-demais-1" class="slide level2"><h2>Mas isso não pode ficar complexo demais?</h2>
+</section>
+<section id="mas-isso-não-pode-ficar-complexo-demais-1" class="slide level2">
+<h2>Mas isso não pode ficar complexo demais?</h2>
 <p>Precisamos equilibrar</p>
 <p><span class="math display">\[
 \boxed{\text{qualidade do ajuste} \quad\times\quad \text{complexidade}}
 \]</span></p>
 <p>Essa ideia já apareceu em Ridge, Lasso e smoothing splines.</p>
-</section><section id="regularização-em-uma-rkhs" class="slide level2"><h2>Regularização em uma RKHS</h2>
+</section>
+<section id="regularização-em-uma-rkhs" class="slide level2">
+<h2>Regularização em uma RKHS</h2>
 <p>Um problema típico é</p>
 <p><span class="math display">\[
 \boxed{
@@ -300,11 +338,11 @@ g(x)=
 \lambda\|g\|_{\mathcal H}^{2}
 }_{\text{penalização da complexidade}}
 \]</span></p>
-</section><section id="o-papel-de-lambda" class="slide level2"><h2>O papel de <span class="math inline">\(\lambda\)</span>
-</h2>
+</section>
+<section id="o-papel-de-lambda" class="slide level2">
+<h2>O papel de <span class="math inline">\(\lambda\)</span></h2>
 <p>O parâmetro <span class="math inline">\(\lambda\)</span> controla o compromisso entre ajuste e complexidade.<br><br></p>
-<h3 id="lambda-pequeno">
-<span class="math inline">\(\lambda\)</span> pequeno</h3>
+<h3 id="lambda-pequeno"><span class="math inline">\(\lambda\)</span> pequeno</h3>
 <p><span class="math display">\[
 \lambda\downarrow
 \Rightarrow
@@ -313,8 +351,7 @@ g(x)=
 \text{maior flexibilidade}
 \]</span></p>
 <p>Maior risco de <strong>overfitting</strong>.<br><br></p>
-<h3 id="lambda-grande">
-<span class="math inline">\(\lambda\)</span> grande</h3>
+<h3 id="lambda-grande"><span class="math inline">\(\lambda\)</span> grande</h3>
 <p><span class="math display">\[
 \lambda\uparrow
 \Rightarrow
@@ -323,7 +360,9 @@ g(x)=
 \text{menor complexidade}
 \]</span></p>
 <p>Maior risco de <strong>underfitting</strong>.</p>
-</section><section id="a-conexão-com-ridge" class="slide level2"><h2>A conexão com Ridge</h2>
+</section>
+<section id="a-conexão-com-ridge" class="slide level2">
+<h2>A conexão com Ridge</h2>
 <p>Na regressão Ridge:</p>
 <p><span class="math display">\[
 \min_{\boldsymbol\beta}
@@ -340,40 +379,48 @@ g(x)=
 +\lambda\|g\|_{\mathcal H}^2
 \right\}
 \]</span></p>
-</section><section id="a-conexão-com-ridge-1" class="slide level2"><h2>A conexão com Ridge</h2>
+</section>
+<section id="a-conexão-com-ridge-1" class="slide level2">
+<h2>A conexão com Ridge</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: center;">Ridge</th>
 <th style="text-align: center;">RKHS</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">estima <span class="math inline">\(\boldsymbol\beta\)</span>
-</td>
-<td style="text-align: center;">estima <span class="math inline">\(g\)</span>
-</td>
+<td style="text-align: center;">estima <span class="math inline">\(\boldsymbol\beta\)</span></td>
+<td style="text-align: center;">estima <span class="math inline">\(g\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">penaliza <span class="math inline">\(\|\boldsymbol\beta\|^2\)</span>
-</td>
-<td style="text-align: center;">penaliza <span class="math inline">\(\|g\|_{\mathcal H}^2\)</span>
-</td>
+<td style="text-align: center;">penaliza <span class="math inline">\(\|\boldsymbol\beta\|^2\)</span></td>
+<td style="text-align: center;">penaliza <span class="math inline">\(\|g\|_{\mathcal H}^2\)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">controla coeficientes</td>
 <td style="text-align: center;">controla a complexidade da função</td>
 </tr>
 </tbody>
-</table></section><section id="uma-dificuldade-aparente" class="slide level2"><h2>Uma dificuldade aparente</h2>
+</table>
+</section>
+<section id="uma-dificuldade-aparente" class="slide level2">
+<h2>Uma dificuldade aparente</h2>
 <p>Se <span class="math inline">\(\mathcal H\)</span> pode conter um número enorme (até infinito) de funções, como resolver</p>
 <p><span class="math display">\[
 \min_{g\in\mathcal H} \{\text{erro}+\text{penalização}\}?
 \]</span></p>
 <p>Parece que precisaríamos procurar em um espaço de dimensão infinita.</p>
 <p>Mas um resultado fundamental simplifica o problema.</p>
-</section></section><section><section id="teorema-do-representante" class="title-slide slide level1 center"><h1>Teorema do Representante</h1>
+</section></section>
+<section>
+<section id="teorema-do-representante" class="title-slide slide level1 center">
+<h1>Teorema do Representante</h1>
 
-</section><section id="a-ideia-central" class="slide level2"><h2>A ideia central</h2>
+</section>
+<section id="a-ideia-central" class="slide level2">
+<h2>A ideia central</h2>
 <p>Para uma ampla classe de problemas regularizados, a solução pode ser escrita como</p>
 <p><span class="math display">\[
 \boxed{
@@ -384,7 +431,9 @@ g(x)=
 <p><span class="math display">\[
 \hat\alpha_1,\hat\alpha_2,\ldots,\hat\alpha_n
 \]</span></p>
-</section><section id="a-ideia-central-1" class="slide level2"><h2>A ideia central</h2>
+</section>
+<section id="a-ideia-central-1" class="slide level2">
+<h2>A ideia central</h2>
 <p>Portanto,<br><br></p>
 <p><span class="math display">\[
 \boxed{
@@ -393,7 +442,9 @@ g(x)=
 \text{problema finito de estimação}
 }
 \]</span></p>
-</section><section id="a-matriz-kernel" class="slide level2"><h2>A matriz kernel</h2>
+</section>
+<section id="a-matriz-kernel" class="slide level2">
+<h2>A matriz kernel</h2>
 <p>Calculamos o kernel para cada par de observações:</p>
 <p><span class="math display">\[
 K_{ij}=K(x_i,x_j)
@@ -411,7 +462,9 @@ K(x_n,x_1)&amp;\cdots&amp;K(x_n,x_n)
 <p><span class="math display">\[
 \hat{\mathbf g}=\mathbf K\boldsymbol\alpha
 \]</span></p>
-</section><section id="o-kernel-trick" class="slide level2"><h2>O kernel trick</h2>
+</section>
+<section id="o-kernel-trick" class="slide level2">
+<h2>O kernel trick</h2>
 <p>Podemos imaginar uma transformação</p>
 <p><span class="math display">\[
 x\longmapsto\phi(x)
@@ -426,7 +479,9 @@ K(x,x')=
 \]</span></p>
 <p>sem precisar construir explicitamente <span class="math inline">\(\phi(x)\)</span>.</p>
 <p>Isso é conhecido como <strong>kernel trick</strong>.</p>
-</section><section id="por-que-isso-ajuda-com-relações-não-lineares" class="slide level2"><h2>Por que isso ajuda com relações não lineares?</h2>
+</section>
+<section id="por-que-isso-ajuda-com-relações-não-lineares" class="slide level2">
+<h2>Por que isso ajuda com relações não lineares?</h2>
 <p>No espaço original, um modelo pode ser simples demais para representar os dados.</p>
 <p>O kernel permite trabalhar implicitamente em um espaço de características mais rico:</p>
 <p><span class="math display">\[
@@ -437,9 +492,14 @@ x
 \text{modelo flexível}
 \]</span></p>
 <p>Com isso, podemos representar relações e fronteiras <strong>não lineares</strong> sem criar explicitamente todas as novas variáveis.</p>
-</section></section><section><section id="kernel-ridge-regression" class="title-slide slide level1 center"><h1>Kernel Ridge Regression</h1>
+</section></section>
+<section>
+<section id="kernel-ridge-regression" class="title-slide slide level1 center">
+<h1>Kernel Ridge Regression</h1>
 
-</section><section id="ridge-kernel" class="slide level2"><h2>Ridge + kernel</h2>
+</section>
+<section id="ridge-kernel" class="slide level2">
+<h2>Ridge + kernel</h2>
 <p>A combinação da perda quadrática com regularização em RKHS leva ao <strong>Kernel Ridge Regression</strong>.</p>
 <p>Com a convenção</p>
 <p><span class="math display">\[
@@ -453,14 +513,18 @@ x
 =(\mathbf K+n\lambda\mathbf I)^{-1}\mathbf y
 }
 \]</span></p>
-</section><section id="ridge-kernel-1" class="slide level2"><h2>Ridge + kernel</h2>
+</section>
+<section id="ridge-kernel-1" class="slide level2">
+<h2>Ridge + kernel</h2>
 <p>A predição em um novo ponto <span class="math inline">\(x\)</span> é<br><br></p>
 <p><span class="math display">\[
 \boxed{
 \hat g(x)=\sum_{i=1}^{n}\hat\alpha_iK(x,x_i)
 }
 \]</span></p>
-</section><section id="comparação-com-regressão-kernel" class="slide level2"><h2>Comparação com regressão kernel</h2>
+</section>
+<section id="comparação-com-regressão-kernel" class="slide level2">
+<h2>Comparação com regressão kernel</h2>
 <p>Não confunda <strong>regressão kernel</strong> com <strong>métodos kernel em RKHS</strong>.<br><br></p>
 <h3 id="nadarayawatson">Nadaraya–Watson</h3>
 <p><span class="math display">\[
@@ -469,33 +533,37 @@ x
 {\sum_iK_h(x-x_i)}
 \]</span></p>
 <p>Os pesos são determinados diretamente pela proximidade.</p>
-</section><section id="comparação-com-regressão-kernel-1" class="slide level2"><h2>Comparação com regressão kernel</h2>
+</section>
+<section id="comparação-com-regressão-kernel-1" class="slide level2">
+<h2>Comparação com regressão kernel</h2>
 <h3 id="rkhs-kernel-ridge">RKHS / Kernel Ridge</h3>
 <p><span class="math display">\[
 \hat g(x)=\sum_i\hat\alpha_iK(x,x_i)
 \]</span></p>
 <p>Os coeficientes <span class="math inline">\(\alpha_i\)</span> são <strong>estimados globalmente a partir dos dados</strong>, com regularização.</p>
-</section><section id="dois-usos-da-palavra-kernel" class="slide level2"><h2>Dois usos da palavra “kernel”</h2>
+</section>
+<section id="dois-usos-da-palavra-kernel" class="slide level2">
+<h2>Dois usos da palavra “kernel”</h2>
 <p>A palavra <em>kernel</em> aparece nos dois contextos, mas os papéis não são idênticos.<br><br></p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Suavização kernel</th>
 <th>RKHS</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>pesos locais</td>
 <td>estrutura de um espaço de funções</td>
 </tr>
 <tr class="even">
-<td>largura de banda <span class="math inline">\(h\)</span>
-</td>
-<td>parâmetros do kernel + <span class="math inline">\(\lambda\)</span>
-</td>
+<td>largura de banda <span class="math inline">\(h\)</span></td>
+<td>parâmetros do kernel + <span class="math inline">\(\lambda\)</span></td>
 </tr>
 <tr class="odd">
 <td>Nadaraya–Watson</td>
@@ -520,7 +588,9 @@ x
 </div>
 </div>
 </div>
-</section><section id="e-os-smoothing-splines" class="slide level2"><h2>E os smoothing splines?</h2>
+</section>
+<section id="e-os-smoothing-splines" class="slide level2">
+<h2>E os smoothing splines?</h2>
 <p>Os smoothing splines também resolvem um problema penalizado:</p>
 <p><span class="math display">\[
 \min_g
@@ -531,7 +601,9 @@ x
 \]</span></p>
 <p>A penalização controla a rugosidade da função.</p>
 <p>Essa formulação também pode ser interpretada no contexto de uma RKHS.</p>
-</section><section id="e-os-smoothing-splines-1" class="slide level2"><h2>E os smoothing splines?</h2>
+</section>
+<section id="e-os-smoothing-splines-1" class="slide level2">
+<h2>E os smoothing splines?</h2>
 <p>Assim,</p>
 <p><span class="math display">\[
 \boxed{
@@ -541,7 +613,9 @@ x
 }
 \]</span></p>
 <p>podem ser vistos dentro de uma estrutura mais geral de <strong>estimação regularizada de funções</strong>.</p>
-</section><section id="onde-rkhs-aparece-em-machine-learning" class="slide level2"><h2>Onde RKHS aparece em Machine Learning?</h2>
+</section>
+<section id="onde-rkhs-aparece-em-machine-learning" class="slide level2">
+<h2>Onde RKHS aparece em Machine Learning?</h2>
 <p>A mesma estrutura aparece em diferentes métodos:</p>
 <p><span class="math display">\[
 \boxed{\text{Kernel Ridge Regression}}
@@ -556,15 +630,25 @@ x
 \boxed{\text{outros métodos kernel regularizados}}
 \]</span></p>
 <p>O que muda entre eles é, entre outras coisas, a <strong>função de perda</strong>, o kernel e a forma de regularização.</p>
-</section></section><section><section id="support-vector-regression" class="title-slide slide level1 center"><h1>Support Vector Regression</h1>
+</section></section>
+<section>
+<section id="support-vector-regression" class="title-slide slide level1 center">
+<h1>Support Vector Regression</h1>
 
-</section><section id="regressão-com-margem" class="slide level2"><h2>Regressão com margem</h2>
+</section>
+<section id="regressão-com-margem" class="slide level2">
+<h2>Regressão com margem</h2>
 <p><span class="math display">\[
 \boxed{L_\varepsilon(y,f(\mathbf x))=\max\{0,|y-f(\mathbf x)|-\varepsilon\}}
 \]</span> A regularização controla a complexidade da função</p>
-</section></section><section><section id="support-vector-machines" class="title-slide slide level1 center"><h1>Support Vector Machines</h1>
+</section></section>
+<section>
+<section id="support-vector-machines" class="title-slide slide level1 center">
+<h1>Support Vector Machines</h1>
 
-</section><section id="da-svr-para-a-svm" class="slide level2"><h2>Da SVR para a SVM</h2>
+</section>
+<section id="da-svr-para-a-svm" class="slide level2">
+<h2>Da SVR para a SVM</h2>
 <p>Na regressão, a ideia de margem apareceu na <strong>Support Vector Regression</strong></p>
 <p>Agora queremos separar classes</p>
 <p>Para simplificar, escreva</p>
@@ -579,7 +663,9 @@ f(\mathbf x)
 \beta_0+\boldsymbol\beta^t\mathbf x
 }
 \]</span></p>
-</section><section id="regra-de-classificação" class="slide level2"><h2>Regra de classificação</h2>
+</section>
+<section id="regra-de-classificação" class="slide level2">
+<h2>Regra de classificação</h2>
 <p>O sinal de <span class="math inline">\(f(\mathbf x)\)</span> determina a classe</p>
 <p><span class="math display">\[
 \boxed{
@@ -597,13 +683,17 @@ g(\mathbf x)
 \beta_0+\boldsymbol\beta^t\mathbf x=0
 }
 \]</span></p>
-</section><section id="muitos-hiperplanos-podem-separar-os-dados" class="slide level2"><h2>Muitos hiperplanos podem separar os dados</h2>
+</section>
+<section id="muitos-hiperplanos-podem-separar-os-dados" class="slide level2">
+<h2>Muitos hiperplanos podem separar os dados</h2>
 <p>Quando as classes são linearmente separáveis, podem existir vários hiperplanos com erro de treinamento igual a zero</p>
 <p>Qual devemos escolher?</p>
 <p><span class="math display">\[
 \boxed{\text{o hiperplano com maior margem}}
 \]</span></p>
-</section><section id="margem" class="slide level2"><h2>Margem</h2>
+</section>
+<section id="margem" class="slide level2">
+<h2>Margem</h2>
 <p>Para a parametrização canônica, as fronteiras da margem são</p>
 <p><span class="math display">\[
 \beta_0+\boldsymbol\beta^t\mathbf x=1
@@ -618,7 +708,9 @@ g(\mathbf x)
 \frac{2}{\|\boldsymbol\beta\|}
 }
 \]</span></p>
-</section><section id="margem-máxima" class="slide level2"><h2>Margem máxima</h2>
+</section>
+<section id="margem-máxima" class="slide level2">
+<h2>Margem máxima</h2>
 <p>Maximizar a margem equivale a minimizar</p>
 <p><span class="math display">\[
 \frac12\|\boldsymbol\beta\|^2
@@ -634,7 +726,9 @@ y_i
 \qquad i=1,\ldots,n
 }
 \]</span></p>
-</section><section id="support-vectors" class="slide level2"><h2>Support vectors</h2>
+</section>
+<section id="support-vectors" class="slide level2">
+<h2>Support vectors</h2>
 <p>Os pontos mais próximos da fronteira satisfazem</p>
 <p><span class="math display">\[
 y_i
@@ -655,8 +749,13 @@ y_i
 </div>
 </div>
 </div>
-</section><section class="slide level2">
-<img data-src="../..\images/classificacao/hiperplano_separador.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="e-quando-não-há-separação-perfeita" class="slide level2"><h2>E quando não há separação perfeita?</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/classificacao/hiperplano_separador.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="e-quando-não-há-separação-perfeita" class="slide level2">
+<h2>E quando não há separação perfeita?</h2>
 <p>Dados reais frequentemente apresentam:</p>
 <ul>
 <li>sobreposição entre classes</li>
@@ -665,9 +764,14 @@ y_i
 </ul>
 <p>Exigir separação perfeita pode produzir uma fronteira instável</p>
 <p>Precisamos permitir violações da margem</p>
-</section></section><section><section id="soft-margin" class="title-slide slide level1 center"><h1>Soft Margin</h1>
+</section></section>
+<section>
+<section id="soft-margin" class="title-slide slide level1 center">
+<h1>Soft Margin</h1>
 
-</section><section id="variáveis-de-folga" class="slide level2"><h2>Variáveis de folga</h2>
+</section>
+<section id="variáveis-de-folga" class="slide level2">
+<h2>Variáveis de folga</h2>
 <p>Introduzimos <span class="math inline">\(\xi_i\geq0\)</span>:</p>
 <p><span class="math display">\[
 \boxed{
@@ -679,7 +783,9 @@ y_i
 1-\xi_i
 }
 \]</span></p>
-</section><section id="problema-de-otimização" class="slide level2"><h2>Problema de otimização</h2>
+</section>
+<section id="problema-de-otimização" class="slide level2">
+<h2>Problema de otimização</h2>
 <p>Uma formulação da SVM é</p>
 <p><span class="math display">\[
 \boxed{
@@ -695,26 +801,30 @@ C\sum_{i=1}^{n}\xi_i
 <p><span class="math display">\[
 \xi_i\geq0
 \]</span></p>
-</section><section id="o-papel-de-c" class="slide level2"><h2>O papel de <span class="math inline">\(C\)</span>
-</h2>
-<h3 id="c-grande">
-<span class="math inline">\(C\)</span> grande</h3>
+</section>
+<section id="o-papel-de-c" class="slide level2">
+<h2>O papel de <span class="math inline">\(C\)</span></h2>
+<h3 id="c-grande"><span class="math inline">\(C\)</span> grande</h3>
 <p>Violações da margem são fortemente penalizadas</p>
 <p><span class="math display">\[
 C\uparrow
 \Rightarrow
 \text{menor tolerância a violações}
 \]</span></p>
-<h3 id="c-pequeno">
-<span class="math inline">\(C\)</span> pequeno</h3>
+<h3 id="c-pequeno"><span class="math inline">\(C\)</span> pequeno</h3>
 <p>Aceitamos mais violações em troca de uma margem maior</p>
 <p><span class="math display">\[
 C\downarrow
 \Rightarrow
 \text{maior regularização}
 \]</span></p>
-</section><section class="slide level2">
-<img data-src="../..\images/classificacao/soft_margin.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="hinge-loss" class="slide level2"><h2>Hinge loss</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/classificacao/soft_margin.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="hinge-loss" class="slide level2">
+<h2>Hinge loss</h2>
 <p>A SVM também pode ser vista como minimização de</p>
 <p><span class="math display">\[
 \boxed{
@@ -724,7 +834,9 @@ L_{\text{hinge}}(y,f(\mathbf x))
 }
 \]</span></p>
 <p>com uma penalização sobre a complexidade do hiperplano</p>
-</section><section id="interpretando-a-hinge-loss" class="slide level2"><h2>Interpretando a hinge loss</h2>
+</section>
+<section id="interpretando-a-hinge-loss" class="slide level2">
+<h2>Interpretando a hinge loss</h2>
 <p>Se</p>
 <p><span class="math display">\[
 yf(\mathbf x)\geq1
@@ -738,7 +850,9 @@ L_{\text{hinge}}=0
 yf(\mathbf x)&lt;1
 \]</span></p>
 <p>há penalização</p>
-</section><section id="comparação-conceitual" class="slide level2"><h2>Comparação conceitual</h2>
+</section>
+<section id="comparação-conceitual" class="slide level2">
+<h2>Comparação conceitual</h2>
 <h3 id="regressão-logística">Regressão logística</h3>
 <p>Estima diretamente uma probabilidade</p>
 <p><span class="math display">\[
@@ -759,9 +873,14 @@ f(\mathbf x)
 </div>
 </div>
 </div>
-</section></section><section><section id="svm-não-linear" class="title-slide slide level1 center"><h1>SVM não linear</h1>
+</section></section>
+<section>
+<section id="svm-não-linear" class="title-slide slide level1 center">
+<h1>SVM não linear</h1>
 
-</section><section id="quando-uma-reta-não-basta" class="slide level2"><h2>Quando uma reta não basta</h2>
+</section>
+<section id="quando-uma-reta-não-basta" class="slide level2">
+<h2>Quando uma reta não basta</h2>
 <p>Se a separação é não linear, podemos transformar as covariáveis</p>
 <p><span class="math display">\[
 \mathbf x
@@ -769,8 +888,13 @@ f(\mathbf x)
 \phi(\mathbf x)
 \]</span></p>
 <p>e construir um hiperplano no novo espaço</p>
-</section><section class="slide level2">
-<img data-src="../..\images/classificacao/kernel_trick.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="kernel-trick" class="slide level2"><h2>Kernel trick</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/classificacao/kernel_trick.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="kernel-trick" class="slide level2">
+<h2>Kernel trick</h2>
 <p>Em vez de calcular explicitamente <span class="math inline">\(\phi(\mathbf x)\)</span>, utilizamos</p>
 <p><span class="math display">\[
 \boxed{
@@ -783,7 +907,9 @@ K(\mathbf x,\mathbf x')
 }
 \]</span></p>
 <p>Assim, podemos produzir fronteiras não lineares no espaço original</p>
-</section><section id="kernels-comuns" class="slide level2"><h2>Kernels comuns</h2>
+</section>
+<section id="kernels-comuns" class="slide level2">
+<h2>Kernels comuns</h2>
 <h3 id="linear">Linear</h3>
 <p><span class="math display">\[
 K(\mathbf x,\mathbf x')
@@ -806,8 +932,13 @@ K(\mathbf x,\mathbf x')
 \right)
 }
 \]</span></p>
-</section><section class="slide level2">
-<img data-src="../..\images/classificacao/comp_kernel_trick.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="hiperparâmetros" class="slide level2"><h2>Hiperparâmetros</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/classificacao/comp_kernel_trick.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="hiperparâmetros" class="slide level2">
+<h2>Hiperparâmetros</h2>
 <p>Na SVM com kernel RBF, dois parâmetros são especialmente importantes</p>
 <p><span class="math display">\[
 \boxed{
@@ -817,7 +948,9 @@ C
 }
 \]</span></p>
 <p>Eles controlam aspectos diferentes da flexibilidade e devem ser escolhidos por validação</p>
-</section><section id="svm-multi-classe" class="slide level2"><h2>SVM: multi-classe</h2>
+</section>
+<section id="svm-multi-classe" class="slide level2">
+<h2>SVM: multi-classe</h2>
 <p>SVM é naturalmente binário. Para <span class="math inline">\(C &gt; 2\)</span> classes, duas estratégias principais:</p>
 <p><strong>One-vs-One (OVO):</strong></p>
 <ul>
@@ -830,14 +963,22 @@ C
 <li>Ajusta <span class="math inline">\(C\)</span> classificadores binários</li>
 <li>Cada classe vs.&nbsp;todas as outras</li>
 <li>Classe com maior pontuação é escolhida</li>
-</ul></section><section class="slide level2">
-<img data-src="../..\images/classificacao/ovo_ovr.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="svr-svm" class="slide level2"><h2>SVR × SVM</h2>
+</ul>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/classificacao/ovo_ovr.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="svr-svm" class="slide level2">
+<h2>SVR × SVM</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Aspecto</th>
 <th>SVR</th>
 <th>SVM</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>tarefa</td>
@@ -846,14 +987,12 @@ C
 </tr>
 <tr class="even">
 <td>região</td>
-<td>
-<span class="math inline">\(\varepsilon\)</span>-tube</td>
+<td><span class="math inline">\(\varepsilon\)</span>-tube</td>
 <td>margem</td>
 </tr>
 <tr class="odd">
 <td>perda</td>
-<td>
-<span class="math inline">\(\varepsilon\)</span>-insensível</td>
+<td><span class="math inline">\(\varepsilon\)</span>-insensível</td>
 <td>hinge</td>
 </tr>
 <tr class="even">
@@ -866,14 +1005,31 @@ C
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 6</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -1040,7 +1196,7 @@ C
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1065,42 +1221,84 @@ C
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1148,13 +1346,14 @@ C
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1267,6 +1466,6 @@ C
         }
       });
       </script>
-
+    
 
 </body></html>

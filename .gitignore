@@ -11,3 +11,5 @@
 .positai
 *.exe
 *.exe
+
+**/*.quarto_ipynb

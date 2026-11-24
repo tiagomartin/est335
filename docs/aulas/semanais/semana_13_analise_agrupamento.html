@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Aprendizado Não Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte II : Aprendizado Não Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte II : Aprendizado Não Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte II : Aprendizado Não Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Análise de Agrupamento</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="semana-13" class="title-slide slide level1 center"><h1>Semana 13</h1>
+</section>
+<section>
+<section id="semana-13" class="title-slide slide level1 center">
+<h1>Semana 13</h1>
 
-</section><section id="análise-de-agrupamento" class="slide level2"><h2>Análise de Agrupamento</h2>
+</section>
+<section id="análise-de-agrupamento" class="slide level2">
+<h2>Análise de Agrupamento</h2>
 <p>Na Semana 12, construímos novas representações dos dados</p>
 <p>Agora queremos responder a outra pergunta:</p>
 <p><span class="math display">\[
@@ -147,7 +159,9 @@
 }
 \]</span></p>
 <p>Sem uma variável resposta, a própria definição de grupo passa a fazer parte do problema</p>
-</section><section id="conhecimento-prévio" class="slide level2"><h2>Conhecimento prévio</h2>
+</section>
+<section id="conhecimento-prévio" class="slide level2">
+<h2>Conhecimento prévio</h2>
 <p>Em Estatística Multivariada, os alunos já estudaram métodos clássicos de agrupamento</p>
 <p>Nesta disciplina, não vamos reconstruir toda essa teoria</p>
 <p>Usaremos:</p>
@@ -160,7 +174,9 @@
 <p><span class="math display">\[
 \boxed{\text{Agrupamento espectral}}
 \]</span></p>
-</section><section id="organização-da-semana" class="slide level2"><h2>Organização da semana</h2>
+</section>
+<section id="organização-da-semana" class="slide level2">
+<h2>Organização da semana</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="encontro-13.1">Encontro 13.1</h3>
@@ -189,7 +205,9 @@
 <li>interpretação e limitações</li>
 </ul>
 </div></div>
-</section><section id="objetivos" class="slide level2"><h2>Objetivos</h2>
+</section>
+<section id="objetivos" class="slide level2">
+<h2>Objetivos</h2>
 <p>Ao final da semana, devemos ser capazes de:</p>
 <ul>
 <li>formular agrupamento como problema não supervisionado</li>
@@ -199,9 +217,15 @@
 <li>construir o Laplaciano de um grafo</li>
 <li>compreender a lógica do agrupamento espectral</li>
 <li>distinguir agrupamento no espaço original de agrupamento em uma representação espectral</li>
-</ul></section></section><section><section id="encontro-13.1-o-problema" class="title-slide slide level1 center"><h1>Encontro 13.1 — O problema</h1>
+</ul>
+</section></section>
+<section>
+<section id="encontro-13.1-o-problema" class="title-slide slide level1 center">
+<h1>Encontro 13.1 — O problema</h1>
 
-</section><section id="o-que-é-um-cluster" class="slide level2"><h2>O que é um cluster?</h2>
+</section>
+<section id="o-que-é-um-cluster" class="slide level2">
+<h2>O que é um cluster?</h2>
 <p>Intuitivamente, queremos que</p>
 <p><span class="math display">\[
 \boxed{
@@ -215,7 +239,9 @@
 }
 \]</span></p>
 <p>Mas isso depende de como definimos <strong>semelhança</strong></p>
-</section><section id="não-existe-uma-única-definição-de-grupo" class="slide level2"><h2>Não existe uma única definição de grupo</h2>
+</section>
+<section id="não-existe-uma-única-definição-de-grupo" class="slide level2">
+<h2>Não existe uma única definição de grupo</h2>
 <p>Um grupo pode significar:</p>
 <ul>
 <li>pequena distância Euclidiana</li>
@@ -225,11 +251,21 @@
 <li>similaridade em uma representação transformada</li>
 </ul>
 <p>Diferentes algoritmos formalizam ideias diferentes de agrupamento</p>
-</section><section id="exemplo-simples" class="slide level2"><h2>Exemplo simples</h2>
+</section>
+<section id="exemplo-simples" class="slide level2">
+<h2>Exemplo simples</h2>
 
-<img data-src="semana_13_analise_agrupamento_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:68.0%"></section><section class="slide level2"></section></section><section><section id="revisão-k-means" class="title-slide slide level1 center"><h1>Revisão — K-means</h1>
+<img data-src="semana_13_analise_agrupamento_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:68.0%"></section>
+<section class="slide level2">
 
-</section><section id="a-ideia" class="slide level2"><h2>A ideia</h2>
+</section></section>
+<section>
+<section id="revisão-k-means" class="title-slide slide level1 center">
+<h1>Revisão — K-means</h1>
+
+</section>
+<section id="a-ideia" class="slide level2">
+<h2>A ideia</h2>
 <p>Queremos particionar as observações em <span class="math inline">\(K\)</span> grupos</p>
 <p><span class="math display">\[
 C_1,\ldots,C_K
@@ -238,7 +274,9 @@ C_1,\ldots,C_K
 <p><span class="math display">\[
 \boldsymbol\mu_1,\ldots,\boldsymbol\mu_K
 \]</span></p>
-</section><section id="função-objetivo" class="slide level2"><h2>Função objetivo</h2>
+</section>
+<section id="função-objetivo" class="slide level2">
+<h2>Função objetivo</h2>
 <p>K-means procura minimizar a variabilidade dentro dos grupos</p>
 <p><span class="math display">\[
 \boxed{
@@ -259,7 +297,9 @@ J(C_1,\ldots,C_K)
 \sum_{i\in C_k}
 \mathbf x_i
 \]</span></p>
-</section><section id="duas-operações" class="slide level2"><h2>Duas operações</h2>
+</section>
+<section id="duas-operações" class="slide level2">
+<h2>Duas operações</h2>
 <p>O algoritmo alterna entre:</p>
 <h3 id="atribuição">Atribuição</h3>
 <p><span class="math display">\[
@@ -283,7 +323,9 @@ c_i
 }
 \]</span></p>
 <p>até estabilização</p>
-</section><section id="geometria-implícita" class="slide level2"><h2>Geometria implícita</h2>
+</section>
+<section id="geometria-implícita" class="slide level2">
+<h2>Geometria implícita</h2>
 <p>Cada observação é atribuída ao centroide mais próximo</p>
 <p>Assim, os centroides induzem uma partição do espaço em células de Voronoi</p>
 <p>Isso favorece grupos aproximadamente:</p>
@@ -291,13 +333,23 @@ c_i
 <li>compactos</li>
 <li>convexos</li>
 <li>relativamente isotrópicos</li>
-</ul></section><section class="slide level2"></section></section><section><section id="quando-k-means-encontra-dificuldades" class="title-slide slide level1 center"><h1>Quando K-means encontra dificuldades?</h1>
+</ul>
+</section>
+<section class="slide level2">
 
-</section><section id="estruturas-não-convexas" class="slide level2"><h2>Estruturas não convexas</h2>
+</section></section>
+<section>
+<section id="quando-k-means-encontra-dificuldades" class="title-slide slide level1 center">
+<h1>Quando K-means encontra dificuldades?</h1>
+
+</section>
+<section id="estruturas-não-convexas" class="slide level2">
+<h2>Estruturas não convexas</h2>
 <p>Considere:</p>
 
-<img data-src="semana_13_analise_agrupamento_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:68.0%"></section><section id="o-problema-não-é-apenas-escolher-k" class="slide level2"><h2>O problema não é apenas escolher <span class="math inline">\(K\)</span>
-</h2>
+<img data-src="semana_13_analise_agrupamento_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:68.0%"></section>
+<section id="o-problema-não-é-apenas-escolher-k" class="slide level2">
+<h2>O problema não é apenas escolher <span class="math inline">\(K\)</span></h2>
 <p>Mesmo sabendo que</p>
 <p><span class="math display">\[
 K=2
@@ -307,9 +359,17 @@ K=2
 <p><span class="math display">\[
 \boxed{\text{conectividade local}}
 \]</span></p>
-</section><section class="slide level2"></section></section><section><section id="revisão-agrupamento-hierárquico" class="title-slide slide level1 center"><h1>Revisão — Agrupamento Hierárquico</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="outra-estratégia" class="slide level2"><h2>Outra estratégia</h2>
+</section></section>
+<section>
+<section id="revisão-agrupamento-hierárquico" class="title-slide slide level1 center">
+<h1>Revisão — Agrupamento Hierárquico</h1>
+
+</section>
+<section id="outra-estratégia" class="slide level2">
+<h2>Outra estratégia</h2>
 <p>Métodos hierárquicos não exigem inicialmente uma partição fixa em <span class="math inline">\(K\)</span> grupos</p>
 <p>No procedimento aglomerativo:</p>
 <p><span class="math display">\[
@@ -324,7 +384,9 @@ n-2
 1
 \]</span></p>
 <p>grupos são sucessivamente fundidos</p>
-</section><section id="duas-escolhas-fundamentais" class="slide level2"><h2>Duas escolhas fundamentais</h2>
+</section>
+<section id="duas-escolhas-fundamentais" class="slide level2">
+<h2>Duas escolhas fundamentais</h2>
 <p>Precisamos definir:</p>
 <h3 id="distância-entre-observações">Distância entre observações</h3>
 <p><span class="math display">\[
@@ -335,10 +397,14 @@ d(\mathbf x_i,\mathbf x_j)
 D(A,B)
 \]</span></p>
 <p>O resultado depende de ambas</p>
-</section><section id="ward" class="slide level2"><h2>Ward</h2>
+</section>
+<section id="ward" class="slide level2">
+<h2>Ward</h2>
 <p>O método de Ward procura fundir grupos de modo a produzir o menor aumento possível na variabilidade intragrupo</p>
 <p>Isso o aproxima conceitualmente do objetivo do K-means</p>
-</section><section id="o-dendrograma" class="slide level2"><h2>O dendrograma</h2>
+</section>
+<section id="o-dendrograma" class="slide level2">
+<h2>O dendrograma</h2>
 <p>O método hierárquico produz uma árvore de fusões</p>
 <p>O corte do dendrograma em determinada altura gera uma partição</p>
 <p><span class="math display">\[
@@ -350,9 +416,17 @@ D(A,B)
 K\text{ grupos}
 }
 \]</span></p>
-</section><section class="slide level2"></section></section><section><section id="quantos-grupos" class="title-slide slide level1 center"><h1>Quantos grupos?</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="não-existe-resposta-puramente-algorítmica" class="slide level2"><h2>Não existe resposta puramente algorítmica</h2>
+</section></section>
+<section>
+<section id="quantos-grupos" class="title-slide slide level1 center">
+<h1>Quantos grupos?</h1>
+
+</section>
+<section id="não-existe-resposta-puramente-algorítmica" class="slide level2">
+<h2>Não existe resposta puramente algorítmica</h2>
 <p>Critérios como silhouette, estabilidade e conhecimento substantivo podem auxiliar a escolha</p>
 <p>Para a observação <span class="math inline">\(i\)</span>,</p>
 <p><span class="math display">\[
@@ -364,7 +438,9 @@ s(i)
 }
 \]</span></p>
 <p>Valores altos indicam melhor compatibilidade com o grupo atribuído # Por que precisamos de outro método?</p>
-</section><section id="o-limite-dos-centroides" class="slide level2"><h2>O limite dos centroides</h2>
+</section>
+<section id="o-limite-dos-centroides" class="slide level2">
+<h2>O limite dos centroides</h2>
 <p>K-means pergunta:</p>
 <blockquote>
 <p>Qual centroide está mais próximo?</p>
@@ -374,9 +450,14 @@ s(i)
 <p>Quais observações estão conectadas por uma sequência de vizinhos semelhantes?</p>
 </blockquote>
 <p>Essa mudança de perspectiva leva aos <strong>grafos</strong></p>
-</section></section><section><section id="encontro-13.2-agrupamento-espectral" class="title-slide slide level1 center"><h1>Encontro 13.2 — Agrupamento Espectral</h1>
+</section></section>
+<section>
+<section id="encontro-13.2-agrupamento-espectral" class="title-slide slide level1 center">
+<h1>Encontro 13.2 — Agrupamento Espectral</h1>
 
-</section><section id="dos-dados-para-um-grafo" class="slide level2"><h2>Dos dados para um grafo</h2>
+</section>
+<section id="dos-dados-para-um-grafo" class="slide level2">
+<h2>Dos dados para um grafo</h2>
 <p>Representamos cada observação por um vértice</p>
 <p><span class="math display">\[
 V=\{1,\ldots,n\}
@@ -388,7 +469,9 @@ V=\{1,\ldots,n\}
 G=(V,E)
 }
 \]</span></p>
-</section><section id="matriz-de-similaridades" class="slide level2"><h2>Matriz de similaridades</h2>
+</section>
+<section id="matriz-de-similaridades" class="slide level2">
+<h2>Matriz de similaridades</h2>
 <p>Definimos</p>
 <p><span class="math display">\[
 W=(w_{ij})
@@ -399,7 +482,9 @@ w_{ij}\geq0
 \]</span></p>
 <p>mede a similaridade entre as observações <span class="math inline">\(i\)</span> e <span class="math inline">\(j\)</span></p>
 <p>Quanto maior <span class="math inline">\(w_{ij}\)</span>, mais forte é a conexão</p>
-</section><section id="kernel-gaussiano" class="slide level2"><h2>Kernel Gaussiano</h2>
+</section>
+<section id="kernel-gaussiano" class="slide level2">
+<h2>Kernel Gaussiano</h2>
 <p>Uma escolha comum é</p>
 <p><span class="math display">\[
 \boxed{
@@ -416,30 +501,38 @@ w_{ij}
 }
 \]</span></p>
 <p>para pares de observações que decidimos conectar</p>
-</section><section id="o-papel-de-sigma" class="slide level2"><h2>O papel de <span class="math inline">\(\sigma\)</span>
-</h2>
+</section>
+<section id="o-papel-de-sigma" class="slide level2">
+<h2>O papel de <span class="math inline">\(\sigma\)</span></h2>
 <p>O parâmetro</p>
 <p><span class="math display">\[
 \sigma
 \]</span></p>
 <p>controla a escala da vizinhança</p>
-<h3 id="sigma-pequeno">
-<span class="math inline">\(\sigma\)</span> pequeno</h3>
+<h3 id="sigma-pequeno"><span class="math inline">\(\sigma\)</span> pequeno</h3>
 <p>apenas observações muito próximas apresentam forte similaridade</p>
-<h3 id="sigma-grande">
-<span class="math inline">\(\sigma\)</span> grande</h3>
+<h3 id="sigma-grande"><span class="math inline">\(\sigma\)</span> grande</h3>
 <p>conexões permanecem fortes mesmo para observações mais distantes</p>
-</section><section class="slide level2"></section></section><section><section id="como-construir-o-grafo" class="title-slide slide level1 center"><h1>Como construir o grafo?</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="grafo-completo" class="slide level2"><h2>Grafo completo</h2>
+</section></section>
+<section>
+<section id="como-construir-o-grafo" class="title-slide slide level1 center">
+<h1>Como construir o grafo?</h1>
+
+</section>
+<section id="grafo-completo" class="slide level2">
+<h2>Grafo completo</h2>
 <p>Todas as observações são conectadas</p>
 <p><span class="math display">\[
 w_{ij}&gt;0
 \]</span></p>
 <p>para praticamente todo par</p>
 <p>Pode ser computacionalmente caro e incluir relações pouco informativas</p>
-</section><section id="k-vizinhos-mais-próximos" class="slide level2"><h2>
-<span class="math inline">\(k\)</span> vizinhos mais próximos</h2>
+</section>
+<section id="k-vizinhos-mais-próximos" class="slide level2">
+<h2><span class="math inline">\(k\)</span> vizinhos mais próximos</h2>
 <p>Conectamos <span class="math inline">\(i\)</span> a <span class="math inline">\(j\)</span> apenas quando uma observação pertence à vizinhança da outra</p>
 <p><span class="math display">\[
 \boxed{
@@ -447,8 +540,9 @@ j\in N_k(i)
 }
 \]</span></p>
 <p>Isso enfatiza a geometria local</p>
-</section><section id="varepsilon-vizinhança" class="slide level2"><h2>
-<span class="math inline">\(\varepsilon\)</span>-vizinhança</h2>
+</section>
+<section id="varepsilon-vizinhança" class="slide level2">
+<h2><span class="math inline">\(\varepsilon\)</span>-vizinhança</h2>
 <p>Conectamos observações quando</p>
 <p><span class="math display">\[
 \boxed{
@@ -458,9 +552,17 @@ j\in N_k(i)
 }
 \]</span></p>
 <p>O parâmetro <span class="math inline">\(\varepsilon\)</span> determina a escala de conectividade</p>
-</section><section class="slide level2"></section></section><section><section id="matriz-de-graus" class="title-slide slide level1 center"><h1>Matriz de graus</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="grau-de-um-vértice" class="slide level2"><h2>Grau de um vértice</h2>
+</section></section>
+<section>
+<section id="matriz-de-graus" class="title-slide slide level1 center">
+<h1>Matriz de graus</h1>
+
+</section>
+<section id="grau-de-um-vértice" class="slide level2">
+<h2>Grau de um vértice</h2>
 <p>Para cada observação,</p>
 <p><span class="math display">\[
 \boxed{
@@ -478,9 +580,17 @@ D
 \operatorname{diag}(d_1,\ldots,d_n)
 }
 \]</span></p>
-</section><section class="slide level2"></section></section><section><section id="laplaciano-do-grafo" class="title-slide slide level1 center"><h1>Laplaciano do grafo</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="definição" class="slide level2"><h2>Definição</h2>
+</section></section>
+<section>
+<section id="laplaciano-do-grafo" class="title-slide slide level1 center">
+<h1>Laplaciano do grafo</h1>
+
+</section>
+<section id="definição" class="slide level2">
+<h2>Definição</h2>
 <p>O Laplaciano não normalizado é</p>
 <p><span class="math display">\[
 \boxed{
@@ -488,7 +598,9 @@ L=D-W
 }
 \]</span></p>
 <p>Essa matriz contém informação sobre a conectividade do grafo</p>
-</section><section id="por-que-o-laplaciano-é-especial" class="slide level2"><h2>Por que o Laplaciano é especial?</h2>
+</section>
+<section id="por-que-o-laplaciano-é-especial" class="slide level2">
+<h2>Por que o Laplaciano é especial?</h2>
 <p>Para qualquer vetor</p>
 <p><span class="math display">\[
 \mathbf f\in\mathbb R^n
@@ -505,7 +617,9 @@ w_{ij}
 (f_i-f_j)^2
 }
 \]</span></p>
-</section><section id="interpretação" class="slide level2"><h2>Interpretação</h2>
+</section>
+<section id="interpretação" class="slide level2">
+<h2>Interpretação</h2>
 <p>Se <span class="math inline">\(w_{ij}\)</span> é grande, minimizar</p>
 <p><span class="math display">\[
 \mathbf f^tL\mathbf f
@@ -515,9 +629,17 @@ w_{ij}
 f_i\approx f_j
 \]</span></p>
 <p>Portanto, os autovetores associados aos menores autovalores produzem coordenadas que variam suavemente ao longo de regiões fortemente conectadas</p>
-</section><section class="slide level2"></section></section><section><section id="componentes-conexas" class="title-slide slide level1 center"><h1>Componentes conexas</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="um-resultado-importante" class="slide level2"><h2>Um resultado importante</h2>
+</section></section>
+<section>
+<section id="componentes-conexas" class="title-slide slide level1 center">
+<h1>Componentes conexas</h1>
+
+</section>
+<section id="um-resultado-importante" class="slide level2">
+<h2>Um resultado importante</h2>
 <p>Se o grafo possui <span class="math inline">\(K\)</span> componentes conexas perfeitamente separadas, então o Laplaciano possui</p>
 <p><span class="math display">\[
 \boxed{
@@ -526,13 +648,23 @@ K
 }
 \]</span></p>
 <p>Os autovetores correspondentes identificam essas componentes</p>
-</section><section id="dados-reais" class="slide level2"><h2>Dados reais</h2>
+</section>
+<section id="dados-reais" class="slide level2">
+<h2>Dados reais</h2>
 <p>Em geral, os grupos não estão perfeitamente desconectados</p>
 <p>Nesse caso, buscamos autovetores associados aos <strong>menores autovalores</strong></p>
 <p>Eles fornecem uma aproximação contínua da estrutura de componentes do grafo</p>
-</section><section class="slide level2"></section></section><section><section id="embedding-espectral" class="title-slide slide level1 center"><h1>Embedding espectral</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="construção" class="slide level2"><h2>Construção</h2>
+</section></section>
+<section>
+<section id="embedding-espectral" class="title-slide slide level1 center">
+<h1>Embedding espectral</h1>
+
+</section>
+<section id="construção" class="slide level2">
+<h2>Construção</h2>
 <p>Considere os autovetores</p>
 <p><span class="math display">\[
 \mathbf u_1,\ldots,\mathbf u_K
@@ -549,7 +681,9 @@ U
 \in\mathbb R^{n\times K}
 }
 \]</span></p>
-</section><section id="uma-nova-representação" class="slide level2"><h2>Uma nova representação</h2>
+</section>
+<section id="uma-nova-representação" class="slide level2">
+<h2>Uma nova representação</h2>
 <p>A linha <span class="math inline">\(i\)</span> de <span class="math inline">\(U\)</span> fornece uma nova representação da observação <span class="math inline">\(i\)</span></p>
 <p><span class="math display">\[
 \boxed{
@@ -564,7 +698,9 @@ U_{i\cdot}
 <p><span class="math display">\[
 \mathbf z_1,\ldots,\mathbf z_n
 \]</span></p>
-</section><section id="e-então-aparece-novamente-o-k-means" class="slide level2"><h2>E então aparece novamente o K-means</h2>
+</section>
+<section id="e-então-aparece-novamente-o-k-means" class="slide level2">
+<h2>E então aparece novamente o K-means</h2>
 <p>No espaço original:</p>
 <p><span class="math display">\[
 \boxed{
@@ -580,7 +716,9 @@ U_{i\cdot}
 }
 \]</span></p>
 <p>Aplicamos K-means aos <span class="math inline">\(\mathbf z_i\)</span></p>
-</section><section id="a-ideia-central" class="slide level2"><h2>A ideia central</h2>
+</section>
+<section id="a-ideia-central" class="slide level2">
+<h2>A ideia central</h2>
 <p>O agrupamento espectral não elimina o K-means</p>
 <p>Ele muda a representação na qual o K-means é aplicado</p>
 <p><span class="math display">\[
@@ -598,12 +736,22 @@ Z
 \text{K-means}
 }
 \]</span></p>
-</section><section class="slide level2"></section></section><section><section id="por-que-isso-ajuda" class="title-slide slide level1 center"><h1>Por que isso ajuda?</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="no-espaço-original" class="slide level2"><h2>No espaço original</h2>
+</section></section>
+<section>
+<section id="por-que-isso-ajuda" class="title-slide slide level1 center">
+<h1>Por que isso ajuda?</h1>
+
+</section>
+<section id="no-espaço-original" class="slide level2">
+<h2>No espaço original</h2>
 <p>Duas observações podem estar relativamente distantes em distância Euclidiana</p>
 <p>Mas podem pertencer à mesma estrutura se houver uma sequência de fortes conexões locais entre elas</p>
-</section><section id="no-espaço-espectral" class="slide level2"><h2>No espaço espectral</h2>
+</section>
+<section id="no-espaço-espectral" class="slide level2">
+<h2>No espaço espectral</h2>
 <p>A representação é determinada pela conectividade do grafo</p>
 <p>Regiões fortemente conectadas tendem a ficar próximas</p>
 <p>Regiões fracamente conectadas tendem a se separar</p>
@@ -614,23 +762,35 @@ Z
 \text{estrutura de conectividade}
 }
 \]</span></p>
-</section><section class="slide level2"></section></section><section><section id="comparando-os-métodos" class="title-slide slide level1 center"><h1>Comparando os métodos</h1>
+</section>
+<section class="slide level2">
 
-</section><section id="k-means" class="slide level2"><h2>K-means</h2>
+</section></section>
+<section>
+<section id="comparando-os-métodos" class="title-slide slide level1 center">
+<h1>Comparando os métodos</h1>
+
+</section>
+<section id="k-means" class="slide level2">
+<h2>K-means</h2>
 <p>Agrupa em torno de centroides</p>
 <p><span class="math display">\[
 \boxed{
 \text{proximidade ao centro}
 }
 \]</span></p>
-</section><section id="hierárquico" class="slide level2"><h2>Hierárquico</h2>
+</section>
+<section id="hierárquico" class="slide level2">
+<h2>Hierárquico</h2>
 <p>Constrói uma sequência de fusões baseada em uma regra de ligação</p>
 <p><span class="math display">\[
 \boxed{
 \text{distância entre grupos}
 }
 \]</span></p>
-</section><section id="espectral" class="slide level2"><h2>Espectral</h2>
+</section>
+<section id="espectral" class="slide level2">
+<h2>Espectral</h2>
 <p>Transforma a estrutura de similaridades antes de agrupar</p>
 <p><span class="math display">\[
 \boxed{
@@ -641,7 +801,9 @@ Z
 \text{partição}
 }
 \]</span></p>
-</section><section id="visão-comparativa" class="slide level2"><h2>Visão comparativa</h2>
+</section>
+<section id="visão-comparativa" class="slide level2">
+<h2>Visão comparativa</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -649,12 +811,14 @@ Z
 <col style="width: 25%">
 <col style="width: 25%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Aspecto</th>
 <th>K-means</th>
 <th>Hierárquico</th>
 <th>Espectral</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>objeto central</td>
@@ -669,8 +833,7 @@ Z
 <td>adequado</td>
 </tr>
 <tr class="odd">
-<td>requer <span class="math inline">\(K\)</span>
-</td>
+<td>requer <span class="math inline">\(K\)</span></td>
 <td>sim</td>
 <td>não inicialmente</td>
 <td>geralmente sim</td>
@@ -691,13 +854,21 @@ Z
 <td>hiperparâmetros</td>
 <td><span class="math inline">\(K\)</span></td>
 <td>distância, ligação, corte</td>
-<td>grafo, escala, <span class="math inline">\(K\)</span>
-</td>
+<td>grafo, escala, <span class="math inline">\(K\)</span></td>
 </tr>
 </tbody>
-</table></section><section class="slide level2"></section></section><section><section id="avaliação-de-agrupamentos" class="title-slide slide level1 center"><h1>Avaliação de agrupamentos</h1>
+</table>
+</section>
+<section class="slide level2">
 
-</section><section id="sem-y-o-que-significa-melhor" class="slide level2"><h2>Sem <span class="math inline">\(Y\)</span>, o que significa “melhor”?</h2>
+</section></section>
+<section>
+<section id="avaliação-de-agrupamentos" class="title-slide slide level1 center">
+<h1>Avaliação de agrupamentos</h1>
+
+</section>
+<section id="sem-y-o-que-significa-melhor" class="slide level2">
+<h2>Sem <span class="math inline">\(Y\)</span>, o que significa “melhor”?</h2>
 <p>Podemos avaliar:</p>
 <ul>
 <li>compactação e separação</li>
@@ -713,7 +884,9 @@ Z
 \text{necessariamente estrutura substantiva}
 }
 \]</span> # Síntese da Semana 13</p>
-</section><section id="k-means-1" class="slide level2"><h2>K-means</h2>
+</section>
+<section id="k-means-1" class="slide level2">
+<h2>K-means</h2>
 <p><span class="math display">\[
 \boxed{
 \min
@@ -725,7 +898,9 @@ Z
 }
 \]</span></p>
 <p>É eficiente, mas sua geometria favorece grupos compactos em torno de centroides</p>
-</section><section id="hierárquico-1" class="slide level2"><h2>Hierárquico</h2>
+</section>
+<section id="hierárquico-1" class="slide level2">
+<h2>Hierárquico</h2>
 <p><span class="math display">\[
 \boxed{
 \text{distância}
@@ -736,7 +911,9 @@ Z
 }
 \]</span></p>
 <p>Produz uma estrutura de agrupamentos em múltiplas escalas</p>
-</section><section id="agrupamento-espectral" class="slide level2"><h2>Agrupamento espectral</h2>
+</section>
+<section id="agrupamento-espectral" class="slide level2">
+<h2>Agrupamento espectral</h2>
 <p><span class="math display">\[
 \boxed{
 X
@@ -753,7 +930,9 @@ K\text{-means}
 }
 \]</span></p>
 <p>Troca a geometria original por uma representação baseada em conectividade</p>
-</section><section id="mensagem-central" class="slide level2"><h2>Mensagem central</h2>
+</section>
+<section id="mensagem-central" class="slide level2">
+<h2>Mensagem central</h2>
 <p>Métodos de agrupamento diferem principalmente pela noção de estrutura que procuram preservar</p>
 <p><span class="math display">\[
 \boxed{
@@ -764,18 +943,37 @@ K\text{-means}
 \text{conectividade}
 }
 \]</span></p>
-</section><section id="próxima-semana" class="slide level2"><h2>Próxima semana</h2>
+</section>
+<section id="próxima-semana" class="slide level2">
+<h2>Próxima semana</h2>
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 13</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -942,7 +1140,7 @@ K\text{-means}
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -967,42 +1165,84 @@ K\text{-means}
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1050,13 +1290,14 @@ K\text{-means}
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1169,6 +1410,6 @@ K\text{-means}
         }
       });
       </script>
-
+    
 
 </body></html>

@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Bagging e Random Forest</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="de-uma-árvore-a-muitas" class="title-slide slide level1 center"><h1>De uma árvore a muitas</h1>
+</section>
+<section>
+<section id="de-uma-árvore-a-muitas" class="title-slide slide level1 center">
+<h1>De uma árvore a muitas</h1>
 
-</section><section id="o-problema" class="slide level2"><h2>O problema</h2>
+</section>
+<section id="o-problema" class="slide level2">
+<h2>O problema</h2>
 <p>Uma árvore profunda pode ter:</p>
 <p><span class="math display">\[
 \text{baixo viés}+\text{alta variância}
@@ -147,7 +159,9 @@
 <p><span class="math display">\[
 \boxed{\text{ajustar várias árvores e calcular uma média}}
 \]</span></p>
-</section><section id="por-que-combinar-árvores" class="slide level2"><h2>Por que combinar árvores?</h2>
+</section>
+<section id="por-que-combinar-árvores" class="slide level2">
+<h2>Por que combinar árvores?</h2>
 <p>Considere dois estimadores <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span>.</p>
 <p>Definimos o estimador combinado:</p>
 <p><span class="math display">\[
@@ -161,7 +175,10 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 + \frac{1}{4}\mathbb{V}(g_1(\mathbf{x}) + g_2(\mathbf{x}))
 + \text{bias}^2
 \]</span></p>
-</section><section class="slide level2"><p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
+</section>
+<section class="slide level2">
+
+<p>Se <span class="math inline">\(g_1(\mathbf{x})\)</span> e <span class="math inline">\(g_2(\mathbf{x})\)</span> são:</p>
 <ul>
 <li>não viesados<br>
 </li>
@@ -182,7 +199,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \le
 \mathbb{E}\big[(\boldsymbol{y} - g_i(\mathbf{x}))^2 \mid \mathbf{x}\big]
 \]</span></p>
-</section><section id="bootstrap" class="slide level2"><h2>Bootstrap</h2>
+</section>
+<section id="bootstrap" class="slide level2">
+<h2>Bootstrap</h2>
 <p>A partir de</p>
 <p><span class="math display">\[
 \mathcal D_n=\{(\mathbf x_i,y_i)\}_{i=1}^{n},
@@ -190,7 +209,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 <p>criamos <span class="math inline">\(\mathcal D_n^{*(b)}\)</span> sorteando <span class="math inline">\(n\)</span> observações <strong>com reposição</strong>.</p>
 <p>Repetimos para:</p>
 <p><span class="math display">\[b=1,\ldots,B\]</span></p>
-</section><section id="bagging" class="slide level2"><h2>Bagging</h2>
+</section>
+<section id="bagging" class="slide level2">
+<h2>Bagging</h2>
 <p>Ajustamos uma árvore <span class="math inline">\(\widehat g_b\)</span> em cada amostra bootstrap.</p>
 <p>A predição é:</p>
 <p><span class="math display">\[
@@ -200,14 +221,21 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 }
 \]</span></p>
 <p>Bagging = <strong>Bootstrap Aggregating</strong>.</p>
-</section><section id="a-intuição-estatística" class="slide level2"><h2>A intuição estatística</h2>
+</section>
+<section id="a-intuição-estatística" class="slide level2">
+<h2>A intuição estatística</h2>
 <p>Cada árvore é instável, mas seus erros não são idênticos.</p>
 <p>A média tende a cancelar parte da variabilidade específica de cada árvore.</p>
 <p><span class="math display">\[
 \boxed{\text{média de modelos instáveis}\Rightarrow\text{modelo mais estável}}
 \]</span></p>
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section><section id="propriedade-fundamental" class="slide level2"><h2>Propriedade fundamental</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/regressao/bagging.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="propriedade-fundamental" class="slide level2">
+<h2>Propriedade fundamental</h2>
 <p>Se os estimadores são aproximadamente não viesados:</p>
 <ul>
 <li>o viés permanece semelhante<br>
@@ -220,7 +248,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 \le
 \mathbb{E}[(\boldsymbol{y} - g_b(\mathbf{x}))^2 \mid \mathbf{x}]
 \]</span></p>
-</section><section id="importância-de-variáveis-em-árvores" class="slide level2"><h2>Importância de Variáveis em Árvores</h2>
+</section>
+<section id="importância-de-variáveis-em-árvores" class="slide level2">
+<h2>Importância de Variáveis em Árvores</h2>
 <p>Bagging permite medir a relevância de cada variável:</p>
 <ul>
 <li>baseada na redução do erro (RSS)<br>
@@ -233,7 +263,10 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 <li>esquerda (<span class="math inline">\(\mathcal{R}_{esq}\)</span>)<br>
 </li>
 <li>direita (<span class="math inline">\(\mathcal{R}_{dir}\)</span>)</li>
-</ul></section><section id="redução-do-erro" class="slide level2"><h2>Redução do erro</h2>
+</ul>
+</section>
+<section id="redução-do-erro" class="slide level2">
+<h2>Redução do erro</h2>
 <p>A redução no RSS é dada por:</p>
 <p><span class="math display">\[
 \text{RSS}_{pai}
@@ -250,7 +283,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 -
 \sum_{i \in \mathcal{R}_{dir}} (y_i - \bar{y}_{dir})^2
 \]</span></p>
-</section><section id="interpretação" class="slide level2"><h2>Interpretação</h2>
+</section>
+<section id="interpretação" class="slide level2">
+<h2>Interpretação</h2>
 <ul>
 <li>quanto maior a redução → melhor a divisão<br>
 </li>
@@ -259,7 +294,9 @@ g(\mathbf{x}) = \frac{g_1(\mathbf{x}) + g_2(\mathbf{x})}{2}
 <blockquote>
 <p>Variáveis importantes são aquelas que mais reduzem a variabilidade da resposta.</p>
 </blockquote>
-</section><section id="caso-ideal-independência" class="slide level2"><h2>Caso ideal: independência</h2>
+</section>
+<section id="caso-ideal-independência" class="slide level2">
+<h2>Caso ideal: independência</h2>
 <p>Se:</p>
 <p><span class="math display">\[
 Var[\widehat g_b(\mathbf x)]=\sigma_g^2
@@ -272,14 +309,18 @@ Var\left[
 =
 \frac{\sigma_g^2}{B}
 \]</span></p>
-</section><section id="mas-árvores-não-são-independentes" class="slide level2"><h2>Mas árvores não são independentes</h2>
+</section>
+<section id="mas-árvores-não-são-independentes" class="slide level2">
+<h2>Mas árvores não são independentes</h2>
 <p>As árvores nascem do mesmo conjunto original e frequentemente selecionam variáveis semelhantes.</p>
 <p>Suponha:</p>
 <p><span class="math display">\[
 Corr(\widehat g_b,\widehat g_{b'})=\rho
 \]</span></p>
 <p>A correlação limita a redução de variância.</p>
-</section><section id="variância-da-média-correlacionada" class="slide level2"><h2>Variância da média correlacionada</h2>
+</section>
+<section id="variância-da-média-correlacionada" class="slide level2">
+<h2>Variância da média correlacionada</h2>
 <p>Sob variância comum <span class="math inline">\(\sigma_g^2\)</span> e correlação comum <span class="math inline">\(\rho\)</span>:</p>
 <p><span class="math display">\[
 \boxed{
@@ -291,15 +332,13 @@ Var(\widehat g_{bag})
 \]</span></p>
 <p>Note que,</p>
 <ul>
-<li>
-<span class="math inline">\(\rho\sigma^2\)</span> é a parte da variância que <strong>não desaparece</strong> com o aumento de <span class="math inline">\(B\)</span>
-</li>
-<li>
-<span class="math inline">\(\dfrac{1-\rho}{B}\sigma^2\)</span> é a parte que <strong>cai com o número de árvores</strong><br><br>
-</li>
+<li><span class="math inline">\(\rho\sigma^2\)</span> é a parte da variância que <strong>não desaparece</strong> com o aumento de <span class="math inline">\(B\)</span></li>
+<li><span class="math inline">\(\dfrac{1-\rho}{B}\sigma^2\)</span> é a parte que <strong>cai com o número de árvores</strong><br><br></li>
 </ul>
 <p>Essa fórmula motiva diretamente a Random Forest.</p>
-</section><section id="interpretando" class="slide level2"><h2>Interpretando</h2>
+</section>
+<section id="interpretando" class="slide level2">
+<h2>Interpretando</h2>
 <p>Quando:</p>
 <p><span class="math display">\[B\to\infty,\]</span></p>
 <p><span class="math display">\[
@@ -308,7 +347,9 @@ Var(\widehat g_{bag})
 \rho\sigma_g^2
 \]</span></p>
 <p>Portanto, aumentar indefinidamente <span class="math inline">\(B\)</span> não remove a parcela associada à correlação.</p>
-</section><section id="o-que-precisamos-fazer" class="slide level2"><h2>O que precisamos fazer?</h2>
+</section>
+<section id="o-que-precisamos-fazer" class="slide level2">
+<h2>O que precisamos fazer?</h2>
 <p>A fórmula sugere duas estratégias:</p>
 <p><span class="math display">\[
 B\uparrow
@@ -317,21 +358,31 @@ B\uparrow
 \]</span></p>
 <p>Bagging aumenta <span class="math inline">\(B\)</span>.</p>
 <p>Random Forest introduz aleatoriedade para reduzir <span class="math inline">\(\rho\)</span>.</p>
-</section></section><section><section id="random-forest" class="title-slide slide level1 center"><h1>Random Forest</h1>
+</section></section>
+<section>
+<section id="random-forest" class="title-slide slide level1 center">
+<h1>Random Forest</h1>
 
-</section><section id="o-problema-do-bagging" class="slide level2"><h2>O problema do Bagging</h2>
+</section>
+<section id="o-problema-do-bagging" class="slide level2">
+<h2>O problema do Bagging</h2>
 <p>Se algumas covariáveis são muito fortes, muitas árvores bootstrap fazem splits semelhantes.</p>
 <p>Resultado:</p>
 <p><span class="math display">\[\rho\uparrow\]</span></p>
 <p>Random Forest tenta produzir árvores menos correlacionadas.</p>
-</section><section id="aleatoriedade-adicional" class="slide level2"><h2>Aleatoriedade adicional</h2>
+</section>
+<section id="aleatoriedade-adicional" class="slide level2">
+<h2>Aleatoriedade adicional</h2>
 <p>Para cada árvore:</p>
 <ol type="1">
 <li>gerar uma amostra bootstrap;</li>
 <li>em cada nó sortear apenas <span class="math inline">\(m\)</span> das <span class="math inline">\(p\)</span> covariáveis;</li>
 <li>buscar o melhor split somente entre essas <span class="math inline">\(m\)</span>;</li>
 <li>continuar recursivamente.</li>
-</ol></section><section id="bagging-é-caso-particular" class="slide level2"><h2>Bagging é caso particular</h2>
+</ol>
+</section>
+<section id="bagging-é-caso-particular" class="slide level2">
+<h2>Bagging é caso particular</h2>
 <p>Se:</p>
 <p><span class="math display">\[m=p,\]</span></p>
 <p>todas as variáveis competem em cada split:</p>
@@ -339,8 +390,9 @@ B\uparrow
 \boxed{\text{Random Forest}\rightarrow\text{Bagging}}
 \]</span></p>
 <p>Se <span class="math inline">\(m&lt;p\)</span>, introduzimos decorrelação adicional.</p>
-</section><section id="o-papel-de-m" class="slide level2"><h2>O papel de <span class="math inline">\(m\)</span>
-</h2>
+</section>
+<section id="o-papel-de-m" class="slide level2">
+<h2>O papel de <span class="math inline">\(m\)</span></h2>
 <p><span class="math display">\[
 m\downarrow
 \Rightarrow
@@ -351,14 +403,18 @@ m\downarrow
 <p><span class="math display">\[
 \boxed{\text{força das árvores}\times\text{correlação}}
 \]</span></p>
-</section><section id="comparação" class="slide level2"><h2>Comparação</h2>
+</section>
+<section id="comparação" class="slide level2">
+<h2>Comparação</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Método</th>
 <th style="text-align: right;">Bootstrap</th>
 <th style="text-align: right;">Covariáveis candidatas/split</th>
 <th>Predição</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Árvore</td>
@@ -376,8 +432,7 @@ m\downarrow
 <td>Random Forest</td>
 <td style="text-align: right;">sim</td>
 <td style="text-align: right;"><span class="math inline">\(m&lt;p\)</span></td>
-<td>média<br><br>
-</td>
+<td>média<br><br></td>
 </tr>
 </tbody>
 </table>
@@ -386,9 +441,17 @@ m\downarrow
 <p><span class="math display">\[
 m \approx \frac{d}{3}
 \]</span></p>
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section><section class="slide level2">
-<img data-src="semana_08_bagging_random_forest_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section><section id="o-preço-do-ensemble" class="slide level2"><h2>O preço do ensemble</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/regressao/rf.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section class="slide level2">
+
+
+<img data-src="semana_08_bagging_random_forest_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="o-preço-do-ensemble" class="slide level2">
+<h2>O preço do ensemble</h2>
 <p>Uma árvore pode ser visualizada como regras.</p>
 <p>Centenas de árvores não podem ser interpretadas diretamente da mesma forma.</p>
 <p><span class="math display">\[
@@ -397,9 +460,14 @@ m \approx \frac{d}{3}
 \text{interpretabilidade direta}\downarrow
 \]</span></p>
 <p>Esse problema será retomado no tópico de interpretabilidade.</p>
-</section></section><section><section id="fechamento" class="title-slide slide level1 center"><h1>Fechamento</h1>
+</section></section>
+<section>
+<section id="fechamento" class="title-slide slide level1 center">
+<h1>Fechamento</h1>
 
-</section><section id="a-progressão-da-semana" class="slide level2"><h2>A progressão da semana</h2>
+</section>
+<section id="a-progressão-da-semana" class="slide level2">
+<h2>A progressão da semana</h2>
 <p><span class="math display">\[
 \boxed{\text{Árvore}}
 \overset{\text{alta variância}}{\longrightarrow}
@@ -408,7 +476,9 @@ m \approx \frac{d}{3}
 \boxed{\text{Random Forest}}
 \]</span></p>
 <p>Cada método surge para resolver uma limitação do anterior.</p>
-</section><section id="seis-ideias-para-levar" class="slide level2"><h2>Seis ideias para levar</h2>
+</section>
+<section id="seis-ideias-para-levar" class="slide level2">
+<h2>Seis ideias para levar</h2>
 <ol type="1">
 <li>Árvores aproximam <span class="math inline">\(r(\mathbf x)\)</span> por regiões constantes.</li>
 <li>Splits são escolhidos para reduzir RSS.</li>
@@ -416,9 +486,15 @@ m \approx \frac{d}{3}
 <li>Bagging reduz variância pela média de árvores bootstrap.</li>
 <li>Correlação entre árvores limita essa redução.</li>
 <li>Random Forest restringe aleatoriamente as covariáveis candidatas para decorrelacionar as árvores.</li>
-</ol></section></section><section><section id="classificação-com-ensembles-de-árvores" class="title-slide slide level1 center"><h1>Classificação com ensembles de árvores</h1>
+</ol>
+</section></section>
+<section>
+<section id="classificação-com-ensembles-de-árvores" class="title-slide slide level1 center">
+<h1>Classificação com ensembles de árvores</h1>
 
-</section><section id="bagging-1" class="slide level2"><h2>Bagging</h2>
+</section>
+<section id="bagging-1" class="slide level2">
+<h2>Bagging</h2>
 <p>Em regressão:</p>
 <p><span class="math display">\[
 \widehat f_{\text{bag}}(\mathbf x)
@@ -439,7 +515,9 @@ m \approx \frac{d}{3}
 \right\}
 }
 \]</span></p>
-</section><section id="probabilidades-no-ensemble" class="slide level2"><h2>Probabilidades no ensemble</h2>
+</section>
+<section id="probabilidades-no-ensemble" class="slide level2">
+<h2>Probabilidades no ensemble</h2>
 <p>Outra possibilidade é agregar probabilidades</p>
 <p><span class="math display">\[
 \boxed{
@@ -457,7 +535,9 @@ m \approx \frac{d}{3}
 \arg\max_k
 \widehat p_k(\mathbf x)
 \]</span></p>
-</section><section id="random-forest-1" class="slide level2"><h2>Random Forest</h2>
+</section>
+<section id="random-forest-1" class="slide level2">
+<h2>Random Forest</h2>
 <p>A mudança em relação ao Bagging permanece a mesma</p>
 <p><span class="math display">\[
 \boxed{
@@ -467,13 +547,17 @@ m \approx \frac{d}{3}
 }
 \]</span></p>
 <p>A randomização reduz a correlação entre as árvores</p>
-</section><section id="o-que-muda-da-regressão" class="slide level2"><h2>O que muda da regressão?</h2>
+</section>
+<section id="o-que-muda-da-regressão" class="slide level2">
+<h2>O que muda da regressão?</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Aspecto</th>
 <th>Regressão</th>
 <th>Classificação</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>split</td>
@@ -496,14 +580,31 @@ m \approx \frac{d}{3}
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 8</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -670,7 +771,7 @@ m \approx \frac{d}{3}
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -695,42 +796,84 @@ m \approx \frac{d}{3}
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -778,13 +921,14 @@ m \approx \frac{d}{3}
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -897,6 +1041,6 @@ m \approx \frac{d}{3}
         }
       });
       </script>
-
+    
 
 </body></html>

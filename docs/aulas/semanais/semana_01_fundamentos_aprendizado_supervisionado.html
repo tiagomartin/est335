@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,15 +136,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Fundamentos do Aprendizado Estatístico</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section><section id="aprendizado-estatístico-supervisionado" class="title-slide slide level1 center"><h1>Aprendizado estatístico supervisionado</h1>
+</section>
+<section>
+<section id="aprendizado-estatístico-supervisionado" class="title-slide slide level1 center">
+<h1>Aprendizado estatístico supervisionado</h1>
 
-</section><section id="o-problema-fundamental" class="slide level2"><h2>O problema fundamental</h2>
+</section>
+<section id="o-problema-fundamental" class="slide level2">
+<h2>O problema fundamental</h2>
 <p>Considere uma amostra observada</p>
 <p><span class="math display">\[
 \mathcal D_n=\{(X_1,Y_1),\ldots,(X_n,Y_n)\}
@@ -153,7 +165,9 @@
 \boxed{\hat g(x)}\longrightarrow
 \boxed{\text{Predição}}
 \]</span></p>
-</section><section id="programação-tradicional-vs.-aprendizado-de-máquina" class="slide level2"><h2>Programação tradicional <em>vs.</em> aprendizado de máquina</h2>
+</section>
+<section id="programação-tradicional-vs.-aprendizado-de-máquina" class="slide level2">
+<h2>Programação tradicional <em>vs.</em> aprendizado de máquina</h2>
 <p><br><br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -169,7 +183,9 @@
 \]</span></p>
 <p>Parte das regras é aprendida a partir dos dados.</p>
 </div></div>
-</section><section id="o-que-significa-aprender" class="slide level2"><h2>O que significa “aprender”?</h2>
+</section>
+<section id="o-que-significa-aprender" class="slide level2">
+<h2>O que significa “aprender”?</h2>
 <p>Segundo a formulação clássica de Mitchell, um sistema aprende a partir de uma experiência <span class="math inline">\(E\)</span>, para uma tarefa <span class="math inline">\(T\)</span>, segundo uma medida de desempenho <span class="math inline">\(P\)</span>, quando seu desempenho melhora com a experiência.<br><br></p>
 <div class="columns">
 <div class="column" style="width:33%;">
@@ -182,7 +198,9 @@
 <h3 id="desempenho-p">Desempenho (<span class="math inline">\(P\)</span>)</h3>
 <p>RMSE em novas observações.</p>
 </div></div>
-</section><section id="diferentes-tipos-de-aprendizado" class="slide level2"><h2>Diferentes tipos de aprendizado</h2>
+</section>
+<section id="diferentes-tipos-de-aprendizado" class="slide level2">
+<h2>Diferentes tipos de aprendizado</h2>
 <p><br><br></p>
 <table class="caption-top">
 <colgroup>
@@ -190,11 +208,13 @@
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Tipo</th>
 <th>Informação disponível</th>
 <th>Exemplos</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><strong>Supervisionado</strong></td>
@@ -209,8 +229,7 @@
 <tr class="odd">
 <td><strong>Por reforço</strong></td>
 <td>estado, ação e recompensa</td>
-<td>decisões sequenciais<br><br>
-</td>
+<td>decisões sequenciais<br><br></td>
 </tr>
 </tbody>
 </table>
@@ -224,9 +243,14 @@
 </div>
 </div>
 </div>
-</section></section><section><section id="aprendizado-supervisionado" class="title-slide slide level1 center"><h1>Aprendizado supervisionado</h1>
+</section></section>
+<section>
+<section id="aprendizado-supervisionado" class="title-slide slide level1 center">
+<h1>Aprendizado supervisionado</h1>
 
-</section><section id="notação" class="slide level2"><h2>Notação</h2>
+</section>
+<section id="notação" class="slide level2">
+<h2>Notação</h2>
 <p>Dispomos de observações</p>
 <p><span class="math display">\[
 \mathcal D_n
@@ -246,7 +270,9 @@ g:\mathcal X\rightarrow\mathcal A
 }
 \]</span></p>
 <p>A forma de <span class="math inline">\(\mathcal Y\)</span>, a ação <span class="math inline">\(\mathcal A\)</span> e a função de perda determinam o problema de aprendizado</p>
-</section><section id="dois-tipos-de-resposta" class="slide level2"><h2>Dois tipos de resposta</h2>
+</section>
+<section id="dois-tipos-de-resposta" class="slide level2">
+<h2>Dois tipos de resposta</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="regressão">Regressão</h3>
@@ -259,7 +285,9 @@ Y\in\mathbb R
 Y\in\{1,\ldots,K\}
 \]</span> Resposta categórica</p>
 </div></div>
-</section><section id="predição-vs.-inferência" class="slide level2"><h2>Predição <em>vs.</em> inferência</h2>
+</section>
+<section id="predição-vs.-inferência" class="slide level2">
+<h2>Predição <em>vs.</em> inferência</h2>
 <p>De modo geral, este problema pode ser dividido em <strong>dois objetivos principais</strong>.<br><br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -277,7 +305,9 @@ Y\in\{1,\ldots,K\}
 <li>Qual modelo produz menor erro preditivo?</li>
 </ul>
 </div></div>
-</section><section id="duas-culturas-em-modelagem-estatística" class="slide level2"><h2>Duas culturas em modelagem estatística</h2>
+</section>
+<section id="duas-culturas-em-modelagem-estatística" class="slide level2">
+<h2>Duas culturas em modelagem estatística</h2>
 <p><span class="citation" data-cites="breiman2001twocultures">@breiman2001twocultures</span> descreve duas tradições complementares:<br><br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -295,17 +325,20 @@ Y\in\{1,\ldots,K\}
 <li>modelos potencialmente muito flexíveis.</li>
 </ul>
 </div></div>
-</section><section id="integração-entre-estatística-e-machine-learning" class="slide level2"><h2>Integração entre Estatística e Machine Learning</h2>
+</section>
+<section id="integração-entre-estatística-e-machine-learning" class="slide level2">
+<h2>Integração entre Estatística e Machine Learning</h2>
 <blockquote>
 <p><strong>Machine Learning e Estatística não são opostos: são complementares.</strong></p>
 </blockquote>
 <p>Historicamente, as duas áreas enfatizaram objetivos diferentes:</p>
 <ul>
-<li>
-<strong>Estatística:</strong> foco em <strong>inferência e interpretação</strong> dos modelos.</li>
-<li>
-<strong>Machine Learning:</strong> foco em <strong>predição e desempenho em novos dados</strong>.</li>
-</ul></section><section id="tendência-atual" class="slide level2"><h2>Tendência atual</h2>
+<li><strong>Estatística:</strong> foco em <strong>inferência e interpretação</strong> dos modelos.</li>
+<li><strong>Machine Learning:</strong> foco em <strong>predição e desempenho em novos dados</strong>.</li>
+</ul>
+</section>
+<section id="tendência-atual" class="slide level2">
+<h2>Tendência atual</h2>
 <p>Hoje muitos métodos modernos procuram <strong>combinar as duas culturas</strong>, buscando:</p>
 <ul>
 <li><strong>alto desempenho preditivo</strong></li>
@@ -315,25 +348,29 @@ Y\in\{1,\ldots,K\}
 <ul>
 <li><strong>Random Forest interpretável</strong></li>
 <li><strong>SHAP (Shapley Additive Explanations)</strong></li>
-<li>
-<strong>modelos semiparamétricos:</strong> GAM (Modelos aditivos generalizados), Modelo de Cox (riscos proporcionais), etc.</li>
-</ul></section><section id="interpretabilidade-vs.-flexibilidade" class="slide level2"><h2>Interpretabilidade <em>vs.</em> Flexibilidade</h2>
+<li><strong>modelos semiparamétricos:</strong> GAM (Modelos aditivos generalizados), Modelo de Cox (riscos proporcionais), etc.</li>
+</ul>
+</section>
+<section id="interpretabilidade-vs.-flexibilidade" class="slide level2">
+<h2>Interpretabilidade <em>vs.</em> Flexibilidade</h2>
 <p>Em modelagem estatística e aprendizado de máquina, frequentemente existe um <strong>trade-off entre interpretabilidade e flexibilidade</strong>.</p>
 <ul>
-<li>
-<strong>Interpretabilidade:</strong> facilidade de compreender como o modelo toma decisões.</li>
-<li>
-<strong>Flexibilidade:</strong> capacidade do modelo de capturar padrões complexos nos dados.</li>
+<li><strong>Interpretabilidade:</strong> facilidade de compreender como o modelo toma decisões.</li>
+<li><strong>Flexibilidade:</strong> capacidade do modelo de capturar padrões complexos nos dados.</li>
 </ul>
 
-<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section><section id="interpretabilidade-vs.-flexibilidade-1" class="slide level2"><h2>Interpretabilidade <em>vs.</em> Flexibilidade</h2>
+<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="interpretabilidade-vs.-flexibilidade-1" class="slide level2">
+<h2>Interpretabilidade <em>vs.</em> Flexibilidade</h2>
 
 <img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p><span class="math display">\[
 \text{Maior interpretabilidade}
 \quad\longleftrightarrow\quad
 \text{Maior flexibilidade}
 \]</span></p>
-</section><section id="formulação-do-aprendizado-estatístico" class="slide level2"><h2>Formulação do aprendizado estatístico</h2>
+</section>
+<section id="formulação-do-aprendizado-estatístico" class="slide level2">
+<h2>Formulação do aprendizado estatístico</h2>
 <p>Buscamos aproximar a <strong>função de predição</strong>, que descreve a relação entre uma variável resposta <span class="math inline">\(Y \in \mathbb{R}\)</span> e um vetor de covariáveis <span class="math inline">\(x\)</span>.</p>
 <p><span class="math display">\[
 \boxed{\hat g(x)\approx r(x)=\mathbb E[Y\mid X=x]}
@@ -342,9 +379,14 @@ Y\in\{1,\ldots,K\}
 <blockquote>
 <p><strong>Como definir matematicamente o que significa uma boa previsão?</strong></p>
 </blockquote>
-</section></section><section><section id="função-de-perda-e-função-de-risco" class="title-slide slide level1 center"><h1>Função de perda e função de risco</h1>
+</section></section>
+<section>
+<section id="função-de-perda-e-função-de-risco" class="title-slide slide level1 center">
+<h1>Função de perda e função de risco</h1>
 
-</section><section id="quanto-custa-errar" class="slide level2"><h2>Quanto custa errar?</h2>
+</section>
+<section id="quanto-custa-errar" class="slide level2">
+<h2>Quanto custa errar?</h2>
 <p>Suponha que o valor observado seja</p>
 <p><span class="math display">\[
 Y=80
@@ -356,13 +398,17 @@ Y=80
 \hat Y_B=65
 \]</span></p>
 <p>Precisamos de uma regra que atribua um <strong>custo ao erro de predição</strong>.</p>
-</section><section id="função-de-perda" class="slide level2"><h2>Função de perda</h2>
+</section>
+<section id="função-de-perda" class="slide level2">
+<h2>Função de perda</h2>
 <p>Uma função de perda é denotada por</p>
 <p><span class="math display">\[
 L(Y,g(X))
 \]</span></p>
 <p>Ela mede o <strong>custo associado</strong> à previsão <span class="math inline">\(g(X)\)</span> quando o valor observado é <span class="math inline">\(Y\)</span>.</p>
-</section><section id="perda-quadrática" class="slide level2"><h2>Perda quadrática</h2>
+</section>
+<section id="perda-quadrática" class="slide level2">
+<h2>Perda quadrática</h2>
 <p>Uma escolha comum em problemas de regressão é a <strong>perda quadrática</strong></p>
 <p><span class="math display">\[
 \boxed{L(Y,g(X))=(Y-g(X))^2}
@@ -372,16 +418,21 @@ L(Y,g(X))
 <li>penaliza erros grandes de forma acentuada;</li>
 <li>está associada à média condicional;</li>
 <li>conduz ao MSE/RMSE na avaliação empírica.</li>
-</ul></section><section id="perda-absoluta" class="slide level2"><h2>Perda absoluta</h2>
+</ul>
+</section>
+<section id="perda-absoluta" class="slide level2">
+<h2>Perda absoluta</h2>
 <p>Além da perda quadrática, outras funções de perda podem ser utilizadas.</p>
 <p><span class="math display">\[
 \boxed{L(Y,g(X))=|Y-g(X)|}
 \]</span></p>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Perda</th>
 <th>Preditor ótimo</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>quadrática</td>
@@ -389,8 +440,7 @@ L(Y,g(X))
 </tr>
 <tr class="even">
 <td>absoluta</td>
-<td>mediana condicional <br><br>
-</td>
+<td>mediana condicional <br><br></td>
 </tr>
 </tbody>
 </table>
@@ -404,13 +454,17 @@ L(Y,g(X))
 </div>
 </div>
 </div>
-</section><section id="da-perda-ao-risco" class="slide level2"><h2>Da perda ao risco</h2>
+</section>
+<section id="da-perda-ao-risco" class="slide level2">
+<h2>Da perda ao risco</h2>
 <p>A perda avalia <strong>uma previsão</strong>. O risco avalia o desempenho médio do modelo em novas observações:</p>
 <p><span class="math display">\[
 \boxed{R(g)=\mathbb E[L(Y,g(X))]}
 \]</span></p>
 <p>Ou seja, o risco corresponde ao <strong>valor esperado da função de perda</strong>.</p>
-</section><section id="a-perda-depende-da-tarefa" class="slide level2"><h2>A perda depende da tarefa</h2>
+</section>
+<section id="a-perda-depende-da-tarefa" class="slide level2">
+<h2>A perda depende da tarefa</h2>
 <h3 id="regressão-1">Regressão</h3>
 <p><span class="math display">\[
 L(y,a)=(y-a)^2
@@ -421,13 +475,17 @@ L(y,a)=(y-a)^2
 \]</span> Em ambos os casos <span class="math display">\[
 \boxed{R(g)=E[L(Y,g(X))]}
 \]</span></p>
-</section><section id="a-perda-depende-da-tarefa-1" class="slide level2"><h2>A perda depende da tarefa</h2>
+</section>
+<section id="a-perda-depende-da-tarefa-1" class="slide level2">
+<h2>A perda depende da tarefa</h2>
 <p>O objetivo é encontrar uma função <span class="math inline">\(g\)</span> que minimize o risco</p>
 <p><span class="math display">\[
 g^* = \arg\min_g \mathbb{E}[L(Y,g(\mathbf{x}))]
 \]</span></p>
 <p>Em outras palavras, queremos um modelo que produza <strong>erros pequenos em média para novas observações</strong>.</p>
-</section><section id="risco-quadrático" class="slide level2"><h2>Risco quadrático</h2>
+</section>
+<section id="risco-quadrático" class="slide level2">
+<h2>Risco quadrático</h2>
 <p>Para regressão com perda quadrática,</p>
 <p><span class="math display">\[
 R(g)
@@ -441,7 +499,9 @@ r(x)=E(Y\mid X=x)
 }
 \]</span></p>
 <p>Esse resultado explica por que a média condicional é o alvo natural da regressão</p>
-</section><section id="decomposição-do-erro" class="slide level2"><h2>Decomposição do erro</h2>
+</section>
+<section id="decomposição-do-erro" class="slide level2">
+<h2>Decomposição do erro</h2>
 <p>Uma forma comum de representar o problema é</p>
 <p><span class="math display">\[
 Y=r(X)+\varepsilon,
@@ -460,7 +520,9 @@ E(\varepsilon^2)
 \]</span></p>
 <p>O primeiro termo depende do estimador</p>
 <p>O segundo é o <strong>erro irredutível</strong></p>
-</section><section id="o-melhor-modelo-também-erra" class="slide level2"><h2>O melhor modelo também erra</h2>
+</section>
+<section id="o-melhor-modelo-também-erra" class="slide level2">
+<h2>O melhor modelo também erra</h2>
 <p>Mesmo que</p>
 <p><span class="math display">\[
 g^*(x)=r(x),
@@ -479,20 +541,22 @@ R(g^*)= E(\varepsilon^2)
 </div>
 </div>
 </div>
-</section><section id="exemplo-preço-de-um-imóvel" class="slide level2"><h2>Exemplo: preço de um imóvel</h2>
+</section>
+<section id="exemplo-preço-de-um-imóvel" class="slide level2">
+<h2>Exemplo: preço de um imóvel</h2>
 <p>Suponha que o preço de um imóvel seja determinado por</p>
 <p><span class="math display">\[
 Y = r(X) + \varepsilon
 \]</span></p>
 <p>onde:</p>
 <ul>
-<li>
-<span class="math inline">\(X\)</span> = área do imóvel</li>
-<li>
-<span class="math inline">\(r(X)\)</span> = preço médio esperado para imóveis com essa área</li>
-<li>
-<span class="math inline">\(\varepsilon\)</span> = fatores não observados: negociação, urgência da venda, estado de conservação etc.</li>
-</ul></section><section id="exemplo-preço-de-um-imóvel-1" class="slide level2"><h2>Exemplo: preço de um imóvel</h2>
+<li><span class="math inline">\(X\)</span> = área do imóvel</li>
+<li><span class="math inline">\(r(X)\)</span> = preço médio esperado para imóveis com essa área</li>
+<li><span class="math inline">\(\varepsilon\)</span> = fatores não observados: negociação, urgência da venda, estado de conservação etc.</li>
+</ul>
+</section>
+<section id="exemplo-preço-de-um-imóvel-1" class="slide level2">
+<h2>Exemplo: preço de um imóvel</h2>
 <p>Para um imóvel de <strong>100 m²</strong>, suponha que</p>
 <p><span class="math display">\[
 r(100) = 500
@@ -508,7 +572,9 @@ r(100) = 500
 r(100)-\hat g(100)=500-470=30
 \]</span></p>
 </div>
-</section><section id="exemplo-preço-de-um-imóvel-2" class="slide level2"><h2>Exemplo: preço de um imóvel</h2>
+</section>
+<section id="exemplo-preço-de-um-imóvel-2" class="slide level2">
+<h2>Exemplo: preço de um imóvel</h2>
 <p>Agora suponha que esse imóvel tenha sido vendido por <strong>R$ 520 mil</strong>:</p>
 <p><span class="math display">\[
 Y = 520
@@ -530,7 +596,9 @@ Y-\hat g(100)
 520-470 = 30+20 = 50
 \]</span></p>
 </div>
-</section><section id="exemplo-preço-de-um-imóvel-3" class="slide level2"><h2>Exemplo: preço de um imóvel</h2>
+</section>
+<section id="exemplo-preço-de-um-imóvel-3" class="slide level2">
+<h2>Exemplo: preço de um imóvel</h2>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -552,7 +620,9 @@ Y-\hat g(100)=520-500=20
 </div>
 </div>
 </div>
-</section><section id="o-modelo-estimado-depende-dos-dados" class="slide level2"><h2>O modelo estimado depende dos dados</h2>
+</section>
+<section id="o-modelo-estimado-depende-dos-dados" class="slide level2">
+<h2>O modelo estimado depende dos dados</h2>
 <p>Um algoritmo de aprendizagem pode ser representado por</p>
 <p><span class="math display">\[
 \mathcal D_n
@@ -565,7 +635,9 @@ Y-\hat g(100)=520-500=20
 R(g) = E\left[(Y-\hat{g}(X))^2\right]
 \]</span></p>
 <p>Esse risco é chamado de <strong>risco condicional</strong>.</p>
-</section><section id="o-modelo-estimado-depende-dos-dados-1" class="slide level2"><h2>O modelo estimado depende dos dados</h2>
+</section>
+<section id="o-modelo-estimado-depende-dos-dados-1" class="slide level2">
+<h2>O modelo estimado depende dos dados</h2>
 <p>Se mudarmos a amostra, podemos obter outro modelo:</p>
 <p><span class="math display">\[
 \mathcal D_1\to\hat g_1,
@@ -579,7 +651,9 @@ R(g) = E\left[(Y-\hat{g}(X))^2\right]
 <p><span class="math display">\[
 E_{\mathcal{D}_n}\left[R\big(\hat{g}_{\mathcal{D}_n}\big)\right]
 \]</span></p>
-</section><section id="o-modelo-estimado-depende-dos-dados-2" class="slide level2"><h2>O modelo estimado depende dos dados</h2>
+</section>
+<section id="o-modelo-estimado-depende-dos-dados-2" class="slide level2">
+<h2>O modelo estimado depende dos dados</h2>
 <p>Assim,</p>
 <p><span class="math display">\[
 \text{Risco esperado} = E[\text{risco condicional}]
@@ -587,15 +661,19 @@ E_{\mathcal{D}_n}\left[R\big(\hat{g}_{\mathcal{D}_n}\big)\right]
 <ul>
 <li>O <strong>risco condicional</strong> avalia o desempenho de um modelo específico, já ajustado.</li>
 <li>O <strong>risco esperado</strong> avalia o desempenho médio do procedimento de aprendizado.</li>
-</ul></section><section id="o-modelo-estimado-depende-dos-dados-3" class="slide level2"><h2>O modelo estimado depende dos dados</h2>
+</ul>
+</section>
+<section id="o-modelo-estimado-depende-dos-dados-3" class="slide level2">
+<h2>O modelo estimado depende dos dados</h2>
 <p>Ou seja:</p>
 <ul>
 <li>risco condicional <span class="math inline">\(\rightarrow\)</span> garantia sobre uma função <span class="math inline">\(g\)</span> específica</li>
-<li>risco esperado <span class="math inline">\(\rightarrow\)</span> garantia sobre o algoritmo que constrói <span class="math inline">\(g\)</span>
-</li>
+<li>risco esperado <span class="math inline">\(\rightarrow\)</span> garantia sobre o algoritmo que constrói <span class="math inline">\(g\)</span></li>
 </ul>
 <p>Essa ideia será fundamental para compreender <strong>variância do estimador</strong>.</p>
-</section><section id="síntese" class="slide level2"><h2>Síntese</h2>
+</section>
+<section id="síntese" class="slide level2">
+<h2>Síntese</h2>
 <p><span class="math display">\[
 \boxed{\text{Dados}}
 \rightarrow
@@ -612,15 +690,18 @@ E_{\mathcal{D}_n}\left[R\big(\hat{g}_{\mathcal{D}_n}\big)\right]
 <blockquote>
 <p><strong>Como estimar o erro que o modelo terá em dados ainda não observados?</strong></p>
 </blockquote>
-</section></section><section><section id="generalização-e-seleção-de-modelos" class="title-slide slide level1 center"><h1>Generalização e seleção de modelos</h1>
+</section></section>
+<section>
+<section id="generalização-e-seleção-de-modelos" class="title-slide slide level1 center">
+<h1>Generalização e seleção de modelos</h1>
 
-</section><section id="exemplo-pib-e-expectativa-de-vida" class="slide level2"><h2>Exemplo: PIB e expectativa de vida</h2>
+</section>
+<section id="exemplo-pib-e-expectativa-de-vida" class="slide level2">
+<h2>Exemplo: PIB e expectativa de vida</h2>
 <p>Considere</p>
 <ul>
-<li>
-<span class="math inline">\(X\)</span>: PIB per capita;</li>
-<li>
-<span class="math inline">\(Y\)</span>: expectativa de vida.</li>
+<li><span class="math inline">\(X\)</span>: PIB per capita;</li>
+<li><span class="math inline">\(Y\)</span>: expectativa de vida.</li>
 </ul>
 <p>Queremos estimar</p>
 <p><span class="math display">\[
@@ -629,9 +710,13 @@ r(x)= E[Y\mid X=x]
 <blockquote>
 <p>Qual é a expectativa de vida média esperada para um país com PIB per capita igual a <span class="math inline">\(x\)</span>?</p>
 </blockquote>
-</section><section id="r-pib-e-expectativa-de-vida" class="slide level2"><h2>R: PIB e expectativa de vida</h2>
+</section>
+<section id="r-pib-e-expectativa-de-vida" class="slide level2">
+<h2>R: PIB e expectativa de vida</h2>
 
-<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"></section><section id="um-modelo-simples" class="slide level2"><h2>Um modelo simples</h2>
+<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"></section>
+<section id="um-modelo-simples" class="slide level2">
+<h2>Um modelo simples</h2>
 <!-- Considere novamente o exemplo **PIB $\times$ expectativa de vida**. -->
 <p>A função de predição considerada é</p>
 <p><span class="math display">\[
@@ -641,7 +726,9 @@ g(x) = \beta_0 + \sum_{i=1}^{p} \beta_i x^i
 <blockquote>
 <p>O modelo é flexível o suficiente para representar a relação entre <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span>?</p>
 </blockquote>
-</section><section id="três-candidatos" class="slide level2"><h2>Três candidatos</h2>
+</section>
+<section id="três-candidatos" class="slide level2">
+<h2>Três candidatos</h2>
 <p>Considere modelos polinomiais com</p>
 <p><span class="math display">\[
 p=1,
@@ -651,7 +738,9 @@ p=4,
 p=50
 \]</span></p>
 
-<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section><section id="sub-ajuste-underfitting" class="slide level2"><h2>Sub-ajuste (<em>underfitting</em>)</h2>
+<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section id="sub-ajuste-underfitting" class="slide level2">
+<h2>Sub-ajuste (<em>underfitting</em>)</h2>
 <p>Um modelo muito simples pode apresentar</p>
 <p><span class="math display">\[
 \text{alto viés}
@@ -659,14 +748,18 @@ p=50
 \text{estrutura relevante não capturada}
 \]</span></p>
 <p>Exemplo: polinômio de grau <span class="math inline">\(1\)</span> quando a relação é fortemente não linear.</p>
-</section><section id="super-ajuste-overfitting" class="slide level2"><h2>Super-ajuste (<em>overfitting</em>)</h2>
+</section>
+<section id="super-ajuste-overfitting" class="slide level2">
+<h2>Super-ajuste (<em>overfitting</em>)</h2>
 <p>Um modelo excessivamente flexível pode ajustar características específicas da amostra:</p>
 <p><span class="math display">\[
 \text{erro de treino muito baixo}
 \quad\not\Rightarrow\quad
 \text{boa generalização}
 \]</span></p>
-</section><section id="o-paradoxo-do-treinamento" class="slide level2"><h2>O paradoxo do treinamento</h2>
+</section>
+<section id="o-paradoxo-do-treinamento" class="slide level2">
+<h2>O paradoxo do treinamento</h2>
 <p>Em geral, quando aumentamos a complexidade,</p>
 <p><span class="math display">\[
 \text{complexidade}\uparrow
@@ -674,7 +767,9 @@ p=50
 \widehat R_{\text{treino}}\downarrow
 \]</span></p>
 <p>Então por que não escolher sempre o modelo mais complexo?</p>
-</section><section id="treino-não-é-generalização" class="slide level2"><h2>Treino não é generalização</h2>
+</section>
+<section id="treino-não-é-generalização" class="slide level2">
+<h2>Treino não é generalização</h2>
 <p><span class="math display">\[
 \boxed{
 \text{Bom ajuste aos dados observados}
@@ -686,16 +781,19 @@ p=50
 <p>Para isso, utilizamos um critério que permita avaliar a qualidade preditiva da função.</p>
 <p>Neste contexto, usamos o <strong>risco quadrático</strong> para medir a qualidade do modelo <span class="math inline">\(R(g).\)</span></p>
 <p>Queremos então escolher uma função <span class="math inline">\(g\)</span> dentro de uma classe de candidatos <span class="math inline">\(\mathcal{G}\)</span> que apresente <strong>baixo risco quadrático</strong>.</p>
-</section><section id="objetivo-prático" class="slide level2"><h2>Objetivo prático</h2>
+</section>
+<section id="objetivo-prático" class="slide level2">
+<h2>Objetivo prático</h2>
 <p>Ao selecionar um modelo, queremos evitar:</p>
 <ul>
-<li>
-<strong>sub-ajuste (underfitting)</strong><br>
+<li><strong>sub-ajuste (underfitting)</strong><br>
 </li>
 <li><strong>super-ajuste (overfitting)</strong></li>
 </ul>
 <p>Ou seja, buscamos um modelo com <strong>bom poder preditivo</strong> para novas observações.</p>
-</section><section id="objetivo-prático-1" class="slide level2"><h2>Objetivo prático</h2>
+</section>
+<section id="objetivo-prático-1" class="slide level2">
+<h2>Objetivo prático</h2>
 <p>Na prática, o valor de <span class="math inline">\(R(g)\)</span> é <strong>desconhecido</strong>.</p>
 <p>Por isso, precisamos <strong>estimar o risco</strong> para avaliar e comparar as funções <span class="math inline">\(g \in \mathcal{G}.\)</span></p>
 <p>A questão central passa a ser:</p>
@@ -703,7 +801,9 @@ p=50
 <p>Como estimar o risco de predição de um modelo?</p>
 </blockquote>
 <p>Na próxima etapa, estudamos métodos para <strong>estimar esse risco</strong> e, assim, escolher o modelo mais adequado.</p>
-</section><section id="risco-observado" class="slide level2"><h2>Risco observado</h2>
+</section>
+<section id="risco-observado" class="slide level2">
+<h2>Risco observado</h2>
 <p>Uma forma natural de avaliar um modelo é medir seu erro <strong>nos dados de treinamento</strong>.</p>
 <p>Esse erro é chamado de <strong>risco observado</strong> ou <strong>erro quadrático médio (EQM)</strong> no conjunto de treinamento:</p>
 <p><span class="math display">\[
@@ -719,7 +819,9 @@ EQM(g) = \frac{1}{n}\sum_{i=1}^{n} (Y_i - \hat g(X_i))^2
 </div>
 </div>
 </div>
-</section><section id="data-splitting" class="slide level2"><h2><em>Data splitting</em></h2>
+</section>
+<section id="data-splitting" class="slide level2">
+<h2><em>Data splitting</em></h2>
 <p>Uma forma simples de estimar o risco de predição é <strong>dividir o conjunto de dados em duas partes</strong>:</p>
 <p><span class="math display">\[
 \boxed{\text{Treino}}
@@ -727,11 +829,12 @@ EQM(g) = \frac{1}{n}\sum_{i=1}^{n} (Y_i - \hat g(X_i))^2
 \boxed{\text{Validação}}
 \]</span></p>
 <ul>
-<li>
-<strong>Treino:</strong> estima os parâmetros do modelo;</li>
-<li>
-<strong>Validação:</strong> estima o desempenho em dados não usados no ajuste.</li>
-</ul></section><section id="erro-de-validação" class="slide level2"><h2>Erro de validação</h2>
+<li><strong>Treino:</strong> estima os parâmetros do modelo;</li>
+<li><strong>Validação:</strong> estima o desempenho em dados não usados no ajuste.</li>
+</ul>
+</section>
+<section id="erro-de-validação" class="slide level2">
+<h2>Erro de validação</h2>
 <p>Para um conjunto de validação <span class="math inline">\(V\)</span>,</p>
 <p><span class="math display">\[
 \widehat R_{\text{val}}(g)
@@ -741,7 +844,9 @@ EQM(g) = \frac{1}{n}\sum_{i=1}^{n} (Y_i - \hat g(X_i))^2
 (Y_i- \hat g(X_i))^2
 \]</span></p>
 <p>Como os dados de validação <strong>não foram usados para treinar o modelo</strong>, essa estimativa é <strong>mais próxima do verdadeiro erro de predição</strong>.</p>
-</section><section id="complexidade-treino-vs.-validação" class="slide level2"><h2>Complexidade: treino <em>vs.</em> validação</h2>
+</section>
+<section id="complexidade-treino-vs.-validação" class="slide level2">
+<h2>Complexidade: treino <em>vs.</em> validação</h2>
 <p>Com o aumento da complexidade:</p>
 <ul>
 <li>erro de treinamento tende a diminuir;</li>
@@ -758,28 +863,32 @@ EQM(g) = \frac{1}{n}\sum_{i=1}^{n} (Y_i - \hat g(X_i))^2
 </div>
 </div>
 </div>
-</section><section id="problema-overfitting-na-validação" class="slide level2"><h2>Problema: overfitting na validação</h2>
+</section>
+<section id="problema-overfitting-na-validação" class="slide level2">
+<h2>Problema: overfitting na validação</h2>
 <p>Se avaliarmos <strong>muitos modelos diferentes</strong>, podemos acabar escolhendo um modelo que se ajusta <strong>bem ao conjunto de validação por acaso</strong>.</p>
 <p>Isso gera <strong>super-ajuste ao conjunto de validação</strong>.</p>
 <p>Consequência:</p>
 <ul>
 <li>o modelo escolhido pode ter bom desempenho na validação, mas <strong>não generalizar bem para novos dados</strong>.</li>
-</ul></section><section id="treinamento-vs.-validação-vs.-teste" class="slide level2"><h2>Treinamento <em>vs.</em> Validação <em>vs.</em> Teste</h2>
+</ul>
+</section>
+<section id="treinamento-vs.-validação-vs.-teste" class="slide level2">
+<h2>Treinamento <em>vs.</em> Validação <em>vs.</em> Teste</h2>
 <p>Uma prática comum é dividir os dados em três partes:</p>
 <ul>
-<li>
-<strong>Treinamento</strong> → ajustar os modelos</li>
-<li>
-<strong>Validação</strong> → escolher o melhor modelo</li>
-<li>
-<strong>Teste</strong> → avaliar o desempenho final</li>
+<li><strong>Treinamento</strong> → ajustar os modelos</li>
+<li><strong>Validação</strong> → escolher o melhor modelo</li>
+<li><strong>Teste</strong> → avaliar o desempenho final</li>
 </ul>
 <p>O conjunto de teste fornece uma estimativa do risco</p>
 <p><span class="math display">\[
 R(g) = E[(Y - \hat g(X))^2]
 \]</span></p>
 <p>para <strong>novas observações</strong>. Assim podemos avaliar se o modelo escolhido realmente <strong>generaliza bem</strong>.</p>
-</section><section id="treinamento-vs.-validação-vs.-teste-1" class="slide level2"><h2>Treinamento <em>vs.</em> Validação <em>vs.</em> Teste</h2>
+</section>
+<section id="treinamento-vs.-validação-vs.-teste-1" class="slide level2">
+<h2>Treinamento <em>vs.</em> Validação <em>vs.</em> Teste</h2>
 
 <img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" width="864"><div class="callout callout-important callout-style-simple">
 <div class="callout-body">
@@ -791,7 +900,9 @@ R(g) = E[(Y - \hat g(X))^2]
 </div>
 </div>
 </div>
-</section><section id="o-problema-de-uma-única-divisão" class="slide level2"><h2>O problema de uma única divisão</h2>
+</section>
+<section id="o-problema-de-uma-única-divisão" class="slide level2">
+<h2>O problema de uma única divisão</h2>
 <p>Uma única divisão treino/validação:</p>
 <ul>
 <li>depende da divisão aleatória escolhida;</li>
@@ -799,15 +910,18 @@ R(g) = E[(Y - \hat g(X))^2]
 <li>pode produzir estimativas instáveis do desempenho.</li>
 </ul>
 <p>Uma alternativa é a <strong>validação cruzada</strong>.</p>
-</section><section id="k-fold-cross-validation" class="slide level2"><h2>
-<span class="math inline">\(k\)</span>-fold cross-validation</h2>
+</section>
+<section id="k-fold-cross-validation" class="slide level2">
+<h2><span class="math inline">\(k\)</span>-fold cross-validation</h2>
 <p>Dividimos os dados em <span class="math inline">\(k\)</span> subconjuntos aproximadamente do mesmo tamanho:</p>
 <p><span class="math display">\[
 D=F_1\cup\cdots\cup F_k
 \]</span></p>
 <p>Cada fold funciona uma vez como validação; os demais são usados para treinamento.</p>
 
-<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="estimativa-do-risco-por-cv" class="slide level2"><h2>Estimativa do risco por CV</h2>
+<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section>
+<section id="estimativa-do-risco-por-cv" class="slide level2">
+<h2>Estimativa do risco por CV</h2>
 <p>O estimador do risco via <span class="math inline">\(k\)</span>-fold cross-validation é</p>
 <p><span class="math display">\[
 \widehat R_{CV}
@@ -829,7 +943,9 @@ D=F_1\cup\cdots\cup F_k
 </div>
 </div>
 </div>
-</section><section id="data-leakage" class="slide level2"><h2><em>Data leakage</em></h2>
+</section>
+<section id="data-leakage" class="slide level2">
+<h2><em>Data leakage</em></h2>
 <h3 id="incorreto">Incorreto</h3>
 <p><span class="math display">\[
 \text{Pré-processar todos os dados}
@@ -854,7 +970,9 @@ D=F_1\cup\cdots\cup F_k
 </div>
 </div>
 </div>
-</section><section id="intervalos-de-confiança-para-o-risco" class="slide level2"><h2>Intervalos de confiança para o risco</h2>
+</section>
+<section id="intervalos-de-confiança-para-o-risco" class="slide level2">
+<h2>Intervalos de confiança para o risco</h2>
 <p>Depois de escolher o modelo usando <strong>treinamento</strong> e <strong>validação</strong>, utilizamos o <strong>conjunto de teste</strong> para estimar o risco verdadeiro do modelo.</p>
 <p>O conjunto de teste não foi usado para ajustar o modelo.<br><br></p>
 <h4 id="estimador-do-risco-no-conjunto-de-teste">Estimador do risco no conjunto de teste</h4>
@@ -867,7 +985,9 @@ D=F_1\cup\cdots\cup F_k
 \sum_{k=1}^{m}
 (\tilde Y_k - g(\tilde{X}_k))^2
 \]</span></p>
-</section><section id="intervalos-de-confiança-para-o-risco-1" class="slide level2"><h2>Intervalos de confiança para o risco</h2>
+</section>
+<section id="intervalos-de-confiança-para-o-risco-1" class="slide level2">
+<h2>Intervalos de confiança para o risco</h2>
 <p>Definimos</p>
 <p><span class="math display">\[
 W_k = (\tilde Y_k - g(\tilde{X}_k))^2, \qquad k = 1 \cdots m
@@ -878,7 +998,9 @@ W_k = (\tilde Y_k - g(\tilde{X}_k))^2, \qquad k = 1 \cdots m
 \]</span></p>
 <p>Se as observações do conjunto de teste são i.i.d., então <span class="math inline">\(W_1,\ldots,W_m\)</span> são variáveis aleatórias <strong>independentes e identicamente distribuídas</strong>.</p>
 <p>Logo, <span class="math inline">\(\hat R(g)\)</span> é simplesmente <strong>a média dessas variáveis</strong>.</p>
-</section><section id="intervalos-de-confiança-para-o-risco-2" class="slide level2"><h2>Intervalos de confiança para o risco</h2>
+</section>
+<section id="intervalos-de-confiança-para-o-risco-2" class="slide level2">
+<h2>Intervalos de confiança para o risco</h2>
 <p>Pelo <strong>Teorema Central do Limite</strong>,</p>
 <p><span class="math display">\[
 \hat R(g)
@@ -898,7 +1020,9 @@ R(g),
 \sum_{k=1}^{m}
 (W_k - \bar W)^2
 \]</span></p>
-</section><section id="intervalos-de-confiança-para-o-risco-3" class="slide level2"><h2>Intervalos de confiança para o risco</h2>
+</section>
+<section id="intervalos-de-confiança-para-o-risco-3" class="slide level2">
+<h2>Intervalos de confiança para o risco</h2>
 <p>onde</p>
 <p><span class="math display">\[
 \bar W = \hat R(g)
@@ -914,7 +1038,10 @@ R(g),
 <ul>
 <li>se o erro estimado é confiável</li>
 <li>se dois modelos possuem desempenho estatisticamente diferente</li>
-</ul></section><section id="síntese-1" class="slide level2"><h2>Síntese</h2>
+</ul>
+</section>
+<section id="síntese-1" class="slide level2">
+<h2>Síntese</h2>
 <p><span class="math display">\[
 \boxed{
 \text{Treinar}
@@ -927,19 +1054,30 @@ R(g),
 <blockquote>
 <p><strong>Como a complexidade do modelo afeta seu erro de generalização?</strong></p>
 </blockquote>
-</section></section><section><section id="complexidade-viés-variância-e-tuning" class="title-slide slide level1 center"><h1>Complexidade, viés, variância e <em>tuning</em>
-</h1>
+</section></section>
+<section>
+<section id="complexidade-viés-variância-e-tuning" class="title-slide slide level1 center">
+<h1>Complexidade, viés, variância e <em>tuning</em></h1>
 
-</section><section id="por-que-modelos-muito-flexíveis-são-instáveis" class="slide level2"><h2>Por que modelos muito flexíveis são instáveis?</h2>
+</section>
+<section id="por-que-modelos-muito-flexíveis-são-instáveis" class="slide level2">
+<h2>Por que modelos muito flexíveis são instáveis?</h2>
 <p>Imagine várias amostras independentes provenientes da mesma população.</p>
 <p>Um modelo muito flexível pode produzir curvas bastante diferentes em cada amostra.</p>
 <p>Essa sensibilidade aos dados é chamada <strong>variância</strong>.</p>
-</section><section class="slide level2">
-<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="o-outro-extremo-modelos-simples" class="slide level2"><h2>O outro extremo: modelos simples</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="o-outro-extremo-modelos-simples" class="slide level2">
+<h2>O outro extremo: modelos simples</h2>
 <p>Modelos muito simples podem variar pouco entre amostras, mas errar sistematicamente a forma de <span class="math inline">\(r(x)\)</span>.</p>
 <p>Esse erro sistemático é chamado <strong>viés</strong>.</p>
 
-<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="viés" class="slide level2"><h2>Viés</h2>
+<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="viés" class="slide level2">
+<h2>Viés</h2>
 <p>Para um ponto <span class="math inline">\(x\)</span>,</p>
 <p><span class="math display">\[
 \operatorname{Bias}[\hat g(x)]
@@ -950,7 +1088,9 @@ E[\hat g(x)]-r(x)
 <blockquote>
 <p>quanto a previsão média do procedimento de aprendizagem se afasta sistematicamente da função verdadeira.</p>
 </blockquote>
-</section><section id="variância" class="slide level2"><h2>Variância</h2>
+</section>
+<section id="variância" class="slide level2">
+<h2>Variância</h2>
 <p><span class="math display">\[
 \operatorname{Var}[\hat g(x)]
 \]</span></p>
@@ -958,7 +1098,9 @@ E[\hat g(x)]-r(x)
 <blockquote>
 <p>quanto o modelo estimado muda quando utilizamos uma nova amostra de treinamento.</p>
 </blockquote>
-</section><section id="decomposição-viésvariância" class="slide level2"><h2>Decomposição viés–variância</h2>
+</section>
+<section id="decomposição-viésvariância" class="slide level2">
+<h2>Decomposição viés–variância</h2>
 <p>Sob perda quadrática,</p>
 <p><span class="math display">\[
 \boxed{
@@ -977,10 +1119,12 @@ E\left[(Y-\hat{g}(x))^2 \mid X=x\right]
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Componente</th>
 <th>Significado</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\operatorname{Bias}^2\left[\hat{g}(x)\right]\)</span></td>
@@ -995,8 +1139,10 @@ E\left[(Y-\hat{g}(x))^2 \mid X=x\right]
 <td>ruído irredutível</td>
 </tr>
 </tbody>
-</table></section><section id="trade-off-viésvariância" class="slide level2"><h2>
-<em>Trade-off</em> viés–variância</h2>
+</table>
+</section>
+<section id="trade-off-viésvariância" class="slide level2">
+<h2><em>Trade-off</em> viés–variância</h2>
 <p>Em geral,</p>
 <p><span class="math display">\[
 \text{complexidade}\uparrow
@@ -1008,36 +1154,39 @@ E\left[(Y-\hat{g}(x))^2 \mid X=x\right]
 \]</span></p>
 <p>O objetivo é encontrar um compromisso que minimize o erro de generalização.</p>
 
-<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="voltando-aos-polinômios" class="slide level2"><h2>Voltando aos polinômios</h2>
+<img data-src="semana_01_fundamentos_aprendizado_supervisionado_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="voltando-aos-polinômios" class="slide level2">
+<h2>Voltando aos polinômios</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Modelo</th>
 <th>Viés</th>
 <th>Variância</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td>grau <span class="math inline">\(1\)</span>
-</td>
+<td>grau <span class="math inline">\(1\)</span></td>
 <td>alto</td>
 <td>baixa</td>
 </tr>
 <tr class="even">
-<td>grau <span class="math inline">\(4\)</span>
-</td>
+<td>grau <span class="math inline">\(4\)</span></td>
 <td>moderado</td>
 <td>moderada</td>
 </tr>
 <tr class="odd">
-<td>grau <span class="math inline">\(50\)</span>
-</td>
+<td>grau <span class="math inline">\(50\)</span></td>
 <td>baixo</td>
 <td>alta</td>
 </tr>
 </tbody>
 </table>
 <p>O melhor modelo não é necessariamente o mais simples nem o mais flexível.</p>
-</section><section id="parâmetro-vs.-hiperparâmetro" class="slide level2"><h2>Parâmetro <em>vs.</em> hiperparâmetro</h2>
+</section>
+<section id="parâmetro-vs.-hiperparâmetro" class="slide level2">
+<h2>Parâmetro <em>vs.</em> hiperparâmetro</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="parâmetros">Parâmetros</h3>
@@ -1054,17 +1203,20 @@ p=\text{grau do polinômio}
 \]</span></p>
 <p>Controla a estrutura/complexidade e é <strong>escolhido por validação</strong>.</p>
 </div></div>
-</section><section id="a-mesma-ideia-aparecerá-em-todo-o-curso" class="slide level2"><h2>A mesma ideia aparecerá em todo o curso</h2>
+</section>
+<section id="a-mesma-ideia-aparecerá-em-todo-o-curso" class="slide level2">
+<h2>A mesma ideia aparecerá em todo o curso</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Método</th>
 <th>Controle de complexidade</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Regressão polinomial</td>
-<td>grau <span class="math inline">\(p\)</span>
-</td>
+<td>grau <span class="math inline">\(p\)</span></td>
 </tr>
 <tr class="even">
 <td>Ridge/Lasso</td>
@@ -1076,8 +1228,7 @@ p=\text{grau do polinômio}
 </tr>
 <tr class="even">
 <td>Kernel</td>
-<td>bandwidth <span class="math inline">\(h\)</span>
-</td>
+<td>bandwidth <span class="math inline">\(h\)</span></td>
 </tr>
 <tr class="odd">
 <td>Árvore</td>
@@ -1089,8 +1240,7 @@ p=\text{grau do polinômio}
 </tr>
 <tr class="odd">
 <td>Boosting</td>
-<td>profundidade, learning rate, nº de árvores,<br><br>
-</td>
+<td>profundidade, learning rate, nº de árvores,<br><br></td>
 </tr>
 </tbody>
 </table>
@@ -1104,7 +1254,9 @@ p=\text{grau do polinômio}
 </div>
 </div>
 </div>
-</section><section id="tuning" class="slide level2"><h2><em>Tuning</em></h2>
+</section>
+<section id="tuning" class="slide level2">
+<h2><em>Tuning</em></h2>
 <p>Se <span class="math inline">\(\theta\)</span> representa um hiperparâmetro,</p>
 <p><span class="math display">\[
 \boxed{
@@ -1115,28 +1267,58 @@ p=\text{grau do polinômio}
 }
 \]</span></p>
 <p>O ajuste de hiperparâmetros deve ser feito <strong>sem usar o conjunto de teste</strong>.</p>
-</section><section class="slide level2">
-<img data-src="../..\images/regressao/pipeline_completo.png" width="1000" class="r-stretch"></section><section id="cinco-perguntas-para-o-restante-da-disciplina" class="slide level2"><h2>Cinco perguntas para o restante da disciplina</h2>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../../images/regressao/pipeline_completo.png" width="1000" class="r-stretch"></section>
+<section id="cinco-perguntas-para-o-restante-da-disciplina" class="slide level2">
+<h2>Cinco perguntas para o restante da disciplina</h2>
 <ol type="1">
-<li><p><strong>Qual função queremos aprender?</strong><br><span class="math display">\[r(x)=\mathbb E[Y\mid X=x]\]</span></p></li>
-<li><p><strong>Como medimos um erro?</strong><br><span class="math display">\[L(Y,g(X))\]</span></p></li>
-<li><p><strong>Como medimos a qualidade de um modelo?</strong><br><span class="math display">\[R(g)=\mathbb E[L(Y,g(X))]\]</span></p></li>
-</ol></section><section id="cinco-perguntas-para-o-restante-da-disciplina-1" class="slide level2"><h2>Cinco perguntas para o restante da disciplina</h2>
+<li><p><strong>Qual função queremos aprender?</strong><br>
+<span class="math display">\[r(x)=\mathbb E[Y\mid X=x]\]</span></p></li>
+<li><p><strong>Como medimos um erro?</strong><br>
+<span class="math display">\[L(Y,g(X))\]</span></p></li>
+<li><p><strong>Como medimos a qualidade de um modelo?</strong><br>
+<span class="math display">\[R(g)=\mathbb E[L(Y,g(X))]\]</span></p></li>
+</ol>
+</section>
+<section id="cinco-perguntas-para-o-restante-da-disciplina-1" class="slide level2">
+<h2>Cinco perguntas para o restante da disciplina</h2>
 <ol start="4" type="1">
-<li><p><strong>Como estimamos o desempenho em novos dados?</strong><br><span class="math display">\[\text{Validação / cross-validation}\]</span></p></li>
-<li><p><strong>Como controlamos a complexidade?</strong><br><span class="math display">\[\text{Tuning / regularização}\]</span></p></li>
+<li><p><strong>Como estimamos o desempenho em novos dados?</strong><br>
+<span class="math display">\[\text{Validação / cross-validation}\]</span></p></li>
+<li><p><strong>Como controlamos a complexidade?</strong><br>
+<span class="math display">\[\text{Tuning / regularização}\]</span></p></li>
 </ol>
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 1</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -1303,7 +1485,7 @@ p=\text{grau do polinômio}
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1328,42 +1510,84 @@ p=\text{grau do polinômio}
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -1411,13 +1635,14 @@ p=\text{grau do polinômio}
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -1530,6 +1755,6 @@ p=\text{grau do polinômio}
         }
       });
       </script>
-
+    
 
 </body></html>

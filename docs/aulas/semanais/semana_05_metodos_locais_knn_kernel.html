@@ -6,20 +6,26 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
-<title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-<style>
-    code{white-space: pre-wrap;}
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <title>EST335 - Métodos Estatísticos para Machine Learning – Parte I : Aprendizado Supervisionado</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,14 +34,14 @@
       vertical-align: middle;
     }
   </style>
-<link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-bb85671dd8bf4f0cdf853a171698be81.css">
-<link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-<link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-<style type="text/css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-e3584fe18f7174561249ea4f3abf481e.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
       overflow: auto;
@@ -130,19 +136,24 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center"><h1 class="title">Parte I : Aprendizado Supervisionado</h1>
+<section id="title-slide" data-background-image="../../images/back.png" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Parte I : Aprendizado Supervisionado</h1>
   <p class="subtitle"><span class="custom-subtitle">Métodos Locais: KNN, Kernel e Regressão Local</span></p>
 
 <div class="quarto-title-authors">
 </div>
 
-</section><section id="de-onde-partimos" class="slide level2"><h2>De onde partimos?</h2>
+</section>
+<section id="de-onde-partimos" class="slide level2">
+<h2>De onde partimos?</h2>
 <p>Até agora especificamos uma forma para <span class="math inline">\(g(x)\)</span>: reta, polinômio ou spline.</p>
 <p>Agora perguntaremos:</p>
 <p><span class="math display">\[
 \boxed{\text{É possível aprender }r(x)\text{ diretamente da vizinhança dos dados?}}
 \]</span></p>
-</section><section id="ideia-central" class="slide level2"><h2>Ideia central</h2>
+</section>
+<section id="ideia-central" class="slide level2">
+<h2>Ideia central</h2>
 <p>Queremos estimar</p>
 <p><span class="math display">\[
 r(x)=E(Y\mid X=x)
@@ -151,15 +162,22 @@ r(x)=E(Y\mid X=x)
 <p><span class="math display">\[
 \boxed{\text{Observações próximas em }X\text{ devem influenciar mais a predição}}
 \]</span></p>
-</section><section><section id="regressão-knn" class="title-slide slide level1 center"><h1>Regressão KNN</h1>
+</section>
+<section>
+<section id="regressão-knn" class="title-slide slide level1 center">
+<h1>Regressão KNN</h1>
 
-</section><section id="uma-pergunta-local" class="slide level2"><h2>Uma pergunta local</h2>
+</section>
+<section id="uma-pergunta-local" class="slide level2">
+<h2>Uma pergunta local</h2>
 <p>Para prever <span class="math inline">\(Y\)</span> em <span class="math inline">\(x\)</span>:</p>
 <blockquote>
 <p>Quais observações de treinamento são mais parecidas com <span class="math inline">\(x\)</span>?</p>
 </blockquote>
 <p>Usamos então as respostas dessas observações para construir a predição.</p>
-</section><section id="o-estimador-knn" class="slide level2"><h2>O estimador KNN</h2>
+</section>
+<section id="o-estimador-knn" class="slide level2">
+<h2>O estimador KNN</h2>
 <p>Se <span class="math inline">\(\mathcal{N}_k(x)\)</span> são os <span class="math inline">\(k\)</span> vizinhos mais próximos de <span class="math inline">\(x\)</span>, a estimativa de <span class="math inline">\(r(x)\)</span> é dada por:</p>
 <p><span class="math display">\[
 \boxed{
@@ -177,20 +195,27 @@ g(x)=
 <li>não paramétrico<br>
 </li>
 <li>dependente da geometria dos dados</li>
-</ul></section><section id="uma-predição-com-k7" class="slide level2"><h2>Uma predição com <span class="math inline">\(k=7\)</span>
-</h2>
+</ul>
+</section>
+<section id="uma-predição-com-k7" class="slide level2">
+<h2>Uma predição com <span class="math inline">\(k=7\)</span></h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section><section id="de-um-ponto-para-uma-curva" class="slide level2"><h2>De um ponto para uma curva</h2>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"></section>
+<section id="de-um-ponto-para-uma-curva" class="slide level2">
+<h2>De um ponto para uma curva</h2>
 <p>Repetimos o procedimento para muitos <span class="math inline">\(x\)</span>:</p>
 <ol type="1">
 <li>encontramos os <span class="math inline">\(k\)</span> vizinhos;</li>
 <li>calculamos a média de <span class="math inline">\(Y\)</span>;</li>
 <li>obtemos <span class="math inline">\(g(x)\)</span>.</li>
-</ol></section><section id="comparando-k1330" class="slide level2"><h2>Comparando <span class="math inline">\(k=1,3,30\)</span>
-</h2>
+</ol>
+</section>
+<section id="comparando-k1330" class="slide level2">
+<h2>Comparando <span class="math inline">\(k=1,3,30\)</span></h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"></section><section id="o-papel-de-k" class="slide level2"><h2>O papel de <span class="math inline">\(k\)</span>
-</h2>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"></section>
+<section id="o-papel-de-k" class="slide level2">
+<h2>O papel de <span class="math inline">\(k\)</span></h2>
 <p><span class="math display">\[
 k\downarrow\Rightarrow\text{vizinhança pequena}\Rightarrow\text{maior flexibilidade}
 \]</span></p>
@@ -200,12 +225,13 @@ k\uparrow\Rightarrow\text{vizinhança grande}\Rightarrow\text{maior suavização
 <p><span class="math display">\[
 \boxed{k=\text{hiperparâmetro de complexidade}}
 \]</span></p>
-</section><section id="viés-variância" class="slide level2"><h2>Viés × variância</h2>
+</section>
+<section id="viés-variância" class="slide level2">
+<h2>Viés × variância</h2>
 <p>O parâmetro <span class="math inline">\(k\)</span> controla o grau de suavização do estimador. Define o equilíbrio viés e variância<br><br></p>
 <div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="k-pequeno">
-<span class="math inline">\(k\)</span> pequeno</h3>
+<h3 id="k-pequeno"><span class="math inline">\(k\)</span> pequeno</h3>
 <ul>
 <li>baixo viés</li>
 <li>alta variância</li>
@@ -213,8 +239,7 @@ k\uparrow\Rightarrow\text{vizinhança grande}\Rightarrow\text{maior suavização
 <li>maior risco de sobreajuste</li>
 </ul>
 </div><div class="column" style="width:48%;">
-<h3 id="k-grande">
-<span class="math inline">\(k\)</span> grande</h3>
+<h3 id="k-grande"><span class="math inline">\(k\)</span> grande</h3>
 <ul>
 <li>maior viés</li>
 <li>menor variância</li>
@@ -222,12 +247,16 @@ k\uparrow\Rightarrow\text{vizinhança grande}\Rightarrow\text{maior suavização
 <li>risco de subajuste</li>
 </ul>
 </div></div>
-</section><section id="knn-é-baseado-em-instâncias" class="slide level2"><h2>KNN é baseado em instâncias</h2>
+</section>
+<section id="knn-é-baseado-em-instâncias" class="slide level2">
+<h2>KNN é baseado em instâncias</h2>
 <p>Ao contrário de um modelo paramétrico, o KNN precisa consultar os dados de treinamento para realizar novas predições.</p>
 <p><span class="math display">\[
 \boxed{\text{KNN é um método local, baseado em instâncias}}
 \]</span></p>
-</section><section id="a-distância-importa" class="slide level2"><h2>A distância importa</h2>
+</section>
+<section id="a-distância-importa" class="slide level2">
+<h2>A distância importa</h2>
 <p>Em uma dimensão:</p>
 <p><span class="math display">\[
 d(x_i,x_k)=|x_i-x_k|
@@ -237,7 +266,9 @@ d(x_i,x_k)=|x_i-x_k|
 d(\mathbf x_i,\mathbf x_k)=
 \sqrt{\sum_{j=1}^p(x_{ij}-x_{kj})^2}
 \]</span></p>
-</section><section id="por-que-padronizar" class="slide level2"><h2>Por que padronizar?</h2>
+</section>
+<section id="por-que-padronizar" class="slide level2">
+<h2>Por que padronizar?</h2>
 <p>Se uma variável varia entre 0 e 1 e outra entre 0 e 100.000, a segunda pode dominar a distância.</p>
 <p><span class="math display">\[
 X_j^*=\frac{X_j-\bar X_j}{s_j}
@@ -252,14 +283,21 @@ X_j^*=\frac{X_j-\bar X_j}{s_j}
 </div>
 </div>
 </div>
-</section><section id="escolha-de-k-por-validação-cruzada" class="slide level2"><h2>Escolha de <span class="math inline">\(k\)</span> por validação cruzada</h2>
+</section>
+<section id="escolha-de-k-por-validação-cruzada" class="slide level2">
+<h2>Escolha de <span class="math inline">\(k\)</span> por validação cruzada</h2>
 
 <img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><p><span class="math display">\[
 \widehat k=\arg\min_k\widehat R_{CV}(k)
 \]</span></p>
-</section></section><section><section id="knn-para-classificação" class="title-slide slide level1 center"><h1>KNN para classificação</h1>
+</section></section>
+<section>
+<section id="knn-para-classificação" class="title-slide slide level1 center">
+<h1>KNN para classificação</h1>
 
-</section><section id="regressão-versus-classificação" class="slide level2"><h2>Regressão versus classificação</h2>
+</section>
+<section id="regressão-versus-classificação" class="slide level2">
+<h2>Regressão versus classificação</h2>
 <h3 id="regressão">Regressão</h3>
 <p><span class="math display">\[
 g(\mathbf x)
@@ -277,7 +315,9 @@ g_k(\mathbf x)
 \sum_{i\in \mathcal N_k(\mathbf x)}I(Y_i=1)
 }
 \]</span></p>
-</section><section id="a-média-virou-probabilidade" class="slide level2"><h2>A média virou probabilidade</h2>
+</section>
+<section id="a-média-virou-probabilidade" class="slide level2">
+<h2>A média virou probabilidade</h2>
 <p>Se entre os <span class="math inline">\(k=5\)</span> vizinhos temos</p>
 <p><span class="math display">\[
 (1,1,0,1,0)
@@ -294,7 +334,9 @@ g_5(\mathbf x)
 <p><span class="math display">\[
 \widehat g_5(\mathbf x)=1
 \]</span></p>
-</section><section id="classificação-multiclasse" class="slide level2"><h2>Classificação multiclasse</h2>
+</section>
+<section id="classificação-multiclasse" class="slide level2">
+<h2>Classificação multiclasse</h2>
 <p>Para <span class="math inline">\(Y\in\{1,\ldots,G\}\)</span>, estimamos</p>
 <p><span class="math display">\[
 \boxed{
@@ -314,8 +356,9 @@ I(Y_i=j)
 \widehat P(Y=j\mid\mathbf X=\mathbf x)
 }
 \]</span></p>
-</section><section id="o-papel-de-k-1" class="slide level2"><h2>O papel de <span class="math inline">\(k\)</span>
-</h2>
+</section>
+<section id="o-papel-de-k-1" class="slide level2">
+<h2>O papel de <span class="math inline">\(k\)</span></h2>
 <p><span class="math display">\[
 k \downarrow
 \quad\Longrightarrow\quad
@@ -327,13 +370,14 @@ k \uparrow
 \text{fronteira mais suave}
 \]</span></p>
 <p>Portanto, o mesmo balanço viés–variância estudado em regressão reaparece na classificação</p>
-</section><section id="o-que-não-mudou-no-knn" class="slide level2"><h2>O que não mudou no KNN?</h2>
+</section>
+<section id="o-que-não-mudou-no-knn" class="slide level2">
+<h2>O que não mudou no KNN?</h2>
 <ul>
 <li>sensibilidade à escala das covariáveis</li>
 <li>efeito da escolha da distância</li>
 <li>custo de predição</li>
-<li>necessidade de selecionar <span class="math inline">\(k\)</span>
-</li>
+<li>necessidade de selecionar <span class="math inline">\(k\)</span></li>
 <li>maldição da dimensionalidade</li>
 </ul>
 <div class="callout callout-note callout-style-simple">
@@ -346,9 +390,14 @@ k \uparrow
 </div>
 </div>
 </div>
-</section></section><section><section id="regressão-por-kernel-nadarayawatson" class="title-slide slide level1 center"><h1>Regressão por Kernel (Nadaraya–Watson)</h1>
+</section></section>
+<section>
+<section id="regressão-por-kernel-nadarayawatson" class="title-slide slide level1 center">
+<h1>Regressão por Kernel (Nadaraya–Watson)</h1>
 
-</section><section id="uma-limitação-do-knn" class="slide level2"><h2>Uma limitação do KNN</h2>
+</section>
+<section id="uma-limitação-do-knn" class="slide level2">
+<h2>Uma limitação do KNN</h2>
 <p>No KNN, todos os vizinhos selecionados recebem o mesmo peso.</p>
 <p>Uma observação quase coincidente com <span class="math inline">\(x\)</span> pode receber o mesmo peso que o <span class="math inline">\(k\)</span>-ésimo vizinho.</p>
 <blockquote>
@@ -360,7 +409,9 @@ k \uparrow
 g(\mathbf{x}) = \frac{1}{k} \sum_{i \in \mathcal{N}_k(\mathbf{x})} Y_i
 \]</span></p>
 </div>
-</section><section id="nadarayawatson" class="slide level2"><h2>Nadaraya–Watson</h2>
+</section>
+<section id="nadarayawatson" class="slide level2">
+<h2>Nadaraya–Watson</h2>
 <p>No <strong>método de Nadaraya–Watson</strong>, o estimador de regressão é dado por:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) = \sum_{i=1}^{n} w_i(\mathbf{x})\,Y_i
@@ -370,18 +421,21 @@ g(\mathbf{x}) = \sum_{i=1}^{n} w_i(\mathbf{x})\,Y_i
 <p><span class="math display">\[
 \sum_{i=1}^{n} w_i(\mathbf{x}) = 1
 \]</span></p>
-</section><section id="estimador-de-nadarayawatson" class="slide level2"><h2>Estimador de Nadaraya–Watson</h2>
+</section>
+<section id="estimador-de-nadarayawatson" class="slide level2">
+<h2>Estimador de Nadaraya–Watson</h2>
 <p>Os pesos são definidos por:</p>
 <p><span class="math display">\[
 w_i(\mathbf{x}) = \frac{K(\mathbf{x}, \mathbf{x}_i)}{\sum_{j=1}^{n} K(\mathbf{x}, \mathbf{x}_j)}
 \]</span></p>
 <p>Em que,</p>
 <ul>
-<li>
-<span class="math inline">\(K(\mathbf{x}, \mathbf{x}_i)\)</span> é um <strong>kernel de suavização</strong>, usado para medir a similaridade entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span>
-</li>
+<li><span class="math inline">\(K(\mathbf{x}, \mathbf{x}_i)\)</span> é um <strong>kernel de suavização</strong>, usado para medir a similaridade entre <span class="math inline">\(\mathbf{x}\)</span> e <span class="math inline">\(\mathbf{x}_i\)</span></li>
 <li>quanto mais próximo <span class="math inline">\(\mathbf{x}_i\)</span> está de <span class="math inline">\(\mathbf{x}\)</span>, maior será o peso</li>
-</ul></section><section id="estimador-de-nadarayawatson-1" class="slide level2"><h2>Estimador de Nadaraya–Watson</h2>
+</ul>
+</section>
+<section id="estimador-de-nadarayawatson-1" class="slide level2">
+<h2>Estimador de Nadaraya–Watson</h2>
 <p>Ele controla:</p>
 <ul>
 <li>como a influência dos pontos decai com a distância<br>
@@ -389,7 +443,9 @@ w_i(\mathbf{x}) = \frac{K(\mathbf{x}, \mathbf{x}_i)}{\sum_{j=1}^{n} K(\mathbf{x}
 <li>o grau de suavização do estimador</li>
 </ul>
 <p>Observações próximas recebem maior influência na estimativa de <span class="math inline">\(g(x)\)</span>.</p>
-</section><section id="kernels-usuais" class="slide level2"><h2>Kernels usuais</h2>
+</section>
+<section id="kernels-usuais" class="slide level2">
+<h2>Kernels usuais</h2>
 <p><strong>Uniforme:</strong> todos os pontos dentro de <span class="math inline">\(h\)</span> têm o mesmo peso</p>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
@@ -398,7 +454,9 @@ K(\mathbf{x}, \mathbf{x}_i) = \mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)}{h}\right)\mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
 \]</span></p>
-</section><section id="kernels-usuais-1" class="slide level2"><h2>Kernels usuais</h2>
+</section>
+<section id="kernels-usuais-1" class="slide level2">
+<h2>Kernels usuais</h2>
 <p><strong>Epanechnikov:</strong> peso decresce com a distância</p>
 <p><span class="math display">\[
 K(\mathbf{x}, \mathbf{x}_i) = \left(1 - \frac{d(\mathbf{x}, \mathbf{x}_i)^2}{h^2}\right)\mathbf{I}\{d(\mathbf{x}, \mathbf{x}_i) \le h\}
@@ -421,13 +479,18 @@ K(\mathbf{x}, \mathbf{x}_i) = \frac{1}{\sqrt{2\pi}h}
 </div>
 </div>
 </div>
-</section><section id="quatro-funções-kernel" class="slide level2"><h2>Quatro funções kernel</h2>
+</section>
+<section id="quatro-funções-kernel" class="slide level2">
+<h2>Quatro funções kernel</h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1056"></section><section id="mesmo-h-kernels-diferentes" class="slide level2"><h2>Mesmo <span class="math inline">\(h\)</span>, kernels diferentes</h2>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1056"></section>
+<section id="mesmo-h-kernels-diferentes" class="slide level2">
+<h2>Mesmo <span class="math inline">\(h\)</span>, kernels diferentes</h2>
 
 <img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>A escolha de <span class="math inline">\(h\)</span> costuma ser mais importante que a forma exata do kernel.</p>
-</section><section id="o-papel-de-h" class="slide level2"><h2>O papel de <span class="math inline">\(h\)</span>
-</h2>
+</section>
+<section id="o-papel-de-h" class="slide level2">
+<h2>O papel de <span class="math inline">\(h\)</span></h2>
 <p><span class="math display">\[
 h\downarrow\Rightarrow\text{mais local}\Rightarrow\text{mais flexível}
 \]</span></p>
@@ -437,10 +500,13 @@ h\uparrow\Rightarrow\text{mais observações relevantes}\Rightarrow\text{mais su
 <p><span class="math display">\[
 \boxed{h=\text{hiperparâmetro de suavização}}
 \]</span></p>
-</section><section id="magnitude-de-h" class="slide level2"><h2>Magnitude de <span class="math inline">\(h\)</span>
-</h2>
+</section>
+<section id="magnitude-de-h" class="slide level2">
+<h2>Magnitude de <span class="math inline">\(h\)</span></h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section><section id="observação-prática" class="slide level2"><h2>Observação prática</h2>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section>
+<section id="observação-prática" class="slide level2">
+<h2>Observação prática</h2>
 <p>Na prática, observa-se que:</p>
 <ul>
 <li>a escolha do <strong>kernel</strong> tem pouca influência no resultado<br>
@@ -448,20 +514,22 @@ h\uparrow\Rightarrow\text{mais observações relevantes}\Rightarrow\text{mais su
 <li>a escolha do parâmetro de suavização (<span class="math inline">\(h\)</span>) é decisiva</li>
 </ul>
 <p>O comportamento do estimador é controlado principalmente por: <span class="math inline">\(h\)</span> (largura da vizinhança)</p>
-</section><section id="knn-kernel" class="slide level2"><h2>KNN × Kernel</h2>
+</section>
+<section id="knn-kernel" class="slide level2">
+<h2>KNN × Kernel</h2>
 <table class="caption-top">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>Aspecto</th>
 <th>KNN</th>
 <th>Kernel</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>Vizinhança</td>
-<td>
-<span class="math inline">\(k\)</span> observações</td>
-<td>controlada por <span class="math inline">\(h\)</span>
-</td>
+<td><span class="math inline">\(k\)</span> observações</td>
+<td>controlada por <span class="math inline">\(h\)</span></td>
 </tr>
 <tr class="even">
 <td>Pesos</td>
@@ -483,8 +551,9 @@ h\uparrow\Rightarrow\text{mais observações relevantes}\Rightarrow\text{mais su
 <p><span class="math display">\[
 \boxed{\text{mesma filosofia: aprender localmente}}
 \]</span></p>
-</section><section id="escolha-de-h" class="slide level2"><h2>Escolha de <span class="math inline">\(h\)</span>
-</h2>
+</section>
+<section id="escolha-de-h" class="slide level2">
+<h2>Escolha de <span class="math inline">\(h\)</span></h2>
 <p>Tratamos diferentes valores de <span class="math inline">\(h\)</span> como candidatos:</p>
 <p><span class="math display">\[
 h_1,\ldots,h_M
@@ -493,21 +562,30 @@ h_1,\ldots,h_M
 <p><span class="math display">\[
 \boxed{\widehat h=\arg\min_h\widehat R_{CV}(h)}
 \]</span></p>
-</section></section><section><section id="regressão-polinomial-local" class="title-slide slide level1 center"><h1>Regressão polinomial local</h1>
+</section></section>
+<section>
+<section id="regressão-polinomial-local" class="title-slide slide level1 center">
+<h1>Regressão polinomial local</h1>
 
-</section><section id="regressão-polinomial-local-1" class="slide level2"><h2>Regressão Polinomial Local</h2>
+</section>
+<section id="regressão-polinomial-local-1" class="slide level2">
+<h2>Regressão Polinomial Local</h2>
 <p>A regressão de Nadaraya–Watson estima <span class="math inline">\(g(x)\)</span> como uma <strong>média ponderada local</strong>, ou seja, resolve</p>
 <p><span class="math display">\[
 \hat{g}(\mathbf{x}) = \arg\min_{\beta_0} \sum_{i=1}^n w_i(\mathbf{x})\,(Y_i - \beta_0)^2
 \]</span></p>
 <p>Isso equivale a ajustar <strong>localmente uma constante</strong> (polinômio de grau 0).</p>
-</section><section id="regressão-polinomial-local-2" class="slide level2"><h2>Regressão Polinomial Local</h2>
+</section>
+<section id="regressão-polinomial-local-2" class="slide level2">
+<h2>Regressão Polinomial Local</h2>
 <p>A regressão polinomial local generaliza essa ideia, permitindo que o ajuste local seja mais flexível.</p>
 <p>Em vez de ajustar apenas um intercepto, consideramos um polinômio de grau <span class="math inline">\(p\)</span>:</p>
 <p><span class="math display">\[
 g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \]</span></p>
-</section><section id="regressão-polinomial-local-3" class="slide level2"><h2>Regressão Polinomial Local</h2>
+</section>
+<section id="regressão-polinomial-local-3" class="slide level2">
+<h2>Regressão Polinomial Local</h2>
 <p>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, estimamos os coeficientes resolvendo:</p>
 <p><span class="math display">\[
 (\hat{\beta}_0, \ldots, \hat{\beta}_p)
@@ -516,7 +594,9 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \sum_{i=1}^n w_i(\mathbf{x})\left(Y_i - \beta_0 - \sum_{j=1}^p \beta_j x_i^j \right)^2
 \]</span></p>
 <p>Ou seja, realizamos um <strong>ajuste de mínimos quadrados ponderados localmente</strong>.</p>
-</section><section id="regressão-polinomial-local-4" class="slide level2"><h2>Regressão Polinomial Local</h2>
+</section>
+<section id="regressão-polinomial-local-4" class="slide level2">
+<h2>Regressão Polinomial Local</h2>
 <p>A solução matricial é dada por:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} =
@@ -524,35 +604,35 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 \]</span></p>
 <p>onde:</p>
 <ul>
-<li>
-<span class="math inline">\(B\)</span> é a matriz de regressão com linhas <span class="math inline">\((1, x_i, x_i^2, \ldots, x_i^p)\)</span><br>
+<li><span class="math inline">\(B\)</span> é a matriz de regressão com linhas <span class="math inline">\((1, x_i, x_i^2, \ldots, x_i^p)\)</span><br>
 </li>
-<li>
-<span class="math inline">\(D\)</span> é uma matriz diagonal com pesos <span class="math inline">\(w_i(\mathbf{x})\)</span><br>
+<li><span class="math inline">\(D\)</span> é uma matriz diagonal com pesos <span class="math inline">\(w_i(\mathbf{x})\)</span><br>
 </li>
-<li>
-<span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
-</ul></section><section id="interpretação" class="slide level2"><h2>Interpretação</h2>
+<li><span class="math inline">\(\boldsymbol{y}\)</span> é o vetor de respostas</li>
+</ul>
+</section>
+<section id="interpretação" class="slide level2">
+<h2>Interpretação</h2>
 <ul>
-<li>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, ajustamos <strong>um modelo diferente</strong>
-</li>
+<li>Para cada ponto <span class="math inline">\(\mathbf{x}\)</span>, ajustamos <strong>um modelo diferente</strong></li>
 <li>Os pesos <span class="math inline">\(w_i(\mathbf{x})\)</span> garantem que apenas observações próximas influenciem o ajuste</li>
-<li>O grau <span class="math inline">\(p\)</span> controla a <strong>flexibilidade local do modelo</strong><br><br>
-</li>
+<li>O grau <span class="math inline">\(p\)</span> controla a <strong>flexibilidade local do modelo</strong><br><br></li>
 </ul>
 <h3 id="casos-importantes">Casos importantes</h3>
 <ul>
-<li>
-<span class="math inline">\(p = 0\)</span> → regressão de Nadaraya–Watson<br>
+<li><span class="math inline">\(p = 0\)</span> → regressão de Nadaraya–Watson<br>
 </li>
-<li>
-<span class="math inline">\(p = 1\)</span> → regressão linear local (reduz viés nas bordas)<br>
+<li><span class="math inline">\(p = 1\)</span> → regressão linear local (reduz viés nas bordas)<br>
 </li>
-<li>
-<span class="math inline">\(p = 2\)</span> → regressão quadrática local</li>
-</ul></section><section id="regressão-polinomial-local-5" class="slide level2"><h2>Regressão Polinomial Local</h2>
+<li><span class="math inline">\(p = 2\)</span> → regressão quadrática local</li>
+</ul>
+</section>
+<section id="regressão-polinomial-local-5" class="slide level2">
+<h2>Regressão Polinomial Local</h2>
 
-<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section><section id="regressão-polinomial-local-6" class="slide level2"><h2>Regressão Polinomial Local</h2>
+<img data-src="semana_05_metodos_locais_knn_kernel_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="regressão-polinomial-local-6" class="slide level2">
+<h2>Regressão Polinomial Local</h2>
 <p>Note que:</p>
 <p><code>nn</code> é a fração de observações utilizada para definir adaptativamente a vizinhança em torno de cada ponto onde a regressão local é ajustada.</p>
 <p><span class="math display">\[nn\downarrow\Rightarrow\text{vizinhança menor}\Rightarrow\text{maior flexibilidade}\]</span></p>
@@ -562,14 +642,31 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
 
 
 </section></section>
-</div>
+    </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>EST335 — Semana 5</p>
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="../../site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="../../site_libs/revealjs/plugin/notes/notes.js"></script><script src="../../site_libs/revealjs/plugin/search/search.js"></script><script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="../../site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -736,7 +833,7 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -761,42 +858,84 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
           RevealZoom
         ]
       });
-    </script><script>
+    </script>
+    
+
+    <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
     
+
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
+
     
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
     
+
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
+
     
+
       })();
-    </script><script id="quarto-html-after-body" type="application/javascript">
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
         tabsets.forEach(function(tabset) {
@@ -844,13 +983,14 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
@@ -963,6 +1103,6 @@ g(\mathbf{x}) \approx \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p
         }
       });
       </script>
-
+    
 
 </body></html>
